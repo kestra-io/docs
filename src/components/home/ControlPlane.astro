@@ -1,0 +1,950 @@
+---
+import PixelEdges from "~/components/about/PixelEdges.astro"
+import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
+import ControlPlaneTopology, {
+    type Props as TopologyProps,
+} from "./ControlPlaneTopology.astro"
+
+interface Domain {
+    id: string
+    label: string
+    tint: string
+    title: string
+    description: string
+    solutionHref?: string
+    topology: TopologyProps
+}
+
+const DOMAINS: Domain[] = [
+    {
+        id: "infrastructure",
+        label: "Infrastructure",
+        tint: "#E6C359",
+        title: "Infrastructure automation",
+        description:
+            "Accelerate infrastructure delivery with consistent controls. Provision and configure across clouds, hypervisors, and bare metal with Terraform and Ansible, with approvals and audit trails on every change.",
+        solutionHref: "/infra-automation",
+        topology: {
+            label: "Kestra topology of the provision_vm flow running: request form, owner approval, Terraform apply, Ansible config and CMDB update run one after the other",
+            nodes: [
+                {
+                    id: "request_form",
+                    type: "core.trigger.Webhook",
+                    plugin: "core.trigger.Webhook",
+                    fallback: "mdi:webhook",
+                    x: 0,
+                    y: 0,
+                    status: "success",
+                    duration: "0.4s",
+                    seconds: 0.4,
+                },
+                {
+                    id: "owner_approval",
+                    type: "core.flow.Pause",
+                    plugin: "core.flow.Pause",
+                    fallback: "mdi:pause-circle-outline",
+                    x: 0,
+                    y: 140,
+                    status: "success",
+                    duration: "2m 31s",
+                    seconds: 151,
+                },
+                {
+                    id: "terraform_apply",
+                    type: "terraform.cli.TerraformCLI",
+                    plugin: "terraform.cli.TerraformCLI",
+                    fallback: "mdi:terraform",
+                    runner: "kubernetes",
+                    x: 310,
+                    y: 0,
+                    status: "success",
+                    duration: "3m 05s",
+                    seconds: 185,
+                    artifacts: 1,
+                },
+                {
+                    id: "ansible_config",
+                    type: "ansible.cli.AnsibleCLI",
+                    plugin: "ansible.cli.AnsibleCLI",
+                    fallback: "mdi:ansible",
+                    x: 310,
+                    y: 140,
+                    status: "running",
+                    duration: "1m 12s",
+                    seconds: 72,
+                },
+                {
+                    id: "update_cmdb",
+                    type: "servicenow.Post",
+                    plugin: "servicenow.Post",
+                    fallback: "mdi:database-sync-outline",
+                    x: 620,
+                    y: 0,
+                    status: "created",
+                    duration: "0.8s",
+                    seconds: 0.8,
+                },
+            ],
+        },
+    },
+    {
+        id: "itops",
+        label: "IT operations",
+        tint: "#59E659",
+        title: "IT operations",
+        description:
+            "Run day 2 operations from one place. Respond to incidents, run runbooks, roll out patches, and rotate certificates, with ServiceNow tickets, approvals, retries, and alerts in every step.",
+        topology: {
+            label: "Kestra topology of the nightly_batch flow running: 2 AM schedule, SFTP download, ERP batch load, archive to S3 and on-call alert run one after the other",
+            nodes: [
+                {
+                    id: "schedule_0200",
+                    type: "core.trigger.Schedule",
+                    plugin: "core.trigger.Schedule",
+                    fallback: "mdi:clock-outline",
+                    x: 0,
+                    y: 0,
+                    status: "success",
+                    duration: "0.2s",
+                    seconds: 0.2,
+                },
+                {
+                    id: "sftp_download",
+                    type: "fs.sftp.Download",
+                    plugin: "fs.sftp.Download",
+                    fallback: "mdi:download-network-outline",
+                    x: 0,
+                    y: 140,
+                    status: "success",
+                    duration: "52s",
+                    seconds: 52,
+                },
+                {
+                    id: "erp_batch_load",
+                    type: "scripts.shell.Commands",
+                    plugin: "scripts.shell.Commands",
+                    fallback: "mdi:console",
+                    runner: "process",
+                    artifacts: 1,
+                    x: 310,
+                    y: 0,
+                    status: "success",
+                    duration: "7m 08s",
+                    seconds: 428,
+                },
+                {
+                    id: "archive_files",
+                    type: "aws.s3.Upload",
+                    plugin: "aws.s3.Upload",
+                    fallback: "mdi:archive-arrow-up-outline",
+                    x: 310,
+                    y: 140,
+                    status: "running",
+                    duration: "24s",
+                    seconds: 24,
+                },
+                {
+                    id: "notify_on_call",
+                    type: "notifications.pagerduty.PagerDutyAlert",
+                    plugin: "notifications.pagerduty.PagerDutyAlert",
+                    fallback: "mdi:bell-ring-outline",
+                    x: 620,
+                    y: 0,
+                    status: "created",
+                    duration: "0.7s",
+                    seconds: 0.7,
+                },
+            ],
+        },
+    },
+    {
+        id: "data",
+        label: "Data pipelines",
+        tint: "#59BCE6",
+        title: "Data pipelines",
+        description:
+            "Deliver reliable data faster. Coordinate ingestion, transformation, and downstream delivery with dependencies, retries, and recovery in one governed workflow.",
+        solutionHref: "/data",
+        topology: {
+            label: "Kestra topology of the daily_revenue flow running: orders extract, dbt build, quality checks, Snowflake load and Slack notification run one after the other",
+            nodes: [
+                {
+                    id: "extract_orders",
+                    type: "jdbc.postgresql.Query",
+                    plugin: "jdbc.postgresql.Query",
+                    fallback: "mdi:database-export-outline",
+                    x: 0,
+                    y: 0,
+                    status: "success",
+                    duration: "42s",
+                    seconds: 42,
+                },
+                {
+                    id: "dbt_build",
+                    type: "dbt.cli.DbtCLI",
+                    plugin: "dbt.cli.DbtCLI",
+                    fallback: "mdi:hammer-wrench",
+                    runner: "docker",
+                    x: 0,
+                    y: 140,
+                    status: "success",
+                    duration: "1m 36s",
+                    seconds: 96,
+                },
+                {
+                    id: "quality_checks",
+                    type: "scripts.python.Script",
+                    plugin: "scripts.python.Script",
+                    fallback: "mdi:language-python",
+                    artifacts: 1,
+                    x: 310,
+                    y: 0,
+                    status: "success",
+                    duration: "18s",
+                    seconds: 18,
+                },
+                {
+                    id: "load_snowflake",
+                    type: "jdbc.snowflake.Upload",
+                    plugin: "jdbc.snowflake.Upload",
+                    fallback: "mdi:snowflake",
+                    x: 310,
+                    y: 140,
+                    status: "running",
+                    duration: "1m 04s",
+                    seconds: 64,
+                },
+                {
+                    id: "notify_slack",
+                    type: "notifications.slack.SlackIncomingWebhook",
+                    plugin: "notifications.slack.SlackIncomingWebhook",
+                    fallback: "mdi:slack",
+                    x: 620,
+                    y: 0,
+                    status: "created",
+                    duration: "0.6s",
+                    seconds: 0.6,
+                },
+            ],
+        },
+    },
+    {
+        id: "business",
+        label: "Business processes",
+        tint: "#E67FA2",
+        title: "Business processes",
+        description:
+            "Shorten business cycles and reduce manual handoffs. Connect requests, approvals, and tasks across finance, sales, and operations in one auditable workflow.",
+        topology: {
+            label: "Kestra topology of the nightly_close flow running: schedule, ledger extract, controller approval, ERP posting and Slack notification run one after the other",
+            nodes: [
+                {
+                    id: "schedule",
+                    type: "core.trigger.Schedule",
+                    plugin: "core.trigger.Schedule",
+                    fallback: "mdi:clock-outline",
+                    x: 0,
+                    y: 0,
+                    status: "success",
+                    duration: "0.2s",
+                    seconds: 0.2,
+                },
+                {
+                    id: "extract_ledger",
+                    type: "jdbc.oracle.Query",
+                    plugin: "jdbc.oracle.Query",
+                    fallback: "mdi:database-export-outline",
+                    x: 0,
+                    y: 140,
+                    status: "success",
+                    duration: "37s",
+                    seconds: 37,
+                },
+                {
+                    id: "controller_approval",
+                    type: "core.flow.Pause",
+                    plugin: "core.flow.Pause",
+                    fallback: "mdi:pause-circle-outline",
+                    x: 310,
+                    y: 0,
+                    status: "success",
+                    duration: "12m 52s",
+                    seconds: 772,
+                },
+                {
+                    id: "post_to_erp",
+                    type: "odoo.Query",
+                    plugin: "odoo.Query",
+                    fallback: "mdi:file-document-outline",
+                    x: 310,
+                    y: 140,
+                    status: "running",
+                    duration: "1m 06s",
+                    seconds: 66,
+                },
+                {
+                    id: "notify_finance",
+                    type: "notifications.slack.SlackIncomingWebhook",
+                    plugin: "notifications.slack.SlackIncomingWebhook",
+                    fallback: "mdi:slack",
+                    x: 620,
+                    y: 0,
+                    status: "created",
+                    duration: "0.5s",
+                    seconds: 0.5,
+                },
+            ],
+        },
+    },
+]
+---
+
+<section class="control-plane" aria-labelledby="control-plane" data-domains>
+    <PixelEdges left="cluster" right="wide" />
+    <div class="container-xl">
+        <div class="grid">
+            <header class="head">
+                <h2 id="control-plane">One control plane for every workflow</h2>
+                <p>
+                    Unified orchestration, with shared visibility and consistent
+                    governance across every team's workflows.
+                </p>
+            </header>
+            <div class="body">
+                <div class="tabs" role="tablist" aria-label="Use cases">
+                    {
+                        DOMAINS.map((domain, idx) => (
+                            <button
+                                type="button"
+                                role="tab"
+                                id={`domain-tab-${domain.id}`}
+                                class:list={["tab", { active: idx === 0 }]}
+                                aria-selected={idx === 0 ? "true" : "false"}
+                                aria-controls={`domain-panel-${domain.id}`}
+                                tabindex={idx === 0 ? 0 : -1}
+                                style={`--tint: ${domain.tint}`}
+                            >
+                                <span class="swatch" aria-hidden="true" />
+                                {domain.label}
+                            </button>
+                        ))
+                    }
+                </div>
+
+                <div class="visuals">
+                    {
+                        DOMAINS.map((domain, idx) => (
+                            <div
+                                id={`domain-panel-${domain.id}`}
+                                role="tabpanel"
+                                aria-labelledby={`domain-tab-${domain.id}`}
+                                class:list={["visual", { active: idx === 0 }]}
+                                data-domain-visual={domain.id}
+                                style={`--tint: ${domain.tint}; --pixels: url("${pixelCluster}")`}
+                            >
+                                <span class="pixels" aria-hidden="true" />
+                                <div class="panel-copy">
+                                    <h3>{domain.title}</h3>
+                                    <p>{domain.description}</p>
+                                    <a
+                                        href={
+                                            domain.solutionHref ?? "/blueprints"
+                                        }
+                                        class="btn-ghost compact solution"
+                                    >
+                                        {domain.solutionHref
+                                            ? "Explore the solution"
+                                            : "Browse blueprints"}
+                                    </a>
+                                </div>
+                                <div class="panel-topology">
+                                    <ControlPlaneTopology
+                                        {...domain.topology}
+                                    />
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+            <span class="bridge" aria-hidden="true">
+                <span class="node"></span>
+                <span class="run"></span>
+            </span>
+        </div>
+    </div>
+</section>
+
+<script>
+    function wireDomains() {
+        for (const root of document.querySelectorAll<HTMLElement>(
+            "[data-domains]",
+        )) {
+            if (root.dataset.wired === "true") continue
+            root.dataset.wired = "true"
+
+            const tabs = [...root.querySelectorAll<HTMLElement>(".tab")]
+            const visuals = [
+                ...root.querySelectorAll<HTMLElement>("[data-domain-visual]"),
+            ]
+
+            const open = (idx: number) => {
+                tabs.forEach((tab, i) => {
+                    tab.classList.toggle("active", i === idx)
+                    tab.setAttribute("aria-selected", String(i === idx))
+                    tab.tabIndex = i === idx ? 0 : -1
+                })
+                visuals.forEach((visual, i) =>
+                    visual.classList.toggle("active", i === idx),
+                )
+            }
+
+            let auto = !matchMedia("(prefers-reduced-motion: reduce)").matches
+            if (auto) tabs[0].style.setProperty("--progress", "0")
+            const shownIndex = (event: Event) =>
+                visuals.findIndex(
+                    (visual) =>
+                        visual.contains(event.target as Node) &&
+                        visual.classList.contains("active"),
+                )
+            root.addEventListener("topology:progress", (event) => {
+                const idx = shownIndex(event)
+                if (!auto || idx < 0) return
+                tabs[idx].style.setProperty(
+                    "--progress",
+                    String((event as CustomEvent<number>).detail),
+                )
+            })
+            root.addEventListener("topology:done", (event) => {
+                const idx = shownIndex(event)
+                if (!auto || idx < 0) return
+                setTimeout(() => {
+                    if (!auto || !visuals[idx].classList.contains("active"))
+                        return
+                    tabs[idx].style.removeProperty("--progress")
+                    const next = (idx + 1) % tabs.length
+                    tabs[next].style.setProperty("--progress", "0")
+                    open(next)
+                }, 1200)
+            })
+            const takeOver = () => {
+                auto = false
+                tabs.forEach((tab) => tab.style.removeProperty("--progress"))
+            }
+            // Rotating would hide the panel a keyboard user is reading.
+            root.addEventListener("focusin", takeOver)
+
+            tabs.forEach((tab, idx) => {
+                tab.addEventListener("click", () => {
+                    takeOver()
+                    open(idx)
+                })
+                tab.addEventListener("keydown", (e) => {
+                    const n = tabs.length
+                    const moves: Record<string, number> = {
+                        ArrowRight: (idx + 1) % n,
+                        ArrowLeft: (idx - 1 + n) % n,
+                        Home: 0,
+                        End: n - 1,
+                    }
+                    const next = moves[e.key]
+                    if (next === undefined) return
+                    e.preventDefault()
+                    takeOver()
+                    tabs[next].focus()
+                    open(next)
+                })
+            })
+        }
+    }
+
+    document.addEventListener("astro:page-load", wireDomains)
+    wireDomains()
+</script>
+
+<style lang="scss">
+    .control-plane {
+        --blue: #3b5bdb;
+
+        position: relative;
+        z-index: 1;
+        overflow-anchor: none;
+        background:
+            radial-gradient(
+                60% 70% at 0% 0%,
+                color-mix(in srgb, var(--blue) 8%, transparent),
+                transparent 70%
+            ),
+            radial-gradient(
+                70% 80% at 100% 100%,
+                color-mix(in srgb, var(--blue) 14%, transparent),
+                transparent 70%
+            ),
+            color-mix(in srgb, var(--blue) 3%, var(--ks-background-body));
+
+        :global(html.dark) & {
+            background: var(--ks-background-body);
+            border-bottom: 1px solid var(--ks-border-primary);
+
+            @include media-breakpoint-down(xl) {
+                border-bottom: 0;
+            }
+        }
+    }
+
+    .grid {
+        --rule: 1px solid var(--ks-border-primary);
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+
+        position: relative;
+        border-left: var(--rule);
+        border-right: var(--rule);
+
+        @include media-breakpoint-down(xl) {
+            border-inline: 0;
+        }
+
+        padding-bottom: clamp(2.5rem, 4vw, 3.5rem);
+
+        > .bridge {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 1px;
+            height: clamp(2.5rem, 4vw, 3.5rem);
+            pointer-events: none;
+
+            &::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: repeating-linear-gradient(
+                    180deg,
+                    color-mix(
+                            in srgb,
+                            var(--ks-content-primary) 28%,
+                            transparent
+                        )
+                        0 4px,
+                    transparent 4px 8px
+                );
+                transform-origin: top;
+                transition: transform 0.45s linear;
+            }
+
+            .node {
+                position: absolute;
+                z-index: 2;
+                top: -6px;
+                left: -6px;
+                width: 13px;
+                height: 13px;
+                border: 1.5px solid #a950ff;
+                border-radius: 50%;
+                background: var(--ks-background-body);
+                box-shadow: 0 0 0 4px rgba(169, 80, 255, 0.12);
+                transition:
+                    opacity 0.3s ease,
+                    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+            }
+
+            .run {
+                position: absolute;
+                z-index: 1;
+                top: 0;
+                left: -1px;
+                width: 3px;
+                height: 14px;
+                border-radius: 2px;
+                background: #8405ff;
+                opacity: 0;
+                animation: bridge-run 2.8s ease-in infinite;
+            }
+
+            &:global(.armed) {
+                &::before {
+                    transform: scaleY(0);
+                }
+
+                .node {
+                    opacity: 0;
+                    transform: scale(0);
+                }
+
+                .run {
+                    animation: none;
+                }
+            }
+
+            &:global(.armed.on) .node {
+                opacity: 1;
+                transform: none;
+            }
+
+            &:global(.armed.drawn)::before {
+                transform: none;
+            }
+        }
+
+        > .body {
+            position: relative;
+            border-block: var(--rule);
+
+            &::before,
+            &::after {
+                content: "";
+                position: absolute;
+                left: -100vw;
+                right: -100vw;
+                height: 1px;
+                background: var(--ks-border-primary);
+                pointer-events: none;
+            }
+
+            &::before {
+                top: -1px;
+            }
+
+            &::after {
+                bottom: -1px;
+            }
+        }
+    }
+
+    .head {
+        display: grid;
+        justify-items: center;
+        row-gap: 1.25rem;
+        padding: 8.5rem 0 4rem;
+        text-align: center;
+
+        > * {
+            padding-inline: var(--inset);
+        }
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem 3rem;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+            color: var(--ks-content-primary);
+            text-wrap: balance;
+            max-width: 10.5em;
+        }
+
+        p {
+            max-width: calc(40rem + 2 * var(--inset));
+            margin: 0;
+            font-size: 1.125rem;
+            line-height: 1.55;
+            color: var(--ks-content-tertiary);
+            text-wrap: balance;
+        }
+    }
+
+    .body {
+        background: none;
+    }
+
+    .tabs {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        border-bottom: var(--rule);
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    .tab {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.625rem;
+        padding: 1.375rem 1rem;
+        border: 0;
+        background: var(--ks-background-body);
+        font-size: 1.0625rem;
+        font-weight: 500;
+        text-align: center;
+        color: var(--ks-content-primary);
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        & + & {
+            border-left: var(--rule);
+        }
+
+        @include media-breakpoint-down(md) {
+            &:nth-child(3) {
+                border-left: 0;
+            }
+
+            &:nth-child(n + 3) {
+                border-top: var(--rule);
+            }
+        }
+
+        &:hover {
+            background: color-mix(
+                in srgb,
+                var(--tint) 4%,
+                var(--ks-background-body)
+            );
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: -2px;
+        }
+
+        &.active {
+            cursor: default;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -1px;
+            height: 2px;
+            background: var(--tint);
+            opacity: 0;
+            transform: scaleX(var(--progress, 1));
+            transform-origin: left;
+            transition:
+                opacity 0.2s ease,
+                transform 0.4s ease;
+        }
+
+        &.active::after {
+            opacity: 1;
+        }
+    }
+
+    .swatch {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 2px;
+        background: var(--ks-content-tertiary);
+        opacity: 0.5;
+        transition:
+            background-color 0.3s ease,
+            opacity 0.3s ease;
+
+        .active & {
+            background: var(--tint);
+            opacity: 1;
+        }
+    }
+
+    .visuals {
+        position: relative;
+        display: grid;
+        overflow: hidden;
+    }
+
+    .visual {
+        :global(.lit) > &.active {
+            box-shadow:
+                inset 0 0 0 2px #a950ff,
+                inset 0 0 60px rgba(169, 80, 255, 0.16);
+        }
+    }
+
+    .visual {
+        position: relative;
+        grid-area: 1 / 1;
+        display: grid;
+        grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
+        align-items: center;
+        gap: 2rem;
+        min-height: max(28rem, min(32rem, calc(100vh - 14rem)));
+        padding: var(--inset);
+        background: var(--ks-background-body);
+        opacity: 0;
+        visibility: hidden;
+        transition:
+            opacity 0.5s ease,
+            visibility 0s linear 0.5s;
+
+        > .panel-copy,
+        > .panel-topology {
+            transform: translateY(16px);
+            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        &.active {
+            opacity: 1;
+            visibility: visible;
+            transition:
+                opacity 0.5s ease,
+                box-shadow 0.5s ease;
+
+            > .panel-copy,
+            > .panel-topology {
+                transform: none;
+            }
+        }
+
+        @include media-breakpoint-down(xl) {
+            grid-template-columns: minmax(0, 1fr);
+            align-content: start;
+        }
+
+        .pixels {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 96px;
+            aspect-ratio: 194 / 168;
+            background: var(--tint);
+            mask: var(--pixels) no-repeat center / contain;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+    }
+
+    .panel-copy {
+        position: relative;
+        z-index: 1;
+
+        h3 {
+            margin: 0 0 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            margin: 0;
+            font-size: 1.0625rem;
+            line-height: 1.65;
+            color: var(--ks-content-secondary);
+        }
+    }
+
+    .solution {
+        margin-top: 1.75rem;
+    }
+
+    .panel-topology {
+        position: relative;
+        display: flex;
+        align-self: stretch;
+        min-height: 20rem;
+    }
+
+    @keyframes bridge-run {
+        0% {
+            opacity: 0;
+            transform: translateY(0);
+        }
+
+        12% {
+            opacity: 1;
+        }
+
+        75% {
+            opacity: 1;
+            transform: translateY(calc(2 * clamp(2.5rem, 4vw, 3.5rem) - 14px));
+        }
+
+        100% {
+            opacity: 0;
+            transform: translateY(calc(2 * clamp(2.5rem, 4vw, 3.5rem) - 14px));
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .grid > .bridge .run {
+            animation: none;
+        }
+    }
+    @include media-breakpoint-down(lg) {
+        .tabs {
+            display: none;
+        }
+
+        .visuals {
+            display: block;
+            overflow: visible;
+        }
+
+        .visual {
+            min-height: 0;
+            gap: 1.5rem;
+            padding-block: 3rem;
+
+            :global(.lit) > &.active {
+                box-shadow: none;
+            }
+            opacity: 1;
+            visibility: visible;
+
+            & + & {
+                border-top: var(--rule);
+            }
+
+            > .panel-copy,
+            > .panel-topology {
+                transform: none;
+            }
+
+            .pixels {
+                width: 64px;
+            }
+        }
+
+        .panel-copy h3::before {
+            content: "";
+            display: inline-block;
+            width: 0.5rem;
+            height: 0.5rem;
+            margin: 0 0.625rem 0.2em 0;
+            border-radius: 2px;
+            background: var(--tint);
+            vertical-align: middle;
+        }
+
+        .solution {
+            margin-top: 1.25rem;
+        }
+
+        .panel-topology {
+            min-height: 0;
+        }
+
+        .panel-copy {
+            display: contents;
+
+            h3 {
+                order: 1;
+                margin: 0;
+            }
+
+            p {
+                order: 3;
+            }
+        }
+
+        .panel-topology {
+            order: 2;
+        }
+
+        .solution {
+            order: 4;
+            justify-self: start;
+            margin-top: 0;
+        }
+    }
+</style>

@@ -1,0 +1,920 @@
+---
+import { Icon } from "astro-icon/components"
+import { API_URL } from "astro:env/client"
+import TopologyNode from "./TopologyNode.astro"
+import kestraMark from "./assets/ai/kestra-logo-mark-on-dark.svg"
+
+type Kind = "trigger" | "task" | "agent" | "approval"
+
+interface Step {
+    kind: Kind
+    id: string
+    type: string
+    plugin: string
+    fallback: string
+    duration: string
+}
+
+interface Flow {
+    id: string
+    label: string
+    namespace: string
+    flow: string
+    approver: string
+    decision: string
+    steps: Step[]
+}
+
+const trigger = (id: string, plugin: string, fallback: string): Step => ({
+    kind: "trigger",
+    id,
+    type: plugin.split(".").pop()!,
+    plugin: `core.trigger.${plugin}`,
+    fallback,
+    duration: "0.2s",
+})
+const task = (
+    id: string,
+    plugin: string,
+    fallback: string,
+    duration: string,
+): Step => ({
+    kind: "task",
+    id,
+    type: plugin,
+    plugin,
+    fallback,
+    duration,
+})
+const agent = (id: string, duration: string): Step => ({
+    kind: "agent",
+    id,
+    type: "ai.agent.AIAgent",
+    plugin: "ai.agent.AIAgent",
+    fallback: "mdi:robot-outline",
+    duration,
+})
+const approval = (id: string): Step => ({
+    kind: "approval",
+    id,
+    type: "core.flow.Pause",
+    plugin: "core.flow.Pause",
+    fallback: "mdi:pause-circle-outline",
+    duration: "2m 10s",
+})
+
+const FLOWS: Flow[] = [
+    {
+        id: "infrastructure",
+        label: "Infrastructure",
+        namespace: "company.infra",
+        flow: "scale_on_alert",
+        approver: "m.diaz",
+        decision: "Scale web to 6 replicas",
+        steps: [
+            trigger("capacity_alert", "Webhook", "mdi:webhook"),
+            task("read_metrics", "prometheus.Query", "mdi:chart-line", "1.2s"),
+            agent("plan_scaling", "8.4s"),
+            approval("owner_approval"),
+            task(
+                "terraform_apply",
+                "terraform.cli.TerraformCLI",
+                "mdi:terraform",
+                "1m 52s",
+            ),
+        ],
+    },
+    {
+        id: "itops",
+        label: "IT operations",
+        namespace: "company.itops",
+        flow: "triage_incident",
+        approver: "s.okafor",
+        decision: "Memory leak in api · restart it",
+        steps: [
+            trigger("incident_opened", "Webhook", "mdi:webhook"),
+            task("fetch_logs", "elasticsearch.Search", "mdi:magnify", "2.1s"),
+            agent("find_root_cause", "11.3s"),
+            approval("oncall_approval"),
+            task(
+                "restart_service",
+                "ansible.cli.AnsibleCLI",
+                "mdi:ansible",
+                "38s",
+            ),
+        ],
+    },
+    {
+        id: "data",
+        label: "Data pipelines",
+        namespace: "company.data",
+        flow: "nightly_orders",
+        approver: "a.weber",
+        decision: "Map new column order_ts",
+        steps: [
+            trigger("nightly", "Schedule", "mdi:clock-outline"),
+            task(
+                "extract_orders",
+                "jdbc.postgresql.Query",
+                "mdi:database-outline",
+                "14s",
+            ),
+            agent("fix_schema_drift", "6.8s"),
+            approval("data_owner"),
+            task("load_warehouse", "dbt.cli.DbtCLI", "mdi:database", "3m 05s"),
+        ],
+    },
+    {
+        id: "business",
+        label: "Business processes",
+        namespace: "company.finance",
+        flow: "refund_request",
+        approver: "j.kim",
+        decision: "Refund 120 € · under policy",
+        steps: [
+            trigger("refund_requested", "Webhook", "mdi:webhook"),
+            task("fetch_order", "core.http.Request", "mdi:web", "0.6s"),
+            agent("assess_refund", "4.9s"),
+            approval("finance_approval"),
+            task("issue_refund", "servicenow.Post", "mdi:cash-refund", "1.4s"),
+        ],
+    },
+]
+
+const plugins = [
+    ...new Set(FLOWS.flatMap((flow) => flow.steps.map((s) => s.plugin))),
+]
+const icons = new Map(
+    await Promise.all(
+        plugins.map(async (plugin) => {
+            try {
+                const response = await fetch(
+                    `${API_URL}/plugins/icons/io.kestra.plugin.${plugin}`,
+                )
+                if (!response.ok) return [plugin, null] as const
+                const svg = Buffer.from(await response.arrayBuffer())
+                return [
+                    plugin,
+                    `data:image/svg+xml;base64,${svg.toString("base64")}`,
+                ] as const
+            } catch {
+                return [plugin, null] as const
+            }
+        }),
+    ),
+)
+
+const seconds = (duration: string) =>
+    [...duration.matchAll(/([\d.]+)\s*(m|s)/g)].reduce(
+        (sum, [, value, unit]) => sum + Number(value) * (unit === "m" ? 60 : 1),
+        0,
+    )
+const MIN_LENGTH = 0.015
+const slots = (steps: Step[]) => {
+    const total = steps.reduce((sum, step) => sum + seconds(step.duration), 0)
+    const shown = steps.map((step) =>
+        Math.max(seconds(step.duration) / total, MIN_LENGTH),
+    )
+    const span = shown.reduce((sum, length) => sum + length, 0)
+    let start = 0
+    return shown.map((length) => {
+        const slot = `--start: ${start / span}; --length: ${length / span}`
+        start += length
+        return slot
+    })
+}
+
+const GUARDS = [
+    { id: "rbac", name: "RBAC", icon: "mdi:shield-account-outline" },
+    { id: "approvals", name: "Approvals", icon: "mdi:account-check-outline" },
+    { id: "audit", name: "Audit logs", icon: "mdi:text-box-search-outline" },
+]
+---
+
+<div class="ai-flow surface-dark" data-ai-flow>
+    <div class="frame">
+        {
+            FLOWS.map((flow, idx) => (
+                <div
+                    class:list={["run", { active: idx === 0 }]}
+                    role="img"
+                    aria-label={`A governed Kestra flow in ${flow.label.toLowerCase()}: ${flow.steps.map((s) => s.id).join(", then ")}. The AI agent is one step: it decides "${flow.decision}", then ${flow.approver} approves before the last task runs. RBAC, approvals and audit logs apply to the whole flow.`}
+                    hidden={idx !== 0}
+                    data-run={idx}
+                    data-flow-domain={flow.id}
+                    data-approver={flow.approver}
+                >
+                    <div class="head">
+                        <img class="flow-mark" src={kestraMark.src} alt="" />
+                        <span class="name">
+                            <span class="ns">{flow.namespace}</span>
+                            <span class="sep">/</span>
+                            <strong>{flow.flow}</strong>
+                        </span>
+                        <ul class="guards">
+                            {GUARDS.map((guard) => (
+                                <li data-guard={guard.id}>
+                                    <Icon name={guard.icon} />
+                                    {guard.name}
+                                    {guard.id === "audit" && (
+                                        <span class="count" data-count />
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    <div class="steps">
+                        {flow.steps.map((step, i, steps) => (
+                            <>
+                                {i > 0 && (
+                                    <span
+                                        class:list={[
+                                            "edge",
+                                            { done: idx === 0 },
+                                        ]}
+                                        data-edge={i - 1}
+                                    />
+                                )}
+                                <div
+                                    class:list={["step", step.kind]}
+                                    data-kind={step.kind}
+                                >
+                                    {step.kind === "agent" && (
+                                        <span class="decision" data-decision>
+                                            <Icon name="mdi:creation-outline" />
+                                            {flow.decision}
+                                        </span>
+                                    )}
+                                    <TopologyNode
+                                        id={step.id}
+                                        type={step.type}
+                                        icon={icons.get(step.plugin) ?? null}
+                                        fallback={step.fallback}
+                                        status={
+                                            idx === 0 ? "success" : "created"
+                                        }
+                                        duration={
+                                            step.kind === "approval"
+                                                ? `Approved by ${flow.approver}`
+                                                : step.duration
+                                        }
+                                        runner={
+                                            step.kind === "agent"
+                                                ? "AI agent"
+                                                : step.kind === "trigger"
+                                                  ? "trigger"
+                                                  : undefined
+                                        }
+                                        style={`--i: ${i}; ${slots(steps)[i]}`}
+                                        data-node={i}
+                                    >
+                                        <span slot="action" class="action" />
+                                    </TopologyNode>
+                                </div>
+                            </>
+                        ))}
+                    </div>
+                </div>
+            ))
+        }
+        <ol class="audit" aria-hidden="true" data-audit></ol>
+    </div>
+</div>
+
+<script>
+    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
+    function playFlow(root: HTMLElement) {
+        if (root.dataset.playing) return
+        root.dataset.playing = "true"
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+
+        const runs = [...root.querySelectorAll<HTMLElement>("[data-run]")]
+        const audit = root.querySelector<HTMLOListElement>("[data-audit]")!
+        const mascot = root
+            .closest("section")
+            ?.querySelector<HTMLElement>("[data-mascot]")
+
+        const mood = (name: string, target: Element | null = null) => {
+            if (!mascot) return
+            if (name) mascot.dataset.mood = name
+            else delete mascot.dataset.mood
+            mascot.dispatchEvent(
+                new CustomEvent("mascot:look", { detail: target }),
+            )
+        }
+
+        let visible = false
+        new IntersectionObserver(([entry]) => {
+            visible = entry.isIntersecting
+        }).observe(root)
+
+        const wait = async (ms: number) => {
+            await sleep(ms)
+            while (root.isConnected && !visible) await sleep(200)
+            if (!root.isConnected)
+                throw new DOMException("detached", "AbortError")
+        }
+
+        const clock = () => {
+            const now = new Date()
+            return [now.getHours(), now.getMinutes(), now.getSeconds()]
+                .map((n) => String(n).padStart(2, "0"))
+                .join(":")
+        }
+        const log = (who: string, what: string, tone = "") => {
+            const row = document.createElement("li")
+            if (tone) row.dataset.tone = tone
+            for (const [cls, text] of [
+                ["time", clock()],
+                ["who", who],
+                ["what", what],
+            ]) {
+                const cell = document.createElement("span")
+                cell.className = cls
+                cell.textContent = text
+                row.appendChild(cell)
+            }
+            audit.insertBefore(row, audit.firstChild)
+            while (audit.children.length > 3) audit.lastElementChild!.remove()
+        }
+
+        const play = async (idx: number) => {
+            runs.forEach((run, i) => (run.hidden = i !== idx))
+            const run = runs[idx]
+            const nodes = [...run.querySelectorAll<HTMLElement>("[data-node]")]
+            const edges = [...run.querySelectorAll<HTMLElement>("[data-edge]")]
+            const decision = run.querySelector<HTMLElement>("[data-decision]")!
+            const guard = (id: string) =>
+                run.querySelector<HTMLElement>(`[data-guard="${id}"]`)!
+            const count = run.querySelector<HTMLElement>("[data-count]")!
+            const approver = run.dataset.approver!
+            const pill = (node: HTMLElement) =>
+                node.querySelector<HTMLElement>(".pill.state")!
+            const pillText = (node: HTMLElement, text: string) => {
+                const el = pill(node)
+                const last = el.lastChild
+                if (last?.nodeType === Node.TEXT_NODE) last.textContent = text
+                else el.appendChild(document.createTextNode(text))
+            }
+            const set = (node: HTMLElement, status: string) => {
+                node.classList.remove(
+                    "is-created",
+                    "is-running",
+                    "is-paused",
+                    "is-success",
+                )
+                node.classList.add(`is-${status}`)
+            }
+            let audited = 0
+            const record = (who: string, what: string, tone = "") => {
+                audited += 1
+                count.textContent = String(audited)
+                guard("audit").dataset.state = "ok"
+                log(who, what, tone)
+            }
+            const id = (node: HTMLElement) =>
+                node.querySelector("strong")!.textContent!.trim()
+            const bar = (node: HTMLElement) =>
+                node.querySelector<HTMLElement>(".progress")
+            const grow = (node: HTMLElement, ms: number) => {
+                const el = bar(node)
+                if (!el) return
+                const start = Number(node.style.getPropertyValue("--start"))
+                const length = Number(node.style.getPropertyValue("--length"))
+                const at = `translateX(${start * 100}%)`
+                el.animate(
+                    [
+                        { transform: `${at} scaleX(0)` },
+                        { transform: `${at} scaleX(${length})` },
+                    ],
+                    { duration: ms, easing: "linear", fill: "forwards" },
+                )
+            }
+
+            run.classList.add("resetting")
+            nodes.forEach((node) => {
+                set(node, "created")
+                bar(node)
+                    ?.getAnimations()
+                    .forEach((animation) => animation.cancel())
+            })
+            edges.forEach((edge) => edge.classList.remove("active", "done"))
+            run.querySelectorAll("[data-guard]").forEach((el) => {
+                delete (el as HTMLElement).dataset.state
+            })
+            count.textContent = ""
+            decision.classList.remove("shown")
+            void run.offsetWidth
+            run.classList.remove("resetting")
+            audit.replaceChildren()
+            await wait(700)
+
+            for (let i = 0; i < nodes.length; i++) {
+                const node = nodes[i]
+                const kind =
+                    node.closest<HTMLElement>("[data-kind]")!.dataset.kind!
+                if (i > 0) {
+                    edges[i - 1].classList.add("active")
+                    await wait(380)
+                    edges[i - 1].classList.replace("active", "done")
+                }
+
+                if (kind === "approval") {
+                    set(node, "paused")
+                    grow(node, 1700)
+                    pillText(node, `Waiting for ${approver}`)
+                    guard("approvals").dataset.state = "wait"
+                    mood("wait", node)
+                    await wait(1700)
+                    pillText(node, `Approved by ${approver}`)
+                    set(node, "success")
+                    guard("approvals").dataset.state = "ok"
+                    mood("ok", node)
+                    record(approver, `approved ${id(node)}`, "ok")
+                    await wait(450)
+                    continue
+                }
+
+                set(node, "running")
+                grow(
+                    node,
+                    kind === "agent" ? 2000 : kind === "trigger" ? 600 : 1000,
+                )
+                if (kind === "agent") {
+                    guard("rbac").dataset.state = "ok"
+                    mood("send", node)
+                    await wait(900)
+                    decision.classList.add("shown")
+                    await wait(1100)
+                    set(node, "success")
+                    record("ai-agent", `${id(node)} · ${decision.innerText}`)
+                    await wait(500)
+                    continue
+                }
+
+                await wait(kind === "trigger" ? 600 : 1000)
+                set(node, "success")
+                record(
+                    kind === "trigger" ? "trigger" : "task",
+                    `${id(node)} · success`,
+                    i === nodes.length - 1 ? "ok" : "",
+                )
+                if (i === nodes.length - 1) mood("happy", node)
+                await wait(350)
+            }
+            await wait(2400)
+            mood("")
+        }
+
+        const openDomain = () =>
+            document.querySelector<HTMLElement>("[data-domain-visual].active")
+                ?.dataset.domainVisual
+        const loop = async () => {
+            let seen = openDomain()
+            let idx = Math.max(
+                0,
+                runs.findIndex((run) => run.dataset.flowDomain === seen),
+            )
+            for (;;) {
+                await play(idx)
+                const open = openDomain()
+                const followed = runs.findIndex(
+                    (run) => run.dataset.flowDomain === open,
+                )
+                if (open !== seen && followed >= 0) idx = followed
+                else idx = (idx + 1) % runs.length
+                seen = open
+            }
+        }
+        loop().catch((error) => {
+            if (error?.name !== "AbortError") throw error
+        })
+    }
+
+    function startFlows() {
+        document
+            .querySelectorAll<HTMLElement>("[data-ai-flow]")
+            .forEach(playFlow)
+    }
+    document.addEventListener("astro:page-load", startFlows)
+    startFlows()
+</script>
+
+<style lang="scss">
+    .ai-flow {
+        --frame: rgba(255, 255, 255, 0.1);
+        --muted: #a3a3b1;
+        --faint: #6b6b78;
+        --created: #8b98ff;
+        --success: #5ee3ae;
+        --running: #9d78ff;
+        --warning: #f2b25c;
+
+        position: relative;
+        z-index: 1;
+        max-width: 72rem;
+        margin: 0 auto;
+        font-family: var(--font-family-mona-sans), system-ui, sans-serif;
+    }
+
+    .frame {
+        position: relative;
+        padding: 1.25rem 1rem 1rem;
+        border: 1px solid var(--frame);
+        border-radius: 12px;
+        background:
+            linear-gradient(
+                160deg,
+                rgba(255, 255, 255, 0.07) 0%,
+                rgba(255, 255, 255, 0.02) 35%,
+                rgba(255, 255, 255, 0.015) 100%
+            ),
+            rgba(18, 18, 24, 0.35);
+        backdrop-filter: blur(18px) saturate(150%);
+        -webkit-backdrop-filter: blur(18px) saturate(150%);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.12),
+            inset 0 -1px 0 rgba(255, 255, 255, 0.03),
+            0 24px 60px -24px rgba(0, 0, 0, 0.6);
+    }
+
+    .head {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding-bottom: 1.25rem;
+        margin-bottom: 3rem;
+        border-bottom: 1px solid var(--frame);
+        font-size: 0.875rem;
+    }
+
+    .flow-mark {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+
+    .name {
+        color: var(--muted);
+
+        .sep {
+            margin-inline: 0.25rem;
+            color: var(--faint);
+        }
+
+        strong {
+            font-weight: 500;
+            color: #ffffff;
+        }
+    }
+
+    .guards {
+        display: flex;
+        gap: 0.5rem;
+        margin: 0 0 0 auto;
+        padding: 0;
+        list-style: none;
+
+        li {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.625rem;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--muted);
+            transition:
+                color 0.3s ease,
+                background-color 0.3s ease;
+
+            :global(svg) {
+                width: 14px;
+                height: 14px;
+            }
+
+            &[data-state="ok"] {
+                color: var(--success);
+                background: color-mix(in srgb, var(--success) 14%, transparent);
+            }
+
+            &[data-state="wait"] {
+                color: var(--warning);
+                background: color-mix(in srgb, var(--warning) 14%, transparent);
+            }
+        }
+
+        .count {
+            min-width: 1ch;
+            font-variant-numeric: tabular-nums;
+
+            &:empty {
+                display: none;
+            }
+        }
+    }
+
+    .steps {
+        display: grid;
+        grid-template-columns:
+            minmax(0, 1fr) 1.25rem minmax(0, 1fr) 1.25rem minmax(0, 1fr)
+            1.25rem minmax(0, 1fr) 1.25rem minmax(0, 1fr);
+        align-items: center;
+    }
+
+    .step {
+        position: relative;
+        min-width: 0;
+
+        :global(.node) {
+            grid-template-columns: auto minmax(0, 1fr);
+            width: 100%;
+            gap: 0.625rem;
+            padding-inline: 0.625rem;
+        }
+
+        :global(.node > .action) {
+            display: none;
+        }
+
+        :global(.node strong) {
+            font-size: 13px;
+        }
+
+        :global(.node .type) {
+            font-size: 12px;
+        }
+
+        :global(.node .icon) {
+            width: 34px;
+            height: 34px;
+        }
+
+        :global(.node .icon svg),
+        :global(.node .plugin) {
+            width: 26px;
+            height: 26px;
+        }
+
+        :global(.node .pills) {
+            left: 0;
+            right: auto;
+            max-width: 100%;
+        }
+
+        :global(.node .pill) {
+            white-space: nowrap;
+        }
+    }
+
+    .step.agent :global(.node) {
+        border-color: color-mix(in srgb, var(--running) 55%, transparent);
+        box-shadow:
+            0 0 0 4px color-mix(in srgb, var(--running) 12%, transparent),
+            0 0 32px color-mix(in srgb, var(--running) 22%, transparent);
+    }
+
+    .decision {
+        position: absolute;
+        bottom: calc(100% + 0.625rem);
+        left: 50%;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        padding: 0.3rem 0.625rem;
+        border-radius: 6px;
+        background: #2a2140;
+        font-size: 0.75rem;
+        font-weight: 500;
+        white-space: nowrap;
+        color: #e4dcff;
+        translate: -50% 0;
+
+        :global(svg) {
+            width: 14px;
+            height: 14px;
+            color: var(--running);
+        }
+
+        :global([data-playing]) & {
+            opacity: 0;
+            translate: -50% 4px;
+            transition:
+                opacity 0.35s ease,
+                translate 0.35s ease;
+        }
+
+        :global([data-playing]) &:global(.shown) {
+            opacity: 1;
+            translate: -50% 0;
+        }
+    }
+
+    .edge {
+        position: relative;
+        height: 1px;
+        margin-inline: 3px;
+        background: repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.28) 0 4px,
+            transparent 4px 8px
+        );
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: -2px;
+            border: 4px solid transparent;
+            border-left: 5px solid rgba(255, 255, 255, 0.4);
+            border-right: 0;
+            translate: 0 -50%;
+        }
+
+        &.active {
+            background: repeating-linear-gradient(
+                90deg,
+                var(--running) 0 4px,
+                transparent 4px 8px
+            );
+            background-size: 16px 1px;
+            animation: march 0.5s linear infinite;
+
+            &::after {
+                border-left-color: var(--running);
+            }
+        }
+
+        &.done {
+            background: rgba(255, 255, 255, 0.4);
+        }
+    }
+
+    .resetting :global(*) {
+        transition: none !important;
+    }
+
+    @keyframes march {
+        to {
+            background-position: 16px 0;
+        }
+    }
+
+    .audit {
+        display: grid;
+        gap: 0.375rem;
+        min-height: 5.75rem;
+        margin: 3.25rem 0 0;
+        padding: 0.875rem 0.5rem 0;
+        border-top: 1px solid var(--frame);
+        list-style: none;
+        font-size: 0.8125rem;
+
+        :global(li) {
+            display: grid;
+            grid-template-columns: 5rem 6rem minmax(0, 1fr);
+            gap: 0.75rem;
+            color: var(--muted);
+            animation: row-in 0.35s ease-out;
+        }
+
+        :global(li:not(:first-child)) {
+            opacity: 0.55;
+        }
+
+        :global(.time) {
+            font-variant-numeric: tabular-nums;
+            color: var(--faint);
+        }
+
+        :global(.who) {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        :global(li[data-tone="ok"] .what) {
+            color: var(--success);
+        }
+    }
+
+    @keyframes row-in {
+        from {
+            opacity: 0;
+            transform: translateY(-4px);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .edge.active {
+            animation: none;
+        }
+    }
+    @media (max-width: 1100px) {
+        .frame {
+            padding: 1rem 1rem 0.75rem;
+        }
+
+        .head {
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .guards {
+            flex-wrap: wrap;
+            margin-left: 0;
+        }
+
+        .steps {
+            grid-template-columns: minmax(0, 1fr);
+            max-width: 22rem;
+            margin-inline: auto;
+            padding-bottom: 1.75rem;
+        }
+
+        .step {
+            padding-bottom: 1.625rem;
+        }
+
+        .edge {
+            justify-self: center;
+            width: 1px;
+            height: 0.875rem;
+            margin: 0;
+            background: repeating-linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.28) 0 4px,
+                transparent 4px 8px
+            );
+
+            &::after {
+                top: auto;
+                right: auto;
+                bottom: -2px;
+                left: 50%;
+                border: 4px solid transparent;
+                border-top: 5px solid rgba(255, 255, 255, 0.4);
+                border-bottom: 0;
+                translate: -50% 0;
+            }
+
+            &.active {
+                background: repeating-linear-gradient(
+                    180deg,
+                    var(--running) 0 4px,
+                    transparent 4px 8px
+                );
+                background-size: 1px 16px;
+                animation: march-down 0.5s linear infinite;
+
+                &::after {
+                    border-top-color: var(--running);
+                }
+            }
+
+            &.done {
+                background: rgba(255, 255, 255, 0.4);
+            }
+        }
+
+        .decision {
+            position: static;
+            display: flex;
+            width: fit-content;
+            margin: 0 auto 0.625rem;
+            translate: none;
+
+            :global([data-playing]) & {
+                translate: 0 4px;
+            }
+
+            :global([data-playing]) &:global(.shown) {
+                translate: none;
+            }
+        }
+
+        .audit {
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+
+            :global(li) {
+                grid-template-columns: 4rem 4.5rem minmax(0, 1fr);
+                gap: 0.5rem;
+            }
+
+            :global(.what) {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+    }
+
+    @keyframes march-down {
+        to {
+            background-position: 0 16px;
+        }
+    }
+</style>

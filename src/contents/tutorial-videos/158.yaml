@@ -1,0 +1,10 @@
+title: "Prompt to Production: Building Kestra Flows with Claude Code"
+description: "Learn how to take a Kestra pipeline from a single prompt to production
+  using Claude Code, the Kestra MCP server, Agent Skills, and kestractl. Follow along
+  step-by-step as an AI agent deploys architecture, hardens pipelines with retries
+  and alerts, and configures Git sync."
+category: "AI"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=Z-as2lwWy8Y"
+publicationDate: "2026-11-10T00:00:00.000"
+contentType: "AI"
