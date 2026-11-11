@@ -169,7 +169,7 @@ Every tool takes an optional `tenant` argument. When the caller can act on a sin
 
 In the Enterprise Edition, each call runs as the caller in the requested tenant, so their [RBAC](../../07.enterprise/03.auth/rbac/index.md) permissions apply to both the tool and the namespace. A caller only sees the tools they can use in at least one of the tenants they can act on. Calling a tool that isn't in their list returns a `Tool not found` error. When a listed tool is denied for a namespace, the call returns an error result instead, for example `Execution not found`.
 
-<!-- TODO(eng): with no X-Forwarded-Host header, the 401 challenge's resource_metadata URL is "https://null/.well-known/oauth-protected-resource/api/v1/mcp" (McpOAuthChallengeFilter reads request.getUri().getAuthority(), which is null). OAuth discovery from the challenge only works behind a proxy that sets X-Forwarded-Host. -->
+<!-- TODO(eng): the 401 challenge's resource_metadata host is "null" without an X-Forwarded-Host header (kestra-io/kestra-ee#12426). Once fixed, OAuth discovery from the challenge works for direct connections. -->
 <!-- TODO(runtime test): live-verified on 2026-11-11 except OAuth (no identity provider on the test instance) and a real MCP client such as Claude Code (tested with raw JSON-RPC requests). -->
 
 
