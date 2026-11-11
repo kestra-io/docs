@@ -77,6 +77,64 @@ describe("prepareSearchResults", () => {
             ],
             expected: "docs/ui/playground",
         },
+        {
+            query: "Flows",
+            results: [
+                doc(
+                    "docs/workflow-components/flow",
+                    "Flows in Kestra – Define Orchestration Units",
+                ),
+                doc(
+                    "docs/best-practices/flows",
+                    "Flow Best Practices: Performance and Reliability",
+                ),
+            ],
+            expected: "docs/workflow-components/flow",
+        },
+        {
+            query: "Outputs",
+            results: [
+                doc("docs/best-practices/outputs", "Managing and Purging Flow Outputs in Kestra"),
+                doc(
+                    "docs/workflow-components/outputs",
+                    "Workflow Outputs in Kestra: Share Data Between Tasks",
+                ),
+            ],
+            expected: "docs/workflow-components/outputs",
+        },
+        {
+            query: "Executions",
+            results: [
+                doc("docs/ui/executions", "Executions in the Kestra UI – Inspect and Manage Runs"),
+                doc(
+                    "docs/workflow-components/execution",
+                    "Executions in Kestra – Run and Monitor Flows",
+                ),
+            ],
+            expected: "docs/workflow-components/execution",
+        },
+        {
+            query: "Namespaces",
+            results: [
+                doc("docs/ui/namespaces", "Namespaces in Kestra UI: Manage Resources"),
+                doc(
+                    "docs/workflow-components/namespace",
+                    "Namespaces in Kestra – Organize and Secure Workflows",
+                ),
+            ],
+            expected: "docs/workflow-components/namespace",
+        },
+        {
+            query: "trigger",
+            results: [
+                doc("docs/plugin-developer-guide/trigger", "Develop a Kestra Trigger Plugin"),
+                doc(
+                    "docs/workflow-components/triggers",
+                    "Triggers in Kestra: Schedule, Events, Webhooks",
+                ),
+            ],
+            expected: "docs/workflow-components/triggers",
+        },
     ])("puts the reference page first for $query", ({ query, results, expected }) => {
         const ranked = prepareSearchResults(results, query)
 
@@ -90,19 +148,24 @@ describe("prepareSearchResults", () => {
         expect(prepareSearchResults(results, "flow editor")[0].url).toBe("docs/ui/editor")
     })
 
-    it.each(["tutorial", "how-to-guides", "migration-guide"])(
-        "prefers a reference page over an exact title in %s",
-        (section) => {
-            const results = [
-                doc(`docs/${section}/inputs`, "Inputs"),
-                doc("docs/workflow-components/inputs", "Workflow Inputs in Kestra"),
-            ]
+    it.each([
+        "tutorial",
+        "how-to-guides",
+        "migration-guide",
+        "best-practices",
+        "plugin-developer-guide",
+        "terraform",
+        "api-reference",
+    ])("prefers a reference page over an exact title in %s", (section) => {
+        const results = [
+            doc(`docs/${section}/inputs`, "Inputs"),
+            doc("docs/workflow-components/inputs", "Workflow Inputs in Kestra"),
+        ]
 
-            expect(prepareSearchResults(results, "inputs")[0].url).toBe(
-                "docs/workflow-components/inputs",
-            )
-        },
-    )
+        expect(prepareSearchResults(results, "inputs")[0].url).toBe(
+            "docs/workflow-components/inputs",
+        )
+    })
 
     it.each([
         "/docs/workflow-components/worker-groups/",
@@ -116,7 +179,7 @@ describe("prepareSearchResults", () => {
 
     it("retains API order for equally relevant hits and does not reorder the input array", () => {
         const tutorial = doc("docs/tutorial/inputs", "Add Inputs")
-        const reference = doc("docs/workflow-components/inputs", "Workflow Inputs")
+        const reference = doc("docs/ui/inputs", "Workflow Inputs")
         const anotherReference = doc("docs/expressions/inputs", "Input Expressions")
         const results = [tutorial, reference, anotherReference]
 
@@ -132,7 +195,7 @@ describe("prepareSearchResults", () => {
         ])
     })
 
-    it.each([undefined, "", "   ", "input", "inputs", "input defaults"])(
+    it.each([undefined, "", "   ", "inputs", "input defaults"])(
         "preserves API relevance when there is no exact documentation match for %s",
         (query) => {
             const results = [
@@ -146,6 +209,16 @@ describe("prepareSearchResults", () => {
             )
         },
     )
+
+    it.each([
+        ["input", "docs/workflow-components/inputs"],
+        ["app", "docs/enterprise/scalability/apps"],
+        ["  WORKER GROUP  ", "docs/enterprise/scalability/worker-groups"],
+    ])("matches the singular query %s to its plural page name", (query, url) => {
+        expect(prepareSearchResults([blog(), doc(url, "Concept reference")], query)[0].url).toBe(
+            url,
+        )
+    })
 
     it("keeps the API order of unmatched results after promoting a reference", () => {
         const results = [

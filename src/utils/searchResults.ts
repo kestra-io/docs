@@ -14,12 +14,25 @@ function documentationPriority(result: SearchResult, searchTerm?: string): numbe
     if (path[0] !== "docs") return 0
 
     const matchesTitle = result.title.trim().toLowerCase() === searchTerm
-    const matchesPage = path.at(-1)?.toLowerCase() === searchTerm.replace(/\s+/g, "-")
+    const pageName = path.at(-1)?.toLowerCase().replace(/s$/, "")
+    const queryPageName = searchTerm.replace(/\s+/g, "-").replace(/s$/, "")
+    const matchesPage = pageName === queryPageName
     if (!matchesTitle && !matchesPage) return 0
 
     // Versioned docs use docs/{major.minor}/{section}/..., otherwise docs/{section}/... .
     const section = path[/^\d+\.\d+$/.test(path[1] ?? "") ? 2 : 1]
-    return ["tutorial", "how-to-guides", "migration-guide"].includes(section) ? 1 : 2
+    if (section === "workflow-components") return 3
+    return [
+        "tutorial",
+        "how-to-guides",
+        "migration-guide",
+        "best-practices",
+        "plugin-developer-guide",
+        "terraform",
+        "api-reference",
+    ].includes(section)
+        ? 1
+        : 2
 }
 
 /**
@@ -28,9 +41,10 @@ function documentationPriority(result: SearchResult, searchTerm?: string): numbe
  * The index can contain entries without a title (e.g. a file indexed
  * without frontmatter); the UI reads title/url/type unconditionally, so
  * such entries are dropped rather than letting one of them break the
- * whole result list. Exact documentation title/page-name matches come first,
- * with reference pages ahead of guides and migrations. Stable sorting keeps
- * the API's relevance order within each priority. The matched part of each
+ * whole result list. Exact documentation title/page-name matches come first
+ * (ignoring a trailing plural s in page names and queries),
+ * with workflow-component references ahead of other pages, then guides and migrations.
+ * Stable sorting keeps the API's relevance order within each priority. The matched part of each
  * title is wrapped in <mark> for highlighting.
  */
 export function prepareSearchResults(results: unknown, searchValue?: string): SearchResult[] {
