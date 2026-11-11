@@ -199,7 +199,7 @@ Filters match the stored string exactly. Kestra normalizes each value before sto
 | `TIME` | `10:15:30`, or `10:15` when the seconds are zero | `10:15:00` |
 | `DURATION` | ISO 8601, such as `PT1H30M` | Seconds with nine decimals, such as `5400.000000000` |
 
-<!-- TODO(eng): DATETIME and DURATION outputs are stored in a different form than inputs (SearchableDataUtils uses value.toString() on the typed input but on the serialized output). Update the table if engineering aligns them. Also: replay-with-inputs indexes the new inputs under the ORIGINAL execution id, overwriting its values, instead of the replay's. Verified live 2026-11-11. -->
+<!-- TODO(eng): DATETIME and DURATION outputs are stored in a different form than inputs (SearchableDataUtils uses value.toString() on the typed input but on the serialized output). Update the table if engineering aligns them. Also: replay-with-inputs indexes the new inputs under the ORIGINAL execution id, overwriting its values, instead of the replay's. See kestra-io/kestra#22542. -->
 
 #### Find executions by searchable value
 

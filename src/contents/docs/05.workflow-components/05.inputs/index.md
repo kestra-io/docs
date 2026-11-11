@@ -505,7 +505,7 @@ Searchable inputs follow these rules:
 - **Inputs inside a `FORM`:** use the dotted ID as the filter key, such as `environment.region` for a `region` input inside an `environment` form.
 - **Flow triggers:** executions started by a [Flow trigger](../07.triggers/02.flow-trigger/index.md) don't store searchable inputs.
 
-<!-- TODO(eng): Flow trigger executions don't go through FlowInputOutput.readExecutionInputs, the only path that indexes inputs. Verified live 2026-11-11. Remove the Flow triggers bullet if this is fixed. -->
+<!-- TODO(eng): Flow trigger executions don't go through FlowInputOutput.readExecutionInputs, the only path that indexes inputs (kestra-io/kestra#22542). Remove the Flow triggers bullet if this is fixed. -->
 
 To find executions by a searchable input, use the **Inputs & Outputs** filter on the **Executions** page or the `searchableData` API filter. See [Find executions by searchable value](../06.outputs/index.md#find-executions-by-searchable-value).
 
