@@ -213,7 +213,7 @@ triggers:
 
 | Property | Required | Description |
 |---|---|---|
-| `header` | Yes | The request header that carries the signature. |
+| `header` | Yes | The request header that carries the signature. The name is not case-sensitive. |
 | `algorithm` | No | `HMAC_SHA1`, `HMAC_SHA256`, or `HMAC_SHA512`. Defaults to `HMAC_SHA256`. |
 | `secret` | Yes | The shared signing secret. Store it as a [secret](../../../06.concepts/04.secret/index.md) and reference it with `{{ secret('...') }}`. |
 | `prefix` | No | Text the header value must start with before the signature, such as `sha256=` for GitHub. |
