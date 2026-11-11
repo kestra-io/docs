@@ -12,7 +12,8 @@
 </template>
 
 <script setup lang="ts">
-    import { defineComponent, h, nextTick, onBeforeUnmount, onMounted, provide, ref } from "vue"
+    import { defineComponent, getCurrentInstance, h, nextTick, onBeforeUnmount, onMounted, provide, ref } from "vue"
+    import { createI18n } from "vue-i18n"
     import { Topology } from "@kestra-io/topology"
     import "@kestra-io/topology/standalone.css"
     import "@kestra-io/topology/style.css"
@@ -34,6 +35,9 @@
         setup: (iconProps) => () => h(TaskIcon, { cls: iconProps.cls, onlyIcon: iconProps.onlyIcon }),
     })
     provide(TASK_ICON_INJECTION_KEY, GraphTaskIcon)
+
+    // The graph translates its labels; only this island needs vue-i18n.
+    getCurrentInstance()?.appContext.app.use(createI18n({ legacy: false, locale: "en", messages: {} }))
 
     const rootRef = ref<HTMLDivElement | null>(null)
     const { fitView } = useVueFlow(String(props.id))
