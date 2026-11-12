@@ -2,14 +2,20 @@ FROM node:26
 
 ARG DEBIAN_FRONTEND=noninteractive
 
+# System packages are installed as root; the container then runs as the
+# node image's non-root "node" user (uid 1000).
 USER root
-WORKDIR /root
 
 RUN apt update && apt install -y \
   apt-transport-https ca-certificates gnupg lsb-release iputils-ping net-tools \
   curl wget git zip unzip less zsh jq lsof ripgrep
 
-ENV HOME="/root"
+ARG USERNAME=node
+RUN chsh -s /bin/zsh ${USERNAME}
+
+USER ${USERNAME}
+ENV HOME="/home/${USERNAME}"
+WORKDIR ${HOME}
 
 # --------------------------------------
 # Git
@@ -23,8 +29,7 @@ RUN git config --global --add safe.directory "/workspaces/docs"
 # Oh my zsh
 # --------------------------------------
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" -- \
-  -t robbyrussell \
-  -p git -p node -p npm
+  --unattended
 
 ENV SHELL=/bin/zsh
 # --------------------------------------
@@ -32,7 +37,7 @@ ENV SHELL=/bin/zsh
 # --------------------------------------
 # SSH 
 # --------------------------------------
-RUN mkdir -p ~/.ssh
+RUN mkdir -p -m 700 ~/.ssh
 RUN touch ~/.ssh/config
 RUN echo "Host github.com" >> ~/.ssh/config \
   && echo "    IdentityFile ~/.ssh/id_ed25519" >> ~/.ssh/config
