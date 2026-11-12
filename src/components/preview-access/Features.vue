@@ -140,7 +140,6 @@
     import { ref, useTemplateRef } from "vue"
     import identify from "~/utils/identify"
     import { useGtm } from "@gtm-support/vue-gtm"
-    import { $fetch } from "~/utils/fetch"
     import { useFormErrors } from "~/composables/useFormErrors"
     import calendarMonthImage from "./images/calendar_month.png"
     import smallCloudImage from "./images/small_cloud.png"
@@ -183,9 +182,6 @@
                     kuid: localStorage.getItem("KUID"),
                 },
             ])
-            let ip = await $fetch<{ ip: string }>(
-                "https://api.ipify.org?format=json",
-            )
             const formData = {
                 fields: [
                     {
@@ -216,7 +212,6 @@
                 ],
                 context: {
                     hutk: getHubspotTracking(),
-                    ipAddress: ip.ip,
                     pageUri: props.routePath,
                     pageName: document.title,
                 },

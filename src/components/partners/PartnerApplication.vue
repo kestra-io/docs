@@ -162,7 +162,6 @@
     import identify from "~/utils/identify"
     import { useGtm } from "@gtm-support/vue-gtm"
     import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
-    import { $fetch } from "~/utils/fetch"
 
     type Track = "services" | "technology"
 
@@ -294,7 +293,6 @@
             hsq.push(["identify", { email: form.email, firstname: form.firstname, lastname: form.lastname, company: form.company, jobtitle: form.jobtitle, kuid }])
             hsq.push(["trackCustomBehavioralEvent", { name: "partner_form_submission" }])
 
-            const { ip } = await $fetch<{ ip: string }>("https://api.ipify.org?format=json")
             const contact = (name: string, value: string) => ({ objectTypeId: "0-1", name, value })
             const company = (name: string, value: string) => ({ objectTypeId: "0-2", name, value })
             await submitHubspotForm(HUBSPOT_FORM_ID, {
@@ -315,7 +313,6 @@
                 ],
                 context: {
                     hutk: getHubspotTracking() || undefined,
-                    ipAddress: ip,
                     pageUri: props.routePath,
                     pageName: document.title,
                 },
