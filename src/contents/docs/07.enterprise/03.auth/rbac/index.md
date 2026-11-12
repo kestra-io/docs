@@ -45,18 +45,16 @@ Once active, a banner at the top of the page confirms the impersonation session.
 
 ![The Stop impersonating button appears in the top right during an active impersonation session](./stop-impersonate-user.png)
 
-**From the API:** send a `POST` request to `/api/v1/users/{id}/impersonate`. The response contains a short-lived JWT you can use in place of your regular credentials to act as that user.
+**From the API:** send a `POST` request to `/api/v1/users/{id}/impersonate`. The response is a `303` redirect with an empty body. It sets a short-lived JWT, valid for one hour by default, in the `JWT` cookie:
 
 ```bash
-curl -X POST https://your-kestra-instance/api/v1/users/{userId}/impersonate \
-  -H "Authorization: Bearer YOUR_API_TOKEN"
+curl -s -o /dev/null -D - -X POST https://your-kestra-instance/api/v1/users/{userId}/impersonate \
+  -H "Authorization: Bearer YOUR_API_TOKEN" | grep -i '^set-cookie: JWT='
 ```
 
-**From kestractl:** use the [`kestractl`](../../../kestra-cli/kestractl/index.md#installation) `users impersonate` command, which calls the same endpoint and prints the token:
+Send that token as the `JWT` cookie or as a `Bearer` token to act as the impersonated user. A request from anyone other than an Instance Owner returns `403`.
 
-```bash
-kestractl users impersonate <user_id>
-```
+<!-- TODO(eng): kestractl users impersonate fails because it follows the 303 redirect (kestra-io/kestractl#212). Document it here again once fixed. -->
 
 ### Resources
 
