@@ -151,7 +151,6 @@
     import CheckBoldIcon from "vue-material-design-icons/CheckBold.vue"
 
     import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
-    import { $fetch } from "~/utils/fetch"
     import identify from "~/utils/identify"
 
     const HUBSPOT_FORM_ID = "a75dff2b-9d18-46fc-8d94-16815b4e3898"
@@ -190,10 +189,6 @@
             const hsq = ((window as any)._hsq = (window as any)._hsq || [])
             hsq.push(["identify", { email, firstname, lastname, kuid }])
 
-            const { ip } = await $fetch<{ ip: string }>(
-                "https://api.ipify.org?format=json",
-            )
-
             const payload = {
                 fields: [
                     { name: "firstname", value: firstname },
@@ -213,7 +208,6 @@
                 ],
                 context: {
                     hutk: getHubspotTracking() || undefined,
-                    ipAddress: ip,
                     pageUri: "early-adopter-program",
                     pageName: document.title,
                 },
