@@ -59,7 +59,7 @@ tasks:
         defaults: staging
     onWait:
       - id: ask_for_review
-        type: io.kestra.plugin.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
         url: "{{ secret('SLACK_WEBHOOK') }}"
         messageText: "Release {{ inputs.version }} is waiting for a review: {{ outputs.approve_deploy.url }}"
     onApprove:
@@ -81,7 +81,7 @@ When the flow runs:
 
 `onWait`, `onApprove`, and `onDeny` are all optional. The task also accepts `errors` and `finally` blocks, like other flowable tasks.
 
-`outputs.<taskId>.url` links to the execution page when the instance has [`kestra.url`](../../configuration/02.runtime-and-storage/index.md#server-environment-and-jvm-settings) configured. In Enterprise, it links to the approval request instead.
+`outputs.<taskId>.url` links to the execution page when the instance has [`kestra.url`](../../configuration/02.runtime-and-storage/index.md#server-environment-and-jvm-settings) configured. In Enterprise, it links to the approval case instead, unless the task disables the case.
 
 ## Review a request
 
@@ -98,7 +98,8 @@ curl -X POST "http://localhost:8080/api/v1/main/executions/{executionId}/actions
 
 Use `decision=DENY` to deny the request. The endpoint returns:
 
-- `409` when the task run is not paused, or was already decided or cancelled.
+- `404` when the execution has no task run with that ID.
+- `409` when the task run is still running its `onWait` tasks, or is not paused because it was already decided or cancelled.
 - `422` when the task run is not an `Approval`, or when the review is refused, for example because a required comment is missing.
 
 `POST .../actions/review/validate` checks a review with the same parameters without submitting it.
@@ -174,7 +175,7 @@ Killing the execution also ends the request.
 | `comment` | The reviewer's comment. |
 | `inputs` | The values the reviewer entered in the review `inputs`. |
 | `due` | When the request expires, computed from `timeout`. |
-| `url` | Link to the execution, or to the approval request in Enterprise. |
+| `url` | Link to the approval case in Enterprise, or to the execution when no case is opened. |
 | `commentRequired` | The rendered `commentRequired` value, while the request waits. |
 | `title` | The rendered request title. Enterprise only. |
 | `caseId` | ID of the approval case. Enterprise only. |

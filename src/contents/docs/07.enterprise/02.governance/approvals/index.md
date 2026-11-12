@@ -95,7 +95,7 @@ The resolution note is the reviewer's comment. The timeline records an `APPROVAL
 
 Approval cases keep the other case features: comments, watchers, linked assets, custom fields, and [`CaseEvent` triggers](../cases/index.md#react-to-case-events). For example, a flow with a `CaseEvent` trigger on `APPROVAL_DECIDED` can post every decision to a channel.
 
-Set `case.enabled: false` to skip the approval case. The request then doesn't appear on the Approvals page.
+Set `case.enabled: false` to skip the approval case. The request then doesn't appear on the Approvals page, and the `url` output links to the execution.
 
 ## The Approvals page
 
