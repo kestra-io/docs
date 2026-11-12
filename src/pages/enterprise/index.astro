@@ -14,6 +14,7 @@ import EnterpriseHero from "~/components/enterprise/EnterpriseHero.astro"
 import CustomerLogos from "~/components/enterprise/CustomerLogos.astro"
 import Deployments from "~/components/enterprise/Deployments.astro"
 import Enterprise from "~/components/home/Enterprise.astro"
+import AgentZones from "~/components/enterprise/AgentZones.astro"
 import AgentControls from "~/components/enterprise/AgentControls.astro"
 import EnterpriseShowcase from "~/components/enterprise/EnterpriseShowcase.astro"
 import Included from "~/components/enterprise/Included.astro"
@@ -174,6 +175,7 @@ const FAQ = [
                 what they can do: which workflows they can call, who can
                 approve, and a record of every action.
             </Fragment>
+            <AgentZones slot="figure" />
             <AgentControls slot="after" />
         </AiGovernance>
         <Deployments />

@@ -1,0 +1,425 @@
+---
+import { Icon } from "astro-icon/components"
+import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
+
+const GUARDS = [
+    "Permissions",
+    "Approvals",
+    "Audit log",
+    "Policies",
+    "Kill switch",
+]
+
+const AGENTS = ["Support agent", "Ops agent", "Finance agent"]
+
+const ZONES = [
+    { group: "support-zone", systems: ["Zendesk", "Orders DB"] },
+    { group: "infra-zone", systems: ["Kubernetes", "ServiceNow"] },
+    { group: "sap-zone", systems: ["SAP", "Vault"] },
+]
+---
+
+<div class="agent-zones">
+    <div class="plane">
+        <p class="title">
+            <img src={kestraMark.src} alt="" width="22" height="22" />
+            Control plane
+        </p>
+        <p class="note">
+            No agent code runs here. It never connects to your systems.
+        </p>
+        <div class="band guards">
+            <p class="label">
+                <Icon name="mdi:shield-check-outline" />
+                Guardrails
+            </p>
+            <ul>
+                {GUARDS.map((guard) => (
+                    <li>{guard}</li>
+                ))}
+            </ul>
+        </div>
+        <div class="band agents">
+            <p class="label">
+                <Icon name="mdi:robot-outline" />
+                AI agents
+            </p>
+            <ul>
+                {AGENTS.map((agent) => (
+                    <li>{agent}</li>
+                ))}
+            </ul>
+        </div>
+    </div>
+    <div class="dispatch">
+        <p class="outbound">
+            <strong>outbound only</strong>
+            TLS · no inbound port
+        </p>
+        <ul>
+            {ZONES.map((zone, index) => (
+                <li style={`--i: ${index}`}>
+                    <span class="wire up" aria-hidden="true" />
+                    <div class="workers">
+                        <strong>Dedicated workers</strong>
+                        <code>wg: {zone.group}</code>
+                        {index === 0 && (
+                            <span class="blocked" aria-hidden="true">
+                                <Icon name="mdi:close" />
+                            </span>
+                        )}
+                    </div>
+                    <span class="wire" aria-hidden="true" />
+                    <ul class="systems">
+                        {zone.systems.map((system) => (
+                            <li>{system}</li>
+                        ))}
+                    </ul>
+                </li>
+            ))}
+        </ul>
+    </div>
+    <p class="caption">
+        <strong>Agents act only through governed workflows.</strong>
+        Each agent’s workers reach only the systems in their own zone and hold
+        no database credentials.
+    </p>
+</div>
+
+<style lang="scss">
+    .agent-zones {
+        --rule: rgba(255, 255, 255, 0.12);
+        --violet: #b48cff;
+        --wire: rgba(180, 140, 255, 0.55);
+        --gap: clamp(1rem, 2.6vw, 2.5rem);
+        --mono: var(--bs-font-monospace);
+
+        position: relative;
+        z-index: 1;
+        padding: 0 clamp(1rem, 2.5vw, 2.5rem);
+        color: #ffffff;
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        code {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            color: #a3a3b1;
+        }
+    }
+
+    .plane {
+        overflow: hidden;
+        border: 1px solid var(--rule);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.045);
+        backdrop-filter: blur(22px);
+        -webkit-backdrop-filter: blur(22px);
+    }
+
+    .title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.625rem;
+        padding: 1.25rem 1rem 0.5rem;
+        font-family: var(--mono);
+        font-size: 0.8125rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+
+        img {
+            width: 1.75rem;
+            height: 1.75rem;
+            padding: 0.1875rem;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 6px;
+            background: #17161d;
+        }
+    }
+
+    .note {
+        padding: 0 1rem 1.25rem;
+        font-family: var(--mono);
+        font-size: 0.75rem;
+        color: #c3c0e4;
+        text-align: center;
+    }
+
+    .band {
+        border-top: 1px solid var(--rule);
+
+        .label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            border-bottom: 1px solid var(--rule);
+            background: rgba(0, 0, 0, 0.22);
+            font-family: var(--mono);
+            font-size: 0.6875rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #c3c0e4;
+
+            :global(svg) {
+                width: 0.875rem;
+                height: 0.875rem;
+                color: var(--violet);
+            }
+        }
+
+        ul {
+            display: grid;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.125rem 0.75rem;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            text-align: center;
+
+            & + li {
+                border-left: 1px solid var(--rule);
+            }
+
+            @include media-breakpoint-down(md) {
+                justify-content: flex-start;
+                padding: 0.5rem 1.25rem;
+                border-left: 0 !important;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            ul {
+                padding-block: 0.375rem;
+            }
+        }
+    }
+
+    .guards ul {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    .agents ul {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    .dispatch {
+        position: relative;
+
+        > ul {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+
+            @include media-breakpoint-down(md) {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            > li {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding-inline: calc(var(--gap) / 2);
+
+                @include media-breakpoint-down(md) {
+                    & + li {
+                        margin-top: 1.25rem;
+
+                        .wire.up {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .outbound {
+        position: absolute;
+        top: 0.75rem;
+        left: calc(100% / 6 + 0.875rem);
+        display: grid;
+        font-family: var(--mono);
+        font-size: 0.6875rem;
+        line-height: 1.5;
+        color: #a3a3b1;
+
+        strong {
+            font-weight: 600;
+            color: var(--violet);
+        }
+
+        @include media-breakpoint-down(md) {
+            position: static;
+            padding-top: 0.75rem;
+            text-align: center;
+        }
+    }
+
+    .wire {
+        position: relative;
+        width: 1px;
+        height: 1.5rem;
+        background: repeating-linear-gradient(
+            var(--wire) 0 3px,
+            transparent 3px 7px
+        );
+
+        &.up {
+            height: 3.25rem;
+
+            &::after {
+                content: "";
+                position: absolute;
+                left: 50%;
+                width: 0.375rem;
+                height: 0.375rem;
+                margin-left: -0.1875rem;
+                border-radius: 50%;
+                background: #ffffff;
+                box-shadow: 0 0 0.625rem 0.125rem rgba(180, 140, 255, 0.8);
+                animation: agent-zones-pulse 2.4s ease-in infinite;
+                animation-delay: calc(var(--i) * 0.8s);
+            }
+
+            @include media-breakpoint-down(md) {
+                height: 2rem;
+            }
+        }
+    }
+
+    .workers {
+        position: relative;
+        display: grid;
+        gap: 0.25rem;
+        width: 100%;
+        padding: 1rem;
+        border: 1px solid rgba(180, 140, 255, 0.4);
+        border-radius: 10px;
+        background: rgba(132, 5, 255, 0.14);
+        backdrop-filter: blur(22px);
+        -webkit-backdrop-filter: blur(22px);
+        text-align: center;
+
+        strong {
+            font-size: 0.9375rem;
+            font-weight: 700;
+        }
+
+        code {
+            color: var(--violet);
+        }
+    }
+
+    .blocked {
+        position: absolute;
+        top: 50%;
+        left: 100%;
+        display: grid;
+        place-items: center;
+        width: var(--gap);
+        height: 1rem;
+        translate: 0 -50%;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 50% 0 auto;
+            border-top: 1px dashed #ff5c7a;
+        }
+
+        :global(svg) {
+            position: relative;
+            width: 1rem;
+            height: 1rem;
+            padding: 1px;
+            border-radius: 50%;
+            background: #ff5c7a;
+            color: #14060b;
+        }
+
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
+
+    .systems {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+
+        li {
+            padding: 0.3125rem 0.75rem;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.04);
+            font-size: 0.8125rem;
+            font-weight: 600;
+        }
+    }
+
+    .caption {
+        display: grid;
+        gap: 0.375rem;
+        margin-top: 2.5rem !important;
+        font-size: 0.9375rem;
+        line-height: 1.5;
+        color: #c3c0e4;
+        text-align: center;
+
+        strong {
+            font-size: 1rem;
+            color: #ffffff;
+        }
+    }
+
+    @keyframes agent-zones-pulse {
+        0% {
+            top: 100%;
+            opacity: 0;
+        }
+
+        15% {
+            opacity: 1;
+        }
+
+        85% {
+            opacity: 1;
+        }
+
+        100% {
+            top: 0;
+            opacity: 0;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .wire.up::after {
+            display: none;
+        }
+    }
+</style>
