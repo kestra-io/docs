@@ -6,6 +6,34 @@ interface Props {
 }
 
 const { items } = Astro.props
+
+const GLYPHS: Record<string, string[]> = {
+    I: ["111", "010", "010", "010", "111"],
+    N: ["10001", "11001", "10101", "10011", "10001"],
+    C: ["0111", "1000", "1000", "1000", "0111"],
+    L: ["1000", "1000", "1000", "1000", "1111"],
+    U: ["1001", "1001", "1001", "1001", "0110"],
+    D: ["1110", "1001", "1001", "1001", "1110"],
+    E: ["1111", "1000", "1110", "1000", "1111"],
+}
+const COLUMNS = 41
+const PITCH = 1000 / COLUMNS
+const GAP = 3
+const SIDE = (PITCH - GAP).toFixed(2)
+const HEIGHT = PITCH * 5 - GAP
+const CELLS: { x: number; y: number }[] = []
+let column = 0
+for (const letter of "INCLUDED") {
+    const rows = GLYPHS[letter]
+    rows.forEach((row, y) =>
+        [...row].forEach((cell, x) => {
+            if (cell === "1")
+                CELLS.push({ x: (column + x) * PITCH, y: y * PITCH })
+        }),
+    )
+    column += rows[0].length + 1
+}
+const DOT = { x: column * PITCH, y: 4 * PITCH }
 ---
 
 <section
@@ -15,26 +43,184 @@ const { items } = Astro.props
 >
     <div class="container-xl">
         <div class="rails">
-            <h2 id="what-is-included">What is included</h2>
-            <ul>
-                {items.map((item) => (
-                    <li>
-                        <Icon name={item.icon} />
-                        <p>{item.text}</p>
-                    </li>
-                ))}
-            </ul>
-            <div class="ctas">
-                <a href="/demo" class="btn-solid">
-                    Book a demo
-                </a>
-                <a href="/pricing#compare" class="btn-ghost">
-                    Compare editions
-                </a>
+            <h2 id="what-is-included" aria-label="What is included">
+                <svg
+                    viewBox={`0 0 ${1000 - GAP} ${HEIGHT.toFixed(2)}`}
+                    aria-hidden="true"
+                    data-blocks
+                >
+                    <defs>
+                        <linearGradient
+                            id="ee-included-sweep"
+                            gradientUnits="userSpaceOnUse"
+                            x1="0"
+                            y1="60"
+                            x2="1000"
+                            y2="60"
+                        >
+                            <stop
+                                offset="0.38"
+                                stop-color="#a39cc4"
+                                stop-opacity="0"
+                            ></stop>
+                            <stop offset="0.46" stop-color="#c9c3e6"></stop>
+                            <stop offset="0.5" stop-color="#ffffff"></stop>
+                            <stop offset="0.54" stop-color="#c9c3e6"></stop>
+                            <stop
+                                offset="0.62"
+                                stop-color="#a39cc4"
+                                stop-opacity="0"
+                            ></stop>
+                            <animateTransform
+                                attributeName="gradientTransform"
+                                type="rotate"
+                                from="0 500 60"
+                                to="360 500 60"
+                                dur="14s"
+                                repeatCount="indefinite"
+                            ></animateTransform>
+                        </linearGradient>
+                        <radialGradient
+                            id="ee-included-near"
+                            gradientUnits="userSpaceOnUse"
+                            cx="500"
+                            cy="60"
+                            r="210"
+                        >
+                            <stop offset="0" stop-color="#eceaf8"></stop>
+                            <stop offset="0.4" stop-color="#d3c6f5"></stop>
+                            <stop
+                                offset="1"
+                                stop-color="#a39cc4"
+                                stop-opacity="0"
+                            ></stop>
+                        </radialGradient>
+                        <linearGradient
+                            id="ee-included-sweep-dot"
+                            gradientUnits="userSpaceOnUse"
+                            x1="0"
+                            y1="60"
+                            x2="1000"
+                            y2="60"
+                        >
+                            <stop
+                                offset="0.38"
+                                stop-color="#f62e76"
+                                stop-opacity="0"
+                            ></stop>
+                            <stop offset="0.46" stop-color="#f62e76"></stop>
+                            <stop offset="0.5" stop-color="#ff7fab"></stop>
+                            <stop offset="0.54" stop-color="#f62e76"></stop>
+                            <stop
+                                offset="0.62"
+                                stop-color="#f62e76"
+                                stop-opacity="0"
+                            ></stop>
+                            <animateTransform
+                                attributeName="gradientTransform"
+                                type="rotate"
+                                from="0 500 60"
+                                to="360 500 60"
+                                dur="14s"
+                                repeatCount="indefinite"
+                            ></animateTransform>
+                        </linearGradient>
+                        <radialGradient
+                            id="ee-included-near-dot"
+                            gradientUnits="userSpaceOnUse"
+                            cx="500"
+                            cy="60"
+                            r="210"
+                        >
+                            <stop offset="0" stop-color="#ff7fab"></stop>
+                            <stop offset="0.4" stop-color="#f62e76"></stop>
+                            <stop
+                                offset="1"
+                                stop-color="#f62e76"
+                                stop-opacity="0"
+                            ></stop>
+                        </radialGradient>
+                    </defs>
+                    {["base", "sweep", "near"].map((layer) => (
+                        <g class={layer}>
+                            {CELLS.map((cell) => (
+                                <rect
+                                    x={cell.x.toFixed(2)}
+                                    y={cell.y.toFixed(2)}
+                                    width={SIDE}
+                                    height={SIDE}
+                                />
+                            ))}
+                        </g>
+                    ))}
+                    {["base", "sweep", "near"].map((layer) => (
+                        <rect
+                            class={`dot ${layer}`}
+                            x={DOT.x.toFixed(2)}
+                            y={DOT.y.toFixed(2)}
+                            width={SIDE}
+                            height={SIDE}
+                        />
+                    ))}
+                </svg>
+            </h2>
+            <div class="column">
+                <ul>
+                    {items.map((item) => (
+                        <li>
+                            <Icon name={item.icon} />
+                            <p>{item.text}</p>
+                        </li>
+                    ))}
+                </ul>
+                <div class="ctas">
+                    <a href="/demo" class="btn-solid">
+                        Book a demo <Icon name="mdi:chevron-right" />
+                    </a>
+                    <a href="/pricing#compare" class="btn-ghost">
+                        Compare editions
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </section>
+
+<script>
+    function wire() {
+        for (const svg of document.querySelectorAll<SVGSVGElement>(
+            "[data-blocks]:not([data-wired])",
+        )) {
+            svg.dataset.wired = ""
+            const section = svg.closest("section")
+            const lights = svg.querySelectorAll("radialGradient")
+            if (!section) continue
+            if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+                svg.pauseAnimations()
+            section.addEventListener("pointermove", (event) => {
+                const box = svg.getBoundingClientRect()
+                const scale = 1000 / box.width
+                for (const light of lights) {
+                    light.setAttribute(
+                        "cx",
+                        String((event.clientX - box.left) * scale),
+                    )
+                    light.setAttribute(
+                        "cy",
+                        String((event.clientY - box.top) * scale),
+                    )
+                }
+                svg.classList.add("is-near")
+            })
+            section.addEventListener("pointerleave", () =>
+                svg.classList.remove("is-near"),
+            )
+        }
+    }
+
+    document.addEventListener("astro:page-load", wire)
+    wire()
+</script>
 
 <style lang="scss">
     .ee-included {
@@ -42,57 +228,106 @@ const { items } = Astro.props
         overflow: hidden;
         background:
             radial-gradient(
-                46% 70% at 50% 46%,
-                rgba(98, 78, 255, 0.5),
-                rgba(58, 60, 235, 0.2) 48%,
-                transparent 72%
+                60% 70% at 50% 55%,
+                rgba(120, 110, 165, 0.16),
+                rgba(90, 84, 130, 0.05) 55%,
+                transparent 75%
             ),
-            radial-gradient(
-                55% 80% at 100% 0%,
-                rgba(33, 136, 255, 0.34),
-                transparent 64%
-            ),
-            radial-gradient(
-                55% 80% at 0% 100%,
-                rgba(84, 62, 230, 0.42),
-                transparent 66%
-            ),
-            linear-gradient(160deg, #0a0b28 0%, #131747 55%, #0d0f36 100%);
+            linear-gradient(180deg, #060609 0%, #0e0d14 55%, #060609 100%);
         color: #ffffff;
     }
 
     .rails {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 7.5rem clamp(1.5rem, 4vw, 3.5rem);
-        border-inline: 1px solid rgba(255, 255, 255, 0.08);
-        text-align: center;
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+        --line: #24232b;
+
+        position: relative;
+        overflow: hidden;
+        padding: 7.5rem var(--inset) 0;
+        border-inline: 1px solid var(--line);
 
         @include media-breakpoint-down(md) {
-            padding-block: 4.5rem;
+            padding-top: 4.5rem;
         }
     }
 
+    h2,
+    .column {
+        width: 100%;
+        max-width: 72rem;
+        margin-inline: auto;
+    }
+
     h2 {
-        margin: 0;
-        font-size: clamp(2rem, 3.6vw, 3rem);
-        font-weight: 600;
-        line-height: 1.1;
-        letter-spacing: -0.02em;
-        color: #ffffff;
+        margin-block: 0 clamp(1.5rem, 3vw, 3rem);
+        user-select: none;
+
+        svg {
+            display: block;
+            width: 100%;
+            height: auto;
+            overflow: visible;
+        }
+
+        .base {
+            fill: rgba(216, 214, 236, 0.13);
+        }
+
+        .sweep {
+            fill: url("#ee-included-sweep");
+            filter: drop-shadow(0 0 0.5rem rgba(206, 198, 240, 0.35));
+        }
+
+        .near {
+            fill: url("#ee-included-near");
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .dot.base {
+            fill: rgba(246, 46, 118, 0.3);
+        }
+
+        .dot.sweep {
+            fill: url("#ee-included-sweep-dot");
+            filter: drop-shadow(0 0 0.5rem rgba(246, 46, 118, 0.5));
+        }
+
+        .dot.near {
+            fill: url("#ee-included-near-dot");
+        }
+
+        :global(svg.is-near) .near {
+            opacity: 1;
+        }
+    }
+
+    .column {
+        position: relative;
+        padding-bottom: 7.5rem;
+        border-inline: 1px solid var(--line);
+
+        @include media-breakpoint-down(md) {
+            padding-bottom: 4.5rem;
+        }
     }
 
     ul {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 0.75rem;
-        width: 100%;
-        max-width: 72rem;
-        margin: 3rem 0 0;
+        position: relative;
+        margin: 0;
         padding: 0;
         list-style: none;
         text-align: left;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0 -100vw auto;
+            height: 1px;
+            background: var(--line);
+        }
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -100,34 +335,59 @@ const { items } = Astro.props
 
         @include media-breakpoint-down(sm) {
             grid-template-columns: minmax(0, 1fr);
-            margin-top: 2rem;
         }
     }
 
     li {
+        position: relative;
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
-        padding: 1.25rem 1.25rem 1.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        padding: 1.5rem 1.5rem 2.25rem;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: auto -100vw 0;
+            height: 1px;
+            background: var(--line);
+            pointer-events: none;
+        }
+
+        & + li {
+            border-left: 1px solid var(--line);
+        }
+
+        @include media-breakpoint-up(lg) {
+            &:nth-child(4n + 1) {
+                border-left: 0;
+            }
+        }
+
+        @include media-breakpoint-between(sm, lg) {
+            &:nth-child(2n + 1) {
+                border-left: 0;
+            }
+        }
 
         @include media-breakpoint-down(sm) {
             flex-direction: row;
             align-items: start;
             gap: 0.875rem;
-            padding: 1rem 1.125rem;
+            padding-block: 1.125rem;
+            border-left: 0;
         }
 
         :global(svg) {
             flex: none;
             width: 1.375rem;
             height: 1.375rem;
-            color: #a99bff;
+            color: #b48cff;
         }
 
         p {
@@ -140,10 +400,16 @@ const { items } = Astro.props
     }
 
     .ctas {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 0.75rem;
-        margin-top: 2.5rem;
+        width: fit-content;
+        margin: 4rem auto 0;
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: minmax(0, 1fr);
+            width: auto;
+            margin: 2.5rem 1.5rem 0;
+        }
     }
 </style>
