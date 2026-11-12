@@ -408,6 +408,8 @@ After the run, the `outputFiles` property allows you to preview or download `sys
 
 ![Ansible File Output](./ansible-outputs.png)
 
+To change how the playbook runs without editing `commands`, set the task's typed options: `checkMode` (`--check`), `diff` (`--diff`), `limit`, `tags`, `skipTags`, `verbosity` (`0` to `4`), and `forks`. Kestra adds the matching flags to every `ansible-playbook` command in the task, so `checkMode: true` with `diff: true` reports what the playbook would change without applying it.
+
 ### Install Galaxy collections and Python packages
 
 When your playbooks use Galaxy collections or Python libraries that the image doesn't include, declare them on the task with `galaxyDependencies` and `pythonDependencies`. For example, if you extend the playbook with the `community.general.json_query` filter, it needs the `community.general` collection and the `jmespath` package:
@@ -483,6 +485,8 @@ Ansible extra variables take precedence over the `vars` block in the playbook, s
 `ansible-runner` runs the playbook from its `runner/project` directory, so the report is keyed by that path. Reference it downstream with `{{ outputs.system_info.outputFiles['runner/project/system_info.json'] }}`, for example as the `from` value in the S3 upload below.
 
 By default, the task fails when the run status is not `successful`. Set `failOnErrors: false` to let downstream tasks inspect `failedHosts` instead.
+
+As with the Ansible CLI task, each playbook task appears as its own task run in the execution's **Gantt** and **Logs** tabs, with its duration, its status, and the results of each host.
 
 ### Upload the report to S3
 
