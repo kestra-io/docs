@@ -9,6 +9,8 @@ const HUBSPOT_SUBMIT_BASE =
     "https://api.hsforms.com/submissions/v3/integration/submit"
 const FORM_GUID_RE =
     /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+const UPSTREAM_TIMEOUT_MS = 8_000
+const ROUTING_BUDGET_MS = 2_000
 
 function json(data: unknown, status: number) {
     return new Response(JSON.stringify(data), {
@@ -47,9 +49,9 @@ export const POST: APIRoute = async ({ request }) => {
         context && typeof context === "object" ? { ...context } : {}
 
     const clientIp =
-        (typeof safeContext.ipAddress === "string" && safeContext.ipAddress) ||
         request.headers.get("CF-Connecting-IP") ||
         request.headers.get("X-Forwarded-For")?.split(",")[0]?.trim() ||
+        (typeof safeContext.ipAddress === "string" && safeContext.ipAddress) ||
         ""
 
     if (clientIp) {
@@ -67,6 +69,7 @@ export const POST: APIRoute = async ({ request }) => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body),
+            signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
         },
     )
 
@@ -81,41 +84,45 @@ export const POST: APIRoute = async ({ request }) => {
     })
 
     let upstream: Response
+    let responseBody: string
 
     try {
         upstream = await submit
+        responseBody = await upstream.text()
     } catch (error) {
         console.error("HubSpot proxy upstream request failed:", error)
+        const timedOut = (error as Error)?.name === "TimeoutError"
         return json(
             {
                 message:
                     "We couldn't reach our forms service. Please try again in a moment.",
+                submitted: timedOut ? null : false,
             },
-            502,
+            timedOut ? 504 : 502,
         )
     }
 
-    const responseBody = await upstream.text()
-    const passthrough = () =>
-        new Response(responseBody, {
-            status: upstream.status,
-            headers: {
-                "Content-Type":
-                    upstream.headers.get("Content-Type") || "application/json",
-            },
-        })
-
-    if (!upstream.ok) return passthrough()
-
-    const resolved = await routing
-    if (!resolved) return passthrough()
-
-    let parsed: Record<string, unknown>
+    let parsed: Record<string, unknown> = {}
     try {
-        parsed = JSON.parse(responseBody)
+        const candidate = JSON.parse(responseBody)
+        if (candidate && typeof candidate === "object") parsed = candidate
     } catch {
-        return passthrough()
+        parsed = {}
     }
 
-    return json({ ...parsed, routing: resolved }, upstream.status)
+    if (!upstream.ok) {
+        return json({ ...parsed, submitted: false }, upstream.status)
+    }
+
+    const resolved = await Promise.race([
+        routing,
+        new Promise<undefined>((resolve) =>
+            setTimeout(() => resolve(undefined), ROUTING_BUDGET_MS),
+        ),
+    ])
+
+    return json(
+        { ...parsed, submitted: true, ...(resolved && { routing: resolved }) },
+        200,
+    )
 }
