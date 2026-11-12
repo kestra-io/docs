@@ -65,6 +65,10 @@ echo -n "<SECRET>" | openssl base64 -A
 
 Verify the output by opening `.env_encoded`. Each line should match the format in the example above, with one `SECRET_` variable per line.
 
+:::alert{type="warning"}
+Encode values without a trailing newline: use `echo -n`, and save `.env` with LF (not CRLF) line endings. Otherwise the newline becomes part of the secret and API calls fail with authentication errors. As a fallback, strip it in the flow with `{{ secret('OPENAI_KEY') | trim }}`.
+:::
+
 Alternatively, you can manually write the file using macros to encode secrets dynamically:
 
 ```bash
