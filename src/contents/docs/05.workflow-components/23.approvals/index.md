@@ -184,7 +184,7 @@ Killing the execution also ends the request.
 ## Enterprise properties
 
 :::alert{type="info"}
-`title`, `assignment`, `case`, and `inAppNotification` require Kestra Enterprise or Cloud. Other editions reject a flow that sets them. See [Approvals in Kestra Enterprise](../../07.enterprise/02.governance/approvals/index.md).
+`title`, `assignment`, `case`, and `inAppNotification` require Kestra Enterprise or Cloud. Other editions save a flow that sets them, but fail the task when it runs. See [Approvals in Kestra Enterprise](../../07.enterprise/02.governance/approvals/index.md).
 :::
 
 Without `assignment`, any user who can review executions in the namespace can decide the request.
