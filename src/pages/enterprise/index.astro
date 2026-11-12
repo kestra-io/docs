@@ -4,7 +4,6 @@ import SchemaSoftwareApplication from "~/components/common/SchemaSoftwareApplica
 import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 import PageShell from "~/components/home/PageShell.astro"
 import AiGovernance from "~/components/home/AiGovernance.astro"
-import ReplaceLegacy from "~/components/home/ReplaceLegacy.astro"
 import Customers, { type Story } from "~/components/home/Customers.astro"
 import { flat } from "~/components/home/flatLogo"
 import filaPhoto from "~/components/home/assets/customers/fila.jpg"
@@ -17,6 +16,7 @@ import Deployments from "~/components/enterprise/Deployments.astro"
 import Enterprise from "~/components/home/Enterprise.astro"
 import AgentControls from "~/components/enterprise/AgentControls.astro"
 import EnterpriseShowcase from "~/components/enterprise/EnterpriseShowcase.astro"
+import Included from "~/components/enterprise/Included.astro"
 import SupportPlans from "~/components/enterprise/SupportPlans.astro"
 import BuyerQuestions from "~/components/enterprise/BuyerQuestions.astro"
 
@@ -85,20 +85,36 @@ const STORIES: Story[] = [
 
 const INCLUDED = [
     {
-        list: [
-            "Kestra Enterprise engine and all Enterprise plugins",
-            "Unlimited executions, flows, tasks, apps and assets",
-            "Multi-tenant, SSO, RBAC, audit logs, secrets, policies",
-            "Worker groups, task runners, high-availability queue",
-        ],
+        icon: "mdi:puzzle-outline",
+        text: "Kestra Enterprise engine and all Enterprise plugins",
     },
     {
-        list: [
-            "Standard support with SLA; Premium and Platinum available",
-            "Customer Success program (Platinum)",
-            "Self-hosted, hybrid or air-gapped deployment",
-            "Annual subscription sized to the project",
-        ],
+        icon: "mdi:infinity",
+        text: "Unlimited executions, flows, tasks, apps and assets",
+    },
+    {
+        icon: "mdi:shield-lock-outline",
+        text: "Multi-tenant, SSO, RBAC, audit logs, secrets, policies",
+    },
+    {
+        icon: "mdi:server-network",
+        text: "Worker groups, task runners, high-availability queue",
+    },
+    {
+        icon: "mdi:lifebuoy",
+        text: "Standard support with SLA; Premium and Platinum available",
+    },
+    {
+        icon: "mdi:account-star-outline",
+        text: "Customer Success program (Platinum)",
+    },
+    {
+        icon: "mdi:cloud-lock-outline",
+        text: "Self-hosted, hybrid or air-gapped deployment",
+    },
+    {
+        icon: "mdi:calendar-check-outline",
+        text: "Annual subscription sized to the project",
     },
 ]
 
@@ -166,17 +182,7 @@ const FAQ = [
             <Fragment slot="title">What Customers Say</Fragment>
         </Customers>
         <SupportPlans />
-        <ReplaceLegacy
-            id="what-is-included"
-            tone="muted"
-            items={INCLUDED}
-            ctas={[
-                { label: "Book a demo", href: "/demo", solid: true },
-                { label: "Compare editions", href: "/pricing#compare" },
-            ]}
-        >
-            <Fragment slot="title">What is included</Fragment>
-        </ReplaceLegacy>
+        <Included items={INCLUDED} />
         <BuyerQuestions items={FAQ} />
     </PageShell>
 </Layout>

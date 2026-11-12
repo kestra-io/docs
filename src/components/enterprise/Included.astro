@@ -1,0 +1,149 @@
+---
+import { Icon } from "astro-icon/components"
+
+interface Props {
+    items: { icon: string; text: string }[]
+}
+
+const { items } = Astro.props
+---
+
+<section
+    class="ee-included surface-dark"
+    aria-labelledby="what-is-included"
+    data-header-dark
+>
+    <div class="container-xl">
+        <div class="rails">
+            <h2 id="what-is-included">What is included</h2>
+            <ul>
+                {items.map((item) => (
+                    <li>
+                        <Icon name={item.icon} />
+                        <p>{item.text}</p>
+                    </li>
+                ))}
+            </ul>
+            <div class="ctas">
+                <a href="/demo" class="btn-solid">
+                    Book a demo
+                </a>
+                <a href="/pricing#compare" class="btn-ghost">
+                    Compare editions
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .ee-included {
+        position: relative;
+        overflow: hidden;
+        background:
+            radial-gradient(
+                46% 70% at 50% 46%,
+                rgba(98, 78, 255, 0.5),
+                rgba(58, 60, 235, 0.2) 48%,
+                transparent 72%
+            ),
+            radial-gradient(
+                55% 80% at 100% 0%,
+                rgba(33, 136, 255, 0.34),
+                transparent 64%
+            ),
+            radial-gradient(
+                55% 80% at 0% 100%,
+                rgba(84, 62, 230, 0.42),
+                transparent 66%
+            ),
+            linear-gradient(160deg, #0a0b28 0%, #131747 55%, #0d0f36 100%);
+        color: #ffffff;
+    }
+
+    .rails {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 7.5rem clamp(1.5rem, 4vw, 3.5rem);
+        border-inline: 1px solid rgba(255, 255, 255, 0.08);
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem;
+        }
+    }
+
+    h2 {
+        margin: 0;
+        font-size: clamp(2rem, 3.6vw, 3rem);
+        font-weight: 600;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        color: #ffffff;
+    }
+
+    ul {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.75rem;
+        width: 100%;
+        max-width: 72rem;
+        margin: 3rem 0 0;
+        padding: 0;
+        list-style: none;
+        text-align: left;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: minmax(0, 1fr);
+            margin-top: 2rem;
+        }
+    }
+
+    li {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 1.25rem 1.25rem 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+        @include media-breakpoint-down(sm) {
+            flex-direction: row;
+            align-items: start;
+            gap: 0.875rem;
+            padding: 1rem 1.125rem;
+        }
+
+        :global(svg) {
+            flex: none;
+            width: 1.375rem;
+            height: 1.375rem;
+            color: #a99bff;
+        }
+
+        p {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.45;
+            color: rgba(255, 255, 255, 0.9);
+        }
+    }
+
+    .ctas {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-top: 2.5rem;
+    }
+</style>

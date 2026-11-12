@@ -23,33 +23,35 @@ const DEPLOYMENTS = [
 
 <section class="ee-deployments" aria-labelledby="where-kestra-runs">
     <PixelEdges />
-    <div class="container">
-        <header>
-            <div>
-                <h2 id="where-kestra-runs">Where Kestra Runs</h2>
-                <p>
-                    Run Kestra Enterprise in any environment you choose: your
-                    data center, your cloud accounts, across network zones, or
-                    fully air-gapped.
-                </p>
-            </div>
-            <a
-                href="https://hs.kestra.io/hubfs/kestra-deployment-options-enterprise-edition.pdf"
-                class="btn-ghost"
-                target="_blank"
-                rel="noopener"
-            >
-                Download the PDF
-            </a>
-        </header>
-        <ul>
-            {DEPLOYMENTS.map((deployment) => (
-                <li>
-                    <h3>{deployment.title}</h3>
-                    <p>{deployment.text}</p>
-                </li>
-            ))}
-        </ul>
+    <div class="container-xl">
+        <div class="rails">
+            <header>
+                <div>
+                    <h2 id="where-kestra-runs">Where Kestra Runs</h2>
+                    <p>
+                        Run Kestra Enterprise in any environment you choose:
+                        your data center, your cloud accounts, across network
+                        zones, or fully air-gapped.
+                    </p>
+                </div>
+                <a
+                    href="https://hs.kestra.io/hubfs/kestra-deployment-options-enterprise-edition.pdf"
+                    class="btn-ghost"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    Download the PDF
+                </a>
+            </header>
+            <ul>
+                {DEPLOYMENTS.map((deployment) => (
+                    <li>
+                        <h3>{deployment.title}</h3>
+                        <p>{deployment.text}</p>
+                    </li>
+                ))}
+            </ul>
+        </div>
     </div>
 </section>
 
@@ -57,14 +59,37 @@ const DEPLOYMENTS = [
     @use "../about/style/section" as *;
 
     .ee-deployments {
-        @include section;
         position: relative;
         border-bottom: 1px solid var(--ks-border-primary);
         background: var(--ks-background-body);
     }
 
-    .container {
+    .rails {
         position: relative;
+        border-inline: 1px solid var(--ks-border-primary);
+
+        > * {
+            position: relative;
+            padding-inline: clamp(1.5rem, 4vw, 3.5rem);
+        }
+
+        > header {
+            padding-top: 7.5rem;
+        }
+
+        > ul {
+            padding-bottom: 7.5rem;
+        }
+
+        @include media-breakpoint-down(md) {
+            > header {
+                padding-top: 4.5rem;
+            }
+
+            > ul {
+                padding-bottom: 4.5rem;
+            }
+        }
     }
 
     header {
@@ -76,6 +101,7 @@ const DEPLOYMENTS = [
 
         h2 {
             @include title;
+            font-size: clamp(2rem, 3.6vw, 3rem);
         }
 
         p {
@@ -89,7 +115,6 @@ const DEPLOYMENTS = [
         grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 1rem;
         margin: 3rem 0 0;
-        padding: 0;
         list-style: none;
 
         @include media-breakpoint-down(lg) {
