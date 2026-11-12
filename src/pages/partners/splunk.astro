@@ -1,0 +1,65 @@
+---
+import Layout from "~/components/layout.astro"
+import PartnerProfile from "~/components/partners/PartnerProfile.astro"
+
+const title = "Splunk & Kestra: From Splunk Alert to Automated Response"
+const description =
+    "Kestra is a certified Splunk partner. The Kestra Add-on for Splunk starts a flow from any Splunk alert, with the alert context and the search results attached."
+
+const facts = [
+    { label: "Partnership", value: "Certified Splunk partner" },
+    {
+        label: "Add-on",
+        value: "Kestra Add-on for Splunk on Splunkbase, for Splunk Enterprise and Splunk Cloud Platform",
+    },
+    {
+        label: "Plugin",
+        value: "Send events, run SPL searches and ship execution logs (Kestra Enterprise)",
+    },
+]
+
+const expertise = [
+    {
+        icon: "mdi:bell-ring-outline",
+        title: "A Splunk alert starts a flow",
+        text: "The Trigger Kestra Flow alert action calls the Kestra Executions API when a saved search fires, with no polling script or open webhook.",
+    },
+    {
+        icon: "mdi:file-table-outline",
+        title: "The alert context travels with it",
+        text: "Alert metadata, the result fields you map and the full results as a CSV arrive in the flow as typed inputs.",
+    },
+    {
+        icon: "mdi:account-check-outline",
+        title: "A response with an owner and an approval",
+        text: "The flow fixes the problem, opens the ticket and waits for a human to approve, and every step is recorded.",
+    },
+    {
+        icon: "mdi:swap-horizontal",
+        title: "Results go back to Splunk",
+        text: "Flows send events through the HTTP Event Collector, run SPL searches and ship execution logs, so Splunk keeps the full record.",
+    },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="Splunk">
+    <PartnerProfile
+        name="Splunk"
+        tagline="Splunk is where teams watch their infrastructure and security. Kestra runs what happens next: a Splunk alert starts a flow that fixes the problem, opens the ticket, asks for approval and records every step."
+        about="The <a href='https://splunkbase.splunk.com/app/10120'>Kestra Add-on for Splunk</a> adds a Trigger Kestra Flow alert action to Splunk Enterprise and Splunk Cloud Platform. The <a href='/docs/how-to-guides/splunk-alert-trigger'>setup guide</a> covers the connection, the token and the receiving flow, and the <a href='/blogs/kestra-splunk-partnership'>announcement</a> explains why we built it."
+        expertiseTitle="Splunk + Kestra: detection in Splunk, response in Kestra"
+        expertise={expertise}
+        facts={facts}
+        plugins={["plugin-ee-splunk"]}
+        contact={{ text: "Book a Demo", href: "/demo" }}
+        secondary={{
+            text: "Get the add-on",
+            href: "https://splunkbase.splunk.com/app/10120",
+        }}
+        closing={{
+            title: "Connect your Splunk alerts to Kestra",
+            text: "Install the add-on from Splunkbase, point an alert at a flow, and start from the setup guide.",
+        }}
+        website="https://www.splunk.com/?utm_source=kestra&utm_medium=referral&utm_campaign=partners"
+    />
+</Layout>
