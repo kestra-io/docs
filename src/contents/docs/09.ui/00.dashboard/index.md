@@ -57,6 +57,7 @@ Additional `chartOptions` properties:
 | Property | Required | Default | Description |
 | --- | --- | --- | --- |
 | `column` | Yes | — | The data column to use as the x-axis categories |
+| `colorByValues` | No | None | Label, color and order of each value, see [Colors and labels per value](#colors-and-labels-per-value) |
 | `legend.enabled` | No | `true` | Show or hide the legend |
 | `tooltip` | No | `ALL` | Tooltip display behavior: `NONE`, `ALL`, or `SINGLE` |
 
@@ -94,6 +95,7 @@ Additional `chartOptions` properties:
 | --- | --- | --- | --- |
 | `graphStyle` | No | `DONUT` | Chart style: `PIE` or `DONUT` |
 | `colorByColumn` | No | — | The column whose values determine segment colors |
+| `colorByValues` | No | None | Label, color and order of each value, see [Colors and labels per value](#colors-and-labels-per-value) |
 | `legend.enabled` | No | `true` | Show or hide the legend |
 | `tooltip` | No | `ALL` | Tooltip display behavior: `NONE`, `ALL`, or `SINGLE` |
 
@@ -129,6 +131,7 @@ Additional `chartOptions` properties:
 | --- | --- | --- | --- |
 | `column` | Yes | — | The data column to use as the time (x) axis |
 | `colorByColumn` | No | — | The column whose values determine series colors |
+| `colorByValues` | No | None | Label, color and order of each value, see [Colors and labels per value](#colors-and-labels-per-value) |
 | `legend.enabled` | No | `true` | Show or hide the legend |
 | `tooltip` | No | `ALL` | Tooltip display behavior: `NONE`, `ALL`, or `SINGLE` |
 
@@ -162,6 +165,51 @@ charts:
           field: DURATION
           agg: SUM
           graphStyle: LINES
+```
+
+#### Colors and labels per value
+
+Bar, Pie and TimeSeries charts can set a label, a color and the order of each value with `colorByValues`. Each entry matches one value of the column the chart is split by.
+
+| Property | Required | Description |
+| --- | --- | --- |
+| `value` | Yes | The value this entry applies to, such as `by_priority.critical` |
+| `label` | No | Text shown instead of the value in the legend and tooltips |
+| `color` | No | A hex color such as `#d32f2f`, or an execution state or log level name such as `failed`, `warning`, `success` or `error` |
+
+- Listed values come first in the chart, its legend and its tooltips, in the order they are listed. The other values follow.
+- A state or log level name follows the light and dark themes. A hex color stays the same in both.
+- A value with no color keeps its state or log level color when it names one. Any other value gets a color from the theme's chart palette, so list a value with a color to keep that color in every chart.
+- Saving fails when a color is not a hex color or an accepted name, or when a value is listed twice. In the editor, press Ctrl+Space after `color:` to see the accepted names.
+
+```yaml
+charts:
+  - id: open_by_priority
+    type: io.kestra.plugin.core.dashboard.chart.Pie
+    chartOptions:
+      displayName: Open issues by priority
+      colorByColumn: name
+      colorByValues:
+        - value: by_priority.critical
+          label: Critical
+          color: failed
+        - value: by_priority.high
+          label: High
+          color: warning
+        - value: by_priority.medium
+          label: Medium
+          color: "#f9a825"
+        - value: by_priority.low
+          label: Low
+          color: success
+    data:
+      type: io.kestra.plugin.core.dashboard.data.Metrics
+      columns:
+        name:
+          field: NAME
+        value:
+          field: VALUE
+          agg: MAX
 ```
 
 #### KPI chart
