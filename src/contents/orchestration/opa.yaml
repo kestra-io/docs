@@ -281,6 +281,10 @@ faq:
 resources:
   title: "More on OPA and Kestra"
   items:
+    - kind: "resource"
+      title: "Policy as code: what it is and how to automate it"
+      description: "How policy engines such as OPA evaluate rules inside CI/CD and infrastructure pipelines."
+      href: "/resources/infrastructure/policy-as-code"
     - kind: "docs"
       title: "Policy-as-code with OPA in Kestra flows"
       description: "How to wire OPA into Kestra flows: connection setup, evaluate before destructive steps, policy lifecycle from Git, audit decisions in execution history."
