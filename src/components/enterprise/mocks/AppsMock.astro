@@ -151,11 +151,13 @@ const FIELDS = [
                     </span>
                 </div>
                 <div class="view busy">
-                    <span class="spinner"></span>
-                    <span class="state running">
-                        <i></i> Running
+                    <span class="hold">
+                        <Icon name="mdi:pause" />
                     </span>
-                    <code>infra.provision_vm</code>
+                    <span class="state waiting">
+                        <i></i> Waiting for approval
+                    </span>
+                    <code>Approver: platform-leads</code>
                 </div>
                 <div class="view done">
                     <span class="check">
@@ -176,6 +178,19 @@ const FIELDS = [
                 <i class="s2"></i>
                 <i class="s3"></i>
                 <i class="s4"></i>
+            </div>
+        </div>
+        <div class="notice">
+            <span class="bell">
+                <Icon name="mdi:bell-outline" />
+            </span>
+            <div>
+                <strong>Approval required</strong>
+                <p>platform-team requests app-sandbox</p>
+                <span class="choices">
+                    <span class="reject">Reject</span>
+                    <span class="approve">Approve</span>
+                </span>
             </div>
         </div>
         <Icon name="mdi:cursor-default" class="cursor" />
@@ -229,7 +244,9 @@ const FIELDS = [
         --ok: #1c7e57;
         --ok-bg: #e7f6ef;
         --shadow: 0 12px 32px -12px rgba(43, 43, 51, 0.18);
-        --loop: 12s;
+        --wait: #b25f00;
+        --wait-bg: #fff1dc;
+        --loop: 14s;
 
         container-type: inline-size;
         width: 100%;
@@ -251,6 +268,8 @@ const FIELDS = [
             --run: #b9a6ff;
             --ok: #06f0b1;
             --ok-bg: rgba(30, 135, 94, 0.18);
+            --wait: #ffb547;
+            --wait-bg: rgba(255, 181, 71, 0.14);
             --shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.6);
         }
     }
@@ -639,12 +658,85 @@ const FIELDS = [
         }
     }
 
-    .spinner {
+    .hold {
+        display: grid;
+        place-items: center;
         width: 2.6em;
         height: 2.6em;
-        border: 0.22em solid var(--chip);
-        border-top-color: var(--run);
         border-radius: 50%;
+        background: var(--wait-bg);
+        color: var(--wait);
+
+        [data-icon] {
+            width: 1.5em;
+            height: 1.5em;
+        }
+    }
+
+    .notice {
+        position: absolute;
+        top: 0.5em;
+        right: -1.2em;
+        display: flex;
+        gap: 0.8em;
+        width: 17em;
+        padding: 0.9em 1em 1em;
+        border: 1px solid var(--line);
+        border-radius: 0.9em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        opacity: 0;
+
+        .bell {
+            display: grid;
+            place-items: center;
+            flex: none;
+            width: 2em;
+            height: 2em;
+            border-radius: 0.5em;
+            background: var(--wait-bg);
+            color: var(--wait);
+
+            [data-icon] {
+                width: 1.15em;
+                height: 1.15em;
+            }
+        }
+
+        strong {
+            display: block;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        p {
+            margin: 0.25em 0 0.8em;
+            font-size: 0.66em;
+            color: var(--muted);
+        }
+    }
+
+    .choices {
+        display: flex;
+        gap: 0.5em;
+
+        span {
+            display: inline-flex;
+            align-items: center;
+            height: 2.5em;
+            padding: 0 1em;
+            border: 1px solid var(--line);
+            border-radius: 0.4em;
+            background: var(--chip);
+            font-size: 0.68em;
+            font-weight: 600;
+        }
+
+        .approve {
+            border-color: transparent;
+            background: var(--primary);
+            color: #ffffff;
+        }
     }
 
     .check {
@@ -676,8 +768,8 @@ const FIELDS = [
             background: currentColor;
         }
 
-        &.running {
-            color: var(--run);
+        &.waiting {
+            color: var(--wait);
         }
 
         &.success {
@@ -778,8 +870,12 @@ const FIELDS = [
             }
         }
 
-        .spinner {
-            animation: apps-mock-spin 0.9s linear infinite;
+        .notice {
+            animation: apps-mock-notice var(--loop) linear infinite both;
+        }
+
+        .approve {
+            animation: apps-mock-press-3 var(--loop) linear infinite both;
         }
 
         .cursor {
@@ -835,13 +931,13 @@ const FIELDS = [
 
     @keyframes apps-mock-press-2 {
         0%,
-        48%,
-        51%,
+        41%,
+        44%,
         100% {
             transform: none;
             filter: none;
         }
-        49.5% {
+        42.5% {
             transform: scale(0.93);
             filter: brightness(1.3);
         }
@@ -849,10 +945,10 @@ const FIELDS = [
 
     @keyframes apps-mock-form {
         0%,
-        51% {
+        44% {
             opacity: 1;
         }
-        53%,
+        46%,
         100% {
             opacity: 0;
         }
@@ -860,14 +956,14 @@ const FIELDS = [
 
     @keyframes apps-mock-busy {
         0%,
-        52% {
+        45% {
             opacity: 0;
         }
-        54%,
-        70% {
+        47%,
+        73% {
             opacity: 1;
         }
-        72%,
+        75%,
         100% {
             opacity: 0;
         }
@@ -875,11 +971,11 @@ const FIELDS = [
 
     @keyframes apps-mock-done {
         0%,
-        71% {
+        74% {
             opacity: 0;
             transform: scale(0.96);
         }
-        74%,
+        77%,
         100% {
             opacity: 1;
             transform: none;
@@ -888,11 +984,11 @@ const FIELDS = [
 
     @keyframes apps-mock-type-1 {
         0%,
-        18% {
+        16% {
             clip-path: inset(0 100% 0 0);
             animation-timing-function: steps(11);
         }
-        25%,
+        22%,
         100% {
             clip-path: inset(0);
         }
@@ -900,11 +996,11 @@ const FIELDS = [
 
     @keyframes apps-mock-type-2 {
         0%,
-        28% {
+        24% {
             clip-path: inset(0 100% 0 0);
             animation-timing-function: steps(13);
         }
-        35%,
+        30%,
         100% {
             clip-path: inset(0);
         }
@@ -912,10 +1008,10 @@ const FIELDS = [
 
     @keyframes apps-mock-type-3 {
         0%,
-        38% {
+        32% {
             opacity: 0;
         }
-        39%,
+        33%,
         100% {
             opacity: 1;
         }
@@ -923,10 +1019,10 @@ const FIELDS = [
 
     @keyframes apps-mock-step-2 {
         0%,
-        53% {
+        46% {
             background: var(--chip);
         }
-        55%,
+        48%,
         100% {
             background: var(--ring);
         }
@@ -934,10 +1030,10 @@ const FIELDS = [
 
     @keyframes apps-mock-step-3 {
         0%,
-        60% {
+        73% {
             background: var(--chip);
         }
-        62%,
+        75%,
         100% {
             background: var(--ring);
         }
@@ -945,18 +1041,45 @@ const FIELDS = [
 
     @keyframes apps-mock-step-4 {
         0%,
-        68% {
+        75% {
             background: var(--chip);
         }
-        70%,
+        77%,
         100% {
             background: var(--ring);
         }
     }
 
-    @keyframes apps-mock-spin {
-        to {
-            transform: rotate(360deg);
+    @keyframes apps-mock-notice {
+        0%,
+        52% {
+            opacity: 0;
+            transform: translateY(-0.8em);
+            animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        56%,
+        73% {
+            opacity: 1;
+            transform: none;
+        }
+        77%,
+        100% {
+            opacity: 0;
+            transform: translateY(-0.4em);
+        }
+    }
+
+    @keyframes apps-mock-press-3 {
+        0%,
+        68.5%,
+        71.5%,
+        100% {
+            transform: none;
+            filter: none;
+        }
+        70% {
+            transform: scale(0.93);
+            filter: brightness(1.3);
         }
     }
 
@@ -976,19 +1099,25 @@ const FIELDS = [
             transform: translate(26.2em, 18.2em);
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
-        19%,
-        40% {
+        18%,
+        34% {
             opacity: 1;
             transform: translate(40.5em, 17em);
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
-        48%,
-        54% {
+        40%,
+        50% {
             opacity: 1;
             transform: translate(35.2em, 26.4em);
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
-        60%,
+        64%,
+        72% {
+            opacity: 1;
+            transform: translate(44.1em, 4.2em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        80%,
         95% {
             opacity: 1;
             transform: translate(44em, 29em);
