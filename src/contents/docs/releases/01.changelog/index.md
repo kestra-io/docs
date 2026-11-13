@@ -46,6 +46,7 @@ Infrastructure self-service in a dedicated tenant type, searchable execution val
 - **Bulk resume of breakpoints**: the **Resume** bulk action and the `resume/by-ids` and `resume/by-query` endpoints also resume executions stopped at a breakpoint. [Docs](../../15.how-to-guides/pause-resume/index.md)
 - **Context panel (EE)**: the flow editor shows inputs, variables, KV pairs, and secrets across the namespace hierarchy in one searchable tree. [Docs](../../09.ui/01.flows/index.md)
 - **Change password in OSS**: users with database-stored Basic Auth credentials can change their password from the user menu. [Docs](../../10.administrator-guide/basic-auth-troubleshooting/index.md)
+- **One plugins page**: the catalog lists each plugin once, as a card or a table row. In EE, it also shows each plugin's installed versions, their source, and available updates, and the Instance Owner installs, updates, and uninstalls versions from it, with installs running in the background. [Docs](../../07.enterprise/05.instance/versioned-plugins/index.md#from-the-ui)
 - **Sign in again without losing work**: when a session ends, the UI asks you to sign in again and retries the failed request, so unsaved changes stay. [Docs](../../09.ui/index.mdx#expired-sessions)
 
 ### AI
@@ -85,6 +86,7 @@ Smaller changes to existing behavior that don't need a migration guide.
 - **API sort direction**: the `sort` query parameter accepts `asc` and `desc` in any case, and any other direction returns `422` instead of silently sorting descending. Also in 2.0.x.
 - **`distinct` filter**: `{{ null | distinct }}` returns null instead of the string `"null"`, so `??`, `is null`, and `if` conditions behave as expected.
 - **Execution live view**: the execution page reconnects its live stream after a dropped connection. The `GET /executions/{id}/follow` stream sends a heartbeat every 30 seconds and always ends after one hour.
+- **Versioned Plugins screen (EE)**: the Instance Owner menu no longer has a Versioned Plugins entry. Plugin versions are managed from the **Plugins** page, and links to the former screen redirect there.
 
 ### Breaking changes
 

@@ -31,7 +31,7 @@ The console organizes instance-wide administration into five sections:
 | **Instance** | Overview, System Overview, Services, Kill Switch, Announcements |
 | **Tenants** | Create, edit, and delete tenants; configure dedicated storage and secrets backends per tenant |
 | **Instance IAM** | Users and Service Accounts that exist at the instance level, independently of any tenant |
-| **Infrastructure** | Worker Groups, Worker Queues, Versioned Plugins, MCP Servers |
+| **Infrastructure** | Worker Groups, Worker Queues, MCP Servers |
 | **Governance** | Instance-level Policies and Audit Logs across all tenants |
 
 ## Exiting Instance Owner

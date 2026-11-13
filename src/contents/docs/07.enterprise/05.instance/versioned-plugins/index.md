@@ -31,7 +31,7 @@ Versioned plugins support several properties that can be modified in your Kestra
 kestra:
   plugins:
       management:
-        enabled: true # setting to false will make Versioned plugin tab disappear + API will return an error
+        enabled: true # false removes the management actions from the Plugins page, and the /api/v1/instance/versioned-plugins endpoints return 403
         remoteStorageEnabled: true
         customPluginsEnabled: true # setting to false will disable installing or uploading custom plugins
         localRepositoryPath: /tmp/kestra/plugins-repository
@@ -91,9 +91,37 @@ Versioned plugins can be installed from the Kestra UI as well as programmaticall
 
 ### From the UI
 
-<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/xPS6BoFZhJkDgU9hQoCA?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Versioned Plugins | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+Plugins are managed on the **Plugins** page, under **Resources** in the left sidebar. Every user can open it, and only the Instance Owner can install, update, or uninstall plugins.
 
-Versioned Plugins are managed under **Instance Owner → Infrastructure → Versioned Plugins**. Both official and custom plugins can be installed. Kestra alerts you when a newer version is available; upgrading installs the new version alongside the previous one without removing it.
+Each card is one plugin and shows its highest installed version and where it comes from:
+
+- **Included with Kestra**: the version ships with the Kestra image.
+- **Added**: the version was installed through plugin management.
+- **Update available**: a newer version of an official Kestra plugin is compatible with this Kestra version. Kestra checks for new versions in the background about once an hour, so after a restart this can take a moment to appear. Custom plugins never show it.
+
+Filter the plugins with **All**, **Bundled**, **Added**, and **Needs update**. A plugin with both a bundled and an added version counts in both **Bundled** and **Added**. When some plugins have an update, a banner says how many, and **Show them** applies the **Needs update** filter. Switch between **Cards** and **Table** to change the layout.
+
+A plugin marked **Not versionable** ships one version per Kestra image, so it can't be updated or installed in another version.
+
+![Plugins page filtered on Added, with the Upload and Add plugin buttons, the scope filters, and plugin cards showing their version and source](./plugins-page-added.png)
+
+As the Instance Owner, you can:
+
+- select **Add plugin** at the top of the page to install a plugin from the Kestra registry or, when custom plugins are enabled, from its Maven coordinates
+- select **Upload** to install a plugin from a `.jar` file, when custom plugins are enabled
+- select **Update to {version}** on a card to install the newer version alongside the current one
+
+Open a plugin to see its **Versions installed** in the right-hand column, each with its source and, for official plugins, a link to its release notes. A version marked **Not loaded on this server** was installed but isn't available on this webserver yet. From there, **Install new version** adds another version, the trash icon next to an added version uninstalls it, and **Uninstall all versions** removes every added version. Versions included with the Kestra image can't be uninstalled.
+
+![Versions installed block of the Ansible plugin, with a bundled version whose uninstall icon is disabled and an added version that can be uninstalled](./plugin-versions-installed.png)
+
+Installs from **Add plugin**, **Install new version**, and **Update to {version}** run in the background. You can leave the page while a plugin downloads, and the install finishes on its own. An upload completes before its dialog closes.
+
+Other users see the same pages in a **Read-only view**: installed versions, their sources, and available updates, with the actions disabled.
+
+When `kestra.plugins.management.enabled` is `false`, the page shows the plugins and their sources, with no management actions and no **Added** or **Needs update** filters.
+
+Links to the former **Instance Owner → Infrastructure → Versioned Plugins** screen open the **Plugins** page filtered on **Added**, and links to a plugin on that screen open the **Plugins** page searched by its artifact ID.
 
 ### From the API
 
@@ -145,6 +173,24 @@ curl -X POST http://0.0.0.0:8080/api/v1/instance/versioned-plugins/install \
 -H "Content-Type: application/json" \
 -d '{"plugins":["io.kestra.plugin:plugin-airbyte:LATEST"]}'
 ```
+
+#### Install in the background
+
+:::badge{version=">=2.1" editions="EE"}
+:::
+
+`POST /api/v1/instance/versioned-plugins/install` waits until every plugin is downloaded. To install without waiting, start an install job with the same body. It returns `202` with the job right away. When custom plugins are disabled, a request that includes a plugin outside `io.kestra` returns `403`, while `/install` skips that plugin:
+
+```bash
+curl -X POST http://0.0.0.0:8080/api/v1/instance/versioned-plugins/install-jobs \
+-H "Authorization: Bearer YOUR-API-TOKEN" \
+-H "Content-Type: application/json" \
+-d '{"plugins":["io.kestra.plugin:plugin-airbyte:LATEST"]}'
+```
+
+The job runs on the webserver that received the request, whether or not the client stays connected. To follow it, open the Server-Sent Events stream at `GET /api/v1/instance/versioned-plugins/install-jobs/{jobId}/follow`. It sends the job's state, then each change with the download progress of each plugin, and ends when the job finishes with `SUCCEEDED` or `FAILED`. Only the user who started a job can follow it; any other job ID returns `404`.
+
+A webserver runs four install jobs at a time and queues the next ones as `PENDING`. It accepts up to 16 unfinished jobs and returns `429` beyond that. Jobs live on the webserver that runs them. If it shuts down, its unfinished jobs fail. If it stops responding, the stream reports them as `FAILED` about a minute later. Start failed jobs again. The user who started a job also sees it in their notifications.
 
 #### List installed plugins
 

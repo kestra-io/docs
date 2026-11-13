@@ -27,7 +27,7 @@ Kestra can host multiple versions of the same plugin:
 
 - Pin a version on an individual task or trigger with `version: "1.0.0"`.
 - When `version` is omitted, the instance-wide default applies (often `LATEST`).
-- In Enterprise Edition, install and manage versions centrally under **Instance → Versioned Plugins** (see [Versioned Plugins](../../07.enterprise/05.instance/versioned-plugins/index.md)).
+- In Enterprise Edition, the Instance Owner installs and manages versions from the **Plugins** page (see [Versioned Plugins](../../07.enterprise/05.instance/versioned-plugins/index.md#from-the-ui)).
 
 ```yaml
 id: postgres_query
@@ -76,8 +76,8 @@ See [Secrets in Open Source](../../15.how-to-guides/secrets/index.md) or [Secret
 
 ## Installing plugins
 
-- **OSS**: the standard Kestra Docker image ships with plugins pre-installed.
-- **UI (Enterprise Edition)**: install, upgrade, and pin versions under **Instance → Versioned Plugins**.
+- **OSS**: the standard Kestra Docker image ships with plugins pre-installed. The **Plugins** page lists them, one card per plugin. Installing and upgrading plugins from that page requires the Enterprise Edition.
+- **UI (Enterprise Edition)**: the Instance Owner installs, updates, and uninstalls plugin versions from the **Plugins** page.
 
 See [Install Selected Plugins on a Slim Kestra Image](../../15.how-to-guides/slim-image-plugins/index.md) to download plugins with [`kestractl`](../../kestra-cli/kestractl/index.md#installation) and add them to a custom image or Docker Compose setup.
 
