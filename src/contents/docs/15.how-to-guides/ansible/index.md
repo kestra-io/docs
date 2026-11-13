@@ -472,6 +472,15 @@ tasks:
 
 Ansible extra variables take precedence over the `vars` block in the playbook, so this run checks Python against `3.12.0` instead of `3.11.0`. Files listed in `extraVarsFiles` accept JSON or YAML from the working directory, Namespace Files (`nsfile://company.team/vars/audit.yml`), or internal storage (`kestra:///...`). Kestra merges them in order, and inline `env.extraVars` values override keys from the files. Values under sensitive key names such as `token`, `secret`, or `vault` are masked in logs.
 
+`inventory.file` also accepts a Namespace File URI, so the task can read the inventory without `namespaceFiles`, including an inventory shared from another namespace:
+
+```yaml
+    inventory:
+      file: nsfile://company.shared/inventories/production.ini
+```
+
+Use `nsfile:///inventory.ini` for a file in the flow's own namespace. A file in another namespace must be allowed for the flow's namespace. See [file access](../../06.concepts/file-access/index.md) for the URI forms.
+
 `logsMode: SUMMARY` streams plays, tasks, failures, and the recap instead of every output line. After the run, the task outputs include:
 
 - `status` and `rc`: the final run status (`successful`, `failed`, or `timeout`) and return code.
