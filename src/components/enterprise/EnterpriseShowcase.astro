@@ -4,6 +4,7 @@ import { Image } from "astro:assets"
 import appsCatalog from "~/contents/docs/07.enterprise/04.scalability/apps/apps_catalog.png"
 import workerGroups from "~/components/twozero/assets/run-worker-groups.png"
 import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
+import OpsMock from "~/components/enterprise/mocks/OpsMock.astro"
 import AppsMock from "~/components/enterprise/mocks/AppsMock.astro"
 import auditLogs from "~/contents/docs/07.enterprise/02.governance/06.audit-logs/audit_logs.png"
 
@@ -37,6 +38,7 @@ const PANELS = [
             "Support high throughput and availability with Kafka, Redis or AMQP queues.",
             "Manage operations with cluster health monitoring, backup and restore, and maintenance mode.",
         ],
+        mock: "ops",
         image: workerGroups,
         alt: "An execution routed to worker groups in Kestra",
     },
@@ -101,20 +103,30 @@ const PANELS = [
                             <h3>{panel.title}</h3>
                             <p class="intro">{panel.intro}</p>
                             <ul>
-                                {panel.points.map((point) => (
-                                    <li set:html={point} />
+                                {panel.points.map((point, i) => (
+                                    <li
+                                        style={`--i: ${i + 2}`}
+                                        set:html={point}
+                                    />
                                 ))}
                             </ul>
                         </div>
-                        <div class:list={["media", { mock: panel.mock }]}>
-                            {panel.mock === "apps" ? (
+                        <div
+                            class:list={["media", { mock: panel.mock }]}
+                            data-tone={panel.id}
+                        >
+                            {panel.mock ? (
                                 <Fragment>
                                     <span
                                         class="pixels"
                                         aria-hidden="true"
                                         style={`--pixels: url("${pixelCluster}")`}
                                     />
-                                    <AppsMock />
+                                    {panel.mock === "apps" ? (
+                                        <AppsMock />
+                                    ) : (
+                                        <OpsMock />
+                                    )}
                                 </Fragment>
                             ) : (
                                 <Image
@@ -141,7 +153,12 @@ const PANELS = [
             root.dataset.wired = "true"
             const tabs = [...root.querySelectorAll<HTMLElement>(".tab")]
             const panels = [...root.querySelectorAll<HTMLElement>(".panel")]
+            const stack = root.querySelector<HTMLElement>(".panels")
             const open = (idx: number, focus = false) => {
+                const from = tabs.findIndex((tab) =>
+                    tab.classList.contains("active"),
+                )
+                stack?.style.setProperty("--dir", idx < from ? "-1" : "1")
                 tabs.forEach((tab, i) => {
                     tab.classList.toggle("active", i === idx)
                     tab.setAttribute("aria-selected", String(i === idx))
@@ -169,8 +186,34 @@ const PANELS = [
         }
     }
 
-    document.addEventListener("astro:page-load", wireShowcase)
+    function wireMocks() {
+        const mocks = document.querySelectorAll<HTMLElement>(
+            "[data-ui-mock]:not([data-wired])",
+        )
+        if (!mocks.length) return
+        const observer = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries) {
+                    ;(entry.target as HTMLElement).toggleAttribute(
+                        "data-play",
+                        entry.isIntersecting,
+                    )
+                }
+            },
+            { threshold: 0.25 },
+        )
+        for (const mock of mocks) {
+            mock.dataset.wired = "true"
+            observer.observe(mock)
+        }
+    }
+
+    document.addEventListener("astro:page-load", () => {
+        wireShowcase()
+        wireMocks()
+    })
     wireShowcase()
+    wireMocks()
 </script>
 
 <style lang="scss">
@@ -432,6 +475,14 @@ const PANELS = [
             }
         }
 
+        &.mock[data-tone="ops"] {
+            --tint: #2f6df2;
+
+            :global(html.dark) & {
+                --tint: #6f93fb;
+            }
+        }
+
         .pixels {
             position: absolute;
             top: 1.5rem;
@@ -453,6 +504,42 @@ const PANELS = [
             border-bottom: 0;
             border-radius: 0.75rem 0 0 0;
             box-shadow: -10px -10px 40px rgba(60, 30, 120, 0.12);
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .panel.active {
+            .copy h3,
+            .copy .intro,
+            .copy li {
+                animation: ee-showcase-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1)
+                    both;
+                animation-delay: calc(var(--i, 0) * 55ms + 60ms);
+            }
+
+            .copy .intro {
+                --i: 1;
+            }
+
+            .media > :global(.ui-mock),
+            .media > :global(img) {
+                animation: ee-showcase-slide 0.75s
+                    cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+            }
+        }
+    }
+
+    @keyframes ee-showcase-rise {
+        from {
+            opacity: 0;
+            transform: translateY(0.75rem);
+        }
+    }
+
+    @keyframes ee-showcase-slide {
+        from {
+            opacity: 0;
+            transform: translateX(calc(var(--dir, 1) * 2.5rem)) scale(0.98);
         }
     }
 
