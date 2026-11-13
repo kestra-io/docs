@@ -225,18 +225,30 @@ kestra:
       retention: 7d
 ```
 
-To reject oversized JDBC messages before they create memory pressure:
+To reject oversized messages before they reach the `queues` table, see [Queue prefix and message protection](#queue-prefix-and-message-protection).
+
+If you are not troubleshooting queue throughput or database pressure, you can usually leave the JDBC queue settings alone and return to them only when scaling.
+
+## Queue prefix and message protection
+
+These properties apply to every queue backend: JDBC, Kafka, Redis, and AMQP.
+
+| Property | Description | Default |
+|---|---|---|
+| `kestra.queue.prefix` | Name prefix added to every queue. Use this when multiple Kestra clusters share one backend to prevent stream collisions. | — |
+| `kestra.queue.message-protection.enabled` | Reject messages larger than `limit` before they reach the backend. Terminal execution states are always allowed through regardless of size. | `true` |
+| `kestra.queue.message-protection.limit` | Maximum serialized message size in bytes. Required when `message-protection.enabled` is `true`. | `1048576` (1 MiB) |
 
 ```yaml
 kestra:
-  jdbc:
-    queues:
-      message-protection:
-        enabled: true
-        limit: 1048576
+  queue:
+    prefix: prod
+    message-protection:
+      enabled: true
+      limit: 1048576   # 1 MiB
 ```
 
-If you are not troubleshooting queue throughput or database pressure, you can usually leave the JDBC queue settings alone and return to them only when scaling.
+Set `prefix` when multiple Kestra clusters share one queue backend, for example staging and production on the same Kafka cluster or Redis instance. Kestra adds the prefix to every queue name, so each cluster reads and writes only its own queues.
 
 ## Internal storage
 
