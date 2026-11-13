@@ -322,8 +322,19 @@ Hover over a row number to show the row handle. Drag the handle to move the row,
 
 To move rows between Kestra and a spreadsheet:
 
-- Click **Copy the table with its headers** in the top-left corner of the grid to copy the table as tab-separated text, ready to paste into Excel.
-- Copy cells in Excel and paste them into a cell of the grid. If the first copied row holds column headers that match the table's column ids or display names, each value goes to its matching column. Otherwise, values fill the grid from the cell you paste into, to the right and down. Kestra adds rows as needed, up to `maxRows`, and warns you about any cells left out.
+- Click **Copy the table with its headers** in the top-left corner of the grid to copy the table as tab-separated text, ready to paste into Excel. Numbers use your browser language's decimal separator, so Excel in that language reads them as numbers.
+- Copy cells in Excel and paste them into a cell of the grid. If the first copied row holds column headers that match the table's column ids or display names, each value goes to its matching column, in any order. If only some of the headers match, Kestra refuses the paste and names the columns it doesn't know. Without headers, values fill the grid from the cell you paste into, to the right and down. Kestra adds rows as needed, up to `maxRows`, and warns you about any cells left out.
+
+Kestra reads each pasted value as its column's type, in the formats Excel copies in your browser's language:
+
+- Numbers with a decimal comma or point and grouped thousands, such as `0,75` or `1 234,5`.
+- Dates such as `09/11/2026` or `9.11.26`, with day and month in your browser's order unless one of them is above 12. `DATETIME` values are read in your browser's time zone.
+- Times such as `14:30` or `2:30 PM`.
+- Booleans in several languages, such as `VRAI`/`FAUX`, `oui`/`non`, or `1`/`0`.
+- Durations such as `2h30`, `1d 4h`, `90min`, or `2:30:00`.
+- `SELECT` and `MULTISELECT` values that match an option's value or label in any case.
+
+A date, time, duration, or select value that Kestra can't read without guessing, such as a date with a month name, stays in the cell as text and shows as an error.
 
 ### Column rules
 
@@ -413,6 +424,7 @@ When filters are set:
 
 - The grid shows only the matching rows, with a footer such as `2 of 4 rows`. Only those rows are validated, listed on the review step, included in the cURL command, and passed to the execution.
 - Users can edit cells within each column's rules, but they can't add, insert, move, or delete rows. Edits made to a row are kept while another selection hides it, and appear again when the row matches again.
+- Pasting from Excel fills only the shown rows, never adds rows, and leaves the columns used in `filters` unchanged.
 - With `allowRowDuplication: true`, users can duplicate a visible row from its row menu, for example to add a second Linux VM. A duplicated row can be deleted again, while a row from `defaults` can't. `allowRowDuplication` defaults to `false` and has no effect without filters.
 
 ![The Execute modal for provision_components with linux selected in component_types, the components grid showing the web-01 and web-02 rows, and the row menu of row 1 open with Duplicate, Clear contents, and a disabled Delete](./table-input-filters.png)
