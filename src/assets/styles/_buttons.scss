@@ -28,3 +28,143 @@ $btn-secondary-ink: #131316; // $base-grey-Black
     --ks-content-primary: #{$btn-secondary-ink};
     --ks-content-btn-secondary-hover: #{$btn-secondary-paper};
 }
+
+@mixin cta-buttons {
+    :global(.btn-solid),
+    :global(.btn-ghost) {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+        padding: 0.875rem 1.5rem;
+        border-radius: 0.5rem;
+        font-size: 1.0625rem;
+        font-weight: 600;
+        line-height: 1.5;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    :global(.btn-solid.compact),
+    :global(.btn-ghost.compact) {
+        padding: 0.625rem 1.125rem;
+        font-size: 0.9375rem;
+    }
+
+    :global(.btn-solid) {
+        overflow: hidden;
+        background: var(--ks-background-button-primary);
+        color: #ffffff;
+        box-shadow:
+            0 0 0 0 rgba(132, 5, 255, 0),
+            inset 0 1px 0 rgba(255, 255, 255, 0.18);
+        transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease,
+            filter 0.25s ease;
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                110deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.35) 50%,
+                transparent 70%
+            );
+            transform: translateX(-120%);
+            pointer-events: none;
+        }
+
+        :global(svg) {
+            width: 1.125rem;
+            height: 1.125rem;
+            transition: transform 0.25s ease;
+        }
+
+        &:hover,
+        &:focus-visible {
+            color: #ffffff;
+            transform: translateY(-1px);
+            filter: brightness(1.08);
+            box-shadow:
+                0 8px 28px -6px rgba(132, 5, 255, 0.7),
+                inset 0 1px 0 rgba(255, 255, 255, 0.25);
+
+            &::after {
+                transform: translateX(120%);
+                transition: transform 0.7s ease;
+            }
+
+            :global(svg) {
+                transform: translateX(3px);
+            }
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            &,
+            &:hover {
+                transform: none;
+            }
+
+            &::after {
+                display: none;
+            }
+        }
+    }
+
+    :global(.btn-ghost) {
+        border: 1px solid #131316;
+        background: #ffffff;
+        color: #131316;
+        transition:
+            background-color 0.2s ease,
+            border-color 0.2s ease;
+
+        :global(svg) {
+            width: 1.125rem;
+            height: 1.125rem;
+        }
+
+        &:hover,
+        &:focus-visible {
+            background: #f2f2f5;
+            color: #131316;
+        }
+    }
+
+    :global(html.dark) & :global(.btn-ghost),
+    :global(.surface-dark .btn-ghost) {
+        border-color: rgba(255, 255, 255, 0.16);
+        background: rgba(42, 42, 52, 0.72);
+        backdrop-filter: blur(16px) saturate(140%);
+        -webkit-backdrop-filter: blur(16px) saturate(140%);
+        color: #ffffff;
+
+        &:hover,
+        &:focus-visible {
+            border-color: rgba(255, 255, 255, 0.24);
+            background: rgba(58, 58, 70, 0.82);
+            color: #ffffff;
+        }
+    }
+
+    :global(html.dark) & :global(.is-light .btn-ghost) {
+        border-color: #131316;
+        background: #ffffff;
+        color: #131316;
+
+        &:hover,
+        &:focus-visible {
+            border-color: #131316;
+            background: #f2f2f5;
+            color: #131316;
+        }
+    }
+}

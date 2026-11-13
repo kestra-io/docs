@@ -1,24 +1,22 @@
 ---
-import Layout from "~/components/layout.astro"
+import LpLayout from "~/components/lp/LpLayout.astro"
 
-import LpHeader from "~/components/lp/workflow-orchestration/LpHeader.astro"
-import LpFooter from "~/components/lp/workflow-orchestration/LpFooter.astro"
-import Hero from "~/components/lp/workflow-orchestration/Hero.astro"
-import Platform from "~/components/lp/workflow-orchestration/Platform.astro"
-import Migration from "~/components/lp/workflow-orchestration/Migration.astro"
-import Features from "~/components/lp/workflow-orchestration/Features.astro"
-import Stack from "~/components/lp/workflow-orchestration/Stack.astro"
-import UseCases from "~/components/lp/workflow-orchestration/UseCases.astro"
-import Faq from "~/components/lp/workflow-orchestration/Faq.astro"
-import ClosingBanner from "~/components/lp/workflow-orchestration/ClosingBanner.astro"
-import Translation from "~/components/lp/vra-migration/Translation.astro"
-import Proof from "~/components/lp/vra-migration/Proof.astro"
+import Hero from "~/components/lp/shared/Hero.astro"
+import Platform from "~/components/lp/shared/Platform.astro"
+import Migration from "~/components/lp/shared/Migration.astro"
+import Features from "~/components/lp/shared/Features.astro"
+import Stack from "~/components/lp/shared/Stack.astro"
+import UseCases from "~/components/lp/shared/UseCases.astro"
+import Faq from "~/components/lp/shared/Faq.astro"
+import ClosingBanner from "~/components/lp/shared/ClosingBanner.astro"
+import Translation from "~/components/lp/shared/Translation.astro"
+import Proof from "~/components/lp/shared/Proof.astro"
 import Conversion from "~/components/lp/pipedream-migration/Conversion.astro"
 import CloudForm from "~/components/cloud/Form.vue"
 
-import FinanceIcon from "~/components/lp/workflow-orchestration/assets/stack-business-processes.svg"
-import SyncIcon from "~/components/lp/workflow-orchestration/assets/stack-data-pipelines.svg"
-import ApiIcon from "~/components/lp/workflow-orchestration/assets/stack-app-microservices.svg"
+import FinanceIcon from "~/components/lp/shared/assets/stack-business-processes.svg"
+import SyncIcon from "~/components/lp/shared/assets/stack-data-pipelines.svg"
+import ApiIcon from "~/components/lp/shared/assets/stack-app-microservices.svg"
 
 /* Paid traffic only: every ad group lands here and is told apart by its
  * utm_content. The organic page for the topic is the migration guide. The
@@ -236,109 +234,78 @@ const faqItems = [
 ]
 ---
 
-<Layout {title} {description} noindex bareChrome forceTheme="light">
-    <div class="lp-workflow-orchestration">
-        <LpHeader
-            cta={{ text: "Start your Cloud trial", href: "#contact-sales" }}
-        />
-        <Hero {routePath} formTitle="Start your Kestra Cloud trial">
-            <Fragment slot="title">
-                Move off <span class="grad grad-a">Pipedream</span>{" "}
-                before <span class="grad grad-b">March 31</span>.
-            </Fragment>
-            <Fragment slot="lead">
-                Pipedream Workflows stops on March 31, 2027 and deletes all
-                data, credentials included, by April 30. Kestra Cloud runs the
-                logic of your Node.js, Python and Bash steps as is. You hold the
-                credentials, and there is nothing to host.<br />
-                <strong
-                    >Fully managed today, open source underneath, so you are not
-                    locked in again.</strong
-                >
-            </Fragment>
-            <Fragment slot="form-sub">
-                14 days free, no credit card. Tell us what you run on Pipedream
-                and we set up your instance.
-            </Fragment>
-            {
-                /* Wrapped: a slot attribute on a hydrated island reaches the client as a stray attribute. */
-            }
-            <Fragment slot="form">
-                <CloudForm variant="plain" {...cloudForm} client:idle />
-            </Fragment>
-        </Hero>
-        <Platform heading="What the shutdown means for you" cards={reasons} />
-        <Migration
-            heading="Off Pipedream in four stages, before March 31"
-            sub="Pipedream keeps running until each wave is cut over."
-            steps={stages}
-        />
-        <Translation
-            heading="What Pipedream becomes in Kestra"
-            sub="A starting map from the migration guide. Triage first: part of every estate is retired or merged before anything is converted."
-            fromLabel="Pipedream"
-            rows={mapping}
-        />
-        <Conversion />
-        <Features
-            heading="What comes with Kestra Cloud"
-            features={cloudFeatures}
-        />
-        <Stack
-            heading="What Pipedream teams run on Kestra"
-            sub={null}
-            columns={automations}
-        />
-        <Proof
-            heading="One migration in progress"
-            sub="Converting by pattern, with Pipedream still running."
-            {cases}
-        />
-        <UseCases
-            {routePath}
-            headingLines={["Bring your export,", "leave with working flows"]}
-            bullets={ctaBullets}
-        >
-            <Fragment slot="form">
-                <CloudForm variant="plain" {...cloudForm} client:visible />
-            </Fragment>
-        </UseCases>
-        <Faq items={faqItems} />
-        <ClosingBanner
-            heading="Export today, convert this week"
-            sub="Start your Cloud trial with your export in hand: your first run takes minutes. Bring your integration list and your monthly step count."
-            cta={{ text: "Start your Cloud trial", href: "#contact-sales" }}
-            reassurance="Fully managed by the team that builds Kestra. The same flows run self-hosted if you ever need it."
-        />
-        <LpFooter />
-    </div>
-</Layout>
-
-<style lang="scss">
-    /* Same pinned palette as /lp/workflow-orchestration: the wrapper class is
-     * shared on purpose, so this page inherits its section components' tokens.
-     * Keep the lists identical. */
-    .lp-workflow-orchestration {
-        --lp-purple: #631bff;
-        --lp-purple-light: #f1efff;
-        --lp-purple-rail: #cdc5ff;
-        --lp-shadow-light: #3952f21a;
-        --lp-bg-dark: #111115;
-        --lp-purple-mid: #9869f7;
-        --lp-content-on-card: #3b3a41;
-        --lp-bg-base: #f7f7f8;
-        --lp-content-primary: #08090a;
-        --lp-content-secondary: #5f5f7c;
-        --lp-content-muted: #7e7e9b;
-        --lp-content-dark-secondary: #adadbf;
-        --lp-border: #d0d0da;
-        --lp-border-subtle: #e9e9ee;
-
-        background-color: #ffffff;
-        overflow-x: clip;
-    }
-
-    :global(html) {
-        --top-bar-height: 80px;
-    }
-</style>
+<LpLayout
+    {title}
+    {description}
+    header={{ cta: { text: "Start your Cloud trial", href: "#contact-sales" } }}
+>
+    <Hero {routePath} formTitle="Start your Kestra Cloud trial">
+        <Fragment slot="title">
+            Move off <span class="grad grad-a">Pipedream</span>{" "}
+            before <span class="grad grad-b">March 31</span>.
+        </Fragment>
+        <Fragment slot="lead">
+            Pipedream Workflows stops on March 31, 2027 and deletes all
+            data, credentials included, by April 30. Kestra Cloud runs the
+            logic of your Node.js, Python and Bash steps as is. You hold the
+            credentials, and there is nothing to host.<br />
+            <strong
+                >Fully managed today, open source underneath, so you are not
+                locked in again.</strong
+            >
+        </Fragment>
+        <Fragment slot="form-sub">
+            14 days free, no credit card. Tell us what you run on Pipedream
+            and we set up your instance.
+        </Fragment>
+        {
+            /* Wrapped: a slot attribute on a hydrated island reaches the client as a stray attribute. */
+        }
+        <Fragment slot="form">
+            <CloudForm variant="plain" {...cloudForm} client:idle />
+        </Fragment>
+    </Hero>
+    <Platform heading="What the shutdown means for you" cards={reasons} />
+    <Migration
+        heading="Off Pipedream in four stages, before March 31"
+        sub="Pipedream keeps running until each wave is cut over."
+        steps={stages}
+    />
+    <Translation
+        heading="What Pipedream becomes in Kestra"
+        sub="A starting map from the migration guide. Triage first: part of every estate is retired or merged before anything is converted."
+        fromLabel="Pipedream"
+        rows={mapping}
+    />
+    <Conversion />
+    <Features
+        heading="What comes with Kestra Cloud"
+        features={cloudFeatures}
+    />
+    <Stack
+        heading="What Pipedream teams run on Kestra"
+        sub={null}
+        columns={automations}
+    />
+    <Proof
+        heading="One migration in progress"
+        sub="Converting by pattern, with Pipedream still running."
+        {cases}
+    />
+    <UseCases
+        {routePath}
+        headingLines={["Bring your export,", "leave with working flows"]}
+        bullets={ctaBullets}
+    >
+        <Fragment slot="form">
+            <CloudForm variant="plain" {...cloudForm} client:visible />
+        </Fragment>
+    </UseCases>
+    <Faq items={faqItems} />
+    <ClosingBanner
+        heading="Export today, convert this week"
+        sub="Start your Cloud trial with your export in hand: your first run takes minutes. Bring your integration list and your monthly step count."
+        cta={{ text: "Start your Cloud trial", href: "#contact-sales" }}
+        reassurance="Fully managed by the team that builds Kestra. The same flows run self-hosted if you ever need it."
+    />
+</LpLayout>

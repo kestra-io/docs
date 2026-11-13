@@ -2,7 +2,11 @@
     import { ref, useId, useTemplateRef } from "vue"
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
-    import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot.js"
+    import {
+        HubspotDeliveryError,
+        getHubspotTracking,
+        submitHubspotForm,
+    } from "~/utils/hubspot.js"
     import { getStoredClickId } from "~/scripts/gclid"
     import {
         ensureMeetingsScriptLoaded,
@@ -10,7 +14,7 @@
         tierFromEmployees,
     } from "~/composables/useMeeting.js"
     import type { Routing } from "~/utils/hubspotRouting"
-    import { $fetch } from "~/utils/fetch"
+    import { useFormErrors } from "~/composables/useFormErrors"
 
     /* This form is mounted more than once per page (the landing pages show it
      * in the hero and again lower down), so the field ids must be unique per
@@ -22,6 +26,15 @@
     const meetingUrl = ref<string>()
     const submitting = ref(false)
     const formRef = useTemplateRef("demo-form")
+
+    const { errors, clearError, validate } = useFormErrors({
+        "first-name": "first name",
+        "last-name": "last name",
+        company: "company name",
+        email: "company email",
+        "job-title": "job title",
+        employees: "company size",
+    })
 
     const props = withDefaults(
         defineProps<{
@@ -52,13 +65,14 @@
         const form = formRef.value
         const hsq = (window._hsq = window._hsq || [])
 
-        if (!form?.checkValidity()) {
+        if (!form || !validate(form)) {
             valid.value = false
-            message.value = "Please check the form fields and try again."
+            message.value = "Please correct the highlighted fields below."
             return
         }
         if (submitting.value) return
         submitting.value = true
+        message.value = ""
 
         const fn = form["first-name"].value
         const ln = form["last-name"].value
@@ -78,9 +92,6 @@
             },
         ])
 
-        const ip = await $fetch<{ ip: string }>(
-            "https://api.ipify.org?format=json",
-        )
         const formData = {
             fields: [
                 { objectTypeId: "0-1", name: "email", value: em },
@@ -116,7 +127,6 @@
             ],
             context: {
                 hutk: getHubspotTracking() || undefined,
-                ipAddress: ip.ip,
                 pageUri: props.routePath,
                 pageName: document.title,
             },
@@ -130,21 +140,23 @@
             }>(hubSpotFormId, formData)
             routing = result?.routing
         } catch (error: any) {
-            submitting.value = false
-            valid.value = false
             console.error("Error submitting form data to HubSpot", error)
-            if (
-                error?.response?.data?.errors?.some?.(
-                    (err: any) => err.errorType === "BLOCKED_EMAIL",
-                )
-            ) {
-                message.value = "Please use a professional email address"
-            } else {
-                message.value =
-                    error?.response?.data?.message ||
-                    "It looks like we've hit a snag. Please ensure cookies are enabled and that any ad-blockers are disabled for this site, then try again."
+            if (!(error instanceof HubspotDeliveryError)) {
+                submitting.value = false
+                valid.value = false
+                if (
+                    error?.response?.data?.errors?.some?.(
+                        (err: any) => err.errorType === "BLOCKED_EMAIL",
+                    )
+                ) {
+                    message.value = "Please use a professional email address"
+                } else {
+                    message.value =
+                        error?.response?.data?.message ||
+                        "It looks like we've hit a snag. Please ensure cookies are enabled and that any ad-blockers are disabled for this site, then try again."
+                }
+                return
             }
-            return
         }
 
         submitting.value = false
@@ -263,12 +275,17 @@
                     <input
                         :id="`${uid}-first-name`"
                         name="first-name"
+                        :class="{ 'is-invalid': errors['first-name'] }"
+                        @input="clearError('first-name')"
                         autocomplete="given-name"
                         type="text"
                         class="form-control"
                         placeholder="First name *"
                         required
                     />
+                    <div v-if="errors['first-name']" class="field-error">
+                        {{ errors["first-name"] }}
+                    </div>
                 </div>
 
                 <div class="col-md-6 col-12">
@@ -278,12 +295,17 @@
                     <input
                         :id="`${uid}-last-name`"
                         name="last-name"
+                        :class="{ 'is-invalid': errors['last-name'] }"
+                        @input="clearError('last-name')"
                         autocomplete="family-name"
                         type="text"
                         class="form-control"
                         placeholder="Last name *"
                         required
                     />
+                    <div v-if="errors['last-name']" class="field-error">
+                        {{ errors["last-name"] }}
+                    </div>
                 </div>
 
                 <div class="col-md-6 col-12">
@@ -293,12 +315,17 @@
                     <input
                         :id="`${uid}-company`"
                         name="company"
+                        :class="{ 'is-invalid': errors.company }"
+                        @input="clearError('company')"
                         autocomplete="organization"
                         type="text"
                         class="form-control"
                         placeholder="Company name *"
                         required
                     />
+                    <div v-if="errors.company" class="field-error">
+                        {{ errors.company }}
+                    </div>
                 </div>
 
                 <div class="col-md-6 col-12">
@@ -308,11 +335,16 @@
                     <input
                         :id="`${uid}-email`"
                         name="email"
+                        :class="{ 'is-invalid': errors.email }"
+                        @input="clearError('email')"
                         type="email"
                         class="form-control"
                         placeholder="Company email *"
                         required
                     />
+                    <div v-if="errors.email" class="field-error">
+                        {{ errors.email }}
+                    </div>
                 </div>
 
                 <div class="col-12">
@@ -322,12 +354,17 @@
                     <input
                         :id="`${uid}-job-title`"
                         name="job-title"
+                        :class="{ 'is-invalid': errors['job-title'] }"
+                        @input="clearError('job-title')"
                         autocomplete="organization-title"
                         type="text"
                         class="form-control"
                         placeholder="Job title *"
                         required
                     />
+                    <div v-if="errors['job-title']" class="field-error">
+                        {{ errors["job-title"] }}
+                    </div>
                 </div>
 
                 <div class="col-12">
@@ -338,7 +375,9 @@
                         :id="`${uid}-employees`"
                         name="employees"
                         class="form-control"
+                        :class="{ 'is-invalid': errors.employees }"
                         required
+                        @change="clearError('employees')"
                     >
                         <option value="" disabled selected>
                             Number of employees *
@@ -347,6 +386,9 @@
                         <option value="100-999">between 100 and 999</option>
                         <option value="1000+">1000+</option>
                     </select>
+                    <div v-if="errors.employees" class="field-error">
+                        {{ errors.employees }}
+                    </div>
                 </div>
 
                 <div class="col-12 mt-3">
@@ -642,6 +684,21 @@
                     margin-bottom: -12px;
                 }
             }
+        }
+    }
+
+    form {
+        .form-control.is-invalid,
+        .form-control.is-invalid:focus {
+            border-color: var(--ks-border-alert-danger);
+            background-image: none;
+            padding-right: $input-padding-x;
+        }
+
+        .field-error {
+            margin-top: 6px;
+            font-size: $font-size-sm;
+            color: var(--ks-content-alert-danger);
         }
     }
 </style>

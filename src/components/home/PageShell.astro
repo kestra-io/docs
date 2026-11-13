@@ -1,0 +1,90 @@
+---
+
+---
+
+<div class="home-page">
+    <slot />
+</div>
+
+<script>
+    function requestCleanHeader() {
+        if (!document.querySelector(".home-page")) return
+        document.body.setAttribute("data-header-clean", "")
+        document.addEventListener(
+            "astro:before-swap",
+            () => document.body.removeAttribute("data-header-clean"),
+            { once: true },
+        )
+    }
+
+    document.addEventListener("astro:page-load", requestCleanHeader)
+    requestCleanHeader()
+
+    function pauseOffscreen() {
+        const sections = document.querySelectorAll<HTMLElement>(
+            ".home-page > section:not([data-watched])",
+        )
+        if (!sections.length) return
+        const observer = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries)
+                    entry.target.toggleAttribute(
+                        "data-offscreen",
+                        !entry.isIntersecting,
+                    )
+            },
+            { rootMargin: "200px 0px" },
+        )
+        for (const section of sections) {
+            section.dataset.watched = ""
+            observer.observe(section)
+        }
+    }
+
+    document.addEventListener("astro:page-load", pauseOffscreen)
+    pauseOffscreen()
+</script>
+
+<style lang="scss">
+    @use "/src/assets/styles/buttons" as *;
+
+    .home-page {
+        --ks-border-primary: #e2e2e8;
+
+        :global(html.dark) & {
+            --ks-border-primary: #46454d;
+        }
+
+        :global(html:not(.dark)) & {
+            --ks-content-tertiary: #6d6d74;
+        }
+
+        overflow: clip;
+
+        @include media-breakpoint-down(xl) {
+            :global(.container-xl:has(> .grid)),
+            :global(.container-xl:has(> .rails)) {
+                padding-inline: 0;
+            }
+        }
+
+        :global([data-offscreen]) :global(*),
+        :global([data-offscreen]) :global(*::before),
+        :global([data-offscreen]) :global(*::after) {
+            animation-play-state: paused !important;
+        }
+
+        @include cta-buttons;
+
+        :global(.container) {
+            @include media-breakpoint-up(xxl) {
+                max-width: 1320px;
+            }
+
+            @include media-breakpoint-down(md) {
+                padding-left: 1.25rem;
+                padding-right: 1.25rem;
+            }
+        }
+    }
+</style>

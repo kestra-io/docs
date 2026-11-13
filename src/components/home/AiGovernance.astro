@@ -1,0 +1,1108 @@
+---
+import AiFlow from "./AiFlow.astro"
+import PixelEdges from "~/components/about/PixelEdges.astro"
+import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
+
+interface Props {
+    eyebrow?: string
+    bridge?: boolean
+    foot?: boolean
+}
+
+const { eyebrow, bridge = true, foot = true } = Astro.props
+---
+
+<section
+    class="ai-governance is-aurora surface-dark"
+    aria-labelledby="ai-governance"
+    data-header-dark
+>
+    <PixelEdges left="wide" right="tall" />
+    <span class="texture" aria-hidden="true"></span>
+    <span
+        class="cluster top"
+        aria-hidden="true"
+        style={`--pixels: url("${pixelCluster}")`}></span>
+    <span
+        class="cluster bottom"
+        aria-hidden="true"
+        style={`--pixels: url("${pixelCluster}")`}></span>
+    <span class="glow" aria-hidden="true" data-glow></span>
+    <div class="planet" aria-hidden="true">
+        <span class="haze"></span>
+        <span class="atmosphere"></span>
+        <span class="rim"></span>
+        <span class="limb"></span>
+    </div>
+    <span class="horizon" aria-hidden="true"></span>
+    <div class="container-xl">
+        <div class="rails">
+            {bridge && <span class="bridge" aria-hidden="true" />}
+            <div class="head">
+                <div>
+                    <div class="mascot" data-mascot aria-hidden="true">
+                        <span class="ring"></span>
+                        <span class="ring outer"></span>
+                        <span class="disc">
+                            <svg viewBox="0 0 48 48">
+                                <rect
+                                    class="antenna"
+                                    x="20"
+                                    y="6"
+                                    width="8"
+                                    height="7"
+                                    rx="3.5"></rect>
+                                <rect
+                                    x="5"
+                                    y="19"
+                                    width="5"
+                                    height="12"
+                                    rx="2.5"></rect>
+                                <rect
+                                    x="38"
+                                    y="19"
+                                    width="5"
+                                    height="12"
+                                    rx="2.5"></rect>
+                                <rect
+                                    class="face"
+                                    x="11.5"
+                                    y="12.5"
+                                    width="25"
+                                    height="24"
+                                    rx="3.5"></rect>
+                                <g class="eyes" data-eyes>
+                                    <circle
+                                        class="eye"
+                                        cx="19.5"
+                                        cy="22"
+                                        r="2.4"></circle>
+                                    <circle
+                                        class="eye wink"
+                                        cx="28.5"
+                                        cy="22"
+                                        r="2.4"></circle>
+                                </g>
+                                <rect
+                                    class="mouth"
+                                    x="18"
+                                    y="29"
+                                    width="12"
+                                    height="2.75"
+                                    rx="1"></rect>
+                            </svg>
+                        </span>
+                    </div>
+                    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+                    <h2 id="ai-governance">
+                        <slot name="title">
+                            Every action an agent takes is <span
+                                >a governed step in a Kestra flow.</span
+                            >
+                        </slot>
+                    </h2>
+                    <p class="lead">
+                        <slot name="lead">
+                            Build agents with any framework. Kestra adds
+                            permissions, approvals, audit trails, state and
+                            retries to every step they take.
+                        </slot>
+                    </p>
+                </div>
+            </div>
+
+            <slot name="cards" />
+
+            <figure class="stack">
+                <AiFlow />
+            </figure>
+
+            {
+                foot && (
+                    <div class="foot">
+                        <a href="/ai-automation" class="btn-ghost">
+                            How agents fit
+                        </a>
+                    </div>
+                )
+            }
+        </div>
+    </div>
+</section>
+
+<script>
+    import { watchDarkSections } from "~/utils/headerDarkSections"
+
+    document.addEventListener("astro:page-load", watchDarkSections)
+    watchDarkSections()
+
+    function wakeMascot(root: HTMLElement) {
+        if (root.dataset.awake) return
+        root.dataset.awake = "true"
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            root.classList.add("in")
+            return
+        }
+        const eyes = root.querySelector<SVGGElement>("[data-eyes]")!
+        const flash = (name: string, ms: number) => {
+            root.classList.add(name)
+            setTimeout(() => root.classList.remove(name), ms)
+        }
+
+        let timer = 0
+        const blinkLater = () => {
+            timer = window.setTimeout(
+                () => {
+                    flash("blinking", 250)
+                    blinkLater()
+                },
+                3500 + Math.random() * 3000,
+            )
+        }
+        root.addEventListener(
+            "mascot:arrive",
+            () => {
+                root.classList.add("in")
+                setTimeout(() => flash("winking", 500), 700)
+                setTimeout(blinkLater, 1400)
+            },
+            { once: true },
+        )
+
+        let frame = 0
+        let pointer = { x: 0, y: 0 }
+        let target: Element | null = null
+        const look = () => {
+            frame = 0
+            const box = root.getBoundingClientRect()
+            const at = target?.getBoundingClientRect()
+            const x0 = at ? at.left + at.width / 2 : pointer.x
+            const y0 = at ? at.top + at.height / 2 : pointer.y
+            const dx = x0 - (box.left + box.width / 2)
+            const dy = y0 - (box.top + box.height / 2)
+            const distance = Math.hypot(dx, dy) || 1
+            const reach = at ? 1 : Math.min(1, distance / 320)
+            const x = (dx / distance) * 3.2 * reach
+            const y = (dy / distance) * 2.6 * reach
+            eyes.style.transform = `translate(${x}px, ${y}px)`
+        }
+        const follow = (event: PointerEvent) => {
+            pointer = { x: event.clientX, y: event.clientY }
+            if (!target) frame ||= requestAnimationFrame(look)
+        }
+        window.addEventListener("pointermove", follow, { passive: true })
+        root.addEventListener("mascot:look", (event) => {
+            target = (event as CustomEvent<Element | null>).detail
+            frame ||= requestAnimationFrame(look)
+        })
+        document.addEventListener(
+            "astro:before-swap",
+            () => {
+                window.removeEventListener("pointermove", follow)
+                clearTimeout(timer)
+            },
+            { once: true },
+        )
+    }
+
+    function wakeMascots() {
+        document
+            .querySelectorAll<HTMLElement>("[data-mascot]")
+            .forEach(wakeMascot)
+    }
+
+    document.addEventListener("astro:page-load", wakeMascots)
+    wakeMascots()
+
+    function trackGlow(glow: HTMLElement) {
+        if (glow.dataset.tracking) return
+        glow.dataset.tracking = "true"
+        if (!matchMedia("(pointer: fine)").matches) return
+        const section = glow.parentElement!
+        let frame = 0
+        let point = { x: 0, y: 0 }
+        const move = () => {
+            frame = 0
+            glow.style.setProperty("--x", `${point.x}px`)
+            glow.style.setProperty("--y", `${point.y}px`)
+        }
+        section.addEventListener("pointermove", (event) => {
+            const box = section.getBoundingClientRect()
+            point = { x: event.clientX - box.left, y: event.clientY - box.top }
+            if (!glow.classList.contains("on")) {
+                glow.style.transition = "opacity 0.6s ease"
+                move()
+                requestAnimationFrame(() => (glow.style.transition = ""))
+                glow.classList.add("on")
+                return
+            }
+            frame ||= requestAnimationFrame(move)
+        })
+        section.addEventListener("pointerleave", () =>
+            glow.classList.remove("on"),
+        )
+    }
+
+    function trackGlows() {
+        document.querySelectorAll<HTMLElement>("[data-glow]").forEach(trackGlow)
+    }
+
+    document.addEventListener("astro:page-load", trackGlows)
+    trackGlows()
+
+    function arriveAi() {
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+        document
+            .querySelectorAll<HTMLElement>(".ai-governance:not(.armed)")
+            .forEach((section) => {
+                const mascot =
+                    section.querySelector<HTMLElement>("[data-mascot]")
+                const lower = section.querySelector<HTMLElement>(".bridge")
+                const upper = document.querySelector<HTMLElement>(
+                    ".control-plane .grid > .bridge",
+                )
+                const panel = document.querySelector<HTMLElement>(
+                    ".control-plane .visuals",
+                )
+                const node = upper?.querySelector<HTMLElement>(".node")
+                if (!mascot) return
+                section.classList.add("armed")
+                upper?.classList.add("armed")
+
+                const later = (ms: number, step: () => void) =>
+                    window.setTimeout(step, ms)
+
+                const play = () => {
+                    panel?.classList.add("lit")
+                    later(100, () => section.classList.add("in"))
+                    later(200, () => upper?.classList.add("on"))
+                    later(400, () => {
+                        upper?.classList.add("drawn")
+                        if (!node || !lower) return
+                        const from = node.getBoundingClientRect()
+                        const target =
+                            section.getBoundingClientRect().top +
+                            lower.offsetTop +
+                            lower.offsetHeight
+                        node.animate(
+                            [
+                                { transform: "translateY(0)" },
+                                {
+                                    transform: `translateY(${target - (from.top + from.height / 2)}px)`,
+                                },
+                            ],
+                            {
+                                duration: 600,
+                                easing: "cubic-bezier(0.65, 0, 0.35, 1)",
+                                fill: "forwards",
+                            },
+                        )
+                    })
+                    later(700, () => lower?.classList.add("drawn"))
+                    later(1000, () => {
+                        mascot.dispatchEvent(new Event("mascot:arrive"))
+                        upper?.classList.add("done")
+                    })
+                    later(1800, () => panel?.classList.remove("lit"))
+                }
+
+                const seen = new IntersectionObserver(
+                    ([entry]) => {
+                        if (!entry.isIntersecting) return
+                        seen.disconnect()
+                        play()
+                    },
+                    { rootMargin: "0px 0px -10% 0px" },
+                )
+                seen.observe(section)
+            })
+    }
+
+    document.addEventListener("astro:page-load", arriveAi)
+    arriveAi()
+
+    function feedAgent() {
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+
+        const inView = (box: DOMRect) =>
+            box.bottom > 0 && box.top < window.innerHeight
+
+        document.addEventListener("topology:progress", (event) => {
+            const section =
+                document.querySelector<HTMLElement>(".ai-governance.in")
+            const mascot = section?.querySelector<HTMLElement>("[data-mascot]")
+            const topology = event.target as HTMLElement
+            const visual = topology.closest<HTMLElement>(
+                "[data-domain-visual].active",
+            )
+            const bridge = document.querySelector<HTMLElement>(
+                ".control-plane .grid > .bridge",
+            )
+            if (!mascot || !visual || !bridge) return
+
+            const nodes = topology.querySelectorAll<HTMLElement>("[data-node]")
+            const detail = (event as CustomEvent<number>).detail
+            const node = nodes[Math.round(detail * nodes.length) - 1]
+            if (!node) return
+            const from = node.getBoundingClientRect()
+            const to = mascot.getBoundingClientRect()
+            if (!inView(from) || !inView(to)) return
+
+            const foot = visual.getBoundingClientRect().bottom - 14
+            const x = bridge.getBoundingClientRect().left
+            const points = [
+                [from.left + from.width / 2, from.bottom],
+                [from.left + from.width / 2, foot],
+                [x, foot],
+                [x, to.top],
+            ].map(([px, py]) => [px + window.scrollX, py + window.scrollY])
+            const legs = points
+                .slice(1)
+                .map((p, i) =>
+                    Math.hypot(p[0] - points[i][0], p[1] - points[i][1]),
+                )
+            const length = legs.reduce((sum, leg) => sum + leg, 0)
+            let run = 0
+            const offsets = [0, ...legs.map((leg) => (run += leg) / length)]
+
+            const tint = getComputedStyle(visual).getPropertyValue("--tint")
+            const packet = document.createElement("span")
+            packet.className = "agent-packet"
+            packet.style.setProperty("--tint", tint)
+            document.body.appendChild(packet)
+            const flight = packet.animate(
+                points.map(([px, py], i) => ({
+                    offset: offsets[i],
+                    transform: `translate(${px}px, ${py}px)`,
+                    opacity: i === 0 ? 0 : 1,
+                })),
+                {
+                    duration: Math.min(2200, Math.max(1100, length * 1.6)),
+                    easing: "cubic-bezier(0.45, 0, 0.25, 1)",
+                },
+            )
+            flight.onfinish = () => {
+                packet.remove()
+                mascot
+                    .querySelector(".ring.outer")
+                    ?.animate(
+                        [
+                            { transform: "scale(1)", borderColor: tint },
+                            { transform: "scale(1.12)", offset: 0.4 },
+                            { transform: "scale(1)" },
+                        ],
+                        { duration: 600, easing: "ease-out" },
+                    )
+            }
+        })
+    }
+
+    feedAgent()
+</script>
+
+<style lang="scss">
+    @use "/src/assets/styles/color-palette" as *;
+
+    .ai-governance {
+        --bg: #1c1c20;
+        --ink: #ffffff;
+        --ink-2: #d6d6de;
+        --node: #141418;
+        --node-hi: #2c2c33;
+        --glow: 255, 255, 255;
+        --glow-a: 1;
+        --pulse: #ffffff;
+        --pulse-kestra: #b48cff;
+        --line: #46454d;
+        --wire: rgba(255, 255, 255, 0.14);
+        --text: #ffffff;
+        --muted: #a3a3b1;
+        --faint: #5c5c68;
+        --danger: #ff5c7a;
+
+        --ks-content-primary: #{$base-grey-white};
+        --ks-content-secondary: #{$base-grey-200};
+        --ks-content-tertiary: #{$base-grey-300};
+        --ks-content-link: #{$base-primary-200};
+
+        --night: #060609;
+
+        position: relative;
+        overflow: hidden;
+        background:
+            radial-gradient(
+                ellipse 75% 55% at 50% 100%,
+                rgba(70, 44, 255, 0.16),
+                rgba(60, 30, 240, 0.06) 55%,
+                transparent 80%
+            ),
+            linear-gradient(
+                180deg,
+                var(--bg) 0%,
+                var(--bg) 30%,
+                #100e1c 70%,
+                var(--night) 100%
+            );
+        color: var(--text);
+    }
+
+    .ai-governance :global(.pixel-edges) {
+        --pixel: rgba(167, 150, 255, 0.07);
+    }
+
+    .cluster {
+        position: absolute;
+        width: 96px;
+        aspect-ratio: 194 / 168;
+        background: #8405ff;
+        mask: var(--pixels) no-repeat center / contain;
+        opacity: 0.22;
+        pointer-events: none;
+
+        &.top {
+            top: 2.5rem;
+            right: clamp(1.5rem, 6vw, 6rem);
+        }
+
+        &.bottom {
+            bottom: 2.5rem;
+            left: clamp(1.5rem, 6vw, 6rem);
+            transform: scaleX(-1);
+            opacity: 0.14;
+        }
+
+        .ai-governance:not(.is-light) & {
+            display: none;
+        }
+    }
+
+    .rails {
+        position: relative;
+        padding: clamp(2.5rem, 4vw, 3.5rem) 0 clamp(4rem, 6vw, 5.5rem);
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            z-index: 3;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: var(--line);
+            pointer-events: none;
+        }
+
+        &::before {
+            left: 0;
+        }
+
+        @include media-breakpoint-down(xl) {
+            &::before,
+            &::after {
+                display: none;
+            }
+        }
+
+        &::after {
+            right: 0;
+        }
+    }
+
+    .head {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 2.5rem;
+        padding-inline: clamp(1.5rem, 4vw, 3.5rem);
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 1.5rem;
+        }
+
+        > div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 56rem;
+        }
+    }
+
+    .mascot {
+        display: grid;
+        place-items: center;
+        z-index: 1;
+        position: relative;
+        width: 9rem;
+        height: 9rem;
+        margin: 0 auto 1.25rem;
+
+        .ring {
+            position: absolute;
+            inset: 1.25rem;
+            border: 1px dashed color-mix(in srgb, var(--ink) 24%, transparent);
+            border-radius: 50%;
+            opacity: 0;
+            transform: scale(0.6);
+            transition:
+                opacity 0.6s ease 0.25s,
+                transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
+
+            &.outer {
+                inset: 0;
+                border-color: color-mix(in srgb, var(--ink) 12%, transparent);
+                transition-delay: 0.4s;
+            }
+        }
+
+        .disc {
+            display: grid;
+            place-items: center;
+            width: 4.75rem;
+            height: 4.75rem;
+            border-radius: 50%;
+            background: linear-gradient(
+                180deg,
+                var(--node-hi) 0%,
+                var(--node) 100%
+            );
+            box-shadow: 0 0 0 1px
+                color-mix(in srgb, var(--ink) 16%, transparent);
+            opacity: 0;
+            transform: scale(0.3);
+            transition:
+                opacity 0.3s ease,
+                transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        svg {
+            width: 3rem;
+            height: 3rem;
+            fill: var(--ink);
+        }
+
+        .face {
+            fill: none;
+            stroke: var(--ink);
+            stroke-width: 3.25;
+        }
+
+        .eyes {
+            transition: transform 0.25s ease-out;
+        }
+
+        .eye,
+        .mouth {
+            transform-box: fill-box;
+            transform-origin: center;
+            transition: transform 0.25s ease;
+        }
+
+        &:global(.in) {
+            .ring,
+            .disc {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .is-light & {
+            .ring {
+                border-color: rgba(169, 80, 255, 0.4);
+
+                &.outer {
+                    border-color: rgba(169, 80, 255, 0.2);
+                }
+            }
+
+            .disc {
+                background: linear-gradient(180deg, #a982ff 0%, #7448e8 100%);
+                box-shadow:
+                    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+                    0 8px 22px -10px rgba(91, 40, 210, 0.5);
+            }
+
+            svg {
+                fill: #ffffff;
+            }
+
+            .face {
+                stroke: #ffffff;
+            }
+
+            .antenna {
+                fill: #ffffff;
+            }
+        }
+
+        &:global(.winking) .wink {
+            animation: shut 0.45s ease-in-out;
+        }
+
+        &:global(.blinking) .eye {
+            animation: shut 0.22s ease-in-out;
+        }
+
+        &[data-mood="send"] .disc {
+            animation: nod 0.5s ease;
+        }
+
+        &[data-mood="ok"] .eye {
+            transform: scaleY(0.55);
+        }
+
+        &[data-mood="wait"] .ring:not(.outer) {
+            animation: mascot-ring-turn 6s linear infinite;
+        }
+
+        &[data-mood="happy"] {
+            .disc {
+                animation: hop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            }
+
+            .eye {
+                transform: scaleY(0.45);
+            }
+
+            .mouth {
+                transform: scaleX(1.3);
+            }
+        }
+
+        &[data-mood="denied"] {
+            .disc {
+                animation: mascot-shake 0.5s ease;
+            }
+
+            .eye {
+                transform: scale(1.25);
+            }
+
+            .mouth {
+                transform: scaleX(0.55);
+            }
+        }
+    }
+
+    :global(.agent-packet) {
+        position: absolute;
+        z-index: 3;
+        top: -4px;
+        left: -4px;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--tint);
+        box-shadow:
+            0 0 0 3px color-mix(in srgb, var(--tint) 22%, transparent),
+            0 0 14px color-mix(in srgb, var(--tint) 60%, transparent);
+        pointer-events: none;
+        will-change: transform;
+    }
+
+    @keyframes nod {
+        40% {
+            transform: translateY(4px) scale(0.97);
+        }
+    }
+
+    @keyframes hop {
+        40% {
+            transform: translateY(-8px);
+        }
+    }
+
+    @keyframes mascot-shake {
+        20%,
+        60% {
+            transform: translateX(-5px) rotate(-4deg);
+        }
+
+        40%,
+        80% {
+            transform: translateX(5px) rotate(4deg);
+        }
+    }
+
+    @keyframes mascot-ring-turn {
+        to {
+            transform: rotate(1turn);
+        }
+    }
+
+    @keyframes shut {
+        35%,
+        60% {
+            transform: scaleY(0.12);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .mascot .ring,
+        .mascot .disc {
+            opacity: 1;
+            transform: none;
+            transition: none;
+        }
+    }
+
+    h2 {
+        margin: 0;
+        font-size: clamp(2rem, 3.6vw, 3rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+        color: var(--text);
+        text-wrap: balance;
+
+        span {
+            color: var(--muted);
+        }
+    }
+
+    .bridge {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 1px;
+        height: clamp(2.5rem, 4vw, 3.5rem);
+        background: repeating-linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--ink) 28%, transparent) 0 4px,
+            transparent 4px 8px
+        );
+        transform-origin: top;
+        transition: transform 0.45s linear;
+        pointer-events: none;
+    }
+
+    .ai-governance:global(.armed) {
+        .bridge {
+            transform: scaleY(0);
+        }
+
+        .bridge:global(.drawn) {
+            transform: none;
+        }
+
+        h2,
+        .lead {
+            transition:
+                opacity 0.7s ease,
+                transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        h2,
+        .lead {
+            opacity: 0;
+            transform: translateY(1.25rem);
+        }
+
+        &:global(.in) {
+            h2,
+            .lead {
+                opacity: 1;
+                transform: none;
+            }
+
+            .lead {
+                transition-delay: 0.15s;
+            }
+        }
+    }
+
+    .eyebrow {
+        margin: 0 0 1rem;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #7448e8;
+    }
+
+    .lead {
+        margin: 1.25rem 0 0;
+        max-width: 44rem;
+        font-size: 1.125rem;
+        line-height: 1.55;
+        color: var(--ink-2);
+    }
+
+    .foot {
+        display: flex;
+        justify-content: center;
+        margin-top: 2.5rem;
+    }
+
+    .texture {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+                circle,
+                color-mix(in srgb, var(--ink) 7%, transparent) 1px,
+                transparent 1.5px
+            )
+            0 0 / 20px 20px;
+        mask: radial-gradient(
+            ellipse 60% 50% at 50% 65%,
+            #000 20%,
+            transparent 75%
+        );
+        pointer-events: none;
+    }
+
+    .ai-governance > .container-xl {
+        position: relative;
+        z-index: 1;
+    }
+
+    .planet {
+        --size: 84rem;
+        --rise: 30rem;
+
+        position: absolute;
+        z-index: 0;
+        bottom: calc(var(--rise) - var(--size));
+        left: 50%;
+        width: var(--size);
+        aspect-ratio: 1;
+        translate: -50% 0;
+        border-radius: 50%;
+        background:
+            linear-gradient(transparent 20%, var(--night) 48%),
+            radial-gradient(
+                ellipse 62% 26% at 50% 0%,
+                rgba(200, 200, 216, 0.24),
+                rgba(130, 130, 150, 0.1) 40%,
+                transparent 72%
+            ),
+            var(--night);
+        pointer-events: none;
+
+        @include media-breakpoint-down(lg) {
+            --size: 60rem;
+            --rise: 22rem;
+        }
+
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
+
+    .limb {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: conic-gradient(
+            from -90deg,
+            transparent 0deg,
+            #3a26ff 22deg,
+            #5f4dff 52deg,
+            rgba(216, 214, 236, 0.45) 80deg,
+            rgba(255, 255, 255, 0.55) 90deg,
+            rgba(216, 214, 236, 0.45) 100deg,
+            #5f4dff 128deg,
+            #3a26ff 158deg,
+            transparent 180deg
+        );
+        mask:
+            radial-gradient(
+                farthest-side,
+                transparent calc(100% - 16px),
+                #000 100%
+            ),
+            linear-gradient(#000 15%, transparent 46%);
+        mask-composite: intersect;
+    }
+
+    .atmosphere {
+        position: absolute;
+        z-index: -1;
+        inset: -20rem;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle closest-side,
+            transparent calc(100% - 20rem),
+            rgba(80, 56, 255, 0.5) calc(100% - 20rem + 1px),
+            rgba(70, 44, 255, 0.22) calc(100% - 18rem),
+            rgba(60, 30, 240, 0.08) calc(100% - 14rem),
+            transparent calc(100% - 9rem)
+        );
+        mask:
+            conic-gradient(
+                from -90deg,
+                #000 0deg,
+                #000 45deg,
+                transparent 78deg,
+                transparent 102deg,
+                #000 135deg,
+                #000 360deg
+            ),
+            linear-gradient(#000 4%, transparent 46%);
+        mask-composite: intersect;
+    }
+
+    .rim {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle closest-side,
+            transparent 82%,
+            rgba(50, 28, 220, 0.16) 92%,
+            rgba(72, 48, 255, 0.5) 98.5%,
+            rgba(118, 100, 255, 0.7) 100%
+        );
+        mask:
+            conic-gradient(
+                from -90deg,
+                #000 0deg,
+                #000 40deg,
+                transparent 75deg,
+                transparent 105deg,
+                #000 140deg,
+                #000 360deg
+            ),
+            linear-gradient(#000 20%, transparent 48%);
+        mask-composite: intersect;
+    }
+
+    .haze {
+        position: absolute;
+        z-index: -1;
+        top: -7rem;
+        left: 50%;
+        width: 44rem;
+        height: 16rem;
+        translate: -50% 0;
+        background: radial-gradient(
+            closest-side,
+            rgba(230, 230, 242, 0.1),
+            rgba(200, 200, 220, 0.04) 55%,
+            transparent
+        );
+    }
+
+    .horizon {
+        position: absolute;
+        z-index: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 1px;
+        background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.08) 12%,
+            rgba(95, 77, 255, 0.55) 32%,
+            rgba(224, 220, 255, 0.95) 50%,
+            rgba(95, 77, 255, 0.55) 68%,
+            rgba(255, 255, 255, 0.08) 88%,
+            transparent 100%
+        );
+        pointer-events: none;
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: 15%;
+            right: 15%;
+            bottom: 0;
+            height: 9rem;
+            background: radial-gradient(
+                ellipse 50% 100% at 50% 100%,
+                rgba(120, 100, 255, 0.4),
+                rgba(70, 44, 255, 0.14) 45%,
+                transparent 75%
+            );
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: -1px;
+            width: 22rem;
+            height: 3px;
+            translate: -50% 0;
+            border-radius: 50%;
+            background: radial-gradient(
+                closest-side,
+                #ffffff,
+                rgba(190, 180, 255, 0.6) 50%,
+                transparent
+            );
+            filter: blur(1.5px);
+            animation: horizon 6s ease-in-out infinite alternate;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            &::after {
+                animation: none;
+            }
+        }
+    }
+
+    @keyframes horizon {
+        from {
+            opacity: 0.7;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    .glow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50rem;
+        height: 50rem;
+        margin: -25rem 0 0 -25rem;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle,
+            rgba(var(--glow), calc(var(--glow-a) * 0.05)) 0%,
+            rgba(var(--glow), calc(var(--glow-a) * 0.03)) 22%,
+            rgba(var(--glow), calc(var(--glow-a) * 0.012)) 45%,
+            transparent 70%
+        );
+        opacity: 0;
+        transform: translate(var(--x, 0), var(--y, 0));
+        transition:
+            opacity 0.6s ease,
+            transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        pointer-events: none;
+
+        &:global(.on) {
+            opacity: 1;
+        }
+    }
+
+    .stack {
+        position: relative;
+        margin: 0;
+        padding: clamp(2rem, 3.5vw, 3rem) clamp(1rem, 2.5vw, 2.5rem);
+        border-block: 1px solid var(--line);
+        background: var(--node);
+    }
+
+    .ai-governance.is-aurora {
+        --muted-on-bg: #c3c0e4;
+
+        .stack {
+            max-width: 74rem;
+            margin-inline: auto;
+            padding-block: 0;
+            border-block: 0;
+            background: none;
+
+            @include media-breakpoint-down(md) {
+                padding: 0 1.25rem;
+            }
+        }
+    }
+</style>

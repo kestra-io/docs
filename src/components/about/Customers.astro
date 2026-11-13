@@ -9,19 +9,19 @@ import fila from "~/assets/companies/fila.svg?raw"
 import xiaomi from "~/assets/landing/infrastructure/companies/xiaomi.svg?raw"
 import acxiom from "~/assets/companies/acxiom.svg?raw"
 import creditAgricole from "~/contents/customer-stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra/logo.svg?raw"
-import councilOfEurope from "~/components/enterprise/assets/logos/COE.svg?raw"
-import itzbund from "~/components/enterprise/assets/logos/ITZ.svg?raw"
+import apple from "~/assets/landing/infrastructure/companies/apple.svg?raw"
+import brainlab from "~/assets/landing/infrastructure/companies/brainlab.svg?raw"
 import { getCollection } from "astro:content"
 import { toSlug } from "~/utils/stories"
 
 const mono = (svg: string) =>
     svg.replace(/fill="(#fff|#ffffff|white)"/gi, 'fill="currentColor"')
-const crop = (svg: string, viewBox: string) => {
-    const [, , w, h] = viewBox.split(" ")
+const crop = (svg: string, viewBox: string, scale = 1) => {
+    const [, , w, h] = viewBox.split(" ").map(Number)
     return svg
         .replace(/viewBox="[^"]+"/, `viewBox="${viewBox}"`)
-        .replace(/<svg([^>]*?) width="[^"]+"/, `<svg$1 width="${w}"`)
-        .replace(/<svg([^>]*?) height="[^"]+"/, `<svg$1 height="${h}"`)
+        .replace(/<svg([^>]*?) width="[^"]+"/, `<svg$1 width="${w * scale}"`)
+        .replace(/<svg([^>]*?) height="[^"]+"/, `<svg$1 height="${h * scale}"`)
 }
 
 const flat = (svg: string) => {
@@ -41,6 +41,12 @@ const CUSTOMERS: {
     tall?: boolean
 }[] = [
     { name: "JPMorgan", svg: mono(jpmorgan), story: "JPMorgan Chase" },
+    {
+        name: "Apple",
+        svg: crop(mono(apple), "4.5 4.5 31.3 37", 1.4),
+        story: "Apple",
+        tall: true,
+    },
     { name: "Bloomberg", svg: mono(bloomberg) },
     { name: "Amdocs", svg: mono(amdocs), story: "Amdocs" },
     { name: "T-Systems", svg: tsystems },
@@ -53,16 +59,7 @@ const CUSTOMERS: {
     { name: "Fila", svg: fila, story: "Fila" },
     { name: "Xiaomi", svg: mono(xiaomi) },
     { name: "Acxiom", svg: acxiom, story: "Acxiom" },
-    {
-        name: "Council of Europe",
-        svg: crop(mono(councilOfEurope), "29 6.5 76.6 61.7"),
-        tall: true,
-    },
-    {
-        name: "ITZBund",
-        svg: crop(flat(itzbund), "25.3 11.3 85.3 52.4"),
-        tall: true,
-    },
+    { name: "Brainlab", svg: crop(mono(brainlab), "8 18.1 105 13.8", 1.3) },
 ]
 
 const stories = await getCollection("customerStories")

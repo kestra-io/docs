@@ -5,6 +5,7 @@
     "dockerfile": "Dockerfile"
   },
   "workspaceFolder": "/workspaces/docs",
+  "remoteUser": "node",
   "forwardPorts": [4321],
   "customizations": {
     "vscode": {

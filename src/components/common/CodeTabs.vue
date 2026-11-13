@@ -64,7 +64,7 @@
         try {
             // The shared core toolset, not the full `shiki` bundle: that one
             // ships every grammar, several megabytes, for one `lang`.
-            const { getHighlighterCore, resolveLanguage } = await import(
+            const { getHighlighterCore, resolveLanguage, pebbleTransformer } = await import(
                 "~/components/plugins/schema/shikiToolset"
             )
             const langOf = (tab: { lang?: string }) => resolveLanguage(tab.lang ?? props.lang)
@@ -75,10 +75,11 @@
                 map[tab.label] = highlighter.codeToHtml(tab.code, {
                     lang: langOf(tab) ?? "text",
                     themes: {
-                        light: "github-light-default",
-                        dark: "github-dark-default",
+                        light: "kestra-light",
+                        dark: "kestra-dark",
                     },
                     defaultColor: false,
+                    transformers: [pebbleTransformer()],
                 })
             }
             highlightedMap.value = map

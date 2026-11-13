@@ -68,7 +68,7 @@ For basic auth contexts, `auth_method` is `basicAuth` and the file stores `usern
 ### Examples
 
 ```bash
-# Deploy flows, then run one and wait for completion
+# Deploy flows, then run one and wait for completion; the run exits non-zero if the execution fails, so the CI job fails too
 kestractl flows deploy ./flows --namespace prod --override --fail-fast
 kestractl executions run prod nightly-refresh --wait --output json
 ```
@@ -227,8 +227,10 @@ kestractl flows usage-report --detailed                               # include 
 ## Execution management
 
 ```bash
-# Run a flow and optionally wait for completion
+# Run a flow
 kestractl executions run my.namespace my-flow
+
+# Run a flow and wait for completion — exits non-zero on FAILED, KILLED, or CANCELLED
 kestractl executions run my.namespace my-flow --wait --output json
 
 # List executions
@@ -706,6 +708,14 @@ kestractl test-suites search-results --namespace my.namespace
 kestractl test-suites last-result    --ids my.namespace/suite-a --ids my.namespace/suite-b
 kestractl test-suites get-result     <result_id>
 ```
+
+`run`, `run-by-query`, and `validate` print their results, then exit with code `1` when the outcome is a failure, so a CI job that runs them fails with the tests:
+
+- `run` exits `1` when the suite or any of its test cases ends `FAILED` or `ERROR`.
+- `run-by-query` exits `1` when any suite it runs, or any test case in one, ends `FAILED` or `ERROR`.
+- `validate` exits `1` when the definition has violations. Warnings don't change the exit code.
+
+A test case that ends `SUCCESS` or `SKIPPED` doesn't fail the command. The exit code is the same with `--output json` and table output.
 
 ## Reusable inputs (Enterprise Edition)
 
