@@ -99,7 +99,7 @@ With features like a built-in code editor, Git-native versioning, human-in-the-l
 
 ### 2. Boomi: Enterprise Integration Platform as a Service (iPaaS)
 
-Boomi is a direct and long-standing competitor to Workato in the enterprise iPaaS space. It offers a comprehensive, low-code platform for connecting applications, data, and people across hybrid environments. Boomi's strengths lie in its broad set of connectors, robust data integration capabilities, and features for master data management and API management. It is particularly well-regarded for complex B2B, EDI, and hybrid cloud integration scenarios that are common in large enterprises.
+[Boomi](/resources/infrastructure/boomi-alternatives) is a direct and long-standing competitor to Workato in the enterprise iPaaS space. It offers a comprehensive, low-code platform for connecting applications, data, and people across hybrid environments. Boomi's strengths lie in its broad set of connectors, robust data integration capabilities, and features for master data management and API management. It is particularly well-regarded for complex B2B, EDI, and hybrid cloud integration scenarios that are common in large enterprises.
 
 *   **Best for:** Large enterprises with complex hybrid integration needs and B2B/EDI requirements.
 
