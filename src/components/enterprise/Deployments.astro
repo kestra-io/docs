@@ -1,5 +1,8 @@
 ---
+import { Image } from "astro:assets"
+import { Icon } from "astro-icon/components"
 import PixelEdges from "~/components/about/PixelEdges.astro"
+import cloudVisual from "~/components/cloud/assets/cloud.webp"
 
 const DEPLOYMENTS = [
     {
@@ -12,12 +15,15 @@ const DEPLOYMENTS = [
     },
     {
         title: "Hybrid",
-        text: "Control plane in one place; worker groups for the systems: on-prem, in each cloud, at the edge.",
+        text: "Control plane in one place, worker groups next to the systems they act on: on-prem, in each cloud, at the edge.",
     },
-    {
-        title: "Kestra Cloud",
-        text: "The same Kestra, run by us. For teams who would rather build flows than operate a platform.",
-    },
+]
+
+const CLOUD = [
+    "Hosting, scaling and upgrades handled by Kestra",
+    "SSO, RBAC and audit logs included",
+    "Run tasks on your own compute",
+    "14 days free, no credit card",
 ]
 ---
 
@@ -27,11 +33,11 @@ const DEPLOYMENTS = [
         <div class="rails">
             <header>
                 <div>
-                    <h2 id="where-kestra-runs">Where Kestra Runs</h2>
+                    <h2 id="where-kestra-runs">Where Kestra runs</h2>
                     <p>
-                        Run Kestra Enterprise in any environment you choose:
-                        your data center, your cloud accounts, across network
-                        zones, or fully air-gapped.
+                        Run Kestra where you need it: your data center, your
+                        cloud accounts, across network zones, fully air-gapped,
+                        or managed by us.
                     </p>
                 </div>
                 <a
@@ -51,6 +57,29 @@ const DEPLOYMENTS = [
                     </li>
                 ))}
             </ul>
+            <aside class="cloud" aria-labelledby="ee-cloud">
+                <Image src={cloudVisual} alt="" />
+                <div class="pitch">
+                    <p class="label">Prefer not to run it?</p>
+                    <h3 id="ee-cloud">Kestra Cloud</h3>
+                    <p>
+                        Kestra managed by the team that built it, with a
+                        selection of Enterprise features and usage-based
+                        pricing.
+                    </p>
+                    <a href="/cloud" class="btn-solid">
+                        Explore Kestra Cloud <Icon name="mdi:chevron-right" />
+                    </a>
+                </div>
+                <ol>
+                    {CLOUD.map((point) => (
+                        <li>
+                            <Icon name="mdi:check" />
+                            {point}
+                        </li>
+                    ))}
+                </ol>
+            </aside>
         </div>
     </div>
 </section>
@@ -77,8 +106,9 @@ const DEPLOYMENTS = [
             padding-top: 7.5rem;
         }
 
-        > ul {
-            padding-bottom: 7.5rem;
+        > .cloud {
+            margin-inline: clamp(1.5rem, 4vw, 3.5rem);
+            margin-bottom: 7.5rem;
         }
 
         @include media-breakpoint-down(md) {
@@ -86,8 +116,8 @@ const DEPLOYMENTS = [
                 padding-top: 4.5rem;
             }
 
-            > ul {
-                padding-bottom: 4.5rem;
+            > .cloud {
+                margin-bottom: 4.5rem;
             }
         }
     }
@@ -112,21 +142,17 @@ const DEPLOYMENTS = [
 
     ul {
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 1rem;
         margin: 3rem 0 0;
         list-style: none;
 
-        @include media-breakpoint-down(lg) {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        @include media-breakpoint-down(sm) {
+        @include media-breakpoint-down(md) {
             grid-template-columns: 1fr;
         }
     }
 
-    li {
+    ul > li {
         padding: 1.5rem 1.5rem 2rem;
         border-radius: 8px;
         background: var(--ks-background-secondary);
@@ -151,6 +177,76 @@ const DEPLOYMENTS = [
             font-size: $font-size-md;
             line-height: 1.6;
             color: var(--ks-content-secondary);
+        }
+    }
+
+    .cloud {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1.2fr) minmax(0, 1fr);
+        align-items: center;
+        gap: 2rem 3rem;
+        margin-top: 1rem;
+        padding: 2rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 8px;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: auto minmax(0, 1fr);
+
+            ol {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: 1fr;
+            padding: 1.25rem;
+        }
+
+        img {
+            width: 7rem;
+            height: auto;
+        }
+
+        .label {
+            margin: 0 0 0.5rem;
+            font-size: $font-size-sm;
+            color: var(--ks-content-tertiary);
+        }
+
+        h3 {
+            margin: 0 0 0.75rem;
+            font-size: $font-size-xl;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        .pitch p:not(.label) {
+            margin: 0 0 1.5rem;
+            font-size: $font-size-md;
+            line-height: 1.6;
+            color: var(--ks-content-secondary);
+        }
+
+        ol {
+            display: grid;
+            gap: 0.75rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        ol li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: $font-size-md;
+            color: var(--ks-content-primary);
+        }
+
+        ol [data-icon] {
+            flex: none;
+            color: var(--ks-content-link);
         }
     }
 </style>

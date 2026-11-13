@@ -23,7 +23,7 @@ import BuyerQuestions from "~/components/enterprise/BuyerQuestions.astro"
 
 const title = "Kestra Enterprise"
 const description =
-    "Kestra Enterprise gives your teams the security, governance, and operational capabilities to automate workflows across your organization."
+    "Kestra Enterprise adds security, governance and SLA-backed support on top of the Apache 2.0 core. Run it self-hosted, in your cloud or air-gapped."
 
 const FEATURES = [
     {
@@ -33,18 +33,18 @@ const FEATURES = [
     },
     {
         id: "governance" as const,
-        title: "Verifiable governance",
-        text: "Show auditors who ran each workflow, with which permissions, and approval chains with SSO, RBAC, audit logs, policies, and approval gates.",
+        title: "Answer every audit question.",
+        text: "Show who ran each workflow, with which permissions and whose approval, through SSO, RBAC, audit logs, policies, and approval gates.",
     },
     {
         id: "scale" as const,
-        title: "Built for your scale and your network.",
+        title: "Grow without re-architecting.",
         text: "Pick the backend that fits your load: Postgres to start, then Redis, RabbitMQ or Kafka as volume grows. Mutual TLS between the controller and workers means only trusted workers can connect, wherever they run.",
     },
     {
         id: "reliability" as const,
         title: "Keep critical workflows running reliably.",
-        text: "Support business continuity with worker groups, backup and restore, maintenance mode, and SLA-backed support.",
+        text: "Workflows keep running through outages and upgrades, with worker groups, backup and restore, maintenance mode, and SLA-backed support.",
     },
 ]
 
@@ -122,11 +122,11 @@ const INCLUDED = [
 const FAQ = [
     {
         question: "What is the difference between open source and Enterprise?",
-        answer: "The engine, the YAML, the plugins and the execution model are identical. Enterprise adds the organization (multi-tenant, namespaces, worker groups, environments), the control (SSO, RBAC, secrets, audit, policies) and the experience (Apps, Copilot on any LLM, approvals), plus a commercial license and support with SLA. A flow moves between editions without changes.",
+        answer: "The engine, the YAML, the plugins and the execution model are identical. Enterprise adds multi-tenancy, worker groups and environments, then SSO, RBAC, secrets, audit logs and policies, then Apps, approvals and Copilot on the model you choose. It comes with a commercial license and support with SLA. A flow moves between editions without changes.",
     },
     {
         question: "Enterprise or Kestra Cloud?",
-        answer: "Same features, different operator. Enterprise is self-hosted: your Kubernetes, your network, your air gap. Kestra Cloud is managed by Kestra, usage-based, for teams who would rather not run it. The decision is deployment location and who operates, not features.",
+        answer: "Enterprise is self-hosted: your Kubernetes, your network, your air gap, with the full Enterprise feature set. Kestra Cloud is managed by Kestra and usage-based. It includes a selection of Enterprise features. The pricing page lists what each one includes.",
     },
     {
         question: "How is it priced?",
@@ -138,7 +138,7 @@ const FAQ = [
     },
     {
         question: "How long does a proof of concept take?",
-        answer: "Most teams evaluate on open source first, so the proof of concept is about organization and governance rather than the engine. A guided trial on your use case typically runs a few weeks. [Confirm with field engineering.]",
+        answer: "Most teams evaluate on open source first, so the proof of concept is about organization and governance rather than the engine. A guided trial runs on your own use case.",
     },
 ]
 ---
@@ -148,7 +148,7 @@ const FAQ = [
         <SchemaSoftwareApplication
             id="https://kestra.io/#enterprise-edition"
             name="Kestra Enterprise Edition"
-            description="Kestra Enterprise is a workflow orchestration platform for engineering teams running mission-critical operations at scale. Built-in governance, enterprise security, SSO, RBAC, audit logs, and horizontal scalability. Self-hosted or managed."
+            description="Kestra Enterprise adds SSO, RBAC, audit logs, multi-tenancy, worker groups and SLA-backed support to the open source Kestra orchestration platform. Self-hosted, hybrid or air-gapped."
             url="https://kestra.io/enterprise"
             isVariantOf="https://kestra.io/#software"
         />
@@ -159,11 +159,12 @@ const FAQ = [
         <CustomerLogos />
         <Enterprise features={FEATURES} layers={false} actions={false} light>
             <Fragment slot="title">
-                When open source is not enough, achieve more with Enterprise.
+                Same engine, ready for the whole organization.
             </Fragment>
             <Fragment slot="lead">
-                Keep the same engine, YAML, and plugins while adding more ways
-                to organize teams and control access.
+                Keep the same engine, YAML and plugins. Enterprise adds what
+                many teams on one platform need: isolation, access control,
+                audit and support with SLA.
             </Fragment>
         </Enterprise>
         <AiGovernance bridge={false} foot={false}>
@@ -171,9 +172,10 @@ const FAQ = [
                 Your AI agents answer to the same governance as your teams.
             </Fragment>
             <Fragment slot="lead">
-                Agents, MCP and the Copilot are open source. Enterprise controls
-                what they can do: which workflows they can call, who can
-                approve, and a record of every action.
+                Agents and MCP are part of the open source core and run on the
+                model of your choice, including one you host on-prem. Enterprise
+                controls what they can do: which workflows they can call, which
+                model they use, who approves, and a record of every action.
             </Fragment>
             <AgentZones slot="figure" />
             <AgentControls slot="after" />
@@ -181,7 +183,7 @@ const FAQ = [
         <Deployments />
         <EnterpriseShowcase />
         <Customers stories={STORIES} foot={false} placeholder={false}>
-            <Fragment slot="title">What Customers Say</Fragment>
+            <Fragment slot="title">Enterprise in production</Fragment>
         </Customers>
         <SupportPlans />
         <Included items={INCLUDED} />
