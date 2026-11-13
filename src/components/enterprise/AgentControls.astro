@@ -77,26 +77,44 @@ const CONTROLS = [
 <style lang="scss">
     .agent-controls {
         --tone: rgba(255, 255, 255, 0.16);
+        --rule: rgba(255, 255, 255, 0.12);
 
         position: relative;
         z-index: 1;
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 2rem clamp(1.5rem, 3vw, 3rem);
-        max-width: 74rem;
-        margin: 2.25rem auto 0;
-        padding: 0 clamp(1rem, 2.5vw, 2.5rem);
+        margin: 3.5rem 0 -2.5rem;
+        padding: 0;
+        border-top: 1px solid var(--rule);
         list-style: none;
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);
-        }
-
-        @include media-breakpoint-down(md) {
-            padding-inline: 1.25rem;
+            padding-inline: clamp(1.5rem, 4vw, 3.5rem);
         }
 
         li {
+            position: relative;
+            padding: 2rem clamp(1.5rem, 4vw, 3.5rem) 0;
+
+            @include media-breakpoint-up(lg) {
+                & + li::before {
+                    content: "";
+                    position: absolute;
+                    inset: 0 auto -100vh 0;
+                    width: 1px;
+                    background: var(--rule);
+                }
+            }
+
+            @include media-breakpoint-down(lg) {
+                padding: 1.5rem 0;
+
+                & + li {
+                    border-top: 1px solid var(--rule);
+                }
+            }
+
             &[data-state="ok"] {
                 --tone: #5ee3ae;
             }
@@ -122,8 +140,8 @@ const CONTROLS = [
             width: 1.75rem;
             height: 1.75rem;
             border-radius: 6px;
-            background: rgba(255, 255, 255, 0.06);
-            color: var(--muted);
+            background: rgba(180, 140, 255, 0.14);
+            color: #b48cff;
             transition:
                 color 0.4s ease,
                 background-color 0.4s ease;
