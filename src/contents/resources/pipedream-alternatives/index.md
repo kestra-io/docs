@@ -1,15 +1,18 @@
 ---
-title: "Pipedream Alternatives After the Workflows Shutdown: What Moves, What to Save, and How to Migrate"
-description: "Pipedream Workflows shuts down on March 31, 2027 and its data is deleted on April 30. What the export contains, what you must save first, how the alternatives compare, and a four-stage plan to move your workflows to Kestra in time."
-metaTitle: "Pipedream Alternatives After the Workflows Shutdown"
-metaDescription: "Pipedream Workflows shuts down March 31, 2027 and deletes all data April 30. See what the export misses, how alternatives compare, and how to migrate to Kestra."
+title: "Pipedream Workflows Alternatives: What the Shutdown Removes, What to Save, and How to Migrate by March 31, 2027"
+description: "Pipedream Workflows shuts down on March 31, 2027 and its data is deleted on April 30. How the Pipedream Workflows alternatives compare, what the export contains, what you must save first, and a four-stage plan to move your workflows to Kestra in time."
+metaTitle: "Pipedream Alternative: Move Workflows by March 31"
+metaDescription: "Looking for a Pipedream alternative? Pipedream Workflows shuts down March 31, 2027: what the export misses, how the options compare, how to migrate."
 tag: "infrastructure"
 date: 2026-10-20
+lastUpdated: 2026-11-04
 faq:
   - question: "Is Pipedream shutting down?"
     answer: "Pipedream Workflows and String are shutting down on March 31, 2027. Existing workflows keep running until then, but the product takes no new signups or subscriptions and ships no new features. All Workflows data, including connected-account credentials and OAuth tokens, is permanently deleted by April 30, 2027. Pipedream Connect, which covers the Connect API, MCP servers and the API proxy, is not affected."
   - question: "What is the best alternative to Pipedream Workflows?"
     answer: "It depends on what your workflows do. For simple SaaS-to-SaaS automations built by business users, Zapier or Make are the closest fit. For teams that want a self-hosted visual builder, n8n. When the logic belongs inside an application your developers own, Temporal. When workflows loop over records, call slow APIs, run code in several languages and need Git, environments, retries and observability, Kestra. For teams leaving a hosted product like Pipedream, Kestra Cloud is the closest fit because it is fully managed; Kestra Open Source and Enterprise cover teams that prefer to self-host."
+  - question: "Is there an open-source alternative to Pipedream?"
+    answer: "Yes. Kestra Open Source is licensed under Apache 2.0 and runs the same YAML flows as Kestra Cloud on Docker Compose, Kubernetes or a VM, so code steps, triggers and branches from Pipedream move across without a managed service. Among the other options, Windmill has an AGPLv3 core, Temporal is MIT-licensed but runs workflows inside your application code, and n8n is self-hostable under a fair-code license rather than an open-source one."
   - question: "What does the Pipedream export include?"
     answer: "Each project exports to a ZIP in its File Store with a manifest.json and one JSON file per workflow: metadata, triggers, steps with their code or action key and version, configured props, and the steps inside if/else and switch branches. It does not include credentials, OAuth tokens, environment variables, secret props, data store contents, File Store files, event history or the source of private multi-file components. One export covers up to 500 workflows or 256 MB."
   - question: "Can I convert Pipedream workflows to Kestra automatically?"
@@ -27,7 +30,7 @@ resourceCtaOverride:
 
 Pipedream Workflows, the serverless product for connecting APIs with triggers, code steps and pre-built actions, is being retired. Pipedream was acquired by Workday, and Workflows is now in maintenance mode: no new signups, no new features, and a hard stop on **March 31, 2027**. A month later, on **April 30, 2027**, all Workflows data is permanently deleted, including the credentials and OAuth tokens of every connected account.
 
-That changes the usual "Pipedream alternatives" question. It is no longer whether to move, but where to, and how to get every workflow, secret and webhook across before the data is gone. This page covers what the shutdown removes, what the export does and does not give you, how the alternatives compare for the workflows teams actually built on Pipedream, and a four-stage plan that finishes before the deadline.
+That changes the usual search for a Pipedream alternative. For Pipedream Workflows users, the question is no longer whether to move, but where to, and how to get every workflow, secret and webhook across before the data is gone. This page covers what the shutdown removes, what the export does and does not give you, how the alternatives compare for the workflows teams actually built on Pipedream, and a four-stage plan that finishes before the deadline.
 
 > **TL;DR:** Pipedream Workflows stops on March 31, 2027 and deletes all data, credentials included, on April 30. The export gives you workflow structure as JSON, not secrets, env vars, data stores or OAuth connections, so save those first. Kestra runs the same triggers and code steps as declarative YAML and adds native loops, retries, Git and observability. Kestra Cloud keeps the hosted model you had on Pipedream; if you prefer to self-host, Kestra Open Source (Apache 2.0) and Enterprise run the same flows on your own infrastructure. If you have already decided to move, go straight to the [Pipedream migration guide](/resources/migration/pipedream): export, concept mapping, a worked conversion and the cutover plan.
 
