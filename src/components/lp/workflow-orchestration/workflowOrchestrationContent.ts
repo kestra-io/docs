@@ -123,7 +123,6 @@ const faqItems: FaqProps["items"] = [
     },
 ]
 
-/** Takes the formatted plugin count, which the Platform and Stack copy quote. */
 export const getWorkflowOrchestrationContent = (totalPlugins: string) => ({
     title: "Unified Workflow Orchestration Platform for the AI era",
     description:

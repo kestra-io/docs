@@ -5,12 +5,6 @@ import type { SvgComponent } from "astro/types"
 export interface Props {
     heading: string
     sub?: string
-    /** A standalone SVG with the design's vertical gradient baked in: a paint
-     * server in a separate <svg> does not resolve through astro-icon's
-     * <symbol>/<use> pair, so these are imported assets, not <Icon> names.
-     * The shared ones in ./assets/stack-*.svg are generated from
-     * @iconify-json/mdi: database-arrow-up-outline, folder-cog-outline,
-     * view-dashboard-edit-outline, plus-circle-outline. */
     columns: {
         Glyph: SvgComponent
         title: string

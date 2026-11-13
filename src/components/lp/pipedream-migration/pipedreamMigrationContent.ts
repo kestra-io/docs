@@ -38,7 +38,6 @@ const reasons: PlatformProps["cards"] = [
     },
 ]
 
-// The guide's four stages (section 2).
 const stages: MigrationProps["steps"] = [
     {
         number: "01",
@@ -62,7 +61,6 @@ const stages: MigrationProps["steps"] = [
     },
 ]
 
-// A condensed cut of the guide's concept mapping (section 3.2).
 const mapping: TranslationProps["rows"] = [
     {
         from: "Workflow and project",
@@ -98,8 +96,6 @@ const mapping: TranslationProps["rows"] = [
     },
 ]
 
-// The guide's five conversion patterns (section 5.1) and the work behind the
-// case study in section 2.2.
 const automations: StackProps["columns"] = [
     {
         Glyph: FinanceIcon,
@@ -158,8 +154,6 @@ const ctaBullets: UseCasesProps["bullets"] = [
     },
 ]
 
-// The Cloud offer, in the words of kestra.io/cloud (the official source for
-// Cloud claims).
 const cloudFeatures: NonNullable<FeaturesProps["features"]> = [
     {
         icon: "mdi:shield-lock-outline",
@@ -214,9 +208,6 @@ const faqItems: FaqProps["items"] = [
     },
 ]
 
-/** Paid traffic only: every ad group lands here and is told apart by its
- * utm_content. The organic page for the topic is the migration guide. The
- * conversion is a Kestra Cloud trial (the /cloud form), not a demo. */
 export const pipedreamMigrationContent = {
     title: "Migrate off Pipedream Workflows",
     description:

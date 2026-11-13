@@ -6,8 +6,6 @@ export interface Props {
     steps: { number: string; title: string; body: string }[]
 }
 
-/* Each badge carries its own radial wash over the same near-black base, taken
- * in this order so every page's stages read the same. */
 const washes = [
     "radial-gradient(120% 150% at 92% -45%, rgba(99, 27, 255, 1) 0%, rgba(227, 24, 224, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
     "radial-gradient(150% 170% at -20% 140%, rgba(99, 27, 255, 1) 0%, rgba(24, 227, 61, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
@@ -33,7 +31,7 @@ const { heading, sub, steps } = Astro.props
                 >
                     <span
                         class="numero"
-                        style={`background-image: ${washes[index % washes.length]}`}
+                        style={`background-image: ${washes[index]}`}
                     >
                         {step.number}
                     </span>

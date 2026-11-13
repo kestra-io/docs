@@ -1,10 +1,5 @@
 import type { Props as FeaturesProps } from "./Features.astro"
 
-/* Copy for campaigns that sell the self-hosted Enterprise Edition. It is not a
- * default in Features or ClosingBanner because it claims a deployment model: a
- * Cloud or open-source campaign that left the prop out would quietly promise
- * air-gapped, self-managed infrastructure. */
-
 export const selfHostedFeatures: FeaturesProps["features"] = [
     {
         icon: "mdi:shield-lock-outline",

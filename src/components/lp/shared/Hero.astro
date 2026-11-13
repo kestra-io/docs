@@ -2,14 +2,10 @@
 import Meeting from "~/components/demo/Meeting.vue"
 import LogoBar from "~/components/home/LogoBar.astro"
 
-/* The page fills the title, lead and form-sub slots, and the form slot when
- * it does not use the default HubSpot meeting form. */
 export interface Props {
-    /** Passed to HubSpot as the originating page URI. */
     routePath: string
     formTitle: string
     formProps?: Record<string, unknown>
-    /** Logo order for the strip under the hero. */
     companies?: string[]
 }
 
@@ -120,10 +116,6 @@ const { routePath, formTitle, formProps = {}, companies } = Astro.props
         }
     }
 
-    /* A <br class="wrap"> in a slotted headline breaks the line from lg up;
-     * below lg the narrower column wraps better on its own. :global because
-     * slotted headlines are authored in the page, outside this component's
-     * style scope. */
     .lp-hero :global(.wrap) {
         display: none;
         @include media-breakpoint-up(lg) {

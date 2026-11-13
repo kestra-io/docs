@@ -63,8 +63,6 @@ const stages: MigrationProps["steps"] = [
     },
 ]
 
-/* A condensed cut of the guide's capability map (Appendix A). Keep the rows in
- * step with it: the map is what the sales team hands the architect. */
 const mapping: TranslationProps["rows"] = [
     {
         from: "Service Broker catalog items and request forms",
@@ -104,9 +102,6 @@ const mapping: TranslationProps["rows"] = [
     },
 ]
 
-/* The guide's case studies (section 2.5). Only the first estate has finished
- * migrating. Figures for the first card are the public ones from
- * /stories/fortune-500-company. */
 const cases: ProofProps["cases"] = [
     {
         status: "Migration complete",
@@ -246,8 +241,6 @@ const faqItems: FaqProps["items"] = [
     },
 ]
 
-/** Paid traffic only: every ad group lands here and is told apart by its
- * utm_content. The organic page for the topic is the migration guide. */
 export const vraMigrationContent = {
     title: "Migrate off VMware vRA, Aria and VCF Automation",
     description:
