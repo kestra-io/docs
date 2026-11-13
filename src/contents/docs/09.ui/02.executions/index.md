@@ -33,6 +33,18 @@ The **Overview** tab also supports [**Replay**](../../15.how-to-guides/replay/in
 
 The Overview tab also embeds a **topology diagram** showing each task's state in the execution graph — green for `SUCCESS`, red for `FAILED`. Click any task node to access its logs, replay it, or change its status.
 
+### Loop iterations in the topology
+
+Each [`Loop`](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop) iteration runs as its own execution, and the topology of the parent execution summarizes them:
+
+- A Loop lane shows how its iterations ended, for example `1 of 3 failed`, or `2 of 10 done · 1 failed` while the Loop runs.
+- To show a single iteration in the diagram, open the **All iterations** picker on the Loop lane. It lists failed iterations first, and you can search by index. Use the arrows next to the picker to move to the previous or next iteration. The tasks of the iteration then show their state and duration. A Loop nested in another one is scoped inside the outer iteration, so its picker reads **Pick <outer loop> first** until you pick one.
+- Click the failure count of a Loop lane to show the iteration that failed, down to the innermost failed Loop.
+
+The **Scope** bar above the diagram lists the iterations shown, or **Whole execution**. **Jump to first failure** shows the first failed iteration, **Loops with failures** collapses the Loop lanes that have none, and **Clear scopes** returns to the whole execution.
+
+Iterations are labeled by their value. An iteration with an empty value shows `index N` instead, where `N` starts at 0. The scope is kept in the URL, so a link opens the topology on the same iteration.
+
 ## Filters
 
 Executions can be filtered by namespace, flow ID, labels, state, start date, or free text. Applied filters can be saved and results exported. The following video demonstrates the filters in action:
@@ -70,7 +82,7 @@ Click a row, or select it and press Enter, to open its details in a resizable pa
 
 Each [`Loop`](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop) iteration runs as its own execution, and the Gantt shows those iterations in place, without leaving the execution you have open:
 
-- A Loop row shows its number of iterations and, when some failed, a failed count. Expand the row with its chevron to list its iterations, each with its value, state, and duration. Click the failed count to expand the loop and keep only its failed iterations.
+- A Loop row shows its number of iterations and, when some failed, a failed count. Expand the row with its chevron to list its iterations, each with its value, state, and duration. Click the failed count to expand the loop and keep only its failed iterations. A bar under the chips splits the iterations by state, including running and not started ones. Hover over or focus it to see the count of each state.
 - Expand an iteration to list its task runs. A Loop inside an iteration expands the same way, at any depth.
 - Select an iteration to see its first failure and its task runs in the panel. **Open iteration** opens its execution page.
 - Select a Loop row to browse its iterations in the panel, 10 at a time. Filter them by state, search them by exact value, or select **Show all executions** to open the executions list filtered on this loop.
@@ -79,6 +91,8 @@ Each [`Loop`](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#l
 Above the Gantt, **Failed only** keeps only failed task runs and iterations, so stepping between iterations hops from one failure to the next. **Go to first failure** walks down nested loops to the first task that failed and selects it.
 
 If the same Loop task runs more than once in an execution, for example after a retry, the Gantt can't tell its iterations apart and shows them together.
+
+The breadcrumb of an iteration's execution page shows where the iteration sits. For each loop level, it lists the Loop task, then the iteration, with its position and value. For example, the `Q3` iteration of a `per_quarter` Loop nested in the `APAC` iteration of a `per_region` Loop shows `Executions / company / team / nested_loop_demo / per_region / 3bNyUKo2 [3/3 - APAC] / per_quarter / 26a35QwXz9iHR7nzMCduJE [3/4 - Q3]`. Long breadcrumbs collapse the first levels into a `...` menu. Click a Loop task in the breadcrumb to open the **Iterations** list of that Loop, or an iteration to open its execution.
 
 <!-- TODO(runtime test): Gantt panel and in-place Loop iterations (kestra#19603, PRs kestra#19989 and kestra#21564, merged to develop 2026-10-21 and 2026-10-30) documented from source only. Check in the UI on a 2.1 build: chips and failed-chip filter, panel content per row type, [ / ] stepping, Failed only, Go to first failure, the duplicate-Loop behavior. Retake execution-gantt-view.png and add a screenshot of an expanded nested Loop with the panel open. -->
 
@@ -91,6 +105,10 @@ The **Logs** tab displays task logs, filterable by log level. Logs can be copied
 For failed tasks, use **Fix with AI** from the task menu to open the flow editor with [AI Copilot](../../develop-with-ai/01.ai-copilot/index.md) pre-loaded with the error context.
 
 ![Fix with AI](./fix-with-ai-logs.png)
+
+For a flow with a `Loop`, the **Logs** tab opens on **With loop iterations**. It shows the logs of the execution and of its failed iterations together, at the `ERROR` level unless you pick another level, and labels each line with its loop and iteration. Failed iterations load in batches. Click a line's label to scope the logs and the topology to that iteration, and **Show in Overview** to open the topology on the same iteration. Select **This execution** to see only the logs of the execution you have open.
+
+<!-- Verified 2026-11-13 on EE develop 30473aa (nested 3x4 Loop): topology chips, picker, scope bar, failure jump, merged logs, Gantt state bar, breadcrumb. Not documented: per-task run counts and the state bar on topology lanes, which need kestra-io/kestra#20603 (open) and kestra-io/kestra#22619. -->
 
 ## Input/Output
 
