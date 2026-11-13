@@ -43,6 +43,8 @@ Each [`Loop`](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#l
 
 The **Scope** bar above the diagram lists the iterations shown, or **Whole execution**. **Jump to first failure** shows the first failed iteration, **Loops with failures** collapses the Loop lanes that have none, and **Clear scopes** returns to the whole execution.
 
+![Topology of a nested Loop scoped to the failed Q3 iteration of the APAC region, with the Scope bar, failure chips, and iteration pickers](./loop-topology-scoped.png)
+
 Iterations are labeled by their value. An iteration with an empty value shows `index N` instead, where `N` starts at 0. The scope is kept in the URL, so a link opens the topology on the same iteration.
 
 ## Filters
@@ -107,6 +109,8 @@ For failed tasks, use **Fix with AI** from the task menu to open the flow editor
 ![Fix with AI](./fix-with-ai-logs.png)
 
 For a flow with a `Loop`, the **Logs** tab opens on **With loop iterations**. It shows the logs of the execution and of its failed iterations together, at the `ERROR` level unless you pick another level, and labels each line with its loop and iteration. Failed iterations load in batches. Click a line's label to scope the logs and the topology to that iteration, and **Show in Overview** to open the topology on the same iteration. Select **This execution** to see only the logs of the execution you have open.
+
+![Logs tab with loop iterations, showing ERROR lines labeled by loop iteration with Show in Overview links](./loop-merged-logs.png)
 
 <!-- Verified 2026-11-13 on EE develop 30473aa (nested 3x4 Loop): topology chips, picker, scope bar, failure jump, merged logs, Gantt state bar, breadcrumb. Not documented: per-task run counts and the state bar on topology lanes, which need kestra-io/kestra#20603 (open) and kestra-io/kestra#22619. -->
 
