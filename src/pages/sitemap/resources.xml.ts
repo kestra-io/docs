@@ -25,7 +25,7 @@ export const GET: APIRoute = async () => {
     const articles = await getCollection("resources")
 
     const articleUrls = articles
-        .filter((post) => !post.data.href)
+        .filter((post) => !post.data.href && !post.data.noindex)
         .map((post) => {
             let lastmod = formatLastMod((post.data as any).date ?? null)
             if (!lastmod && (post as any).filePath) {

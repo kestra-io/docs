@@ -214,7 +214,7 @@ You should consider an orchestrator when you see these signals:
 *   You find yourself implementing the same retry and error-handling logic in multiple services.
 *   It becomes difficult to answer the question, "What is the status of this order?"
 *   Business users need to request changes to workflows, but the logic is buried in code.
-*   You need to [solve complex orchestration problems](/resources/infrastructure/orchestration-problems-complexity) that span multiple teams or domains.
+*   You need to [solve complex orchestration problems](/resources/orchestration) that span multiple teams or domains.
 
 ## Microservice orchestration tools: a comparison
 
