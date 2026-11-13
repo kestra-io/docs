@@ -1,0 +1,681 @@
+---
+import { Icon } from "astro-icon/components"
+
+const NAV = [
+    {
+        group: "Tenant",
+        items: [
+            { icon: "mdi:monitor-dashboard", label: "System Overview" },
+            { icon: "mdi:shield-check-outline", label: "Policies" },
+            { icon: "mdi:database-outline", label: "KV Store" },
+            { icon: "mdi:lock-outline", label: "Secrets" },
+            { icon: "mdi:lightning-bolt-outline", label: "Triggers" },
+        ],
+    },
+    {
+        group: "Administration",
+        items: [
+            { icon: "mdi:server-network", label: "Instance" },
+            { icon: "mdi:domain", label: "Tenants" },
+            { icon: "mdi:account-group-outline", label: "IAM" },
+            {
+                icon: "mdi:text-box-search-outline",
+                label: "Audit Logs",
+                on: true,
+            },
+            { icon: "mdi:power", label: "Kill Switch" },
+            { icon: "mdi:bullhorn-outline", label: "Announcements" },
+        ],
+    },
+]
+
+const AUDIT = [
+    {
+        type: "Execution",
+        action: "Resumed",
+        actor: "m.chen",
+        detail: "approval:deploy_prod",
+        age: 40,
+    },
+    {
+        type: "Execution",
+        action: "Created",
+        actor: "s.roy",
+        detail: "flowId:deploy_prod",
+        age: 260,
+    },
+    {
+        type: "Flow",
+        action: "Updated",
+        actor: "j.kim",
+        detail: "revision:7",
+        age: 900,
+    },
+    {
+        type: "Role",
+        action: "Created",
+        actor: "admin",
+        detail: "id:finance_viewer",
+        age: 3600,
+    },
+    {
+        type: "User",
+        action: "Login",
+        actor: "j.kim",
+        detail: "resource:USER",
+        age: 7400,
+    },
+    {
+        type: "Secret",
+        action: "Updated",
+        actor: "m.chen",
+        detail: "key:DB_PASSWORD",
+        age: 0,
+    },
+    {
+        type: "Namespace",
+        action: "Updated",
+        actor: "admin",
+        detail: "id:acme.finance",
+        age: 0,
+    },
+    {
+        type: "Flow",
+        action: "Created",
+        actor: "agent-01",
+        detail: "id:sync_crm",
+        age: 0,
+    },
+    {
+        type: "Binding",
+        action: "Created",
+        actor: "admin",
+        detail: "role:editor",
+        age: 0,
+    },
+]
+
+const ACTION_ICONS: Record<string, string> = {
+    Created: "mdi:plus-circle-outline",
+    Updated: "mdi:pencil-outline",
+    Resumed: "mdi:play-circle-outline",
+    Login: "mdi:login",
+}
+
+const ago = (seconds: number) =>
+    seconds < 60
+        ? "just now"
+        : seconds < 3600
+          ? `${Math.round(seconds / 60)} min ago`
+          : `${Math.round(seconds / 3600)} hours ago`
+
+const VISIBLE = 5
+
+const ROLES = ["Admin", "Developer", "Editor", "Launcher", "Viewer"]
+
+const IDENTITY = ["SSO · OIDC", "SCIM", "LDAP", "Secrets manager"]
+---
+
+<div class="ui-mock gov-mock" aria-hidden="true" data-ui-mock data-audit-mock>
+    <span class="defs">
+        {Object.values(ACTION_ICONS).map((icon) => (
+            <Icon name={icon} />
+        ))}
+    </span>
+    <div class="stage">
+        <div class="ui">
+            <div class="bar">
+                <img src="/icon.svg" alt="" width="24" height="24" />
+                <span class="slash">/</span>
+                <Icon name="mdi:text-box-search-outline" />
+                <strong>Audit Logs</strong>
+                <span class="export">
+                    <Icon name="mdi:download" /> Export as CSV
+                </span>
+            </div>
+            <div class="nav">
+                {NAV.map((section) => (
+                    <div>
+                        <span class="group">{section.group}</span>
+                        {section.items.map((item) => (
+                            <span class:list={["item", { on: item.on }]}>
+                                <Icon name={item.icon} />
+                                {item.label}
+                            </span>
+                        ))}
+                    </div>
+                ))}
+            </div>
+            <div class="main">
+                <div class="tools">
+                    <span class="filter">
+                        <Icon name="mdi:filter-outline" /> Add filters
+                    </span>
+                    <span class="search">
+                        <Icon name="mdi:magnify" /> Search audit logs
+                    </span>
+                    <span class="filter last">Last 7 days</span>
+                </div>
+                <div class="table">
+                    <div class="head">
+                        <span>Resource type</span>
+                        <span>Type</span>
+                        <span>Actor</span>
+                        <span>Details</span>
+                        <span>Date</span>
+                    </div>
+                    <div class="feed" data-feed>
+                        {AUDIT.slice(0, VISIBLE).map((line) => (
+                            <div class="line" data-age={line.age}>
+                                <span>
+                                    <span class="pill">{line.type}</span>
+                                </span>
+                                <span>
+                                    <span
+                                        class:list={[
+                                            "state",
+                                            line.action.toLowerCase(),
+                                        ]}
+                                    >
+                                        <Icon
+                                            name={ACTION_ICONS[line.action]}
+                                        />
+                                        {line.action}
+                                    </span>
+                                </span>
+                                <strong>{line.actor}</strong>
+                                <span>
+                                    <code>{line.detail}</code>
+                                </span>
+                                <span class="date">{ago(line.age)}</span>
+                            </div>
+                        ))}
+                    </div>
+                    <template data-pool>
+                        {AUDIT.slice(VISIBLE).map((line) => (
+                            <div class="line" data-age={line.age}>
+                                <span>
+                                    <span class="pill">{line.type}</span>
+                                </span>
+                                <span>
+                                    <span
+                                        class:list={[
+                                            "state",
+                                            line.action.toLowerCase(),
+                                        ]}
+                                    >
+                                        <Icon
+                                            name={ACTION_ICONS[line.action]}
+                                        />
+                                        {line.action}
+                                    </span>
+                                </span>
+                                <strong>{line.actor}</strong>
+                                <span>
+                                    <code>{line.detail}</code>
+                                </span>
+                                <span class="date">{ago(line.age)}</span>
+                            </div>
+                        ))}
+                    </template>
+                </div>
+                <p class="stream">
+                    <span class="live"></span>
+                    Streaming to Splunk & Syslog over TLS
+                    <span class="count">
+                        <span data-exported>1,284</span> events
+                    </span>
+                </p>
+                <div class="sets">
+                    <span class="label">Roles</span>
+                    {ROLES.map((role) => (
+                        <span class="role">{role}</span>
+                    ))}
+                </div>
+                <div class="sets">
+                    <span class="label">Identity</span>
+                    {IDENTITY.map((item) => (
+                        <span class="idp">{item}</span>
+                    ))}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function wireAudit() {
+        const reduced = window.matchMedia(
+            "(prefers-reduced-motion: reduce)",
+        ).matches
+        for (const mock of document.querySelectorAll<HTMLElement>(
+            "[data-audit-mock]:not([data-fed])",
+        )) {
+            mock.dataset.fed = "true"
+            const feed = mock.querySelector<HTMLElement>("[data-feed]")
+            const pool = mock.querySelector<HTMLTemplateElement>("[data-pool]")
+            const exported = mock.querySelector<HTMLElement>("[data-exported]")
+            if (reduced || !feed || !pool) continue
+            const queue = [
+                ...pool.content.querySelectorAll<HTMLElement>(".line"),
+            ]
+            const keep = feed.children.length
+            let total = 1284
+
+            const ago = (seconds: number) =>
+                seconds < 60
+                    ? "just now"
+                    : seconds < 3600
+                      ? `${Math.round(seconds / 60)} min ago`
+                      : `${Math.round(seconds / 3600)} hours ago`
+
+            const step = () => {
+                feed.querySelectorAll<HTMLElement>(".line").forEach((line) => {
+                    const age = Number(line.dataset.age) + 150
+                    line.dataset.age = String(age)
+                    const date = line.querySelector(".date")
+                    if (date) date.textContent = ago(age)
+                })
+                const next = queue.shift()
+                if (!next) return
+                const line = next.cloneNode(true) as HTMLElement
+                line.dataset.age = "0"
+                const date = line.querySelector(".date")
+                if (date) date.textContent = "just now"
+                line.classList.add("enter")
+                feed.insertBefore(line, feed.firstChild)
+                void line.offsetWidth
+                line.classList.remove("enter")
+                const last = feed.children[keep] as HTMLElement | undefined
+                if (last)
+                    window.setTimeout(() => {
+                        last.remove()
+                        queue.push(last)
+                    }, 600)
+                total++
+                if (exported)
+                    exported.textContent = total.toLocaleString("en-US")
+            }
+
+            const timer = window.setInterval(() => {
+                if (!mock.isConnected) return window.clearInterval(timer)
+                const panel = mock.closest(".panel")
+                if (!mock.hasAttribute("data-play")) return
+                if (panel && !panel.classList.contains("active")) return
+                step()
+            }, 1900)
+        }
+    }
+
+    document.addEventListener("astro:page-load", wireAudit)
+    wireAudit()
+</script>
+
+<style lang="scss">
+    @use "./tokens" as *;
+
+    .gov-mock {
+        --row: 2.9em;
+
+        @include tokens;
+    }
+
+    .defs {
+        position: absolute;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+    }
+
+    .stage {
+        position: relative;
+        padding-block: 2.4em;
+        font-size: calc(100cqw / 50);
+        line-height: 1.3;
+        color: var(--text);
+    }
+
+    .ui {
+        display: grid;
+        grid-template-columns: 9.5em minmax(0, 1fr);
+        grid-template-rows: 3em auto;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 1.1em;
+        background: var(--deep);
+        box-shadow: var(--shadow);
+    }
+
+    .bar {
+        grid-column: 1 / -1;
+        display: flex;
+        align-items: center;
+        gap: 0.6em;
+        padding: 0 1em 0 0.7em;
+        border-bottom: 1px solid var(--line);
+        background: var(--chrome);
+
+        img {
+            width: 1.7em;
+            height: 1.7em;
+            border-radius: 0.35em;
+        }
+
+        .slash {
+            color: var(--muted);
+            opacity: 0.6;
+        }
+
+        > [data-icon] {
+            width: 1.05em;
+            height: 1.05em;
+            color: var(--muted);
+        }
+
+        strong {
+            font-size: 0.82em;
+            font-weight: 600;
+        }
+    }
+
+    .export {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35em;
+        height: 2.5em;
+        margin-left: auto;
+        padding: 0 0.9em;
+        border-radius: 0.4em;
+        background: var(--primary);
+        font-size: 0.72em;
+        font-weight: 600;
+        white-space: nowrap;
+        color: #ffffff;
+
+        [data-icon] {
+            width: 1.2em;
+            height: 1.2em;
+        }
+    }
+
+    .nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0.9em;
+        padding: 0.9em 0.6em 1.2em;
+        border-right: 1px solid var(--line);
+        background: var(--chrome);
+
+        div {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1em;
+        }
+
+        .group {
+            margin-bottom: 0.3em;
+            padding-left: 0.4em;
+            font-size: 0.68em;
+            color: var(--muted);
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 0.6em;
+            padding: 0.42em 0.5em;
+            border-radius: 0.4em;
+            font-size: 0.72em;
+            font-weight: 600;
+            white-space: nowrap;
+            color: var(--soft);
+
+            &.on {
+                background: var(--chip);
+                color: var(--text);
+            }
+        }
+
+        [data-icon] {
+            flex: none;
+            width: 1.3em;
+            height: 1.3em;
+            color: var(--muted);
+        }
+    }
+
+    .main {
+        padding: 1.1em 1.25em 1.4em;
+    }
+
+    .tools {
+        display: flex;
+        gap: 0.5em;
+        margin-bottom: 0.9em;
+    }
+
+    .filter,
+    .search {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
+        height: 3em;
+        padding: 0 0.9em;
+        border: 1px solid var(--line);
+        border-radius: 0.5em;
+        background: var(--panel);
+        font-size: 0.68em;
+        font-weight: 600;
+        white-space: nowrap;
+
+        [data-icon] {
+            width: 1.3em;
+            height: 1.3em;
+        }
+    }
+
+    .search {
+        flex: 1;
+        font-weight: 400;
+        color: var(--muted);
+
+        [data-icon] {
+            color: var(--text);
+        }
+    }
+
+    .table {
+        border: 1px solid var(--line);
+        border-radius: 0.5em;
+        background: var(--panel);
+        overflow: hidden;
+    }
+
+    .head,
+    .line {
+        display: grid;
+        grid-template-columns: 0.95fr 0.95fr 0.8fr 1.6fr 0.85fr;
+        align-items: center;
+        gap: 0.8em;
+        padding: 0 1em;
+
+        > :last-child {
+            text-align: right;
+        }
+    }
+
+    .head {
+        height: 2.6em;
+        background: var(--field);
+        font-size: 0.62em;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        color: var(--muted);
+    }
+
+    .feed {
+        height: calc(var(--row) * 5);
+        overflow: hidden;
+    }
+
+    .line {
+        height: var(--row);
+        border-top: 1px solid var(--line);
+        transition:
+            margin-top 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+            opacity 0.45s ease,
+            background-color 1.2s ease;
+
+        &:global(.enter) {
+            margin-top: calc(var(--row) * -1);
+            background: color-mix(in srgb, var(--ring) 10%, transparent);
+            opacity: 0;
+            transition: none;
+        }
+
+        strong {
+            font-size: 0.74em;
+            font-weight: 600;
+        }
+
+        code {
+            padding: 0.25em 0.55em;
+            border-radius: 0.35em;
+            background: var(--chip);
+            font-size: 0.66em;
+            white-space: nowrap;
+            color: var(--soft);
+        }
+
+        .date {
+            font-size: 0.68em;
+            white-space: nowrap;
+            color: var(--muted);
+        }
+    }
+
+    .pill {
+        display: inline-block;
+        padding: 0.25em 0.65em;
+        border: 1px solid var(--line);
+        border-radius: 0.4em;
+        font-size: 0.68em;
+        font-weight: 600;
+    }
+
+    .state {
+        --tone: var(--muted);
+
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35em;
+        padding: 0.2em 0.6em;
+        border-radius: 0.4em;
+        background: color-mix(in srgb, var(--tone) 14%, transparent);
+        font-size: 0.68em;
+        font-weight: 600;
+        color: var(--tone);
+
+        [data-icon] {
+            width: 1.15em;
+            height: 1.15em;
+        }
+
+        &.created {
+            --tone: var(--ok);
+        }
+
+        &.resumed {
+            --tone: var(--run);
+        }
+    }
+
+    .stream {
+        display: flex;
+        align-items: center;
+        gap: 0.6em;
+        margin: 0.9em 0 1em;
+        font-size: 0.7em;
+        color: var(--muted);
+
+        .live {
+            position: relative;
+            width: 0.6em;
+            height: 0.6em;
+            border-radius: 50%;
+            background: var(--ok);
+
+            &::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: 50%;
+                background: var(--ok);
+                opacity: 0;
+            }
+        }
+
+        .count {
+            margin-left: auto;
+            font-variant-numeric: tabular-nums;
+            color: var(--soft);
+        }
+    }
+
+    .sets {
+        display: flex;
+        align-items: center;
+        gap: 0.45em;
+
+        & + .sets {
+            margin-top: 0.6em;
+        }
+
+        .label {
+            width: 4.6em;
+            font-size: 0.72em;
+            font-weight: 600;
+            color: var(--muted);
+        }
+
+        .role,
+        .idp {
+            padding: 0.35em 0.85em;
+            border-radius: 999px;
+            background: var(--chip);
+            font-size: 0.68em;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .idp {
+            background: var(--tile);
+            color: var(--tile-ink);
+
+            :global(html.dark) & {
+                background: rgba(152, 105, 247, 0.18);
+                color: #b9a6ff;
+            }
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .gov-mock[data-play] .live::after {
+            animation: gov-mock-beat 2s ease-out infinite;
+        }
+    }
+
+    @keyframes gov-mock-beat {
+        0% {
+            opacity: 0.5;
+            transform: scale(1);
+        }
+        70%,
+        100% {
+            opacity: 0;
+            transform: scale(2.8);
+        }
+    }
+</style>

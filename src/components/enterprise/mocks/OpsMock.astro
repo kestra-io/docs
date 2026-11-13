@@ -51,8 +51,6 @@ const TENANTS = [
         high: true,
     },
 ]
-
-const STAGES = ["dev", "staging", "prod"]
 ---
 
 <div class="ui-mock ops-mock" aria-hidden="true" data-ui-mock>
@@ -120,22 +118,6 @@ const STAGES = ["dev", "staging", "prod"]
                                 <i />
                             </span>
                         </div>
-                    ))}
-                </div>
-                <div class="promote">
-                    <span class="label">Promote</span>
-                    {STAGES.map((stage, idx) => (
-                        <Fragment>
-                            {idx > 0 && (
-                                <Icon
-                                    name="mdi:arrow-right"
-                                    class={`arrow a${idx}`}
-                                />
-                            )}
-                            <span class={`env e${idx + 1}`} data-label={stage}>
-                                {stage}
-                            </span>
-                        </Fragment>
                     ))}
                 </div>
             </div>
@@ -439,52 +421,6 @@ const STAGES = ["dev", "staging", "prod"]
         }
     }
 
-    .promote {
-        display: flex;
-        align-items: center;
-        gap: 0.7em;
-        margin-top: 1.1em;
-
-        .label {
-            margin-right: 0.3em;
-            font-size: 0.72em;
-            font-weight: 600;
-            color: var(--muted);
-        }
-
-        .arrow {
-            width: 1.1em;
-            height: 1.1em;
-            color: var(--muted);
-            opacity: 0.6;
-        }
-    }
-
-    .env {
-        position: relative;
-        padding: 0.4em 1em;
-        border-radius: 999px;
-        background: var(--chip);
-        font-size: 0.72em;
-        font-weight: 600;
-
-        &::after {
-            content: attr(data-label);
-            position: absolute;
-            inset: 0;
-            display: grid;
-            place-items: center;
-            border-radius: inherit;
-            background: var(--primary);
-            color: #ffffff;
-            opacity: 0;
-        }
-
-        &.e3::after {
-            opacity: 1;
-        }
-    }
-
     @media (prefers-reduced-motion: no-preference) {
         .ops-mock:not([data-play]) * {
             animation-play-state: paused !important;
@@ -511,26 +447,6 @@ const STAGES = ["dev", "staging", "prod"]
 
         .quota.high i::after {
             animation: ops-mock-warn var(--loop) linear infinite both;
-        }
-
-        .env.e1::after {
-            animation: ops-mock-env-1 var(--loop) linear infinite both;
-        }
-
-        .env.e2::after {
-            animation: ops-mock-env-2 var(--loop) linear infinite both;
-        }
-
-        .env.e3::after {
-            animation: ops-mock-env-3 var(--loop) linear infinite both;
-        }
-
-        .arrow.a1 {
-            animation: ops-mock-arrow-1 var(--loop) linear infinite both;
-        }
-
-        .arrow.a2 {
-            animation: ops-mock-arrow-2 var(--loop) linear infinite both;
         }
     }
 
@@ -602,82 +518,6 @@ const STAGES = ["dev", "staging", "prod"]
         60%,
         100% {
             opacity: 1;
-        }
-    }
-
-    @keyframes ops-mock-env-1 {
-        0%,
-        2% {
-            opacity: 0;
-        }
-        5%,
-        38% {
-            opacity: 1;
-        }
-        42%,
-        100% {
-            opacity: 0;
-        }
-    }
-
-    @keyframes ops-mock-env-2 {
-        0%,
-        42% {
-            opacity: 0;
-        }
-        46%,
-        66% {
-            opacity: 1;
-        }
-        70%,
-        100% {
-            opacity: 0;
-        }
-    }
-
-    @keyframes ops-mock-env-3 {
-        0%,
-        70% {
-            opacity: 0;
-        }
-        74%,
-        96% {
-            opacity: 1;
-        }
-        100% {
-            opacity: 0;
-        }
-    }
-
-    @keyframes ops-mock-arrow-1 {
-        0%,
-        36%,
-        48%,
-        100% {
-            opacity: 0.6;
-            transform: none;
-            color: var(--muted);
-        }
-        42% {
-            opacity: 1;
-            transform: translateX(0.25em);
-            color: var(--ring);
-        }
-    }
-
-    @keyframes ops-mock-arrow-2 {
-        0%,
-        64%,
-        76%,
-        100% {
-            opacity: 0.6;
-            transform: none;
-            color: var(--muted);
-        }
-        70% {
-            opacity: 1;
-            transform: translateX(0.25em);
-            color: var(--ring);
         }
     }
 </style>
