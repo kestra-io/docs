@@ -26,7 +26,7 @@ import BuyerQuestions from "~/components/enterprise/BuyerQuestions.astro"
 
 const title = "Kestra Enterprise"
 const description =
-    "Kestra Enterprise adds security, governance and SLA-backed support on top of the Apache 2.0 core. Run it self-hosted, in your cloud or air-gapped."
+    "Kestra Enterprise gives your teams the security, governance, and operational capabilities to automate workflows across your organization."
 
 const FEATURES = [
     {
@@ -35,19 +35,19 @@ const FEATURES = [
         text: "Share one platform with isolated workflows, credentials, and execution environments. Namespaces, multi-tenancy, and role-based permissions control access, protect secrets, and isolate failures.",
     },
     {
+        id: "reliability" as const,
+        title: "Keep critical workflows running reliably.",
+        text: "Workflows keep running through outages and upgrades, with worker groups, backup and restore, and maintenance mode.",
+    },
+    {
         id: "governance" as const,
         title: "Answer every audit question.",
-        text: "Show who ran each workflow, with which permissions and whose approval, through SSO, RBAC, audit logs, policies, and approval gates.",
+        text: "Show auditors who ran each workflow, with which permissions and whose approval, through SSO, RBAC, audit logs, policies, and approval gates.",
     },
     {
         id: "scale" as const,
-        title: "Grow without re-architecting.",
+        title: "Scale on the backend you choose, inside your network.",
         text: "Pick the backend that fits your load: Postgres to start, then Redis, RabbitMQ or Kafka as volume grows. Mutual TLS between the controller and workers means only trusted workers can connect, wherever they run.",
-    },
-    {
-        id: "reliability" as const,
-        title: "Keep critical workflows running reliably.",
-        text: "Workflows keep running through outages and upgrades, with worker groups, backup and restore, maintenance mode, and SLA-backed support.",
     },
 ]
 
@@ -132,7 +132,7 @@ const INCLUDED = [
 const FAQ = [
     {
         question: "What is the difference between open source and Enterprise?",
-        answer: "The engine, the YAML, the plugins and the execution model are identical. Enterprise adds multi-tenancy, worker groups and environments, then SSO, RBAC, secrets, audit logs and policies, then Apps, approvals and Copilot on the model you choose. It comes with a commercial license and support with SLA. A flow moves between editions without changes.",
+        answer: "The engine, the YAML, the plugins and the execution model are identical. Enterprise adds three things. Organization: multi-tenancy, namespaces, worker groups and environments. Control: SSO, RBAC, secrets, audit logs and policies. Experience: Apps, approvals and Copilot on any LLM. It comes with a commercial license and support with SLA. A flow moves between editions without changes.",
     },
     {
         question: "Enterprise or Kestra Cloud?",
@@ -172,9 +172,9 @@ const FAQ = [
                 Same engine, ready for the whole organization.
             </Fragment>
             <Fragment slot="lead">
-                Keep the same engine, YAML and plugins. Enterprise adds what
-                many teams on one platform need: isolation, access control,
-                audit and support with SLA.
+                Kestra Enterprise runs the same engine, YAML and plugins as
+                Kestra Core, and adds what many teams on one platform need:
+                isolation, access control, audit and support with SLA.
             </Fragment>
         </Enterprise>
         <AiGovernance bridge={false} foot={false}>
@@ -182,10 +182,10 @@ const FAQ = [
                 Your AI agents answer to the same governance as your teams.
             </Fragment>
             <Fragment slot="lead">
-                Agents and MCP are part of the open source core and run on the
-                model of your choice, including one you host on-prem. Enterprise
-                controls what they can do: which workflows they can call, which
-                model they use, who approves, and a record of every action.
+                Agents, MCP and the Copilot are open source. Enterprise controls
+                what they can do: which workflows they can call, which model
+                they run on, including one you host on-prem, who can approve,
+                and a record of every action.
             </Fragment>
             <AgentZones slot="figure" />
             <AgentControls slot="after" />
