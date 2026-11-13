@@ -51,6 +51,11 @@ const APPS = [
     },
 ]
 
+const PEOPLE = [
+    { id: "launcher", name: "Launcher", icon: "mdi:play-circle-outline" },
+    { id: "admin", name: "Admin", icon: "mdi:shield-account-outline" },
+]
+
 const FIELDS = [
     {
         label: "Deployment name",
@@ -193,7 +198,17 @@ const FIELDS = [
                 </span>
             </div>
         </div>
-        <Icon name="mdi:cursor-default" class="cursor" />
+        {PEOPLE.map((person) => (
+            <span class:list={["cursor", person.id]}>
+                <svg viewBox="0 0 10 10">
+                    <path d="M0 0 L10 4 L5.5 5.5 L4 10 Z" />
+                </svg>
+                <span class="who">
+                    <Icon name={person.icon} />
+                    {person.name}
+                </span>
+            </span>
+        ))}
     </div>
 </div>
 
@@ -795,16 +810,60 @@ const FIELDS = [
     }
 
     .cursor {
+        --tone: 204, 62, 138;
+
         position: absolute;
         top: 0;
         left: 0;
-        width: 1.5em;
-        height: 1.5em;
-        color: #ffffff;
-        stroke: #1a1b25;
-        stroke-width: 1.4px;
-        stroke-linejoin: round;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.1em;
         opacity: 0;
+
+        :global(html.dark) & {
+            --tone: 240, 140, 190;
+        }
+
+        &.admin {
+            --tone: 38, 112, 214;
+
+            :global(html.dark) & {
+                --tone: 140, 196, 255;
+            }
+        }
+
+        svg {
+            width: 0.95em;
+            height: 0.95em;
+            fill: rgb(var(--tone));
+        }
+    }
+
+    .who {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3em;
+        margin-left: 0.6em;
+        padding: 0.15em 0.55em;
+        border: 1px solid rgb(var(--tone));
+        border-radius: 0.45em;
+        background: rgb(var(--tone));
+        font-size: 0.7em;
+        font-weight: 600;
+        white-space: nowrap;
+        color: #ffffff;
+
+        :global(html.dark) & {
+            border-color: rgba(var(--tone), 0.45);
+            background: rgb(20, 20, 24);
+            color: rgb(var(--tone));
+        }
+
+        [data-icon] {
+            width: 1.1em;
+            height: 1.1em;
+        }
     }
 
     @media (prefers-reduced-motion: no-preference) {
@@ -878,8 +937,12 @@ const FIELDS = [
             animation: apps-mock-press-3 var(--loop) linear infinite both;
         }
 
-        .cursor {
-            animation: apps-mock-cursor var(--loop) linear infinite both;
+        .cursor.launcher {
+            animation: apps-mock-launcher var(--loop) linear infinite both;
+        }
+
+        .cursor.admin {
+            animation: apps-mock-admin var(--loop) linear infinite both;
         }
     }
 
@@ -1083,7 +1146,7 @@ const FIELDS = [
         }
     }
 
-    @keyframes apps-mock-cursor {
+    @keyframes apps-mock-launcher {
         0% {
             opacity: 0;
             transform: translate(40em, 27em);
@@ -1096,7 +1159,7 @@ const FIELDS = [
         9%,
         15% {
             opacity: 1;
-            transform: translate(26.2em, 18.2em);
+            transform: translate(26.4em, 18.2em);
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
         18%,
@@ -1106,25 +1169,48 @@ const FIELDS = [
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
         40%,
-        50% {
+        48% {
             opacity: 1;
-            transform: translate(35.2em, 26.4em);
+            transform: translate(35.4em, 26.5em);
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
-        64%,
-        72% {
-            opacity: 1;
-            transform: translate(44.1em, 4.2em);
-            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        80%,
+        56%,
         95% {
-            opacity: 1;
-            transform: translate(44em, 29em);
+            opacity: 0.35;
+            transform: translate(41em, 30em);
         }
         100% {
             opacity: 0;
-            transform: translate(44em, 29em);
+            transform: translate(41em, 30em);
+        }
+    }
+
+    @keyframes apps-mock-admin {
+        0%,
+        54% {
+            opacity: 0;
+            transform: translate(50em, 11em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        58% {
+            opacity: 1;
+            transform: translate(48em, 9em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        65%,
+        72% {
+            opacity: 1;
+            transform: translate(44.3em, 4.1em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        79% {
+            opacity: 1;
+            transform: translate(47em, 10em);
+        }
+        84%,
+        100% {
+            opacity: 0;
+            transform: translate(47em, 10em);
         }
     }
 </style>
