@@ -1,5 +1,14 @@
 import { openModal } from "~/utils/modal"
 
+// Note whether the page has a scrollbar, since an open dialog removes it.
+const root = document.documentElement
+const markScrollbar = () => {
+    if (document.querySelector("dialog.modal[open]")) return
+    root.toggleAttribute("data-has-scrollbar", window.innerWidth > root.clientWidth)
+}
+markScrollbar()
+new ResizeObserver(markScrollbar).observe(root)
+
 // Declarative modal triggers: `data-modal-target="#id"` opens that <dialog>.
 // Close fallbacks for browsers without invoker commands or `closedby="any"`.
 document.addEventListener("click", (event) => {
