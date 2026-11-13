@@ -222,6 +222,7 @@ This group includes:
 - instance owner behavior
 - default roles
 - invitation expiration
+- user session cleanup
 - password rules
 - server basic auth
 - gRPC basic auth between workers and controllers
@@ -362,6 +363,28 @@ kestra:
 ```
 
 See [Password expiration and reuse](../../07.enterprise/03.auth/rbac/index.md#password-expiration-and-reuse) for how they behave and what they do not cover.
+
+### User sessions
+
+In the Enterprise Edition, each sign-in opens a [session](../../07.enterprise/03.auth/04.authentication/index.md#sessions). A background job on the executor deletes the sessions that expired longer ago than `retention`:
+
+```yaml
+kestra:
+  security:
+    user-sessions:
+      purge:
+        enabled: true
+        initial-delay: 1h
+        fixed-delay: 1d
+        retention: 30d
+```
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `kestra.security.user-sessions.purge.enabled` | `true` | Run the purge job. |
+| `kestra.security.user-sessions.purge.initial-delay` | `1h` | Delay after startup before the first run. |
+| `kestra.security.user-sessions.purge.fixed-delay` | `1d` | Delay between the end of a run and the start of the next. |
+| `kestra.security.user-sessions.purge.retention` | `30d` | How long an expired session is kept before it is deleted. |
 
 ### Delete configuration files after startup
 

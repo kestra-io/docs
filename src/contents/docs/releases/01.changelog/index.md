@@ -46,6 +46,7 @@ Infrastructure self-service in a dedicated tenant type, searchable execution val
 - **Bulk resume of breakpoints**: the **Resume** bulk action and the `resume/by-ids` and `resume/by-query` endpoints also resume executions stopped at a breakpoint. [Docs](../../15.how-to-guides/pause-resume/index.md)
 - **Context panel (EE)**: the flow editor shows inputs, variables, KV pairs, and secrets across the namespace hierarchy in one searchable tree. [Docs](../../09.ui/01.flows/index.md)
 - **Change password in OSS**: users with database-stored Basic Auth credentials can change their password from the user menu. [Docs](../../10.administrator-guide/basic-auth-troubleshooting/index.md)
+- **Sign in again without losing work**: when a session ends, the UI asks you to sign in again and retries the failed request, so unsaved changes stay. [Docs](../../09.ui/index.mdx#expired-sessions)
 
 ### AI
 
@@ -58,6 +59,7 @@ Infrastructure self-service in a dedicated tenant type, searchable execution val
 - **OIDC issuer (EE, Cloud)**: exchange a short-lived Kestra token for AWS or Google Cloud credentials, with no stored keys. [Docs](../../07.enterprise/03.auth/oidc-issuer/index.md)
 - **SAML 2.0 SSO (EE)**: SP-initiated SAML login with group sync and Single Logout. [Docs](../../07.enterprise/03.auth/sso/saml/index.md)
 - **Password expiration and reuse prevention (EE)**: Basic Auth password policies. [Docs](../../07.enterprise/03.auth/rbac/index.md#password-expiration-and-reuse)
+- **One session per sign-in (EE, Cloud)**: signing in on another browser or device no longer ends your other sessions. [Docs](../../07.enterprise/03.auth/04.authentication/index.md#sessions)
 - **Default retention policy (EE)**: choose how long to keep executions and logs when you set up the instance or create a tenant, and get the purge flow generated. [Docs](../../10.administrator-guide/purge/index.md#default-retention-flow)
 - **Cases tickets and events (EE, Cloud)**: link external tickets to cases and trigger flows on case events. [Docs](../../07.enterprise/02.governance/cases/index.md#external-tickets)
 - **Bulk invitations (EE)**: invite up to 25 users at once, and let invited users accept with their SSO provider. [Docs](../../07.enterprise/03.auth/invitations/index.md)

@@ -80,4 +80,23 @@ Read notifications are deleted after 7 days and unread ones after 30 days. A bac
 
 <br />
 
+## Expired sessions
+
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
+When your session ends, for example because you logged out in another window, the next action in the UI opens a **Your session has expired** dialog instead of sending you to the login page. Sign in again and Kestra retries the request that failed, so the page you are on and its unsaved changes, such as flow edits, stay as they were. **Go to login page** discards them and opens the login page.
+
+In the open-source edition, sign in with your username and password in the dialog.
+
+In the Enterprise Edition, Kestra first renews your access token on its own, and shows the dialog only when the [session](../07.enterprise/03.auth/04.authentication/index.md#sessions) itself has ended:
+
+- With a password, sign in in the dialog. Your username is filled in and can't be changed. If your password has expired, Kestra opens the page to change it instead, and unsaved changes are lost.
+- With [SSO](../07.enterprise/03.auth/sso/index.md) or a one-time code, select **Sign in in a new tab**, sign in there, then come back and select **Continue**. When the instance also accepts passwords, the dialog shows the password form, and **Use another sign-in method** opens the login page in a new tab.
+- If a different user signs in in the other tab, the page reloads instead of retrying the request as that user.
+
+If you sign in again in another tab, the dialog closes on its own when you come back to this one.
+
+When the UI can't reach the Kestra server, a **Cannot reach the Kestra server** banner asks you to copy any unsaved work before refreshing the page. It disappears once the server responds again.
+
 <ChildCard />
