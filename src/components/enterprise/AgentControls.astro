@@ -83,7 +83,11 @@ const CONTROLS = [
         z-index: 1;
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        margin: 3.5rem 0 -2.5rem;
+        margin: 3.5rem 0 0;
+
+        @include media-breakpoint-up(lg) {
+            margin-bottom: -2.5rem;
+        }
         padding: 0;
         border-top: 1px solid var(--rule);
         list-style: none;
