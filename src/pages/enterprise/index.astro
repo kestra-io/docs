@@ -7,6 +7,9 @@ import AiGovernance from "~/components/home/AiGovernance.astro"
 import Customers, { type Story } from "~/components/home/Customers.astro"
 import { flat } from "~/components/home/flatLogo"
 import filaPhoto from "~/components/home/assets/customers/fila.jpg"
+import creditAgricolePhoto from "~/components/enterprise/assets/credit-agricole.jpg"
+import dataportPhoto from "~/components/enterprise/assets/dataport.jpg"
+import manufacturerPhoto from "~/components/enterprise/assets/manufacturer.jpg"
 import fila from "~/assets/companies/fila.svg?raw"
 import dataport from "~/assets/companies/dataport.svg?raw"
 import creditAgricole from "~/contents/customer-stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra/logo.svg?raw"
@@ -62,6 +65,7 @@ const STORIES: Story[] = [
     },
     {
         company: "Crédit Agricole",
+        photo: creditAgricolePhoto,
         story: "Crédit Agricole",
         logo: flat(creditAgricole),
         height: 32,
@@ -72,6 +76,7 @@ const STORIES: Story[] = [
     },
     {
         company: "Dataport",
+        photo: dataportPhoto,
         logo: flat(dataport),
         height: 26,
         stat: "3 weeks",
@@ -81,6 +86,7 @@ const STORIES: Story[] = [
     },
     {
         company: "Fortune 500 manufacturer",
+        photo: manufacturerPhoto,
         stat: "90%",
         label: 'lower licensing costs after <a href="/resources/migration/vra">replacing</a> VMware Aria Automation with Kestra Enterprise.',
         quote: "We eliminated the high cost and risk of VMware vRA. What used to take 6 months now takes 6 days with Kestra.",
