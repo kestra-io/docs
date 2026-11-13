@@ -183,7 +183,7 @@ const zones = await Promise.all(
     .plane {
         overflow: hidden;
         border: 1px solid var(--rule);
-        border-radius: 12px;
+        border-radius: 8px;
         background: rgba(26, 25, 34, 0.88);
     }
 
@@ -220,7 +220,7 @@ const zones = await Promise.all(
     .band {
         margin: 0 var(--pad) var(--pad);
         padding: 1.25rem var(--inner) 1.5rem;
-        border-radius: 12px;
+        border-radius: 6px;
         background: rgba(0, 0, 0, 0.26);
 
         .label {
@@ -315,7 +315,8 @@ const zones = await Promise.all(
                     & + li {
                         margin-top: 1.25rem;
 
-                        .wire.up {
+                        .wire.up,
+                        .workers::after {
                             display: none;
                         }
                     }
@@ -360,6 +361,28 @@ const zones = await Promise.all(
 
             height: var(--run);
 
+            &::before {
+                content: "";
+                position: absolute;
+                top: -1px;
+                left: 50%;
+                width: 4rem;
+                height: 1px;
+                margin-left: -2rem;
+                background: linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--violet) 30%,
+                    #ffffff 50%,
+                    var(--violet) 70%,
+                    transparent
+                );
+                box-shadow: 0 0 0.75rem 1px rgba(180, 140, 255, 0.7);
+                opacity: 0;
+                animation: agent-zones-arrive 2.4s linear infinite;
+                animation-delay: calc(var(--i) * 0.8s);
+            }
+
             &::after {
                 content: "";
                 position: absolute;
@@ -389,9 +412,31 @@ const zones = await Promise.all(
         width: 100%;
         padding: 1rem 0.5rem;
         border: 1px solid rgba(180, 140, 255, 0.4);
-        border-radius: 10px;
+        border-radius: 8px;
         background: rgba(40, 24, 72, 0.9);
         text-align: center;
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            width: 4rem;
+            height: 1px;
+            margin-left: -2rem;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                var(--violet) 30%,
+                #ffffff 50%,
+                var(--violet) 70%,
+                transparent
+            );
+            box-shadow: 0 0 0.75rem 1px rgba(180, 140, 255, 0.7);
+            opacity: 0;
+            animation: agent-zones-depart 2.4s linear infinite;
+            animation-delay: calc(var(--i) * 0.8s);
+        }
 
         strong {
             display: flex;
@@ -465,7 +510,7 @@ const zones = await Promise.all(
         }
         width: 100%;
         border: 1px solid var(--rule);
-        border-radius: 10px;
+        border-radius: 8px;
         background: rgba(26, 25, 34, 0.88);
 
         li {
@@ -505,6 +550,55 @@ const zones = await Promise.all(
         }
     }
 
+    @keyframes agent-zones-arrive {
+        0% {
+            transform: scaleX(1.1);
+            opacity: 0.5;
+        }
+
+        14% {
+            transform: scaleX(1.5);
+            opacity: 0;
+        }
+
+        80% {
+            transform: scaleX(0.2);
+            opacity: 0;
+        }
+
+        96% {
+            transform: scaleX(1);
+            opacity: 1;
+        }
+
+        100% {
+            transform: scaleX(1.1);
+            opacity: 0.5;
+        }
+    }
+
+    @keyframes agent-zones-depart {
+        0% {
+            transform: scaleX(0.2);
+            opacity: 0;
+        }
+
+        7% {
+            transform: scaleX(1);
+            opacity: 1;
+        }
+
+        26% {
+            transform: scaleX(1.5);
+            opacity: 0;
+        }
+
+        100% {
+            transform: scaleX(1.5);
+            opacity: 0;
+        }
+    }
+
     @keyframes agent-zones-pulse {
         0% {
             transform: translateY(0);
@@ -526,7 +620,9 @@ const zones = await Promise.all(
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .wire.up::after {
+        .wire.up::before,
+        .wire.up::after,
+        .workers::after {
             display: none;
         }
     }
