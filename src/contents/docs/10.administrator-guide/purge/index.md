@@ -56,7 +56,33 @@ triggers:
 - A window set to **Keep forever** has no task.
 - The flow runs every day at 02:00. Each new tenant gets a different minute in that hour, so tenants don't all purge at the same time.
 
-When **Keep failed executions forever** is on, `FAILED` is left out of the states, and the flow gets a `purge_execution_logs` task that deletes the logs of finished executions other than `FAILED`. `purge_logs` then deletes only trigger logs. If the logs window is longer than the executions window, the logs of the other finished executions are deleted with their execution instead.
+When **Keep failed executions forever** is on, `FAILED` is left out of the states, and the flow purges logs before executions:
+
+```yaml
+tasks:
+  - id: purge_execution_logs
+    type: io.kestra.plugin.core.log.PurgeLogs
+    endDate: "{{ now() | dateAdd(-90, 'DAYS') }}"
+    logLevels: [WARN, INFO, DEBUG, TRACE]
+    purgeNonExecutionLogs: false
+
+  - id: purge_trigger_logs
+    type: io.kestra.plugin.core.log.PurgeLogs
+    endDate: "{{ now() | dateAdd(-90, 'DAYS') }}"
+    purgeExecutionLogs: false
+
+  - id: purge_executions
+    type: io.kestra.plugin.core.execution.PurgeExecutions
+    endDate: "{{ now() | dateAdd(-90, 'DAYS') }}"
+    states: [SUCCESS, WARNING, KILLED, CANCELLED, RETRIED, SKIPPED, RESUBMITTED]
+    purgeLog: true
+```
+
+- `purge_execution_logs` deletes execution logs below `ERROR` that are older than the logs window, for every execution, including running and paused ones.
+- `purge_trigger_logs` deletes trigger logs older than the logs window, at every level.
+- `purge_executions` deletes the other finished executions older than the executions window, together with their remaining `ERROR` logs. `FAILED` executions keep their `ERROR` logs.
+
+With the logs window set to **Keep forever**, only `purge_executions` remains, with `purgeLog: false`, so every log is kept. With the executions window set to **Keep forever**, there is no `purge_executions` task, so the `ERROR` logs of every execution are kept.
 
 Kestra doesn't generate the flow when the tenant already has a `retention` flow in its system flows namespace, or when both windows are set to **Keep forever**. If generating the flow fails, Kestra logs a warning and still creates the tenant.
 

@@ -65,7 +65,7 @@ Set how long to keep each kind of data:
 - **Keep executions for**: the number of days a finished execution is kept, with its metrics and output files.
 - **Keep logs for**: the number of days execution logs and trigger logs are kept.
 
-Both start at 90 days. Select **Keep forever** to keep one of them indefinitely. Turn on **Keep failed executions forever** to never purge `FAILED` executions and their logs. Executions that haven't finished, such as running or paused ones, are never purged.
+Both start at 90 days. Select **Keep forever** to keep one of them indefinitely. Turn on **Keep failed executions forever** to never purge `FAILED` executions and their `ERROR` logs. Their other logs still follow the logs window. Executions that haven't finished, such as running or paused ones, are never purged, but their logs follow the logs window.
 
 Click **Save** to generate the `retention` flow in the [system flows](../../../06.concepts/system-flows/index.md) namespace of your first tenant. The values also become the instance's default policy, which the tenant creation wizard starts from. You can change the flow later in the flow editor or through Git. See [Default retention flow](../../../10.administrator-guide/purge/index.md#default-retention-flow) for what it purges.
 

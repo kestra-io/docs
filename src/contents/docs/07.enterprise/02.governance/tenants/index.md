@@ -122,7 +122,7 @@ curl -X POST "https://kestra.example.com/api/v1/tenants" \
 
 To create an [Infrastructure tenant](./infrastructure/index.md), add `"type": "INFRASTRUCTURE"` to the body.
 
-To choose the tenant's retention policy, add `retentionPolicy` to the body. `executionsDays` and `logsDays` are numbers of days, or `null` to keep forever, and `keepFailedExecutions` keeps `FAILED` executions and their logs forever:
+To choose the tenant's retention policy, add `retentionPolicy` to the body. `executionsDays` and `logsDays` are numbers of days, or `null` to keep forever, and `keepFailedExecutions` keeps `FAILED` executions and their `ERROR` logs forever:
 
 ```json
 {
