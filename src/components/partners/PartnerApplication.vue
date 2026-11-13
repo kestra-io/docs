@@ -67,9 +67,9 @@
                                                     :key="c"
                                                     :class="{ included: p.includes.includes(c) }"
                                                 >
-                                                    <span class="mark" aria-hidden="true">
-                                                        <Check v-if="p.includes.includes(c)" :size="12" />
-                                                        <Minus v-else :size="12" />
+                                                    <span class="tick" aria-hidden="true">
+                                                        <CheckBold v-if="p.includes.includes(c)" :size="16" />
+                                                        <Close v-else :size="16" />
                                                     </span>
                                                     <span class="text">{{ c }}</span>
                                                     <span class="visually-hidden">
@@ -172,8 +172,8 @@
 <script setup lang="ts">
     import { computed, onMounted, reactive, ref, watch } from "vue"
     import CheckCircleOutline from "vue-material-design-icons/CheckCircleOutline.vue"
-    import Check from "vue-material-design-icons/Check.vue"
-    import Minus from "vue-material-design-icons/Minus.vue"
+    import CheckBold from "vue-material-design-icons/CheckBold.vue"
+    import Close from "vue-material-design-icons/Close.vue"
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
     import { useGtm } from "@gtm-support/vue-gtm"
@@ -526,23 +526,17 @@
             &.included {
                 color: var(--ks-content-primary);
 
-                .mark {
-                    background: var(--ks-background-button-primary);
-                    color: #fff;
+                .tick {
+                    color: var(--ks-icon-active);
                 }
             }
         }
 
-        .mark {
+        .tick {
             flex: 0 0 auto;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            width: 1.125rem;
-            height: 1.125rem;
-            margin-top: 0.05rem;
-            border-radius: 50%;
-            background: var(--ks-background-secondary);
+            height: 1.35em;
             color: var(--ks-content-tertiary);
 
             :deep(.material-design-icon) {
