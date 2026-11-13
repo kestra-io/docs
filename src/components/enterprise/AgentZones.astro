@@ -1,4 +1,5 @@
 ---
+import { API_URL } from "astro:env/client"
 import { Icon } from "astro-icon/components"
 import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
 
@@ -13,10 +14,51 @@ const GUARDS = [
 const AGENTS = ["Support agent", "Ops agent", "Finance agent"]
 
 const ZONES = [
-    { group: "support-zone", systems: ["Zendesk", "Orders DB"] },
-    { group: "infra-zone", systems: ["Kubernetes", "ServiceNow"] },
-    { group: "sap-zone", systems: ["SAP", "Vault"] },
+    {
+        group: "support-zone",
+        systems: [
+            { name: "Zendesk", plugin: "io.kestra.plugin.zendesk" },
+            { name: "Orders DB", plugin: "io.kestra.plugin.jdbc.postgresql" },
+        ],
+    },
+    {
+        group: "infra-zone",
+        systems: [
+            { name: "Kubernetes", plugin: "io.kestra.plugin.kubernetes" },
+            { name: "ServiceNow", plugin: "io.kestra.plugin.servicenow" },
+        ],
+    },
+    {
+        group: "sap-zone",
+        systems: [
+            { name: "SAP", plugin: "io.kestra.plugin.jdbc.hana" },
+            { name: "Vault", plugin: "io.kestra.ee.secret.vault" },
+        ],
+    },
 ]
+
+async function logo(plugin: string) {
+    try {
+        const response = await fetch(`${API_URL}/plugins/icons/${plugin}`)
+        if (!response.ok) return null
+        const svg = Buffer.from(await response.arrayBuffer())
+        return `data:image/svg+xml;base64,${svg.toString("base64")}`
+    } catch {
+        return null
+    }
+}
+
+const zones = await Promise.all(
+    ZONES.map(async (zone) => ({
+        ...zone,
+        systems: await Promise.all(
+            zone.systems.map(async (system) => ({
+                name: system.name,
+                logo: await logo(system.plugin),
+            })),
+        ),
+    })),
+)
 ---
 
 <div class="agent-zones">
@@ -57,7 +99,7 @@ const ZONES = [
             TLS · no inbound port
         </p>
         <ul>
-            {ZONES.map((zone, index) => (
+            {zones.map((zone, index) => (
                 <li style={`--i: ${index}`}>
                     <span class="wire up" aria-hidden="true" />
                     <div class="workers">
@@ -72,7 +114,18 @@ const ZONES = [
                     <span class="wire" aria-hidden="true" />
                     <ul class="systems">
                         {zone.systems.map((system) => (
-                            <li>{system}</li>
+                            <li>
+                                {system.logo && (
+                                    <img
+                                        src={system.logo}
+                                        alt=""
+                                        width="20"
+                                        height="20"
+                                        loading="lazy"
+                                    />
+                                )}
+                                {system.name}
+                            </li>
                         ))}
                     </ul>
                 </li>
@@ -367,18 +420,35 @@ const ZONES = [
     }
 
     .systems {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.5rem;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: 100%;
+        border: 1px solid var(--rule);
+        border-radius: 10px;
+        background: #121117;
 
         li {
-            padding: 0.3125rem 0.75rem;
-            border: 1px solid var(--rule);
-            border-radius: 6px;
-            background: rgba(255, 255, 255, 0.04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.625rem 0.5rem;
             font-size: 0.8125rem;
             font-weight: 600;
+
+            & + li {
+                border-left: 1px solid var(--rule);
+            }
+        }
+
+        img {
+            flex: none;
+            width: 1.375rem;
+            height: 1.375rem;
+            padding: 0.1875rem;
+            border-radius: 5px;
+            background: #ffffff;
+            object-fit: contain;
         }
     }
 
