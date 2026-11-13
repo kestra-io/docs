@@ -1,53 +1,42 @@
 ---
 import { Icon } from "astro-icon/components"
 
-const NAV = [
-    {
-        group: "Self-Service",
-        items: [
-            { icon: "mdi:view-grid-outline", label: "Catalog", on: true },
-            { icon: "mdi:history", label: "Requests" },
-            { icon: "mdi:cube-outline", label: "Deployments" },
-            { icon: "mdi:server-outline", label: "Inventory" },
-            { icon: "mdi:alert-circle-outline", label: "Cases" },
-            { icon: "mdi:chart-line", label: "Dashboards" },
-        ],
-    },
-    {
-        group: "Automation",
-        items: [
-            { icon: "mdi:creation-outline", label: "AI Copilot" },
-            { icon: "mdi:file-tree-outline", label: "Flows" },
-            { icon: "mdi:rocket-launch-outline", label: "Promote" },
-            { icon: "mdi:play-outline", label: "Executions" },
-            { icon: "mdi:text-box-outline", label: "Logs" },
-            { icon: "mdi:flask-outline", label: "Tests" },
-        ],
-    },
-]
-
-const TAGS = ["All tags", "Compute", "Data", "Environment", "Storage"]
-
 const APPS = [
     {
-        title: "Provision a virtual machine",
-        text: "Request a VM with a time-boxed lease, added to the inventory as soon as it is declared.",
-        tag: "Compute",
+        icon: "mdi:database-export-outline",
+        title: "Data Export Request",
+        text: "Request a filtered dataset and download it as a file.",
+        tags: ["Analytics", "Reporting"],
     },
     {
-        title: "Request object storage",
-        text: "Add a bucket to one of your deployments.",
-        tag: "Storage",
+        icon: "mdi:creation-outline",
+        title: "AI Content Review",
+        text: "Review what the model wrote before it is published.",
+        tags: ["AI", "Approval"],
     },
     {
-        title: "Request a database",
-        text: "Attach a managed database to one of your deployments.",
-        tag: "Data",
+        icon: "mdi:server-outline",
+        title: "VM Provisioning Request",
+        text: "Choose a size and a region, then get it approved.",
+        tags: ["Infrastructure", "Approval"],
     },
     {
-        title: "Request an environment",
-        text: "A machine and its database, grouped under a single deployment and lease.",
-        tag: "Environment",
+        icon: "mdi:account-plus-outline",
+        title: "New Employee Onboarding",
+        text: "Create the accounts and access a new hire needs.",
+        tags: ["HR", "Onboarding"],
+    },
+    {
+        icon: "mdi:lifebuoy",
+        title: "IT Helpdesk Ticket",
+        text: "Open a ticket and follow it to resolution.",
+        tags: ["IT Support"],
+    },
+    {
+        icon: "mdi:calendar-check-outline",
+        title: "Event Registration",
+        text: "A public form that feeds your CRM.",
+        tags: ["Public", "Events"],
     },
 ]
 
@@ -57,82 +46,44 @@ const PEOPLE = [
 ]
 
 const FIELDS = [
-    {
-        label: "Deployment name",
-        value: "app-sandbox",
-        hint: "The machine is created inside a deployment of this name, and the lease is on it.",
-    },
-    { label: "Owner", value: "platform-team" },
-    { label: "Environment", value: "sandbox", select: true },
+    { label: "Requested by", value: "j.kim" },
+    { label: "Dataset", value: "customers", select: true },
+    { label: "Reason", value: "Quarterly churn analysis" },
 ]
 ---
 
 <div class="ui-mock apps-mock" aria-hidden="true" data-ui-mock>
     <div class="stage">
-        <div class="ui">
-            <div class="bar">
-                <img src="/icon.svg" alt="" width="24" height="24" />
-                <span class="slash">/</span>
-                <Icon name="mdi:view-grid-outline" />
-                <strong>Service catalog</strong>
-                <span class="manage">
-                    <Icon name="mdi:application-cog-outline" /> Manage apps
-                </span>
-            </div>
-            <div class="nav">
-                {NAV.map((section) => (
+        <div class="apps">
+            {APPS.map((app, idx) => (
+                <div class="app">
+                    <span class="tile">
+                        <Icon name={app.icon} />
+                    </span>
                     <div>
-                        <span class="group">{section.group}</span>
-                        {section.items.map((item) => (
-                            <span class:list={["item", { on: item.on }]}>
-                                <Icon name={item.icon} />
-                                {item.label}
-                            </span>
-                        ))}
+                        <strong>{app.title}</strong>
+                        <p>{app.text}</p>
                     </div>
-                ))}
-            </div>
-            <div class="main">
-                <div class="tags">
-                    {TAGS.map((tag, idx) => (
-                        <span class:list={{ on: idx === 0 }}>{tag}</span>
-                    ))}
-                    <span class="history">
-                        <Icon name="mdi:history" /> Request history
+                    <span class="tags">
+                        {app.tags.map((tag) => (
+                            <span>{tag}</span>
+                        ))}
+                    </span>
+                    <span class:list={["request", { go: idx === 0 }]}>
+                        <Icon name="mdi:monitor" /> View App
                     </span>
                 </div>
-                <div class="search">
-                    <Icon name="mdi:magnify" /> Search apps catalog
-                </div>
-                <div class="apps">
-                    {APPS.map((app, idx) => (
-                        <div class="app">
-                            <span class="tile">
-                                <Icon name="mdi:cube-outline" />
-                            </span>
-                            <div>
-                                <strong>{app.title}</strong>
-                                <p>{app.text}</p>
-                            </div>
-                            <span class="tag">{app.tag}</span>
-                            <span class:list={["request", { go: idx === 0 }]}>
-                                Request
-                            </span>
-                        </div>
-                    ))}
-                </div>
-            </div>
-            <div class="veil"></div>
+            ))}
         </div>
         <div class="modal">
-            <strong class="name">Provision a virtual machine</strong>
+            <strong class="name">Data Export Request</strong>
             <p class="lede">
-                Fill in the form below. The machine is created inside a
-                deployment, and the lease is on that deployment.
+                Request a filtered dataset and download it as a file. Exports of
+                customer data are approved by the data owners.
             </p>
             <div class="views">
                 <div class="view form">
-                    <strong class="section">Identity</strong>
+                    <strong class="section">Submit a request</strong>
                     {FIELDS.map((field, idx) => (
                         <label>
                             <span>
@@ -148,12 +99,9 @@ const FIELDS = [
                                     <Icon name="mdi:chevron-down" />
                                 )}
                             </span>
-                            {field.hint && <small>{field.hint}</small>}
                         </label>
                     ))}
-                    <span class="next">
-                        <Icon name="mdi:chevron-right" /> Next
-                    </span>
+                    <span class="next">Submit</span>
                 </div>
                 <div class="view busy">
                     <span class="hold">
@@ -162,19 +110,21 @@ const FIELDS = [
                     <span class="state waiting">
                         <i></i> Waiting for approval
                     </span>
-                    <code>Approver: platform-leads</code>
+                    <code>Approver: data-owners</code>
                 </div>
                 <div class="view done">
                     <span class="check">
                         <Icon name="mdi:check" />
                     </span>
                     <span class="state success">
-                        <i></i> Success
+                        <i></i> Your request has completed.
                     </span>
-                    <code>app-sandbox · sandbox · platform-team</code>
                     <span class="added">
-                        <Icon name="mdi:server-outline" /> Added to the
-                        inventory
+                        <Icon name="mdi:file-delimited-outline" />
+                        customers.csv
+                        <b>
+                            <Icon name="mdi:download" /> Download
+                        </b>
                     </span>
                 </div>
             </div>
@@ -191,7 +141,7 @@ const FIELDS = [
             </span>
             <div>
                 <strong>Approval required</strong>
-                <p>platform-team requests app-sandbox</p>
+                <p>j.kim requests the customers dataset</p>
                 <span class="choices">
                     <span class="reject">Reject</span>
                     <span class="approve">Approve</span>
@@ -229,57 +179,11 @@ const FIELDS = [
         color: var(--text);
     }
 
-    .ui {
-        position: relative;
-        display: grid;
-        grid-template-columns: 9.5em minmax(0, 1fr);
-        grid-template-rows: 3em auto;
-        overflow: hidden;
-        border: 1px solid var(--line);
-        border-radius: 1.1em;
-        background: var(--deep);
-        box-shadow: var(--shadow);
-    }
-
-    .bar {
-        grid-column: 1 / -1;
-        display: flex;
-        align-items: center;
-        gap: 0.6em;
-        padding: 0 1em 0 0.7em;
-        border-bottom: 1px solid var(--line);
-        background: var(--chrome);
-
-        img {
-            width: 1.7em;
-            height: 1.7em;
-            border-radius: 0.35em;
-        }
-
-        .slash {
-            color: var(--muted);
-            opacity: 0.6;
-        }
-
-        > [data-icon] {
-            width: 1.05em;
-            height: 1.05em;
-            color: var(--muted);
-        }
-
-        strong {
-            font-size: 0.82em;
-            font-weight: 600;
-        }
-    }
-
-    .manage,
-    .history,
     .request,
     .next {
         display: inline-flex;
         align-items: center;
-        gap: 0.35em;
+        gap: 0.4em;
         border-radius: 0.4em;
         font-weight: 600;
         white-space: nowrap;
@@ -290,119 +194,15 @@ const FIELDS = [
         }
     }
 
-    .manage,
     .next {
         background: var(--primary);
         color: #ffffff;
     }
 
-    .manage {
-        height: 2.5em;
-        margin-left: auto;
-        padding: 0 0.9em;
-        font-size: 0.72em;
-    }
-
-    .nav {
-        display: flex;
-        flex-direction: column;
-        gap: 0.9em;
-        padding: 0.9em 0.6em 1.2em;
-        border-right: 1px solid var(--line);
-        background: var(--chrome);
-
-        div {
-            display: flex;
-            flex-direction: column;
-            gap: 0.1em;
-        }
-
-        .group {
-            margin-bottom: 0.3em;
-            padding-left: 0.4em;
-            font-size: 0.68em;
-            color: var(--muted);
-        }
-
-        .item {
-            display: flex;
-            align-items: center;
-            gap: 0.6em;
-            padding: 0.42em 0.5em;
-            border-radius: 0.4em;
-            font-size: 0.72em;
-            font-weight: 600;
-            color: var(--soft);
-
-            &.on {
-                background: var(--chip);
-                color: var(--text);
-            }
-        }
-
-        [data-icon] {
-            flex: none;
-            width: 1.3em;
-            height: 1.3em;
-            color: var(--muted);
-        }
-    }
-
-    .main {
-        padding: 1.1em 1.25em 1.75em;
-    }
-
-    .tags {
-        display: flex;
-        align-items: center;
-        gap: 0.4em;
-
-        span {
-            padding: 0.5em 0.9em;
-            border: 1px solid transparent;
-            border-radius: 999px;
-            background: var(--panel);
-            font-size: 0.66em;
-            font-weight: 600;
-            white-space: nowrap;
-
-            &.on {
-                border-color: var(--line);
-                background: var(--chip);
-            }
-        }
-
-        .history {
-            margin-left: auto;
-            border-color: var(--line);
-            border-radius: 0.4em;
-        }
-    }
-
-    .search {
-        display: flex;
-        align-items: center;
-        gap: 0.7em;
-        height: 3.2em;
-        margin: 1em 0;
-        padding: 0 0.9em;
-        border: 1px solid var(--line);
-        border-radius: 0.5em;
-        background: var(--panel);
-        font-size: 0.68em;
-        color: var(--muted);
-
-        [data-icon] {
-            width: 1.3em;
-            height: 1.3em;
-            color: var(--text);
-        }
-    }
-
     .apps {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.8em;
+        gap: 0.9em;
     }
 
     .app {
@@ -412,8 +212,9 @@ const FIELDS = [
         gap: 1.4em 0.75em;
         padding: 0.95em 0.85em 0.85em;
         border: 1px solid var(--line);
-        border-radius: 0.5em;
+        border-radius: 0.8em;
         background: var(--panel);
+        box-shadow: var(--shadow);
 
         .tile {
             display: grid;
@@ -443,17 +244,21 @@ const FIELDS = [
             color: var(--muted);
         }
 
-        .tag {
+        .tags {
             grid-column: 1 / -1;
             grid-row: 2;
+            display: flex;
             align-self: center;
-            justify-self: start;
-            padding: 0.3em 0.6em;
-            border-radius: 0.3em;
-            background: var(--chip);
-            font-size: 0.62em;
-            font-weight: 600;
-            color: var(--soft);
+            gap: 0.35em;
+
+            span {
+                padding: 0.3em 0.6em;
+                border-radius: 0.3em;
+                background: var(--chip);
+                font-size: 0.62em;
+                font-weight: 600;
+                color: var(--soft);
+            }
         }
     }
 
@@ -468,16 +273,10 @@ const FIELDS = [
         font-size: 0.68em;
     }
 
-    .veil {
-        position: absolute;
-        inset: 0;
-        background: var(--veil);
-    }
-
     .modal {
         position: absolute;
         top: 50%;
-        left: 54%;
+        left: 46%;
         width: 26em;
         padding: 2.2em 2.2em 1.9em;
         border: 1px solid var(--line);
@@ -545,14 +344,6 @@ const FIELDS = [
             font-weight: 600;
             color: #e5484d;
         }
-
-        small {
-            display: block;
-            margin-top: 0.5em;
-            font-size: 0.86em;
-            font-weight: 400;
-            color: var(--muted);
-        }
     }
 
     .input {
@@ -586,7 +377,7 @@ const FIELDS = [
         float: right;
         height: 2.7em;
         margin-top: 0.5em;
-        padding: 0 1.1em 0 0.8em;
+        padding: 0 1.3em;
         font-size: 0.8em;
     }
 
@@ -727,17 +518,33 @@ const FIELDS = [
     .added {
         display: inline-flex;
         align-items: center;
-        gap: 0.4em;
-        padding: 0.5em 0.9em;
-        border-radius: 999px;
-        background: var(--chip);
-        font-size: 0.68em;
-        font-weight: 600;
+        gap: 0.5em;
+        padding: 0.5em 0.6em 0.5em 0.9em;
+        border: 1px solid var(--line);
+        border-radius: 0.5em;
+        font-family: var(--bs-font-monospace);
+        font-size: 0.72em;
 
         [data-icon] {
-            width: 1.2em;
-            height: 1.2em;
-            color: var(--run);
+            width: 1.25em;
+            height: 1.25em;
+            color: var(--muted);
+        }
+
+        b {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3em;
+            margin-left: 0.6em;
+            padding: 0.4em 0.8em;
+            border-radius: 0.35em;
+            background: var(--chip);
+            font-family: var(--bs-font-sans-serif);
+            font-weight: 600;
+
+            [data-icon] {
+                color: currentColor;
+            }
         }
     }
 
@@ -803,7 +610,7 @@ const FIELDS = [
             animation-play-state: paused !important;
         }
 
-        .veil {
+        .apps {
             animation: apps-mock-veil var(--loop) linear infinite both;
         }
 
@@ -881,14 +688,14 @@ const FIELDS = [
     @keyframes apps-mock-veil {
         0%,
         11% {
-            opacity: 0;
+            opacity: 1;
         }
         14%,
         96% {
-            opacity: 1;
+            opacity: 0.45;
         }
         100% {
-            opacity: 0;
+            opacity: 1;
         }
     }
 
@@ -1081,39 +888,39 @@ const FIELDS = [
     @keyframes apps-mock-launcher {
         0% {
             opacity: 0;
-            transform: translate(40em, 27em);
+            transform: translate(31em, 21em);
         }
         2% {
             opacity: 1;
-            transform: translate(40em, 27em);
+            transform: translate(31em, 21em);
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
         9%,
         15% {
             opacity: 1;
-            transform: translate(26.4em, 18.2em);
+            transform: translate(20.6em, 8em);
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
         18%,
         34% {
             opacity: 1;
-            transform: translate(40.5em, 17em);
+            transform: translate(33em, 12em);
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
         40%,
         48% {
             opacity: 1;
-            transform: translate(35.4em, 26.5em);
+            transform: translate(31em, 23.1em);
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
         56%,
         95% {
             opacity: 0.35;
-            transform: translate(41em, 30em);
+            transform: translate(38.5em, 26.5em);
         }
         100% {
             opacity: 0;
-            transform: translate(41em, 30em);
+            transform: translate(38.5em, 26.5em);
         }
     }
 

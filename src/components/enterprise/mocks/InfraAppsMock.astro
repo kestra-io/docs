@@ -1,0 +1,1148 @@
+---
+import { Icon } from "astro-icon/components"
+
+const NAV = [
+    {
+        group: "Self-Service",
+        items: [
+            { icon: "mdi:view-grid-outline", label: "Catalog", on: true },
+            { icon: "mdi:history", label: "Requests" },
+            { icon: "mdi:cube-outline", label: "Deployments" },
+            { icon: "mdi:server-outline", label: "Inventory" },
+            { icon: "mdi:alert-circle-outline", label: "Cases" },
+            { icon: "mdi:chart-line", label: "Dashboards" },
+        ],
+    },
+    {
+        group: "Automation",
+        items: [
+            { icon: "mdi:creation-outline", label: "AI Copilot" },
+            { icon: "mdi:file-tree-outline", label: "Flows" },
+            { icon: "mdi:rocket-launch-outline", label: "Promote" },
+            { icon: "mdi:play-outline", label: "Executions" },
+            { icon: "mdi:text-box-outline", label: "Logs" },
+            { icon: "mdi:flask-outline", label: "Tests" },
+        ],
+    },
+]
+
+const TAGS = ["All tags", "Compute", "Data", "Environment", "Storage"]
+
+const APPS = [
+    {
+        title: "Provision a virtual machine",
+        text: "Request a VM with a time-boxed lease, added to the inventory as soon as it is declared.",
+        tag: "Compute",
+    },
+    {
+        title: "Request object storage",
+        text: "Add a bucket to one of your deployments.",
+        tag: "Storage",
+    },
+    {
+        title: "Request a database",
+        text: "Attach a managed database to one of your deployments.",
+        tag: "Data",
+    },
+    {
+        title: "Request an environment",
+        text: "A machine and its database, grouped under a single deployment and lease.",
+        tag: "Environment",
+    },
+]
+
+const PEOPLE = [
+    { id: "launcher", name: "Launcher", icon: "mdi:play-circle-outline" },
+    { id: "admin", name: "Admin", icon: "mdi:shield-account-outline" },
+]
+
+const FIELDS = [
+    {
+        label: "Deployment name",
+        value: "app-sandbox",
+        hint: "The machine is created inside a deployment of this name, and the lease is on it.",
+    },
+    { label: "Owner", value: "platform-team" },
+    { label: "Environment", value: "sandbox", select: true },
+]
+---
+
+<div class="ui-mock infra-mock" aria-hidden="true" data-ui-mock>
+    <div class="stage">
+        <div class="ui">
+            <div class="bar">
+                <img src="/icon.svg" alt="" width="24" height="24" />
+                <span class="slash">/</span>
+                <Icon name="mdi:view-grid-outline" />
+                <strong>Service catalog</strong>
+                <span class="manage">
+                    <Icon name="mdi:application-cog-outline" /> Manage apps
+                </span>
+            </div>
+            <div class="nav">
+                {NAV.map((section) => (
+                    <div>
+                        <span class="group">{section.group}</span>
+                        {section.items.map((item) => (
+                            <span class:list={["item", { on: item.on }]}>
+                                <Icon name={item.icon} />
+                                {item.label}
+                            </span>
+                        ))}
+                    </div>
+                ))}
+            </div>
+            <div class="main">
+                <div class="tags">
+                    {TAGS.map((tag, idx) => (
+                        <span class:list={{ on: idx === 0 }}>{tag}</span>
+                    ))}
+                    <span class="history">
+                        <Icon name="mdi:history" /> Request history
+                    </span>
+                </div>
+                <div class="search">
+                    <Icon name="mdi:magnify" /> Search apps catalog
+                </div>
+                <div class="apps">
+                    {APPS.map((app, idx) => (
+                        <div class="app">
+                            <span class="tile">
+                                <Icon name="mdi:cube-outline" />
+                            </span>
+                            <div>
+                                <strong>{app.title}</strong>
+                                <p>{app.text}</p>
+                            </div>
+                            <span class="tag">{app.tag}</span>
+                            <span class:list={["request", { go: idx === 0 }]}>
+                                Request
+                            </span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <div class="veil"></div>
+        </div>
+        <div class="modal">
+            <strong class="name">Provision a virtual machine</strong>
+            <p class="lede">
+                Fill in the form below. The machine is created inside a
+                deployment, and the lease is on that deployment.
+            </p>
+            <div class="views">
+                <div class="view form">
+                    <strong class="section">Identity</strong>
+                    {FIELDS.map((field, idx) => (
+                        <label>
+                            <span>
+                                <b>*</b> {field.label}
+                            </span>
+                            <span
+                                class:list={["input", { select: field.select }]}
+                            >
+                                <span class={`val v${idx + 1}`}>
+                                    {field.value}
+                                </span>
+                                {field.select && (
+                                    <Icon name="mdi:chevron-down" />
+                                )}
+                            </span>
+                            {field.hint && <small>{field.hint}</small>}
+                        </label>
+                    ))}
+                    <span class="next">
+                        <Icon name="mdi:chevron-right" /> Next
+                    </span>
+                </div>
+                <div class="view busy">
+                    <span class="hold">
+                        <Icon name="mdi:pause" />
+                    </span>
+                    <span class="state waiting">
+                        <i></i> Waiting for approval
+                    </span>
+                    <code>Approver: platform-leads</code>
+                </div>
+                <div class="view done">
+                    <span class="check">
+                        <Icon name="mdi:check" />
+                    </span>
+                    <span class="state success">
+                        <i></i> Success
+                    </span>
+                    <code>app-sandbox · sandbox · platform-team</code>
+                    <span class="added">
+                        <Icon name="mdi:server-outline" /> Added to the
+                        inventory
+                    </span>
+                </div>
+            </div>
+            <div class="steps">
+                <i></i>
+                <i class="s2"></i>
+                <i class="s3"></i>
+                <i class="s4"></i>
+            </div>
+        </div>
+        <div class="notice">
+            <span class="bell">
+                <Icon name="mdi:bell-outline" />
+            </span>
+            <div>
+                <strong>Approval required</strong>
+                <p>platform-team requests app-sandbox</p>
+                <span class="choices">
+                    <span class="reject">Reject</span>
+                    <span class="approve">Approve</span>
+                </span>
+            </div>
+        </div>
+        {PEOPLE.map((person) => (
+            <span class:list={["cursor", person.id]}>
+                <svg viewBox="0 0 10 10">
+                    <path d="M0 0 L10 4 L5.5 5.5 L4 10 Z" />
+                </svg>
+                <span class="who">
+                    <Icon name={person.icon} />
+                    {person.name}
+                </span>
+            </span>
+        ))}
+    </div>
+</div>
+
+<style lang="scss">
+    @use "./tokens" as *;
+
+    .infra-mock {
+        --loop: 14s;
+
+        @include tokens;
+    }
+
+    .stage {
+        position: relative;
+        padding-block: 2.4em;
+        font-size: calc(100cqw / 50);
+        line-height: 1.3;
+        color: var(--text);
+    }
+
+    .ui {
+        position: relative;
+        display: grid;
+        grid-template-columns: 9.5em minmax(0, 1fr);
+        grid-template-rows: 3em auto;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 1.1em;
+        background: var(--deep);
+        box-shadow: var(--shadow);
+    }
+
+    .bar {
+        grid-column: 1 / -1;
+        display: flex;
+        align-items: center;
+        gap: 0.6em;
+        padding: 0 1em 0 0.7em;
+        border-bottom: 1px solid var(--line);
+        background: var(--chrome);
+
+        img {
+            width: 1.7em;
+            height: 1.7em;
+            border-radius: 0.35em;
+        }
+
+        .slash {
+            color: var(--muted);
+            opacity: 0.6;
+        }
+
+        > [data-icon] {
+            width: 1.05em;
+            height: 1.05em;
+            color: var(--muted);
+        }
+
+        strong {
+            font-size: 0.82em;
+            font-weight: 600;
+        }
+    }
+
+    .manage,
+    .history,
+    .request,
+    .next {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35em;
+        border-radius: 0.4em;
+        font-weight: 600;
+        white-space: nowrap;
+
+        [data-icon] {
+            width: 1.2em;
+            height: 1.2em;
+        }
+    }
+
+    .manage,
+    .next {
+        background: var(--primary);
+        color: #ffffff;
+    }
+
+    .manage {
+        height: 2.5em;
+        margin-left: auto;
+        padding: 0 0.9em;
+        font-size: 0.72em;
+    }
+
+    .nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0.9em;
+        padding: 0.9em 0.6em 1.2em;
+        border-right: 1px solid var(--line);
+        background: var(--chrome);
+
+        div {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1em;
+        }
+
+        .group {
+            margin-bottom: 0.3em;
+            padding-left: 0.4em;
+            font-size: 0.68em;
+            color: var(--muted);
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 0.6em;
+            padding: 0.42em 0.5em;
+            border-radius: 0.4em;
+            font-size: 0.72em;
+            font-weight: 600;
+            color: var(--soft);
+
+            &.on {
+                background: var(--chip);
+                color: var(--text);
+            }
+        }
+
+        [data-icon] {
+            flex: none;
+            width: 1.3em;
+            height: 1.3em;
+            color: var(--muted);
+        }
+    }
+
+    .main {
+        padding: 1.1em 1.25em 1.75em;
+    }
+
+    .tags {
+        display: flex;
+        align-items: center;
+        gap: 0.4em;
+
+        span {
+            padding: 0.5em 0.9em;
+            border: 1px solid transparent;
+            border-radius: 999px;
+            background: var(--panel);
+            font-size: 0.66em;
+            font-weight: 600;
+            white-space: nowrap;
+
+            &.on {
+                border-color: var(--line);
+                background: var(--chip);
+            }
+        }
+
+        .history {
+            margin-left: auto;
+            border-color: var(--line);
+            border-radius: 0.4em;
+        }
+    }
+
+    .search {
+        display: flex;
+        align-items: center;
+        gap: 0.7em;
+        height: 3.2em;
+        margin: 1em 0;
+        padding: 0 0.9em;
+        border: 1px solid var(--line);
+        border-radius: 0.5em;
+        background: var(--panel);
+        font-size: 0.68em;
+        color: var(--muted);
+
+        [data-icon] {
+            width: 1.3em;
+            height: 1.3em;
+            color: var(--text);
+        }
+    }
+
+    .apps {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.8em;
+    }
+
+    .app {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-rows: 1fr auto;
+        gap: 1.4em 0.75em;
+        padding: 0.95em 0.85em 0.85em;
+        border: 1px solid var(--line);
+        border-radius: 0.5em;
+        background: var(--panel);
+
+        .tile {
+            display: grid;
+            place-items: center;
+            width: 2.2em;
+            height: 2.2em;
+            border-radius: 0.4em;
+            background: var(--tile);
+            color: var(--tile-ink);
+
+            [data-icon] {
+                width: 1.2em;
+                height: 1.2em;
+            }
+        }
+
+        strong {
+            display: block;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        p {
+            margin: 0.35em 0 0;
+            font-size: 0.64em;
+            line-height: 1.5;
+            color: var(--muted);
+        }
+
+        .tag {
+            grid-column: 1 / -1;
+            grid-row: 2;
+            align-self: center;
+            justify-self: start;
+            padding: 0.3em 0.6em;
+            border-radius: 0.3em;
+            background: var(--chip);
+            font-size: 0.62em;
+            font-weight: 600;
+            color: var(--soft);
+        }
+    }
+
+    .request {
+        grid-column: 2;
+        grid-row: 2;
+        justify-self: end;
+        height: 2.5em;
+        padding: 0 0.9em;
+        border: 1px solid var(--line);
+        background: var(--chip);
+        font-size: 0.68em;
+    }
+
+    .veil {
+        position: absolute;
+        inset: 0;
+        background: var(--veil);
+    }
+
+    .modal {
+        position: absolute;
+        top: 50%;
+        left: 54%;
+        width: 26em;
+        padding: 2.2em 2.2em 1.9em;
+        border: 1px solid var(--line);
+        border-radius: 1.1em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        transform: translate(-50%, -50%);
+
+        .name {
+            display: block;
+            font-size: 1.3em;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .lede {
+            margin: 0.6em 0 1.2em;
+            font-size: 0.72em;
+            line-height: 1.55;
+            color: var(--soft);
+        }
+
+        .section {
+            display: block;
+            margin-bottom: 0.8em;
+            font-size: 0.88em;
+            font-weight: 600;
+        }
+    }
+
+    .views {
+        display: grid;
+    }
+
+    .view {
+        grid-area: 1 / 1;
+
+        &.form,
+        &.busy {
+            opacity: 0;
+        }
+
+        &.busy,
+        &.done {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8em;
+        }
+
+        code {
+            font-size: 0.72em;
+            color: var(--muted);
+        }
+    }
+
+    label {
+        display: block;
+        margin-bottom: 0.9em;
+        font-size: 0.74em;
+        font-weight: 600;
+
+        b {
+            font-weight: 600;
+            color: #e5484d;
+        }
+
+        small {
+            display: block;
+            margin-top: 0.5em;
+            font-size: 0.86em;
+            font-weight: 400;
+            color: var(--muted);
+        }
+    }
+
+    .input {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 2.9em;
+        margin-top: 0.45em;
+        padding: 0 0.85em;
+        border: 1px solid transparent;
+        border-radius: 0.45em;
+        background: var(--field);
+        font-family: var(--bs-font-monospace);
+        font-size: 1.05em;
+        font-weight: 400;
+
+        &.select {
+            border-color: var(--line);
+            font-family: inherit;
+            font-weight: 500;
+        }
+
+        [data-icon] {
+            width: 1.2em;
+            height: 1.2em;
+            color: var(--muted);
+        }
+    }
+
+    .next {
+        float: right;
+        height: 2.7em;
+        margin-top: 0.5em;
+        padding: 0 1.1em 0 0.8em;
+        font-size: 0.8em;
+    }
+
+    .steps {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.4em;
+        margin-top: 1.3em;
+        padding-top: 1.1em;
+        border-top: 1px solid var(--line);
+
+        i {
+            height: 0.3em;
+            border-radius: 999px;
+            background: var(--ring);
+        }
+    }
+
+    .hold {
+        display: grid;
+        place-items: center;
+        width: 2.6em;
+        height: 2.6em;
+        border-radius: 50%;
+        background: var(--wait-bg);
+        color: var(--wait);
+
+        [data-icon] {
+            width: 1.5em;
+            height: 1.5em;
+        }
+    }
+
+    .notice {
+        position: absolute;
+        top: 0.5em;
+        right: -1.2em;
+        display: flex;
+        gap: 0.8em;
+        width: 17em;
+        padding: 0.9em 1em 1em;
+        border: 1px solid var(--line);
+        border-radius: 0.9em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        opacity: 0;
+
+        .bell {
+            display: grid;
+            place-items: center;
+            flex: none;
+            width: 2em;
+            height: 2em;
+            border-radius: 0.5em;
+            background: var(--wait-bg);
+            color: var(--wait);
+
+            [data-icon] {
+                width: 1.15em;
+                height: 1.15em;
+            }
+        }
+
+        strong {
+            display: block;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        p {
+            margin: 0.25em 0 0.8em;
+            font-size: 0.66em;
+            color: var(--muted);
+        }
+    }
+
+    .choices {
+        display: flex;
+        gap: 0.5em;
+
+        span {
+            display: inline-flex;
+            align-items: center;
+            height: 2.5em;
+            padding: 0 1em;
+            border: 1px solid var(--line);
+            border-radius: 0.4em;
+            background: var(--chip);
+            font-size: 0.68em;
+            font-weight: 600;
+        }
+
+        .approve {
+            border-color: transparent;
+            background: var(--primary);
+            color: #ffffff;
+        }
+    }
+
+    .check {
+        display: grid;
+        place-items: center;
+        width: 2.6em;
+        height: 2.6em;
+        border-radius: 50%;
+        background: var(--ok-bg);
+        color: var(--ok);
+
+        [data-icon] {
+            width: 1.5em;
+            height: 1.5em;
+        }
+    }
+
+    .state {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
+        font-size: 0.9em;
+        font-weight: 600;
+
+        i {
+            width: 0.55em;
+            height: 0.55em;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        &.waiting {
+            color: var(--wait);
+        }
+
+        &.success {
+            color: var(--ok);
+        }
+    }
+
+    .added {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4em;
+        padding: 0.5em 0.9em;
+        border-radius: 999px;
+        background: var(--chip);
+        font-size: 0.68em;
+        font-weight: 600;
+
+        [data-icon] {
+            width: 1.2em;
+            height: 1.2em;
+            color: var(--run);
+        }
+    }
+
+    .cursor {
+        --tone: 204, 62, 138;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.1em;
+        opacity: 0;
+
+        :global(html.dark) & {
+            --tone: 240, 140, 190;
+        }
+
+        &.admin {
+            --tone: 38, 112, 214;
+
+            :global(html.dark) & {
+                --tone: 140, 196, 255;
+            }
+        }
+
+        svg {
+            width: 0.95em;
+            height: 0.95em;
+            fill: rgb(var(--tone));
+        }
+    }
+
+    .who {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3em;
+        margin-left: 0.6em;
+        padding: 0.15em 0.55em;
+        border: 1px solid rgb(var(--tone));
+        border-radius: 0.45em;
+        background: rgb(var(--tone));
+        font-size: 0.7em;
+        font-weight: 600;
+        white-space: nowrap;
+        color: #ffffff;
+
+        :global(html.dark) & {
+            border-color: rgba(var(--tone), 0.45);
+            background: rgb(20, 20, 24);
+            color: rgb(var(--tone));
+        }
+
+        [data-icon] {
+            width: 1.1em;
+            height: 1.1em;
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .infra-mock:not([data-play]) * {
+            animation-play-state: paused !important;
+        }
+
+        .veil {
+            animation: infra-mock-veil var(--loop) linear infinite both;
+        }
+
+        .modal {
+            animation: infra-mock-modal var(--loop) linear infinite both;
+        }
+
+        .request.go {
+            animation: infra-mock-press-1 var(--loop) linear infinite both;
+        }
+
+        .next {
+            animation: infra-mock-press-2 var(--loop) linear infinite both;
+        }
+
+        .view.form {
+            animation: infra-mock-form var(--loop) linear infinite both;
+        }
+
+        .view.busy {
+            animation: infra-mock-busy var(--loop) linear infinite both;
+        }
+
+        .view.done {
+            animation: infra-mock-done var(--loop) linear infinite both;
+        }
+
+        .val {
+            animation: var(--loop) linear infinite both;
+
+            &.v1 {
+                animation-name: infra-mock-type-1;
+            }
+
+            &.v2 {
+                animation-name: infra-mock-type-2;
+            }
+
+            &.v3 {
+                animation-name: infra-mock-type-3;
+            }
+        }
+
+        .steps {
+            .s2 {
+                animation: infra-mock-step-2 var(--loop) linear infinite both;
+            }
+
+            .s3 {
+                animation: infra-mock-step-3 var(--loop) linear infinite both;
+            }
+
+            .s4 {
+                animation: infra-mock-step-4 var(--loop) linear infinite both;
+            }
+        }
+
+        .notice {
+            animation: infra-mock-notice var(--loop) linear infinite both;
+        }
+
+        .approve {
+            animation: infra-mock-press-3 var(--loop) linear infinite both;
+        }
+
+        .cursor.launcher {
+            animation: infra-mock-launcher var(--loop) linear infinite both;
+        }
+
+        .cursor.admin {
+            animation: infra-mock-admin var(--loop) linear infinite both;
+        }
+    }
+
+    @keyframes infra-mock-veil {
+        0%,
+        11% {
+            opacity: 0;
+        }
+        14%,
+        96% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes infra-mock-modal {
+        0%,
+        11% {
+            opacity: 0;
+            transform: translate(-50%, -46%) scale(0.95);
+            animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        15%,
+        96% {
+            opacity: 1;
+            transform: translate(-50%, -50%);
+        }
+        100% {
+            opacity: 0;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    @keyframes infra-mock-press-1 {
+        0%,
+        9%,
+        12%,
+        100% {
+            transform: none;
+            filter: none;
+        }
+        10.5% {
+            transform: scale(0.93);
+            filter: brightness(0.92);
+        }
+    }
+
+    @keyframes infra-mock-press-2 {
+        0%,
+        41%,
+        44%,
+        100% {
+            transform: none;
+            filter: none;
+        }
+        42.5% {
+            transform: scale(0.93);
+            filter: brightness(1.3);
+        }
+    }
+
+    @keyframes infra-mock-form {
+        0%,
+        44% {
+            opacity: 1;
+        }
+        46%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes infra-mock-busy {
+        0%,
+        45% {
+            opacity: 0;
+        }
+        47%,
+        73% {
+            opacity: 1;
+        }
+        75%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes infra-mock-done {
+        0%,
+        74% {
+            opacity: 0;
+            transform: scale(0.96);
+        }
+        77%,
+        100% {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    @keyframes infra-mock-type-1 {
+        0%,
+        16% {
+            clip-path: inset(0 100% 0 0);
+            animation-timing-function: steps(11);
+        }
+        22%,
+        100% {
+            clip-path: inset(0);
+        }
+    }
+
+    @keyframes infra-mock-type-2 {
+        0%,
+        24% {
+            clip-path: inset(0 100% 0 0);
+            animation-timing-function: steps(13);
+        }
+        30%,
+        100% {
+            clip-path: inset(0);
+        }
+    }
+
+    @keyframes infra-mock-type-3 {
+        0%,
+        32% {
+            opacity: 0;
+        }
+        33%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes infra-mock-step-2 {
+        0%,
+        46% {
+            background: var(--chip);
+        }
+        48%,
+        100% {
+            background: var(--ring);
+        }
+    }
+
+    @keyframes infra-mock-step-3 {
+        0%,
+        73% {
+            background: var(--chip);
+        }
+        75%,
+        100% {
+            background: var(--ring);
+        }
+    }
+
+    @keyframes infra-mock-step-4 {
+        0%,
+        75% {
+            background: var(--chip);
+        }
+        77%,
+        100% {
+            background: var(--ring);
+        }
+    }
+
+    @keyframes infra-mock-notice {
+        0%,
+        52% {
+            opacity: 0;
+            transform: translateY(-0.8em);
+            animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        56%,
+        73% {
+            opacity: 1;
+            transform: none;
+        }
+        77%,
+        100% {
+            opacity: 0;
+            transform: translateY(-0.4em);
+        }
+    }
+
+    @keyframes infra-mock-press-3 {
+        0%,
+        68.5%,
+        71.5%,
+        100% {
+            transform: none;
+            filter: none;
+        }
+        70% {
+            transform: scale(0.93);
+            filter: brightness(1.3);
+        }
+    }
+
+    @keyframes infra-mock-launcher {
+        0% {
+            opacity: 0;
+            transform: translate(40em, 27em);
+        }
+        2% {
+            opacity: 1;
+            transform: translate(40em, 27em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        9%,
+        15% {
+            opacity: 1;
+            transform: translate(26.4em, 18.2em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        18%,
+        34% {
+            opacity: 1;
+            transform: translate(40.5em, 17em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        40%,
+        48% {
+            opacity: 1;
+            transform: translate(35.4em, 26.5em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        56%,
+        95% {
+            opacity: 0.35;
+            transform: translate(41em, 30em);
+        }
+        100% {
+            opacity: 0;
+            transform: translate(41em, 30em);
+        }
+    }
+
+    @keyframes infra-mock-admin {
+        0%,
+        54% {
+            opacity: 0;
+            transform: translate(50em, 11em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        58% {
+            opacity: 1;
+            transform: translate(48em, 9em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        65%,
+        72% {
+            opacity: 1;
+            transform: translate(44.3em, 4.1em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        79% {
+            opacity: 1;
+            transform: translate(47em, 10em);
+        }
+        84%,
+        100% {
+            opacity: 0;
+            transform: translate(47em, 10em);
+        }
+    }
+</style>
