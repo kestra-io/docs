@@ -1,0 +1,256 @@
+---
+title: "Terraform vs Ansible: Differences, and How to Use Them Together"
+description: "Terraform provisions infrastructure; Ansible configures what runs on it. This guide compares the two, explains when to use each, and shows five ways to connect them, from provisioners to dynamic inventory to an orchestrator that runs both in one workflow."
+metaTitle: "Terraform vs Ansible: Differences & How to Use Both Together"
+metaDescription: "Terraform vs Ansible compared: state, language, execution model, and use cases. Then five ways to use Terraform and Ansible together, with a working example."
+tag: "infrastructure"
+date: 2026-11-04
+slug: "terraform-and-ansible"
+faq:
+  - question: "What is the difference between Terraform and Ansible?"
+    answer: "Terraform is a declarative infrastructure-as-code tool that creates, changes, and destroys infrastructure through provider APIs and tracks it in a state file. Ansible is an agentless automation tool that connects to hosts and devices over SSH, WinRM, or APIs and runs tasks to configure operating systems, install software, and perform operations. Terraform answers what infrastructure should exist; Ansible answers how each machine should be set up and maintained."
+  - question: "Is Terraform better than Ansible?"
+    answer: "Neither is better in general; they are built for different jobs. Terraform is better for provisioning cloud and virtual infrastructure because it keeps state, plans changes, and handles dependencies between resources. Ansible is better for configuring servers, deploying software, managing network devices, and running procedures such as patching or restarts. Most infrastructure teams use both."
+  - question: "Can Ansible replace Terraform?"
+    answer: "Partly. Ansible has cloud modules that can create instances, networks, and load balancers, but it keeps no state, so it cannot plan changes, detect what was removed from the code, or destroy resources it no longer describes. Teams that provision more than a few resources usually keep Terraform or OpenTofu for provisioning and use Ansible for configuration."
+  - question: "Can Terraform replace Ansible?"
+    answer: "Not for configuration management. Terraform can run scripts at creation time through provisioners or cloud-init, but HashiCorp describes provisioners as a last resort, and Terraform has no model for ongoing configuration, ordered procedures, or operations on existing machines. Patching, restarts, application deployment, and network device configuration remain Ansible territory."
+  - question: "Should I use Terraform and Ansible together?"
+    answer: "Yes, in most infrastructure teams. Terraform creates the infrastructure and exposes its details, such as IP addresses and hostnames, as outputs. Ansible reads those details as its inventory and configures the machines. The design decision is how the two hand off to each other: a Terraform provisioner, a dynamic inventory, a CI/CD pipeline, or an orchestrator that runs both in one workflow."
+  - question: "How do you pass Terraform outputs to Ansible?"
+    answer: "The most common methods are rendering an Ansible inventory from a Terraform output with templatefile, using the Terraform Ansible provider with the cloud.terraform inventory plugin to read hosts from state, or querying the cloud provider with an Ansible dynamic inventory plugin filtered by tags that Terraform applied. Whichever you choose, the step that runs Ansible must wait until Terraform has finished and the hosts accept connections."
+  - question: "Does this work with OpenTofu?"
+    answer: "Yes. OpenTofu is a fork of Terraform with the same language, state format, and workflow, so every pattern on this page works with OpenTofu by replacing the terraform command with tofu."
+---
+
+import FlowTopologyFigure from "~/components/resources/FlowTopologyFigure.astro"
+
+export const provisionAndConfigure = [
+    { id: "on_merge", type: "core.trigger.Webhook", plugin: "core.trigger.Webhook", fallback: "mdi:webhook", x: 0, y: 0, status: "success", duration: "0.3s", seconds: 0.3 },
+    { id: "terraform_apply", type: "terraform.cli.TerraformCLI", plugin: "terraform.cli.TerraformCLI", fallback: "mdi:terraform", runner: "kubernetes", x: 0, y: 140, status: "success", duration: "3m 12s", seconds: 192, artifacts: 1 },
+    { id: "ansible_config", type: "ansible.cli.AnsibleCLI", plugin: "ansible.cli.AnsibleCLI", fallback: "mdi:ansible", x: 310, y: 0, status: "success", duration: "1m 48s", seconds: 108 },
+    { id: "smoke_test", type: "core.http.Request", plugin: "core.http.Request", fallback: "mdi:web-check", x: 310, y: 140, status: "running", duration: "2.1s", seconds: 2.1 },
+    { id: "notify_team", type: "slack.notifications.SlackIncomingWebhook", plugin: "slack.notifications.SlackIncomingWebhook", fallback: "mdi:slack", x: 620, y: 0, status: "created", duration: "0.4s", seconds: 0.4 },
+]
+
+Terraform and Ansible are not competitors. Terraform provisions infrastructure: it creates the networks, virtual machines, and cloud services, and keeps track of them in a state file. Ansible configures what runs on that infrastructure: it connects to each machine and sets up the operating system, packages, and applications, then keeps doing so for the rest of the machine's life. Most infrastructure teams use both, and the real question is how to connect them.
+
+> **TL;DR** — Use Terraform (or OpenTofu) to create and destroy infrastructure, because it keeps state and plans changes. Use Ansible to configure machines and run operations on them, because it is agentless and procedural. Connect them by passing Terraform outputs to Ansible as inventory, and run both from one place that orders the steps, retries failures, and keeps the logs: a CI/CD pipeline for simple cases, an orchestrator when requests, schedules, approvals, and Day 2 operations are involved.
+
+## Terraform vs Ansible: the short answer
+
+**Terraform** describes the infrastructure you want in HCL, compares it with what exists, and calls provider APIs to close the gap. It is declarative and stateful: it knows what it created, so it can change or destroy it later.
+
+**Ansible** describes the steps to bring a machine into the right shape in YAML playbooks, and runs them over SSH, WinRM, or an API. It is agentless and mostly procedural: tasks run in order, each one idempotent, and nothing is stored between runs except what you write down yourself.
+
+In one sentence: Terraform builds the infrastructure, Ansible sets it up and keeps it running.
+
+## Key differences between Terraform and Ansible
+
+| | Terraform / OpenTofu | Ansible |
+|---|---|---|
+| **Main job** | Provisioning: create, change, and destroy infrastructure | Configuration and operations: set up and maintain hosts, applications, and devices |
+| **Approach** | Declarative: describe the end state | Procedural: ordered tasks, each idempotent |
+| **State** | State file records every managed resource | No state; facts are gathered at runtime |
+| **Language** | HCL | YAML playbooks with Jinja2 templating |
+| **Execution** | `plan` shows the changes, `apply` makes them | `ansible-playbook` runs the tasks; `--check` gives a dry run |
+| **Talks to** | Cloud, virtualization, and SaaS APIs through providers | Hosts over SSH or WinRM, network devices, and APIs through modules |
+| **Removal** | Deleting a resource from code destroys it | Removing a task does nothing; you write an explicit removal task |
+| **Drift** | Detected by comparing state with reality | Corrected each time the playbook runs |
+| **Typical phase** | Day 1 provisioning, and decommissioning | Day 1 configuration and [Day 2 operations](/resources/infrastructure/day-2-operations) |
+| **License** | Terraform: BSL 1.1 since 2023; OpenTofu: MPL 2.0 | Ansible core: GPL v3; Ansible Automation Platform is commercial |
+
+## When to use Terraform, when to use Ansible
+
+Use **Terraform** when you need to:
+
+*   Create cloud resources: VPCs, subnets, instances, managed databases, load balancers, IAM.
+*   Create virtual machines on vSphere, Proxmox, or Nutanix from templates.
+*   Keep a record of what exists, preview changes before making them, and destroy cleanly.
+*   Manage dependencies between resources, such as a subnet before an instance.
+
+Use **Ansible** when you need to:
+
+*   Configure operating systems: users, packages, services, hardening baselines.
+*   Deploy and configure applications on machines that already exist.
+*   Configure network devices from Cisco, Juniper, Arista, and others.
+*   Run procedures: patching, rolling restarts, certificate deployment, backups.
+
+The gray zones are real. Ansible has modules that create cloud resources, but without state it cannot tell what to remove. Terraform can run a script when a resource is created, but it has no model for configuring machines over time. Using each tool outside its strength works for small cases and becomes painful at scale.
+
+## Why most teams use Terraform and Ansible together
+
+The typical lifecycle of a virtual machine shows the split:
+
+1.  **Terraform** creates the VM, its disks, network interfaces, and DNS record, and outputs its IP address.
+2.  **Ansible** waits for the VM to accept connections, applies the hardening baseline, installs the application, and registers it with monitoring.
+3.  **Ansible** patches, rotates certificates, and restarts services for as long as the VM lives.
+4.  **Terraform** destroys the VM and its resources when it is no longer needed.
+
+Each tool does what it is good at. The weak point is the handoff between steps 1 and 2: Ansible needs to know what Terraform created, and it must run only after Terraform has finished and the machine is reachable.
+
+## Five ways to use Terraform and Ansible together
+
+### 1. A Terraform provisioner that calls Ansible
+
+A `local-exec` provisioner on the resource runs `ansible-playbook` against the new machine's IP once it is created.
+
+*   **Good for:** demos and single machines.
+*   **Limits:** HashiCorp documents provisioners as a last resort. A failed playbook taints the resource, configuration runs only at creation, and there is no separate log, retry, or way to rerun Ansible alone.
+
+### 2. A dynamic inventory built from Terraform
+
+Terraform exposes the hosts, and Ansible reads them as inventory. You can render an inventory file from a Terraform output with `templatefile`, use the Terraform Ansible provider together with the `cloud.terraform` inventory plugin to read hosts from state, or let Ansible query the cloud directly with a dynamic inventory plugin filtered by tags that Terraform applied.
+
+*   **Good for:** a clean data handoff that keeps each tool independent.
+*   **Limits:** it solves the data, not the sequencing. Something still has to run Terraform, then Ansible, in order.
+
+### 3. Ansible calling Terraform
+
+The `community.general.terraform` module runs Terraform from a playbook, so Ansible drives the whole sequence.
+
+*   **Good for:** teams whose automation already lives in Ansible.
+*   **Limits:** plan output, state, and errors surface through a module wrapper, which makes failures harder to read and changes harder to review.
+
+### 4. A CI/CD pipeline with a stage for each tool
+
+A GitHub Actions or GitLab CI pipeline runs `terraform apply` in one job and `ansible-playbook` in the next, passing the inventory as an artifact.
+
+*   **Good for:** changes that start from a Git merge.
+*   **Limits:** pipelines are built for code changes. Requests from other teams, schedules, alerts, approvals that wait hours, and Day 2 operations on existing machines fit poorly, and long runs hit job timeouts.
+
+### 5. An orchestrator that runs both as steps of one workflow
+
+An orchestration platform runs Terraform and Ansible as tasks of the same workflow, passes outputs between them, and adds triggers, retries, approvals, and a full execution history. IBM now positions HCP Terraform and Red Hat Ansible Automation Platform as a combined offering for this; open-source orchestrators such as Kestra do it without tying you to either vendor's commercial platform.
+
+*   **Good for:** provisioning on request, scheduled and event-driven operations, multi-tool sequences that include ITSM, DNS, CMDB, or chat.
+*   **Limits:** one more platform to run, which pays off when there is more than one pipeline to coordinate.
+
+| Approach | Best for | Main limitation |
+|---|---|---|
+| Terraform provisioner | Demos, single machines | Couples lifecycles; no separate logs or retries |
+| Dynamic inventory | Clean handoff of host data | Does not order or run the steps |
+| Ansible calls Terraform | Ansible-first teams | Terraform hidden behind a module |
+| CI/CD pipeline | Git-triggered changes | Weak on requests, schedules, approvals, Day 2 |
+| Orchestrator | Requests, Day 2, multi-tool sequences | One more platform to operate |
+
+## Passing Terraform outputs to Ansible
+
+The most portable handoff is an inventory rendered by Terraform. Define an output that builds the inventory from the resources it created:
+
+```hcl
+output "ansible_inventory" {
+  value = templatefile("${path.module}/inventory.tftpl", {
+    web_hosts = aws_instance.web[*].private_ip
+  })
+}
+```
+
+With a template next to it:
+
+```text
+[web]
+%{ for ip in web_hosts ~}
+${ip}
+%{ endfor ~}
+```
+
+Then write it to a file after `apply` with `terraform output -raw ansible_inventory > inventory.ini`, and pass that file to `ansible-playbook -i inventory.ini`.
+
+Three details make the difference in production:
+
+*   **Remote state.** Store Terraform state in a remote backend such as S3, GCS, or HCP Terraform, so every run sees the same state, wherever it executes.
+*   **Wait for the hosts.** Start the playbook with `ansible.builtin.wait_for_connection` so it does not fail on machines that are still booting.
+*   **Keep secrets out of outputs.** Pass credentials to both tools from a secrets manager at run time, not through Terraform outputs or inventory files.
+
+## Terraform and Ansible with Kestra
+
+Kestra is an open-source orchestration platform with declarative YAML workflows. Terraform and Ansible each run as a task in their own container, with the files, variables, and credentials they need, and the workflow passes Terraform's outputs to Ansible.
+
+<FlowTopologyFigure
+    nodes={provisionAndConfigure}
+    label="Kestra topology of a provision_and_configure flow running: a merge webhook triggers Terraform apply, which hands its inventory to the Ansible configuration step, followed by a smoke test and a team notification"
+    caption="Terraform hands its inventory to Ansible as a file. Each node is a task in one YAML file, versioned in Git."
+/>
+
+### Example: provision with Terraform, configure with Ansible
+
+The workflow below runs when a change is merged. Terraform applies the configuration stored next to the workflow and writes the inventory and the service endpoint as outputs. Ansible configures the new hosts from that inventory. A smoke test checks the endpoint, and the team is notified.
+
+```yaml
+id: provision_and_configure
+namespace: platform.infra
+
+inputs:
+  - id: environment
+    type: SELECT
+    values: [dev, staging, prod]
+    defaults: dev
+
+tasks:
+  - id: terraform_apply
+    type: io.kestra.plugin.terraform.cli.TerraformCLI
+    namespaceFiles:
+      enabled: true
+      include:
+        - terraform/**
+    env:
+      AWS_ACCESS_KEY_ID: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+      AWS_SECRET_ACCESS_KEY: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+      AWS_DEFAULT_REGION: eu-west-1
+    beforeCommands:
+      - terraform -chdir=terraform init -input=false
+    commands:
+      - terraform -chdir=terraform apply -auto-approve -input=false -var="environment={{ inputs.environment }}"
+      - terraform -chdir=terraform output -raw ansible_inventory > inventory.ini
+      - echo "::{\"outputs\":{\"endpoint\":\"$(terraform -chdir=terraform output -raw endpoint)\"}}::"
+    outputFiles:
+      - inventory.ini
+
+  - id: ansible_config
+    type: io.kestra.plugin.ansible.cli.AnsibleCLI
+    namespaceFiles:
+      enabled: true
+      include:
+        - ansible/**
+    inputFiles:
+      inventory.ini: "{{ outputs.terraform_apply.outputFiles['inventory.ini'] }}"
+    commands:
+      - ansible-playbook -i inventory.ini ansible/site.yml
+
+  - id: smoke_test
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://{{ outputs.terraform_apply.vars.endpoint }}/health"
+
+  - id: notify_team
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+    url: "{{ secret('SLACK_PLATFORM') }}"
+    payload: |
+      {
+        "text": "{{ inputs.environment }} is provisioned and configured. Endpoint: {{ outputs.terraform_apply.vars.endpoint }}. Execution {{ execution.id }}."
+      }
+
+triggers:
+  - id: on_merge
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: infra-main-merged
+```
+
+What the orchestrator adds to the two tools:
+
+*   **One run, one history.** Terraform and Ansible logs, the inventory file, and the outputs stay attached to the same execution.
+*   **Restart from the failed step.** If the playbook fails, fix it and [replay](/docs/concepts/replay) from the Ansible task instead of running Terraform again. Steps can also [retry](/docs/workflow-components/retries) automatically.
+*   **Any trigger.** The same workflow can start from a Git merge, a [schedule](/docs/workflow-components/triggers/schedule-trigger), a monitoring alert, or a typed request form built from [inputs](/docs/workflow-components/inputs), which is the basis of [self-service infrastructure](/resources/infrastructure/self-service-infrastructure).
+*   **Day 2 with the same playbooks.** Patching, certificate rotation, and restarts reuse the Ansible content on the machines Terraform created; see [patch management automation](/resources/infrastructure/patch-management-automation).
+*   **Everything around the two tools.** ServiceNow, DNS, the CMDB, vSphere, Kubernetes, and chat run as steps of the same workflow; see how to [orchestrate Terraform](/orchestration/terraform) and [orchestrate Ansible](/orchestration/ansible) with Kestra.
+
+[Kestra for Infrastructure](/infra-automation) brings this model to platform and infrastructure teams in Kestra Enterprise Edition: self-service without losing control, on the same Kestra that already runs data and AI workflows.
+
+## Related reading
+
+*   [Infrastructure orchestration](/resources/infrastructure/infrastructure-orchestration): coordinating provisioning, configuration, and operations across tools.
+*   [Day 2 operations](/resources/infrastructure/day-2-operations): what happens to infrastructure after it goes live.
+*   [Self-service infrastructure](/resources/infrastructure/self-service-infrastructure): letting engineers request environments without tickets.
+*   [Terraform drift detection](/resources/infrastructure/terraform-drift-detection): finding the gap between code and reality.
+*   [Ansible alternatives](/resources/infrastructure/alternatives-to-ansible) and [AWX alternatives](/resources/infrastructure/awx-alternatives): when Ansible's own tooling is not enough.
+*   [VM lifecycle management](/resources/infrastructure/vm-lifecycle-management): the full life of a virtual machine, from request to decommissioning.

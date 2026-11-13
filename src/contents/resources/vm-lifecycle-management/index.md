@@ -82,7 +82,7 @@ By codifying your VM deployment workflows, you can turn a complex manual process
 
 Effective automation relies on a combination of the right tools and strategic implementation.
 
-- **Orchestration Engines**: Use a central orchestration platform to coordinate tasks across different tools and systems. An orchestrator can manage the end-to-end workflow, from provisioning a VM with Terraform to configuring it with Ansible and updating a [ServiceNow](https://kestra.io/orchestration/servicenow) CMDB.
+- **Orchestration Engines**: Use a central orchestration platform to coordinate tasks across different tools and systems. An orchestrator can manage the end-to-end workflow, from provisioning a VM with Terraform to [configuring it with Ansible](/resources/infrastructure/terraform-and-ansible) and updating a [ServiceNow](https://kestra.io/orchestration/servicenow) CMDB.
 - **Event-Driven Automation**: Implement [event-driven orchestration](https://kestra.io/resources/infrastructure/event-driven-orchestration) to react automatically to changes in your environment. For example, a monitoring alert could trigger a workflow to scale a VM's resources, or a new entry in a database could initiate the provisioning of a new VM.
 - **Integration with CMDB/ITSM**: Ensure that your automation workflows are fully integrated with your Configuration Management Database (CMDB) and IT Service Management (ITSM) tools. This keeps your inventory accurate and aligns technical operations with business processes.
 
