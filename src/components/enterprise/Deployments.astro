@@ -58,7 +58,6 @@ const CLOUD = [
                 ))}
             </ul>
             <aside class="cloud" aria-labelledby="ee-cloud">
-                <Image src={cloudVisual} alt="" />
                 <div class="pitch">
                     <p class="label">Prefer not to run it?</p>
                     <h3 id="ee-cloud">Kestra Cloud</h3>
@@ -71,6 +70,7 @@ const CLOUD = [
                         Explore Kestra Cloud <Icon name="mdi:chevron-right" />
                     </a>
                 </div>
+                <Image src={cloudVisual} alt="" />
                 <ol>
                     {CLOUD.map((point) => (
                         <li>
@@ -106,18 +106,17 @@ const CLOUD = [
             padding-top: 7.5rem;
         }
 
+        padding-bottom: 7.5rem;
+
         > .cloud {
             margin-inline: clamp(1.5rem, 4vw, 3.5rem);
-            margin-bottom: 7.5rem;
         }
 
         @include media-breakpoint-down(md) {
+            padding-bottom: 4.5rem;
+
             > header {
                 padding-top: 4.5rem;
-            }
-
-            > .cloud {
-                margin-bottom: 4.5rem;
             }
         }
     }
@@ -181,17 +180,33 @@ const CLOUD = [
     }
 
     .cloud {
+        --tint: #eef1ff;
+        --edge: #dfe4ff;
+
         display: grid;
-        grid-template-columns: auto minmax(0, 1.2fr) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 1.15fr) auto minmax(0, 1fr);
         align-items: center;
-        gap: 2rem 3rem;
+        gap: 2.5rem clamp(2rem, 4vw, 4rem);
+        overflow: hidden;
         margin-top: 1rem;
-        padding: 2rem;
-        border: 1px solid var(--ks-border-primary);
+        padding: clamp(2.5rem, 5vw, 4.5rem) clamp(1.5rem, 4vw, 4rem);
+        border: 1px solid var(--edge);
         border-radius: 8px;
+        background:
+            radial-gradient(
+                60% 120% at 50% 50%,
+                rgba(132, 5, 255, 0.07),
+                transparent 70%
+            ),
+            var(--tint);
+
+        :global(html.dark) & {
+            --tint: #14162a;
+            --edge: #262a4a;
+        }
 
         @include media-breakpoint-down(lg) {
-            grid-template-columns: auto minmax(0, 1fr);
+            grid-template-columns: minmax(0, 1fr) auto;
 
             ol {
                 grid-column: 1 / -1;
@@ -200,29 +215,40 @@ const CLOUD = [
 
         @include media-breakpoint-down(sm) {
             grid-template-columns: 1fr;
-            padding: 1.25rem;
+            padding: 2rem 1.25rem;
+
+            img {
+                order: -1;
+            }
         }
 
         img {
-            width: 7rem;
+            width: clamp(9rem, 15vw, 13rem);
             height: auto;
+
+            @include media-breakpoint-down(sm) {
+                width: 7rem;
+            }
         }
 
         .label {
-            margin: 0 0 0.5rem;
+            margin: 0 0 0.75rem;
             font-size: $font-size-sm;
-            color: var(--ks-content-tertiary);
+            font-weight: 600;
+            color: var(--ks-content-link);
         }
 
         h3 {
-            margin: 0 0 0.75rem;
-            font-size: $font-size-xl;
+            margin: 0 0 1rem;
+            font-size: clamp(1.75rem, 2.6vw, 2.25rem);
             font-weight: 600;
+            line-height: 1.15;
             color: var(--ks-content-primary);
         }
 
         .pitch p:not(.label) {
-            margin: 0 0 1.5rem;
+            max-width: 26rem;
+            margin: 0 0 2rem;
             font-size: $font-size-md;
             line-height: 1.6;
             color: var(--ks-content-secondary);
@@ -230,7 +256,6 @@ const CLOUD = [
 
         ol {
             display: grid;
-            gap: 0.75rem;
             margin: 0;
             padding: 0;
             list-style: none;
@@ -239,9 +264,14 @@ const CLOUD = [
         ol li {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
+            padding-block: 0.875rem;
             font-size: $font-size-md;
             color: var(--ks-content-primary);
+
+            & + li {
+                border-top: 1px solid var(--edge);
+            }
         }
 
         ol [data-icon] {
