@@ -9,7 +9,7 @@
  */
 export default function define(HL, hairline) {
 const {
-  Cam, clamp, facing, fit, prism, proj, rings, rrect, circ, poly, rad,
+  Cam, clamp, facing, fit, prism, proj, rings, rrect, circ, poly, rad, seg,
   spring, stepS, mk, pointer, put, register, disposer, solid,
 } = HL;
 
@@ -31,9 +31,11 @@ function mount({ stage, svg, read }, value) {
   const [br, bi] = rings(-BW, -BD, BW, BD, 9, 1.6);
   put(solid(g), prism(P, front, br, bi, 0, BH));
 
-  // The shackle: a U-shaped bar in the plane of the body's middle, two plates
-  // for its thickness, the far one painted first.
-  const back = mk("path", {}, g), fore = mk("path", { class: "sil" }, g);
+  // The shackle: a U-shaped bar in the plane of the body's middle. The far
+  // plate is painted first, then the sides that face the viewer with their
+  // far edges, then the near plate.
+  const back = mk("path", {}, g), sides = mk("path", { class: "fo" }, g);
+  const edges = mk("path", { class: "nf" }, g), fore = mk("path", { class: "sil" }, g);
   function outline(lift, ang, ty) {
     const pts = [];
     const arc = (r, a0, a1) => {
@@ -42,10 +44,27 @@ function mount({ stage, svg, read }, value) {
     const o = LEG + BAR, i = LEG - BAR, zl = BH - lift, zr = BH;
     pts.push([-o, zl]); arc(o, Math.PI, 0); pts.push([o, zr], [i, zr]); arc(i, 0, Math.PI); pts.push([-i, zl]);
     const c = Math.cos(ang), s = Math.sin(ang);
-    return poly(pts.map(([lx, lz]) => {
+    return pts.map(([lx, lz]) => {
       const dx = lx + LEG; // from the long leg, the pivot
       return P(-LEG + dx * c + ty * s, -dx * s + ty * c, lz + lift);
-    }));
+    });
+  }
+  const TOP = 8; // a sample on the outer arc's crown, whose side always shows
+  const turnOf = (a, b, c, d) => (b[0] - a[0]) * (d[1] - a[1]) - (b[1] - a[1]) * (d[0] - a[0]) + (d[0] - c[0]) * (b[1] - c[1]) - (d[1] - c[1]) * (b[0] - c[0]);
+  function bar(lift, ang) {
+    const far = outline(lift, ang, -BAR), near = outline(lift, ang, BAR), n = far.length;
+    const turn = far.map((_, i) => { const j = (i + 1) % n; return turnOf(far[i], far[j], near[j], near[i]); });
+    const shown = turn.map((t) => t * turn[TOP] > 0);
+    let quads = "", lines = "";
+    for (let i = 0; i < n; i++) {
+      const j = (i + 1) % n;
+      if (shown[i]) { quads += poly([far[i], far[j], near[j], near[i]]); lines += seg(far[i], far[j]); }
+      if (shown[i] !== shown[(i + n - 1) % n]) lines += seg(far[i], near[i]);
+    }
+    back.setAttribute("d", poly(far));
+    sides.setAttribute("d", quads);
+    edges.setAttribute("d", lines);
+    fore.setAttribute("d", poly(near));
   }
 
   // The keyhole is the Kestra mark: six diamonds and the round dot, in relief
@@ -69,8 +88,7 @@ function mount({ stage, svg, read }, value) {
     if (o === drawn) return;
     drawn = o;
     const lift = LIFT * Math.min(1, o * 2), ang = sw * Math.max(0, o * 2 - 1);
-    back.setAttribute("d", outline(lift, ang, -BAR));
-    fore.setAttribute("d", outline(lift, ang, BAR));
+    bar(lift, ang);
     fore.classList.toggle("hi", o > 0.5);
     pixEl.setAttribute("class", o > 0.5 ? "dot m" : "dot");
   }

@@ -114,8 +114,10 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
             <slot name="cards" />
 
             <figure class="stack">
-                <AiFlow />
+                <slot name="figure"><AiFlow /></slot>
             </figure>
+
+            <slot name="after" />
 
             {
                 foot && (

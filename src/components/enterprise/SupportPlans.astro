@@ -1,0 +1,262 @@
+---
+import { Icon } from "astro-icon/components"
+import PixelEdges from "~/components/about/PixelEdges.astro"
+import { API_URL } from "astro:env/client"
+
+const PLANS = ["Standard", "Premium", "Platinum"]
+
+const ROWS: { label: string; values: (string | boolean)[] }[] = [
+    {
+        label: "Channels",
+        values: [
+            "E-mail",
+            "E-mail + dedicated Teams/Slack",
+            "E-mail + dedicated Teams/Slack",
+        ],
+    },
+    { label: "P0 response", values: ["24h", "6h", "1h"] },
+    { label: "Coverage", values: ["8×5", "8×5", "24×7"] },
+    { label: "Customer Success program", values: [false, false, true] },
+    {
+        label: "Expert advisory",
+        values: ["Add-on", "Add-on", "6 hours / month"],
+    },
+]
+
+const TOOLS = [
+    { name: "Teams", plugin: "notifications.teams.TeamsIncomingWebhook" },
+    { name: "Slack", plugin: "notifications.slack.SlackIncomingWebhook" },
+]
+
+const logos = await Promise.all(
+    TOOLS.map(async (tool) => {
+        try {
+            const response = await fetch(
+                `${API_URL}/plugins/icons/io.kestra.plugin.${tool.plugin}`,
+            )
+            if (!response.ok) return null
+            const svg = Buffer.from(await response.arrayBuffer())
+            return {
+                name: tool.name,
+                src: `data:image/svg+xml;base64,${svg.toString("base64")}`,
+            }
+        } catch {
+            return null
+        }
+    }),
+)
+const TOOLS_TEXT = TOOLS.map((tool) => tool.name).join("/")
+const hasLogos = logos.every(Boolean)
+---
+
+<section class="ee-support" aria-labelledby="ee-support">
+    <PixelEdges left="wide" right="tall" />
+    <div class="container-xl">
+        <div class="rails">
+            <header>
+                <h2 id="ee-support">Support and Customer Success</h2>
+                <p>
+                    Enterprise includes Standard support. Premium and Platinum
+                    add channels, response times and the Customer Success
+                    program.
+                </p>
+            </header>
+            <ul>
+                {PLANS.map((plan, idx) => (
+                    <li class:list={{ top: idx === PLANS.length - 1 }}>
+                        <h3>{plan}</h3>
+                        <dl>
+                            {ROWS.map((row) => (
+                                <div>
+                                    <dt>{row.label}</dt>
+                                    <dd>
+                                        {row.values[idx] === true ? (
+                                            <Icon
+                                                name="mdi:check"
+                                                class="yes"
+                                                aria-label="Included"
+                                            />
+                                        ) : row.values[idx] === false ? (
+                                            <span
+                                                class="no"
+                                                aria-label="Not included"
+                                            >
+                                                —
+                                            </span>
+                                        ) : hasLogos &&
+                                          String(row.values[idx]).endsWith(
+                                              TOOLS_TEXT,
+                                          ) ? (
+                                            <>
+                                                {String(row.values[idx]).slice(
+                                                    0,
+                                                    -TOOLS_TEXT.length,
+                                                )}
+                                                <span class="tools">
+                                                    {logos.map((logo) => (
+                                                        <img
+                                                            src={logo!.src}
+                                                            alt={logo!.name}
+                                                            title={logo!.name}
+                                                            width="20"
+                                                            height="20"
+                                                        />
+                                                    ))}
+                                                </span>
+                                            </>
+                                        ) : (
+                                            row.values[idx]
+                                        )}
+                                    </dd>
+                                </div>
+                            ))}
+                        </dl>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "../about/style/section" as *;
+
+    .ee-support {
+        position: relative;
+        border-bottom: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-body);
+    }
+
+    .rails {
+        position: relative;
+        border-inline: 1px solid var(--ks-border-primary);
+
+        > * {
+            position: relative;
+            padding-inline: clamp(1.5rem, 4vw, 3.5rem);
+        }
+
+        > header {
+            padding-top: 7.5rem;
+        }
+
+        > ul {
+            padding-bottom: 7.5rem;
+        }
+
+        @include media-breakpoint-down(md) {
+            > header {
+                padding-top: 4.5rem;
+            }
+
+            > ul {
+                padding-bottom: 4.5rem;
+            }
+        }
+    }
+
+    header {
+        h2 {
+            @include title;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+        }
+
+        p {
+            @include lead;
+            max-width: 40rem;
+        }
+    }
+
+    ul {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+        margin: 3rem 0 0;
+        list-style: none;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    li {
+        padding: 1.5rem 1.5rem 0.75rem;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        background: var(--ks-background-secondary);
+
+        &.top {
+            border-color: color-mix(
+                in srgb,
+                var(--ks-content-link) 45%,
+                transparent
+            );
+            background: #f0f0fd;
+
+            :global(html.dark) & {
+                background: #1c1b2e;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            padding: 1.25rem 1.25rem 0.5rem;
+        }
+    }
+
+    h3 {
+        margin: 0 0 0.75rem;
+        font-size: $font-size-xl;
+        font-weight: 600;
+        color: var(--ks-content-primary);
+    }
+
+    dl {
+        margin: 0;
+
+        > div {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 1.5rem;
+            padding: 0.75rem 0;
+            border-top: 1px solid var(--ks-border-primary);
+        }
+    }
+
+    dt {
+        font-size: $font-size-sm;
+        font-weight: 400;
+        color: var(--ks-content-tertiary);
+    }
+
+    dd {
+        margin: 0;
+        font-size: $font-size-md;
+        font-weight: 500;
+        text-align: right;
+        color: var(--ks-content-primary);
+    }
+
+    .tools {
+        display: inline-flex;
+        gap: 0.375rem;
+        margin-left: 0.125rem;
+        vertical-align: -0.3em;
+
+        img {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+    }
+
+    .yes {
+        width: 1.125rem;
+        height: 1.125rem;
+        vertical-align: -0.2em;
+        color: var(--ks-content-link);
+    }
+
+    .no {
+        color: var(--ks-content-tertiary);
+    }
+</style>

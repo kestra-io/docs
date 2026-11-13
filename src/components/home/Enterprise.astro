@@ -31,6 +31,7 @@ interface Props {
     features?: Feature[]
     layers?: boolean
     actions?: boolean
+    light?: boolean
 }
 
 const DEFAULT_FEATURES: Feature[] = [
@@ -60,6 +61,7 @@ const {
     features: FEATURES = DEFAULT_FEATURES,
     layers = true,
     actions = true,
+    light = false,
 } = Astro.props
 
 const ROOT = "acme"
@@ -211,9 +213,9 @@ const WORKERS = [
 ---
 
 <section
-    class="enterprise surface-dark"
+    class:list={["enterprise", light ? "light" : "surface-dark"]}
     aria-labelledby="enterprise"
-    data-header-dark
+    data-header-dark={light ? undefined : ""}
 >
     {
         ["left", "right"].map((side) => (
@@ -889,6 +891,49 @@ const WORKERS = [
         }
     }
 
+    .enterprise.light {
+        --rule-color: var(--ks-border-primary);
+
+        border-bottom: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-body);
+        color: var(--ks-content-primary);
+
+        &::before {
+            display: none;
+        }
+
+        .squares {
+            opacity: 0.75;
+
+            rect {
+                fill: rgba(99, 27, 255, 0.035);
+            }
+        }
+
+        .head h2,
+        .head h2 em,
+        .features h3 {
+            color: var(--ks-content-primary);
+        }
+
+        .head p {
+            color: var(--ks-content-tertiary);
+        }
+
+        .features .text {
+            color: var(--ks-content-secondary);
+        }
+
+        .features > li:hover {
+            background: var(--ks-background-secondary);
+        }
+
+        .glimpse {
+            background: #0d0d10;
+            box-shadow: 0 30px 60px -36px rgba(13, 13, 16, 0.55);
+        }
+    }
+
     .squares {
         position: absolute;
         width: 520px;
@@ -969,6 +1014,11 @@ const WORKERS = [
 
         &.solo {
             grid-template-columns: minmax(0, 1fr);
+
+            h2 {
+                max-width: 16em;
+                text-wrap: balance;
+            }
 
             p {
                 max-width: 48rem;

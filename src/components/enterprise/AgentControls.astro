@@ -1,0 +1,172 @@
+---
+import { Icon } from "astro-icon/components"
+
+const CONTROLS = [
+    {
+        guard: "rbac",
+        icon: "mdi:shield-account-outline",
+        title: "Permissioned",
+        text: "An agent can only invoke authorized workflows and act within its service account’s permissions.",
+    },
+    {
+        guard: "approvals",
+        icon: "mdi:account-check-outline",
+        title: "Approved",
+        text: "Actions that change production wait for a human. The approval, the approver and the context are logged.",
+    },
+    {
+        guard: "audit",
+        icon: "mdi:text-box-search-outline",
+        title: "Audited",
+        text: "Every agent action is an execution: inputs, outputs, duration, who or what triggered it. A kill switch stops it when needed.",
+    },
+]
+---
+
+<ul class="agent-controls" data-agent-controls>
+    {CONTROLS.map((control) => (
+        <li data-control={control.guard}>
+            <h3>
+                <span class="badge">
+                    <Icon name={control.icon} />
+                </span>
+                {control.title}
+            </h3>
+            <p>{control.text}</p>
+        </li>
+    ))}
+</ul>
+
+<script>
+    function followGuards() {
+        for (const list of document.querySelectorAll<HTMLElement>(
+            "[data-agent-controls]:not([data-wired])",
+        )) {
+            list.dataset.wired = ""
+            const section = list.closest("section")
+            if (!section) continue
+            const sync = () => {
+                for (const item of list.querySelectorAll<HTMLElement>(
+                    "[data-control]",
+                )) {
+                    const guard = [
+                        ...section.querySelectorAll<HTMLElement>(
+                            `[data-guard="${item.dataset.control}"]`,
+                        ),
+                    ].find((el) => el.offsetParent)
+                    const state = guard?.dataset.state ?? ""
+                    if (item.dataset.state !== state) item.dataset.state = state
+                }
+            }
+            sync()
+            new MutationObserver((records) => {
+                if (records.some((record) => !list.contains(record.target)))
+                    sync()
+            }).observe(section, {
+                subtree: true,
+                attributes: true,
+                attributeFilter: ["data-state", "class", "hidden"],
+            })
+        }
+    }
+
+    document.addEventListener("astro:page-load", followGuards)
+    followGuards()
+</script>
+
+<style lang="scss">
+    .agent-controls {
+        --tone: rgba(255, 255, 255, 0.16);
+        --rule: rgba(255, 255, 255, 0.11);
+
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin: 3.5rem 0 0;
+
+        @include media-breakpoint-up(lg) {
+            margin-bottom: -2.5rem;
+        }
+        padding: 0;
+        border-top: 1px solid var(--rule);
+        list-style: none;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+            padding-inline: clamp(1.5rem, 4vw, 3.5rem);
+        }
+
+        li {
+            position: relative;
+            padding: 2rem clamp(1.5rem, 4vw, 3.5rem) 0;
+
+            @include media-breakpoint-up(lg) {
+                & + li::before {
+                    content: "";
+                    position: absolute;
+                    inset: 0 auto -100vh 0;
+                    width: 1px;
+                    background: var(--rule);
+                }
+            }
+
+            @include media-breakpoint-down(lg) {
+                padding: 1.5rem 0;
+
+                & + li {
+                    border-top: 1px solid var(--rule);
+                }
+            }
+
+            &[data-state="ok"] {
+                --tone: #5ee3ae;
+            }
+
+            &[data-state="wait"] {
+                --tone: #f2b25c;
+            }
+        }
+
+        h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 0 0 0.75rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .badge {
+            display: grid;
+            place-items: center;
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: 6px;
+            background: rgba(180, 140, 255, 0.14);
+            color: #b48cff;
+            transition:
+                color 0.4s ease,
+                background-color 0.4s ease;
+
+            :global(svg) {
+                width: 1rem;
+                height: 1rem;
+            }
+        }
+
+        li[data-state="ok"] .badge,
+        li[data-state="wait"] .badge {
+            background: color-mix(in srgb, var(--tone) 14%, transparent);
+            color: var(--tone);
+        }
+
+        p {
+            margin: 0;
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            color: var(--muted);
+        }
+    }
+</style>

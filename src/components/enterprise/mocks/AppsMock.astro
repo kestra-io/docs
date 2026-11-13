@@ -1,0 +1,955 @@
+---
+import { Icon } from "astro-icon/components"
+
+const APPS = [
+    {
+        icon: "mdi:database-export-outline",
+        title: "Data Export Request",
+        text: "Request a filtered dataset and download it as a file.",
+        tags: ["Analytics", "Reporting"],
+    },
+    {
+        icon: "mdi:creation-outline",
+        title: "AI Content Review",
+        text: "Review what the model wrote before it is published.",
+        tags: ["AI", "Approval"],
+    },
+    {
+        icon: "mdi:server-outline",
+        title: "VM Provisioning Request",
+        text: "Choose a size and a region, then get it approved.",
+        tags: ["Infrastructure", "Approval"],
+    },
+    {
+        icon: "mdi:account-plus-outline",
+        title: "New Employee Onboarding",
+        text: "Create the accounts and access a new hire needs.",
+        tags: ["HR", "Onboarding"],
+    },
+    {
+        icon: "mdi:lifebuoy",
+        title: "IT Helpdesk Ticket",
+        text: "Open a ticket and follow it to resolution.",
+        tags: ["IT Support"],
+    },
+    {
+        icon: "mdi:calendar-check-outline",
+        title: "Event Registration",
+        text: "A public form that feeds your CRM.",
+        tags: ["Public", "Events"],
+    },
+]
+
+const PEOPLE = [
+    { id: "launcher", name: "Launcher", icon: "mdi:play-circle-outline" },
+    { id: "admin", name: "Admin", icon: "mdi:shield-account-outline" },
+]
+
+const FIELDS = [
+    { label: "Requested by", value: "j.kim" },
+    { label: "Dataset", value: "customers", select: true },
+    { label: "Reason", value: "Quarterly churn analysis" },
+]
+---
+
+<div class="ui-mock apps-mock" aria-hidden="true" data-ui-mock>
+    <div class="stage">
+        <div class="apps">
+            {APPS.map((app, idx) => (
+                <div class="app">
+                    <span class="tile">
+                        <Icon name={app.icon} />
+                    </span>
+                    <div>
+                        <strong>{app.title}</strong>
+                        <p>{app.text}</p>
+                    </div>
+                    <span class="tags">
+                        {app.tags.map((tag) => (
+                            <span>{tag}</span>
+                        ))}
+                    </span>
+                    <span class:list={["request", { go: idx === 0 }]}>
+                        <Icon name="mdi:monitor" /> View App
+                    </span>
+                </div>
+            ))}
+        </div>
+        <div class="modal">
+            <strong class="name">Data Export Request</strong>
+            <p class="lede">
+                Request a filtered dataset and download it as a file. Exports of
+                customer data are approved by the data owners.
+            </p>
+            <div class="views">
+                <div class="view form">
+                    <strong class="section">Submit a request</strong>
+                    {FIELDS.map((field, idx) => (
+                        <label>
+                            <span>
+                                <b>*</b> {field.label}
+                            </span>
+                            <span
+                                class:list={["input", { select: field.select }]}
+                            >
+                                <span class={`val v${idx + 1}`}>
+                                    {field.value}
+                                </span>
+                                {field.select && (
+                                    <Icon name="mdi:chevron-down" />
+                                )}
+                            </span>
+                        </label>
+                    ))}
+                    <span class="next">Submit</span>
+                </div>
+                <div class="view busy">
+                    <span class="hold">
+                        <Icon name="mdi:pause" />
+                    </span>
+                    <span class="state waiting">
+                        <i></i> Waiting for approval
+                    </span>
+                    <code>Approver: data-owners</code>
+                </div>
+                <div class="view done">
+                    <span class="check">
+                        <Icon name="mdi:check" />
+                    </span>
+                    <span class="state success">
+                        <i></i> Your request has completed.
+                    </span>
+                    <span class="added">
+                        <Icon name="mdi:file-delimited-outline" />
+                        customers.csv
+                        <b>
+                            <Icon name="mdi:download" /> Download
+                        </b>
+                    </span>
+                </div>
+            </div>
+            <div class="steps">
+                <i></i>
+                <i class="s2"></i>
+                <i class="s3"></i>
+                <i class="s4"></i>
+            </div>
+        </div>
+        <div class="notice">
+            <span class="bell">
+                <Icon name="mdi:bell-outline" />
+            </span>
+            <div>
+                <strong>Approval required</strong>
+                <p>j.kim requests the customers dataset</p>
+                <span class="choices">
+                    <span class="reject">Reject</span>
+                    <span class="approve">Approve</span>
+                </span>
+            </div>
+        </div>
+        {PEOPLE.map((person) => (
+            <span class:list={["cursor", person.id]}>
+                <svg viewBox="0 0 10 10">
+                    <path d="M0 0 L10 4 L5.5 5.5 L4 10 Z" />
+                </svg>
+                <span class="who">
+                    <Icon name={person.icon} />
+                    {person.name}
+                </span>
+            </span>
+        ))}
+    </div>
+</div>
+
+<style lang="scss">
+    @use "./tokens" as *;
+
+    .apps-mock {
+        --loop: 14s;
+
+        @include tokens;
+    }
+
+    .stage {
+        position: relative;
+        padding-block: 2.4em;
+        font-size: calc(100cqw / 50);
+        line-height: 1.3;
+        color: var(--text);
+    }
+
+    .request,
+    .next {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4em;
+        border-radius: 0.4em;
+        font-weight: 600;
+        white-space: nowrap;
+
+        [data-icon] {
+            width: 1.2em;
+            height: 1.2em;
+        }
+    }
+
+    .next {
+        background: var(--primary);
+        color: #ffffff;
+    }
+
+    .apps {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.9em;
+    }
+
+    .app {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-rows: 1fr auto;
+        gap: 1.4em 0.75em;
+        padding: 0.95em 0.85em 0.85em;
+        border: 1px solid var(--line);
+        border-radius: 0.8em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+
+        .tile {
+            display: grid;
+            place-items: center;
+            width: 2.2em;
+            height: 2.2em;
+            border-radius: 0.4em;
+            background: var(--tile);
+            color: var(--tile-ink);
+
+            [data-icon] {
+                width: 1.2em;
+                height: 1.2em;
+            }
+        }
+
+        strong {
+            display: block;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        p {
+            margin: 0.35em 0 0;
+            font-size: 0.64em;
+            line-height: 1.5;
+            color: var(--muted);
+        }
+
+        .tags {
+            grid-column: 1 / -1;
+            grid-row: 2;
+            display: flex;
+            align-self: center;
+            gap: 0.35em;
+
+            span {
+                padding: 0.3em 0.6em;
+                border-radius: 0.3em;
+                background: var(--chip);
+                font-size: 0.62em;
+                font-weight: 600;
+                color: var(--soft);
+            }
+        }
+    }
+
+    .request {
+        grid-column: 2;
+        grid-row: 2;
+        justify-self: end;
+        height: 2.5em;
+        padding: 0 0.9em;
+        border: 1px solid var(--line);
+        background: var(--chip);
+        font-size: 0.68em;
+    }
+
+    .modal {
+        position: absolute;
+        top: 50%;
+        left: 46%;
+        width: 26em;
+        padding: 2.2em 2.2em 1.9em;
+        border: 1px solid var(--line);
+        border-radius: 1.1em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        transform: translate(-50%, -50%);
+
+        .name {
+            display: block;
+            font-size: 1.3em;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .lede {
+            margin: 0.6em 0 1.2em;
+            font-size: 0.72em;
+            line-height: 1.55;
+            color: var(--soft);
+        }
+
+        .section {
+            display: block;
+            margin-bottom: 0.8em;
+            font-size: 0.88em;
+            font-weight: 600;
+        }
+    }
+
+    .views {
+        display: grid;
+    }
+
+    .view {
+        grid-area: 1 / 1;
+
+        &.form,
+        &.busy {
+            opacity: 0;
+        }
+
+        &.busy,
+        &.done {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8em;
+        }
+
+        code {
+            font-size: 0.72em;
+            color: var(--muted);
+        }
+    }
+
+    label {
+        display: block;
+        margin-bottom: 0.9em;
+        font-size: 0.74em;
+        font-weight: 600;
+
+        b {
+            font-weight: 600;
+            color: #e5484d;
+        }
+    }
+
+    .input {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 2.9em;
+        margin-top: 0.45em;
+        padding: 0 0.85em;
+        border: 1px solid transparent;
+        border-radius: 0.45em;
+        background: var(--field);
+        font-family: var(--bs-font-monospace);
+        font-size: 1.05em;
+        font-weight: 400;
+
+        &.select {
+            border-color: var(--line);
+            font-family: inherit;
+            font-weight: 500;
+        }
+
+        [data-icon] {
+            width: 1.2em;
+            height: 1.2em;
+            color: var(--muted);
+        }
+    }
+
+    .next {
+        float: right;
+        height: 2.7em;
+        margin-top: 0.5em;
+        padding: 0 1.3em;
+        font-size: 0.8em;
+    }
+
+    .steps {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.4em;
+        margin-top: 1.3em;
+        padding-top: 1.1em;
+        border-top: 1px solid var(--line);
+
+        i {
+            height: 0.3em;
+            border-radius: 999px;
+            background: var(--ring);
+        }
+    }
+
+    .hold {
+        display: grid;
+        place-items: center;
+        width: 2.6em;
+        height: 2.6em;
+        border-radius: 50%;
+        background: var(--wait-bg);
+        color: var(--wait);
+
+        [data-icon] {
+            width: 1.5em;
+            height: 1.5em;
+        }
+    }
+
+    .notice {
+        position: absolute;
+        top: 0.5em;
+        right: -1.2em;
+        display: flex;
+        gap: 0.8em;
+        width: 17em;
+        padding: 0.9em 1em 1em;
+        border: 1px solid var(--line);
+        border-radius: 0.9em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        opacity: 0;
+
+        .bell {
+            display: grid;
+            place-items: center;
+            flex: none;
+            width: 2em;
+            height: 2em;
+            border-radius: 0.5em;
+            background: var(--wait-bg);
+            color: var(--wait);
+
+            [data-icon] {
+                width: 1.15em;
+                height: 1.15em;
+            }
+        }
+
+        strong {
+            display: block;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        p {
+            margin: 0.25em 0 0.8em;
+            font-size: 0.66em;
+            color: var(--muted);
+        }
+    }
+
+    .choices {
+        display: flex;
+        gap: 0.5em;
+
+        span {
+            display: inline-flex;
+            align-items: center;
+            height: 2.5em;
+            padding: 0 1em;
+            border: 1px solid var(--line);
+            border-radius: 0.4em;
+            background: var(--chip);
+            font-size: 0.68em;
+            font-weight: 600;
+        }
+
+        .approve {
+            border-color: transparent;
+            background: var(--primary);
+            color: #ffffff;
+        }
+    }
+
+    .check {
+        display: grid;
+        place-items: center;
+        width: 2.6em;
+        height: 2.6em;
+        border-radius: 50%;
+        background: var(--ok-bg);
+        color: var(--ok);
+
+        [data-icon] {
+            width: 1.5em;
+            height: 1.5em;
+        }
+    }
+
+    .state {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
+        font-size: 0.9em;
+        font-weight: 600;
+
+        i {
+            width: 0.55em;
+            height: 0.55em;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        &.waiting {
+            color: var(--wait);
+        }
+
+        &.success {
+            color: var(--ok);
+        }
+    }
+
+    .added {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
+        padding: 0.5em 0.6em 0.5em 0.9em;
+        border: 1px solid var(--line);
+        border-radius: 0.5em;
+        font-family: var(--bs-font-monospace);
+        font-size: 0.72em;
+
+        [data-icon] {
+            width: 1.25em;
+            height: 1.25em;
+            color: var(--muted);
+        }
+
+        b {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3em;
+            margin-left: 0.6em;
+            padding: 0.4em 0.8em;
+            border-radius: 0.35em;
+            background: var(--chip);
+            font-family: var(--bs-font-sans-serif);
+            font-weight: 600;
+
+            [data-icon] {
+                color: currentColor;
+            }
+        }
+    }
+
+    .cursor {
+        --tone: 204, 62, 138;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.1em;
+        opacity: 0;
+
+        :global(html.dark) & {
+            --tone: 240, 140, 190;
+        }
+
+        &.admin {
+            --tone: 38, 112, 214;
+
+            :global(html.dark) & {
+                --tone: 140, 196, 255;
+            }
+        }
+
+        svg {
+            width: 0.95em;
+            height: 0.95em;
+            fill: rgb(var(--tone));
+        }
+    }
+
+    .who {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3em;
+        margin-left: 0.6em;
+        padding: 0.15em 0.55em;
+        border: 1px solid rgb(var(--tone));
+        border-radius: 0.45em;
+        background: rgb(var(--tone));
+        font-size: 0.7em;
+        font-weight: 600;
+        white-space: nowrap;
+        color: #ffffff;
+
+        :global(html.dark) & {
+            border-color: rgba(var(--tone), 0.45);
+            background: rgb(20, 20, 24);
+            color: rgb(var(--tone));
+        }
+
+        [data-icon] {
+            width: 1.1em;
+            height: 1.1em;
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .apps-mock:not([data-play]) * {
+            animation-play-state: paused !important;
+        }
+
+        .apps {
+            animation: apps-mock-veil var(--loop) linear infinite both;
+        }
+
+        .modal {
+            animation: apps-mock-modal var(--loop) linear infinite both;
+        }
+
+        .request.go {
+            animation: apps-mock-press-1 var(--loop) linear infinite both;
+        }
+
+        .next {
+            animation: apps-mock-press-2 var(--loop) linear infinite both;
+        }
+
+        .view.form {
+            animation: apps-mock-form var(--loop) linear infinite both;
+        }
+
+        .view.busy {
+            animation: apps-mock-busy var(--loop) linear infinite both;
+        }
+
+        .view.done {
+            animation: apps-mock-done var(--loop) linear infinite both;
+        }
+
+        .val {
+            animation: var(--loop) linear infinite both;
+
+            &.v1 {
+                animation-name: apps-mock-type-1;
+            }
+
+            &.v2 {
+                animation-name: apps-mock-type-2;
+            }
+
+            &.v3 {
+                animation-name: apps-mock-type-3;
+            }
+        }
+
+        .steps {
+            .s2 {
+                animation: apps-mock-step-2 var(--loop) linear infinite both;
+            }
+
+            .s3 {
+                animation: apps-mock-step-3 var(--loop) linear infinite both;
+            }
+
+            .s4 {
+                animation: apps-mock-step-4 var(--loop) linear infinite both;
+            }
+        }
+
+        .notice {
+            animation: apps-mock-notice var(--loop) linear infinite both;
+        }
+
+        .approve {
+            animation: apps-mock-press-3 var(--loop) linear infinite both;
+        }
+
+        .cursor.launcher {
+            animation: apps-mock-launcher var(--loop) linear infinite both;
+        }
+
+        .cursor.admin {
+            animation: apps-mock-admin var(--loop) linear infinite both;
+        }
+    }
+
+    @keyframes apps-mock-veil {
+        0%,
+        11% {
+            opacity: 1;
+        }
+        14%,
+        96% {
+            opacity: 0.45;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes apps-mock-modal {
+        0%,
+        11% {
+            opacity: 0;
+            transform: translate(-50%, -46%) scale(0.95);
+            animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        15%,
+        96% {
+            opacity: 1;
+            transform: translate(-50%, -50%);
+        }
+        100% {
+            opacity: 0;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    @keyframes apps-mock-press-1 {
+        0%,
+        9%,
+        12%,
+        100% {
+            transform: none;
+            filter: none;
+        }
+        10.5% {
+            transform: scale(0.93);
+            filter: brightness(0.92);
+        }
+    }
+
+    @keyframes apps-mock-press-2 {
+        0%,
+        41%,
+        44%,
+        100% {
+            transform: none;
+            filter: none;
+        }
+        42.5% {
+            transform: scale(0.93);
+            filter: brightness(1.3);
+        }
+    }
+
+    @keyframes apps-mock-form {
+        0%,
+        44% {
+            opacity: 1;
+        }
+        46%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes apps-mock-busy {
+        0%,
+        45% {
+            opacity: 0;
+        }
+        47%,
+        73% {
+            opacity: 1;
+        }
+        75%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes apps-mock-done {
+        0%,
+        74% {
+            opacity: 0;
+            transform: scale(0.96);
+        }
+        77%,
+        100% {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    @keyframes apps-mock-type-1 {
+        0%,
+        16% {
+            clip-path: inset(0 100% 0 0);
+            animation-timing-function: steps(11);
+        }
+        22%,
+        100% {
+            clip-path: inset(0);
+        }
+    }
+
+    @keyframes apps-mock-type-2 {
+        0%,
+        24% {
+            clip-path: inset(0 100% 0 0);
+            animation-timing-function: steps(13);
+        }
+        30%,
+        100% {
+            clip-path: inset(0);
+        }
+    }
+
+    @keyframes apps-mock-type-3 {
+        0%,
+        32% {
+            opacity: 0;
+        }
+        33%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes apps-mock-step-2 {
+        0%,
+        46% {
+            background: var(--chip);
+        }
+        48%,
+        100% {
+            background: var(--ring);
+        }
+    }
+
+    @keyframes apps-mock-step-3 {
+        0%,
+        73% {
+            background: var(--chip);
+        }
+        75%,
+        100% {
+            background: var(--ring);
+        }
+    }
+
+    @keyframes apps-mock-step-4 {
+        0%,
+        75% {
+            background: var(--chip);
+        }
+        77%,
+        100% {
+            background: var(--ring);
+        }
+    }
+
+    @keyframes apps-mock-notice {
+        0%,
+        52% {
+            opacity: 0;
+            transform: translateY(-0.8em);
+            animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        56%,
+        73% {
+            opacity: 1;
+            transform: none;
+        }
+        77%,
+        100% {
+            opacity: 0;
+            transform: translateY(-0.4em);
+        }
+    }
+
+    @keyframes apps-mock-press-3 {
+        0%,
+        68.5%,
+        71.5%,
+        100% {
+            transform: none;
+            filter: none;
+        }
+        70% {
+            transform: scale(0.93);
+            filter: brightness(1.3);
+        }
+    }
+
+    @keyframes apps-mock-launcher {
+        0% {
+            opacity: 0;
+            transform: translate(31em, 21em);
+        }
+        2% {
+            opacity: 1;
+            transform: translate(31em, 21em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        9%,
+        15% {
+            opacity: 1;
+            transform: translate(20.6em, 8em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        18%,
+        34% {
+            opacity: 1;
+            transform: translate(33em, 12em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        40%,
+        48% {
+            opacity: 1;
+            transform: translate(31em, 23.1em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        56%,
+        95% {
+            opacity: 0.35;
+            transform: translate(38.5em, 26.5em);
+        }
+        100% {
+            opacity: 0;
+            transform: translate(38.5em, 26.5em);
+        }
+    }
+
+    @keyframes apps-mock-admin {
+        0%,
+        54% {
+            opacity: 0;
+            transform: translate(50em, 11em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        58% {
+            opacity: 1;
+            transform: translate(48em, 9em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        65%,
+        72% {
+            opacity: 1;
+            transform: translate(44.3em, 4.1em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        79% {
+            opacity: 1;
+            transform: translate(47em, 10em);
+        }
+        84%,
+        100% {
+            opacity: 0;
+            transform: translate(47em, 10em);
+        }
+    }
+</style>

@@ -1,0 +1,633 @@
+---
+import { API_URL } from "astro:env/client"
+import { Icon } from "astro-icon/components"
+import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
+
+const GUARDS = [
+    "Permissions",
+    "Approvals",
+    "Audit log",
+    "Policies",
+    "Kill switch",
+]
+
+const AGENTS = ["Support agent", "Ops agent", "Finance agent"]
+
+const ZONES = [
+    {
+        group: "support-zone",
+        systems: [
+            { name: "Zendesk", plugin: "io.kestra.plugin.zendesk" },
+            { name: "Orders DB", plugin: "io.kestra.plugin.jdbc.postgresql" },
+        ],
+    },
+    {
+        group: "infra-zone",
+        systems: [
+            { name: "Kubernetes", plugin: "io.kestra.plugin.kubernetes" },
+            { name: "ServiceNow", plugin: "io.kestra.plugin.servicenow" },
+        ],
+    },
+    {
+        group: "sap-zone",
+        systems: [
+            { name: "SAP", plugin: "io.kestra.plugin.jdbc.hana" },
+            { name: "Vault", plugin: "io.kestra.ee.secret.vault" },
+        ],
+    },
+]
+
+async function logo(plugin: string) {
+    try {
+        const response = await fetch(`${API_URL}/plugins/icons/${plugin}`)
+        if (!response.ok) return null
+        const svg = Buffer.from(await response.arrayBuffer())
+        return `data:image/svg+xml;base64,${svg.toString("base64")}`
+    } catch {
+        return null
+    }
+}
+
+const zones = await Promise.all(
+    ZONES.map(async (zone) => ({
+        ...zone,
+        systems: await Promise.all(
+            zone.systems.map(async (system) => ({
+                name: system.name,
+                logo: await logo(system.plugin),
+            })),
+        ),
+    })),
+)
+---
+
+<div class="agent-zones">
+    <div class="plane">
+        <p class="title">
+            <img src={kestraMark.src} alt="" width="22" height="22" />
+            Control plane
+        </p>
+        <p class="note">
+            No agent code runs here. It never connects to your systems.
+        </p>
+        <div class="band guards">
+            <p class="label">
+                <Icon name="mdi:shield-check-outline" />
+                Guardrails
+            </p>
+            <ul>
+                {GUARDS.map((guard) => (
+                    <li>{guard}</li>
+                ))}
+            </ul>
+        </div>
+        <div class="band agents">
+            <p class="label">
+                <Icon name="mdi:robot-outline" />
+                AI agents
+            </p>
+            <ul>
+                {AGENTS.map((agent) => (
+                    <li>{agent}</li>
+                ))}
+            </ul>
+        </div>
+    </div>
+    <div class="dispatch">
+        <p class="outbound">
+            <strong>outbound only</strong>
+            TLS · no inbound port
+        </p>
+        <ul>
+            {zones.map((zone, index) => (
+                <li style={`--i: ${index}`}>
+                    <span class="wire up" aria-hidden="true" />
+                    <div class="workers">
+                        <strong>
+                            <Icon name="mdi:server-outline" />
+                            Dedicated workers
+                        </strong>
+                        <code>wg: {zone.group}</code>
+                        {index === 0 && (
+                            <span class="blocked" aria-hidden="true">
+                                <Icon name="mdi:lock" />
+                            </span>
+                        )}
+                    </div>
+                    <span class="wire" aria-hidden="true" />
+                    <ul class="systems">
+                        {zone.systems.map((system) => (
+                            <li>
+                                {system.logo && (
+                                    <img
+                                        src={system.logo}
+                                        alt=""
+                                        width="20"
+                                        height="20"
+                                        loading="lazy"
+                                    />
+                                )}
+                                {system.name}
+                            </li>
+                        ))}
+                    </ul>
+                </li>
+            ))}
+        </ul>
+    </div>
+    <p class="caption">
+        <strong>Agents act only through governed workflows.</strong>
+        Each agent’s workers reach only the systems in their own zone and hold
+        no database credentials.
+    </p>
+</div>
+
+<style lang="scss">
+    :global(.ai-governance.is-aurora.surface-dark:has(.agent-zones)) {
+        --line: rgba(255, 255, 255, 0.11);
+    }
+
+    .agent-zones {
+        --rule: rgba(255, 255, 255, 0.11);
+        --violet: #b48cff;
+        --wire: rgba(180, 140, 255, 0.55);
+        --gap: clamp(1rem, 2.6vw, 2.5rem);
+        --mono: var(--bs-font-monospace);
+        --pad: 0.75rem;
+        --inner: 1.5rem;
+        --edge: calc(var(--pad) + var(--inner) + 1px);
+
+        @include media-breakpoint-down(md) {
+            --inner: 1.25rem;
+            --edge: var(--pad);
+        }
+
+        position: relative;
+        z-index: 1;
+        padding: 0 clamp(1rem, 2.5vw, 2.5rem);
+        color: #ffffff;
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        code {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            color: #a3a3b1;
+        }
+    }
+
+    .plane {
+        overflow: hidden;
+        border: 1px solid var(--rule);
+        border-radius: 8px;
+        background: rgba(26, 25, 34, 0.88);
+    }
+
+    .title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.625rem;
+        padding: 1.25rem 1rem 0.5rem;
+        font-family: var(--mono);
+        font-size: 0.8125rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+
+        img {
+            width: 1.75rem;
+            height: 1.75rem;
+            padding: 0.1875rem;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 6px;
+            background: #17161d;
+        }
+    }
+
+    .note {
+        padding: 0 1rem 1.25rem;
+        font-family: var(--mono);
+        font-size: 0.75rem;
+        color: #c3c0e4;
+        text-align: center;
+    }
+
+    .band {
+        margin: 0 var(--pad) var(--pad);
+        padding: 1.25rem var(--inner) 1.5rem;
+        border-radius: 6px;
+        background: rgba(0, 0, 0, 0.26);
+
+        .label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding-bottom: 1rem;
+            font-family: var(--mono);
+            font-size: 0.6875rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #c3c0e4;
+
+            :global(svg) {
+                width: 0.875rem;
+                height: 0.875rem;
+                color: var(--violet);
+            }
+        }
+
+        ul {
+            display: grid;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            text-align: center;
+
+            & + li {
+                border-left: 1px solid var(--rule);
+            }
+
+            @include media-breakpoint-down(md) {
+                justify-content: flex-start;
+                padding: 0.375rem 0;
+                border-left: 0 !important;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            padding-bottom: 1rem;
+
+            .label {
+                justify-content: flex-start;
+                padding-bottom: 0.625rem;
+            }
+        }
+    }
+
+    .guards ul {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    .agents ul {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    .dispatch {
+        position: relative;
+        padding-inline: var(--edge);
+
+        > ul {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+
+            @include media-breakpoint-down(md) {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            > li {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding-inline: calc(var(--gap) / 2);
+
+                @include media-breakpoint-down(md) {
+                    & + li {
+                        margin-top: 1.25rem;
+
+                        .wire.up,
+                        .workers::after {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .outbound {
+        position: absolute;
+        top: 0.75rem;
+        left: calc(var(--edge) + (100% - 2 * var(--edge)) / 6 + 0.875rem);
+        display: grid;
+        font-family: var(--mono);
+        font-size: 0.6875rem;
+        line-height: 1.5;
+        color: #a3a3b1;
+
+        strong {
+            font-weight: 600;
+            color: var(--violet);
+        }
+
+        @include media-breakpoint-down(md) {
+            position: static;
+            padding-top: 0.75rem;
+            text-align: center;
+        }
+    }
+
+    .wire {
+        position: relative;
+        width: 1px;
+        height: 1.5rem;
+        background: repeating-linear-gradient(
+            var(--wire) 0 3px,
+            transparent 3px 7px
+        );
+
+        &.up {
+            --run: 3.25rem;
+
+            height: var(--run);
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: -1px;
+                left: 50%;
+                width: 4rem;
+                height: 1px;
+                margin-left: -2rem;
+                background: linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--violet) 30%,
+                    #ffffff 50%,
+                    var(--violet) 70%,
+                    transparent
+                );
+                box-shadow: 0 0 0.75rem 1px rgba(180, 140, 255, 0.7);
+                opacity: 0;
+                animation: agent-zones-arrive 2.4s linear infinite;
+                animation-delay: calc(var(--i) * 0.8s);
+            }
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                width: 0.375rem;
+                height: 0.375rem;
+                margin-left: -0.1875rem;
+                border-radius: 50%;
+                background: #ffffff;
+                box-shadow: 0 0 0.625rem 0.125rem rgba(180, 140, 255, 0.8);
+                will-change: transform, opacity;
+                animation: agent-zones-pulse 2.4s ease-in infinite;
+                animation-delay: calc(var(--i) * 0.8s);
+            }
+
+            @include media-breakpoint-down(md) {
+                --run: 2rem;
+            }
+        }
+    }
+
+    .workers {
+        position: relative;
+        display: grid;
+        gap: 0.25rem;
+        width: 100%;
+        padding: 1rem 0.5rem;
+        border: 1px solid rgba(180, 140, 255, 0.4);
+        border-radius: 8px;
+        background: rgba(40, 24, 72, 0.9);
+        text-align: center;
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            width: 4rem;
+            height: 1px;
+            margin-left: -2rem;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                var(--violet) 30%,
+                #ffffff 50%,
+                var(--violet) 70%,
+                transparent
+            );
+            box-shadow: 0 0 0.75rem 1px rgba(180, 140, 255, 0.7);
+            opacity: 0;
+            animation: agent-zones-depart 2.4s linear infinite;
+            animation-delay: calc(var(--i) * 0.8s);
+        }
+
+        strong {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.9375rem;
+            font-weight: 700;
+            white-space: nowrap;
+
+            :global(svg) {
+                flex: none;
+                width: 1.125rem;
+                height: 1.125rem;
+                color: var(--violet);
+            }
+        }
+
+        code {
+            color: var(--violet);
+        }
+    }
+
+    .blocked {
+        position: absolute;
+        z-index: 1;
+        top: 50%;
+        left: 100%;
+        display: grid;
+        place-items: center;
+        width: var(--gap);
+        height: 1.5rem;
+        translate: 0 -50%;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 50% 0 auto;
+            border-top: 1px dashed rgba(255, 92, 122, 0.7);
+        }
+
+        :global(svg) {
+            position: relative;
+            width: 1.5rem;
+            height: 1.5rem;
+            padding: 0.3125rem;
+            border: 1px solid rgba(255, 92, 122, 0.7);
+            border-radius: 50%;
+            background: #1b1118;
+            color: #ff5c7a;
+            box-shadow: 0 0 0.75rem rgba(255, 92, 122, 0.35);
+        }
+
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
+
+    .systems {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        @include media-breakpoint-between(md, xl) {
+            grid-template-columns: minmax(0, 1fr);
+            padding-block: 0.25rem;
+
+            li {
+                justify-content: flex-start;
+                padding: 0.375rem 0 0.375rem calc(50% - 3.5rem);
+            }
+        }
+        width: 100%;
+        border: 1px solid var(--rule);
+        border-radius: 8px;
+        background: rgba(26, 25, 34, 0.88);
+
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.625rem 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        img {
+            flex: none;
+            width: 1.375rem;
+            height: 1.375rem;
+            padding: 0.1875rem;
+            border-radius: 5px;
+            background: #ffffff;
+            object-fit: contain;
+        }
+    }
+
+    .caption {
+        display: grid;
+        gap: 0.375rem;
+        margin-top: 4rem !important;
+        font-size: 0.9375rem;
+        line-height: 1.5;
+        color: #c3c0e4;
+        text-align: center;
+
+        strong {
+            font-size: 1rem;
+            color: #ffffff;
+        }
+    }
+
+    @keyframes agent-zones-arrive {
+        0% {
+            transform: scaleX(1.1);
+            opacity: 0.5;
+        }
+
+        14% {
+            transform: scaleX(1.5);
+            opacity: 0;
+        }
+
+        80% {
+            transform: scaleX(0.2);
+            opacity: 0;
+        }
+
+        96% {
+            transform: scaleX(1);
+            opacity: 1;
+        }
+
+        100% {
+            transform: scaleX(1.1);
+            opacity: 0.5;
+        }
+    }
+
+    @keyframes agent-zones-depart {
+        0% {
+            transform: scaleX(0.2);
+            opacity: 0;
+        }
+
+        7% {
+            transform: scaleX(1);
+            opacity: 1;
+        }
+
+        26% {
+            transform: scaleX(1.5);
+            opacity: 0;
+        }
+
+        100% {
+            transform: scaleX(1.5);
+            opacity: 0;
+        }
+    }
+
+    @keyframes agent-zones-pulse {
+        0% {
+            transform: translateY(0);
+            opacity: 0;
+        }
+
+        15% {
+            opacity: 1;
+        }
+
+        85% {
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateY(calc(-1 * var(--run)));
+            opacity: 0;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .wire.up::before,
+        .wire.up::after,
+        .workers::after {
+            display: none;
+        }
+    }
+</style>
