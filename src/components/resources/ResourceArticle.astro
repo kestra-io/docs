@@ -9,6 +9,8 @@ import ResourceHero from "~/components/resources/ResourceHero.astro"
 import SimilarResources from "~/components/resources/SimilarResources.astro"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
 import Faq from "~/components/common/Faq.vue"
+import SchemaArticle from "~/components/common/SchemaArticle.astro"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 import ResourceCtaPair from "~/components/resources/ResourceCtaPair.vue"
 import LivePluginCount from "~/components/content/LivePluginCount.astro"
 import ResourceList from "~/components/resources/ResourceList.astro"
@@ -54,7 +56,7 @@ const staticImage = image
 // Author: a named Person if set in front-matter, otherwise the Kestra
 // Organization node emitted site-wide (referenced by @id).
 const author = page.author
-    ? { "@type": "Person", name: page.author }
+    ? { "@type": "Person" as const, name: page.author }
     : { "@id": "https://kestra.io/#organization" }
 
 // Always emit an image: the per-page hero when present, else the site OG default.
@@ -62,40 +64,7 @@ const articleImage = staticImage
     ? `${Astro.url.origin}${staticImage.src}`
     : `${Astro.url.origin}/og-image.png`
 
-const jsonLinkedData = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    mainEntityOfPage: {
-        "@type": "WebPage",
-        "@id": Astro.url.href,
-    },
-    headline: metaTitle,
-    image: [articleImage],
-    author,
-    ...(date ? { datePublished: date } : {}),
-    ...(lastUpdated ? { dateModified: lastUpdated } : {}),
-    publisher: {
-        "@type": "Organization",
-        "@id": "https://kestra.io/#organization",
-        name: "Kestra",
-        logo: { "@type": "ImageObject", url: "https://kestra.io/logo.svg" },
-    },
-    description: metaDescription,
-}
-
 const faqItems = await resolveTotalPluginsPlaceholder(page.faq ?? [])
-const faqSchema =
-    faqItems.length > 0
-        ? {
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              mainEntity: faqItems.map((item) => ({
-                  "@type": "Question",
-                  name: item.question,
-                  acceptedAnswer: { "@type": "Answer", text: item.answer },
-              })),
-          }
-        : null
 ---
 
 <Layout
@@ -103,35 +72,39 @@ const faqSchema =
     description={metaDescription}
     image={staticImage?.src}
 >
-    <section>
-        <Fragment slot="head">
-            <meta property="og:type" content="article" />
-            {date && (
-                <meta
-                    property="article:published_time"
-                    content={new Date(date).toISOString()}
-                />
-            )}
+    {/* Direct child of Layout: a slot on a nested element never reaches <head>. */}
+    <Fragment slot="head">
+        <meta property="og:type" content="article" />
+        {date && (
+            <meta
+                property="article:published_time"
+                content={new Date(date).toISOString()}
+            />
+        )}
+        {lastUpdated && (
+            <meta
+                property="article:modified_time"
+                content={new Date(lastUpdated).toISOString()}
+            />
+        )}
+        <SchemaArticle
+            headline={metaTitle}
+            description={metaDescription}
+            image={articleImage}
+            {author}
+            datePublished={date}
+            dateModified={lastUpdated}
+        />
+        {page.schema && (
             <script
                 is:inline
                 type="application/ld+json"
-                set:html={JSON.stringify(jsonLinkedData)}
+                set:html={JSON.stringify(page.schema)}
             />
-            {page.schema && (
-                <script
-                    is:inline
-                    type="application/ld+json"
-                    set:html={JSON.stringify(page.schema)}
-                />
-            )}
-            {faqSchema && (
-                <script
-                    is:inline
-                    type="application/ld+json"
-                    set:html={JSON.stringify(faqSchema)}
-                />
-            )}
-        </Fragment>
+        )}
+        <SchemaFAQ items={faqItems} />
+    </Fragment>
+    <section>
         <ResourceHero
             tag={page.tag}
             title={page.title}
