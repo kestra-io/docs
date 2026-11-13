@@ -52,11 +52,47 @@ const beam = (angle: number, r: number) => {
 const WHEEL = CARDS
 const STEP = 360 / WHEEL.length
 const RINGS = [{ r: 590 }, { r: 372, dash: "3 13", k: 1 }]
+let seed = 7
+const random = () => {
+    seed = (seed * 16807) % 2147483647
+    return seed / 2147483647
+}
+const dust = (count: number, size: number) =>
+    Array.from({ length: count }, () => ({
+        x: +(random() * 1600).toFixed(1),
+        y: +(random() * 800).toFixed(1),
+        s: +(size * (0.7 + random() * 0.6)).toFixed(1),
+        o: +(0.35 + random() * 0.65).toFixed(2),
+    }))
+const DUST = [
+    { depth: "far", squares: dust(70, 3) },
+    { depth: "mid", squares: dust(30, 6) },
+    { depth: "near", squares: dust(9, 16) },
+]
 ---
 
 <section class="ee-hero" aria-labelledby="ee-hero-title">
     <PixelEdges left="tall" right="wide" />
     <div class="frame surface-dark" data-header-dark data-ee-orbit>
+        <div class="depth" aria-hidden="true">
+            {DUST.map((layer) => (
+                <svg
+                    class={layer.depth}
+                    viewBox="0 0 1600 800"
+                    preserveAspectRatio="xMidYMid slice"
+                >
+                    {layer.squares.map((square) => (
+                        <rect
+                            x={square.x}
+                            y={square.y}
+                            width={square.s}
+                            height={square.s}
+                            opacity={square.o}
+                        />
+                    ))}
+                </svg>
+            ))}
+        </div>
         <div class="container-xl">
             <div class="stage">
                 <div class="copy">
@@ -147,6 +183,7 @@ const RINGS = [{ r: 590 }, { r: 372, dash: "3 13", k: 1 }]
                                 </div>
                             ))}
                         </div>
+                        <span class="shade" />
                         <span class="core" data-core>
                             <span class="pips">
                                 {CARDS.map(() => (
@@ -327,6 +364,35 @@ const RINGS = [{ r: 590 }, { r: 372, dash: "3 13", k: 1 }]
             running = entry.isIntersecting
             if (running) loop()
         }).observe(frame)
+
+        if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
+            let queued = 0
+            frame.addEventListener("pointermove", (event) => {
+                if (queued) return
+                queued = requestAnimationFrame(() => {
+                    queued = 0
+                    const box = frame.getBoundingClientRect()
+                    const x = (event.clientX - box.left) / box.width - 0.5
+                    const y = (event.clientY - box.top) / box.height - 0.5
+                    hub.style.setProperty(
+                        "--ry",
+                        `${(-18 + x * 22).toFixed(2)}deg`,
+                    )
+                    hub.style.setProperty(
+                        "--rx",
+                        `${(16 - y * 18).toFixed(2)}deg`,
+                    )
+                    frame.style.setProperty("--mx", x.toFixed(3))
+                    frame.style.setProperty("--my", y.toFixed(3))
+                })
+            })
+            frame.addEventListener("pointerleave", () => {
+                hub.style.removeProperty("--ry")
+                hub.style.removeProperty("--rx")
+                frame.style.removeProperty("--mx")
+                frame.style.removeProperty("--my")
+            })
+        }
     }
 
     function startOrbits() {
@@ -373,27 +439,27 @@ const RINGS = [{ r: 590 }, { r: 372, dash: "3 13", k: 1 }]
         overflow: hidden;
         background:
             radial-gradient(
-                50% 68% at 74% 50%,
-                rgba(98, 78, 255, 0.55),
-                rgba(58, 60, 235, 0.22) 46%,
+                34% 48% at 72% 52%,
+                rgba(112, 88, 255, 0.62),
+                rgba(70, 58, 235, 0.26) 48%,
+                transparent 74%
+            ),
+            radial-gradient(
+                46% 60% at 100% 0%,
+                rgba(40, 110, 255, 0.3),
+                transparent 62%
+            ),
+            radial-gradient(
+                40% 55% at 58% 118%,
+                rgba(96, 70, 240, 0.42),
                 transparent 70%
             ),
             radial-gradient(
-                65% 85% at 100% 0%,
-                rgba(33, 136, 255, 0.42),
-                transparent 64%
+                36% 50% at 0% 100%,
+                rgba(70, 50, 210, 0.2),
+                transparent 68%
             ),
-            radial-gradient(
-                60% 80% at 0% 100%,
-                rgba(84, 62, 230, 0.5),
-                transparent 66%
-            ),
-            radial-gradient(
-                55% 60% at 55% 115%,
-                rgba(70, 90, 177, 0.55),
-                transparent 70%
-            ),
-            linear-gradient(160deg, #0a0b28 0%, #131747 55%, #0d0f36 100%);
+            linear-gradient(165deg, #010103 0%, #05051a 52%, #010104 100%);
         color: #ffffff;
 
         &::after {
@@ -412,10 +478,105 @@ const RINGS = [{ r: 590 }, { r: 372, dash: "3 13", k: 1 }]
             pointer-events: none;
         }
 
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(0, 0, 0, 0.72) 0%,
+                    rgba(0, 0, 0, 0.3) 34%,
+                    transparent 58%
+                ),
+                radial-gradient(
+                    62% 78% at 72% 52%,
+                    transparent 40%,
+                    rgba(0, 0, 4, 0.6) 76%,
+                    #000000 100%
+                );
+            pointer-events: none;
+
+            @include media-breakpoint-down(lg) {
+                background: radial-gradient(
+                    95% 52% at 50% 74%,
+                    transparent 40%,
+                    rgba(0, 0, 4, 0.6) 78%,
+                    #000000 100%
+                );
+            }
+        }
+
         > .container-xl {
             position: relative;
             z-index: 1;
         }
+    }
+
+    .depth {
+        position: absolute;
+        inset: -4rem;
+        pointer-events: none;
+
+        svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            translate: calc(var(--mx, 0) * var(--shift))
+                calc(var(--my, 0) * var(--shift));
+            transition: translate 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, translate;
+        }
+
+        .far {
+            --shift: -14px;
+
+            fill: rgba(205, 200, 255, 0.45);
+            animation: drift 46s ease-in-out infinite alternate;
+        }
+
+        .mid {
+            --shift: -36px;
+
+            fill: rgba(170, 155, 255, 0.4);
+            animation: drift 34s ease-in-out -8s infinite alternate;
+        }
+
+        .near {
+            --shift: -80px;
+
+            fill: rgba(140, 120, 255, 0.16);
+            animation: drift 26s ease-in-out -14s infinite alternate;
+        }
+    }
+
+    @keyframes drift {
+        from {
+            transform: translate3d(-1.25%, 0.75%, 0);
+        }
+
+        to {
+            transform: translate3d(1.25%, -0.75%, 0);
+        }
+    }
+
+    .shade {
+        position: absolute;
+        top: calc(var(--drop) - var(--rc));
+        left: 0;
+        width: 9rem;
+        height: 9rem;
+        margin: -4.5rem;
+        border-radius: 50%;
+        background: radial-gradient(
+            closest-side,
+            rgba(0, 0, 0, 0.75),
+            rgba(0, 0, 0, 0.45) 45%,
+            transparent
+        );
+        transform: translateZ(-26px);
+        pointer-events: none;
     }
 
     .core {
@@ -432,13 +593,15 @@ const RINGS = [{ r: 590 }, { r: 372, dash: "3 13", k: 1 }]
         margin: -2.375rem;
         border: 1px solid rgba(255, 255, 255, calc(0.18 + var(--level) * 0.07));
         border-radius: 0.875rem;
-        background: linear-gradient(180deg, #2a2a31, #151519);
+        background:
+            linear-gradient(155deg, rgba(255, 255, 255, 0.16), transparent 38%),
+            linear-gradient(180deg, #1c1c22, #060608);
         box-shadow:
             inset 0 1px 0 rgba(255, 255, 255, 0.18),
             0 0 calc(16px + var(--level) * 9px)
                 rgba(110, 90, 255, calc(0.12 + var(--level) * 0.1)),
-            0 18px 44px rgba(0, 0, 0, 0.6);
-        transform: scale(calc(1 + var(--level) * 0.04));
+            0 0 0 1px rgba(0, 0, 0, 0.5);
+        transform: translateZ(90px) scale(calc(1 + var(--level) * 0.04));
         transition:
             transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
             box-shadow 0.6s ease,
@@ -491,7 +654,7 @@ const RINGS = [{ r: 590 }, { r: 372, dash: "3 13", k: 1 }]
 
         &:global(.ping) {
             transition-duration: 0.12s;
-            transform: scale(calc(1.08 + var(--level) * 0.04));
+            transform: translateZ(90px) scale(calc(1.08 + var(--level) * 0.04));
         }
 
         &:global(.full)::after {
@@ -555,6 +718,7 @@ const RINGS = [{ r: 590 }, { r: 372, dash: "3 13", k: 1 }]
 
         position: relative;
         height: 39rem;
+        perspective: 1100px;
 
         @include media-breakpoint-up(lg) {
             translate: -3rem 0;
@@ -580,9 +744,46 @@ const RINGS = [{ r: 590 }, { r: 372, dash: "3 13", k: 1 }]
         left: 50%;
         width: 0;
         height: 0;
+        transform: rotateX(var(--rx, 16deg)) rotateY(var(--ry, -18deg));
+        transform-style: preserve-3d;
         transition:
             --turn 0.72s cubic-bezier(0.16, 1, 0.3, 1),
-            --spin 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+            --spin 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+            transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+
+        @include media-breakpoint-down(md) {
+            transform: rotateX(10deg) rotateY(-10deg) scale(0.84);
+        }
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        &::before {
+            inset: calc(var(--rc) * -1.15);
+            background: radial-gradient(
+                closest-side,
+                rgba(0, 0, 0, 0.85),
+                rgba(0, 0, 0, 0.4) 55%,
+                transparent
+            );
+            transform: translate3d(2rem, 3.5rem, -160px);
+        }
+
+        &::after {
+            inset: calc(var(--rc) * -0.78);
+            background: radial-gradient(
+                closest-side,
+                rgba(140, 120, 255, 0.34),
+                rgba(98, 78, 255, 0.12) 60%,
+                transparent
+            );
+            transform: translateZ(-40px);
+        }
     }
 
     .rings {
@@ -592,10 +793,11 @@ const RINGS = [{ r: 590 }, { r: 372, dash: "3 13", k: 1 }]
         margin: calc(var(--rc) * -1);
         overflow: visible;
         pointer-events: none;
+        transform: translateZ(-8px);
 
         circle {
             fill: none;
-            stroke: rgba(170, 160, 255, 0.3);
+            stroke: rgba(196, 186, 255, 0.5);
             vector-effect: non-scaling-stroke;
         }
 
@@ -638,8 +840,16 @@ const RINGS = [{ r: 590 }, { r: 372, dash: "3 13", k: 1 }]
             gap: 0.5rem;
             padding: 0.25rem 0.625rem;
             translate: -50% -50%;
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(14px);
+            background:
+                linear-gradient(
+                    160deg,
+                    rgba(255, 255, 255, 0.1),
+                    transparent 60%
+                ),
+                rgba(12, 12, 28, 0.96);
+            box-shadow:
+                inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+                0 0 24px -6px rgba(0, 0, 0, 0.8);
             font-size: 0.8125rem;
             font-weight: 500;
             white-space: nowrap;
@@ -681,12 +891,14 @@ const RINGS = [{ r: 590 }, { r: 372, dash: "3 13", k: 1 }]
         letter-spacing: 0.04em;
         white-space: nowrap;
         color: rgba(255, 255, 255, 0.6);
+        transform: translateZ(90px);
     }
 
     .wheel {
         position: absolute;
         width: 0;
         height: 0;
+        transform-style: preserve-3d;
     }
 
     .wheel .glimpse {
@@ -696,9 +908,10 @@ const RINGS = [{ r: 590 }, { r: 372, dash: "3 13", k: 1 }]
         top: 0;
         left: 0;
         translate: -50% -50%;
-        transform: translate(
+        transform: translate3d(
                 calc(sin(var(--t)) * var(--rc)),
-                calc(var(--c) * var(--rc) * -1)
+                calc(var(--c) * var(--rc) * -1 + (1 - var(--c)) * 0.5rem),
+                24px
             )
             scale(calc(0.88 + 0.12 * var(--c)));
         opacity: calc(0.7 + 0.3 * var(--c));
@@ -727,7 +940,7 @@ const RINGS = [{ r: 590 }, { r: 372, dash: "3 13", k: 1 }]
         z-index: 1;
         top: 0;
         left: 0;
-        translate: -50% -50%;
+        translate: -50% -50% 24px;
         pointer-events: none;
         will-change: transform, opacity;
 
@@ -964,8 +1177,17 @@ const RINGS = [{ r: 590 }, { r: 372, dash: "3 13", k: 1 }]
         --mark: rgba(255, 255, 255, 0.75);
         --arm: 0.5rem;
 
-        background-color: rgba(255, 255, 255, 0.07);
-        backdrop-filter: blur(22px);
+        background-color: rgba(12, 12, 28, 0.94);
+        background-image: linear-gradient(
+            160deg,
+            rgba(255, 255, 255, 0.13),
+            rgba(255, 255, 255, 0.02) 42%,
+            transparent 70%
+        );
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.2),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+            0 0 46px -8px rgba(0, 0, 0, 0.85);
 
         &::before {
             content: "";
@@ -1048,6 +1270,10 @@ const RINGS = [{ r: 590 }, { r: 372, dash: "3 13", k: 1 }]
     }
 
     @media (prefers-reduced-motion: reduce) {
+        .depth svg {
+            animation: none;
+        }
+
         .live,
         .glimpse {
             transition: none;
