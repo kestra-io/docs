@@ -135,6 +135,10 @@ When building new flows in a Namespace, Namespace variables are accessible from 
 
 ### From the UI
 
+To create a namespace under an existing one, open any namespace, hover the arrow next to a namespace in the breadcrumb, then hover the parent you want. Its menu lists its child namespaces and ends with **Create child namespace**, which opens the create form with `parent.` already in the **Id** field. The entry appears only where you have permission to create namespaces, and never under the [system namespace](../../../06.concepts/system-flows/index.md).
+
+![The namespace breadcrumb with the docs menu open and the test entry hovered, showing its child namespaces cond and table followed by Create child namespace](./create-child-namespace-breadcrumb.png)
+
 The video below shows how to create a namespace and add several secrets and a nested Namespace variable that references one of them. It was recorded before Kestra 2.0, so it also adds plugin defaults for the AWS and Git plugins. In Kestra 2.0, a namespace-scoped [Policy](#policies) applies those values instead.
 
 <div class="video-container">
