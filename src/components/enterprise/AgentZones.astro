@@ -143,8 +143,12 @@ const zones = await Promise.all(
 </div>
 
 <style lang="scss">
+    :global(.ai-governance.is-aurora.surface-dark:has(.agent-zones)) {
+        --line: rgba(255, 255, 255, 0.11);
+    }
+
     .agent-zones {
-        --rule: rgba(255, 255, 255, 0.12);
+        --rule: rgba(255, 255, 255, 0.11);
         --violet: #b48cff;
         --wire: rgba(180, 140, 255, 0.55);
         --gap: clamp(1rem, 2.6vw, 2.5rem);

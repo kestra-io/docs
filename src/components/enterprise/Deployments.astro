@@ -85,10 +85,12 @@ const DEPLOYMENTS = [
         --rule-color: rgba(255, 255, 255, 0.11);
         --rule: 1px solid var(--rule-color);
         --muted: #9a9aa8;
+        --bg: #0d0d10;
+        --lift: #141419;
 
         position: relative;
         border-block: var(--rule);
-        background: linear-gradient(180deg, #000000 30%, #17181e 100%);
+        background: linear-gradient(180deg, #000000 0, var(--bg) 18rem);
         color: #ffffff;
     }
 
@@ -152,13 +154,13 @@ const DEPLOYMENTS = [
         align-items: center;
         gap: 0.5rem 1.25rem;
         padding: 2rem 2rem 2rem 1.25rem;
-        --card: #040405;
+        --card: var(--bg);
 
         background: var(--card);
         transition: background-color 0.3s ease;
 
         &:hover {
-            --card: #0b0b0e;
+            --card: var(--lift);
         }
 
         @include media-breakpoint-up(lg) {
@@ -222,8 +224,14 @@ const DEPLOYMENTS = [
         flex-wrap: wrap;
         align-items: center;
         gap: 0.75rem 1rem;
+        position: relative;
         padding: 2.25rem var(--inset);
         border-block: var(--rule);
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background: var(--lift);
+        }
         font-size: 0.9375rem;
         line-height: 1.55;
 
@@ -255,8 +263,10 @@ const DEPLOYMENTS = [
             text-decoration: none;
             white-space: nowrap;
 
-            &:hover {
-                color: #ffffff;
+            &::after {
+                content: "";
+                position: absolute;
+                inset: 0;
             }
 
             [data-icon] {
@@ -264,8 +274,12 @@ const DEPLOYMENTS = [
                 height: 1rem;
                 transition: translate 0.2s ease;
             }
+        }
 
-            &:hover [data-icon] {
+        &:hover a {
+            color: #ffffff;
+
+            [data-icon] {
                 translate: 0.1875rem 0;
             }
         }
