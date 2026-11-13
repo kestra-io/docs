@@ -8,7 +8,7 @@ icon: /src/contents/docs/icons/architecture.svg
 
 The Worker Controller is the server component that every Worker connects to.
 
-Workers never read the job queue or the database directly. They open a gRPC connection to a Worker Controller, which sends them jobs, receives their results, logs, and metrics, relays their heartbeats, and forwards kill requests. Each section below links to the page that documents how to configure the feature.
+Workers never read the job queue or the database directly. They open a gRPC connection to a Worker Controller, which sends them jobs, receives their results, logs, and metrics, and relays their heartbeats. Each section below links to the page that documents how to configure the feature.
 
 ## What the Worker Controller does
 
@@ -44,7 +44,7 @@ Workers find Worker Controllers in one of three ways:
 
 - `STATIC` (default): a fixed list of addresses. The shipped default is `localhost:50051`.
 - `DNS`: a host name that resolves to the Worker Controllers' A and AAAA records.
-- `STORAGE`: each Worker Controller registers its address in internal storage, and Workers read that list.
+- `STORAGE`: each Worker Controller registers its address in internal storage, and Workers read that list. Use it only when Workers share the same internal storage as the Worker Controllers.
 
 See [controller discovery strategies](../../../07.enterprise/04.scalability/worker-group/index.md#controller-discovery-strategies) for the configuration of each mode.
 

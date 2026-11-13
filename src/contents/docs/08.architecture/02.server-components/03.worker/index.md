@@ -123,6 +123,21 @@ Each running realtime trigger holds a thread and a slot of the Worker's capacity
 | `kestra.server.termination-grace-period` | `5m` | How long a stopping Worker waits for running jobs. |
 | `kestra.server.worker-task-restart-strategy` | `AFTER_TERMINATION_GRACE_PERIOD` | What happens to a stopped Worker's tasks. |
 
+These properties tune the Worker's gRPC connection to the Worker Controller. For the message size limit and shared Basic credentials, see the [Worker Controller configuration](../02.worker-controller/index.md#configuration).
+
+| Property | Default | Purpose |
+|---|---|---|
+| `kestra.grpc.channel.keep-alive-time` | `1h` | Interval between keep-alive pings, sent even when no call is active. |
+| `kestra.grpc.channel.shutdown-timeout` | `30s` | Maximum wait for the connection to close gracefully. |
+| `kestra.grpc.channel.retry.enabled` | `true` | Retry calls that are safe to repeat, such as KV and namespace file reads, when the Worker Controller is unavailable. |
+| `kestra.grpc.channel.retry.max-attempts` | `4` | Attempts per retried call, including the first. A value below `2` disables retries. |
+| `kestra.grpc.channel.retry.initial-backoff` | `PT0.5S` | Delay before the first retry. |
+| `kestra.grpc.channel.retry.max-backoff` | `PT5S` | Maximum delay between retries. |
+| `kestra.grpc.channel.retry.backoff-multiplier` | `2.0` | Factor applied to the delay after each failed attempt. |
+| `kestra.worker.controllers.health-check.enabled` | `true` | Use the gRPC health service to stop sending calls to a Worker Controller that isn't serving. |
+| `kestra.worker.controllers.wait-for-ready.enabled` | `true` | Wait for a Worker Controller to be ready instead of failing the call immediately. |
+| `kestra.worker.controllers.wait-for-ready.deadline` | `PT30S` | Maximum wait for a ready Worker Controller when `wait-for-ready` is enabled. |
+
 ### Monitoring and troubleshooting
 
 Workers publish metrics under `kestra.worker.*`, tagged with `worker_group`:
