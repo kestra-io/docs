@@ -101,7 +101,6 @@
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
     import { useGtm } from "@gtm-support/vue-gtm"
-    import { $fetch } from "~/utils/fetch"
     import { useFormErrors } from "~/composables/useFormErrors"
     import Squared from "~/components/layout/Squared.vue"
 
@@ -179,10 +178,6 @@
             { name: "contact_form_submission" },
         ])
 
-        const ipData = await $fetch<{ ip: string }>(
-            "https://api.ipify.org?format=json",
-        )
-
         const hubspotData = {
             fields: [
                 ...fields.map((f) => ({
@@ -203,7 +198,6 @@
             ],
             context: {
                 hutk: getHubspotTracking() || undefined,
-                ipAddress: ipData.ip,
                 pageUri: props.routePath || window.location.pathname,
                 pageName: document.title,
             },
