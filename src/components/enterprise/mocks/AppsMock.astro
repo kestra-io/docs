@@ -1,0 +1,1001 @@
+---
+import { Icon } from "astro-icon/components"
+
+const NAV = [
+    {
+        group: "Self-Service",
+        items: [
+            { icon: "mdi:view-grid-outline", label: "Catalog", on: true },
+            { icon: "mdi:history", label: "Requests" },
+            { icon: "mdi:cube-outline", label: "Deployments" },
+            { icon: "mdi:server-outline", label: "Inventory" },
+            { icon: "mdi:alert-circle-outline", label: "Cases" },
+            { icon: "mdi:chart-line", label: "Dashboards" },
+        ],
+    },
+    {
+        group: "Automation",
+        items: [
+            { icon: "mdi:creation-outline", label: "AI Copilot" },
+            { icon: "mdi:file-tree-outline", label: "Flows" },
+            { icon: "mdi:rocket-launch-outline", label: "Promote" },
+            { icon: "mdi:play-outline", label: "Executions" },
+            { icon: "mdi:text-box-outline", label: "Logs" },
+            { icon: "mdi:flask-outline", label: "Tests" },
+        ],
+    },
+]
+
+const TAGS = ["All tags", "Compute", "Data", "Environment", "Storage"]
+
+const APPS = [
+    {
+        title: "Provision a virtual machine",
+        text: "Request a VM with a time-boxed lease, added to the inventory as soon as it is declared.",
+        tag: "Compute",
+    },
+    {
+        title: "Request object storage",
+        text: "Add a bucket to one of your deployments.",
+        tag: "Storage",
+    },
+    {
+        title: "Request a database",
+        text: "Attach a managed database to one of your deployments.",
+        tag: "Data",
+    },
+    {
+        title: "Request an environment",
+        text: "A machine and its database, grouped under a single deployment and lease.",
+        tag: "Environment",
+    },
+]
+
+const FIELDS = [
+    {
+        label: "Deployment name",
+        value: "app-sandbox",
+        hint: "The machine is created inside a deployment of this name, and the lease is on it.",
+    },
+    { label: "Owner", value: "platform-team" },
+    { label: "Environment", value: "sandbox", select: true },
+]
+---
+
+<div class="ui-mock apps-mock" aria-hidden="true" data-ui-mock>
+    <div class="stage">
+        <div class="ui">
+            <div class="bar">
+                <img src="/icon.svg" alt="" width="24" height="24" />
+                <span class="slash">/</span>
+                <Icon name="mdi:view-grid-outline" />
+                <strong>Service catalog</strong>
+                <span class="manage">
+                    <Icon name="mdi:application-cog-outline" /> Manage apps
+                </span>
+            </div>
+            <div class="nav">
+                {NAV.map((section) => (
+                    <div>
+                        <span class="group">{section.group}</span>
+                        {section.items.map((item) => (
+                            <span class:list={["item", { on: item.on }]}>
+                                <Icon name={item.icon} />
+                                {item.label}
+                            </span>
+                        ))}
+                    </div>
+                ))}
+            </div>
+            <div class="main">
+                <div class="tags">
+                    {TAGS.map((tag, idx) => (
+                        <span class:list={{ on: idx === 0 }}>{tag}</span>
+                    ))}
+                    <span class="history">
+                        <Icon name="mdi:history" /> Request history
+                    </span>
+                </div>
+                <div class="search">
+                    <Icon name="mdi:magnify" /> Search apps catalog
+                </div>
+                <div class="apps">
+                    {APPS.map((app, idx) => (
+                        <div class="app">
+                            <span class="tile">
+                                <Icon name="mdi:cube-outline" />
+                            </span>
+                            <div>
+                                <strong>{app.title}</strong>
+                                <p>{app.text}</p>
+                            </div>
+                            <span class="tag">{app.tag}</span>
+                            <span class:list={["request", { go: idx === 0 }]}>
+                                Request
+                            </span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <div class="veil"></div>
+        </div>
+        <div class="modal">
+            <strong class="name">Provision a virtual machine</strong>
+            <p class="lede">
+                Fill in the form below. The machine is created inside a
+                deployment, and the lease is on that deployment.
+            </p>
+            <div class="views">
+                <div class="view form">
+                    <strong class="section">Identity</strong>
+                    {FIELDS.map((field, idx) => (
+                        <label>
+                            <span>
+                                <b>*</b> {field.label}
+                            </span>
+                            <span
+                                class:list={["input", { select: field.select }]}
+                            >
+                                <span class={`val v${idx + 1}`}>
+                                    {field.value}
+                                </span>
+                                {field.select && (
+                                    <Icon name="mdi:chevron-down" />
+                                )}
+                            </span>
+                            {field.hint && <small>{field.hint}</small>}
+                        </label>
+                    ))}
+                    <span class="next">
+                        <Icon name="mdi:chevron-right" /> Next
+                    </span>
+                </div>
+                <div class="view busy">
+                    <span class="spinner"></span>
+                    <span class="state running">
+                        <i></i> Running
+                    </span>
+                    <code>infra.provision_vm</code>
+                </div>
+                <div class="view done">
+                    <span class="check">
+                        <Icon name="mdi:check" />
+                    </span>
+                    <span class="state success">
+                        <i></i> Success
+                    </span>
+                    <code>app-sandbox · sandbox · platform-team</code>
+                    <span class="added">
+                        <Icon name="mdi:server-outline" /> Added to the
+                        inventory
+                    </span>
+                </div>
+            </div>
+            <div class="steps">
+                <i></i>
+                <i class="s2"></i>
+                <i class="s3"></i>
+                <i class="s4"></i>
+            </div>
+        </div>
+        <Icon name="mdi:cursor-default" class="cursor" />
+    </div>
+</div>
+
+<script>
+    function wireMocks() {
+        const mocks = document.querySelectorAll<HTMLElement>(
+            "[data-ui-mock]:not([data-wired])",
+        )
+        if (!mocks.length) return
+        const observer = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries) {
+                    ;(entry.target as HTMLElement).toggleAttribute(
+                        "data-play",
+                        entry.isIntersecting,
+                    )
+                }
+            },
+            { threshold: 0.25 },
+        )
+        for (const mock of mocks) {
+            mock.dataset.wired = "true"
+            observer.observe(mock)
+        }
+    }
+
+    document.addEventListener("astro:page-load", wireMocks)
+    wireMocks()
+</script>
+
+<style lang="scss">
+    .apps-mock {
+        --chrome: #ffffff;
+        --deep: #f7f7fa;
+        --panel: #ffffff;
+        --field: #f7f7fa;
+        --line: #e4e4ec;
+        --chip: #f0f0f5;
+        --text: #2b2b33;
+        --soft: #4a4a57;
+        --muted: #6c6c7a;
+        --primary: #6a2bf5;
+        --tile: #f1e9ff;
+        --tile-ink: #8405ff;
+        --veil: rgba(43, 43, 51, 0.06);
+        --ring: #8405ff;
+        --run: #8405ff;
+        --ok: #1c7e57;
+        --ok-bg: #e7f6ef;
+        --shadow: 0 12px 32px -12px rgba(43, 43, 51, 0.18);
+        --loop: 12s;
+
+        container-type: inline-size;
+        width: 100%;
+
+        :global(html.dark) & {
+            --chrome: #1e1e26;
+            --deep: #121216;
+            --panel: #18181e;
+            --field: #121216;
+            --line: #2e2e3c;
+            --chip: #26262f;
+            --text: #ffffff;
+            --soft: #d6d6e0;
+            --muted: #adadbf;
+            --tile: #ffffff;
+            --tile-ink: #18181e;
+            --veil: rgba(0, 0, 0, 0.3);
+            --ring: #9869f7;
+            --run: #b9a6ff;
+            --ok: #06f0b1;
+            --ok-bg: rgba(30, 135, 94, 0.18);
+            --shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.6);
+        }
+    }
+
+    .stage {
+        position: relative;
+        padding-block: 2.4em;
+        font-size: calc(100cqw / 50);
+        line-height: 1.3;
+        color: var(--text);
+    }
+
+    .ui {
+        position: relative;
+        display: grid;
+        grid-template-columns: 9.5em minmax(0, 1fr);
+        grid-template-rows: 3em auto;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 1.1em;
+        background: var(--deep);
+        box-shadow: var(--shadow);
+    }
+
+    .bar {
+        grid-column: 1 / -1;
+        display: flex;
+        align-items: center;
+        gap: 0.6em;
+        padding: 0 1em 0 0.7em;
+        border-bottom: 1px solid var(--line);
+        background: var(--chrome);
+
+        img {
+            width: 1.7em;
+            height: 1.7em;
+            border-radius: 0.35em;
+        }
+
+        .slash {
+            color: var(--muted);
+            opacity: 0.6;
+        }
+
+        > [data-icon] {
+            width: 1.05em;
+            height: 1.05em;
+            color: var(--muted);
+        }
+
+        strong {
+            font-size: 0.82em;
+            font-weight: 600;
+        }
+    }
+
+    .manage,
+    .history,
+    .request,
+    .next {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35em;
+        border-radius: 0.4em;
+        font-weight: 600;
+        white-space: nowrap;
+
+        [data-icon] {
+            width: 1.2em;
+            height: 1.2em;
+        }
+    }
+
+    .manage,
+    .next {
+        background: var(--primary);
+        color: #ffffff;
+    }
+
+    .manage {
+        height: 2.5em;
+        margin-left: auto;
+        padding: 0 0.9em;
+        font-size: 0.72em;
+    }
+
+    .nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0.9em;
+        padding: 0.9em 0.6em 1.2em;
+        border-right: 1px solid var(--line);
+        background: var(--chrome);
+
+        div {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1em;
+        }
+
+        .group {
+            margin-bottom: 0.3em;
+            padding-left: 0.4em;
+            font-size: 0.68em;
+            color: var(--muted);
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 0.6em;
+            padding: 0.42em 0.5em;
+            border-radius: 0.4em;
+            font-size: 0.72em;
+            font-weight: 600;
+            color: var(--soft);
+
+            &.on {
+                background: var(--chip);
+                color: var(--text);
+            }
+        }
+
+        [data-icon] {
+            flex: none;
+            width: 1.3em;
+            height: 1.3em;
+            color: var(--muted);
+        }
+    }
+
+    .main {
+        padding: 1.1em 1.25em 1.75em;
+    }
+
+    .tags {
+        display: flex;
+        align-items: center;
+        gap: 0.4em;
+
+        span {
+            padding: 0.5em 0.9em;
+            border: 1px solid transparent;
+            border-radius: 999px;
+            background: var(--panel);
+            font-size: 0.66em;
+            font-weight: 600;
+            white-space: nowrap;
+
+            &.on {
+                border-color: var(--line);
+                background: var(--chip);
+            }
+        }
+
+        .history {
+            margin-left: auto;
+            border-color: var(--line);
+            border-radius: 0.4em;
+        }
+    }
+
+    .search {
+        display: flex;
+        align-items: center;
+        gap: 0.7em;
+        height: 3.2em;
+        margin: 1em 0;
+        padding: 0 0.9em;
+        border: 1px solid var(--line);
+        border-radius: 0.5em;
+        background: var(--panel);
+        font-size: 0.68em;
+        color: var(--muted);
+
+        [data-icon] {
+            width: 1.3em;
+            height: 1.3em;
+            color: var(--text);
+        }
+    }
+
+    .apps {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.8em;
+    }
+
+    .app {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-rows: 1fr auto;
+        gap: 1.4em 0.75em;
+        padding: 0.95em 0.85em 0.85em;
+        border: 1px solid var(--line);
+        border-radius: 0.5em;
+        background: var(--panel);
+
+        .tile {
+            display: grid;
+            place-items: center;
+            width: 2.2em;
+            height: 2.2em;
+            border-radius: 0.4em;
+            background: var(--tile);
+            color: var(--tile-ink);
+
+            [data-icon] {
+                width: 1.2em;
+                height: 1.2em;
+            }
+        }
+
+        strong {
+            display: block;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        p {
+            margin: 0.35em 0 0;
+            font-size: 0.64em;
+            line-height: 1.5;
+            color: var(--muted);
+        }
+
+        .tag {
+            grid-column: 1 / -1;
+            grid-row: 2;
+            align-self: center;
+            justify-self: start;
+            padding: 0.3em 0.6em;
+            border-radius: 0.3em;
+            background: var(--chip);
+            font-size: 0.62em;
+            font-weight: 600;
+            color: var(--soft);
+        }
+    }
+
+    .request {
+        grid-column: 2;
+        grid-row: 2;
+        justify-self: end;
+        height: 2.5em;
+        padding: 0 0.9em;
+        border: 1px solid var(--line);
+        background: var(--chip);
+        font-size: 0.68em;
+    }
+
+    .veil {
+        position: absolute;
+        inset: 0;
+        background: var(--veil);
+    }
+
+    .modal {
+        position: absolute;
+        top: 50%;
+        left: 54%;
+        width: 26em;
+        padding: 2.2em 2.2em 1.9em;
+        border: 1px solid var(--line);
+        border-radius: 1.1em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        transform: translate(-50%, -50%);
+
+        .name {
+            display: block;
+            font-size: 1.3em;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .lede {
+            margin: 0.6em 0 1.2em;
+            font-size: 0.72em;
+            line-height: 1.55;
+            color: var(--soft);
+        }
+
+        .section {
+            display: block;
+            margin-bottom: 0.8em;
+            font-size: 0.88em;
+            font-weight: 600;
+        }
+    }
+
+    .views {
+        display: grid;
+    }
+
+    .view {
+        grid-area: 1 / 1;
+
+        &.form,
+        &.busy {
+            opacity: 0;
+        }
+
+        &.busy,
+        &.done {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8em;
+        }
+
+        code {
+            font-size: 0.72em;
+            color: var(--muted);
+        }
+    }
+
+    label {
+        display: block;
+        margin-bottom: 0.9em;
+        font-size: 0.74em;
+        font-weight: 600;
+
+        b {
+            font-weight: 600;
+            color: #e5484d;
+        }
+
+        small {
+            display: block;
+            margin-top: 0.5em;
+            font-size: 0.86em;
+            font-weight: 400;
+            color: var(--muted);
+        }
+    }
+
+    .input {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 2.9em;
+        margin-top: 0.45em;
+        padding: 0 0.85em;
+        border: 1px solid transparent;
+        border-radius: 0.45em;
+        background: var(--field);
+        font-family: var(--bs-font-monospace);
+        font-size: 1.05em;
+        font-weight: 400;
+
+        &.select {
+            border-color: var(--line);
+            font-family: inherit;
+            font-weight: 500;
+        }
+
+        [data-icon] {
+            width: 1.2em;
+            height: 1.2em;
+            color: var(--muted);
+        }
+    }
+
+    .next {
+        float: right;
+        height: 2.7em;
+        margin-top: 0.5em;
+        padding: 0 1.1em 0 0.8em;
+        font-size: 0.8em;
+    }
+
+    .steps {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.4em;
+        margin-top: 1.3em;
+        padding-top: 1.1em;
+        border-top: 1px solid var(--line);
+
+        i {
+            height: 0.3em;
+            border-radius: 999px;
+            background: var(--ring);
+        }
+    }
+
+    .spinner {
+        width: 2.6em;
+        height: 2.6em;
+        border: 0.22em solid var(--chip);
+        border-top-color: var(--run);
+        border-radius: 50%;
+    }
+
+    .check {
+        display: grid;
+        place-items: center;
+        width: 2.6em;
+        height: 2.6em;
+        border-radius: 50%;
+        background: var(--ok-bg);
+        color: var(--ok);
+
+        [data-icon] {
+            width: 1.5em;
+            height: 1.5em;
+        }
+    }
+
+    .state {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
+        font-size: 0.9em;
+        font-weight: 600;
+
+        i {
+            width: 0.55em;
+            height: 0.55em;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        &.running {
+            color: var(--run);
+        }
+
+        &.success {
+            color: var(--ok);
+        }
+    }
+
+    .added {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4em;
+        padding: 0.5em 0.9em;
+        border-radius: 999px;
+        background: var(--chip);
+        font-size: 0.68em;
+        font-weight: 600;
+
+        [data-icon] {
+            width: 1.2em;
+            height: 1.2em;
+            color: var(--run);
+        }
+    }
+
+    .cursor {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1.5em;
+        height: 1.5em;
+        color: #ffffff;
+        stroke: #1a1b25;
+        stroke-width: 1.4px;
+        stroke-linejoin: round;
+        opacity: 0;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .apps-mock:not([data-play]) * {
+            animation-play-state: paused !important;
+        }
+
+        .veil {
+            animation: apps-mock-veil var(--loop) linear infinite both;
+        }
+
+        .modal {
+            animation: apps-mock-modal var(--loop) linear infinite both;
+        }
+
+        .request.go {
+            animation: apps-mock-press-1 var(--loop) linear infinite both;
+        }
+
+        .next {
+            animation: apps-mock-press-2 var(--loop) linear infinite both;
+        }
+
+        .view.form {
+            animation: apps-mock-form var(--loop) linear infinite both;
+        }
+
+        .view.busy {
+            animation: apps-mock-busy var(--loop) linear infinite both;
+        }
+
+        .view.done {
+            animation: apps-mock-done var(--loop) linear infinite both;
+        }
+
+        .val {
+            animation: var(--loop) linear infinite both;
+
+            &.v1 {
+                animation-name: apps-mock-type-1;
+            }
+
+            &.v2 {
+                animation-name: apps-mock-type-2;
+            }
+
+            &.v3 {
+                animation-name: apps-mock-type-3;
+            }
+        }
+
+        .steps {
+            .s2 {
+                animation: apps-mock-step-2 var(--loop) linear infinite both;
+            }
+
+            .s3 {
+                animation: apps-mock-step-3 var(--loop) linear infinite both;
+            }
+
+            .s4 {
+                animation: apps-mock-step-4 var(--loop) linear infinite both;
+            }
+        }
+
+        .spinner {
+            animation: apps-mock-spin 0.9s linear infinite;
+        }
+
+        .cursor {
+            animation: apps-mock-cursor var(--loop) linear infinite both;
+        }
+    }
+
+    @keyframes apps-mock-veil {
+        0%,
+        11% {
+            opacity: 0;
+        }
+        14%,
+        96% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes apps-mock-modal {
+        0%,
+        11% {
+            opacity: 0;
+            transform: translate(-50%, -46%) scale(0.95);
+            animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        15%,
+        96% {
+            opacity: 1;
+            transform: translate(-50%, -50%);
+        }
+        100% {
+            opacity: 0;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    @keyframes apps-mock-press-1 {
+        0%,
+        9%,
+        12%,
+        100% {
+            transform: none;
+            filter: none;
+        }
+        10.5% {
+            transform: scale(0.93);
+            filter: brightness(0.92);
+        }
+    }
+
+    @keyframes apps-mock-press-2 {
+        0%,
+        48%,
+        51%,
+        100% {
+            transform: none;
+            filter: none;
+        }
+        49.5% {
+            transform: scale(0.93);
+            filter: brightness(1.3);
+        }
+    }
+
+    @keyframes apps-mock-form {
+        0%,
+        51% {
+            opacity: 1;
+        }
+        53%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes apps-mock-busy {
+        0%,
+        52% {
+            opacity: 0;
+        }
+        54%,
+        70% {
+            opacity: 1;
+        }
+        72%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes apps-mock-done {
+        0%,
+        71% {
+            opacity: 0;
+            transform: scale(0.96);
+        }
+        74%,
+        100% {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    @keyframes apps-mock-type-1 {
+        0%,
+        18% {
+            clip-path: inset(0 100% 0 0);
+            animation-timing-function: steps(11);
+        }
+        25%,
+        100% {
+            clip-path: inset(0);
+        }
+    }
+
+    @keyframes apps-mock-type-2 {
+        0%,
+        28% {
+            clip-path: inset(0 100% 0 0);
+            animation-timing-function: steps(13);
+        }
+        35%,
+        100% {
+            clip-path: inset(0);
+        }
+    }
+
+    @keyframes apps-mock-type-3 {
+        0%,
+        38% {
+            opacity: 0;
+        }
+        39%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes apps-mock-step-2 {
+        0%,
+        53% {
+            background: var(--chip);
+        }
+        55%,
+        100% {
+            background: var(--ring);
+        }
+    }
+
+    @keyframes apps-mock-step-3 {
+        0%,
+        60% {
+            background: var(--chip);
+        }
+        62%,
+        100% {
+            background: var(--ring);
+        }
+    }
+
+    @keyframes apps-mock-step-4 {
+        0%,
+        68% {
+            background: var(--chip);
+        }
+        70%,
+        100% {
+            background: var(--ring);
+        }
+    }
+
+    @keyframes apps-mock-spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes apps-mock-cursor {
+        0% {
+            opacity: 0;
+            transform: translate(40em, 27em);
+        }
+        2% {
+            opacity: 1;
+            transform: translate(40em, 27em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        9%,
+        15% {
+            opacity: 1;
+            transform: translate(26.2em, 18.2em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        19%,
+        40% {
+            opacity: 1;
+            transform: translate(40.5em, 17em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        48%,
+        54% {
+            opacity: 1;
+            transform: translate(35.2em, 26.4em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        60%,
+        95% {
+            opacity: 1;
+            transform: translate(44em, 29em);
+        }
+        100% {
+            opacity: 0;
+            transform: translate(44em, 29em);
+        }
+    }
+</style>

@@ -3,6 +3,8 @@ import { Icon } from "astro-icon/components"
 import { Image } from "astro:assets"
 import appsCatalog from "~/contents/docs/07.enterprise/04.scalability/apps/apps_catalog.png"
 import workerGroups from "~/components/twozero/assets/run-worker-groups.png"
+import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
+import AppsMock from "~/components/enterprise/mocks/AppsMock.astro"
 import auditLogs from "~/contents/docs/07.enterprise/02.governance/06.audit-logs/audit_logs.png"
 
 const PANELS = [
@@ -18,6 +20,7 @@ const PANELS = [
             "Build workflows with human-in-the-loop approvals, reusable inputs, custom blueprints, and an app catalog.",
             "Test and maintain workflows with unit testing, plugin versioning, and hot reload.",
         ],
+        mock: "apps",
         image: appsCatalog,
         alt: "The Kestra Apps catalog",
     },
@@ -103,14 +106,25 @@ const PANELS = [
                                 ))}
                             </ul>
                         </div>
-                        <div class="media">
-                            <Image
-                                src={panel.image}
-                                alt={panel.alt}
-                                widths={[640, 960, 1280]}
-                                sizes="(max-width: 992px) 100vw, 50vw"
-                                loading="lazy"
-                            />
+                        <div class:list={["media", { mock: panel.mock }]}>
+                            {panel.mock === "apps" ? (
+                                <Fragment>
+                                    <span
+                                        class="pixels"
+                                        aria-hidden="true"
+                                        style={`--pixels: url("${pixelCluster}")`}
+                                    />
+                                    <AppsMock />
+                                </Fragment>
+                            ) : (
+                                <Image
+                                    src={panel.image}
+                                    alt={panel.alt}
+                                    widths={[640, 960, 1280]}
+                                    sizes="(max-width: 992px) 100vw, 50vw"
+                                    loading="lazy"
+                                />
+                            )}
                         </div>
                     </div>
                 ))}
@@ -309,6 +323,7 @@ const PANELS = [
     }
 
     .copy {
+        align-self: center;
         padding: 3.5rem var(--inset);
 
         h3 {
@@ -368,6 +383,67 @@ const PANELS = [
             padding: 0 0 0 var(--inset);
         }
 
+        &.mock {
+            --tint: #8405ff;
+
+            display: flex;
+            align-items: center;
+            align-self: stretch;
+            padding: 1.5rem var(--inset);
+            border-left: var(--rule);
+            background:
+                radial-gradient(
+                    80% 90% at 100% 0%,
+                    color-mix(in srgb, var(--tint) 20%, transparent),
+                    transparent 70%
+                ),
+                radial-gradient(
+                    60% 70% at 0% 100%,
+                    color-mix(in srgb, var(--tint) 10%, transparent),
+                    transparent 70%
+                ),
+                color-mix(in srgb, var(--tint) 3%, var(--ks-background-body));
+
+            :global(html.dark) & {
+                --tint: #9869f7;
+
+                background:
+                    radial-gradient(
+                        80% 90% at 100% 0%,
+                        color-mix(in srgb, var(--tint) 12%, transparent),
+                        transparent 70%
+                    ),
+                    radial-gradient(
+                        60% 70% at 0% 100%,
+                        color-mix(in srgb, var(--tint) 6%, transparent),
+                        transparent 70%
+                    ),
+                    color-mix(
+                        in srgb,
+                        var(--tint) 3%,
+                        var(--ks-background-body)
+                    );
+            }
+
+            @include media-breakpoint-down(lg) {
+                padding: 2rem var(--inset);
+                border-left: 0;
+                border-top: var(--rule);
+            }
+        }
+
+        .pixels {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 96px;
+            aspect-ratio: 194 / 168;
+            background: var(--tint);
+            mask: var(--pixels) no-repeat center / contain;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
         :global(img) {
             display: block;
             width: 100%;
@@ -378,6 +454,10 @@ const PANELS = [
             border-radius: 0.75rem 0 0 0;
             box-shadow: -10px -10px 40px rgba(60, 30, 120, 0.12);
         }
+    }
+
+    .panel:not(.active) :global(.ui-mock *) {
+        animation: none !important;
     }
 
     @media (prefers-reduced-motion: reduce) {
