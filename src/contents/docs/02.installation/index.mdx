@@ -19,14 +19,15 @@ Not sure where to start?
 - **Running in production?** Choose [Kubernetes](./03.kubernetes/index.md) (or a managed equivalent on [AWS EKS](./04.kubernetes-aws-eks/index.md), [GCP GKE](./05.kubernetes-gcp-gke/index.md), or [Azure AKS](./06.kubernetes-azure-aks/index.md)) for a scalable, distributed deployment.
 - **Prefer a single VM or on-prem server?** Deploy on [AWS EC2](./08.aws-ec2/index.md), [GCP VM](./09.gcp-vm/index.md), [Azure VM](./10.azure-vm/index.md), or a [DigitalOcean Droplet](./11.digitalocean-droplet/index.md).
 
-### Deployment Target Comparison
+The following table compares the main installation methods.
 
-| Method | Environment Target | Database Backend | High Availability | Recommended Use Case |
-| :--- | :--- | :--- | :--- | :--- |
-| **[Docker](./02.docker/index.md)** | Local Laptop / Evaluation | Embedded H2 | No | Rapid evaluation, local flow testing, sandbox exploration. |
-| **[Docker Compose](./03.docker-compose/index.md)** | Local Dev / Staging | PostgreSQL / MySQL | No (Single Host) | Local development with persistent database, team staging server. |
-| **[Kubernetes](./03.kubernetes/index.md)** | Production Cluster | External DB / Distributed | Yes | Enterprise production, horizontally scalable distributed workers. |
-| **[Standalone JAR](./12.standalone-server/index.md)** | Bare Metal / Custom VM | Embedded H2 or External DB | Optional | Environments without Docker runtimes, managed via systemd. |
+| Method | Best for | Database | Scaling and availability |
+| :--- | :--- | :--- | :--- |
+| [Docker](./02.docker/index.md) | Evaluation and local flow development | Embedded H2 | Single container |
+| [Docker Compose](./03.docker-compose/index.md) | Persistent local development, staging, or production on a single VM | PostgreSQL (bundled) or an external database | Single host |
+| [Kubernetes](./03.kubernetes/index.md) | Production deployments that need to scale | External PostgreSQL or MySQL | Scale each component independently; supports [high availability](../10.administrator-guide/high-availability/index.md) |
+| [Virtual machine](./08.aws-ec2/index.md) | Production on a single cloud VM with managed database and storage | Managed PostgreSQL | Single host |
+| [Standalone JAR](./12.standalone-server/index.md) | Hosts without Docker, run as a systemd service | Embedded H2 or an external database | Single process |
 
 :::alert{type="info"}
 **Minimum system requirements:** Kestra requires at least **2 vCPUs and 4 GiB of memory** to run correctly. Local Docker installs run comfortably on a typical laptop; size production deployments above this baseline based on your workload.
