@@ -12,6 +12,8 @@ Start Kestra with a PostgreSQL database backend by using a Docker Compose file.
   <iframe src="https://www.youtube.com/embed/SGL8ywf3OJQ?si=Ww-JsVKvceR_n08j" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
+Use Docker Compose for persistent local development, a shared staging server, or a single-VM production setup with an external database. Docker Compose runs on one host, so it doesn't provide high availability. For deployments that need to scale components independently, use [Kubernetes](../03.kubernetes/index.md).
+
 ## Prerequisites
 
 - Install [Docker](https://docs.docker.com/compose/install/) before you begin.
