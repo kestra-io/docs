@@ -384,12 +384,11 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
                                         {[os, cloud, ee].map((cell) => (
                                             <td>
                                                 {cell === false ? (
-                                                    <span
+                                                    <Icon
+                                                        name="mdi:close"
                                                         class="no"
                                                         aria-label="Not included"
-                                                    >
-                                                        —
-                                                    </span>
+                                                    />
                                                 ) : typeof cell === "string" ? (
                                                     <span class="text">
                                                         {cell}
@@ -669,7 +668,8 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
         line-height: 1.35;
     }
 
-    .yes {
+    .yes,
+    .no {
         display: block;
         width: 1.125rem;
         height: 1.125rem;
