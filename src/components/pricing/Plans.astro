@@ -230,8 +230,8 @@ const PLANS: {
     .customers {
         position: relative;
 
-        &::before {
-            content: "";
+        &::before,
+        &::after {
             position: absolute;
             top: 0;
             left: 50%;
@@ -239,6 +239,15 @@ const PLANS: {
             border-top: var(--rule);
             translate: -50% 0;
         }
+
+        &::before {
+            content: "";
+        }
+    }
+
+    .plans::after {
+        content: "";
+        top: 100%;
     }
 
     .compare {

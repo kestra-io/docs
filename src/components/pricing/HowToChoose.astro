@@ -75,6 +75,7 @@ const ROWS: { label: string; values: string[] }[] = [
     }
 
     .rails {
+        padding-bottom: 4rem;
         border-inline: var(--rule);
     }
 
@@ -98,9 +99,42 @@ const ROWS: { label: string; values: string[] }[] = [
     }
 
     .scroll {
+        position: relative;
         overflow-x: auto;
-        border-top: var(--rule);
+        border-block: var(--rule);
         background: var(--ks-background-body);
+
+        @include media-breakpoint-up(lg) {
+            overflow: visible;
+
+            &::after {
+                content: "";
+                position: absolute;
+                inset: 0 0 0 auto;
+                z-index: 1;
+                width: 26%;
+                border-radius: 1rem;
+                background: linear-gradient(
+                    180deg,
+                    color-mix(in srgb, var(--ks-content-link) 6%, transparent),
+                    transparent
+                );
+                box-shadow:
+                    0 0 0 1px
+                        color-mix(
+                            in srgb,
+                            var(--ks-content-link) 55%,
+                            var(--ks-background-body)
+                        ),
+                    0 0 0 6px
+                        color-mix(
+                            in srgb,
+                            var(--ks-content-link) 14%,
+                            var(--ks-background-body)
+                        );
+                pointer-events: none;
+            }
+        }
     }
 
     table {
