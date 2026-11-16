@@ -6,6 +6,7 @@ import PageShell from "~/components/home/PageShell.astro"
 import Plans from "~/components/pricing/Plans.astro"
 import HowToChoose from "~/components/pricing/HowToChoose.astro"
 import CompareEditions from "~/components/pricing/CompareEditions.astro"
+import CustomerLogos from "~/components/enterprise/CustomerLogos.astro"
 import SupportPlans from "~/components/enterprise/SupportPlans.astro"
 import BuyerQuestions from "~/components/enterprise/BuyerQuestions.astro"
 
@@ -65,6 +66,7 @@ const FAQ = [
     </Fragment>
     <PageShell>
         <Plans />
+        <CustomerLogos marquee />
         <HowToChoose />
         <CompareEditions />
         <SupportPlans title="Support plans" rows={SUPPORT_ROWS}>

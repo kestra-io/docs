@@ -81,7 +81,6 @@ const PLANS: {
     <div class="container-xl">
         <div class="rails">
             <header>
-                <p class="eyebrow">Pricing</p>
                 <h1 id="pricing-title">Three ways to run Kestra</h1>
                 <p class="lead">
                     Self-host the open-source version for free. Choose Cloud for
@@ -174,7 +173,7 @@ const PLANS: {
 
     .rails {
         position: relative;
-        padding: 0 clamp(1.5rem, 4vw, 3.5rem) 6rem;
+        padding: 0 clamp(1.5rem, 4vw, 3.5rem) 4.5rem;
         border-inline: var(--rule);
 
         @include media-breakpoint-down(md) {
@@ -189,10 +188,6 @@ const PLANS: {
         @include media-breakpoint-down(md) {
             padding-block: calc(2.5rem + 57px) 2.5rem;
         }
-    }
-
-    .eyebrow {
-        @include eyebrow;
     }
 
     h1 {
