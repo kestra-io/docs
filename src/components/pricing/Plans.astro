@@ -168,6 +168,10 @@ const PLANS: {
         background: var(--ks-background-body);
     }
 
+    :global(.home-page:has(.pricing-plans)) {
+        overflow: clip visible;
+    }
+
     :global(body:has(.pricing-plans) #top-bar:not(.open)) {
         box-shadow: 0 1px 0 var(--ks-border-primary);
     }
