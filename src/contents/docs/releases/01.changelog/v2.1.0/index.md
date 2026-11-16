@@ -62,6 +62,7 @@ Infrastructure self-service in a dedicated tenant type, searchable execution val
 - **Impersonate service accounts (EE)**: Instance Owners can impersonate a service account, and impersonation is now reserved to Instance Owners. [Docs](../../../07.enterprise/03.auth/rbac/index.md#impersonate)
 - **LDAP user attributes (EE)**: the `user-attributes` mapping now sets new users' email, first name, and last name. Earlier versions accepted the setting but ignored it. [Docs](../../../07.enterprise/03.auth/sso/ldap/index.md)
 - **Execution labels in test fixtures (EE)**: `fixtures.labels` sets the labels a flow gets in production. [Docs](../../../07.enterprise/02.governance/unit-tests/index.md#set-execution-labels-in-fixtures)
+- **Dedicated storage and secrets manager form (EE)**: a namespace or tenant's dedicated internal storage and secrets manager are set in a form built from the plugin's properties, and saved values are kept when you edit them. [Docs](../../../07.enterprise/02.governance/tenants/index.md#dedicated-storage-and-secrets-backend-per-tenant)
 
 ## Infrastructure
 

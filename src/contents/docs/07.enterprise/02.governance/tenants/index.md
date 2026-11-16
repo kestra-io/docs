@@ -194,7 +194,12 @@ By default, each tenant uses the same [runtime and storage configuration](../../
 
 A dedicated storage and secrets backend is configured from the tenant's **Settings** page (**Instance Owner → Tenants → All tenants**, then the settings icon in the tenant's row). Turn on **Dedicated internal storage** in the **Internal storage** section or **Dedicated secrets manager** in the **Secrets manager** section, then select the storage or secret type. Namespaces have the same sections on their **Edit** tab.
 
-The configuration is a form built from the selected plugin's properties: required properties come first, and optional ones are grouped below them. Select **Code** to edit the same properties as YAML, or **Documentation** to open the reference for the selected type. A property the plugin doesn't define is flagged so you can remove it before saving.
+The configuration has two modes that edit the same properties, so you can switch between them:
+
+- **Form**: one field per property of the selected plugin. Required properties come first, and optional ones are grouped below them. A property the plugin doesn't define is flagged so you can remove it before saving. If the form for the selected type can't be loaded, this tab asks for the configuration as key and value pairs instead.
+- **Code**: the same properties as YAML. An empty editor shows an example with the plugin's main properties.
+
+Select **Documentation** to open the reference for the selected type.
 
 On a namespace, saved values are never shown again. Each one appears as **Set**: select **Replace** to enter a new value, or delete it to remove the property. Saving keeps every value you didn't change. Changing the storage or secret type clears the configuration, because the saved values belong to the previous backend.
 
@@ -238,7 +243,13 @@ Single-word keys such as `bucket`, `region`, `endpoint`, and `address` stay the 
 
 #### Dedicated storage example
 
-An S3 bucket as the tenant's internal storage, entered in the **Code** view of **Dedicated internal storage** with the type set to `s3`:
+An S3 bucket as the tenant's internal storage, with the type set to `s3`. In the form, `bucket` is required and the keys and region are under **Connection**:
+
+![Dedicated internal storage with the s3 type and the bucket, accessKey, region, and secretKey fields filled in the form](./tenant-dedicated-storage-form.png)
+
+The same values in the **Code** view:
+
+![Dedicated internal storage Code view with the S3 configuration as YAML](./tenant-dedicated-storage-code.png)
 
 ```yaml
 bucket: tenant-a-kestra-storage
@@ -271,7 +282,13 @@ serviceAccount: |
 
 #### Dedicated secrets manager example
 
-AWS Secrets Manager, entered in the **Code** view of **Dedicated secrets manager** with the type set to `aws-secret-manager`:
+AWS Secrets Manager, with the type set to `aws-secret-manager`. In the form, `region` is at the top and `accessKeyId` and `secretKeyId` are under **Advanced**:
+
+![Dedicated secrets manager with the aws-secret-manager type and the region field filled in the form](./tenant-dedicated-secrets-manager-form.png)
+
+The same values in the **Code** view:
+
+![Dedicated secrets manager Code view with the AWS Secrets Manager configuration as YAML](./tenant-dedicated-secrets-manager-code.png)
 
 ```yaml
 region: eu-west-1
