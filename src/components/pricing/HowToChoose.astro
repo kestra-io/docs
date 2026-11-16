@@ -26,7 +26,7 @@ const ROWS: { label: string; values: string[] }[] = [
 ]
 ---
 
-<section class="pricing-choose" aria-labelledby="how-to-choose">
+<section class="pricing-choose surface-dark" aria-labelledby="how-to-choose">
     <div class="container-xl">
         <div class="rails">
             <header>
@@ -62,6 +62,12 @@ const ROWS: { label: string; values: string[] }[] = [
     @use "../about/style/section" as *;
 
     .pricing-choose {
+        --ks-border-primary: #24232b;
+        --ks-background-secondary: #060609;
+        --ks-background-body: #0e0d14;
+        --ks-content-primary: #ffffff;
+        --ks-content-secondary: #a9a8b3;
+        --ks-content-link: #a396ff;
         --rule: 1px solid var(--ks-border-primary);
         --inset: clamp(1.5rem, 4vw, 3.5rem);
 
