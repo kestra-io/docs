@@ -89,12 +89,11 @@ const hasLogos = logos.every(Boolean)
                                                 aria-label="Included"
                                             />
                                         ) : row.values[idx] === false ? (
-                                            <span
+                                            <Icon
+                                                name="mdi:close"
                                                 class="no"
                                                 aria-label="Not included"
-                                            >
-                                                —
-                                            </span>
+                                            />
                                         ) : hasLogos &&
                                           String(row.values[idx]).endsWith(
                                               TOOLS_TEXT,
@@ -261,10 +260,14 @@ const hasLogos = logos.every(Boolean)
         }
     }
 
-    .yes {
+    .yes,
+    .no {
         width: 1.125rem;
         height: 1.125rem;
         vertical-align: -0.2em;
+    }
+
+    .yes {
         color: var(--ks-content-link);
     }
 
