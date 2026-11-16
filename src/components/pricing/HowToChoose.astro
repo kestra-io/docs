@@ -1,0 +1,157 @@
+---
+const EDITIONS = ["Kestra Core", "Kestra Cloud", "Kestra Enterprise"]
+
+const ROWS: { label: string; values: string[] }[] = [
+    { label: "Who operates", values: ["You", "Kestra", "You"] },
+    {
+        label: "Where it runs",
+        values: [
+            "Anywhere you deploy it",
+            "Managed by Kestra, in the US or EU",
+            "Your infrastructure, including air-gapped",
+        ],
+    },
+    {
+        label: "Governance",
+        values: [
+            "Basic authentication",
+            "SSO and RBAC",
+            "Full: SSO, LDAP, SCIM, RBAC, audit logs, policies",
+        ],
+    },
+    {
+        label: "How you pay",
+        values: ["Free", "Usage-based", "Fixed annual subscription"],
+    },
+]
+---
+
+<section class="pricing-choose" aria-labelledby="how-to-choose">
+    <div class="container-xl">
+        <div class="rails">
+            <header>
+                <h2 id="how-to-choose">How to choose</h2>
+                <p>
+                    Four questions settle it: who operates, where it runs, the
+                    governance you need and how you pay.
+                </p>
+            </header>
+            <div class="scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <td></td>
+                            {EDITIONS.map((edition) => (
+                                <th scope="col">{edition}</th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {ROWS.map((row) => (
+                            <tr>
+                                <th scope="row">{row.label}</th>
+                                {row.values.map((value) => (
+                                    <td>{value}</td>
+                                ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "../about/style/section" as *;
+
+    .pricing-choose {
+        --rule: 1px solid var(--ks-border-primary);
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+
+        position: relative;
+        border-bottom: var(--rule);
+        background: var(--ks-background-secondary);
+    }
+
+    .rails {
+        border-inline: var(--rule);
+    }
+
+    header {
+        padding: 7.5rem var(--inset) 3.5rem;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem 2.5rem;
+        }
+
+        h2 {
+            @include title;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            @include lead;
+            max-width: 40rem;
+        }
+    }
+
+    .scroll {
+        overflow-x: auto;
+        border-top: var(--rule);
+        background: var(--ks-background-body);
+    }
+
+    table {
+        width: 100%;
+        min-width: 44rem;
+        margin: 0;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
+
+    th,
+    td {
+        padding: 1.5rem 1.5rem;
+        text-align: left;
+        vertical-align: top;
+
+        &:first-child {
+            width: 22%;
+            padding-left: var(--inset);
+        }
+
+        & + th,
+        & + td {
+            border-left: var(--rule);
+        }
+    }
+
+    tbody tr {
+        border-top: var(--rule);
+    }
+
+    thead th {
+        font-size: $font-size-md;
+        font-weight: 600;
+        color: var(--ks-content-primary);
+    }
+
+    tbody th {
+        font-size: $font-size-md;
+        font-weight: 400;
+        color: var(--ks-content-secondary);
+    }
+
+    tbody td {
+        font-size: $font-size-md;
+        font-weight: 500;
+        line-height: 1.4;
+        color: var(--ks-content-primary);
+    }
+
+    tbody tr:last-child > * {
+        padding-bottom: 2.5rem;
+    }
+</style>
