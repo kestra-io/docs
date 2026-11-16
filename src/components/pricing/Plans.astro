@@ -240,7 +240,7 @@ const PLANS: {
             grid-template-columns: minmax(0, 1fr);
         }
 
-        // A plan: a tinted panel that holds the offer, then what it includes.
+        // A plan: a panel that holds the offer, then what it includes.
         > li {
             display: flex;
             flex-direction: column;
@@ -257,26 +257,6 @@ const PLANS: {
                     border-top: var(--rule);
                 }
             }
-
-            &.neutral,
-            &.blue {
-                --tint: #ececf1;
-            }
-
-            &.premium {
-                --tint: #e3dbff;
-            }
-
-            :global(html.dark) & {
-                &.neutral,
-                &.blue {
-                    --tint: rgba(255, 255, 255, 0.07);
-                }
-
-                &.premium {
-                    --tint: rgba(143, 123, 255, 0.24);
-                }
-            }
         }
     }
 
@@ -285,7 +265,6 @@ const PLANS: {
         flex-direction: column;
         align-items: center;
         padding: 2rem 1.5rem 1.5rem;
-        background: linear-gradient(180deg, var(--tint), transparent 92%);
         text-align: center;
     }
 
