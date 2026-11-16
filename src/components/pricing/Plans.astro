@@ -189,10 +189,39 @@ const PLANS: {
         max-width: 70rem;
         margin: 0 auto;
         padding: 0;
+        position: relative;
         overflow: hidden;
-        border: var(--rule);
         border-radius: 10px;
         list-style: none;
+
+        // The frame: a hairline ring with a light that travels around it.
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            padding: 1px;
+            border-radius: inherit;
+            background:
+                conic-gradient(
+                    from var(--plans-turn),
+                    transparent 0 62%,
+                    #8405ff 80%,
+                    #f62e76 92%,
+                    transparent 100%
+                ),
+                var(--ks-border-primary);
+            mask:
+                linear-gradient(#000 0 0) content-box exclude,
+                linear-gradient(#000 0 0);
+            pointer-events: none;
+            animation: plans-turn 7s linear infinite;
+
+            @media (prefers-reduced-motion: reduce) {
+                background: var(--ks-border-primary);
+                animation: none;
+            }
+        }
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);
@@ -223,6 +252,18 @@ const PLANS: {
                     background: #1c1b2e;
                 }
             }
+        }
+    }
+
+    @property --plans-turn {
+        syntax: "<angle>";
+        inherits: false;
+        initial-value: 0deg;
+    }
+
+    @keyframes plans-turn {
+        to {
+            --plans-turn: 360deg;
         }
     }
 
