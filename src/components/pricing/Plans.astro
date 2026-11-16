@@ -275,7 +275,7 @@ const PLANS: {
         min-height: 1.75rem;
 
         // The edition tag of the Enterprise page's hero, on a light surface:
-        // a pill with a violet ring.
+        // a pill with a ring that starts violet and turns grey.
         h2 {
             position: relative;
             display: inline-flex;
@@ -283,12 +283,12 @@ const PLANS: {
             margin: 0;
             padding: 0.3125rem 0.75rem;
             border-radius: 999px;
-            background: linear-gradient(160deg, #e3dcff, #ffffff 85%);
-            box-shadow: 0 6px 14px -10px rgba(99, 27, 255, 0.55);
+            background: linear-gradient(160deg, #f3f1fb, #ffffff 70%);
+            box-shadow: 0 6px 14px -10px rgba(19, 19, 22, 0.35);
             font-size: 0.8125rem;
             font-weight: 600;
             letter-spacing: 0.01em;
-            color: var(--ks-content-link);
+            color: var(--ks-content-primary);
 
             &::before {
                 content: "";
@@ -298,9 +298,9 @@ const PLANS: {
                 border-radius: inherit;
                 background: linear-gradient(
                     150deg,
-                    rgba(99, 27, 255, 0.75),
-                    rgba(99, 27, 255, 0.25) 45%,
-                    rgba(99, 27, 255, 0.55)
+                    rgba(99, 27, 255, 0.4),
+                    rgba(19, 19, 22, 0.16) 45%,
+                    rgba(19, 19, 22, 0.22)
                 );
                 mask:
                     linear-gradient(#000 0 0) content-box exclude,
