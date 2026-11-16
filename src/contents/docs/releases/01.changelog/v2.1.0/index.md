@@ -71,6 +71,7 @@ Infrastructure self-service in a dedicated tenant type, searchable execution val
 - **PEM certificates for gRPC (EE)**: controller and worker mTLS can use PEM files directly, with hot reload. [Docs](../../../configuration/06.enterprise-and-advanced/index.md#pem-certificates)
 - **Executor loop intervals**: tune how often the executor checks SLA deadlines and delayed executions. [Docs](../../../configuration/04.plugins-and-execution/index.md)
 - **`PurgeMetrics`**: bulk-delete execution metrics without going through `PurgeExecutions`. [Docs](../../../10.administrator-guide/purge/index.md)
+- **Plugin downloads through an authenticating proxy**: plugin downloads send `http(s).proxyUser` and `http(s).proxyPassword` to the proxy, and skip it for hosts in `http.nonProxyHosts`. [Docs](../../../10.administrator-guide/mitm-proxy-configuration/index.md#authenticate-plugin-downloads-with-the-proxy)
 - **Installed plugins API (EE)**: `GET /api/v1/plugins/installed` lists every plugin loaded on the instance and whether a newer version is available. [Docs](../../../07.enterprise/05.instance/versioned-plugins/index.md)
 - **Task runner details (EE)**: the Kubernetes, AWS Batch, Azure Batch, Azure VM, Google Batch, and Cloud Run task runners add a **Runner details** artifact with the configuration the run used. [Docs](../../../task-runners/04.types/03.kubernetes-task-runner/index.md)
 - **Plugin endpoints (preview)**: plugin UI components can call server-side logic defined in the plugin. [Docs](../../../plugin-developer-guide/10.plugin-ui/index.md)
