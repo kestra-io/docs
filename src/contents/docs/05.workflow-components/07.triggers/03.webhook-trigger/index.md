@@ -186,7 +186,7 @@ See [Security hardening](../../../security-hardening/index.md#webhook-endpoints)
 
 ## Verify the request signature
 
-:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::badge{version=">=2.0.10" editions="OSS,EE,Cloud"}
 :::
 
 Many providers sign each webhook request with a shared secret and send the HMAC of the request body in a header, such as GitHub's `X-Hub-Signature-256`. Set `signature` on the trigger to check it: Kestra computes the HMAC over the raw request body and rejects a request whose signature is missing or wrong before any execution is created.
