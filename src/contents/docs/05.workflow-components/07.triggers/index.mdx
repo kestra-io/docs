@@ -205,15 +205,17 @@ Triggers are enabled or disabled from the **Triggers** tab of the flow editor. S
 
 If a trigger is locked due to an execution in progress, the **Unlock trigger** button is available in the Triggers tab. Manually unlocking a trigger may result in duplicate executions.
 
+<!-- TODO(runtime test): kestra#18379 (kestra#18819, kestra-ee#10573) documented from source only. On an EE develop image newer than 2026-11-16 13:39 UTC, check that Webhook, MCP Tool, and Flow triggers are listed in Tenant → Triggers as UNSCHEDULED, the greyed toggle and its tooltip, the bulk-toggle skip warning, the 409 from PUT /triggers/set-disabled, and the last execution columns after a webhook call. Add a Tenant → Triggers screenshot showing an UNSCHEDULED row. -->
+
 :::alert{type="info"}
-Only scheduler-based triggers are visible in the Triggers tab and API. Flow Triggers (handled by the Executor) and Webhook triggers (handled by the Webserver) do not appear there.
+Webhook, MCP Tool, Flow, and asset event triggers are fired by the Webserver or the Executor, not the Scheduler. They're listed in the Triggers tab, **Tenant → Triggers**, and the triggers API with the type `UNSCHEDULED`, but their toggle is unavailable. To disable one, set `disabled: true` on the trigger in the flow source.
 :::
 
 ### Toggle, unlock, or delete triggers from Tenant → Triggers
 
 From **Tenant → Triggers** you can bulk manage trigger state:
 
-- **Toggle**: enable or disable one or more triggers without editing the flow code.
+- **Toggle**: enable or disable one or more triggers without editing the flow code. A bulk toggle skips `UNSCHEDULED` triggers and says how many it skipped, and the API returns `409` for them.
 - **Unlock**: clear the “locked” state if a trigger is stuck waiting on a long-running execution (use carefully, as this may create duplicate executions).
 - **Delete trigger**: remove the trigger's stored state, including its lock, next evaluation date, and any backfill. The trigger definition in the flow is unchanged. For a realtime trigger, deleting the state also stops its running instance.
 
