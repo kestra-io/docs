@@ -215,6 +215,32 @@ const DOT = { x: column * PITCH, y: 4 * PITCH }
             section.addEventListener("pointerleave", () =>
                 svg.classList.remove("is-near"),
             )
+            if (
+                !window.matchMedia("(hover: none)").matches ||
+                window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            )
+                continue
+            let frame = 0
+            const pass = () => {
+                const start = performance.now()
+                svg.classList.add("is-near")
+                const step = (now: number) => {
+                    const t = Math.min((now - start) / 1800, 1)
+                    const eased = t < 0.5 ? 2 * t * t : 1 - (2 - 2 * t) ** 2 / 2
+                    for (const light of lights) {
+                        light.setAttribute("cx", String(-220 + eased * 1440))
+                        light.setAttribute("cy", "60")
+                    }
+                    if (t < 1) frame = requestAnimationFrame(step)
+                    else svg.classList.remove("is-near")
+                }
+                cancelAnimationFrame(frame)
+                frame = requestAnimationFrame(step)
+            }
+            new IntersectionObserver(
+                ([entry]) => entry.isIntersecting && pass(),
+                { threshold: 0.9 },
+            ).observe(svg)
         }
     }
 

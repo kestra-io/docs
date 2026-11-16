@@ -167,6 +167,10 @@ const zones = await Promise.all(
         padding: 0 clamp(1rem, 2.5vw, 2.5rem);
         color: #ffffff;
 
+        @include media-breakpoint-down(md) {
+            padding-inline: 0;
+        }
+
         ul {
             margin: 0;
             padding: 0;
