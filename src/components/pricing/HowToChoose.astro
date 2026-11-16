@@ -58,6 +58,21 @@ const ROWS: { label: string; values: string[] }[] = [
                     </tbody>
                 </table>
             </div>
+            <ul class="cards">
+                {EDITIONS.map((edition, idx) => (
+                    <li class:list={{ featured: idx === EDITIONS.length - 1 }}>
+                        <h3>{edition}</h3>
+                        <dl>
+                            {ROWS.map((row) => (
+                                <div>
+                                    <dt>{row.label}</dt>
+                                    <dd>{row.values[idx]}</dd>
+                                </div>
+                            ))}
+                        </dl>
+                    </li>
+                ))}
+            </ul>
         </div>
     </div>
 </section>
@@ -109,6 +124,10 @@ const ROWS: { label: string; values: string[] }[] = [
         position: relative;
         overflow-x: auto;
         border-block: var(--rule);
+
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
 
         @include media-breakpoint-up(lg) {
             overflow: visible;
@@ -201,6 +220,73 @@ const ROWS: { label: string; values: string[] }[] = [
         padding-bottom: 2.5rem;
     }
 
+    .cards {
+        display: none;
+        margin: 0;
+        padding: 0;
+        border-top: var(--rule);
+        list-style: none;
+
+        @include media-breakpoint-down(md) {
+            display: block;
+        }
+
+        > li {
+            border-bottom: var(--rule);
+
+            &.featured {
+                margin: 1rem 0.75rem 0;
+                overflow: hidden;
+                border: 1px solid
+                    color-mix(in srgb, var(--ks-content-link) 55%, transparent);
+                border-radius: 1rem;
+                animation: pricing-choose-glow 3.2s ease-in-out infinite
+                    alternate;
+
+                h3,
+                dl > div {
+                    padding-inline: calc(var(--inset) - 0.75rem);
+                }
+            }
+        }
+
+        h3 {
+            margin: 0;
+            padding: 1rem var(--inset);
+            background: rgba(255, 255, 255, 0.035);
+            font-size: $font-size-md;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        dl {
+            margin: 0;
+
+            > div {
+                display: grid;
+                grid-template-columns: 7rem minmax(0, 1fr);
+                gap: 1rem;
+                padding: 0.875rem var(--inset);
+                border-top: var(--rule);
+            }
+        }
+
+        dt {
+            font-size: $font-size-sm;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--ks-content-secondary);
+        }
+
+        dd {
+            margin: 0;
+            font-size: $font-size-sm;
+            font-weight: 500;
+            line-height: 1.5;
+            color: var(--ks-content-primary);
+        }
+    }
+
     @keyframes pricing-choose-glow {
         from {
             box-shadow: 0 0 1rem 0 rgba(163, 150, 255, 0.12);
@@ -212,7 +298,8 @@ const ROWS: { label: string; values: string[] }[] = [
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .scroll::after {
+        .scroll::after,
+        .cards > .featured {
             animation: none;
         }
     }
