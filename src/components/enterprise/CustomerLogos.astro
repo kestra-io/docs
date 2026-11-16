@@ -40,7 +40,7 @@ const height = (logo: ImageMetadata, scale: number) =>
 
 <section class="ee-logos" aria-label="Trusted by leading companies">
     <ul>
-        {COMPANIES.map((company) => {
+        {COMPANIES.map((company, idx) => {
             const href = storyHref(company.story)
             const image = (
                 <Image
@@ -50,7 +50,7 @@ const height = (logo: ImageMetadata, scale: number) =>
                 />
             )
             return (
-                <li>
+                <li class:list={{ wrap: idx === 4 }}>
                     {href ? (
                         <a class="has-story" href={href}>
                             {image}
@@ -87,6 +87,24 @@ const height = (logo: ImageMetadata, scale: number) =>
 
         li {
             display: flex;
+        }
+
+        @media (min-width: 430px) and (max-width: 1279.98px) {
+            ul {
+                display: grid;
+                grid-template-columns: repeat(8, minmax(0, 1fr));
+                gap: 2.25rem 0;
+                max-width: 56rem;
+            }
+
+            li {
+                grid-column: span 2;
+                justify-content: center;
+            }
+
+            li.wrap {
+                grid-column: 2 / span 2;
+            }
         }
 
         .has-story {

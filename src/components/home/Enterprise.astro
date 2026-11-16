@@ -1599,6 +1599,7 @@ const WORKERS = [
         .name {
             flex: none;
             width: 6.5rem;
+            white-space: nowrap;
             color: #c9c9d2;
         }
 
@@ -1663,7 +1664,7 @@ const WORKERS = [
         display: none;
     }
 
-    @include media-breakpoint-down(md) {
+    @include media-breakpoint-down(xl) {
         .attempt {
             padding-left: 0.25rem;
         }
@@ -1926,7 +1927,11 @@ const WORKERS = [
         font-size: 0.875rem;
 
         @include media-breakpoint-down(xl) {
-            zoom: 0.8;
+            zoom: 0.74;
+        }
+
+        @include media-breakpoint-down(lg) {
+            zoom: 0.55;
         }
 
         @include media-breakpoint-down(md) {

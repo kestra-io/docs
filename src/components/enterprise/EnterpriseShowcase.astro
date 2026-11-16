@@ -238,6 +238,10 @@ const PANELS = [
         border-left: var(--rule);
         border-right: var(--rule);
         padding-bottom: clamp(4rem, 6vw, 5.5rem);
+
+        @include media-breakpoint-down(xl) {
+            padding-bottom: 0;
+        }
     }
 
     .head {
@@ -341,6 +345,10 @@ const PANELS = [
     .panels {
         display: grid;
         border-bottom: var(--rule);
+
+        @include media-breakpoint-down(xl) {
+            border-bottom: 0;
+        }
     }
 
     .panel {
@@ -362,12 +370,21 @@ const PANELS = [
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);
+            padding: 3rem var(--inset);
         }
     }
 
     .copy {
         align-self: center;
         padding: 3.5rem var(--inset);
+
+        @include media-breakpoint-down(lg) {
+            display: contents;
+
+            ul {
+                order: 2;
+            }
+        }
 
         h3 {
             margin: 0;
@@ -469,9 +486,11 @@ const PANELS = [
             }
 
             @include media-breakpoint-down(lg) {
-                padding: 2rem var(--inset);
-                border-left: 0;
-                border-top: var(--rule);
+                order: 1;
+                margin-bottom: 2rem;
+                padding: 1rem 1.5rem;
+                border: var(--rule);
+                border-radius: 0.75rem;
             }
         }
 

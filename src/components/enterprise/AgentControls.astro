@@ -85,14 +85,14 @@ const CONTROLS = [
         grid-template-columns: repeat(3, minmax(0, 1fr));
         margin: 3.5rem 0 0;
 
-        @include media-breakpoint-up(lg) {
+        @include media-breakpoint-up(md) {
             margin-bottom: -2.5rem;
         }
         padding: 0;
         border-top: 1px solid var(--rule);
         list-style: none;
 
-        @include media-breakpoint-down(lg) {
+        @include media-breakpoint-down(md) {
             grid-template-columns: minmax(0, 1fr);
             padding-inline: clamp(1.5rem, 4vw, 3.5rem);
         }
@@ -101,7 +101,7 @@ const CONTROLS = [
             position: relative;
             padding: 2rem clamp(1.5rem, 4vw, 3.5rem) 0;
 
-            @include media-breakpoint-up(lg) {
+            @include media-breakpoint-up(md) {
                 & + li::before {
                     content: "";
                     position: absolute;
@@ -111,7 +111,7 @@ const CONTROLS = [
                 }
             }
 
-            @include media-breakpoint-down(lg) {
+            @include media-breakpoint-down(md) {
                 padding: 1.5rem 0;
 
                 & + li {
