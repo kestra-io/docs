@@ -104,9 +104,7 @@ const PLANS: {
                             ]}
                         >
                             <div class="panel">
-                                <div class="name">
-                                    <h2 class={plan.tone}>{plan.name}</h2>
-                                </div>
+                                <h2>{plan.name}</h2>
                                 <p class="stage">
                                     {plan.tag && (
                                         <span class="tag">{plan.tag}</span>
@@ -312,119 +310,18 @@ const PLANS: {
         text-align: center;
     }
 
-    .name {
-        display: flex;
-        justify-content: center;
-
-        // The edition tag of the Enterprise page's hero, one tone per edition:
-        // neutral for Open Source, blue for Cloud, ink and violet for
-        // Enterprise. Each tone sets the fill, the ring and the ink.
-        h2 {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            margin: 0;
-            padding: 0.3125rem 0.75rem;
-            border-radius: 999px;
-            background: var(--tag-fill);
-            box-shadow: var(--tag-shadow, none);
-            font-size: 0.8125rem;
-            font-weight: 600;
-            letter-spacing: 0.01em;
-            color: var(--tag-ink);
-
-            &::before {
-                content: "";
-                position: absolute;
-                inset: 0;
-                padding: 1px;
-                border-radius: inherit;
-                background: var(--tag-ring);
-                mask:
-                    linear-gradient(#000 0 0) content-box exclude,
-                    linear-gradient(#000 0 0);
-                pointer-events: none;
-            }
-
-            &.neutral {
-                --tag-fill: linear-gradient(160deg, #f4f4f6, #ffffff 70%);
-                --tag-ring: linear-gradient(
-                    150deg,
-                    rgba(19, 19, 22, 0.26),
-                    rgba(19, 19, 22, 0.12)
-                );
-                --tag-ink: #131316;
-            }
-
-            &.blue {
-                --tag-fill: linear-gradient(160deg, #e2ebff, #ffffff 85%);
-                --tag-ring: linear-gradient(
-                    150deg,
-                    rgba(46, 98, 255, 0.6),
-                    rgba(46, 98, 255, 0.18) 45%,
-                    rgba(46, 98, 255, 0.4)
-                );
-                --tag-ink: #1f43b8;
-            }
-
-            &.premium {
-                --tag-fill: linear-gradient(150deg, #2c2547, #131316 65%);
-                --tag-ring: linear-gradient(
-                    150deg,
-                    #d9ceff,
-                    rgba(143, 123, 255, 0.45) 40%,
-                    rgba(255, 255, 255, 0.12) 60%,
-                    rgba(180, 150, 255, 0.7)
-                );
-                --tag-ink: #ffffff;
-                --tag-shadow: 0 8px 18px -10px rgba(44, 37, 71, 0.8);
-            }
-
-            :global(html.dark) & {
-                &.neutral {
-                    --tag-fill: rgba(255, 255, 255, 0.06);
-                    --tag-ring: linear-gradient(
-                        150deg,
-                        rgba(255, 255, 255, 0.34),
-                        rgba(255, 255, 255, 0.1)
-                    );
-                    --tag-ink: #ffffff;
-                }
-
-                &.blue {
-                    --tag-fill: linear-gradient(
-                        160deg,
-                        rgba(70, 110, 255, 0.24),
-                        rgba(22, 21, 30, 0.5)
-                    );
-                    --tag-ring: linear-gradient(
-                        150deg,
-                        rgba(140, 170, 255, 0.75),
-                        rgba(140, 170, 255, 0.2) 45%,
-                        rgba(140, 170, 255, 0.5)
-                    );
-                    --tag-ink: #d3deff;
-                }
-
-                &.premium {
-                    --tag-fill: linear-gradient(150deg, #ffffff, #d9ceff);
-                    --tag-ring: linear-gradient(
-                        150deg,
-                        #ffffff,
-                        rgba(143, 123, 255, 0.6)
-                    );
-                    --tag-ink: #131316;
-                    --tag-shadow: 0 0 18px -6px rgba(180, 150, 255, 0.6);
-                }
-            }
-        }
+    h2 {
+        margin: 0;
+        font-size: $font-size-xl;
+        font-weight: 600;
+        color: var(--ks-content-primary);
     }
 
     .stage {
         display: flex;
         align-items: center;
         min-height: 1.5rem;
-        margin: 0.75rem 0 0;
+        margin: 0.5rem 0 0;
     }
 
     .tag {
