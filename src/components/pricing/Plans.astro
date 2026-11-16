@@ -183,6 +183,7 @@ const PLANS: {
     .frame {
         position: relative;
         margin-inline: auto;
+        padding-bottom: 4rem;
         border-inline: var(--rule);
 
         &::before {
@@ -248,7 +249,8 @@ const PLANS: {
         }
     }
 
-    .plans::after {
+    .plans::after,
+    .customers::after {
         content: "";
         top: 100%;
     }
