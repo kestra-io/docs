@@ -474,6 +474,17 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
         }
 
         @include media-breakpoint-up(md) {
+            &::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 50%;
+                width: 100vw;
+                border-top: var(--rule);
+                translate: -50% 0;
+                pointer-events: none;
+            }
+
             &::after {
                 content: "";
                 position: absolute;
