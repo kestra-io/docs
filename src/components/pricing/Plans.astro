@@ -1,6 +1,10 @@
 ---
 import { Icon } from "astro-icon/components"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import PixelEdges from "~/components/about/PixelEdges.astro"
+
+// The site-wide plugin total, as on the homepage.
+const totalPlugins = await fetchTotalPluginsCount()
 
 type Action = { label: string; href: string; solid?: boolean }
 
@@ -22,7 +26,7 @@ const PLANS: {
         price: "Free",
         text: "For individuals and single teams who want to run Kestra themselves. No limits on flows or executions.",
         features: [
-            "Declarative workflows, 2,300+ plugins",
+            `Declarative workflows, ${totalPlugins}+ plugins`,
             "Scheduling and events",
             "Code and no-code editors",
             "AI agents and MCP server",

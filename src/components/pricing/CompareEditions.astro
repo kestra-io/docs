@@ -1,5 +1,9 @@
 ---
 import { Icon } from "astro-icon/components"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+// The site-wide plugin total, as on the homepage.
+const totalPlugins = await fetchTotalPluginsCount()
 
 // true: included. false: not included. A string: shown as is.
 // { note }: included, with a qualifier under the check.
@@ -14,7 +18,7 @@ const GROUPS: { title: string; rows: Row[] }[] = [
         title: "Platform",
         rows: [
             [
-                "Declarative workflows, 2,300+ plugins, unlimited flows and executions",
+                `Declarative workflows, ${totalPlugins}+ plugins, unlimited flows and executions`,
                 true,
                 true,
                 true,
