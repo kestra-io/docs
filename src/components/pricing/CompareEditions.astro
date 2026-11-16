@@ -26,9 +26,10 @@ const EDITIONS = [
 ]
 const SALES = "Talk to sales"
 
-const GROUPS: { title: string; rows: Row[] }[] = [
+const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
     {
         title: "Platform",
+        icon: "mdi:layers-outline",
         rows: [
             [
                 `Declarative workflows, ${totalPlugins}+ plugins, unlimited flows and executions`,
@@ -104,6 +105,7 @@ const GROUPS: { title: string; rows: Row[] }[] = [
     },
     {
         title: "Authentication and access",
+        icon: "mdi:account-key-outline",
         rows: [
             [
                 "SSO (OIDC)",
@@ -159,6 +161,7 @@ const GROUPS: { title: string; rows: Row[] }[] = [
     },
     {
         title: "Secrets and security",
+        icon: "mdi:shield-lock-outline",
         rows: [
             [
                 "Built-in secrets manager",
@@ -194,6 +197,7 @@ const GROUPS: { title: string; rows: Row[] }[] = [
     },
     {
         title: "Governance and observability",
+        icon: "mdi:clipboard-check-outline",
         rows: [
             [
                 "Policies and restricted plugins",
@@ -259,6 +263,7 @@ const GROUPS: { title: string; rows: Row[] }[] = [
     },
     {
         title: "Development and customization",
+        icon: "mdi:code-braces",
         rows: [
             [
                 "Unit tests, plugin versioning, custom blueprints",
@@ -274,6 +279,7 @@ const GROUPS: { title: string; rows: Row[] }[] = [
     },
     {
         title: "Infrastructure and scalability",
+        icon: "mdi:server-network",
         rows: [
             [
                 "Workers on your own infrastructure",
@@ -354,7 +360,10 @@ const GROUPS: { title: string; rows: Row[] }[] = [
                         <tbody>
                             <tr class="group">
                                 <th scope="colgroup" colspan="4">
-                                    {group.title}
+                                    <span>
+                                        <Icon name={group.icon} />
+                                        {group.title}
+                                    </span>
                                 </th>
                             </tr>
                             {group.rows.map(
@@ -555,12 +564,24 @@ const GROUPS: { title: string; rows: Row[] }[] = [
     }
 
     .group th {
-        padding-block: 2.25rem 0.875rem;
+        padding-block: 1.5rem;
         border-left: 0;
-        font-size: $font-size-sm;
-        font-weight: 600;
+        font-size: $font-size-md;
+        font-weight: 700;
         text-align: left;
-        color: var(--ks-content-link);
+        color: var(--ks-content-primary);
+
+        span {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+        }
+
+        :global(svg) {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: var(--ks-content-tertiary);
+        }
     }
 
     tbody th[scope="row"] {
