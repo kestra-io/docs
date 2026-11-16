@@ -87,7 +87,8 @@ const PLANS: {
         <div class="rails">
             <div class="frame">
                 <header>
-                    <h1 id="pricing-title">Three ways to run Kestra</h1>
+                    <!-- prettier-ignore -->
+                    <h1 id="pricing-title">Three ways to run Kestra<span class="brand-dot" aria-hidden="true"></span></h1>
                     <p class="lead">
                         Self-host the open-source version for free. Choose Cloud
                         for a managed service. Get Enterprise for advanced
@@ -209,7 +210,19 @@ const PLANS: {
 
     h1 {
         @include title;
+        font-size: clamp(2.5rem, 5.2vw, 4.25rem);
+        letter-spacing: -0.03em;
+        line-height: 1.04;
         color: var(--ks-content-primary);
+
+        // The homepage title's full stop: the square pink dot of the logo.
+        .brand-dot {
+            display: inline-block;
+            width: 0.15em;
+            height: 0.15em;
+            margin-left: 0.05em;
+            background: #fe0071;
+        }
     }
 
     .lead {
