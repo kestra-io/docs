@@ -354,6 +354,39 @@ const PLANS: {
         align-items: center;
         padding: 1.25rem 1.5rem 0.75rem;
         text-align: center;
+
+        @include media-breakpoint-down(lg) {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+            justify-items: start;
+            text-align: left;
+
+            > * {
+                grid-column: 1 / -1;
+            }
+
+            > h2 {
+                grid-column: 1;
+            }
+
+            > .stage {
+                grid-column: 2;
+                margin: 0;
+            }
+
+            > .text {
+                max-width: none;
+            }
+
+            > a {
+                width: 100%;
+            }
+
+            > .more:not(:has(a)) {
+                display: none;
+            }
+        }
     }
 
     h2 {
