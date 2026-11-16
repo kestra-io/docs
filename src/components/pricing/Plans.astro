@@ -92,12 +92,12 @@ const PLANS: {
                         return (
                             <li class:list={{ featured: plan.featured }}>
                                 <div class="panel">
-                                    <h2>
-                                        {plan.name}
+                                    <h2>{plan.name}</h2>
+                                    <p class="stage">
                                         {plan.tag && (
                                             <span class="tag">{plan.tag}</span>
                                         )}
-                                    </h2>
+                                    </p>
                                     <p class="price">{plan.price}</p>
                                     <p class="text">{plan.text}</p>
                                     <a
@@ -355,19 +355,20 @@ const PLANS: {
     }
 
     h2 {
-        position: relative;
         margin: 0;
         font-size: $font-size-xl;
         font-weight: 600;
         color: var(--ks-content-primary);
     }
 
+    .stage {
+        display: flex;
+        align-items: center;
+        min-height: 1.375rem;
+        margin: 0.25rem 0 0;
+    }
+
     .tag {
-        position: absolute;
-        top: 50%;
-        left: calc(100% + 0.5rem);
-        translate: 0 -50%;
-        white-space: nowrap;
         padding: 0.125rem 0.625rem;
         border-radius: 999px;
         background: color-mix(in srgb, var(--ks-content-link) 12%, transparent);

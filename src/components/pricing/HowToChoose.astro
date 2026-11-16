@@ -1,4 +1,6 @@
 ---
+import BlockTitle from "~/components/enterprise/BlockTitle.astro"
+
 const EDITIONS = ["Kestra Core", "Kestra Cloud", "Kestra Enterprise"]
 
 const ROWS: { label: string; values: string[] }[] = [
@@ -30,7 +32,9 @@ const ROWS: { label: string; values: string[] }[] = [
     <div class="container-xl">
         <div class="rails">
             <header>
-                <h2 id="how-to-choose">How to choose</h2>
+                <h2 id="how-to-choose" aria-label="How to choose">
+                    <BlockTitle text="HOW TO CHOOSE" prefix="pricing-choose" />
+                </h2>
             </header>
             <div class="scroll">
                 <table>
@@ -63,8 +67,7 @@ const ROWS: { label: string; values: string[] }[] = [
 
     .pricing-choose {
         --ks-border-primary: #24232b;
-        --ks-background-secondary: #060609;
-        --ks-background-body: #0e0d14;
+        --ks-background-body: #0b0a10;
         --ks-content-primary: #ffffff;
         --ks-content-secondary: #a9a8b3;
         --ks-content-link: #a396ff;
@@ -72,8 +75,15 @@ const ROWS: { label: string; values: string[] }[] = [
         --inset: clamp(1.5rem, 4vw, 3.5rem);
 
         position: relative;
-        border-bottom: var(--rule);
-        background: var(--ks-background-secondary);
+        overflow: hidden;
+        background:
+            radial-gradient(
+                60% 70% at 50% 55%,
+                rgba(120, 110, 165, 0.16),
+                rgba(90, 84, 130, 0.05) 55%,
+                transparent 75%
+            ),
+            linear-gradient(180deg, #060609 0%, #0e0d14 55%, #060609 100%);
     }
 
     .rails {
@@ -89,9 +99,9 @@ const ROWS: { label: string; values: string[] }[] = [
         }
 
         h2 {
-            @include title;
-            font-size: clamp(2rem, 3.6vw, 3rem);
-            color: var(--ks-content-primary);
+            max-width: 72rem;
+            margin: 0 auto;
+            user-select: none;
         }
     }
 
@@ -99,7 +109,6 @@ const ROWS: { label: string; values: string[] }[] = [
         position: relative;
         overflow-x: auto;
         border-block: var(--rule);
-        background: var(--ks-background-body);
 
         @include media-breakpoint-up(lg) {
             overflow: visible;
@@ -126,19 +135,10 @@ const ROWS: { label: string; values: string[] }[] = [
                     color-mix(in srgb, var(--ks-content-link) 6%, transparent),
                     transparent
                 );
-                box-shadow:
-                    0 0 0 1px
-                        color-mix(
-                            in srgb,
-                            var(--ks-content-link) 55%,
-                            var(--ks-background-body)
-                        ),
-                    0 0 0 6px
-                        color-mix(
-                            in srgb,
-                            var(--ks-content-link) 14%,
-                            var(--ks-background-body)
-                        );
+                border: 1px solid
+                    color-mix(in srgb, var(--ks-content-link) 55%, transparent);
+                animation: pricing-choose-glow 3.2s ease-in-out infinite
+                    alternate;
                 pointer-events: none;
             }
         }
@@ -194,5 +194,21 @@ const ROWS: { label: string; values: string[] }[] = [
 
     tbody tr:last-child > * {
         padding-bottom: 2.5rem;
+    }
+
+    @keyframes pricing-choose-glow {
+        from {
+            box-shadow: 0 0 1rem 0 rgba(163, 150, 255, 0.12);
+        }
+
+        to {
+            box-shadow: 0 0 2.75rem 0.25rem rgba(163, 150, 255, 0.42);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .scroll::after {
+            animation: none;
+        }
     }
 </style>
