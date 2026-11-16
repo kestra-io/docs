@@ -27,12 +27,10 @@ const COMPANIES: {
 ]
 
 interface Props {
-    /** Scroll the logos in one endless line instead of a centred row. */
     marquee?: boolean
 }
 
 const { marquee = false } = Astro.props
-// Enough copies for half the track to outrun the widest screen.
 const COPIES = 4
 
 const stories = await getCollection("customerStories")

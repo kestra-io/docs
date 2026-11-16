@@ -3,7 +3,6 @@ import { Icon } from "astro-icon/components"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import PixelEdges from "~/components/about/PixelEdges.astro"
 
-// The site-wide plugin total, as on the homepage.
 const totalPlugins = await fetchTotalPluginsCount()
 
 type Action = { label: string; href: string; solid?: boolean }
@@ -16,12 +15,10 @@ const PLANS: {
     features: string[]
     ideal: string
     actions: Action[]
-    tone: "neutral" | "blue" | "premium"
     featured?: boolean
 }[] = [
     {
         name: "Kestra Core",
-        tone: "neutral",
         tag: "Open Source",
         price: "Free",
         text: "For individuals and single teams who want to run Kestra themselves. No limits on flows or executions.",
@@ -44,7 +41,6 @@ const PLANS: {
     },
     {
         name: "Kestra Cloud",
-        tone: "blue",
         tag: "Early Access",
         price: "Usage-based",
         text: "Managed by the people who build Kestra. Start in minutes, scale when you need to.",
@@ -61,7 +57,6 @@ const PLANS: {
     },
     {
         name: "Kestra Enterprise",
-        tone: "premium",
         price: "Annual",
         text: "For organizations running Kestra as shared infrastructure, on their own terms.",
         features: [
@@ -87,8 +82,7 @@ const PLANS: {
         <div class="rails">
             <div class="frame">
                 <header>
-                    <!-- prettier-ignore -->
-                    <h1 id="pricing-title">Three ways to run Kestra<span class="brand-dot" aria-hidden="true"></span></h1>
+                    <h1 id="pricing-title">Three ways to run Kestra</h1>
                     <p class="lead">
                         Self-host the open-source version for free. Choose Cloud
                         for a managed service. Get Enterprise for advanced
@@ -104,12 +98,7 @@ const PLANS: {
                                 ? { target: "_blank", rel: "noopener" }
                                 : {}
                         return (
-                            <li
-                                class:list={[
-                                    plan.tone,
-                                    { featured: plan.featured },
-                                ]}
-                            >
+                            <li class:list={{ featured: plan.featured }}>
                                 <div class="panel">
                                     <h2>{plan.name}</h2>
                                     <p class="stage">
@@ -176,8 +165,6 @@ const PLANS: {
         background: var(--ks-background-body);
     }
 
-    // The site header draws its hairline only once scrolled. This page opens
-    // on a white hero, so the header carries it from the top.
     :global(body:has(.pricing-plans) #top-bar:not(.open)) {
         box-shadow: 0 1px 0 var(--ks-border-primary);
     }
@@ -186,9 +173,6 @@ const PLANS: {
         position: relative;
     }
 
-    // The grid: two rails that run the height of the section, a rule under
-    // the hero that crosses the whole page, and one between each plan.
-    // Its rails fall on the header's logo and search button.
     .frame {
         margin-inline: auto;
         border-inline: var(--rule);
@@ -214,8 +198,8 @@ const PLANS: {
         line-height: 1.04;
         color: var(--ks-content-primary);
 
-        // The homepage title's full stop: the square pink dot of the logo.
-        .brand-dot {
+        &::after {
+            content: "";
             display: inline-block;
             width: 0.15em;
             height: 0.15em;
@@ -252,7 +236,6 @@ const PLANS: {
             grid-template-columns: minmax(0, 1fr);
         }
 
-        // A plan: a panel that holds the offer, then what it includes.
         > li {
             display: flex;
             flex-direction: column;
@@ -270,7 +253,6 @@ const PLANS: {
                 }
             }
 
-            // The featured plan: a faint wash that fills its cell from the top.
             &.featured {
                 background: linear-gradient(180deg, #f5f4fb, transparent 34rem);
 
