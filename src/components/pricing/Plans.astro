@@ -141,15 +141,12 @@ const PLANS: {
         position: relative;
         border-bottom: var(--rule);
         background: var(--ks-background-body);
+    }
 
-        // The site header draws its hairline only once scrolled: this one
-        // closes it while the page sits at the top.
-        &::before {
-            content: "";
-            position: absolute;
-            inset: 67px 0 auto;
-            border-top: var(--rule);
-        }
+    // The site header draws its hairline only once scrolled. This page opens
+    // on a white hero, so the header carries it from the top.
+    :global(body:has(.pricing-plans) #top-bar:not(.open)) {
+        box-shadow: 0 1px 0 var(--ks-border-primary);
     }
 
     .rails {
