@@ -203,6 +203,8 @@ Select **Documentation** to open the reference for the selected type.
 
 On a namespace, saved values are never shown again. Each one appears as **Set**: select **Replace** to enter a new value, or delete it to remove the property. Saving keeps every value you didn't change. Changing the storage or secret type clears the configuration, because the saved values belong to the previous backend.
 
+![Namespace Edit tab with a saved S3 storage configuration: bucket, accessKey, region, and secretKey each show Set with a Replace button](./namespace-dedicated-storage-saved.png)
+
 In the API, the fields are `storageType`, `storageConfiguration`, `secretType`, and `secretConfiguration`. The [Terraform `kestra_tenant` resource](../../../13.terraform/resources/tenant/index.md) exposes them as `storage_type`, `storage_configuration`, `secret_type`, and `secret_configuration`, with the configuration as a flat map of strings.
 
 Keep in mind:

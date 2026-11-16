@@ -100,6 +100,10 @@ tasks:
 
 Namespace-level Policies are inherited by child Namespaces. A Policy created in a parent Namespace applies to all flows in the parent and every child Namespace under it. See [Policies](../policies/index.md) for the full DSL reference, enforcement modes, and inheritance behavior.
 
+### Dedicated storage and secrets manager
+
+A namespace can use its own internal storage and secrets manager instead of its tenant's. On the namespace **Edit** tab, turn on **Dedicated internal storage** or **Dedicated secrets manager** and fill in the form. Saved values show as **Set**, and saving keeps the ones you don't replace. See [Dedicated storage and secrets backend per tenant](../tenants/index.md#dedicated-storage-and-secrets-backend-per-tenant).
+
 ### Default service account for SDK plugins
 
 Namespaces can now provide **default authentication credentials** that [SDK-based plugins](/plugins/plugin-kestra) use to run tasks such as [List all Namespaces](/plugins/plugin-kestra/kestra-namespaces/io.kestra.plugin.kestra.namespaces.list). This allows tasks relying on the [Kestra SDK](../../../api-reference/kestra-sdk/index.mdx) to call the API without hard-coding credentials inside the flow.
