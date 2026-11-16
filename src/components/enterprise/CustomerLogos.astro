@@ -76,7 +76,7 @@ const height = (logo: ImageMetadata, scale: number) =>
         </>
     ) : (
         <ul>
-            {COMPANIES.map((company) => {
+            {COMPANIES.map((company, idx) => {
                 const href = storyHref(company.story)
                 const image = (
                     <Image
@@ -86,7 +86,7 @@ const height = (logo: ImageMetadata, scale: number) =>
                     />
                 )
                 return (
-                    <li>
+                    <li class:list={{ wrap: idx === 4 }}>
                         {href ? (
                             <a class="has-story" href={href}>
                                 {image}
@@ -124,6 +124,42 @@ const height = (logo: ImageMetadata, scale: number) =>
 
         li {
             display: flex;
+        }
+
+        @media (min-width: 430px) and (max-width: 1279.98px) {
+            ul {
+                display: grid;
+                grid-template-columns: repeat(8, minmax(0, 1fr));
+                gap: 2.25rem 0;
+                max-width: 56rem;
+            }
+
+            li {
+                grid-column: span 2;
+                justify-content: center;
+            }
+
+            li.wrap {
+                grid-column: 2 / span 2;
+            }
+        }
+
+        @media (max-width: 429.98px) {
+            ul {
+                display: grid;
+                grid-template-columns: repeat(6, minmax(0, 1fr));
+                gap: 1.75rem 0;
+            }
+
+            li {
+                grid-column: span 2;
+                justify-content: center;
+            }
+
+            li:nth-child(-n + 2),
+            li:nth-child(n + 6) {
+                grid-column: span 3;
+            }
         }
 
         .has-story {
@@ -258,6 +294,7 @@ const height = (logo: ImageMetadata, scale: number) =>
             }
 
             ul {
+                display: flex;
                 flex-wrap: nowrap;
                 gap: var(--gap);
                 max-width: none;
@@ -267,6 +304,7 @@ const height = (logo: ImageMetadata, scale: number) =>
 
             li {
                 flex: none;
+                grid-column: auto;
             }
         }
     }

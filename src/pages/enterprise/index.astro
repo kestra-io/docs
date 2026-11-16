@@ -7,9 +7,6 @@ import AiGovernance from "~/components/home/AiGovernance.astro"
 import Customers, { type Story } from "~/components/home/Customers.astro"
 import { flat } from "~/components/home/flatLogo"
 import filaPhoto from "~/components/home/assets/customers/fila.jpg"
-import creditAgricolePhoto from "~/contents/customer-stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra/hero.jpeg"
-import dataportPhoto from "~/contents/customer-stories/building-a-government-grade-orchestration-control-plane-with-kestra/hero.jpg"
-import manufacturerPhoto from "~/contents/customer-stories/securing-hybrid-cloud-automation-across-it-and-ot-with-kestra/hero.jpg"
 import creditAgricolePhoto from "~/components/enterprise/assets/credit-agricole.jpg"
 import dataportPhoto from "~/components/enterprise/assets/dataport.jpg"
 import manufacturerPhoto from "~/components/enterprise/assets/manufacturer.jpg"
@@ -153,7 +150,7 @@ const INCLUDED = [
     },
     {
         icon: "mdi:account-star-outline",
-        text: "Customer Success program (Platinum)",
+        text: "Customer Success program (Premium and Platinum)",
     },
     {
         icon: "mdi:cloud-lock-outline",
@@ -193,7 +190,7 @@ const FAQ = [
 ]
 ---
 
-<Layout {title} {description}>
+<Layout {title} {description} headerClean headerClear headerOverDark>
     <Fragment slot="head">
         <SchemaSoftwareApplication
             id="https://kestra.io/#enterprise-edition"

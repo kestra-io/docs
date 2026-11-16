@@ -143,7 +143,7 @@ const DEPLOYMENTS = [
         border-top: var(--rule);
         list-style: none;
 
-        @include media-breakpoint-down(lg) {
+        @include media-breakpoint-down(md) {
             grid-template-columns: 1fr;
         }
     }
@@ -163,23 +163,29 @@ const DEPLOYMENTS = [
             --card: var(--lift);
         }
 
-        @include media-breakpoint-up(lg) {
+        @include media-breakpoint-up(md) {
             & + li {
                 border-left: var(--rule);
             }
         }
 
-        @include media-breakpoint-down(lg) {
+        @include media-breakpoint-down(md) {
+            padding-block: 2rem;
+
             & + li {
                 border-top: var(--rule);
             }
         }
 
-        @include media-breakpoint-between(lg, xl) {
+        @include media-breakpoint-between(md, xl) {
             grid-template-columns: minmax(0, 1fr);
-            padding: 0.5rem 1.25rem 1.5rem;
+            grid-template-rows: 12rem auto;
+            align-items: start;
+            padding: 1rem 1.5rem 2.25rem;
 
             :global(.hairline-figure) {
+                align-self: center;
+                justify-self: center;
                 max-width: 13rem;
             }
         }

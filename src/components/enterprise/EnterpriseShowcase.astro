@@ -1,13 +1,9 @@
 ---
 import { Icon } from "astro-icon/components"
-import { Image } from "astro:assets"
-import appsCatalog from "~/contents/docs/07.enterprise/04.scalability/apps/apps_catalog.png"
-import workerGroups from "~/components/twozero/assets/run-worker-groups.png"
 import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
 import SecretsMock from "~/components/enterprise/mocks/SecretsMock.astro"
 import OpsMock from "~/components/enterprise/mocks/OpsMock.astro"
 import AppsMock from "~/components/enterprise/mocks/AppsMock.astro"
-import auditLogs from "~/contents/docs/07.enterprise/02.governance/06.audit-logs/audit_logs.png"
 
 const PANELS = [
     {
@@ -23,8 +19,6 @@ const PANELS = [
             "Test and maintain workflows with unit testing, plugin versioning, and hot reload.",
         ],
         mock: "apps",
-        image: appsCatalog,
-        alt: "The Kestra Apps catalog",
     },
     {
         id: "ops",
@@ -40,8 +34,6 @@ const PANELS = [
             "Monitor cluster health, back up and restore, and upgrade in maintenance mode.",
         ],
         mock: "ops",
-        image: workerGroups,
-        alt: "An execution routed to worker groups in Kestra",
     },
     {
         id: "gov",
@@ -57,8 +49,6 @@ const PANELS = [
             "Allow or restrict plugins, and stop any execution with the kill switch.",
         ],
         mock: "gov",
-        image: auditLogs,
-        alt: "The Kestra audit logs",
     },
 ]
 ---
@@ -113,30 +103,15 @@ const PANELS = [
                                 ))}
                             </ul>
                         </div>
-                        <div
-                            class:list={["media", { mock: panel.mock }]}
-                            data-tone={panel.id}
-                        >
-                            {panel.mock ? (
-                                <Fragment>
-                                    <span
-                                        class="pixels"
-                                        aria-hidden="true"
-                                        style={`--pixels: url("${pixelCluster}")`}
-                                    />
-                                    {panel.mock === "apps" && <AppsMock />}
-                                    {panel.mock === "ops" && <OpsMock />}
-                                    {panel.mock === "gov" && <SecretsMock />}
-                                </Fragment>
-                            ) : (
-                                <Image
-                                    src={panel.image}
-                                    alt={panel.alt}
-                                    widths={[640, 960, 1280]}
-                                    sizes="(max-width: 992px) 100vw, 50vw"
-                                    loading="lazy"
-                                />
-                            )}
+                        <div class="media mock" data-tone={panel.id}>
+                            <span
+                                class="pixels"
+                                aria-hidden="true"
+                                style={`--pixels: url("${pixelCluster}")`}
+                            />
+                            {panel.mock === "apps" && <AppsMock />}
+                            {panel.mock === "ops" && <OpsMock />}
+                            {panel.mock === "gov" && <SecretsMock />}
                         </div>
                     </div>
                 ))}
@@ -238,6 +213,10 @@ const PANELS = [
         border-left: var(--rule);
         border-right: var(--rule);
         padding-bottom: clamp(4rem, 6vw, 5.5rem);
+
+        @include media-breakpoint-down(xl) {
+            padding-bottom: 0;
+        }
     }
 
     .head {
@@ -341,6 +320,10 @@ const PANELS = [
     .panels {
         display: grid;
         border-bottom: var(--rule);
+
+        @include media-breakpoint-down(xl) {
+            border-bottom: 0;
+        }
     }
 
     .panel {
@@ -362,12 +345,21 @@ const PANELS = [
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);
+            padding: 3rem var(--inset);
         }
     }
 
     .copy {
         align-self: center;
         padding: 3.5rem var(--inset);
+
+        @include media-breakpoint-down(lg) {
+            display: contents;
+
+            ul {
+                order: 2;
+            }
+        }
 
         h3 {
             margin: 0;
@@ -469,9 +461,36 @@ const PANELS = [
             }
 
             @include media-breakpoint-down(lg) {
-                padding: 2rem var(--inset);
-                border-left: 0;
-                border-top: var(--rule);
+                order: 1;
+                margin-bottom: 2rem;
+                padding: 1rem 1.5rem;
+                border: var(--rule);
+                border-radius: 0.75rem;
+            }
+
+            @include media-breakpoint-down(sm) {
+                --zoom: 1.22;
+                --shift: -24%;
+
+                margin-inline: calc(-1 * var(--inset));
+                padding: 0.5rem 0;
+                border-inline: 0;
+                border-radius: 0;
+
+                > :global(.ui-mock) {
+                    flex: none;
+                    width: calc(var(--zoom) * 100%);
+                    margin-left: var(--shift);
+                }
+
+                &[data-tone="ops"] {
+                    --zoom: 1.05;
+                    --shift: 1.5%;
+                }
+
+                &[data-tone="gov"] {
+                    --shift: 2%;
+                }
             }
         }
 
@@ -502,17 +521,6 @@ const PANELS = [
             opacity: 0.3;
             pointer-events: none;
         }
-
-        :global(img) {
-            display: block;
-            width: 100%;
-            height: auto;
-            border: 1px solid var(--ks-border-primary);
-            border-right: 0;
-            border-bottom: 0;
-            border-radius: 0.75rem 0 0 0;
-            box-shadow: -10px -10px 40px rgba(60, 30, 120, 0.12);
-        }
     }
 
     @media (prefers-reduced-motion: no-preference) {
@@ -529,8 +537,7 @@ const PANELS = [
                 --i: 1;
             }
 
-            .media > :global(.ui-mock),
-            .media > :global(img) {
+            .media > :global(.ui-mock) {
                 animation: ee-showcase-slide 0.75s
                     cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
             }

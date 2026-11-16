@@ -227,6 +227,12 @@ const zones = await Promise.all(
         border-radius: 6px;
         background: rgba(0, 0, 0, 0.26);
 
+        &.agents {
+            @include media-breakpoint-down(md) {
+                border: 1px solid rgba(180, 140, 255, 0.4);
+            }
+        }
+
         .label {
             display: flex;
             align-items: center;
@@ -307,6 +313,8 @@ const zones = await Promise.all(
 
             @include media-breakpoint-down(md) {
                 grid-template-columns: minmax(0, 1fr);
+                margin-top: 0.75rem;
+                padding-left: 1.5rem;
             }
 
             > li {
@@ -316,13 +324,52 @@ const zones = await Promise.all(
                 padding-inline: calc(var(--gap) / 2);
 
                 @include media-breakpoint-down(md) {
+                    position: relative;
+
+                    .wire.up,
+                    .workers::after {
+                        display: none;
+                    }
+
+                    &::before,
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        left: -1rem;
+                    }
+
+                    &::before {
+                        top: -4.375rem;
+                        bottom: 0;
+                        width: 1px;
+                        background: repeating-linear-gradient(
+                            var(--wire) 0 3px,
+                            transparent 3px 7px
+                        );
+                    }
+
+                    &::after {
+                        top: 2.4rem;
+                        width: calc(1rem + var(--gap) / 2);
+                        height: 1px;
+                        background: repeating-linear-gradient(
+                            90deg,
+                            var(--wire) 0 3px,
+                            transparent 3px 7px
+                        );
+                    }
+
                     & + li {
                         margin-top: 1.25rem;
 
-                        .wire.up,
-                        .workers::after {
-                            display: none;
+                        &::before {
+                            top: -1.25rem;
                         }
+                    }
+
+                    &:last-child::before {
+                        bottom: auto;
+                        height: 3.65rem;
                     }
                 }
             }
