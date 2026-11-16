@@ -2,20 +2,28 @@
 import { Image } from "astro:assets"
 import { getCollection } from "astro:content"
 import { toSlug } from "~/utils/stories"
-import brainlab from "~/components/home/assets/companies/brainlab.svg"
-import bloomberg from "~/components/home/assets/companies/bloomberg.svg"
 import fila from "~/components/home/assets/companies/fila.svg"
-import apple from "~/components/home/assets/companies/apple.svg"
-import amdocs from "~/components/home/assets/companies/amdocs.svg"
-import apotek from "~/components/demo/assets/logos/apotek.svg"
+import bloomberg from "~/components/home/assets/companies/bloomberg.svg"
+import bundesagentur from "~/components/home/assets/companies/bundesagentur.svg"
+import tsystems from "~/components/home/assets/companies/t-system.svg"
+import dataport from "./assets/logos/DATAPORT.svg"
+import itzbund from "~/components/home/assets/companies/itzbund.svg"
+import totalenergies from "~/assets/trusted-companies/TotalEnergies.svg"
 
-const COMPANIES = [
-    { logo: brainlab, name: "Brainlab", scale: 1.1 },
-    { logo: bloomberg, name: "Bloomberg", scale: 0.86 },
+const COMPANIES: {
+    logo: ImageMetadata
+    name: string
+    story?: string
+    scale: number
+    lift?: number
+}[] = [
     { logo: fila, name: "FILA", story: "Fila", scale: 0.72 },
-    { logo: apple, name: "Apple", story: "Apple", scale: 1, lift: 0.12 },
-    { logo: amdocs, name: "Amdocs", story: "Amdocs", scale: 0.9 },
-    { logo: apotek, name: "Apotek Hjärtat", scale: 0.95 },
+    { logo: bloomberg, name: "Bloomberg", scale: 0.86 },
+    { logo: bundesagentur, name: "Bundesagentur für Arbeit", scale: 1 },
+    { logo: tsystems, name: "T-Systems", scale: 1 },
+    { logo: dataport, name: "Dataport", story: "Dataport", scale: 1.9 },
+    { logo: itzbund, name: "ITZBund", scale: 1.8 },
+    { logo: totalenergies, name: "TotalEnergies", scale: 1.9 },
 ]
 
 const stories = await getCollection("customerStories")

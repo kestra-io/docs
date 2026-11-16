@@ -1,5 +1,9 @@
 ---
+import { Image } from "astro:assets"
+import { Icon } from "astro-icon/components"
 import Faq from "~/components/common/Faq.vue"
+import soc2Img from "~/components/layout/assets/soc2.png"
+import gdprImg from "~/components/layout/assets/gdpr.svg"
 
 interface Props {
     items: { question: string; answer: string }[]
@@ -13,6 +17,19 @@ const { items } = Astro.props
         <div class="grid">
             <header class="head">
                 <h2 id="ee-faq">Frequently asked questions</h2>
+                <div class="trust">
+                    <div class="badges">
+                        <Image src={soc2Img} alt="SOC 2" height="56" />
+                        <Image src={gdprImg} alt="GDPR" height="56" />
+                    </div>
+                    <p>
+                        SOC 2 Type 2 and GDPR, independently audited. The
+                        report is available on request.
+                    </p>
+                    <a href="/security">
+                        Security overview <Icon name="mdi:arrow-right" />
+                    </a>
+                </div>
             </header>
             <div class="list">
                 <Faq {items} showHeader={false} client:visible />
@@ -60,6 +77,44 @@ const { items } = Astro.props
             letter-spacing: -0.02em;
             line-height: 1.1;
             color: var(--ks-content-primary);
+        }
+    }
+
+    .trust {
+        max-width: 22rem;
+        margin-top: 2.5rem;
+
+        .badges {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+
+            img {
+                width: auto;
+                height: 3.5rem;
+            }
+        }
+
+        p {
+            margin: 0 0 0.75rem;
+            font-size: $font-size-sm;
+            line-height: 1.6;
+            color: var(--ks-content-secondary);
+        }
+
+        a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: $font-size-sm;
+            font-weight: 600;
+            color: var(--ks-content-link);
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
     }
 

@@ -7,6 +7,9 @@ import AiGovernance from "~/components/home/AiGovernance.astro"
 import Customers, { type Story } from "~/components/home/Customers.astro"
 import { flat } from "~/components/home/flatLogo"
 import filaPhoto from "~/components/home/assets/customers/fila.jpg"
+import creditAgricolePhoto from "~/contents/customer-stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra/hero.jpeg"
+import dataportPhoto from "~/contents/customer-stories/building-a-government-grade-orchestration-control-plane-with-kestra/hero.jpg"
+import manufacturerPhoto from "~/contents/customer-stories/securing-hybrid-cloud-automation-across-it-and-ot-with-kestra/hero.jpg"
 import creditAgricolePhoto from "~/components/enterprise/assets/credit-agricole.jpg"
 import dataportPhoto from "~/components/enterprise/assets/dataport.jpg"
 import manufacturerPhoto from "~/components/enterprise/assets/manufacturer.jpg"
@@ -22,6 +25,7 @@ import AgentControls from "~/components/enterprise/AgentControls.astro"
 import EnterpriseShowcase from "~/components/enterprise/EnterpriseShowcase.astro"
 import Included from "~/components/enterprise/Included.astro"
 import SupportPlans from "~/components/enterprise/SupportPlans.astro"
+import ReplaceLegacy from "~/components/home/ReplaceLegacy.astro"
 import BuyerQuestions from "~/components/enterprise/BuyerQuestions.astro"
 
 const title = "Kestra Enterprise"
@@ -53,46 +57,76 @@ const FEATURES = [
 
 const STORIES: Story[] = [
     {
-        company: "FILA",
-        photo: filaPhoto,
-        story: "Fila",
-        logo: flat(fila),
-        height: 21,
-        stat: "2.5M",
-        label: "executions a month across 2,000+ workflows, ERP, PLM and supply chain in 70+ countries.",
-        quote: "Instead of spending days fixing issues, we now have full visibility and control.",
-        author: "John Kim, IT Lead",
-    },
-    {
         company: "Crédit Agricole",
         photo: creditAgricolePhoto,
         story: "Crédit Agricole",
         logo: flat(creditAgricole),
         height: 32,
+        industry: "Infrastructure",
         stat: "7 teams",
         label: "unified on 100+ managed clusters.",
         quote: "Secure, scalable, and manageable by all our teams.",
         author: "Julien Legrand, Data Product Owner",
     },
     {
+        company: "Fortune 500 manufacturer",
+        photo: manufacturerPhoto,
+        story: "Fortune 500 Company",
+        industry: "Infrastructure",
+        stat: "90%",
+        label: 'lower licensing costs after <a href="/resources/migration/vra">replacing</a> VMware Aria Automation with Kestra Enterprise.',
+        quote: "We eliminated the high cost and risk of VMware vRA. What used to take 6 months now takes 6 days with Kestra.",
+        author: "Principal Hosting",
+    },
+    {
         company: "Dataport",
-        story: "Dataport",
         photo: dataportPhoto,
+        story: "Dataport",
         logo: flat(dataport),
         height: 26,
+        industry: "Infrastructure",
         stat: "3 weeks",
         label: "to validate compliance for German public administration, self-hosted, no external SaaS dependency.",
         quote: "Kestra gives us a modern orchestration platform we can run ourselves without compromising on governance.",
         author: "Platform Architect",
     },
     {
-        company: "Fortune 500 manufacturer",
-        story: "Fortune 500 Company",
-        photo: manufacturerPhoto,
-        stat: "90%",
-        label: 'lower licensing costs after <a href="/resources/migration/vra">replacing</a> VMware Aria Automation with Kestra Enterprise.',
-        quote: "We eliminated the high cost and risk of VMware vRA. What used to take 6 months now takes 6 days with Kestra.",
-        author: "Principal Hosting",
+        company: "FILA",
+        photo: filaPhoto,
+        story: "Fila",
+        logo: flat(fila),
+        height: 21,
+        industry: "ERP and supply chain",
+        stat: "2.5M",
+        label: "executions a month across 2,000+ workflows, ERP, PLM and supply chain in 70+ countries.",
+        quote: "Instead of spending days fixing issues, we now have full visibility and control.",
+        author: "John Kim, IT Lead",
+    },
+]
+
+const INFRA_STEPS = [
+    {
+        icon: "mdi:form-select",
+        title: "A self-service catalog",
+        text: "People request infrastructure from a catalog instead of opening a ticket. The infrastructure team decides what can be requested and can require approval before anything runs.",
+    },
+    {
+        icon: "mdi:account-clock-outline",
+        title: "An owner and a lease",
+        text: "Every deployment has an owner and a lease. When a lease is about to expire, the owner is notified and the environment can be decommissioned.",
+    },
+    {
+        icon: "mdi:cog-sync-outline",
+        title: "Day 2 built in",
+        text: "Resize, patch, snapshot, extend or decommission straight from the deployment.",
+    },
+]
+
+const INFRA_CTAS = [
+    {
+        label: "Explore infrastructure automation",
+        href: "/infra-automation",
+        solid: true,
     },
 ]
 
@@ -149,6 +183,10 @@ const FAQ = [
         answer: "Yes. Several public administrations and industrial sites run Kestra Enterprise with no outbound connection. Plugins and updates are delivered offline.",
     },
     {
+        question: "Is Kestra SOC 2 and GDPR compliant?",
+        answer: 'Yes. Kestra Technologies holds a SOC 2 Type 2 report covering the Security, Availability and Confidentiality criteria, together with GDPR Article 5. The audit covers how we build the software, and a self-hosted deployment stays under your control. A Data Processing Agreement is available on request. Request the report from the <a href="/trust" target="_blank" rel="noopener">Trust Center</a>, or read the <a href="/security">security overview</a>.',
+    },
+    {
         question: "How long does a proof of concept take?",
         answer: "Most teams evaluate on open source first, so the proof of concept is about organization and governance rather than the engine. A guided trial runs on your own use case.",
     },
@@ -183,7 +221,7 @@ const FAQ = [
         </Enterprise>
         <AiGovernance bridge={false} foot={false}>
             <Fragment slot="title">
-                Your AI agents answer to the same governance as your teams.
+                Unify orchestration and govern AI agents like any other team.
             </Fragment>
             <Fragment slot="lead">
                 Agents, MCP and the Copilot are open source. Enterprise controls
@@ -196,6 +234,21 @@ const FAQ = [
         </AiGovernance>
         <Deployments />
         <EnterpriseShowcase />
+        <ReplaceLegacy
+            id="ee-infrastructure"
+            items={INFRA_STEPS}
+            ctas={INFRA_CTAS}
+        >
+            <Fragment slot="title">
+                Make infrastructure available to the whole company, without
+                losing control.
+            </Fragment>
+            <Fragment slot="lead">
+                Give your teams a self-service catalog for infrastructure. Your
+                existing Terraform modules, Ansible playbooks and PowerShell
+                scripts keep doing the work.
+            </Fragment>
+        </ReplaceLegacy>
         <Customers stories={STORIES} foot={false} placeholder={false}>
             <Fragment slot="title">Enterprise in production</Fragment>
         </Customers>
