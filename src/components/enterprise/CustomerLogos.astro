@@ -52,21 +52,30 @@ const height = (logo: ImageMetadata, scale: number) =>
     aria-label="Trusted by leading companies"
 >
     {marquee ? (
-        <div class="track">
-            {Array.from({ length: COPIES }, (_, copy) => (
-                <ul aria-hidden={copy > 0 ? "true" : undefined}>
-                    {COMPANIES.map((company) => (
-                        <li>
-                            <Image
-                                src={company.logo}
-                                alt={copy > 0 ? "" : company.name}
-                                style={`--h: ${height(company.logo, company.scale)}rem; translate: 0 ${-(company.lift ?? 0)}rem`}
-                            />
-                        </li>
+        <>
+            {Astro.slots.has("caption") && (
+                <p class="caption">
+                    <slot name="caption" />
+                </p>
+            )}
+            <div class="window">
+                <div class="track">
+                    {Array.from({ length: COPIES }, (_, copy) => (
+                        <ul aria-hidden={copy > 0 ? "true" : undefined}>
+                            {COMPANIES.map((company) => (
+                                <li>
+                                    <Image
+                                        src={company.logo}
+                                        alt={copy > 0 ? "" : company.name}
+                                        style={`--h: ${height(company.logo, company.scale)}rem; translate: 0 ${-(company.lift ?? 0)}rem`}
+                                    />
+                                </li>
+                            ))}
+                        </ul>
                     ))}
-                </ul>
-            ))}
-        </div>
+                </div>
+            </div>
+        </>
     ) : (
         <ul>
             {COMPANIES.map((company) => {
@@ -192,8 +201,14 @@ const height = (logo: ImageMetadata, scale: number) =>
         &.marquee {
             --gap: clamp(2.5rem, 5vw, 4.5rem);
 
+            display: flex;
+            align-items: center;
+            gap: 1rem clamp(1.5rem, 3vw, 3rem);
             padding: 1.5rem 0;
-            overflow: hidden;
+
+            @include media-breakpoint-down(lg) {
+                flex-direction: column;
+            }
 
             :global(img) {
                 height: var(--h);
@@ -203,13 +218,36 @@ const height = (logo: ImageMetadata, scale: number) =>
                 }
             }
 
-            mask-image: linear-gradient(
-                90deg,
-                transparent,
-                #000 12%,
-                #000 88%,
-                transparent
-            );
+            .caption {
+                flex: none;
+                max-width: 21rem;
+                margin: 0;
+                text-wrap: balance;
+                padding-left: clamp(1.5rem, 4vw, 3.5rem);
+                font-size: 0.9375rem;
+                line-height: 1.45;
+                color: var(--ks-content-secondary);
+
+                @include media-breakpoint-down(lg) {
+                    max-width: none;
+                    padding-inline: 1.5rem;
+                    text-align: center;
+                }
+            }
+
+            .window {
+                flex: 1;
+                min-width: 0;
+                max-width: 100%;
+                overflow: hidden;
+                mask-image: linear-gradient(
+                    90deg,
+                    transparent,
+                    #000 12%,
+                    #000 88%,
+                    transparent
+                );
+            }
 
             .track {
                 display: flex;
