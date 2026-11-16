@@ -254,14 +254,36 @@ const PLANS: {
             }
 
             &.featured {
-                background: linear-gradient(180deg, #f5f4fb, transparent 34rem);
+                position: relative;
+                z-index: 1;
+                border-left-color: transparent;
+                border-top-color: transparent;
+                border-radius: 1rem;
+                background:
+                    linear-gradient(180deg, #f5f4fb, transparent 34rem),
+                    var(--ks-background-body);
+                box-shadow:
+                    0 0 0 1px
+                        color-mix(
+                            in srgb,
+                            var(--ks-content-link) 55%,
+                            var(--ks-background-body)
+                        ),
+                    0 0 0 6px
+                        color-mix(
+                            in srgb,
+                            var(--ks-content-link) 14%,
+                            var(--ks-background-body)
+                        );
 
                 :global(html.dark) & {
-                    background: linear-gradient(
-                        180deg,
-                        rgba(143, 123, 255, 0.1),
-                        transparent 34rem
-                    );
+                    background:
+                        linear-gradient(
+                            180deg,
+                            rgba(143, 123, 255, 0.1),
+                            transparent 34rem
+                        ),
+                        var(--ks-background-body);
                 }
             }
         }
