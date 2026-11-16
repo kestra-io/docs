@@ -1,0 +1,330 @@
+---
+import { Icon } from "astro-icon/components"
+
+// true: included. false: not included. A string: shown as is.
+// { note }: included, with a qualifier under the check.
+type Cell = boolean | string | { note: string }
+type Row = [feature: string, openSource: Cell, cloud: Cell, enterprise: Cell]
+
+const EDITIONS = ["Open Source", "Cloud", "Enterprise"]
+const SALES = "Talk to sales"
+
+const GROUPS: { title: string; rows: Row[] }[] = [
+    {
+        title: "Platform",
+        rows: [
+            [
+                "Declarative workflows, 2,300+ plugins, unlimited flows and executions",
+                true,
+                true,
+                true,
+            ],
+            ["Code and no-code editors, draft revisions", true, true, true],
+            ["AI Copilot, AI agents and MCP server", true, true, true],
+            ["AI Copilot on your own LLM", false, SALES, true],
+            ["Apps and human-in-the-loop approvals", false, true, true],
+            ["Task runners", false, { note: "usage-based" }, true],
+            ["Enterprise plugins", false, true, true],
+        ],
+    },
+    {
+        title: "Authentication and access",
+        rows: [
+            ["SSO (OIDC)", false, true, true],
+            ["SCIM", false, SALES, true],
+            ["LDAP", false, false, true],
+            [
+                "Role-based access control (RBAC) and user management",
+                false,
+                true,
+                true,
+            ],
+            ["Service accounts and API tokens", false, true, true],
+        ],
+    },
+    {
+        title: "Secrets and security",
+        rows: [
+            ["Built-in secrets manager", false, true, true],
+            [
+                "External secret managers (Vault, AWS, GCP, Azure and more)",
+                false,
+                SALES,
+                true,
+            ],
+            ["Dedicated storage per namespace", false, SALES, true],
+        ],
+    },
+    {
+        title: "Governance and observability",
+        rows: [
+            ["Policies and restricted plugins", false, true, true],
+            ["Promote from dev to production", false, true, true],
+            ["Assets and lineage", false, true, true],
+            ["Audit logs", false, true, true],
+            [
+                "Audit log export and log shipping to your SIEM or observability tools",
+                false,
+                SALES,
+                true,
+            ],
+            ["Cases and quotas", false, SALES, true],
+        ],
+    },
+    {
+        title: "Development and customization",
+        rows: [
+            [
+                "Unit tests, plugin versioning, custom blueprints",
+                false,
+                true,
+                true,
+            ],
+        ],
+    },
+    {
+        title: "Infrastructure and scalability",
+        rows: [
+            [
+                "Workers on your own infrastructure",
+                false,
+                "Coming soon, talk to sales",
+                true,
+            ],
+            ["Multiple tenants", false, "1 included, more as an add-on", true],
+            [
+                "Custom queue and storage backends (Kafka, Redis, Elasticsearch)",
+                false,
+                false,
+                true,
+            ],
+            [
+                "Fully managed hosting: upgrades, backups, monitoring and scaling",
+                false,
+                true,
+                false,
+            ],
+        ],
+    },
+]
+---
+
+<section class="pricing-compare" aria-labelledby="comparison-table">
+    <div class="container-xl">
+        <div class="rails">
+            <header>
+                <h2 id="comparison-table">Compare editions</h2>
+                <p>
+                    The complete feature matrix. Open source is the foundation.
+                    Kestra Cloud includes most Enterprise features, and the rest
+                    are available through sales.
+                </p>
+            </header>
+            <div class="scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Feature</th>
+                            {EDITIONS.map((edition) => (
+                                <th scope="col">{edition}</th>
+                            ))}
+                        </tr>
+                    </thead>
+                    {GROUPS.map((group) => (
+                        <tbody>
+                            <tr class="group">
+                                <th scope="colgroup" colspan="4">
+                                    {group.title}
+                                </th>
+                            </tr>
+                            {group.rows.map(([feature, ...cells]) => (
+                                <tr>
+                                    <th scope="row">{feature}</th>
+                                    {cells.map((cell) => (
+                                        <td>
+                                            {cell === false ? (
+                                                <span
+                                                    class="no"
+                                                    aria-label="Not included"
+                                                >
+                                                    —
+                                                </span>
+                                            ) : typeof cell === "string" ? (
+                                                <span class="text">{cell}</span>
+                                            ) : (
+                                                <>
+                                                    <Icon
+                                                        name="mdi:check"
+                                                        class="yes"
+                                                        aria-label="Included"
+                                                    />
+                                                    {cell !== true && (
+                                                        <span class="note">
+                                                            {cell.note}
+                                                        </span>
+                                                    )}
+                                                </>
+                                            )}
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    ))}
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "../about/style/section" as *;
+
+    .pricing-compare {
+        --rule: 1px solid var(--ks-border-primary);
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+
+        position: relative;
+        border-bottom: var(--rule);
+        background: var(--ks-background-body);
+    }
+
+    .rails {
+        padding-bottom: 5rem;
+        border-inline: var(--rule);
+
+        @include media-breakpoint-down(md) {
+            padding-bottom: 3rem;
+        }
+    }
+
+    header {
+        padding: 7.5rem var(--inset) 3.5rem;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem 2.5rem;
+        }
+
+        h2 {
+            @include title;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            @include lead;
+            max-width: 44rem;
+        }
+    }
+
+    .scroll {
+        @include media-breakpoint-down(md) {
+            overflow-x: auto;
+        }
+    }
+
+    table {
+        width: 100%;
+        margin: 0;
+        border-collapse: separate;
+        border-spacing: 0;
+        table-layout: fixed;
+
+        @include media-breakpoint-down(md) {
+            min-width: 40rem;
+        }
+    }
+
+    th,
+    td {
+        padding: 0.875rem 1rem;
+        border-bottom: var(--rule);
+
+        &:first-child {
+            width: 46%;
+            padding-left: var(--inset);
+            text-align: left;
+        }
+
+        &:not(:first-child) {
+            border-left: var(--rule);
+            text-align: center;
+        }
+    }
+
+    thead th {
+        position: sticky;
+        top: 67px;
+        z-index: 2;
+        padding-block: 1.125rem;
+        border-top: var(--rule);
+        background: var(--ks-background-body);
+        font-size: $font-size-md;
+        font-weight: 600;
+        color: var(--ks-content-primary);
+
+        &:first-child {
+            font-size: $font-size-sm;
+            font-weight: 400;
+            color: var(--ks-content-tertiary);
+        }
+
+        &:last-child {
+            color: var(--ks-content-link);
+        }
+
+        @include media-breakpoint-down(md) {
+            position: static;
+        }
+    }
+
+    .group th {
+        padding-block: 2.25rem 0.875rem;
+        border-left: 0;
+        font-size: $font-size-sm;
+        font-weight: 600;
+        text-align: left;
+        color: var(--ks-content-link);
+    }
+
+    tbody th[scope="row"] {
+        font-size: 0.9375rem;
+        font-weight: 400;
+        line-height: 1.45;
+        color: var(--ks-content-primary);
+    }
+
+    tbody tr:not(.group):hover > * {
+        background: var(--ks-background-secondary);
+    }
+
+    td {
+        vertical-align: middle;
+        font-size: $font-size-sm;
+        line-height: 1.35;
+    }
+
+    .yes {
+        display: block;
+        width: 1.125rem;
+        height: 1.125rem;
+        margin-inline: auto;
+        color: var(--ks-content-link);
+    }
+
+    .no {
+        color: var(--ks-content-tertiary);
+    }
+
+    .text {
+        font-weight: 500;
+        color: var(--ks-content-secondary);
+    }
+
+    .note {
+        display: block;
+        margin-top: 0.125rem;
+        font-size: 0.75rem;
+        color: var(--ks-content-tertiary);
+    }
+</style>

@@ -1,0 +1,295 @@
+---
+import { Icon } from "astro-icon/components"
+import PixelEdges from "~/components/about/PixelEdges.astro"
+
+type Action = { label: string; href: string; solid?: boolean }
+
+const PLANS: {
+    name: string
+    tag?: string
+    price: string
+    text: string
+    features: string[]
+    ideal: string
+    actions: Action[]
+    featured?: boolean
+}[] = [
+    {
+        name: "Open Source",
+        price: "Free",
+        text: "For individuals and single teams who want to run Kestra themselves. No limits on flows or executions.",
+        features: [
+            "Declarative workflows, 2,300+ plugins",
+            "Scheduling and events",
+            "Code and no-code editors",
+            "AI agents and MCP server",
+            "Queue on PostgreSQL or MySQL",
+            "Community Slack, docs and blueprints",
+        ],
+        ideal: "Ideal for a first team and a first production.",
+        actions: [
+            { label: "Get started", href: "/get-started", solid: true },
+            {
+                label: "Star on GitHub",
+                href: "https://github.com/kestra-io/kestra",
+            },
+        ],
+    },
+    {
+        name: "Kestra Cloud",
+        tag: "Early access program",
+        price: "Usage-based",
+        text: "Managed by the people who build Kestra. Start in minutes, scale when you need to.",
+        features: [
+            "Everything in Open Source",
+            "Fully managed: hosting, upgrades, monitoring",
+            "Automatic scaling",
+            "Built-in security and governance",
+            "Enterprise plugins included",
+            "SOC2",
+        ],
+        ideal: "Get most Enterprise capabilities without managing the infrastructure yourself.",
+        actions: [{ label: "Request access", href: "/cloud", solid: true }],
+    },
+    {
+        name: "Enterprise",
+        price: "Annual",
+        text: "For organizations running Kestra as shared infrastructure, on their own terms.",
+        features: [
+            "Unlimited executions, flows, tasks, apps and assets",
+            "Sized to the project: instances, environments, worker groups",
+            "SSO, RBAC, audit logs, secrets, policies, approvals",
+            "Customer Success program, support with SLA",
+            "Self-hosted, hybrid or air-gapped",
+        ],
+        ideal: "Ideal when a second team joins, when auditors ask, when agents act.",
+        actions: [
+            { label: "Book a demo", href: "/demo", solid: true },
+            { label: "About Enterprise", href: "/enterprise" },
+        ],
+        featured: true,
+    },
+]
+---
+
+<section class="pricing-plans" aria-labelledby="pricing-title">
+    <PixelEdges left="tall" right="wide" />
+    <div class="container-xl">
+        <div class="rails">
+            <header>
+                <p class="eyebrow">Pricing</p>
+                <h1 id="pricing-title">Three ways to run Kestra</h1>
+                <p class="lead">
+                    Self-host the open-source version for free. Choose Cloud for
+                    a managed service. Get Enterprise for advanced governance,
+                    air-gapped-ready deployment, and SLA backed support.
+                </p>
+            </header>
+            <ul class="plans">
+                {PLANS.map((plan) => (
+                    <li class:list={{ featured: plan.featured }}>
+                        <div class="name">
+                            <h2>{plan.name}</h2>
+                            {plan.tag && <span class="tag">{plan.tag}</span>}
+                        </div>
+                        <p class="price">{plan.price}</p>
+                        <p class="text">{plan.text}</p>
+                        <div class="actions">
+                            {plan.actions.map((action) => (
+                                <a
+                                    href={action.href}
+                                    class:list={[
+                                        action.solid
+                                            ? "btn-solid"
+                                            : "btn-ghost",
+                                        "compact",
+                                    ]}
+                                    {...(action.href.startsWith("http")
+                                        ? {
+                                              target: "_blank",
+                                              rel: "noopener",
+                                          }
+                                        : {})}
+                                >
+                                    {action.label}
+                                </a>
+                            ))}
+                        </div>
+                        <ul class="features">
+                            {plan.features.map((feature) => (
+                                <li>
+                                    <Icon name="mdi:check" />
+                                    {feature}
+                                </li>
+                            ))}
+                        </ul>
+                        <p class="ideal">{plan.ideal}</p>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "../about/style/section" as *;
+
+    .pricing-plans {
+        --rule: 1px solid var(--ks-border-primary);
+        --inset: clamp(1.5rem, 3vw, 2.5rem);
+
+        position: relative;
+        border-bottom: var(--rule);
+        background: var(--ks-background-body);
+    }
+
+    .rails {
+        position: relative;
+        border-inline: var(--rule);
+    }
+
+    header {
+        padding: calc(6rem + 67px) clamp(1.5rem, 4vw, 3.5rem) 4.5rem;
+
+        @include media-breakpoint-down(md) {
+            padding-block: calc(3rem + 67px) 3rem;
+        }
+    }
+
+    .eyebrow {
+        @include eyebrow;
+    }
+
+    h1 {
+        @include title;
+        color: var(--ks-content-primary);
+    }
+
+    .lead {
+        @include lead;
+        max-width: 44rem;
+    }
+
+    .plans {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin: 0;
+        padding: 0;
+        border-top: var(--rule);
+        list-style: none;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        > li {
+            display: flex;
+            flex-direction: column;
+            padding: 2.5rem var(--inset) 2.25rem;
+            background: var(--ks-background-body);
+
+            @include media-breakpoint-up(lg) {
+                & + li {
+                    border-left: var(--rule);
+                }
+            }
+
+            @include media-breakpoint-down(lg) {
+                & + li {
+                    border-top: var(--rule);
+                }
+            }
+
+            &.featured {
+                background: #f0f0fd;
+
+                :global(html.dark) & {
+                    background: #1c1b2e;
+                }
+            }
+        }
+    }
+
+    .name {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem 0.75rem;
+        min-height: 1.75rem;
+
+        h2 {
+            margin: 0;
+            font-size: $font-size-lg;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+    }
+
+    .tag {
+        padding: 0.125rem 0.625rem;
+        background: color-mix(in srgb, var(--ks-content-link) 12%, transparent);
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--ks-content-link);
+    }
+
+    .price {
+        margin: 1.25rem 0 0;
+        font-size: clamp(2rem, 3vw, 2.75rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+        color: var(--ks-content-primary);
+    }
+
+    .text {
+        margin: 1rem 0 0;
+        font-size: $font-size-md;
+        line-height: 1.55;
+        color: var(--ks-content-secondary);
+
+        @include media-breakpoint-up(lg) {
+            min-height: 4.65em;
+        }
+    }
+
+    .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.625rem;
+        margin-top: 1.5rem;
+    }
+
+    .features {
+        display: grid;
+        gap: 0.75rem;
+        margin: 2rem 0 0;
+        padding: 2rem 0 0;
+        border-top: var(--rule);
+        list-style: none;
+
+        li {
+            display: grid;
+            grid-template-columns: 1.125rem minmax(0, 1fr);
+            gap: 0.625rem;
+            font-size: 0.9375rem;
+            line-height: 1.5;
+            color: var(--ks-content-primary);
+        }
+
+        :global(svg) {
+            width: 1.125rem;
+            height: 1.125rem;
+            margin-top: 0.15em;
+            color: var(--ks-content-link);
+        }
+    }
+
+    .ideal {
+        margin: auto 0 0;
+        padding-top: 2rem;
+        font-size: $font-size-sm;
+        line-height: 1.55;
+        color: var(--ks-content-tertiary);
+    }
+</style>

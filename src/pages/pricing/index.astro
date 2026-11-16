@@ -1,35 +1,79 @@
 ---
 import Layout from "~/components/layout.astro"
 import SchemaSoftwareApplication from "~/components/common/SchemaSoftwareApplication.astro"
-import Header from "~/components/price/Header.astro"
-import HostSwitcher from "~/components/price/HostSwitcher.astro"
-import PriceGrid from "~/components/price/PriceGrid.astro"
-import PriceBottom from "~/components/price/PriceBottom.astro"
-import PlanTable from "~/components/price/PlanTable.astro"
-import PriceQuote from "~/components/price/PriceQuote.vue"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import PageShell from "~/components/home/PageShell.astro"
+import Plans from "~/components/pricing/Plans.astro"
+import HowToChoose from "~/components/pricing/HowToChoose.astro"
+import CompareEditions from "~/components/pricing/CompareEditions.astro"
+import SupportPlans from "~/components/enterprise/SupportPlans.astro"
+import BuyerQuestions from "~/components/enterprise/BuyerQuestions.astro"
 
 const title = "Kestra Pricing: Open Source, Cloud & Enterprise Plans"
 const description =
-    "Choose the right plan for your needs. Start with the Open Source version and scale with the Enterprise Edition of Kestra."
+    "Self-host the open-source version for free, choose Kestra Cloud for a managed service, or get Enterprise for advanced governance, air-gapped deployment and support with SLA."
+
+const SUPPORT_ROWS = [
+    {
+        label: "Channels",
+        values: [
+            "E-mail",
+            "E-mail + dedicated Teams/Slack",
+            "E-mail + dedicated Teams/Slack",
+        ],
+    },
+    { label: "P0 response", values: ["12h", "2h", "1h"] },
+    {
+        label: "Coverage",
+        values: [
+            "08:00 to 18:00, weekdays",
+            "08:00 to 18:00, weekdays",
+            "24×7 for P0",
+        ],
+    },
+    { label: "Customer Success program", values: [false, false, true] },
+    {
+        label: "Expert advisory",
+        values: ["Add-on", "Add-on", "6 hours / month"],
+    },
+]
+
+const FAQ = [
+    {
+        question: "What drives the cost on Kestra Cloud?",
+        answer: 'Mostly task runs. A task run is one attempt of one task, not one execution. Most tasks call another service, such as BigQuery, Snowflake or Slack, and count only as a task run. Only scripts that run on Kestra’s own task runner (Python, Shell, Node.js…) also add compute, billed per second. Every plan includes a monthly allowance of both. For more detail, see <a href="/docs/enterprise/cloud/task-runs">how task runs are counted</a> and <a href="/docs/enterprise/cloud/cloud-compute">Kestra Cloud compute</a>.',
+    },
+    {
+        question: "What is an instance in the Enterprise subscription?",
+        answer: "One Kestra Enterprise deployment, with its environments and worker groups. The subscription is sized to the number of instances and the support level, with no limit on executions, flows, tasks, apps or assets.",
+    },
+    {
+        question: "Is there a trial?",
+        answer: "Open source is free forever. Kestra Cloud starts with a 14-day free trial on your own flows, which we extend for teams that share feedback with us. Enterprise evaluations are a guided trial on your use case: book a demo and we scope it together.",
+    },
+    {
+        question: "How do we get a quote?",
+        answer: "Book a demo. Pricing is sized to the project, so the conversation starts with instances, environments and the level of support you need.",
+    },
+]
 ---
 
 <Layout {title} {description}>
     <Fragment slot="head">
         <SchemaSoftwareApplication url="https://kestra.io/pricing" />
+        <SchemaFAQ items={FAQ} />
     </Fragment>
-    <div class="cont">
-        <Header>
-            <HostSwitcher slot="switcher" />
-        </Header>
-        <PriceGrid />
-        <PlanTable />
-        <PriceQuote client:load />
-        <PriceBottom />
-    </div>
+    <PageShell>
+        <Plans />
+        <HowToChoose />
+        <CompareEditions />
+        <SupportPlans title="Support plans" rows={SUPPORT_ROWS}>
+            <Fragment slot="lead">
+                Kestra Cloud and Enterprise both include Standard support.
+                Premium and Platinum below are Enterprise plans; for Premium on
+                Kestra Cloud, talk to sales.
+            </Fragment>
+        </SupportPlans>
+        <BuyerQuestions title="Questions about pricing" items={FAQ} />
+    </PageShell>
 </Layout>
-
-<style lang="scss">
-    .cont {
-        overflow: clip;
-    }
-</style>

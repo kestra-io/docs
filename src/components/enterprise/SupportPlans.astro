@@ -5,7 +5,14 @@ import { API_URL } from "astro:env/client"
 
 const PLANS = ["Standard", "Premium", "Platinum"]
 
-const ROWS: { label: string; values: (string | boolean)[] }[] = [
+type Row = { label: string; values: (string | boolean)[] }
+
+interface Props {
+    title?: string
+    rows?: Row[]
+}
+
+const DEFAULT_ROWS: Row[] = [
     {
         label: "Channels",
         values: [
@@ -22,6 +29,9 @@ const ROWS: { label: string; values: (string | boolean)[] }[] = [
         values: ["Add-on", "Add-on", "6 hours / month"],
     },
 ]
+
+const { title = "Support and Customer Success", rows: ROWS = DEFAULT_ROWS } =
+    Astro.props
 
 const TOOLS = [
     { name: "Teams", plugin: "notifications.teams.TeamsIncomingWebhook" },
@@ -54,11 +64,13 @@ const hasLogos = logos.every(Boolean)
     <div class="container-xl">
         <div class="rails">
             <header>
-                <h2 id="ee-support">Support and Customer Success</h2>
+                <h2 id="ee-support">{title}</h2>
                 <p>
-                    Enterprise includes Standard support. Premium and Platinum
-                    add channels, response times and the Customer Success
-                    program.
+                    <slot name="lead">
+                        Enterprise includes Standard support. Premium and
+                        Platinum add channels, response times and the Customer
+                        Success program.
+                    </slot>
                 </p>
             </header>
             <ul>
