@@ -469,8 +469,8 @@ const PANELS = [
             }
 
             @include media-breakpoint-down(sm) {
-                --zoom: 1.22;
-                --shift: -24%;
+                --zoom: 1;
+                --shift: 0%;
 
                 margin-inline: calc(-1 * var(--inset));
                 padding: 0.5rem 0;
@@ -484,12 +484,13 @@ const PANELS = [
                 }
 
                 &[data-tone="ops"] {
-                    --zoom: 1.05;
+                    --zoom: 1.02;
                     --shift: 1.5%;
                 }
 
                 &[data-tone="gov"] {
-                    --shift: 2%;
+                    --zoom: 1.16;
+                    --shift: 4%;
                 }
             }
         }

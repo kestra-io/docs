@@ -605,6 +605,29 @@ const FIELDS = [
         }
     }
 
+    @media (max-width: 575.98px) {
+        .stage {
+            padding: 3.2em 1em;
+            font-size: calc(100cqw / 36);
+        }
+
+        .apps {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .app:nth-child(n + 4) {
+            display: none;
+        }
+
+        .modal {
+            left: 50%;
+        }
+
+        .notice {
+            right: 1em;
+        }
+    }
+
     @media (prefers-reduced-motion: no-preference) {
         .apps-mock:not([data-play]) * {
             animation-play-state: paused !important;
@@ -682,6 +705,22 @@ const FIELDS = [
 
         .cursor.admin {
             animation: apps-mock-admin var(--loop) linear infinite both;
+        }
+
+        @media (max-width: 575.98px) {
+            .cursor.launcher {
+                animation-name: apps-mock-launcher-sm;
+            }
+
+            .cursor.admin {
+                animation-name: apps-mock-admin-sm;
+            }
+        }
+
+        @media (min-width: 576px) and (max-width: 991.98px) {
+            .cursor.admin {
+                animation-name: apps-mock-admin-md;
+            }
         }
     }
 
@@ -950,6 +989,103 @@ const FIELDS = [
         100% {
             opacity: 0;
             transform: translate(47em, 10em);
+        }
+    }
+
+    @keyframes apps-mock-launcher-sm {
+        0% {
+            opacity: 0;
+            transform: translate(24em, 22.5em);
+        }
+        2% {
+            opacity: 1;
+            transform: translate(24em, 22.5em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        9%,
+        15% {
+            opacity: 1;
+            transform: translate(29.8em, 8.8em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        18%,
+        34% {
+            opacity: 1;
+            transform: translate(28em, 12.8em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        40%,
+        48% {
+            opacity: 1;
+            transform: translate(26em, 23.9em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        56%,
+        95% {
+            opacity: 0.35;
+            transform: translate(29.5em, 27.3em);
+        }
+        100% {
+            opacity: 0;
+            transform: translate(29.5em, 27.3em);
+        }
+    }
+
+    @keyframes apps-mock-admin-sm {
+        0%,
+        54% {
+            opacity: 0;
+            transform: translate(31.1em, 11em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        58% {
+            opacity: 1;
+            transform: translate(30.3em, 9em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        65%,
+        72% {
+            opacity: 1;
+            transform: translate(28.1em, 4.1em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        79% {
+            opacity: 1;
+            transform: translate(29.9em, 10em);
+        }
+        84%,
+        100% {
+            opacity: 0;
+            transform: translate(29.9em, 10em);
+        }
+    }
+
+    @keyframes apps-mock-admin-md {
+        0%,
+        54% {
+            opacity: 0;
+            transform: translate(46.8em, 11em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        58% {
+            opacity: 1;
+            transform: translate(46.2em, 9em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        65%,
+        72% {
+            opacity: 1;
+            transform: translate(44.3em, 4.1em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        79% {
+            opacity: 1;
+            transform: translate(45.8em, 10em);
+        }
+        84%,
+        100% {
+            opacity: 0;
+            transform: translate(45.8em, 10em);
         }
     }
 </style>
