@@ -192,8 +192,17 @@ const height = (logo: ImageMetadata, scale: number) =>
         &.marquee {
             --gap: clamp(2.5rem, 5vw, 4.5rem);
 
-            padding-inline: 0;
+            padding: 1.5rem 0;
             overflow: hidden;
+
+            :global(img) {
+                height: var(--h);
+
+                @include media-breakpoint-down(md) {
+                    height: calc(var(--h) * 0.75);
+                }
+            }
+
             mask-image: linear-gradient(
                 90deg,
                 transparent,
