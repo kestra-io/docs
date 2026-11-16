@@ -81,78 +81,81 @@ const PLANS: {
     <PixelEdges left="tall" right="wide" />
     <div class="container-xl">
         <div class="rails">
-            <header>
-                <h1 id="pricing-title">Three ways to run Kestra</h1>
-                <p class="lead">
-                    Self-host the open-source version for free. Choose Cloud for
-                    a managed service. Get Enterprise for advanced governance,
-                    air-gapped-ready deployment, and SLA backed support.
-                </p>
-            </header>
-            <ul class="plans">
-                {PLANS.map((plan) => {
-                    const [primary, secondary] = plan.actions
-                    const external = (href: string) =>
-                        href.startsWith("http")
-                            ? { target: "_blank", rel: "noopener" }
-                            : {}
-                    return (
-                        <li
-                            class:list={[
-                                plan.tone,
-                                { featured: plan.featured },
-                            ]}
-                        >
-                            <div class="panel">
-                                <h2>{plan.name}</h2>
-                                <p class="stage">
-                                    {plan.tag && (
-                                        <span class="tag">{plan.tag}</span>
-                                    )}
-                                </p>
-                                <p class="price">{plan.price}</p>
-                                <p class="text">{plan.text}</p>
-                                <a
-                                    href={primary.href}
-                                    class={
-                                        primary.solid
-                                            ? "btn-solid"
-                                            : "btn-ghost"
-                                    }
-                                    {...external(primary.href)}
-                                >
-                                    {primary.label}
-                                </a>
-                                <p class="more">
-                                    {secondary && (
-                                        <a
-                                            href={secondary.href}
-                                            {...external(secondary.href)}
-                                        >
-                                            {secondary.label}
-                                            <span
-                                                class="arrow"
-                                                aria-hidden="true"
+            <div class="frame">
+                <header>
+                    <h1 id="pricing-title">Three ways to run Kestra</h1>
+                    <p class="lead">
+                        Self-host the open-source version for free. Choose Cloud
+                        for a managed service. Get Enterprise for advanced
+                        governance, air-gapped-ready deployment, and SLA backed
+                        support.
+                    </p>
+                </header>
+                <ul class="plans">
+                    {PLANS.map((plan) => {
+                        const [primary, secondary] = plan.actions
+                        const external = (href: string) =>
+                            href.startsWith("http")
+                                ? { target: "_blank", rel: "noopener" }
+                                : {}
+                        return (
+                            <li
+                                class:list={[
+                                    plan.tone,
+                                    { featured: plan.featured },
+                                ]}
+                            >
+                                <div class="panel">
+                                    <h2>{plan.name}</h2>
+                                    <p class="stage">
+                                        {plan.tag && (
+                                            <span class="tag">{plan.tag}</span>
+                                        )}
+                                    </p>
+                                    <p class="price">{plan.price}</p>
+                                    <p class="text">{plan.text}</p>
+                                    <a
+                                        href={primary.href}
+                                        class={
+                                            primary.solid
+                                                ? "btn-solid"
+                                                : "btn-ghost"
+                                        }
+                                        {...external(primary.href)}
+                                    >
+                                        {primary.label}
+                                    </a>
+                                    <p class="more">
+                                        {secondary && (
+                                            <a
+                                                href={secondary.href}
+                                                {...external(secondary.href)}
                                             >
-                                                →
-                                            </span>
-                                        </a>
-                                    )}
-                                </p>
-                            </div>
-                            <ul class="features">
-                                {plan.features.map((feature) => (
-                                    <li>
-                                        <Icon name="mdi:check" />
-                                        {feature}
-                                    </li>
-                                ))}
-                            </ul>
-                            <p class="ideal">{plan.ideal}</p>
-                        </li>
-                    )
-                })}
-            </ul>
+                                                {secondary.label}
+                                                <span
+                                                    class="arrow"
+                                                    aria-hidden="true"
+                                                >
+                                                    →
+                                                </span>
+                                            </a>
+                                        )}
+                                    </p>
+                                </div>
+                                <ul class="features">
+                                    {plan.features.map((feature) => (
+                                        <li>
+                                            <Icon name="mdi:check" />
+                                            {feature}
+                                        </li>
+                                    ))}
+                                </ul>
+                                <p class="ideal">{plan.ideal}</p>
+                            </li>
+                        )
+                    })}
+                </ul>
+            </div>
         </div>
     </div>
 </section>
@@ -176,16 +179,24 @@ const PLANS: {
 
     .rails {
         position: relative;
-        padding: 0 clamp(1.5rem, 4vw, 3.5rem) 4.5rem;
+        padding: 0 clamp(1.5rem, 4vw, 3.5rem);
+        border-inline: var(--rule);
+    }
+
+    // The grid: two inner rails that run the height of the section, a rule
+    // under the hero and one between each plan.
+    .frame {
+        max-width: 72rem;
+        margin-inline: auto;
         border-inline: var(--rule);
 
-        @include media-breakpoint-down(md) {
-            padding-bottom: 3.5rem;
+        @include media-breakpoint-down(lg) {
+            max-width: 32rem;
         }
     }
 
     header {
-        padding: calc(3.5rem + 61px) 0 3.5rem;
+        padding: calc(3.5rem + 61px) 1.5rem 3.5rem;
         text-align: center;
 
         @include media-breakpoint-down(md) {
@@ -207,31 +218,34 @@ const PLANS: {
     .plans {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 1.25rem;
-        max-width: 72rem;
-        margin: 0 auto;
+        margin: 0;
         padding: 0;
+        border-top: var(--rule);
         list-style: none;
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);
-            max-width: 32rem;
         }
 
-        // A card: a tinted panel that holds the offer, then what it includes.
+        // A plan: a tinted panel that holds the offer, then what it includes.
         > li {
-            position: relative;
             display: flex;
             flex-direction: column;
-            padding: 0.75rem 0.75rem 1.75rem;
-            border: var(--rule);
-            border-radius: 12px;
-            background: var(--ks-background-body);
+            padding: 0.75rem 0.75rem 2.5rem;
 
-            &.neutral {
-                --tint: #ececf1;
+            @include media-breakpoint-up(lg) {
+                & + li {
+                    border-left: var(--rule);
+                }
             }
 
+            @include media-breakpoint-down(lg) {
+                & + li {
+                    border-top: var(--rule);
+                }
+            }
+
+            &.neutral,
             &.blue {
                 --tint: #ececf1;
             }
@@ -241,10 +255,7 @@ const PLANS: {
             }
 
             :global(html.dark) & {
-                &.neutral {
-                    --tint: rgba(255, 255, 255, 0.07);
-                }
-
+                &.neutral,
                 &.blue {
                     --tint: rgba(255, 255, 255, 0.07);
                 }
@@ -253,50 +264,6 @@ const PLANS: {
                     --tint: rgba(143, 123, 255, 0.24);
                 }
             }
-
-            // The featured card's ring carries a light that travels around it.
-            &.featured {
-                border-color: transparent;
-
-                &::before {
-                    content: "";
-                    position: absolute;
-                    inset: -1px;
-                    padding: 1px;
-                    border-radius: inherit;
-                    background:
-                        conic-gradient(
-                            from var(--plans-turn),
-                            transparent 0 60%,
-                            #b4b8c8 78%,
-                            #8f9fe6 94%,
-                            transparent 100%
-                        ),
-                        var(--ks-border-primary);
-                    mask:
-                        linear-gradient(#000 0 0) content-box exclude,
-                        linear-gradient(#000 0 0);
-                    pointer-events: none;
-                    animation: plans-turn 7s linear infinite;
-
-                    @media (prefers-reduced-motion: reduce) {
-                        background: var(--ks-border-primary);
-                        animation: none;
-                    }
-                }
-            }
-        }
-    }
-
-    @property --plans-turn {
-        syntax: "<angle>";
-        inherits: false;
-        initial-value: 0deg;
-    }
-
-    @keyframes plans-turn {
-        to {
-            --plans-turn: 360deg;
         }
     }
 
@@ -305,7 +272,6 @@ const PLANS: {
         flex-direction: column;
         align-items: center;
         padding: 2rem 1.5rem 1.5rem;
-        border-radius: 6px;
         background: linear-gradient(180deg, var(--tint), transparent 92%);
         text-align: center;
     }
