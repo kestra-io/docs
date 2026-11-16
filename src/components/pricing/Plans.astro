@@ -2,6 +2,7 @@
 import { Icon } from "astro-icon/components"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import PixelEdges from "~/components/about/PixelEdges.astro"
+import CustomerGrid from "~/components/about/CustomerGrid.astro"
 
 const totalPlugins = await fetchTotalPluginsCount()
 
@@ -149,6 +150,17 @@ const PLANS: {
                         )
                     })}
                 </ul>
+                <p class="compare">
+                    <a href="#comparison-table">
+                        Compare plans and features
+                        <span class="arrow" aria-hidden="true">
+                            ↓
+                        </span>
+                    </a>
+                </p>
+                <div class="customers">
+                    <CustomerGrid columns={6} flush />
+                </div>
             </div>
         </div>
     </div>
@@ -214,13 +226,9 @@ const PLANS: {
         margin-inline: auto;
     }
 
-    .plans {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+    .plans,
+    .customers {
         position: relative;
-        margin: 0;
-        padding: 0;
-        list-style: none;
 
         &::before {
             content: "";
@@ -231,6 +239,43 @@ const PLANS: {
             border-top: var(--rule);
             translate: -50% 0;
         }
+    }
+
+    .compare {
+        margin: 0;
+        padding: 3rem 1.5rem 4rem;
+        font-size: $font-size-md;
+        text-align: center;
+
+        a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            color: var(--ks-content-primary);
+            text-decoration: none;
+
+            &:hover {
+                color: var(--ks-content-link);
+            }
+        }
+
+        .arrow {
+            transition: translate 0.2s ease;
+        }
+
+        a:hover .arrow,
+        a:focus-visible .arrow {
+            translate: 0 0.2em;
+        }
+    }
+
+    .plans {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin: 0;
+        padding: 0;
+        list-style: none;
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);

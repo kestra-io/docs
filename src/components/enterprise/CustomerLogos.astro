@@ -26,13 +26,6 @@ const COMPANIES: {
     { logo: totalenergies, name: "TotalEnergies", scale: 1.9 },
 ]
 
-interface Props {
-    marquee?: boolean
-}
-
-const { marquee = false } = Astro.props
-const COPIES = 4
-
 const stories = await getCollection("customerStories")
 const storyHref = (company?: string) => {
     const entry = company && stories.find((e) => e.data.companyName === company)
@@ -45,63 +38,33 @@ const height = (logo: ImageMetadata, scale: number) =>
     ).toFixed(3)
 ---
 
-<section
-    class:list={["ee-logos", { marquee }]}
-    aria-label="Trusted by leading companies"
->
-    {marquee ? (
-        <>
-            {Astro.slots.has("caption") && (
-                <p class="caption">
-                    <slot name="caption" />
-                </p>
-            )}
-            <div class="window">
-                <div class="track">
-                    {Array.from({ length: COPIES }, (_, copy) => (
-                        <ul aria-hidden={copy > 0 ? "true" : undefined}>
-                            {COMPANIES.map((company) => (
-                                <li>
-                                    <Image
-                                        src={company.logo}
-                                        alt={copy > 0 ? "" : company.name}
-                                        style={`--h: ${height(company.logo, company.scale)}rem; translate: 0 ${-(company.lift ?? 0)}rem`}
-                                    />
-                                </li>
-                            ))}
-                        </ul>
-                    ))}
-                </div>
-            </div>
-        </>
-    ) : (
-        <ul>
-            {COMPANIES.map((company, idx) => {
-                const href = storyHref(company.story)
-                const image = (
-                    <Image
-                        src={company.logo}
-                        alt={company.name}
-                        style={`--h: ${height(company.logo, company.scale)}rem; translate: 0 ${-(company.lift ?? 0)}rem`}
-                    />
-                )
-                return (
-                    <li class:list={{ wrap: idx === 4 }}>
-                        {href ? (
-                            <a class="has-story" href={href}>
-                                {image}
-                                <span class="read">
-                                    Read story <span class="arrow">→</span>
-                                </span>
-                            </a>
-                        ) : (
-                            image
-                        )}
-                    </li>
-                )
-            })}
-        </ul>
-    )}
+<section class="ee-logos" aria-label="Trusted by leading companies">
+    <ul>
+        {COMPANIES.map((company, idx) => {
+            const href = storyHref(company.story)
+            const image = (
+                <Image
+                    src={company.logo}
+                    alt={company.name}
+                    style={`--h: ${height(company.logo, company.scale)}rem; translate: 0 ${-(company.lift ?? 0)}rem`}
+                />
+            )
+            return (
+                <li class:list={{ wrap: idx === 4 }}>
+                    {href ? (
+                        <a class="has-story" href={href}>
+                            {image}
+                            <span class="read">
+                                Read story <span class="arrow">→</span>
+                            </span>
+                        </a>
+                    ) : (
+                        image
+                    )}
+                </li>
+            )
+        })}
+    </ul>
 </section>
 
 <style lang="scss">
@@ -230,87 +193,6 @@ const height = (logo: ImageMetadata, scale: number) =>
 
         :global(html.dark) & :global(img) {
             filter: brightness(0) invert(1);
-        }
-
-        &.marquee {
-            --gap: clamp(2.5rem, 5vw, 4.5rem);
-
-            display: flex;
-            align-items: center;
-            gap: 1rem clamp(1.5rem, 3vw, 3rem);
-            padding: 1.5rem 0;
-
-            @include media-breakpoint-down(lg) {
-                flex-direction: column;
-            }
-
-            :global(img) {
-                height: var(--h);
-
-                @include media-breakpoint-down(md) {
-                    height: calc(var(--h) * 0.75);
-                }
-            }
-
-            .caption {
-                flex: none;
-                max-width: 21rem;
-                margin: 0;
-                text-wrap: balance;
-                padding-left: clamp(1.5rem, 4vw, 3.5rem);
-                font-size: 0.9375rem;
-                line-height: 1.45;
-                color: var(--ks-content-secondary);
-
-                @include media-breakpoint-down(lg) {
-                    max-width: none;
-                    padding-inline: 1.5rem;
-                    text-align: center;
-                }
-            }
-
-            .window {
-                flex: 1;
-                min-width: 0;
-                max-width: 100%;
-                overflow: hidden;
-                mask-image: linear-gradient(
-                    90deg,
-                    transparent,
-                    #000 12%,
-                    #000 88%,
-                    transparent
-                );
-            }
-
-            .track {
-                display: flex;
-                width: max-content;
-                animation: ee-logos-scroll 60s linear infinite;
-
-                @media (prefers-reduced-motion: reduce) {
-                    animation: none;
-                }
-            }
-
-            ul {
-                display: flex;
-                flex-wrap: nowrap;
-                gap: var(--gap);
-                max-width: none;
-                margin: 0;
-                padding-right: var(--gap);
-            }
-
-            li {
-                flex: none;
-            }
-        }
-    }
-
-    @keyframes ee-logos-scroll {
-        to {
-            translate: -50% 0;
         }
     }
 </style>
