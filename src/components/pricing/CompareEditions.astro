@@ -5,7 +5,14 @@ import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 const totalPlugins = await fetchTotalPluginsCount()
 
 type Cell = boolean | string | { note: string }
-type Row = [feature: string, openSource: Cell, cloud: Cell, enterprise: Cell]
+type Info = [text: string, link: string]
+type Row = [
+    feature: string,
+    openSource: Cell,
+    cloud: Cell,
+    enterprise: Cell,
+    info?: Info,
+]
 
 const EDITIONS = [
     { name: "Kestra Core", label: "Get started", href: "/get-started" },
@@ -28,57 +35,226 @@ const GROUPS: { title: string; rows: Row[] }[] = [
                 true,
                 true,
                 true,
+                [
+                    "No limit on the number of workflows or executions",
+                    "/docs/workflow-components",
+                ],
             ],
-            ["Code and no-code editors, draft revisions", true, true, true],
-            ["AI Copilot, AI agents and MCP server", true, true, true],
-            ["AI Copilot on your own LLM", false, SALES, true],
-            ["Apps and human-in-the-loop approvals", false, true, true],
-            ["Task runners", false, { note: "usage-based" }, true],
-            ["Enterprise plugins", false, true, true],
+            [
+                "Code and no-code editors, draft revisions",
+                true,
+                true,
+                true,
+                [
+                    "Write YAML or use the guided form editor; both stay in sync",
+                    "/docs/ui/flows",
+                ],
+            ],
+            [
+                "AI Copilot, AI agents and MCP server",
+                true,
+                true,
+                true,
+                [
+                    "Generate and edit flows from a natural language prompt with Gemini",
+                    "/docs/develop-with-ai/ai-copilot",
+                ],
+            ],
+            [
+                "AI Copilot on your own LLM",
+                false,
+                SALES,
+                true,
+                [
+                    "Edit, Plan, and Ask modes with memory and a confirmation step, on any cloud or self-hosted LLM",
+                    "/docs/develop-with-ai/ai-copilot",
+                ],
+            ],
+            [
+                "Apps and human-in-the-loop approvals",
+                false,
+                true,
+                true,
+                [
+                    "Build forms, approvals, and dashboards on top of your workflows",
+                    "/docs/enterprise/scalability/apps",
+                ],
+            ],
+            [
+                "Task runners",
+                false,
+                { note: "usage-based" },
+                true,
+                [
+                    "Run tasks on Kubernetes, cloud batch services, or dedicated VMs on AWS, Azure, Google Cloud, and Huawei Cloud",
+                    "/docs/task-runners",
+                ],
+            ],
+            [
+                "Enterprise plugins",
+                false,
+                true,
+                true,
+                [
+                    "Integrations for infrastructure, security, and governance at scale",
+                    "/plugins",
+                ],
+            ],
         ],
     },
     {
         title: "Authentication and access",
         rows: [
-            ["SSO (OIDC)", false, true, true],
-            ["SCIM", false, SALES, true],
-            ["LDAP", false, false, true],
+            [
+                "SSO (OIDC)",
+                false,
+                true,
+                true,
+                [
+                    "Sign in with your identity provider",
+                    "/docs/enterprise/auth/sso",
+                ],
+            ],
+            [
+                "SCIM",
+                false,
+                SALES,
+                true,
+                [
+                    "Provision users and groups from your identity provider automatically",
+                    "/docs/enterprise/auth/scim",
+                ],
+            ],
+            [
+                "LDAP",
+                false,
+                false,
+                true,
+                [
+                    "Authenticate with existing LDAP credentials and sync groups",
+                    "/docs/enterprise/auth/sso/ldap",
+                ],
+            ],
             [
                 "Role-based access control (RBAC) and user management",
                 false,
                 true,
                 true,
+                [
+                    "Grant actions on resources per namespace, for users, groups, and service accounts",
+                    "/docs/enterprise/auth/rbac",
+                ],
             ],
-            ["Service accounts and API tokens", false, true, true],
+            [
+                "Service accounts and API tokens",
+                false,
+                true,
+                true,
+                [
+                    "Programmatic access with service accounts, API tokens, OAuth2, and JWT",
+                    "/docs/enterprise/auth/service-accounts",
+                ],
+            ],
         ],
     },
     {
         title: "Secrets and security",
         rows: [
-            ["Built-in secrets manager", false, true, true],
+            [
+                "Built-in secrets manager",
+                false,
+                true,
+                true,
+                [
+                    "Scope secrets and variables to a namespace or tenant",
+                    "/docs/enterprise/governance/namespace-management#namespace-level-features",
+                ],
+            ],
             [
                 "External secret managers (Vault, AWS, GCP, Azure and more)",
                 false,
                 SALES,
                 true,
+                [
+                    "Store secrets in Kestra, or read them from Vault, AWS, Azure, Google Cloud, and other backends",
+                    "/docs/enterprise/governance/secrets-manager",
+                ],
             ],
-            ["Dedicated storage per namespace", false, SALES, true],
+            [
+                "Dedicated storage per namespace",
+                false,
+                SALES,
+                true,
+                [
+                    "Give each namespace or tenant its own internal storage",
+                    "/docs/enterprise/governance/worker-isolation",
+                ],
+            ],
         ],
     },
     {
         title: "Governance and observability",
         rows: [
-            ["Policies and restricted plugins", false, true, true],
-            ["Promote from dev to production", false, true, true],
-            ["Assets and lineage", false, true, true],
-            ["Audit logs", false, true, true],
+            [
+                "Policies and restricted plugins",
+                false,
+                true,
+                true,
+                [
+                    "Rules per namespace that set, check, or block task configuration in every flow",
+                    "/docs/enterprise/governance/policies",
+                ],
+            ],
+            [
+                "Promote from dev to production",
+                false,
+                true,
+                true,
+                [
+                    "Move flows from dev to prod from the UI, with a diff and a review step",
+                    "/docs/enterprise/governance/promote",
+                ],
+            ],
+            [
+                "Assets and lineage",
+                false,
+                true,
+                true,
+                [
+                    "A live inventory of the tables, files, and systems your workflows touch",
+                    "/docs/enterprise/governance/assets",
+                ],
+            ],
+            [
+                "Audit logs",
+                false,
+                true,
+                true,
+                [
+                    "Record every action by every user on every resource",
+                    "/docs/enterprise/governance/audit-logs",
+                ],
+            ],
             [
                 "Audit log export and log shipping to your SIEM or observability tools",
                 false,
                 SALES,
                 true,
+                [
+                    "Send logs and audit logs to Datadog, Splunk, Elasticsearch, your SIEM, and more",
+                    "/docs/enterprise/governance/logshipper",
+                ],
             ],
-            ["Cases and quotas", false, SALES, true],
+            [
+                "Cases and quotas",
+                false,
+                SALES,
+                true,
+                [
+                    "Track incidents next to the executions that caused them, from creation to resolution",
+                    "/docs/enterprise/governance/cases",
+                ],
+            ],
         ],
     },
     {
@@ -89,6 +265,10 @@ const GROUPS: { title: string; rows: Row[] }[] = [
                 false,
                 true,
                 true,
+                [
+                    "Test flows in isolation with fixtures and assertions, including expected failures",
+                    "/docs/enterprise/governance/unit-tests",
+                ],
             ],
         ],
     },
@@ -100,13 +280,30 @@ const GROUPS: { title: string; rows: Row[] }[] = [
                 false,
                 "Coming soon, talk to sales",
                 true,
+                [
+                    "Route tasks to dedicated workers by tag and reserve capacity for critical work",
+                    "/docs/enterprise/scalability/worker-group",
+                ],
             ],
-            ["Multiple tenants", false, "1 included, more as an add-on", true],
+            [
+                "Multiple tenants",
+                false,
+                "1 included, more as an add-on",
+                true,
+                [
+                    "Isolate teams or environments inside one Kestra instance",
+                    "/docs/enterprise/governance/tenants",
+                ],
+            ],
             [
                 "Custom queue and storage backends (Kafka, Redis, Elasticsearch)",
                 false,
                 false,
                 true,
+                [
+                    "Move the queue off PostgreSQL or MySQL when your scale calls for it",
+                    "/docs/architecture/main-components#queue",
+                ],
             ],
             [
                 "Fully managed hosting: upgrades, backups, monitoring and scaling",
@@ -160,38 +357,58 @@ const GROUPS: { title: string; rows: Row[] }[] = [
                                     {group.title}
                                 </th>
                             </tr>
-                            {group.rows.map(([feature, ...cells]) => (
-                                <tr>
-                                    <th scope="row">{feature}</th>
-                                    {cells.map((cell) => (
-                                        <td>
-                                            {cell === false ? (
-                                                <span
-                                                    class="no"
-                                                    aria-label="Not included"
-                                                >
-                                                    —
+                            {group.rows.map(
+                                ([feature, os, cloud, ee, info]) => (
+                                    <tr>
+                                        <th scope="row">
+                                            {feature}
+                                            {info && (
+                                                <span class="info" tabindex="0">
+                                                    <Icon name="mdi:information-slab-circle-outline" />
+                                                    <span
+                                                        class="tip"
+                                                        role="tooltip"
+                                                    >
+                                                        {info[0]}
+                                                        <a href={info[1]}>
+                                                            Learn more
+                                                        </a>
+                                                    </span>
                                                 </span>
-                                            ) : typeof cell === "string" ? (
-                                                <span class="text">{cell}</span>
-                                            ) : (
-                                                <>
-                                                    <Icon
-                                                        name="mdi:check"
-                                                        class="yes"
-                                                        aria-label="Included"
-                                                    />
-                                                    {cell !== true && (
-                                                        <span class="note">
-                                                            {cell.note}
-                                                        </span>
-                                                    )}
-                                                </>
                                             )}
-                                        </td>
-                                    ))}
-                                </tr>
-                            ))}
+                                        </th>
+                                        {[os, cloud, ee].map((cell) => (
+                                            <td>
+                                                {cell === false ? (
+                                                    <span
+                                                        class="no"
+                                                        aria-label="Not included"
+                                                    >
+                                                        —
+                                                    </span>
+                                                ) : typeof cell === "string" ? (
+                                                    <span class="text">
+                                                        {cell}
+                                                    </span>
+                                                ) : (
+                                                    <>
+                                                        <Icon
+                                                            name="mdi:check"
+                                                            class="yes"
+                                                            aria-label="Included"
+                                                        />
+                                                        {cell !== true && (
+                                                            <span class="note">
+                                                                {cell.note}
+                                                            </span>
+                                                        )}
+                                                    </>
+                                                )}
+                                            </td>
+                                        ))}
+                                    </tr>
+                                ),
+                            )}
                         </tbody>
                     ))}
                 </table>
@@ -351,6 +568,67 @@ const GROUPS: { title: string; rows: Row[] }[] = [
         font-weight: 400;
         line-height: 1.45;
         color: var(--ks-content-primary);
+    }
+
+    .info {
+        position: relative;
+        display: inline-flex;
+        margin-left: 0.375rem;
+        vertical-align: -0.15em;
+        color: var(--ks-content-tertiary);
+        cursor: pointer;
+
+        :global(svg) {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        &:hover .tip,
+        &:focus-within .tip {
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+
+    .tip {
+        position: absolute;
+        top: calc(100% + 0.625rem);
+        left: 50%;
+        z-index: 4;
+        width: 15rem;
+        padding: 0.625rem 0.75rem;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 0.5rem;
+        background: var(--ks-background-body);
+        box-shadow: 0 10px 30px var(--ks-shadows-light);
+        font-size: $font-size-xs;
+        line-height: 1.5;
+        color: var(--ks-content-secondary);
+        translate: -50% 0;
+        visibility: hidden;
+        opacity: 0;
+        transition:
+            opacity 0.2s,
+            visibility 0.2s;
+        cursor: default;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: -0.625rem 0 100%;
+        }
+
+        a {
+            display: block;
+            margin-top: 0.25rem;
+            font-weight: 600;
+            color: var(--ks-content-link);
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
     }
 
     tbody tr:not(.group):hover > * {
