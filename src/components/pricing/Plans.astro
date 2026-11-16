@@ -90,46 +90,66 @@ const PLANS: {
                 </p>
             </header>
             <ul class="plans">
-                {PLANS.map((plan) => (
-                    <li class:list={{ featured: plan.featured }}>
-                        <div class="name">
-                            <h2 class={plan.tone}>{plan.name}</h2>
-                            {plan.tag && <span class="tag">{plan.tag}</span>}
-                        </div>
-                        <p class="price">{plan.price}</p>
-                        <p class="text">{plan.text}</p>
-                        <div class="actions">
-                            {plan.actions.map((action) => (
+                {PLANS.map((plan) => {
+                    const [primary, secondary] = plan.actions
+                    const external = (href: string) =>
+                        href.startsWith("http")
+                            ? { target: "_blank", rel: "noopener" }
+                            : {}
+                    return (
+                        <li
+                            class:list={[
+                                plan.tone,
+                                { featured: plan.featured },
+                            ]}
+                        >
+                            <div class="panel">
+                                <div class="name">
+                                    <h2 class={plan.tone}>{plan.name}</h2>
+                                </div>
+                                <p class="stage">
+                                    {plan.tag && (
+                                        <span class="tag">{plan.tag}</span>
+                                    )}
+                                </p>
+                                <p class="price">{plan.price}</p>
+                                <p class="text">{plan.text}</p>
                                 <a
-                                    href={action.href}
-                                    class:list={[
-                                        action.solid
-                                            ? "btn-solid"
-                                            : "btn-ghost",
-                                        "compact",
-                                    ]}
-                                    {...(action.href.startsWith("http")
-                                        ? {
-                                              target: "_blank",
-                                              rel: "noopener",
-                                          }
-                                        : {})}
+                                    href={primary.href}
+                                    class="btn-solid"
+                                    {...external(primary.href)}
                                 >
-                                    {action.label}
+                                    {primary.label}
                                 </a>
-                            ))}
-                        </div>
-                        <ul class="features">
-                            {plan.features.map((feature) => (
-                                <li>
-                                    <Icon name="mdi:check" />
-                                    {feature}
-                                </li>
-                            ))}
-                        </ul>
-                        <p class="ideal">{plan.ideal}</p>
-                    </li>
-                ))}
+                                <p class="more">
+                                    {secondary && (
+                                        <a
+                                            href={secondary.href}
+                                            {...external(secondary.href)}
+                                        >
+                                            {secondary.label}
+                                            <span
+                                                class="arrow"
+                                                aria-hidden="true"
+                                            >
+                                                →
+                                            </span>
+                                        </a>
+                                    )}
+                                </p>
+                            </div>
+                            <ul class="features">
+                                {plan.features.map((feature) => (
+                                    <li>
+                                        <Icon name="mdi:check" />
+                                        {feature}
+                                    </li>
+                                ))}
+                            </ul>
+                            <p class="ideal">{plan.ideal}</p>
+                        </li>
+                    )
+                })}
             </ul>
         </div>
     </div>
@@ -140,7 +160,6 @@ const PLANS: {
 
     .pricing-plans {
         --rule: 1px solid var(--ks-border-primary);
-        --inset: clamp(1.5rem, 3vw, 2.5rem);
 
         position: relative;
         border-bottom: var(--rule);
@@ -164,11 +183,11 @@ const PLANS: {
     }
 
     header {
-        padding: calc(6rem + 67px) 0 4.5rem;
+        padding: calc(3.5rem + 61px) 0 3.5rem;
         text-align: center;
 
         @include media-breakpoint-down(md) {
-            padding-block: calc(3rem + 67px) 3rem;
+            padding-block: calc(2.5rem + 57px) 2.5rem;
         }
     }
 
@@ -190,70 +209,82 @@ const PLANS: {
     .plans {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        max-width: 70rem;
+        gap: 1.25rem;
+        max-width: 72rem;
         margin: 0 auto;
         padding: 0;
-        position: relative;
-        overflow: hidden;
-        border-radius: 10px;
         list-style: none;
-
-        // The frame: a hairline ring with a light that travels around it.
-        &::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            padding: 1px;
-            border-radius: inherit;
-            background:
-                conic-gradient(
-                    from var(--plans-turn),
-                    transparent 0 60%,
-                    #b4b8c8 78%,
-                    #8f9fe6 94%,
-                    transparent 100%
-                ),
-                var(--ks-border-primary);
-            mask:
-                linear-gradient(#000 0 0) content-box exclude,
-                linear-gradient(#000 0 0);
-            pointer-events: none;
-            animation: plans-turn 7s linear infinite;
-
-            @media (prefers-reduced-motion: reduce) {
-                background: var(--ks-border-primary);
-                animation: none;
-            }
-        }
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);
+            max-width: 32rem;
         }
 
+        // A card: a tinted panel that holds the offer, then what it includes.
         > li {
+            position: relative;
             display: flex;
             flex-direction: column;
-            padding: 2.5rem var(--inset) 2.25rem;
+            padding: 0.75rem 0.75rem 1.75rem;
+            border: var(--rule);
+            border-radius: 12px;
             background: var(--ks-background-body);
 
-            @include media-breakpoint-up(lg) {
-                & + li {
-                    border-left: var(--rule);
+            &.neutral {
+                --tint: #ececf1;
+            }
+
+            &.blue {
+                --tint: #dde7ff;
+            }
+
+            &.premium {
+                --tint: #e3dbff;
+            }
+
+            :global(html.dark) & {
+                &.neutral {
+                    --tint: rgba(255, 255, 255, 0.07);
+                }
+
+                &.blue {
+                    --tint: rgba(70, 110, 255, 0.2);
+                }
+
+                &.premium {
+                    --tint: rgba(143, 123, 255, 0.24);
                 }
             }
 
-            @include media-breakpoint-down(lg) {
-                & + li {
-                    border-top: var(--rule);
-                }
-            }
-
+            // The featured card's ring carries a light that travels around it.
             &.featured {
-                background: #f0f0fd;
+                border-color: transparent;
 
-                :global(html.dark) & {
-                    background: #1c1b2e;
+                &::before {
+                    content: "";
+                    position: absolute;
+                    inset: -1px;
+                    padding: 1px;
+                    border-radius: inherit;
+                    background:
+                        conic-gradient(
+                            from var(--plans-turn),
+                            transparent 0 60%,
+                            #b4b8c8 78%,
+                            #8f9fe6 94%,
+                            transparent 100%
+                        ),
+                        var(--ks-border-primary);
+                    mask:
+                        linear-gradient(#000 0 0) content-box exclude,
+                        linear-gradient(#000 0 0);
+                    pointer-events: none;
+                    animation: plans-turn 7s linear infinite;
+
+                    @media (prefers-reduced-motion: reduce) {
+                        background: var(--ks-border-primary);
+                        animation: none;
+                    }
                 }
             }
         }
@@ -271,12 +302,19 @@ const PLANS: {
         }
     }
 
+    .panel {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem 1.5rem 1.5rem;
+        border-radius: 6px;
+        background: linear-gradient(180deg, var(--tint), transparent 92%);
+        text-align: center;
+    }
+
     .name {
         display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 0.5rem 0.75rem;
-        min-height: 1.75rem;
+        justify-content: center;
 
         // The edition tag of the Enterprise page's hero, one tone per edition:
         // neutral for Open Source, blue for Cloud, ink and violet for
@@ -382,6 +420,13 @@ const PLANS: {
         }
     }
 
+    .stage {
+        display: flex;
+        align-items: center;
+        min-height: 1.5rem;
+        margin: 0.75rem 0 0;
+    }
+
     .tag {
         padding: 0.125rem 0.625rem;
         background: color-mix(in srgb, var(--ks-content-link) 12%, transparent);
@@ -391,16 +436,17 @@ const PLANS: {
     }
 
     .price {
-        margin: 1.25rem 0 0;
-        font-size: clamp(2rem, 3vw, 2.75rem);
+        margin: 0.75rem 0 0;
+        font-size: clamp(2.25rem, 3.4vw, 3rem);
         font-weight: 600;
-        letter-spacing: -0.02em;
+        letter-spacing: -0.03em;
         line-height: 1.1;
         color: var(--ks-content-primary);
     }
 
     .text {
-        margin: 1rem 0 0;
+        max-width: 19rem;
+        margin: 1.25rem 0 0;
         font-size: $font-size-md;
         line-height: 1.55;
         color: var(--ks-content-secondary);
@@ -410,26 +456,37 @@ const PLANS: {
         }
     }
 
-    .actions {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 0.5rem;
-        min-height: 2.875rem;
+    .panel > a {
+        width: min(100%, 19rem);
         margin-top: 1.5rem;
+    }
 
-        // Two buttons stay on one line in a column of the narrowed grid.
-        a.compact {
-            padding-inline: 0.875rem;
+    .more {
+        min-height: 1.5rem;
+        margin: 0.875rem 0 0;
+        font-size: 0.9375rem;
+
+        a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+            text-decoration: none;
+
+            @include arrow-nudge;
+
+            &:hover {
+                color: var(--ks-content-link);
+            }
         }
     }
 
     .features {
         display: grid;
         gap: 0.75rem;
-        margin: 2rem 0 0;
-        padding: 2rem 0 0;
-        border-top: var(--rule);
+        margin: 1.75rem 0 0;
+        padding: 0 1.5rem;
         list-style: none;
 
         li {
@@ -451,7 +508,7 @@ const PLANS: {
 
     .ideal {
         margin: auto 0 0;
-        padding-top: 2rem;
+        padding: 1.75rem 1.5rem 0;
         font-size: $font-size-sm;
         line-height: 1.55;
         color: var(--ks-content-tertiary);
