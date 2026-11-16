@@ -47,6 +47,7 @@ Infrastructure self-service in a dedicated tenant type, searchable execution val
 - **Context panel (EE)**: the flow editor shows inputs, variables, KV pairs, and secrets across the namespace hierarchy in one searchable tree. [Docs](../../09.ui/01.flows/index.md)
 - **Change password in OSS**: users with database-stored Basic Auth credentials can change their password from the user menu. [Docs](../../10.administrator-guide/basic-auth-troubleshooting/index.md)
 - **One plugins page**: the catalog lists each plugin once, as a card or a table row. In EE, it also shows each plugin's installed versions, their source, and available updates, and the Instance Owner installs, updates, and uninstalls versions from it, with installs running in the background. [Docs](../../07.enterprise/05.instance/versioned-plugins/index.md#from-the-ui)
+- **Dashboard charts from flow outputs (EE)**: the `Outputs` data source charts an ION file that a flow returns as an output, read from the flow's latest successful execution. [Docs](../../09.ui/00.dashboard/index.md#outputs-ee-and-cloud-only)
 - **Sign in again without losing work**: when a session ends, the UI asks you to sign in again and retries the failed request, so unsaved changes stay. [Docs](../../09.ui/index.mdx#expired-sessions)
 
 ### AI
