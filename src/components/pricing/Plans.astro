@@ -141,15 +141,30 @@ const PLANS: {
         position: relative;
         border-bottom: var(--rule);
         background: var(--ks-background-body);
+
+        // The site header draws its hairline only once scrolled: this one
+        // closes it while the page sits at the top.
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 67px 0 auto;
+            border-top: var(--rule);
+        }
     }
 
     .rails {
         position: relative;
+        padding: 0 clamp(1.5rem, 4vw, 3.5rem) 6rem;
         border-inline: var(--rule);
+
+        @include media-breakpoint-down(md) {
+            padding-bottom: 3.5rem;
+        }
     }
 
     header {
-        padding: calc(6rem + 67px) clamp(1.5rem, 4vw, 3.5rem) 4.5rem;
+        padding: calc(6rem + 67px) 0 4.5rem;
+        text-align: center;
 
         @include media-breakpoint-down(md) {
             padding-block: calc(3rem + 67px) 3rem;
@@ -168,14 +183,18 @@ const PLANS: {
     .lead {
         @include lead;
         max-width: 44rem;
+        margin-inline: auto;
     }
 
     .plans {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        margin: 0;
+        max-width: 70rem;
+        margin: 0 auto;
         padding: 0;
-        border-top: var(--rule);
+        overflow: hidden;
+        border: var(--rule);
+        border-radius: 10px;
         list-style: none;
 
         @include media-breakpoint-down(lg) {
@@ -256,8 +275,15 @@ const PLANS: {
     .actions {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.625rem;
+        align-items: center;
+        gap: 0.5rem;
+        min-height: 2.875rem;
         margin-top: 1.5rem;
+
+        // Two buttons stay on one line in a column of the narrowed grid.
+        a.compact {
+            padding-inline: 0.875rem;
+        }
     }
 
     .features {
