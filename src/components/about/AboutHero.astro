@@ -1,10 +1,10 @@
 ---
-import Link from "~/components/common/Link.astro"
+import { Icon } from "astro-icon/components"
 import AsciiMark from "./AsciiMark.astro"
 import HeroFlows from "./HeroFlows.astro"
 ---
 
-<section class="hero">
+<section class="hero surface-dark" data-header-dark>
     <HeroFlows />
     <div class="container">
         <div class="content">
@@ -25,12 +25,12 @@ import HeroFlows from "./HeroFlows.astro"
                 language and call any system.
             </p>
             <div class="actions">
-                <Link href="/careers" class="btn btn-primary"
-                    >We are hiring</Link
-                >
+                <a href="/careers" class="btn-solid">
+                    We are hiring <Icon name="mdi:chevron-right" />
+                </a>
                 <a
                     href="/resources/whitepapers/unified-orchestration"
-                    class="btn btn-secondary">Read the whitepaper</a
+                    class="btn-ghost">Read the whitepaper</a
                 >
             </div>
         </div>
@@ -48,12 +48,13 @@ import HeroFlows from "./HeroFlows.astro"
     .hero {
         position: relative;
         overflow: hidden;
-        padding: 7rem 0 8rem;
+        margin-top: -67px;
+        padding: calc(7rem + 67px) 0 8rem;
         color: #fff;
         background: #111114;
 
         @include media-breakpoint-down(md) {
-            padding: 3rem 0 3.5rem;
+            padding: calc(3rem + 67px) 0 3.5rem;
         }
 
         .container {
@@ -125,14 +126,6 @@ import HeroFlows from "./HeroFlows.astro"
                 justify-content: center;
                 text-align: center;
             }
-        }
-
-        .btn-secondary {
-            --ks-content-primary: #fff;
-            --ks-background-button-secondary: transparent;
-            --ks-content-btn-secondary-hover: #{$base-grey-800};
-            --ks-background-button-secondary-hover: #fff;
-            border-color: rgba(255, 255, 255, 0.7);
         }
     }
 

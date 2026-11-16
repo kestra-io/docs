@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Instance-owner-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Instance-owner-only are not tenant-scoped.
-  version: 2.0.9
+  version: 2.0.10
 tags:
 - name: Flows
   description: Flows api
@@ -38526,6 +38526,7 @@ components:
       - JSON
     KillSwitch:
       required:
+      - enabled
       - evaluationType
       - name
       - startDate

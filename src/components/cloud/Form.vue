@@ -161,8 +161,11 @@
     import { ref, useId, useTemplateRef } from "vue"
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
-    import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
-    import { $fetch } from "~/utils/fetch"
+    import {
+        HubspotDeliveryError,
+        getHubspotTracking,
+        submitHubspotForm,
+    } from "~/utils/hubspot"
     import {
         CONNOR_CLOUD_MEETING_LINK,
         ensureMeetingsScriptLoaded,
@@ -261,10 +264,6 @@
             const hsq = ((window as any)._hsq = (window as any)._hsq || [])
             hsq.push(["identify", { email, firstname, lastname, kuid }])
 
-            const { ip } = await $fetch<{ ip: string }>(
-                "https://api.ipify.org?format=json",
-            )
-
             const payload = {
                 fields: [
                     { name: "firstname", value: firstname },
@@ -285,20 +284,26 @@
                 ],
                 context: {
                     hutk: getHubspotTracking() || undefined,
-                    ipAddress: ip,
                     pageUri,
                     pageName: document.title,
                 },
             }
 
-            const result = await submitHubspotForm<{ routing?: Routing }>(
-                HUBSPOT_FORM_ID,
-                payload,
-            )
+            let routing: Routing | undefined
+            try {
+                const result = await submitHubspotForm<{ routing?: Routing }>(
+                    HUBSPOT_FORM_ID,
+                    payload,
+                )
+                routing = result?.routing
+            } catch (error) {
+                if (!(error instanceof HubspotDeliveryError)) throw error
+                console.error("Cloud form delivery not confirmed", error)
+            }
 
             valid.value = true
             meetingUrl.value = withContactParams(
-                cloudMeetingUrl(employees, result?.routing),
+                cloudMeetingUrl(employees, routing),
                 {
                 firstname,
                 lastname,

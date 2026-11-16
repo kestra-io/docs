@@ -57,14 +57,16 @@ tasks:
     method: GET
 
   - id: extract_titles
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ outputs.fetch_products.body | jq('map(select(.completed == false)) | map(.title)') | first }}"
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      titles: "{{ outputs.fetch_products.body | jq('map(select(.completed == false)) | map(.title)') | first }}"
 
   - id: count_pending
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ outputs.fetch_products.body | jq('[.[] | select(.completed == false)] | length') | first }}"
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      count: "{{ outputs.fetch_products.body | jq('[.[] | select(.completed == false)] | length') | first }}"
 
   - id: build_report
-    type: io.kestra.plugin.core.debug.Return
-    format: "Pending tasks: {{ outputs.count_pending.value }} | First item: {{ outputs.extract_titles.value | jq('.[0]') | first }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "Pending tasks: {{ outputs.count_pending.values.count }} | First item: {{ outputs.extract_titles.values.titles | jq('.[0]') | first }}"
 ```

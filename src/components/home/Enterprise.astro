@@ -1,0 +1,2702 @@
+---
+import { Icon } from "astro-icon/components"
+import { API_URL } from "astro:env/client"
+import kestraMark from "./assets/ai/kestra-logo-mark-on-dark.svg"
+import EnterpriseLayers from "./EnterpriseLayers.astro"
+
+const RING = [
+    [2, 0],
+    [3, 0],
+    [4, 0],
+    [1, 1],
+    [5, 1],
+    [0, 2],
+    [6, 2],
+    [1, 3],
+    [5, 3],
+    [2, 4],
+    [3, 4],
+    [4, 4],
+]
+const depth = (side: string, col: number) => (side === "left" ? 6 - col : col)
+
+interface Feature {
+    id: "access" | "reliability" | "governance" | "scale"
+    title: string
+    text: string
+    kicker?: string
+}
+
+interface Props {
+    features?: Feature[]
+    layers?: boolean
+    actions?: boolean
+}
+
+const DEFAULT_FEATURES: Feature[] = [
+    {
+        id: "access",
+        title: "Give every team secure access.",
+        text: "Each team works in its own space on one shared platform, with isolated workflows, credentials, and execution environments.",
+    },
+    {
+        id: "reliability",
+        title: "Keep critical workflows running reliably.",
+        text: "Workflows keep running through outages and upgrades, with worker groups, backup and restore, maintenance mode, and SLA-backed support.",
+    },
+    {
+        id: "governance",
+        title: "Answer every audit question.",
+        text: "Show who ran each workflow, with which permissions and whose approval, through SSO, RBAC, audit logs, policies, and approval gates.",
+    },
+    {
+        id: "scale",
+        title: "Grow without re-architecting.",
+        text: "Pick the backend that fits your load, and let only trusted workers connect, wherever they run.",
+    },
+]
+
+const {
+    features: FEATURES = DEFAULT_FEATURES,
+    layers = true,
+    actions = true,
+} = Astro.props
+
+const ROOT = "acme"
+const NAMESPACES = [
+    "acme.cloud",
+    "acme.kubernetes",
+    "acme.network",
+    "acme.monitoring",
+]
+const FLOW = { parent: "acme.kubernetes", id: "scale_cluster" }
+const DELETED = "acme.network"
+const PEOPLE = [
+    { id: "launcher", name: "Launcher", icon: "mdi:play-circle-outline" },
+    { id: "editor", name: "Editor", icon: "mdi:pencil" },
+    { id: "admin", name: "Admin", icon: "mdi:shield-account-outline" },
+]
+
+const RUN = [
+    { id: "extract", start: 0, end: 22, worker: "worker-1" },
+    { id: "reconcile", start: 22, end: 44, worker: "worker-2" },
+    { id: "post_ledger", start: 44, end: 60, worker: "worker-2", fails: true },
+    { id: "retry", start: 62, end: 82, worker: "worker-3", retry: true },
+    { id: "report", start: 82, end: 100, worker: "worker-1" },
+]
+
+const AUDIT = [
+    {
+        type: "Execution",
+        action: "Resumed",
+        actor: "m.chen",
+        detail: "approval:deploy_prod",
+        age: 40,
+    },
+    {
+        type: "Execution",
+        action: "Created",
+        actor: "s.roy",
+        detail: "flowId:deploy_prod",
+        age: 260,
+    },
+    {
+        type: "Flow",
+        action: "Updated",
+        actor: "j.kim",
+        detail: "revision:7",
+        age: 900,
+    },
+    {
+        type: "Role",
+        action: "Created",
+        actor: "admin",
+        detail: "id:finance_viewer",
+        age: 3600,
+    },
+    {
+        type: "User",
+        action: "Login",
+        actor: "j.kim",
+        detail: "resource:USER",
+        age: 7400,
+    },
+    {
+        type: "Secret",
+        action: "Updated",
+        actor: "m.chen",
+        detail: "key:DB_PASSWORD",
+        age: 0,
+    },
+    {
+        type: "Namespace",
+        action: "Updated",
+        actor: "admin",
+        detail: "id:acme.finance",
+        age: 0,
+    },
+    {
+        type: "Flow",
+        action: "Created",
+        actor: "agent-01",
+        detail: "id:sync_crm",
+        age: 0,
+    },
+    {
+        type: "Binding",
+        action: "Created",
+        actor: "admin",
+        detail: "role:editor",
+        age: 0,
+    },
+]
+const ACTION_ICONS: Record<string, string> = {
+    Created: "mdi:plus-circle-outline",
+    Updated: "mdi:pencil-outline",
+    Resumed: "mdi:play-circle-outline",
+    Login: "mdi:login",
+}
+const ago = (seconds: number) =>
+    seconds < 60
+        ? "just now"
+        : seconds < 3600
+          ? `${Math.round(seconds / 60)} min ago`
+          : `${Math.round(seconds / 3600)} hours ago`
+
+const BACKENDS = {
+    repository: [
+        { id: "jdbc", name: "JDBC" },
+        { id: "elasticsearch", name: "Elasticsearch", plugin: "elasticsearch" },
+    ],
+    queue: [
+        { id: "jdbc", name: "JDBC" },
+        { id: "redis", name: "Redis", plugin: "redis" },
+        { id: "rabbitmq", name: "RabbitMQ", plugin: "amqp" },
+        { id: "kafka", name: "Kafka", plugin: "kafka" },
+    ],
+}
+const SETUPS = [
+    ["elasticsearch", "kafka"],
+    ["jdbc", "redis"],
+    ["elasticsearch", "rabbitmq"],
+    ["jdbc", "jdbc"],
+]
+const icons = Object.fromEntries(
+    await Promise.all(
+        [...BACKENDS.repository, ...BACKENDS.queue]
+            .filter((backend) => backend.plugin)
+            .map(async (backend) => {
+                try {
+                    const response = await fetch(
+                        `${API_URL}/plugins/icons/io.kestra.plugin.${backend.plugin}`,
+                    )
+                    if (!response.ok) return [backend.id, null]
+                    const svg = Buffer.from(await response.arrayBuffer())
+                    return [
+                        backend.id,
+                        `data:image/svg+xml;base64,${svg.toString("base64")}`,
+                    ]
+                } catch {
+                    return [backend.id, null]
+                }
+            }),
+    ),
+) as Record<string, string | null>
+
+const WORKERS = [
+    { name: "onprem-01", ok: true },
+    { name: "euwest-02", ok: true },
+    { name: "unknown", ok: false },
+]
+---
+
+<section
+    class="enterprise surface-dark"
+    aria-labelledby="enterprise"
+    data-header-dark
+>
+    {
+        ["left", "right"].map((side) => (
+            <svg
+                class:list={["squares", side]}
+                viewBox="0 0 500 352"
+                aria-hidden="true"
+            >
+                <defs>
+                    <linearGradient
+                        id={`squares-edge-${side}`}
+                        x1="0"
+                        y1="0"
+                        x2="1"
+                        y2="1"
+                    >
+                        <stop
+                            offset="0"
+                            stop-color="#e4e6ff"
+                            stop-opacity="0.6"
+                        />
+                        <stop
+                            offset="1"
+                            stop-color="#6a73e8"
+                            stop-opacity="0.45"
+                        />
+                    </linearGradient>
+                    {[1, 2, 3, 4, 5, 6].map((far) => (
+                        <filter
+                            id={`squares-blur-${side}-${far}`}
+                            x="-30%"
+                            y="-30%"
+                            width="160%"
+                            height="160%"
+                        >
+                            <feGaussianBlur stdDeviation={far * 0.75} />
+                        </filter>
+                    ))}
+                </defs>
+                {RING.map(([col, row]) => {
+                    const far = depth(side, col)
+                    return (
+                        <rect
+                            x={col * 74 + 0.5}
+                            y={row * 74 + 0.5}
+                            width="55"
+                            height="55"
+                            rx="3"
+                            filter={
+                                far
+                                    ? `url(#squares-blur-${side}-${far})`
+                                    : undefined
+                            }
+                            style={`--d: ${(6 - far) * 0.45}s; --edge: ${Math.max(0, 1 - far * 0.2).toFixed(2)}; stroke: url(#squares-edge-${side})`}
+                        />
+                    )
+                })}
+            </svg>
+        ))
+    }
+    <div class="container-xl">
+        <div class="grid">
+            <header class:list={["head", { solo: !layers }]}>
+                <div>
+                    <h2 id="enterprise">
+                        <slot name="title">
+                            <span>Achieve more with</span>{" "}
+                            <em>Kestra Enterprise.</em>
+                        </slot>
+                    </h2>
+                    <p>
+                        <slot name="lead">
+                            Enterprise adds security, governance and SLA on top
+                            of the Apache 2.0 core, to run orchestration across
+                            your whole organization. Run it self-hosted, in your
+                            cloud or air-gapped.
+                        </slot>
+                    </p>
+                    {
+                        actions && (
+                            <div class="actions">
+                                <a href="/enterprise" class="btn-solid">
+                                    Explore Enterprise
+                                </a>
+                                <a href="/demo" class="btn-ghost">
+                                    Book a demo
+                                </a>
+                            </div>
+                        )
+                    }
+                </div>
+                {layers && <EnterpriseLayers />}
+            </header>
+
+            <ul class="features">
+                {
+                    FEATURES.map((feature) => (
+                        <li>
+                            <div class="stage" aria-hidden="true">
+                                <div
+                                    class="glimpse free"
+                                    data-card={feature.id}
+                                >
+                                    {feature.id === "access" && (
+                                        <div
+                                            class="glimpse-body tenant"
+                                            data-tenants
+                                        >
+                                            <p class="tenant-label">
+                                                <Icon name="mdi:server-network" />
+                                                Tenant
+                                                <span class="pill">
+                                                    <span class="dot" />
+                                                    Infrastructure
+                                                </span>
+                                            </p>
+                                            <ul class="ns-tree">
+                                                <li>
+                                                    <span data-row={ROOT}>
+                                                        <Icon
+                                                            name="mdi:folder-open-outline"
+                                                            class="folder"
+                                                        />
+                                                        {ROOT}
+                                                    </span>
+                                                    <ul>
+                                                        {NAMESPACES.map(
+                                                            (namespace) => (
+                                                                <li
+                                                                    class:list={{
+                                                                        doomed:
+                                                                            namespace ===
+                                                                            DELETED,
+                                                                    }}
+                                                                >
+                                                                    <span
+                                                                        data-row={
+                                                                            namespace
+                                                                        }
+                                                                    >
+                                                                        <Icon
+                                                                            name="mdi:folder-open-outline"
+                                                                            class="folder"
+                                                                        />
+                                                                        {
+                                                                            namespace
+                                                                        }
+                                                                        {namespace ===
+                                                                            DELETED && (
+                                                                            <span
+                                                                                class="row-state"
+                                                                                data-row-state
+                                                                            >
+                                                                                <span class="pill bad deleted">
+                                                                                    <Icon name="mdi:delete-outline" />
+                                                                                    Deleted
+                                                                                </span>
+                                                                            </span>
+                                                                        )}
+                                                                    </span>
+                                                                    {namespace ===
+                                                                        FLOW.parent && (
+                                                                        <ul>
+                                                                            <li>
+                                                                                <span data-row="flow">
+                                                                                    <Icon name="mdi:file-tree-outline" />
+                                                                                    {
+                                                                                        FLOW.id
+                                                                                    }
+                                                                                    <span
+                                                                                        class="row-state"
+                                                                                        data-row-state
+                                                                                    >
+                                                                                        <span class="pill editing">
+                                                                                            <Icon name="mdi:pencil" />
+                                                                                            Editing
+                                                                                        </span>
+                                                                                        <span class="pill run running">
+                                                                                            <Icon
+                                                                                                name="mdi:loading"
+                                                                                                class="spin"
+                                                                                            />
+                                                                                            Running
+                                                                                        </span>
+                                                                                        <span class="pill ok success">
+                                                                                            <Icon name="mdi:check-circle-outline" />
+                                                                                            Success
+                                                                                        </span>
+                                                                                    </span>
+                                                                                </span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    )}
+                                                                </li>
+                                                            ),
+                                                        )}
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                            {PEOPLE.map((person) => (
+                                                <span
+                                                    class:list={[
+                                                        "cursor",
+                                                        person.id,
+                                                    ]}
+                                                    data-person={person.id}
+                                                >
+                                                    <svg viewBox="0 0 10 10">
+                                                        <path d="M0 0 L10 4 L5.5 5.5 L4 10 Z" />
+                                                    </svg>
+                                                    <span class="who">
+                                                        <Icon
+                                                            name={person.icon}
+                                                        />
+                                                        {person.name}
+                                                    </span>
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
+                                    {feature.id === "reliability" && (
+                                        <div
+                                            class="glimpse-body timeline"
+                                            data-routing
+                                        >
+                                            <p class="run-head">
+                                                <Icon name="mdi:file-tree-outline" />
+                                                <strong>close_books</strong>
+                                                <span
+                                                    class="run-tag is-success"
+                                                    data-run-state
+                                                >
+                                                    <Icon
+                                                        name="mdi:check-circle-outline"
+                                                        class="done"
+                                                    />
+                                                    <Icon
+                                                        name="mdi:loading"
+                                                        class="spin"
+                                                    />
+                                                    <span data-run-time>
+                                                        Success
+                                                    </span>
+                                                </span>
+                                            </p>
+                                            <div class="rows">
+                                                {RUN.map((step) => (
+                                                    <p
+                                                        class:list={[
+                                                            "row",
+                                                            {
+                                                                retry: step.retry,
+                                                                failed: step.fails,
+                                                            },
+                                                        ]}
+                                                        data-step={step.id}
+                                                    >
+                                                        <span class="name">
+                                                            {step.retry
+                                                                ? "↳ attempt 2"
+                                                                : step.id}
+                                                        </span>
+                                                        <span class="track">
+                                                            <span
+                                                                class:list={[
+                                                                    "attempt",
+                                                                    "go",
+                                                                    step.fails
+                                                                        ? "broken"
+                                                                        : "done",
+                                                                ]}
+                                                                style={`left: ${step.start}%; width: ${step.end - step.start}%; --ms: ${(step.end - step.start) * 45}ms`}
+                                                            >
+                                                                <span class="worker-long">
+                                                                    worker-
+                                                                </span>
+                                                                <span class="worker-short">
+                                                                    w
+                                                                </span>
+                                                                {
+                                                                    step.worker.split(
+                                                                        "-",
+                                                                    )[1]
+                                                                }
+                                                            </span>
+                                                            {step.fails && (
+                                                                <span
+                                                                    class="down"
+                                                                    style={`left: ${step.end}%`}
+                                                                >
+                                                                    <Icon name="mdi:close-circle-outline" />
+                                                                    <span class="down-text">
+                                                                        {
+                                                                            step.worker
+                                                                        }{" "}
+                                                                        down
+                                                                    </span>
+                                                                </span>
+                                                            )}
+                                                        </span>
+                                                    </p>
+                                                ))}
+                                            </div>
+                                            <p class="status ok" data-status>
+                                                <span class="live" />
+                                                <span data-status-text>
+                                                    Success · 0 executions lost
+                                                </span>
+                                            </p>
+                                        </div>
+                                    )}
+                                    {feature.id === "governance" && (
+                                        <div
+                                            class="glimpse-body notes"
+                                            data-audit
+                                        >
+                                            <div class="stack" data-stack>
+                                                {AUDIT.slice(0, 3).map(
+                                                    (line) => (
+                                                        <div
+                                                            class="note"
+                                                            data-age={line.age}
+                                                        >
+                                                            <p class="note-top">
+                                                                <span class="pill">
+                                                                    {line.type}
+                                                                </span>
+                                                                <span
+                                                                    class:list={[
+                                                                        "state",
+                                                                        line.action.toLowerCase(),
+                                                                    ]}
+                                                                >
+                                                                    <Icon
+                                                                        name={
+                                                                            ACTION_ICONS[
+                                                                                line
+                                                                                    .action
+                                                                            ]
+                                                                        }
+                                                                    />
+                                                                    {
+                                                                        line.action
+                                                                    }
+                                                                </span>
+                                                                <span class="date">
+                                                                    {ago(
+                                                                        line.age,
+                                                                    )}
+                                                                </span>
+                                                            </p>
+                                                            <p class="note-main">
+                                                                <strong>
+                                                                    {line.actor}
+                                                                </strong>
+                                                                <span class="tag">
+                                                                    {
+                                                                        line.detail
+                                                                    }
+                                                                </span>
+                                                            </p>
+                                                        </div>
+                                                    ),
+                                                )}
+                                            </div>
+                                            <template data-pool>
+                                                {AUDIT.slice(3).map((line) => (
+                                                    <div
+                                                        class="note"
+                                                        data-age={line.age}
+                                                    >
+                                                        <p class="note-top">
+                                                            <span class="pill">
+                                                                {line.type}
+                                                            </span>
+                                                            <span
+                                                                class:list={[
+                                                                    "state",
+                                                                    line.action.toLowerCase(),
+                                                                ]}
+                                                            >
+                                                                <Icon
+                                                                    name={
+                                                                        ACTION_ICONS[
+                                                                            line
+                                                                                .action
+                                                                        ]
+                                                                    }
+                                                                />
+                                                                {line.action}
+                                                            </span>
+                                                            <span class="date">
+                                                                {ago(line.age)}
+                                                            </span>
+                                                        </p>
+                                                        <p class="note-main">
+                                                            <strong>
+                                                                {line.actor}
+                                                            </strong>
+                                                            <span class="tag">
+                                                                {line.detail}
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                ))}
+                                            </template>
+                                            <p class="stream">
+                                                <span class="live" />
+                                                Streaming to Splunk & Syslog
+                                                over TLS
+                                                <span class="count">
+                                                    <span data-exported>
+                                                        1,284
+                                                    </span>{" "}
+                                                    events
+                                                </span>
+                                            </p>
+                                        </div>
+                                    )}
+                                    {feature.id === "scale" && (
+                                        <div
+                                            class="glimpse-body schema-body"
+                                            data-backends
+                                            data-setups={JSON.stringify(SETUPS)}
+                                        >
+                                            <div
+                                                class="schema blocked"
+                                                data-intruder
+                                            >
+                                                <svg
+                                                    class="lines"
+                                                    viewBox="0 0 560 340"
+                                                    aria-hidden="true"
+                                                >
+                                                    <path
+                                                        class="wire"
+                                                        d="M140 100 C196 100 196 170 252 170"
+                                                    />
+                                                    <path
+                                                        class="wire"
+                                                        d="M140 170 H252"
+                                                    />
+                                                    <path
+                                                        class="wire intruder"
+                                                        d="M140 240 C196 240 196 170 252 170"
+                                                    />
+                                                    <path
+                                                        class="jet"
+                                                        d="M140 240 C196 240 196 170 252 170"
+                                                        data-jet
+                                                    />
+                                                    <path
+                                                        class="cut"
+                                                        d="M192.5 201.5 l7 7 M199.5 201.5 l-7 7"
+                                                    />
+                                                    <path
+                                                        class="wire"
+                                                        d="M308 170 C354 170 354 112 400 112"
+                                                    />
+                                                    <path
+                                                        class="wire"
+                                                        d="M308 170 C354 170 354 228 400 228"
+                                                    />
+                                                    <g class="flows">
+                                                        <path d="M140 100 C196 100 196 170 252 170 H308 C354 170 354 112 400 112" />
+                                                        <path d="M140 170 H308 C354 170 354 228 400 228" />
+                                                    </g>
+                                                </svg>
+                                                <svg
+                                                    class="lines vertical"
+                                                    viewBox="0 0 340 420"
+                                                    aria-hidden="true"
+                                                >
+                                                    <path
+                                                        class="wire"
+                                                        d="M60 40 C60 106 170 106 170 172"
+                                                    />
+                                                    <path
+                                                        class="wire"
+                                                        d="M170 40 V172"
+                                                    />
+                                                    <path
+                                                        class="wire intruder"
+                                                        d="M280 40 C280 106 170 106 170 172"
+                                                    />
+                                                    <path
+                                                        class="jet"
+                                                        d="M280 40 C280 106 170 106 170 172"
+                                                        pathLength="138"
+                                                        data-jet
+                                                    />
+                                                    <path
+                                                        class="cut"
+                                                        d="M221.5 102.5 l7 7 M228.5 102.5 l-7 7"
+                                                    />
+                                                    <path
+                                                        class="wire"
+                                                        d="M170 228 C170 284 85 284 85 340"
+                                                    />
+                                                    <path
+                                                        class="wire"
+                                                        d="M170 228 C170 284 255 284 255 340"
+                                                    />
+                                                    <g class="flows">
+                                                        <path
+                                                            d="M60 40 C60 106 170 106 170 172 V228 C170 284 85 284 85 340"
+                                                            pathLength="640"
+                                                        />
+                                                        <path
+                                                            d="M170 40 V228 C170 284 255 284 255 340"
+                                                            pathLength="640"
+                                                        />
+                                                    </g>
+                                                </svg>
+                                                <p
+                                                    class="workers"
+                                                    data-handshake
+                                                >
+                                                    {WORKERS.map(
+                                                        (worker, idx) => (
+                                                            <span
+                                                                class:list={[
+                                                                    "worker",
+                                                                    worker.ok
+                                                                        ? "ok"
+                                                                        : "refused",
+                                                                ]}
+                                                                data-worker={
+                                                                    worker.ok
+                                                                        ? "ok"
+                                                                        : "refused"
+                                                                }
+                                                                style={`top: ${100 + idx * 70}px`}
+                                                            >
+                                                                <span class="state" />
+                                                                {worker.name}
+                                                            </span>
+                                                        ),
+                                                    )}
+                                                </p>
+                                                <span class="hub">
+                                                    <img
+                                                        src={kestraMark.src}
+                                                        alt=""
+                                                        width="28"
+                                                        height="28"
+                                                    />
+                                                </span>
+                                                <span class="hub-label">
+                                                    Kestra
+                                                </span>
+                                                {(
+                                                    [
+                                                        "repository",
+                                                        "queue",
+                                                    ] as const
+                                                ).map((kind, col) => (
+                                                    <div
+                                                        class:list={[
+                                                            "lane",
+                                                            kind,
+                                                        ]}
+                                                        data-column={kind}
+                                                    >
+                                                        <div class="bar">
+                                                            <p class="lane-title">
+                                                                {kind ===
+                                                                "repository"
+                                                                    ? "Repository"
+                                                                    : "Queue"}
+                                                            </p>
+                                                            {BACKENDS[kind].map(
+                                                                (backend) => (
+                                                                    <span
+                                                                        class:list={[
+                                                                            "choice",
+                                                                            {
+                                                                                on:
+                                                                                    backend.id ===
+                                                                                    SETUPS[0][
+                                                                                        col
+                                                                                    ],
+                                                                            },
+                                                                        ]}
+                                                                        data-option={
+                                                                            backend.id
+                                                                        }
+                                                                    >
+                                                                        <span class="logo">
+                                                                            {icons[
+                                                                                backend
+                                                                                    .id
+                                                                            ] ? (
+                                                                                <img
+                                                                                    src={
+                                                                                        icons[
+                                                                                            backend
+                                                                                                .id
+                                                                                        ]
+                                                                                    }
+                                                                                    alt=""
+                                                                                />
+                                                                            ) : (
+                                                                                <Icon
+                                                                                    name="mdi:language-java"
+                                                                                    class="java"
+                                                                                />
+                                                                            )}
+                                                                        </span>
+                                                                        {
+                                                                            backend.name
+                                                                        }
+                                                                    </span>
+                                                                ),
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                            <div class="copy">
+                                {feature.kicker && (
+                                    <p class="kicker">{feature.kicker}</p>
+                                )}
+                                <h3>{feature.title}</h3>
+                                <p class="text">{feature.text}</p>
+                            </div>
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .enterprise {
+        --bg: #0d0d10;
+        --rule-color: rgba(255, 255, 255, 0.11);
+        --rule: 1px solid var(--rule-color);
+        --text: #ffffff;
+        --muted: #9a9aa8;
+        --faint: #5c5c68;
+        --created: #8b98ff;
+        --success: #5ee3ae;
+        --running: #9d78ff;
+        --warning: #f28c5c;
+        --danger: #ff6b6b;
+        --neutral: #b9b9c6;
+
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(180deg, #000000 30%, #17181e 100%);
+        color: var(--text);
+
+        > .container-xl {
+            position: relative;
+            z-index: 1;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--rule-color);
+            pointer-events: none;
+        }
+    }
+
+    .squares {
+        position: absolute;
+        width: 520px;
+        pointer-events: none;
+
+        --rail: calc(min(50vw, 760px) - 7px + 4rem);
+
+        &.left {
+            top: 50%;
+            right: calc(50% + var(--rail));
+            transform: translateY(-50%);
+        }
+
+        &.right {
+            left: calc(50% + var(--rail));
+            bottom: 140px;
+        }
+
+        @media (max-width: 1760px) {
+            display: none;
+        }
+
+        rect {
+            fill: rgba(196, 200, 255, 0.05);
+            stroke-width: 1.25;
+            stroke-opacity: calc(0.15 + var(--edge) * 0.85);
+            animation: glint 9s ease-in-out var(--d) infinite;
+        }
+
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+    }
+
+    @keyframes glint {
+        0%,
+        100% {
+            opacity: 0.6;
+        }
+
+        20% {
+            opacity: 1;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .squares rect {
+            animation: none;
+        }
+    }
+
+    .grid {
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+
+        position: relative;
+        border-left: var(--rule);
+        border-right: var(--rule);
+
+        @include media-breakpoint-down(xl) {
+            border-inline: 0;
+        }
+    }
+
+    .head {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+        align-items: center;
+        gap: 2rem 3rem;
+        padding: 6.5rem var(--inset) 4.5rem;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem 3rem;
+        }
+
+        &.solo {
+            grid-template-columns: minmax(0, 1fr);
+
+            p {
+                max-width: 48rem;
+            }
+        }
+
+        h2 {
+            margin: 0;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            color: var(--text);
+
+            span {
+                color: #a9a9b8;
+            }
+
+            em {
+                font-style: normal;
+                color: var(--text);
+            }
+        }
+
+        p {
+            max-width: 40rem;
+            margin: 1.25rem 0 0;
+            font-size: 1.125rem;
+            line-height: 1.55;
+            color: rgba(255, 255, 255, 0.6);
+            text-wrap: pretty;
+        }
+    }
+
+    .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 2rem;
+    }
+
+    .features {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100vw;
+            right: -100vw;
+            height: 1px;
+            background: var(--rule-color);
+            pointer-events: none;
+        }
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        > li {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            padding: 0 0 clamp(3.5rem, 5.5vw, 4.75rem) var(--inset);
+            overflow: hidden;
+            transition: background-color 0.3s ease;
+
+            &:nth-child(even) {
+                border-left: var(--rule);
+            }
+
+            &:nth-child(n + 3) {
+                border-top: var(--rule);
+            }
+
+            &:nth-last-child(-n + 2) {
+                padding-bottom: calc(
+                    clamp(3.5rem, 5.5vw, 4.75rem) + clamp(3rem, 5vw, 4.5rem)
+                );
+
+                @include media-breakpoint-down(md) {
+                    padding-bottom: clamp(3.5rem, 5.5vw, 4.75rem);
+                }
+            }
+
+            @include media-breakpoint-down(md) {
+                &:last-child {
+                    padding-bottom: calc(
+                        clamp(3.5rem, 5.5vw, 4.75rem) + clamp(3rem, 5vw, 4.5rem)
+                    );
+                }
+            }
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.015);
+            }
+
+            @include media-breakpoint-down(md) {
+                &:nth-child(even) {
+                    border-left: 0;
+                }
+
+                & + li {
+                    border-top: var(--rule);
+                }
+            }
+        }
+
+        h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.375rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            line-height: 1.35;
+            color: var(--text);
+        }
+
+        .kicker {
+            margin: 0 0 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #b9a6ff;
+        }
+
+        .text {
+            max-width: 30rem;
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--muted);
+        }
+    }
+
+    .copy {
+        padding-right: var(--inset);
+    }
+
+    @include media-breakpoint-down(md) {
+        .features > li {
+            gap: 0;
+        }
+
+        .copy {
+            display: contents;
+        }
+
+        .features > li {
+            padding-top: 2.5rem;
+        }
+
+        .features .kicker,
+        .features h3 {
+            order: -1;
+            padding-right: var(--inset);
+        }
+
+        .features h3 {
+            margin-bottom: 0;
+        }
+
+        .stage {
+            order: 0;
+            padding-top: 1.5rem;
+        }
+
+        .features .text {
+            order: 1;
+            margin-top: 1.5rem;
+            padding-right: var(--inset);
+        }
+    }
+
+    .stage {
+        padding-top: clamp(2.5rem, 4vw, 3.5rem);
+    }
+
+    .glimpse {
+        display: flex;
+        flex-direction: column;
+        width: calc(100% - var(--inset));
+        height: 23.5rem;
+        overflow: hidden;
+
+        @include media-breakpoint-down(md) {
+            height: auto;
+            min-height: 25rem;
+        }
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: 0.75rem;
+        background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.035) 0%,
+            rgba(255, 255, 255, 0.012) 60%
+        );
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.05),
+            0 30px 60px -30px rgba(0, 0, 0, 0.9);
+        font-size: 0.9375rem;
+        color: #c9c9d2;
+
+        p {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0;
+        }
+
+        :global(svg) {
+            flex: none;
+            width: 1rem;
+            height: 1rem;
+            color: var(--faint);
+        }
+
+        :global(.spin) {
+            animation: spin 1s linear infinite;
+        }
+    }
+
+    .glimpse-body {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1.125rem 1.25rem 1.5rem;
+    }
+
+    .pill,
+    .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3125rem;
+        padding: 0.125rem 0.5rem;
+        border-radius: 0.375rem;
+        background: rgba(255, 255, 255, 0.07);
+        font-size: 0.75rem;
+        font-weight: 500;
+        line-height: 1.5;
+        white-space: nowrap;
+        color: #c9c9d2;
+
+        :global(svg) {
+            width: 0.875rem;
+            height: 0.875rem;
+            color: currentColor;
+        }
+
+        .dot {
+            width: 0.375rem;
+            height: 0.375rem;
+            border-radius: 50%;
+            background: currentColor;
+        }
+    }
+
+    .tag {
+        padding-inline: 0.4375rem;
+        border-radius: 0.375rem;
+        font-size: 0.75rem;
+        color: var(--muted);
+    }
+
+    .pill {
+        transition:
+            color 0.3s ease,
+            background-color 0.3s ease;
+
+        &.ok {
+            background: color-mix(in srgb, var(--success) 14%, transparent);
+            color: var(--success);
+        }
+
+        &.bad {
+            background: color-mix(in srgb, var(--danger) 14%, transparent);
+            color: var(--danger);
+        }
+
+        &.run {
+            background: color-mix(in srgb, var(--running) 14%, transparent);
+            color: var(--running);
+        }
+
+        &.wait {
+            background: color-mix(in srgb, var(--warning) 14%, transparent);
+            color: var(--warning);
+        }
+    }
+
+    .tenant {
+        position: relative;
+        flex: 1;
+        gap: 1.25rem;
+    }
+
+    .tenant-label {
+        font-size: 0.875rem;
+        color: var(--muted);
+
+        :global(svg) {
+            width: 1.125rem;
+            height: 1.125rem;
+            color: var(--muted);
+        }
+
+        .pill {
+            margin-left: auto;
+        }
+    }
+
+    .row-state {
+        display: grid;
+        margin-left: auto;
+
+        .pill {
+            grid-area: 1 / 1;
+            justify-self: end;
+            opacity: 0;
+            transform: translateY(2px);
+            transition:
+                opacity 0.3s ease,
+                transform 0.3s ease;
+        }
+
+        &[data-state="editing"] .editing,
+        &[data-state="running"] .running,
+        &[data-state="success"] .success,
+        &[data-state="deleted"] .deleted {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    .ns-tree {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        font-size: 0.9375rem;
+        color: var(--muted);
+
+        :global(.folder) {
+            color: #b48cff;
+        }
+
+        ul {
+            margin: 0 0 0 0.4375rem;
+            padding: 0;
+            list-style: none;
+        }
+
+        > li {
+            padding-left: 0;
+
+            &::before {
+                display: none;
+            }
+        }
+
+        li {
+            position: relative;
+            padding-left: 0.875rem;
+
+            &.doomed {
+                max-height: 2.25rem;
+                overflow: hidden;
+                transition:
+                    max-height 0.5s ease,
+                    opacity 0.4s ease;
+
+                &:global(.removed) {
+                    max-height: 0;
+                    opacity: 0;
+                }
+            }
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 0.625rem;
+                height: 1rem;
+                border-left: 1px solid rgba(255, 255, 255, 0.14);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+            }
+
+            &:not(:last-child)::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                border-left: 1px solid rgba(255, 255, 255, 0.14);
+            }
+        }
+
+        [data-row] {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            margin-left: -0.375rem;
+            padding: 0 0.375rem;
+            border: 1px solid transparent;
+            border-radius: 0.375rem;
+            line-height: 2rem;
+            transition:
+                background-color 0.4s ease,
+                border-color 0.4s ease,
+                color 0.4s ease;
+
+            &:global(.gone) {
+                text-decoration: line-through;
+                opacity: 0.55;
+            }
+
+            &:global(.hot) {
+                border-color: rgba(var(--tone), 0.25);
+                background: rgba(var(--tone), 0.06);
+                color: rgb(var(--tone));
+
+                :global(svg) {
+                    color: currentColor;
+                }
+            }
+        }
+
+        :global(svg) {
+            width: 0.9375rem;
+            height: 0.9375rem;
+        }
+    }
+
+    .cursor {
+        --tone: 240, 140, 190;
+
+        position: absolute;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.125rem;
+        transition:
+            left 1.1s cubic-bezier(0.65, 0, 0.35, 1),
+            top 1.1s cubic-bezier(0.65, 0, 0.35, 1),
+            opacity 0.5s ease;
+
+        :global(.placing) & {
+            transition: none;
+        }
+
+        &:global(.idle) {
+            opacity: 0.3;
+        }
+
+        svg {
+            width: 0.75rem;
+            height: 0.75rem;
+            fill: rgb(var(--tone));
+        }
+
+        &.launcher {
+            top: 1.25rem;
+            left: 45%;
+        }
+
+        &.editor {
+            --tone: 120, 214, 170;
+
+            bottom: 0.5rem;
+            left: 6%;
+        }
+
+        &.admin {
+            --tone: 140, 196, 255;
+
+            top: 3.5rem;
+            left: 72%;
+        }
+    }
+
+    .who {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin-left: 0.5rem;
+        padding: 0.0625rem 0.4375rem;
+        border: 1px solid rgba(var(--tone), 0.45);
+        border-radius: 0.375rem;
+        background: rgba(20, 20, 24, 0.6);
+        backdrop-filter: blur(4px);
+        font-size: 0.8125rem;
+        font-weight: 500;
+        white-space: nowrap;
+        color: rgb(var(--tone));
+
+        :global(svg) {
+            width: 0.8125rem;
+            height: 0.8125rem;
+            color: currentColor;
+        }
+    }
+
+    .timeline {
+        gap: 1.25rem;
+        width: 100%;
+        max-width: 34rem;
+        margin-inline: auto;
+    }
+
+    .run-head {
+        font-size: 0.875rem;
+        color: var(--muted);
+
+        strong {
+            font-weight: 400;
+        }
+    }
+
+    .run-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-left: auto;
+        padding: 2px 8px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        transition:
+            color 0.3s ease,
+            background-color 0.3s ease;
+
+        :global(svg) {
+            width: 14px;
+            height: 14px;
+            color: currentColor;
+        }
+
+        :global(.done),
+        :global(.spin) {
+            display: none;
+        }
+
+        &:global(.is-running) {
+            background: color-mix(in srgb, var(--running) 14%, transparent);
+            color: var(--running);
+
+            :global(.spin) {
+                display: block;
+            }
+        }
+
+        &:global(.is-success) {
+            background: color-mix(in srgb, var(--success) 18%, transparent);
+            color: var(--success);
+
+            :global(.done) {
+                display: block;
+            }
+        }
+    }
+
+    .rows {
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+    }
+
+    .row {
+        gap: 0.75rem;
+        font-size: 0.8125rem;
+        transition: opacity 0.3s ease;
+
+        .name {
+            flex: none;
+            width: 6.5rem;
+            color: #c9c9d2;
+        }
+
+        &.retry .name {
+            color: var(--muted);
+        }
+
+        &:global(.pending) {
+            opacity: 0;
+        }
+    }
+
+    .track {
+        position: relative;
+        display: block;
+        flex: 1;
+        height: 1.375rem;
+        background: linear-gradient(
+                rgba(255, 255, 255, 0.06),
+                rgba(255, 255, 255, 0.06)
+            )
+            0 50% / 100% 1px no-repeat;
+    }
+
+    .attempt {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        padding-left: 0.375rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        font-size: 0.6875rem;
+        white-space: nowrap;
+        color: #c9c9d2;
+        clip-path: inset(0 100% 0 0);
+        transition:
+            clip-path var(--ms) linear,
+            background-color 0.3s ease,
+            border-color 0.3s ease;
+
+        &:global(.go) {
+            clip-path: inset(0);
+        }
+
+        &:global(.done) {
+            border-color: color-mix(in srgb, var(--success) 50%, transparent);
+            background: color-mix(in srgb, var(--success) 16%, transparent);
+            color: #e6e6ea;
+        }
+
+        &:global(.broken) {
+            border-color: color-mix(in srgb, var(--danger) 55%, transparent);
+            background: color-mix(in srgb, var(--danger) 14%, transparent);
+        }
+    }
+
+    .worker-short {
+        display: none;
+    }
+
+    @include media-breakpoint-down(md) {
+        .attempt {
+            padding-left: 0.25rem;
+        }
+
+        .worker-long,
+        .down-text {
+            display: none;
+        }
+
+        .worker-short {
+            display: inline;
+        }
+
+        .row .name {
+            width: 5.5rem;
+        }
+    }
+
+    .down {
+        position: absolute;
+        top: 50%;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin-left: 0.5rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+        color: var(--danger);
+        opacity: 0;
+        transform: translateY(-50%);
+        transition: opacity 0.3s ease;
+
+        :global(svg) {
+            width: 0.8125rem;
+            height: 0.8125rem;
+            color: currentColor;
+        }
+    }
+
+    .row:global(.failed) .down {
+        opacity: 1;
+    }
+
+    .status {
+        font-size: 0.8125rem;
+        color: var(--muted);
+        transition: color 0.3s ease;
+
+        .live {
+            background: var(--faint);
+        }
+
+        &:global(.warn) {
+            color: var(--warning);
+
+            .live {
+                background: var(--warning);
+
+                &::after {
+                    border-color: var(--warning);
+                }
+            }
+        }
+
+        &:global(.ok) {
+            color: var(--success);
+
+            .live {
+                background: var(--success);
+            }
+        }
+    }
+
+    .glimpse.free {
+        border-color: rgba(255, 255, 255, 0.055);
+        background:
+            radial-gradient(
+                120% 90% at 50% 0%,
+                rgba(255, 255, 255, 0.03),
+                transparent 70%
+            ),
+            rgba(255, 255, 255, 0.007);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+
+        .glimpse-body {
+            justify-content: center;
+            padding: 1.5rem 1.75rem;
+        }
+    }
+
+    .notes {
+        align-items: center;
+        gap: 2.5rem;
+    }
+
+    .stack {
+        position: relative;
+        width: min(100%, 32rem);
+        height: 6.5rem;
+    }
+
+    .note {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.875rem 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 0.75rem;
+        background: #17171b;
+        box-shadow: 0 16px 32px -16px rgba(0, 0, 0, 0.9);
+        transform-origin: bottom center;
+        transition:
+            transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+            opacity 0.45s ease;
+
+        &:nth-child(1) {
+            z-index: 3;
+        }
+
+        > * {
+            transition: opacity 0.4s ease;
+        }
+
+        &:nth-child(n + 2) > * {
+            opacity: 0;
+        }
+
+        &:nth-child(2) {
+            z-index: 2;
+            opacity: 0.7;
+            transform: translateY(0.625rem) scale(0.95);
+        }
+
+        &:nth-child(3) {
+            z-index: 1;
+            opacity: 0.35;
+            transform: translateY(1.25rem) scale(0.9);
+        }
+
+        &:nth-child(n + 4) {
+            opacity: 0;
+            transform: translateY(2.5rem) scale(0.85);
+        }
+
+        &:global(.enter) {
+            opacity: 0;
+            transform: translateY(-1rem);
+            transition: none;
+        }
+
+        p {
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+    }
+
+    .note-top {
+        .state {
+            --tone: var(--neutral);
+
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3125rem;
+            padding: 0.125rem 0.5rem;
+            border-radius: 0.375rem;
+            background: color-mix(in srgb, var(--tone) 16%, transparent);
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--tone);
+
+            :global(svg) {
+                width: 0.875rem;
+                height: 0.875rem;
+                color: currentColor;
+            }
+
+            &.created {
+                --tone: var(--created);
+            }
+
+            &.resumed {
+                --tone: var(--running);
+            }
+        }
+
+        .date {
+            margin-left: auto;
+            font-size: 0.8125rem;
+            color: var(--faint);
+        }
+    }
+
+    .note-main strong {
+        font-weight: 500;
+        color: #ffffff;
+    }
+
+    .stream {
+        font-size: 0.875rem;
+        color: var(--muted);
+
+        @include media-breakpoint-down(md) {
+            .glimpse & {
+                display: block;
+            }
+
+            text-align: center;
+
+            .live {
+                display: inline-block;
+                margin-right: 0.5rem;
+                vertical-align: 0.05em;
+            }
+
+            .count {
+                display: block;
+                margin: 0.25rem 0 0;
+            }
+        }
+
+        .count {
+            margin-left: 0.75rem;
+            font-variant-numeric: tabular-nums;
+            color: var(--faint);
+        }
+    }
+
+    .live {
+        position: relative;
+        flex-shrink: 0;
+        width: 0.4375rem;
+        height: 0.4375rem;
+        border-radius: 50%;
+        background: var(--success);
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: -0.25rem;
+            border-radius: 50%;
+            border: 1px solid var(--success);
+            opacity: 0;
+            animation: ping 2s ease-out infinite;
+        }
+    }
+
+    .schema-body {
+        align-items: center;
+    }
+
+    .schema {
+        position: relative;
+        width: 35rem;
+        height: 21.25rem;
+        flex: none;
+        font-size: 0.875rem;
+
+        @include media-breakpoint-down(xl) {
+            zoom: 0.8;
+        }
+
+        @include media-breakpoint-down(md) {
+            width: 340px;
+            height: 420px;
+            zoom: 0.9;
+        }
+    }
+
+    .schema > .lines.vertical {
+        display: none;
+        width: 340px;
+        height: 420px;
+    }
+
+    @include media-breakpoint-down(md) {
+        .schema > .lines:not(.vertical) {
+            display: none;
+        }
+
+        .schema > .lines.vertical {
+            display: block;
+        }
+
+        .schema .worker {
+            top: 40px !important;
+            width: 104px;
+            margin-top: -20px;
+            padding: 0 0.625rem;
+            font-size: 0.8125rem;
+
+            &:nth-child(1) {
+                left: 8px;
+            }
+
+            &:nth-child(2) {
+                left: 118px;
+            }
+
+            &:nth-child(3) {
+                left: 228px;
+            }
+        }
+
+        .schema .hub {
+            top: 172px;
+            left: 142px;
+        }
+
+        .schema .hub-label {
+            top: 191px;
+            left: 208px;
+            width: auto;
+            text-align: left;
+        }
+
+        .schema .lane {
+            top: 340px !important;
+            width: 150px;
+
+            &.repository {
+                left: 10px;
+            }
+
+            &.queue {
+                left: 180px;
+            }
+        }
+    }
+
+    .schema > .lines {
+        position: absolute;
+        inset: 0;
+        width: 560px;
+        height: 340px;
+        overflow: visible;
+        fill: none;
+
+        .wire {
+            stroke: rgba(255, 255, 255, 0.16);
+            stroke-width: 1;
+
+            &.intruder {
+                transition: stroke 0.3s ease;
+            }
+        }
+
+        .jet {
+            stroke: rgba(255, 255, 255, 0.7);
+            stroke-width: 1.25;
+            stroke-linecap: round;
+            stroke-dasharray: 14 400;
+            stroke-dashoffset: 14;
+            opacity: 0;
+        }
+
+        .cut {
+            stroke: var(--danger);
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            opacity: 0;
+            transform: scale(0.4);
+            transform-box: fill-box;
+            transform-origin: center;
+            transition:
+                opacity 0.2s ease,
+                transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .flows path {
+            stroke: rgba(255, 255, 255, 0.7);
+            stroke-width: 1.25;
+            stroke-linecap: round;
+            stroke-dasharray: 14 640;
+            animation: enterprise-line-flow 3.2s linear infinite;
+
+            & + path {
+                animation-delay: -1.6s;
+            }
+        }
+    }
+
+    .schema:global(.blocked) {
+        .lines .intruder {
+            stroke: color-mix(in srgb, var(--danger) 55%, transparent);
+            stroke-dasharray: 3 3;
+        }
+
+        .lines .cut {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    @keyframes enterprise-line-flow {
+        from {
+            stroke-dashoffset: 654;
+        }
+
+        to {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    .workers {
+        display: contents;
+    }
+
+    .worker,
+    .bar {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 6px;
+        background: #141418;
+    }
+
+    .worker {
+        position: absolute;
+        left: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: 140px;
+        height: 40px;
+        margin-top: -20px;
+        padding: 0 0.75rem;
+        font-size: 0.875rem;
+        white-space: nowrap;
+        color: #e6e6ea;
+
+        .state {
+            width: 0.4375rem;
+            height: 0.4375rem;
+            border-radius: 50%;
+            background: var(--success);
+            transition: background-color 0.3s ease;
+        }
+
+        &.refused {
+            border-color: color-mix(in srgb, var(--danger) 30%, transparent);
+            color: var(--muted);
+
+            .state {
+                background: var(--danger);
+            }
+        }
+
+        &:global(.checking) {
+            border-color: rgba(255, 255, 255, 0.1);
+
+            .state {
+                background: var(--faint);
+                animation: pulse 0.9s ease-in-out infinite;
+            }
+        }
+
+        &:global(.shake) {
+            animation: enterprise-worker-shake 0.45s ease;
+        }
+    }
+
+    .hub {
+        position: absolute;
+        top: 142px;
+        left: 252px;
+        display: grid;
+        place-items: center;
+        width: 56px;
+        height: 56px;
+        border-radius: 10px;
+        background: #141418;
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14);
+        animation: hub-in 3.2s linear infinite;
+    }
+
+    @keyframes hub-in {
+        0%,
+        16%,
+        30%,
+        62%,
+        76%,
+        100% {
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14);
+        }
+
+        21%,
+        67% {
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.5),
+                0 0 24px 2px rgba(255, 255, 255, 0.12);
+        }
+    }
+
+    @keyframes lane-in {
+        0%,
+        12%,
+        100% {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        4% {
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+    }
+
+    .hub-label {
+        position: absolute;
+        top: 208px;
+        left: 240px;
+        width: 80px;
+        text-align: center;
+        font-size: 0.8125rem;
+        color: var(--muted);
+    }
+
+    .lane {
+        position: absolute;
+        left: 400px;
+        width: 160px;
+
+        &.repository {
+            top: 80px;
+        }
+
+        &.queue {
+            top: 196px;
+        }
+    }
+
+    .lane .lane-title {
+        position: absolute;
+        top: 8px;
+        left: 0.625rem;
+        font-size: 0.75rem;
+        line-height: 1;
+        color: var(--faint);
+    }
+
+    .bar {
+        position: relative;
+        height: 64px;
+        animation: lane-in 3.2s linear infinite;
+
+        .repository & {
+            animation-delay: calc(-3.2s + 0.44 * 3.2s);
+        }
+
+        .queue & {
+            animation-delay: calc(-3.2s + 0.9 * 3.2s);
+        }
+    }
+
+    .choice {
+        position: absolute;
+        top: 40px;
+        left: 0.625rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #ffffff;
+        opacity: 0;
+        transform: translateY(calc(-50% + 6px));
+        transition:
+            opacity 0.4s ease,
+            transform 0.4s ease;
+
+        &.on,
+        &:global(.on) {
+            opacity: 1;
+            transform: translateY(-50%);
+        }
+
+        .logo {
+            display: grid;
+            place-items: center;
+            width: 1.375rem;
+            height: 1.375rem;
+        }
+
+        img {
+            width: 1.375rem;
+            height: 1.375rem;
+            object-fit: contain;
+        }
+
+        &[data-option="kafka"] img {
+            filter: invert(1);
+        }
+
+        :global(.java) {
+            width: 1.125rem;
+            height: 1.125rem;
+            color: #e76f00;
+        }
+    }
+
+    @keyframes pulse {
+        50% {
+            opacity: 0.3;
+        }
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes ping {
+        0% {
+            opacity: 0.6;
+            transform: scale(0.6);
+        }
+
+        100% {
+            opacity: 0;
+            transform: scale(1.6);
+        }
+    }
+
+    @keyframes enterprise-worker-shake {
+        0%,
+        100% {
+            transform: none;
+        }
+
+        25% {
+            transform: translateX(-3px);
+        }
+
+        50% {
+            transform: translateX(3px);
+        }
+
+        75% {
+            transform: translateX(-2px);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .glimpse :global(.spin),
+        .live::after,
+        .schema > .lines .flows path,
+        .hub,
+        .bar {
+            animation: none;
+        }
+    }
+</style>
+
+<script>
+    const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches
+
+    function whileVisible(el: Element, start: () => void, stop: () => void) {
+        new IntersectionObserver(([entry]) =>
+            entry.isIntersecting ? start() : stop(),
+        ).observe(el)
+    }
+
+    function playTenants() {
+        const stage = document.querySelector<HTMLElement>("[data-tenants]")
+        if (!stage || stage.dataset.wired || reduced()) return
+        stage.dataset.wired = "true"
+        const row = (name: string) =>
+            stage.querySelector<HTMLElement>(`[data-row="${name}"]`)
+        const person = (name: string) =>
+            stage.querySelector<HTMLElement>(`[data-person="${name}"]`)
+        const launcher = person("launcher")
+        const editor = person("editor")
+        const admin = person("admin")
+        const flow = row("flow")
+        const doomed = row("acme.network")
+        if (!launcher || !editor || !admin || !flow || !doomed) return
+
+        const at = new Map<HTMLElement, [HTMLElement, number]>()
+        let lit: HTMLElement | undefined
+        let timers: number[] = []
+
+        const go = (who: HTMLElement, name: string, lane: number) => {
+            const target = name === "foot" ? stage : row(name)
+            if (!target) return
+            at.set(who, [target, lane])
+            const box = stage.getBoundingClientRect()
+            const rect = target.getBoundingClientRect()
+            const scale = box.width / stage.offsetWidth || 1
+            const width = stage.offsetWidth
+            const x = Math.min(width * lane, width - who.offsetWidth)
+            const y =
+                target === stage
+                    ? stage.offsetHeight - who.offsetHeight - 12
+                    : (rect.top - box.top + rect.height * 0.55) / scale
+            who.style.left = `${x}px`
+            who.style.top = `${y}px`
+            who.style.bottom = "auto"
+        }
+
+        const light = (who?: HTMLElement, tone?: string) => {
+            lit?.classList.remove("hot")
+            lit = who ? at.get(who)?.[0] : undefined
+            if (!who || !lit || lit === stage) return
+            lit.style.setProperty(
+                "--tone",
+                tone ?? getComputedStyle(who).getPropertyValue("--tone"),
+            )
+            lit.classList.add("hot")
+        }
+
+        const show = (target: HTMLElement, name = "") => {
+            const state = target.querySelector<HTMLElement>("[data-row-state]")
+            if (state) state.dataset.state = name
+        }
+
+        const rest = () => {
+            go(launcher, "acme", 0.45)
+            go(admin, "acme", 0.74)
+            go(editor, "foot", 0.04)
+        }
+
+        const people = [launcher, editor, admin]
+        const focus = (who?: HTMLElement) =>
+            people.forEach((person) =>
+                person.classList.toggle("idle", !!who && person !== who),
+            )
+
+        const reset = () => {
+            rest()
+            focus()
+            light()
+            show(flow)
+            show(doomed)
+            doomed.classList.remove("gone")
+            doomed.parentElement?.classList.remove("removed")
+        }
+
+        const STORY: [number, () => void][] = [
+            [0, () => (focus(editor), go(editor, "flow", 0.5))],
+            [1100, () => (light(editor), show(flow, "editing"))],
+            [
+                3200,
+                () => (
+                    focus(launcher),
+                    go(editor, "foot", 0.04),
+                    go(launcher, "flow", 0.5)
+                ),
+            ],
+            [4300, () => (light(launcher), show(flow, "running"))],
+            [6100, () => show(flow, "success")],
+            [
+                7800,
+                () => (
+                    focus(admin),
+                    go(launcher, "acme", 0.45),
+                    light(),
+                    show(flow),
+                    go(admin, "acme.network", 0.58)
+                ),
+            ],
+            [
+                8900,
+                () => (
+                    light(admin, "255, 122, 138"),
+                    show(doomed, "deleted"),
+                    doomed.classList.add("gone")
+                ),
+            ],
+            [
+                10000,
+                () => (light(), doomed.parentElement?.classList.add("removed")),
+            ],
+            [10700, () => go(admin, "acme", 0.74)],
+            [12600, reset],
+        ]
+        const LOOP = 14400
+
+        const play = () => {
+            timers = STORY.map(([delay, beat]) =>
+                window.setTimeout(beat, delay),
+            )
+            timers.push(window.setTimeout(play, LOOP))
+        }
+
+        const snap = (move: () => void) => {
+            stage.classList.add("placing")
+            move()
+            stage.getBoundingClientRect()
+            stage.classList.remove("placing")
+        }
+        snap(rest)
+
+        whileVisible(
+            stage,
+            () => (reset(), play()),
+            () => (timers.forEach(window.clearTimeout), (timers = [])),
+        )
+        const reposition = () =>
+            snap(() =>
+                at.forEach(([target, lane], who) =>
+                    go(who, target.dataset.row ?? "foot", lane),
+                ),
+            )
+        window.addEventListener("resize", reposition)
+        document.addEventListener(
+            "astro:before-swap",
+            () => window.removeEventListener("resize", reposition),
+            { once: true },
+        )
+    }
+
+    function playRouting() {
+        const card = document.querySelector<HTMLElement>("[data-routing]")
+        if (!card || card.dataset.wired || reduced()) return
+        card.dataset.wired = "true"
+        const state = card.querySelector<HTMLElement>("[data-run-state]")
+        const status = card.querySelector<HTMLElement>("[data-status]")
+        const statusText = card.querySelector<HTMLElement>("[data-status-text]")
+        const rows = [...card.querySelectorAll<HTMLElement>("[data-step]")]
+        const bar = (row: HTMLElement) =>
+            row.querySelector<HTMLElement>(".attempt")!
+
+        let visible = false
+        let waiters: (() => void)[] = []
+        whileVisible(
+            card,
+            () => {
+                visible = true
+                waiters.splice(0).forEach((go) => go())
+            },
+            () => (visible = false),
+        )
+        const wait = async (ms: number) => {
+            await new Promise((done) => setTimeout(done, ms))
+            if (!visible) await new Promise<void>((go) => waiters.push(go))
+        }
+
+        const say = (text: string, tone = "") => {
+            if (statusText) statusText.textContent = text
+            status?.classList.toggle("warn", tone === "warn")
+            status?.classList.toggle("ok", tone === "ok")
+        }
+        const time = card.querySelector<HTMLElement>("[data-run-time]")
+        const total = time?.textContent ?? ""
+        const setState = (running: boolean) => {
+            state?.classList.toggle("is-running", running)
+            state?.classList.toggle("is-success", !running)
+            if (time) time.textContent = running ? "Running" : total
+        }
+
+        const reset = () => {
+            rows.forEach((row) => {
+                row.classList.remove("failed")
+                row.classList.toggle("pending", row.classList.contains("retry"))
+                bar(row).classList.remove("go", "done", "broken")
+            })
+            setState(true)
+            say("Running on 3 workers")
+        }
+
+        const loop = async () => {
+            for (;;) {
+                rows.forEach((row) => (bar(row).style.transition = "none"))
+                reset()
+                void card.offsetWidth
+                rows.forEach((row) => (bar(row).style.transition = ""))
+                await wait(900)
+
+                for (const row of rows) {
+                    const step = bar(row)
+                    step.classList.add("go")
+                    const ms = parseFloat(step.style.getPropertyValue("--ms"))
+                    if (row.dataset.step === "post_ledger") {
+                        await wait(ms)
+                        step.classList.add("broken")
+                        row.classList.add("failed")
+                        rows.forEach((other) =>
+                            other.classList.remove("pending"),
+                        )
+                        say(
+                            "worker-2 down · retrying post_ledger on worker-3",
+                            "warn",
+                        )
+                        await wait(1200)
+                        continue
+                    }
+                    await wait(ms)
+                    step.classList.add("done")
+                    await wait(150)
+                }
+
+                setState(false)
+                say("Success · 0 executions lost", "ok")
+                await wait(3600)
+            }
+        }
+        loop()
+    }
+
+    function playAudit() {
+        const card = document.querySelector<HTMLElement>(
+            ".enterprise [data-audit]",
+        )
+        if (!card || card.dataset.wired || reduced()) return
+        card.dataset.wired = "true"
+        const stack = card.querySelector<HTMLElement>("[data-stack]")
+        const pool = card.querySelector<HTMLTemplateElement>("[data-pool]")
+        const exported = card.querySelector<HTMLElement>("[data-exported]")
+        if (!stack || !pool) return
+        const queue = [...pool.content.querySelectorAll<HTMLElement>(".note")]
+        let total = 1284
+        let timer = 0
+
+        const ago = (seconds: number) =>
+            seconds < 60
+                ? "just now"
+                : seconds < 3600
+                  ? `${Math.round(seconds / 60)} min ago`
+                  : `${Math.round(seconds / 3600)} hours ago`
+
+        const step = () => {
+            stack.querySelectorAll<HTMLElement>(".note").forEach((note) => {
+                const age = Number(note.dataset.age) + 150
+                note.dataset.age = String(age)
+                const date = note.querySelector(".date")
+                if (date) date.textContent = ago(age)
+            })
+            const next = queue.shift()
+            if (!next) return
+            const note = next.cloneNode(true) as HTMLElement
+            note.dataset.age = "0"
+            const date = note.querySelector(".date")
+            if (date) date.textContent = "just now"
+            note.classList.add("enter")
+            stack.insertBefore(note, stack.firstChild)
+            void note.offsetWidth
+            note.classList.remove("enter")
+            const last = stack.children[4] as HTMLElement | undefined
+            if (last)
+                window.setTimeout(() => (last.remove(), queue.push(last)), 450)
+            total++
+            if (exported) exported.textContent = total.toLocaleString("en-US")
+        }
+
+        whileVisible(
+            card,
+            () => (timer = window.setInterval(step, 1600)),
+            () => window.clearInterval(timer),
+        )
+    }
+
+    function playBackends() {
+        const card = document.querySelector<HTMLElement>("[data-backends]")
+        if (!card || card.dataset.wired || reduced()) return
+        card.dataset.wired = "true"
+        const setups = JSON.parse(card.dataset.setups ?? "[]") as string[][]
+        const columns = [...card.querySelectorAll<HTMLElement>("[data-column]")]
+        const CLOCK = 3200
+        const ARRIVALS = [0.48, 0.94]
+        const turns = [0, 0]
+        let timers: number[] = []
+
+        const show = (col: number) => {
+            turns[col] = (turns[col] + 1) % setups.length
+            columns[col]
+                .querySelectorAll<HTMLElement>("[data-option]")
+                .forEach((option) =>
+                    option.classList.toggle(
+                        "on",
+                        option.dataset.option === setups[turns[col]][col],
+                    ),
+                )
+        }
+
+        const start = () => {
+            const now = Number(document.timeline.currentTime ?? 0)
+            timers = ARRIVALS.flatMap((arrival, col) => {
+                const wait =
+                    (((arrival * CLOCK - (now % CLOCK)) % CLOCK) + CLOCK) %
+                    CLOCK
+                let interval = 0
+                const first = window.setTimeout(() => {
+                    show(col)
+                    interval = window.setInterval(() => show(col), 2 * CLOCK)
+                    timers.push(interval)
+                }, wait + CLOCK)
+                return [first]
+            })
+        }
+
+        whileVisible(card, start, () => {
+            timers.forEach(
+                (id) => (window.clearTimeout(id), window.clearInterval(id)),
+            )
+            timers = []
+        })
+    }
+
+    function playHandshake() {
+        const strip = document.querySelector<HTMLElement>("[data-handshake]")
+        if (!strip || strip.dataset.wired || reduced()) return
+        strip.dataset.wired = "true"
+        const workers = [
+            ...strip.querySelectorAll<HTMLElement>('[data-worker="ok"]'),
+        ]
+        let timers: number[] = []
+
+        const play = () => {
+            workers.forEach((worker) => worker.classList.add("checking"))
+            timers = workers.map((worker, idx) =>
+                window.setTimeout(
+                    () => {
+                        worker.classList.remove("checking")
+                    },
+                    900 + idx * 1100,
+                ),
+            )
+            timers.push(window.setTimeout(play, 12000))
+        }
+
+        whileVisible(strip, play, () => {
+            timers.forEach(window.clearTimeout)
+            timers = []
+        })
+    }
+
+    function playIntruder() {
+        const schema = document.querySelector<HTMLElement>("[data-intruder]")
+        if (!schema || schema.dataset.wired || reduced()) return
+        schema.dataset.wired = "true"
+        const jets = [...schema.querySelectorAll<SVGPathElement>("[data-jet]")]
+        const visibleJet = () =>
+            jets.find((path) => path.getClientRects().length) ?? jets[0]
+        const worker = schema.querySelector<HTMLElement>(
+            '[data-worker="refused"]',
+        )
+        if (!jets.length || !worker) return
+        let timers: number[] = []
+
+        const attempt = () => {
+            schema.classList.remove("blocked")
+            worker.classList.add("checking")
+            timers = [
+                window.setTimeout(() => {
+                    const jet = visibleJet()
+                    const run = jet.animate(
+                        [
+                            { strokeDashoffset: 14, opacity: 1 },
+                            { strokeDashoffset: -55, opacity: 1 },
+                        ],
+                        { duration: 900, easing: "ease-out", fill: "forwards" },
+                    )
+                    run.finished.then(() => {
+                        schema.classList.add("blocked")
+                        worker.classList.remove("checking", "shake")
+                        void worker.offsetWidth
+                        worker.classList.add("shake")
+                        jet.animate([{ opacity: 1 }, { opacity: 0 }], {
+                            duration: 400,
+                            fill: "forwards",
+                        })
+                    })
+                }, 1200),
+                window.setTimeout(attempt, 6400),
+            ]
+        }
+
+        whileVisible(schema, attempt, () => {
+            timers.forEach(window.clearTimeout)
+            timers = []
+            schema.classList.add("blocked")
+            worker.classList.remove("checking")
+        })
+    }
+
+    function init() {
+        playTenants()
+        playRouting()
+        playAudit()
+        playBackends()
+        playHandshake()
+        playIntruder()
+    }
+
+    document.addEventListener("astro:page-load", init)
+    init()
+</script>

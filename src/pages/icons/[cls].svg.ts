@@ -3,10 +3,10 @@ export const prerender = false
 
 import { $fetchApiRawCached } from "~/utils/fetch.ts"
 import { optimizeSvgIcon } from "~/utils/svgo"
+import { parseIconParam } from "~/utils/themeIcons"
 
 export async function GET({ params }: { params: { cls: string } }) {
-    const clsComplete = params.cls
-    const [cls, modifier] = clsComplete.split("-")
+    const { cls, modifier } = parseIconParam(params.cls)
     const response = await $fetchApiRawCached(`/plugins/icons/${cls}`)
 
     if (!response.ok) {

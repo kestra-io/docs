@@ -23,7 +23,7 @@ const description =
     "Kestra is the open-source unified orchestration platform, run in production by more than 40,000 organizations. Founded in 2021 by Emmanuel Darras and Ludovic Dehon."
 ---
 
-<Layout {title} {description} headerTheme="darkHeader" headerBg="#111114">
+<Layout {title} {description} headerClean headerOverDark>
     <div class="about-us">
         <AboutHero />
         <Company />
@@ -52,7 +52,16 @@ const description =
     </div>
 </Layout>
 
+<script>
+    import { watchDarkSections } from "~/utils/headerDarkSections"
+
+    document.addEventListener("astro:page-load", watchDarkSections)
+    watchDarkSections()
+</script>
+
 <style lang="scss">
+    @use "/src/assets/styles/buttons" as *;
+
     :global(main:has(> .about-us)) {
         background: #111114;
     }
@@ -62,6 +71,8 @@ const description =
         --ks-border-primary: #e2e2e8;
 
         background: var(--ks-background-body);
+
+        @include cta-buttons;
 
         :global(html.dark) & {
             --ks-border-primary: #46454d;

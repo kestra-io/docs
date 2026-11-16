@@ -50,8 +50,7 @@
 
                                 <div v-if="form.track === 'services'" class="types">
                                     <span class="label">
-                                        Which partner types describe you? Pick all that apply.
-                                        <span class="required-field">*</span>
+                                        Which partner types describe you? Select all that apply.
                                     </span>
                                     <div class="choice-grid">
                                         <label
@@ -60,9 +59,24 @@
                                             class="choice multi"
                                             :class="{ selected: form.kind.includes(p.id) }"
                                         >
-                                            <input type="checkbox" :value="p.id" v-model="form.kind" />
+                                            <input type="checkbox" :value="p.id" v-model="form.kind" @change="onKindChange(p.id)" />
                                             <strong>{{ p.title }}</strong>
-                                            <span>{{ p.text }}</span>
+                                            <ul class="capabilities">
+                                                <li
+                                                    v-for="c in CAPABILITIES"
+                                                    :key="c"
+                                                    :class="{ included: p.includes.includes(c) }"
+                                                >
+                                                    <span class="tick" aria-hidden="true">
+                                                        <CheckBold v-if="p.includes.includes(c)" :size="16" />
+                                                        <Close v-else :size="16" />
+                                                    </span>
+                                                    <span class="text">{{ c }}</span>
+                                                    <span class="visually-hidden">
+                                                        {{ p.includes.includes(c) ? "(included)" : "(not included)" }}
+                                                    </span>
+                                                </li>
+                                            </ul>
                                         </label>
                                     </div>
                                 </div>
@@ -158,11 +172,12 @@
 <script setup lang="ts">
     import { computed, onMounted, reactive, ref, watch } from "vue"
     import CheckCircleOutline from "vue-material-design-icons/CheckCircleOutline.vue"
+    import CheckBold from "vue-material-design-icons/CheckBold.vue"
+    import Close from "vue-material-design-icons/Close.vue"
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
     import { useGtm } from "@gtm-support/vue-gtm"
     import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
-    import { $fetch } from "~/utils/fetch"
 
     type Track = "services" | "technology"
 
@@ -174,29 +189,36 @@
         {
             id: "services" as Track,
             title: "Services partner",
-            text: "Solution, managed services or implementation partner. You demo, sell, deliver or run Kestra for your clients.",
+            text: "You demo, deploy, or manage Kestra for your clients. (Resellers select this option)",
         },
         {
             id: "technology" as Track,
             title: "Technology partner",
-            text: "Cloud, data or infrastructure platform. You ship an integration with Kestra and we list and launch it together.",
+            text: "You ship an integration with Kestra such as a Kestra Plugin or have an integration with Kestra in your own solution.",
         },
+    ]
+    const CAPABILITIES = [
+        "Build Kestra Flows",
+        "Demo Kestra",
+        "Co-Sell Kestra",
+        "Install, Maintain, and Upgrade Kestra Infrastructure",
+        "Resell Kestra Licenses",
     ]
     const PARTNER_TYPES = [
         {
             id: "solution",
             title: "Solution partner",
-            text: "You demo Kestra and sell or co-sell it to your clients.",
+            includes: ["Build Kestra Flows", "Demo Kestra", "Co-Sell Kestra"],
         },
         {
             id: "managed_services",
             title: "Managed services partner",
-            text: "You install, upgrade and support the Kestra infrastructure of your clients.",
+            includes: ["Build Kestra Flows", "Demo Kestra", "Co-Sell Kestra", "Install, Maintain, and Upgrade Kestra Infrastructure"],
         },
         {
-            id: "implementation",
-            title: "Implementation partner",
-            text: "You author, test and productionize Kestra workflows for your clients.",
+            id: "reseller_partner",
+            title: "Reseller partner",
+            includes: ["Co-Sell Kestra", "Resell Kestra Licenses"],
         },
     ]
     const EXPERIENCES: Record<Track, string[]> = {
@@ -242,6 +264,14 @@
     })
 
     watch(() => form.track, () => { form.kind = [] })
+
+    // Solution and managed services are mutually exclusive; reseller combines with either.
+    const EXCLUSIVE_KINDS = ["solution", "managed_services"]
+    const onKindChange = (id: string) => {
+        if (EXCLUSIVE_KINDS.includes(id) && form.kind.includes(id)) {
+            form.kind = form.kind.filter((k) => k === id || !EXCLUSIVE_KINDS.includes(k))
+        }
+    }
     const experiences = computed(() => (form.track ? EXPERIENCES[form.track] : []))
     const trackLabel = computed(() => (form.track === "technology" ? "technology partners" : "services partners"))
     const trackHref = computed(() => (form.track === "technology" ? "/partners/technology" : "/partners/services"))
@@ -294,7 +324,6 @@
             hsq.push(["identify", { email: form.email, firstname: form.firstname, lastname: form.lastname, company: form.company, jobtitle: form.jobtitle, kuid }])
             hsq.push(["trackCustomBehavioralEvent", { name: "partner_form_submission" }])
 
-            const { ip } = await $fetch<{ ip: string }>("https://api.ipify.org?format=json")
             const contact = (name: string, value: string) => ({ objectTypeId: "0-1", name, value })
             const company = (name: string, value: string) => ({ objectTypeId: "0-2", name, value })
             await submitHubspotForm(HUBSPOT_FORM_ID, {
@@ -315,7 +344,6 @@
                 ],
                 context: {
                     hutk: getHubspotTracking() || undefined,
-                    ipAddress: ip,
                     pageUri: props.routePath,
                     pageName: document.title,
                 },
@@ -447,7 +475,7 @@
             color: var(--ks-content-primary);
         }
 
-        span {
+        > span {
             font-size: $font-size-sm;
             color: var(--ks-content-secondary);
         }
@@ -463,7 +491,9 @@
         }
 
         &.multi {
-            padding-right: 3rem;
+            strong {
+                padding-right: 2rem;
+            }
 
             input {
                 opacity: 1;
@@ -472,6 +502,45 @@
                 width: 1.125rem;
                 height: 1.125rem;
                 accent-color: var(--ks-border-active);
+            }
+        }
+    }
+
+    .capabilities {
+        list-style: none;
+        margin: 0.25rem 0 0;
+        padding: 0.75rem 0 0;
+        border-top: 1px solid var(--ks-border-secondary);
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: $font-size-sm;
+            line-height: 1.35;
+            color: var(--ks-content-tertiary);
+
+            &.included {
+                color: var(--ks-content-primary);
+
+                .tick {
+                    color: var(--ks-icon-active);
+                }
+            }
+        }
+
+        .tick {
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            height: 1.35em;
+            color: var(--ks-content-tertiary);
+
+            :deep(.material-design-icon) {
+                display: inline-flex;
             }
         }
     }

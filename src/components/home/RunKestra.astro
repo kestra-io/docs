@@ -1,0 +1,562 @@
+---
+
+---
+
+<section class="run-kestra" aria-labelledby="run-kestra">
+    <canvas class="sky" aria-hidden="true" data-rocket></canvas>
+    <div class="container-xl">
+        <div class="stage">
+            <header class="head">
+                <h2 id="run-kestra">Three ways to run Kestra</h2>
+                <p>
+                    Try it alone, try it managed, or talk to an expert who has
+                    done the migration before.
+                </p>
+            </header>
+
+            <div class="side">
+                <div class="editions surface-dark">
+                    <article class="edition">
+                        <h3>Kestra Core</h3>
+                        <p class="badge">Open Source</p>
+                        <p>
+                            Where most teams start, and where many experiment
+                            with a first production. Self-hosted and free, with
+                            no limits on flows or executions.
+                        </p>
+                        <a href="/get-started" class="btn-ghost compact">
+                            Get started
+                        </a>
+                    </article>
+
+                    <article class="edition">
+                        <h3>Kestra Cloud</h3>
+                        <p class="badge">Early Access</p>
+                        <p>
+                            Managed by the people who build Kestra. No platform
+                            to run, pay for what you use.
+                        </p>
+                        <a href="/cloud" class="btn-ghost compact">
+                            Try Kestra Cloud
+                        </a>
+                    </article>
+
+                    <article class="edition featured">
+                        <h3>Kestra Enterprise</h3>
+                        <p>
+                            The Kestra experience scaled for the enterprise:
+                            multi-team organization, security and governance,
+                            support with SLAs. Self-hosted, cloud or air-gapped.
+                        </p>
+                        <a href="/demo" class="btn-solid compact">
+                            Book a demo
+                        </a>
+                    </article>
+                </div>
+                <a href="/pricing" class="compare">
+                    Find the edition that fits your team{" "}
+                    <span aria-hidden="true">→</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function flyRocket() {
+        const canvas =
+            document.querySelector<HTMLCanvasElement>("[data-rocket]")
+        if (!canvas || canvas.dataset.wired) return
+        canvas.dataset.wired = "true"
+        const ctx = canvas.getContext("2d")
+        if (!ctx) return
+        const still = matchMedia("(prefers-reduced-motion: reduce)").matches
+
+        const HEADING = (-29 * Math.PI) / 180
+        const FWD = { x: Math.cos(HEADING), y: Math.sin(HEADING) }
+
+        const SPRITE = [
+            "..BBBBBBBBBBBBBBBBBBBBBPPPPPP",
+            "..BBBBBBBBBBBBBBBBBBBBBPPPPPP",
+            "..BBBBBBBBBBBBBBBBBBBBBPPPPPP",
+            ".....BBBBBBBBBBBB",
+            ".....BBBBBBBBBBBB",
+            ".....BBBBBBBBBBBB",
+            "........BBBBBBBBBBBB",
+            "........BBBBBBBBBBBB",
+            "........BBBBBBBBBBBB",
+            "...........BBBBBBBBBBBBBBBPPPPPP",
+            "...........BBBBBBBBBBBBBBBPPPPPP",
+            "...........BBBBBBBBBBBBBBBPPPPPP",
+            ".......DDDDBBBBBBBBBDDD",
+            "..DDDDDDDDDBBBBBBBBBDDD",
+            "..DDDDDDDDDBBBBBBBBBDDD",
+            "......DDDDDDBBBBBBBBBBBDDD",
+            "......DDDDDBBBBBBBBBBBBBDD",
+            "......DDDDDDBBBBBBBBBBBBDD",
+            "......BBBBBBBBBBBBLLLBBBBBDDD",
+            "......BBBBBBBBBBBBLLLBBBBBBDD",
+            "......BBBBBBBBBBBBLLLBBBBBBDD",
+            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
+            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
+            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
+            ".........BBBLLLBBBLLLBBBLLLBBBBBBBBBBBBBBBBBBPPPPPP",
+            "BBBBBBBBBBBBLLLBBBLLLBBBLLLBBBBBBBBBBBBBBBBBBPPPPPP",
+            "BBBBBBBBBBBBLLLBBBLLLBBBLLLBBBBBBBBBBBBBBBBBBPPPPPP",
+            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
+            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
+            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
+            "......BBBBBBBBBBBBLLLBBBBBBDDD",
+            "......BBBBBBBBBBBBLLLBBBBBBDDD",
+            "......BBBBBBBBBBBBLLLBBBBBBDDD",
+            "......DDDDDDBBBBBBBBBBBBDDD",
+            "......DDDDDDBBBBBBBBBBBBDDD",
+            "......DDDDDDBBBBBBBBBBBBDDD",
+            "......DDDDDDBBBBBBBBBDDD",
+            "...DDDDDDDDDBBBBBBBBBDDD",
+            "...DDDDDDDDDBBBBBBBBBDDD",
+            "............BBBBBBBBBBBBBBBPPPPPP",
+            "............BBBBBBBBBBBBBBBPPPPPP",
+            "............BBBBBBBBBBBBBBBPPPPPP",
+            "............BBBBBBBBB",
+            ".........BBBBBBBBBBBB",
+            ".........BBBBBBBBBBBB",
+            ".........BBBBBBBBB",
+            "......BBBBBBBBBBBB",
+            "......BBBBBBBBBBBB",
+            "......BBBBBBBBBBBB",
+            "...BBBBBBBBBBBBBBBBBBBBBPPPPPP",
+            "...BBBBBBBBBBBBBBBBBBBBBPPPPPP",
+            "...BBBBBBBBBBBBBBBBBBBBBPPPPPP",
+        ]
+        const HEART = { x: 14, y: 25.5 }
+        const INK: Record<string, string> = {
+            B: "rgb(92, 84, 255)",
+            D: "rgb(33, 66, 255)",
+            L: "rgb(184, 176, 255)",
+            P: "rgb(255, 4, 254)",
+        }
+        const STEPS = 3
+
+        let width = 0
+        let height = 0
+        let unit = 14
+        let at = { x: 0, y: 0 }
+        let reach = 600
+        let plume: HTMLCanvasElement | null = null
+        let cells: { u: number; v: number; ink: string }[] = []
+
+        const rand = (i: number, k: number) => {
+            const h = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453
+            return h - Math.floor(h)
+        }
+        const LINES = Array.from({ length: 8 }, (_, i) => ({
+            lane: rand(i, 1) * 2 - 1,
+            pace: 0.8 + rand(i, 2) * 0.7,
+            length: 0.6 + rand(i, 3) * 0.8,
+            offset: rand(i, 4),
+        }))
+        const STARS = Array.from({ length: 140 }, (_, i) => {
+            const depth = rand(i, 11) < 0.55 ? 0 : rand(i, 12) < 0.7 ? 1 : 2
+            const tone = rand(i, 13)
+            return {
+                x: rand(i, 14),
+                y: rand(i, 15),
+                depth,
+                cross: depth === 2 && rand(i, 16) < 0.35,
+                colour:
+                    tone < 0.6
+                        ? "255, 255, 255"
+                        : tone < 0.82
+                          ? "196, 184, 255"
+                          : tone < 0.93
+                            ? "120, 140, 255"
+                            : "255, 90, 220",
+                pace: 0.6 + rand(i, 17) * 0.8,
+                phase: rand(i, 18) * 6.28,
+            }
+        })
+        const SPARKS = [
+            { lane: -4.5, pace: 0.6, offset: 0 },
+            { lane: 4, pace: 0.5, offset: 0.45 },
+        ]
+
+        const layout = () => {
+            const box = canvas.getBoundingClientRect()
+            const ratio = Math.min(2, window.devicePixelRatio || 1)
+            width = box.width
+            height = box.height
+            canvas.width = Math.round(width * ratio)
+            canvas.height = Math.round(height * ratio)
+            ctx.setTransform(ratio, 0, 0, ratio, 0, 0)
+
+            const wide = width >= 992
+            unit = wide
+                ? Math.max(10, Math.min(19, width / 100))
+                : Math.max(6, width / 60)
+            at = wide
+                ? { x: width * 0.81, y: Math.max(unit * 13, height * 0.28) }
+                : { x: width * 0.55, y: unit * 13 }
+            reach = wide ? Math.min(width * 0.45, 820) : width * 0.8
+
+            cells = []
+            SPRITE.forEach((line, row) => {
+                ;[...line].forEach((key, col) => {
+                    if (INK[key])
+                        cells.push({
+                            u: col - HEART.x,
+                            v: row - HEART.y,
+                            ink: key,
+                        })
+                })
+            })
+
+            const w = unit * 20
+            const pad = unit * 6
+            plume = document.createElement("canvas")
+            plume.width = Math.round(w + pad * 2)
+            plume.height = Math.round(reach + pad * 2)
+            const pctx = plume.getContext("2d")
+            if (!pctx) return
+            const W = plume.width
+            const H = plume.height
+            const g = pctx.createLinearGradient(0, pad, 0, pad + reach)
+            // The rocket's own blues, saturated: a vivid violet at the nozzle,
+            // its hull's violet, then its deep blue fading out.
+            g.addColorStop(0, "rgba(130, 90, 255, 1)")
+            g.addColorStop(0.2, "rgba(92, 70, 255, 1)")
+            g.addColorStop(0.55, "rgba(50, 60, 255, 0.75)")
+            g.addColorStop(0.85, "rgba(33, 66, 255, 0.3)")
+            g.addColorStop(1, "rgba(33, 66, 255, 0)")
+            pctx.fillStyle = g
+            pctx.fillRect(0, 0, W, H)
+            pctx.globalCompositeOperation = "destination-in"
+            const sides = pctx.createLinearGradient(0, 0, W, 0)
+            sides.addColorStop(0, "rgba(0, 0, 0, 0)")
+            sides.addColorStop(0.22, "rgba(0, 0, 0, 0.55)")
+            sides.addColorStop(0.5, "rgba(0, 0, 0, 1)")
+            sides.addColorStop(0.78, "rgba(0, 0, 0, 0.55)")
+            sides.addColorStop(1, "rgba(0, 0, 0, 0)")
+            pctx.fillStyle = sides
+            pctx.fillRect(0, 0, W, H)
+            const head = pctx.createLinearGradient(0, 0, 0, pad + w * 0.6)
+            head.addColorStop(0, "rgba(0, 0, 0, 0)")
+            head.addColorStop(1, "rgba(0, 0, 0, 1)")
+            pctx.fillStyle = head
+            pctx.fillRect(0, 0, W, H)
+            pctx.globalCompositeOperation = "source-over"
+        }
+
+        const frame = (time: number) => {
+            const t = time / 1000
+            ctx.clearRect(0, 0, width, height)
+
+            const dot = Math.max(2, Math.round(unit / STEPS))
+            for (const star of STARS) {
+                const speed = [5, 14, 34][star.depth] * star.pace
+                const x =
+                    (((star.x * width - FWD.x * speed * t) % width) + width) %
+                    width
+                const y =
+                    (((star.y * height - FWD.y * speed * t) % height) +
+                        height) %
+                    height
+                const twinkle =
+                    0.55 + 0.45 * Math.sin(t * 1.6 * star.pace + star.phase)
+                const alpha = [0.22, 0.4, 0.7][star.depth] * twinkle
+                const size = [0.5, 0.75, 1][star.depth] * dot
+                const sx = Math.round(x)
+                const sy = Math.round(y)
+                ctx.fillStyle = `rgba(${star.colour}, ${alpha})`
+                ctx.fillRect(sx, sy, size, size)
+                if (star.cross) {
+                    ctx.fillStyle = `rgba(${star.colour}, ${alpha * 0.5})`
+                    ctx.fillRect(sx - size, sy, size, size)
+                    ctx.fillRect(sx + size, sy, size, size)
+                    ctx.fillRect(sx, sy - size, size, size)
+                    ctx.fillRect(sx, sy + size, size, size)
+                }
+            }
+
+            if (plume) {
+                ctx.save()
+                ctx.translate(at.x, at.y)
+                ctx.rotate(HEADING + Math.PI / 2)
+                ctx.globalAlpha = 0.85 + 0.15 * Math.sin(t * 8)
+                ctx.drawImage(plume, -plume.width / 2, -unit * 6)
+                ctx.restore()
+            }
+
+            ctx.save()
+            ctx.translate(at.x, at.y)
+            ctx.rotate(HEADING)
+
+            const fine = unit / STEPS
+            const flow = t * unit * 30
+            for (let row = 4; row * fine < reach * 0.8; row += 1) {
+                const fade = 1 - (row * fine) / (reach * 0.8)
+                const slot = Math.floor((row * fine + flow) / fine)
+                for (let lane = -24; lane <= 24; lane += 2) {
+                    const spread = Math.exp(-((lane / 14) ** 2))
+                    const n = rand(lane + 80, slot - row * 2)
+                    if (n > spread * fade * 0.06) continue
+                    ctx.fillStyle = `rgba(255, 235, 250, ${0.2 + 0.35 * fade})`
+                    ctx.fillRect(
+                        -row * fine - unit * 4,
+                        lane * fine,
+                        fine * 0.7,
+                        fine * 0.7,
+                    )
+                }
+            }
+
+            ctx.lineCap = "round"
+            for (const line of LINES) {
+                const k = (line.offset + t * line.pace * 1.4) % 1
+                const x = -unit * 5 - k * reach * 0.6
+                const y = line.lane * unit * 12
+                const length = unit * 4 * line.length
+                const fade = Math.sin(k * Math.PI)
+                const g = ctx.createLinearGradient(x, y, x - length, y)
+                g.addColorStop(0, `rgba(255, 255, 255, ${0.9 * fade})`)
+                g.addColorStop(1, "rgba(255, 255, 255, 0)")
+                ctx.strokeStyle = g
+                ctx.lineWidth = Math.max(1.5, unit * 0.18)
+                ctx.beginPath()
+                ctx.moveTo(x, y)
+                ctx.lineTo(x - length, y)
+                ctx.stroke()
+            }
+
+            for (const spark of SPARKS) {
+                const k = (spark.offset + t * spark.pace) % 1
+                const fade = Math.sin(k * Math.PI)
+                for (let i = 0; i < 3; i++) {
+                    const x = -unit * 6 - k * reach * 0.35 - i * unit * 2.2
+                    const w = unit * (1.6 - i * 0.35)
+                    const h = unit * (0.9 - i * 0.12)
+                    ctx.fillStyle =
+                        i === 0
+                            ? `rgba(255, 4, 254, ${fade})`
+                            : `rgba(92, 84, 255, ${fade * (1 - i * 0.2)})`
+                    ctx.fillRect(x - w, spark.lane * unit - h / 2, w, h)
+                }
+            }
+
+            const shake = still ? 0 : 0.9
+            ctx.translate(
+                (rand(t * 60, 1) - 0.5) * shake * 2,
+                (rand(t * 60, 2) - 0.5) * shake * 2,
+            )
+            const gap = fine > 4 ? 0.6 : 0
+            for (const cell of cells) {
+                ctx.fillStyle = INK[cell.ink]
+                ctx.fillRect(
+                    cell.u * fine,
+                    cell.v * fine,
+                    fine - gap,
+                    fine - gap,
+                )
+            }
+            ctx.restore()
+        }
+
+        layout()
+        new ResizeObserver(() => {
+            layout()
+            if (still) frame(0)
+        }).observe(canvas)
+        if (still) {
+            frame(0)
+            return
+        }
+
+        let visible = false
+        let raf = 0
+        let last = 0
+        const tick = (time: number) => {
+            raf = 0
+            if (!visible) return
+            if (time - last > 40) {
+                last = time
+                frame(time)
+            }
+            raf = requestAnimationFrame(tick)
+        }
+        new IntersectionObserver(([entry]) => {
+            visible = entry.isIntersecting
+            if (visible && !raf) raf = requestAnimationFrame(tick)
+        }).observe(canvas)
+    }
+
+    document.addEventListener("astro:page-load", flyRocket)
+    flyRocket()
+</script>
+
+<style lang="scss">
+    .run-kestra {
+        position: relative;
+        overflow: hidden;
+        background:
+            radial-gradient(
+                50% 60% at 78% 30%,
+                rgba(120, 70, 255, 0.14),
+                transparent 70%
+            ),
+            #08070d;
+        color: #ffffff;
+        --rule-color: rgba(255, 255, 255, 0.13);
+        --rule: 1px solid var(--rule-color);
+        --inset: clamp(1.5rem, 3vw, 2.75rem);
+    }
+
+    .sky {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
+    .stage {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        justify-items: start;
+        gap: clamp(2.5rem, 4vw, 3.5rem);
+        max-width: 76rem;
+        margin-inline: auto;
+        padding: clamp(5rem, 9vw, 8rem) clamp(1rem, 5vw, 4rem);
+
+        @include media-breakpoint-down(lg) {
+            padding-top: 15rem;
+        }
+    }
+
+    .head {
+        max-width: 40rem;
+
+        h2 {
+            margin: 0;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            color: #ffffff;
+            text-shadow: 0 0 1.5rem rgba(8, 7, 13, 0.8);
+        }
+
+        p {
+            max-width: 34rem;
+            margin: 1.25rem 0 0;
+            font-size: 1.125rem;
+            line-height: 1.55;
+            color: rgba(255, 255, 255, 0.72);
+            text-shadow: 0 0 1rem rgba(8, 7, 13, 0.8);
+        }
+    }
+
+    .side {
+        width: min(61rem, 100%);
+    }
+
+    .editions {
+        border: var(--rule);
+        border-radius: 10px;
+        background: rgba(14, 12, 22, 0.55);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+
+    .editions {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        width: 100%;
+        overflow: hidden;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    .edition {
+        position: relative;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 2rem var(--inset) 2.25rem;
+
+        & + & {
+            border-left: var(--rule);
+
+            @include media-breakpoint-down(lg) {
+                border-left: 0;
+                border-top: var(--rule);
+            }
+        }
+
+        > a {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: auto;
+        }
+    }
+
+    .compare {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        justify-content: flex-start;
+        padding: 1.5rem 0 0;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: #ffffff;
+        text-shadow: 0 0 0.75rem rgba(8, 6, 18, 0.9);
+        text-decoration: none;
+        transition: color 0.2s ease;
+
+        span {
+            transition: translate 0.2s ease;
+        }
+
+        &:hover {
+            color: #c4b8ff;
+
+            span {
+                translate: 0.25em 0;
+            }
+        }
+    }
+
+    .badge {
+        margin: 0 0 0.75rem;
+        align-self: flex-start;
+        padding: 0.125rem 0.625rem;
+        background: rgba(167, 150, 255, 0.16);
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #c4b8ff;
+    }
+
+    h3 {
+        margin: 0 0 0.5rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #ffffff;
+    }
+
+    .edition p:not(.badge) {
+        max-width: 30rem;
+        margin: 0 0 0.75rem;
+        font-size: 0.9375rem;
+        line-height: 1.55;
+        color: rgba(255, 255, 255, 0.7);
+
+        &:last-of-type {
+            margin-bottom: 1.25rem;
+        }
+    }
+</style>

@@ -14,6 +14,8 @@ export const LUKE_MEETING_LINK =
     "https://hs.kestra.io/meetings/luke-lipan?uuid=c75c198e-f6c2-43cb-8e05-d622bd9fa06c&embed=true"
 export const JONATHAN_MEETING_LINK =
     "https://meetings-eu1.hubspot.com/jonathan-lowe?embed=true"
+export const MARCUS_MEETING_LINK =
+    "https://meetings-eu1.hubspot.com/marcus-urbatschek?embed=true"
 
 export interface MeetingOptions {
     fallback?: string
@@ -37,6 +39,7 @@ function americasMeetingUrl(territory: VisitorTerritory) {
 }
 
 export function getGeoMeetingUrl(territory: VisitorTerritory = visitorTerritory()) {
+    if (territory === "dach") return MARCUS_MEETING_LINK
     return americasMeetingUrl(territory) ?? DAVID_MEETING_LINK
 }
 
