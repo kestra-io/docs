@@ -1,6 +1,7 @@
 ---
 import { Icon } from "astro-icon/components"
 import PixelEdges from "~/components/about/PixelEdges.astro"
+import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
 
 type Action = { label: string; href: string; solid?: boolean }
 
@@ -52,7 +53,7 @@ const PLANS: {
         actions: [{ label: "Request access", href: "/cloud", solid: true }],
     },
     {
-        name: "Enterprise",
+        name: "Kestra Enterprise",
         price: "Annual",
         text: "For organizations running Kestra as shared infrastructure, on their own terms.",
         features: [
@@ -89,7 +90,15 @@ const PLANS: {
                 {PLANS.map((plan) => (
                     <li class:list={{ featured: plan.featured }}>
                         <div class="name">
-                            <h2>{plan.name}</h2>
+                            <h2>
+                                <img
+                                    src={kestraMark.src}
+                                    alt=""
+                                    width="16"
+                                    height="16"
+                                />
+                                {plan.name}
+                            </h2>
                             {plan.tag && <span class="tag">{plan.tag}</span>}
                         </div>
                         <p class="price">{plan.price}</p>
@@ -274,11 +283,74 @@ const PLANS: {
         gap: 0.5rem 0.75rem;
         min-height: 1.75rem;
 
+        // The edition tag of the Enterprise page's hero, on a light surface:
+        // a glass pill with the Kestra mark and a soft ring.
         h2 {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4375rem;
             margin: 0;
-            font-size: $font-size-lg;
-            font-weight: 600;
+            padding: 0.3125rem 0.75rem 0.3125rem 0.5625rem;
+            border-radius: 999px;
+            background: linear-gradient(
+                160deg,
+                rgba(130, 115, 190, 0.14),
+                rgba(255, 255, 255, 0.7)
+            );
+            box-shadow: 0 6px 16px -12px rgba(60, 50, 120, 0.5);
+            font-size: 0.8125rem;
+            font-weight: 500;
+            letter-spacing: 0.01em;
             color: var(--ks-content-primary);
+
+            &::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                padding: 1px;
+                border-radius: inherit;
+                background: linear-gradient(
+                    150deg,
+                    rgba(120, 100, 200, 0.5),
+                    rgba(150, 140, 190, 0.2) 45%,
+                    rgba(120, 100, 200, 0.35)
+                );
+                mask:
+                    linear-gradient(#000 0 0) content-box exclude,
+                    linear-gradient(#000 0 0);
+                pointer-events: none;
+            }
+
+            img {
+                width: 1rem;
+                height: 1rem;
+            }
+
+            :global(html.dark) & {
+                background:
+                    radial-gradient(
+                        120% 140% at 0% 0%,
+                        rgba(255, 255, 255, 0.08),
+                        transparent 55%
+                    ),
+                    linear-gradient(
+                        160deg,
+                        rgba(130, 115, 190, 0.12),
+                        rgba(22, 21, 30, 0.5)
+                    );
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+
+                &::before {
+                    background: linear-gradient(
+                        150deg,
+                        rgba(255, 255, 255, 0.45),
+                        rgba(190, 170, 255, 0.2) 40%,
+                        rgba(255, 255, 255, 0.08) 60%,
+                        rgba(180, 150, 255, 0.3)
+                    );
+                }
+            }
         }
     }
 
