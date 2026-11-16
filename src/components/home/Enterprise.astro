@@ -532,6 +532,13 @@ const WORKERS = [
                                             class="glimpse-body notes"
                                             data-audit
                                         >
+                                            <span class="defs" aria-hidden="true">
+                                                {Object.values(
+                                                    ACTION_ICONS,
+                                                ).map((icon) => (
+                                                    <Icon name={icon} />
+                                                ))}
+                                            </span>
                                             <div class="stack" data-stack>
                                                 {AUDIT.slice(0, 3).map(
                                                     (line) => (
@@ -1753,6 +1760,13 @@ const WORKERS = [
             justify-content: center;
             padding: 1.5rem 1.75rem;
         }
+    }
+
+    .defs {
+        position: absolute;
+        width: 0;
+        height: 0;
+        overflow: hidden;
     }
 
     .notes {

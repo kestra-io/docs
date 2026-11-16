@@ -107,6 +107,24 @@ const height = (logo: ImageMetadata, scale: number) =>
             }
         }
 
+        @media (max-width: 429.98px) {
+            ul {
+                display: grid;
+                grid-template-columns: repeat(6, minmax(0, 1fr));
+                gap: 1.75rem 0;
+            }
+
+            li {
+                grid-column: span 2;
+                justify-content: center;
+            }
+
+            li:nth-child(-n + 2),
+            li:nth-child(n + 6) {
+                grid-column: span 3;
+            }
+        }
+
         .has-story {
             position: relative;
             display: flex;

@@ -710,7 +710,10 @@ const DUST = [
         @include media-breakpoint-down(md) {
             --rc: 9.5rem;
 
+            order: 1;
+            width: 100%;
             height: 25rem;
+            margin-top: 0.5rem;
         }
     }
 
@@ -974,6 +977,13 @@ const DUST = [
             padding: 7rem 0 2rem;
         }
 
+        @include media-breakpoint-down(md) {
+            justify-items: center;
+            gap: 0;
+            padding-bottom: 3.5rem;
+            text-align: center;
+        }
+
         @include media-breakpoint-between(lg, xl) {
             grid-template-columns: minmax(0, 1fr) minmax(0, 28rem);
             gap: 2rem;
@@ -993,6 +1003,24 @@ const DUST = [
             align-items: center;
             margin-inline: auto;
             text-align: center;
+        }
+
+        @include media-breakpoint-down(md) {
+            display: contents;
+
+            > * {
+                position: relative;
+                z-index: 1;
+            }
+
+            .lead {
+                order: 2;
+                margin-top: 0;
+            }
+
+            .buttons {
+                order: 2;
+            }
         }
     }
 
@@ -1111,14 +1139,21 @@ const DUST = [
     }
 
     .buttons {
-        display: inline-grid;
-        grid-auto-columns: 1fr;
-        grid-auto-flow: column;
+        display: flex;
+        flex-wrap: wrap;
         gap: 0.75rem;
         margin-top: 2.25rem;
 
+        @include media-breakpoint-down(lg) {
+            justify-content: center;
+        }
+
         @media (max-width: 460px) {
-            grid-auto-flow: row;
+            :global(.btn-solid),
+            :global(.btn-ghost) {
+                padding: 0.75rem 1.125rem;
+                font-size: 1rem;
+            }
         }
     }
 

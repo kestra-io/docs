@@ -467,6 +467,31 @@ const PANELS = [
                 border: var(--rule);
                 border-radius: 0.75rem;
             }
+
+            @include media-breakpoint-down(sm) {
+                --zoom: 1.22;
+                --shift: -24%;
+
+                margin-inline: calc(-1 * var(--inset));
+                padding: 0.5rem 0;
+                border-inline: 0;
+                border-radius: 0;
+
+                > :global(.ui-mock) {
+                    flex: none;
+                    width: calc(var(--zoom) * 100%);
+                    margin-left: var(--shift);
+                }
+
+                &[data-tone="ops"] {
+                    --zoom: 1.05;
+                    --shift: 1.5%;
+                }
+
+                &[data-tone="gov"] {
+                    --shift: 2%;
+                }
+            }
         }
 
         &.mock[data-tone="ops"] {

@@ -301,7 +301,7 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
                         )
                     })
                     later(700, () => lower?.classList.add("drawn"))
-                    later(1000, () => {
+                    later(lower ? 1000 : 150, () => {
                         mascot.dispatchEvent(new Event("mascot:arrive"))
                         upper?.classList.add("done")
                     })
