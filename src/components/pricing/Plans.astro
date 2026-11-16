@@ -16,8 +16,9 @@ const PLANS: {
     featured?: boolean
 }[] = [
     {
-        name: "Open Source",
+        name: "Kestra Core",
         tone: "neutral",
+        tag: "Open Source",
         price: "Free",
         text: "For individuals and single teams who want to run Kestra themselves. No limits on flows or executions.",
         features: [
@@ -30,7 +31,7 @@ const PLANS: {
         ],
         ideal: "Ideal for a first team and a first production.",
         actions: [
-            { label: "Get started", href: "/get-started", solid: true },
+            { label: "Get started", href: "/get-started" },
             {
                 label: "Star on GitHub",
                 href: "https://github.com/kestra-io/kestra",
@@ -40,7 +41,7 @@ const PLANS: {
     {
         name: "Kestra Cloud",
         tone: "blue",
-        tag: "Early access program",
+        tag: "Early Access",
         price: "Usage-based",
         text: "Managed by the people who build Kestra. Start in minutes, scale when you need to.",
         features: [
@@ -52,7 +53,7 @@ const PLANS: {
             "SOC2",
         ],
         ideal: "Get most Enterprise capabilities without managing the infrastructure yourself.",
-        actions: [{ label: "Request access", href: "/cloud", solid: true }],
+        actions: [{ label: "Try Kestra Cloud", href: "/cloud" }],
     },
     {
         name: "Kestra Enterprise",
@@ -115,7 +116,11 @@ const PLANS: {
                                 <p class="text">{plan.text}</p>
                                 <a
                                     href={primary.href}
-                                    class="btn-solid"
+                                    class={
+                                        primary.solid
+                                            ? "btn-solid"
+                                            : "btn-ghost"
+                                    }
                                     {...external(primary.href)}
                                 >
                                     {primary.label}
@@ -424,6 +429,7 @@ const PLANS: {
 
     .tag {
         padding: 0.125rem 0.625rem;
+        border-radius: 999px;
         background: color-mix(in srgb, var(--ks-content-link) 12%, transparent);
         font-size: 0.75rem;
         font-weight: 600;
