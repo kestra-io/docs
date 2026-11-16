@@ -79,8 +79,8 @@ IaC tools manage and provision infrastructure through code instead of manual pro
 ### Configuration Management
 These tools automate the configuration of servers and systems, ensuring consistency across environments.
 *   **Ansible:** An agentless automation tool that uses YAML for playbook definitions. It's excellent for configuration management, application deployment, and task automation. Kestra offers native [Ansible orchestration](/orchestration/ansible).
-*   **Puppet:** A model-driven tool that uses a declarative language to define the state of your infrastructure.
-*   **Chef:** Uses a pure-Ruby, domain-specific language (DSL) for writing system configuration "recipes".
+*   **Puppet:** A model-driven tool that uses a declarative language to define the state of your infrastructure. *Note: The source code is still Apache 2.0, but Perforce now ships Puppet Core, a proprietary build that is free only up to 25 nodes, and the public repository has not been maintained since 2024. [OpenVox](https://voxpupuli.org/openvox/) is the community-driven open-source fork.*
+*   **Chef:** Uses a pure-Ruby, domain-specific language (DSL) for writing system configuration "recipes". *Note: The source code is open, but the binaries distributed by Progress require a license key. [Cinc](https://cinc.sh/) is the community distribution built from the same source under Apache 2.0.*
 *   **SaltStack (Salt):** A Python-based, event-driven automation tool that excels at remote execution and configuration management at scale. For users of Ansible's enterprise offering, there are also several [AWX alternatives](/resources/infrastructure/awx-alternatives).
 
 ### Containers and Container Orchestration
@@ -103,7 +103,7 @@ These tools collect, process, and visualize data to provide insights into your s
 
 ### Secrets Management
 These tools securely store and manage access to secrets like API keys, passwords, and certificates.
-*   **HashiCorp Vault:** A tool for securely accessing secrets. It provides a unified interface, tight access control, and records a detailed audit log.
+*   **HashiCorp Vault:** A tool for securely accessing secrets. It provides a unified interface, tight access control, and records a detailed audit log. *Note: Like Terraform, Vault moved to the Business Source License (BSL) in 2023 and is no longer considered open source by the OSI.*
 *   **[OpenBao](https://openbao.org/):** A community-driven fork of HashiCorp's Vault, created to ensure it remains open source after Vault's license change.
 
 ## The DevOps Tool Sprawl Challenge: More Tools, More Silos
