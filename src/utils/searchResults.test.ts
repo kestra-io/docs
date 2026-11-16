@@ -135,6 +135,34 @@ describe("prepareSearchResults", () => {
             ],
             expected: "docs/workflow-components/triggers",
         },
+{
+            query: "policy",
+            results: [
+                doc(
+                    "docs/enterprise/governance/policies",
+                    "Policies in Kestra Enterprise",
+                ),
+                doc(
+                    "docs/terraform/data-sources/policy",
+                    "Terraform: kestra_policy Data Source",
+                ),
+            ],
+            expected: "docs/enterprise/governance/policies",
+        },
+        {
+            query: "test",
+            results: [
+                doc(
+                    "docs/developer-guide/unit-testing",
+                    "Unit Testing Flows in Kestra",
+                ),
+                doc(
+                    "docs/terraform/resources/test",
+                    "Terraform: kestra_test Resource",
+                ),
+            ],
+            expected: "docs/developer-guide/unit-testing",
+        },
     ])("puts the reference page first for $query", ({ query, results, expected }) => {
         const ranked = prepareSearchResults(results, query)
 

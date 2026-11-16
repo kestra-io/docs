@@ -31,7 +31,7 @@ function documentationPriority(result: SearchResult, searchTerm?: string): numbe
         "terraform",
         "api-reference",
     ].includes(section)
-        ? 1
+       ? (matchesTitle ? 1 : 0)
         : 2
 }
 
