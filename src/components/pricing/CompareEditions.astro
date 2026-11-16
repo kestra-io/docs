@@ -7,7 +7,16 @@ const totalPlugins = await fetchTotalPluginsCount()
 type Cell = boolean | string | { note: string }
 type Row = [feature: string, openSource: Cell, cloud: Cell, enterprise: Cell]
 
-const EDITIONS = ["Kestra Core", "Kestra Cloud", "Kestra Enterprise"]
+const EDITIONS = [
+    { name: "Kestra Core", label: "Get started", href: "/get-started" },
+    { name: "Kestra Cloud", label: "Try Kestra Cloud", href: "/cloud" },
+    {
+        name: "Kestra Enterprise",
+        label: "Book a demo",
+        href: "/demo",
+        solid: true,
+    },
+]
 const SALES = "Talk to sales"
 
 const GROUPS: { title: string; rows: Row[] }[] = [
@@ -127,7 +136,20 @@ const GROUPS: { title: string; rows: Row[] }[] = [
                         <tr>
                             <th scope="col">Feature</th>
                             {EDITIONS.map((edition) => (
-                                <th scope="col">{edition}</th>
+                                <th scope="col">
+                                    <span>{edition.name}</span>
+                                    <a
+                                        href={edition.href}
+                                        class:list={[
+                                            edition.solid
+                                                ? "btn-solid"
+                                                : "btn-ghost",
+                                            "compact",
+                                        ]}
+                                    >
+                                        {edition.label}
+                                    </a>
+                                </th>
                             ))}
                         </tr>
                     </thead>
@@ -219,8 +241,40 @@ const GROUPS: { title: string; rows: Row[] }[] = [
     }
 
     .scroll {
+        position: relative;
+
         @include media-breakpoint-down(md) {
             overflow-x: auto;
+        }
+
+        @include media-breakpoint-up(md) {
+            &::after {
+                content: "";
+                position: absolute;
+                inset: 0 0 0 auto;
+                z-index: 3;
+                width: 18%;
+                border-radius: 1rem;
+                background: linear-gradient(
+                    180deg,
+                    color-mix(in srgb, var(--ks-content-link) 6%, transparent),
+                    transparent 34rem
+                );
+                box-shadow:
+                    0 0 0 1px
+                        color-mix(
+                            in srgb,
+                            var(--ks-content-link) 55%,
+                            var(--ks-background-body)
+                        ),
+                    0 0 0 6px
+                        color-mix(
+                            in srgb,
+                            var(--ks-content-link) 14%,
+                            var(--ks-background-body)
+                        );
+                pointer-events: none;
+            }
         }
     }
 
@@ -255,7 +309,7 @@ const GROUPS: { title: string; rows: Row[] }[] = [
 
     thead th {
         position: sticky;
-        top: 67px;
+        top: 61px;
         z-index: 2;
         padding-block: 1.125rem;
         border-top: var(--rule);
@@ -273,6 +327,14 @@ const GROUPS: { title: string; rows: Row[] }[] = [
         @include media-breakpoint-down(md) {
             position: static;
         }
+    }
+
+    thead span {
+        display: block;
+    }
+
+    thead a {
+        margin-top: 0.625rem;
     }
 
     .group th {
