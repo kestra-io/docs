@@ -4,7 +4,7 @@ import { Image } from "astro:assets"
 import appsCatalog from "~/contents/docs/07.enterprise/04.scalability/apps/apps_catalog.png"
 import workerGroups from "~/components/twozero/assets/run-worker-groups.png"
 import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
-import GovMock from "~/components/enterprise/mocks/GovMock.astro"
+import SecretsMock from "~/components/enterprise/mocks/SecretsMock.astro"
 import OpsMock from "~/components/enterprise/mocks/OpsMock.astro"
 import AppsMock from "~/components/enterprise/mocks/AppsMock.astro"
 import auditLogs from "~/contents/docs/07.enterprise/02.governance/06.audit-logs/audit_logs.png"
@@ -126,7 +126,7 @@ const PANELS = [
                                     />
                                     {panel.mock === "apps" && <AppsMock />}
                                     {panel.mock === "ops" && <OpsMock />}
-                                    {panel.mock === "gov" && <GovMock />}
+                                    {panel.mock === "gov" && <SecretsMock />}
                                 </Fragment>
                             ) : (
                                 <Image
