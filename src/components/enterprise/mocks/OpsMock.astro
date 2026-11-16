@@ -1,127 +1,109 @@
 ---
 import { Icon } from "astro-icon/components"
 
-const NAV = [
-    {
-        group: "Tenant",
-        items: [
-            { icon: "mdi:monitor-dashboard", label: "System Overview" },
-            { icon: "mdi:shield-check-outline", label: "Policies" },
-            { icon: "mdi:database-outline", label: "KV Store" },
-            { icon: "mdi:lock-outline", label: "Secrets" },
-            { icon: "mdi:lightning-bolt-outline", label: "Triggers" },
-        ],
-    },
-    {
-        group: "Administration",
-        items: [
-            { icon: "mdi:server-network", label: "Instance", on: true },
-            { icon: "mdi:domain", label: "Tenants" },
-            { icon: "mdi:account-group-outline", label: "IAM" },
-            { icon: "mdi:text-box-search-outline", label: "Audit Logs" },
-            { icon: "mdi:power", label: "Kill Switch" },
-            { icon: "mdi:bullhorn-outline", label: "Announcements" },
-        ],
-    },
-]
-
-const TABS = ["Overview", "Tenants", "Worker groups", "Health"]
-
 const SERVICES = ["executor-1", "executor-2", "scheduler", "webserver"]
 
-const TENANTS = [
+const OTHER_TENANTS = ["infrastructure", "finance-ops"]
+
+const LANES = [
     {
-        name: "data-platform",
-        namespaces: 12,
-        group: "eu-west · k8s",
-        quota: 0.72,
+        group: "on-prem-dc1",
+        place: "Private datacenter",
+        icon: "mdi:server",
+        task: "extract_orders",
+        type: "postgresql.Query",
+        glyph: "mdi:database-outline",
     },
     {
-        name: "infrastructure",
-        namespaces: 9,
-        group: "on-prem dc1",
-        quota: 0.56,
+        group: "eu-west-k8s",
+        place: "Kubernetes · eu-west-1",
+        icon: "mdi:kubernetes",
+        task: "transform",
+        type: "python.Script",
+        glyph: "mdi:language-python",
     },
-    { name: "finance-ops", namespaces: 6, group: "sap-zone", quota: 0.38 },
     {
-        name: "ml-agents",
-        namespaces: 4,
         group: "gpu-pool",
-        quota: 0.82,
-        high: true,
+        place: "GPU nodes",
+        icon: "mdi:expansion-card-variant",
+        task: "train_model",
+        type: "python.Commands",
+        glyph: "mdi:creation-outline",
     },
 ]
 ---
 
 <div class="ui-mock ops-mock" aria-hidden="true" data-ui-mock>
     <div class="stage">
-        <div class="ui">
-            <div class="bar">
-                <img src="/icon.svg" alt="" width="24" height="24" />
-                <span class="slash">/</span>
-                <Icon name="mdi:server-network" />
-                <strong>Instance</strong>
-                <span class="mode">
-                    <Icon name="mdi:wrench-outline" /> Maintenance mode
-                    <i></i>
+        <div class="stack">
+            {OTHER_TENANTS.map((tenant) => (
+                <span class="ghost">
+                    <code>{tenant}</code>
                 </span>
-            </div>
-            <div class="nav">
-                {NAV.map((section) => (
-                    <div>
-                        <span class="group">{section.group}</span>
-                        {section.items.map((item) => (
-                            <span class:list={["item", { on: item.on }]}>
-                                <Icon name={item.icon} />
-                                {item.label}
-                            </span>
-                        ))}
-                    </div>
-                ))}
-            </div>
-            <div class="main">
-                <div class="tabs">
-                    {TABS.map((tab) => (
-                        <span class:list={{ on: tab === "Tenants" }}>
-                            {tab}
-                        </span>
-                    ))}
-                </div>
-                <p class="title">Cluster health</p>
-                <div class="services">
-                    {SERVICES.map((service, idx) => (
-                        <span style={`--k: ${idx}`}>
-                            <i />
-                            {service}
-                        </span>
-                    ))}
-                </div>
-                <p class="title">Tenants and worker groups</p>
-                <div class="table">
-                    <div class="head">
-                        <span>Tenant</span>
-                        <span>Namespaces</span>
-                        <span>Worker group</span>
-                        <span>Quota</span>
-                    </div>
-                    {TENANTS.map((tenant, idx) => (
-                        <div class="line" style={`--k: ${idx}`}>
-                            <code>{tenant.name}</code>
-                            <span>{tenant.namespaces}</span>
-                            <span>
-                                <span class="group">{tenant.group}</span>
-                            </span>
-                            <span
-                                class:list={["quota", { high: tenant.high }]}
-                                style={`--v: ${tenant.quota}`}
-                            >
+            ))}
+            <div class="sheet">
+                <p class="head">
+                    <span class="tenant">
+                        <small>Tenant</small>
+                        <code>data-platform</code>
+                    </span>
+                    <span class="flow">
+                        <Icon name="mdi:file-tree-outline" />
+                        <code>daily_ingest</code>
+                        <span class="tag">
+                            <span class="doing">
                                 <i />
+                                Running
                             </span>
+                            <span class="ok">
+                                <Icon name="mdi:check-circle-outline" />
+                                Success
+                            </span>
+                        </span>
+                    </span>
+                </p>
+                <div class="lanes">
+                    {LANES.map((lane, idx) => (
+                        <div class="lane">
+                            <p class="where">
+                                <Icon name={lane.icon} />
+                                <span>
+                                    <code>{lane.group}</code>
+                                    <small>{lane.place}</small>
+                                </span>
+                            </p>
+                            <div class="track">
+                                <p class={`node n${idx + 1}`}>
+                                    <span class="glyph">
+                                        <Icon name={lane.glyph} />
+                                    </span>
+                                    <span class="what">
+                                        <code>{lane.task}</code>
+                                        <small>{lane.type}</small>
+                                    </span>
+                                    <span class="st">
+                                        <i />
+                                        <Icon name="mdi:check-circle" />
+                                    </span>
+                                    {idx < LANES.length - 1 && (
+                                        <span class="edge" />
+                                    )}
+                                </p>
+                            </div>
                         </div>
                     ))}
                 </div>
             </div>
         </div>
+        <p class="services">
+            <span class="label">Cluster health</span>
+            {SERVICES.map((service, idx) => (
+                <span class="service" style={`--k: ${idx}`}>
+                    <i />
+                    {service}
+                </span>
+            ))}
+        </p>
     </div>
 </div>
 
@@ -142,181 +124,311 @@ const TENANTS = [
         color: var(--text);
     }
 
-    .ui {
-        display: grid;
-        grid-template-columns: 9.5em minmax(0, 1fr);
-        grid-template-rows: 3em auto;
-        overflow: hidden;
+    p {
+        margin: 0;
+    }
+
+    code {
+        font-family: var(--bs-font-monospace);
+        color: inherit;
+    }
+
+    .stack {
+        position: relative;
+        margin: 2.6em 2.6em 0 0;
+    }
+
+    .ghost {
+        position: absolute;
+        inset: 0;
+        padding: 0.28em 1.2em;
         border: 1px solid var(--line);
-        border-radius: 1.1em;
-        background: var(--deep);
+        border-radius: 0.9em;
+        background: var(--panel);
+        opacity: 0.75;
+        translate: 1.3em -1.3em;
+
+        &:first-child {
+            opacity: 0.45;
+            translate: 2.6em -2.6em;
+        }
+
+        code {
+            font-size: 0.6em;
+            color: var(--muted);
+        }
+    }
+
+    .sheet {
+        position: relative;
+        border: 1px solid var(--line);
+        border-radius: 0.9em;
+        background: var(--panel);
         box-shadow: var(--shadow);
     }
 
-    .bar {
-        grid-column: 1 / -1;
+    .head {
         display: flex;
         align-items: center;
-        gap: 0.6em;
-        padding: 0 1em 0 0.7em;
+        justify-content: space-between;
+        gap: 1em;
+        padding: 0.9em 1.3em;
         border-bottom: 1px solid var(--line);
-        background: var(--chrome);
 
-        img {
-            width: 1.7em;
-            height: 1.7em;
-            border-radius: 0.35em;
-        }
-
-        .slash {
-            color: var(--muted);
-            opacity: 0.6;
-        }
-
-        > [data-icon] {
-            width: 1.05em;
-            height: 1.05em;
+        small {
+            font-size: 0.6em;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
             color: var(--muted);
         }
+    }
 
-        strong {
-            font-size: 0.82em;
+    .tenant {
+        display: flex;
+        align-items: baseline;
+        gap: 0.7em;
+
+        code {
+            font-size: 0.84em;
             font-weight: 600;
         }
     }
 
-    .mode {
-        display: inline-flex;
+    .flow {
+        display: flex;
         align-items: center;
         gap: 0.5em;
-        height: 2.5em;
-        margin-left: auto;
-        padding: 0 0.8em;
-        border: 1px solid var(--line);
-        border-radius: 0.4em;
-        font-size: 0.68em;
+
+        > [data-icon] {
+            width: 1em;
+            height: 1em;
+            color: var(--muted);
+        }
+
+        > code {
+            font-size: 0.72em;
+            color: var(--soft);
+        }
+    }
+
+    .tag {
+        display: grid;
+        margin-left: 0.4em;
+        font-size: 0.62em;
         font-weight: 600;
+
+        > span {
+            grid-area: 1 / 1;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4em;
+            white-space: nowrap;
+        }
+
+        .doing {
+            color: var(--run);
+            opacity: 0;
+
+            :global(html.dark) & {
+                color: #b9a6ff;
+            }
+        }
+
+        .ok {
+            color: var(--ok);
+        }
+
+        [data-icon] {
+            width: 1.3em;
+            height: 1.3em;
+        }
+    }
+
+    .doing i,
+    .st i {
+        width: 0.95em;
+        height: 0.95em;
+        border: 0.16em solid var(--run);
+        border-right-color: transparent;
+        border-radius: 50%;
+
+        :global(html.dark) & {
+            border-color: #b9a6ff;
+            border-right-color: transparent;
+        }
+    }
+
+    .lane {
+        display: grid;
+        grid-template-columns: 13em minmax(0, 1fr);
+        height: 6.2em;
+
+        & + & {
+            border-top: 1px dashed var(--line);
+        }
+    }
+
+    .where {
+        display: flex;
+        align-items: center;
+        gap: 0.7em;
+        padding-left: 1.3em;
+        border-right: 1px dashed var(--line);
+
+        [data-icon] {
+            flex: none;
+            width: 1.15em;
+            height: 1.15em;
+            color: var(--muted);
+        }
+
+        span {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15em;
+        }
+
+        code {
+            font-size: 0.72em;
+            font-weight: 600;
+        }
+
+        small {
+            font-size: 0.6em;
+            color: var(--muted);
+        }
+    }
+
+    .track {
+        position: relative;
+    }
+
+    .node {
+        position: absolute;
+        top: 50%;
+        left: 1.3em;
+        display: flex;
+        align-items: center;
+        gap: 0.7em;
+        width: 12.4em;
+        height: 3.4em;
+        padding: 0 0.8em 0 0.6em;
+        border: 1px solid var(--line);
+        border-radius: 0.6em;
+        background: var(--panel);
+        translate: 0 -50%;
+
+        &.n2 {
+            left: 10.2em;
+        }
+
+        &.n3 {
+            left: 19.1em;
+        }
+    }
+
+    .glyph {
+        display: grid;
+        place-items: center;
+        flex: none;
+        width: 2.2em;
+        height: 2.2em;
+        border-radius: 0.4em;
+        background: var(--field);
         color: var(--soft);
 
         [data-icon] {
             width: 1.2em;
             height: 1.2em;
-            color: var(--muted);
-        }
-
-        i {
-            position: relative;
-            width: 2.1em;
-            height: 1.2em;
-            border-radius: 999px;
-            background: var(--chip);
-
-            &::after {
-                content: "";
-                position: absolute;
-                top: 0.15em;
-                left: 0.15em;
-                width: 0.9em;
-                height: 0.9em;
-                border-radius: 50%;
-                background: var(--muted);
-            }
         }
     }
 
-    .nav {
+    .what {
         display: flex;
         flex-direction: column;
-        gap: 0.9em;
-        padding: 0.9em 0.6em 1.2em;
-        border-right: 1px solid var(--line);
-        background: var(--chrome);
+        gap: 0.1em;
+        min-width: 0;
 
-        div {
-            display: flex;
-            flex-direction: column;
-            gap: 0.1em;
-        }
-
-        .group {
-            margin-bottom: 0.3em;
-            padding-left: 0.4em;
-            font-size: 0.68em;
-            color: var(--muted);
-        }
-
-        .item {
-            display: flex;
-            align-items: center;
-            gap: 0.6em;
-            padding: 0.42em 0.5em;
-            border-radius: 0.4em;
+        code {
             font-size: 0.72em;
             font-weight: 600;
             white-space: nowrap;
-            color: var(--soft);
+        }
 
-            &.on {
-                background: var(--chip);
-                color: var(--text);
-            }
+        small {
+            font-family: var(--bs-font-monospace);
+            font-size: 0.56em;
+            white-space: nowrap;
+            color: var(--muted);
+        }
+    }
+
+    .st {
+        display: grid;
+        place-items: center;
+        flex: none;
+        margin-left: auto;
+
+        > * {
+            grid-area: 1 / 1;
+        }
+
+        i {
+            opacity: 0;
         }
 
         [data-icon] {
-            flex: none;
-            width: 1.3em;
-            height: 1.3em;
-            color: var(--muted);
+            width: 1.05em;
+            height: 1.05em;
+            color: var(--ok);
         }
     }
 
-    .main {
-        padding: 0.4em 1.25em 1.4em;
-    }
+    .edge {
+        position: absolute;
+        top: 50%;
+        left: 100%;
+        width: 3.1em;
+        height: 4.25em;
+        border: solid var(--muted);
+        border-width: 1px 1px 0 0;
+        border-top-right-radius: 0.6em;
+        opacity: 0.55;
 
-    .tabs {
-        display: flex;
-        gap: 1.6em;
-        margin: 0 -1.25em;
-        padding: 0 1.25em;
-        border-bottom: 1px solid var(--line);
-
-        span {
-            padding: 0.9em 0;
-            border-bottom: 2px solid transparent;
-            font-size: 0.74em;
-            font-weight: 600;
-            color: var(--muted);
-
-            &.on {
-                border-color: var(--ring);
-                color: var(--text);
-            }
+        &::after {
+            content: "";
+            position: absolute;
+            right: -0.26em;
+            bottom: 0;
+            width: 0.5em;
+            height: 0.5em;
+            border: solid var(--muted);
+            border-width: 0 1px 1px 0;
+            rotate: 45deg;
         }
-    }
-
-    .title {
-        margin: 1.4em 0 0.7em;
-        font-size: 0.8em;
-        font-weight: 600;
     }
 
     .services {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 0.6em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1.6em;
+        margin-top: 2.6em;
+        font-size: 0.68em;
+        white-space: nowrap;
 
-        span {
-            display: flex;
+        .label {
+            font-weight: 600;
+            color: var(--soft);
+        }
+
+        .service {
+            display: inline-flex;
             align-items: center;
             gap: 0.6em;
-            padding: 0.8em 0.8em;
-            border: 1px solid var(--line);
-            border-radius: 0.5em;
-            background: var(--panel);
             font-family: var(--bs-font-monospace);
-            font-size: 0.68em;
-            white-space: nowrap;
+            color: var(--muted);
         }
 
         i {
@@ -338,88 +450,7 @@ const TENANTS = [
         }
     }
 
-    .table {
-        border: 1px solid var(--line);
-        border-radius: 0.5em;
-        background: var(--panel);
-        overflow: hidden;
-    }
-
-    .head,
-    .line {
-        display: grid;
-        grid-template-columns: 1.25fr 0.85fr 1.15fr 1fr;
-        align-items: center;
-        gap: 1em;
-        padding: 0 1em;
-    }
-
-    .head {
-        height: 2.6em;
-        background: var(--field);
-        font-size: 0.62em;
-        font-weight: 600;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: var(--muted);
-    }
-
-    .line {
-        height: 2.75em;
-        border-top: 1px solid var(--line);
-        font-size: 0.74em;
-        font-weight: 600;
-
-        code {
-            font-size: 0.95em;
-            font-weight: 400;
-            color: var(--text);
-        }
-
-        .group {
-            display: inline-block;
-            padding: 0.3em 0.8em;
-            border-radius: 999px;
-            background: var(--tile);
-            font-size: 0.86em;
-            white-space: nowrap;
-            color: var(--tile-ink);
-
-            :global(html.dark) & {
-                background: rgba(152, 105, 247, 0.18);
-                color: #b9a6ff;
-            }
-        }
-    }
-
-    .quota {
-        position: relative;
-        height: 0.5em;
-        border-radius: 999px;
-        background: var(--chip);
-        overflow: hidden;
-
-        i {
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            background: var(--ring);
-            transform: scaleX(var(--v));
-            transform-origin: left;
-
-            &::after {
-                content: "";
-                position: absolute;
-                inset: 0;
-                background: #e8a23a;
-                opacity: 0;
-            }
-        }
-
-        &.high i::after {
-            opacity: 1;
-        }
-    }
+    $steps: (1 5 27, 2 33 55, 3 61 83);
 
     @media (prefers-reduced-motion: no-preference) {
         .ops-mock:not([data-play]) * {
@@ -431,22 +462,45 @@ const TENANTS = [
             animation-delay: calc(var(--k) * 0.45s);
         }
 
-        .line {
-            animation: ops-mock-line var(--loop) linear infinite both;
-            animation-delay: calc(var(--k) * 0.3s);
+        .doing i,
+        .st i {
+            animation: ops-mock-spin 0.9s linear infinite;
         }
 
-        .quota i {
-            animation: ops-mock-fill var(--loop) linear infinite both;
-            animation-delay: calc(var(--k) * 0.3s);
+        .tag .doing {
+            animation: ops-mock-tag-doing var(--loop) linear infinite both;
         }
 
-        .quota.high i {
-            animation-name: ops-mock-fill-high;
+        .tag .ok {
+            animation: ops-mock-tag-ok var(--loop) linear infinite both;
         }
 
-        .quota.high i::after {
-            animation: ops-mock-warn var(--loop) linear infinite both;
+        @each $n, $start, $end in $steps {
+            .n#{$n} {
+                animation: ops-mock-node-#{$n} var(--loop) linear infinite both;
+
+                .st i {
+                    animation:
+                        ops-mock-spin 0.9s linear infinite,
+                        ops-mock-busy-#{$n} var(--loop) linear infinite both;
+                }
+
+                .st [data-icon] {
+                    animation: ops-mock-done-#{$n}
+                        var(--loop)
+                        linear
+                        infinite
+                        both;
+                }
+
+                .edge {
+                    animation: ops-mock-edge-#{$n}
+                        var(--loop)
+                        linear
+                        infinite
+                        both;
+                }
+            }
         }
     }
 
@@ -462,62 +516,112 @@ const TENANTS = [
         }
     }
 
-    @keyframes ops-mock-line {
-        0%,
-        3% {
-            opacity: 0;
-            transform: translateY(0.5em);
-            animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    @keyframes ops-mock-spin {
+        to {
+            rotate: 1turn;
         }
-        9%,
-        94% {
+    }
+
+    @keyframes ops-mock-tag-doing {
+        0%,
+        83% {
             opacity: 1;
-            transform: none;
         }
-        98%,
-        100% {
-            opacity: 0;
-            transform: none;
-        }
-    }
-
-    @keyframes ops-mock-fill {
-        0%,
-        8% {
-            transform: scaleX(0);
-            animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        24%,
-        100% {
-            transform: scaleX(var(--v));
-        }
-    }
-
-    @keyframes ops-mock-fill-high {
-        0%,
-        8% {
-            transform: scaleX(0);
-            animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        24%,
-        46% {
-            transform: scaleX(0.5);
-            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        60%,
-        100% {
-            transform: scaleX(var(--v));
-        }
-    }
-
-    @keyframes ops-mock-warn {
-        0%,
-        54% {
+        85%,
+        97% {
             opacity: 0;
         }
-        60%,
         100% {
             opacity: 1;
+        }
+    }
+
+    @keyframes ops-mock-tag-ok {
+        0%,
+        83% {
+            opacity: 0;
+        }
+        85%,
+        97% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @each $n, $start, $end in $steps {
+        @keyframes ops-mock-node-#{$n} {
+            0%,
+            #{$start * 1%} {
+                border-color: var(--line);
+                box-shadow: none;
+            }
+            #{($start + 2) * 1%},
+            #{$end * 1%} {
+                border-color: var(--ring);
+                box-shadow: 0 0.5em 1.4em -0.6em
+                    color-mix(in srgb, var(--ring) 60%, transparent);
+            }
+            #{($end + 3) * 1%},
+            100% {
+                border-color: var(--line);
+                box-shadow: none;
+            }
+        }
+
+        @keyframes ops-mock-busy-#{$n} {
+            0%,
+            #{$start * 1%} {
+                opacity: 0;
+            }
+            #{($start + 2) * 1%},
+            #{$end * 1%} {
+                opacity: 1;
+            }
+            #{($end + 2) * 1%},
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes ops-mock-done-#{$n} {
+            0%,
+            #{$end * 1%} {
+                opacity: 0;
+                scale: 0.6;
+                animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+            }
+            #{($end + 3) * 1%},
+            96% {
+                opacity: 1;
+                scale: 1;
+            }
+            99%,
+            100% {
+                opacity: 0;
+                scale: 1;
+            }
+        }
+
+        @keyframes ops-mock-edge-#{$n} {
+            0%,
+            #{$end * 1%} {
+                clip-path: inset(-1em 100% calc(100% - 0.7em) 0);
+            }
+            #{($end + 3) * 1%} {
+                clip-path: inset(-1em -1em calc(100% - 0.7em) 0);
+            }
+            #{($end + 6) * 1%},
+            96% {
+                clip-path: inset(-1em -1em -1em 0);
+                opacity: 0.55;
+            }
+            99%,
+            100% {
+                clip-path: inset(-1em -1em -1em 0);
+                opacity: 0;
+            }
         }
     }
 </style>
