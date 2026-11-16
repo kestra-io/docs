@@ -1,7 +1,7 @@
 ---
 import { Icon } from "astro-icon/components"
 import PixelEdges from "~/components/about/PixelEdges.astro"
-import { API_URL } from "astro:env/client"
+import { fetchPluginIcon } from "~/utils/pluginIcon"
 
 const PLANS = ["Standard", "Premium", "Platinum"]
 
@@ -31,14 +31,10 @@ const TOOLS = [
 const logos = await Promise.all(
     TOOLS.map(async (tool) => {
         try {
-            const response = await fetch(
-                `${API_URL}/plugins/icons/io.kestra.plugin.${tool.plugin}`,
-            )
-            if (!response.ok) return null
-            const svg = Buffer.from(await response.arrayBuffer())
+            const svg = await fetchPluginIcon(`io.kestra.plugin.${tool.plugin}`)
             return {
                 name: tool.name,
-                src: `data:image/svg+xml;base64,${svg.toString("base64")}`,
+                src: `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`,
             }
         } catch {
             return null
