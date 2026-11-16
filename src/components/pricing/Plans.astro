@@ -22,7 +22,7 @@ const PLANS: {
         name: "Kestra Core",
         tag: "Open Source",
         price: "Free",
-        text: "For individuals and single teams who want to run Kestra themselves. No limits on flows or executions.",
+        text: "You run Kestra, with no limits on flows or executions.",
         features: [
             `Declarative workflows, ${totalPlugins}+ plugins`,
             "Scheduling and events",
@@ -31,45 +31,38 @@ const PLANS: {
             "Queue on PostgreSQL or MySQL",
             "Community Slack, docs and blueprints",
         ],
-        ideal: "Ideal for a first team and a first production.",
-        actions: [
-            { label: "Get started", href: "/get-started" },
-            {
-                label: "Star on GitHub",
-                href: "https://github.com/kestra-io/kestra",
-            },
-        ],
+        ideal: "Start with your first team.",
+        actions: [{ label: "Get started", href: "/get-started" }],
     },
     {
         name: "Kestra Cloud",
-        tag: "Early Access",
         price: "Usage-based",
-        text: "Managed by the people who build Kestra. Start in minutes, scale when you need to.",
+        text: "We run Kestra for you, with SSO, RBAC and audit logs from day one.",
         features: [
-            "Everything in Open Source",
+            "Everything in Kestra Core",
             "Fully managed: hosting, upgrades, monitoring",
             "Automatic scaling",
-            "Built-in security and governance",
+            "Secrets manager, policies and Apps",
             "Enterprise plugins included",
-            "SOC2",
+            "SOC 2 Type 2",
         ],
-        ideal: "Get most Enterprise capabilities without managing the infrastructure yourself.",
-        actions: [{ label: "Try Kestra Cloud", href: "/cloud" }],
+        ideal: "Skip the platform work.",
+        actions: [{ label: "Request access", href: "/cloud" }],
     },
     {
         name: "Kestra Enterprise",
         price: "Annual",
-        text: "For organizations running Kestra as shared infrastructure, on their own terms.",
+        text: "You run Kestra on your own infrastructure, with full governance and SLA-backed support.",
         features: [
             "Unlimited executions, flows, tasks, apps and assets",
             "Sized to the project: instances, environments, worker groups",
             "SSO, RBAC, audit logs, secrets, policies, approvals",
-            "Customer Success program, support with SLA",
+            "Customer Success program, SLA-backed support",
             "Self-hosted, hybrid or air-gapped",
         ],
-        ideal: "Ideal when a second team joins, when auditors ask, when agents act.",
+        ideal: "Scale orchestration across teams.",
         actions: [
-            { label: "Book a demo", href: "/demo", solid: true },
+            { label: "Contact sales", href: "/demo", solid: true },
             { label: "About Enterprise", href: "/enterprise" },
         ],
         featured: true,
@@ -85,10 +78,7 @@ const PLANS: {
                 <header>
                     <h1 id="pricing-title">Three ways to run Kestra</h1>
                     <p class="lead">
-                        Self-host the open-source version for free. Choose Cloud
-                        for a managed service. Get Enterprise for advanced
-                        governance, air-gapped-ready deployment, and SLA backed
-                        support.
+                        The right edition depends on who runs Kestra and how much governance your teams need.
                     </p>
                 </header>
                 <ul class="plans">

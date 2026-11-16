@@ -11,7 +11,7 @@ import BuyerQuestions from "~/components/enterprise/BuyerQuestions.astro"
 
 const title = "Kestra Pricing: Open Source, Cloud & Enterprise Plans"
 const description =
-    "Self-host the open-source version for free, choose Kestra Cloud for a managed service, or get Enterprise for advanced governance, air-gapped deployment and support with SLA."
+    "Run open-source Kestra Core yourself, get a managed platform with SSO, RBAC and audit logs on Kestra Cloud, or run Kestra Enterprise on your own infrastructure with full governance and SLA-backed support."
 
 const SUPPORT_ROWS = [
     {
@@ -41,7 +41,7 @@ const SUPPORT_ROWS = [
 const FAQ = [
     {
         question: "What drives the cost on Kestra Cloud?",
-        answer: 'Mostly task runs. A task run is one attempt of one task, not one execution. Most tasks call another service, such as BigQuery, Snowflake or Slack, and count only as a task run. Only scripts that run on Kestra’s own task runner (Python, Shell, Node.js…) also add compute, billed per second. Every plan includes a monthly allowance of both. For more detail, see <a href="/docs/enterprise/cloud/task-runs">how task runs are counted</a> and <a href="/docs/enterprise/cloud/cloud-compute">Kestra Cloud compute</a>.',
+        answer: 'Mostly task runs. A task run is one attempt of one task, not one execution. Most tasks call another service, such as BigQuery, Snowflake or Slack, and count only as a task run. Only scripts that run on Kestra’s own task runner (Python, Shell, Node.js…) also add compute, billed per second. Every Kestra Cloud account includes a monthly allowance of both. For more detail, see <a href="/docs/enterprise/cloud/task-runs">how task runs are counted</a> and <a href="/docs/enterprise/cloud/cloud-compute">Kestra Cloud compute</a>.',
     },
     {
         question: "What is an instance in the Enterprise subscription?",
@@ -49,11 +49,11 @@ const FAQ = [
     },
     {
         question: "Is there a trial?",
-        answer: "Open source is free forever. Kestra Cloud starts with a 14-day free trial on your own flows, which we extend for teams that share feedback with us. Enterprise evaluations are a guided trial on your use case: book a demo and we scope it together.",
+        answer: "Kestra Core needs no trial. Install it and run it. Request access to Kestra Cloud and you get a 14-day free trial on your own flows, extended for teams that share feedback with us. Kestra Enterprise starts with a guided trial on your use case. Contact sales and we scope it together.",
     },
     {
         question: "How do we get a quote?",
-        answer: "Book a demo. Pricing is sized to the project, so the conversation starts with instances, environments and the level of support you need.",
+        answer: "Contact sales. Pricing is sized to the project, so the conversation starts with instances, environments and the level of support you need.",
     },
 ]
 ---
@@ -69,9 +69,9 @@ const FAQ = [
         <CompareEditions />
         <SupportPlans title="Support plans" rows={SUPPORT_ROWS}>
             <Fragment slot="lead">
-                Kestra Cloud and Enterprise both include Standard support.
-                Premium and Platinum below are Enterprise plans; for Premium on
-                Kestra Cloud, talk to sales.
+                Kestra Cloud and Kestra Enterprise include Standard support.
+                Premium and Platinum are Enterprise plans, and Premium is
+                available on Kestra Cloud through sales.
             </Fragment>
         </SupportPlans>
         <BuyerQuestions title="Questions about pricing" items={FAQ} />

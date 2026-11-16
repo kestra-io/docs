@@ -7,7 +7,7 @@ const ROWS: { label: string; values: string[] }[] = [
         label: "Where it runs",
         values: [
             "Anywhere you deploy it",
-            "Managed by Kestra, in the US or EU",
+            "Managed by Kestra",
             "Your infrastructure, including air-gapped",
         ],
     },
@@ -15,7 +15,7 @@ const ROWS: { label: string; values: string[] }[] = [
         label: "Governance",
         values: [
             "Basic authentication",
-            "SSO and RBAC",
+            "SSO, RBAC and audit logs",
             "Full: SSO, LDAP, SCIM, RBAC, audit logs, policies",
         ],
     },
@@ -31,10 +31,6 @@ const ROWS: { label: string; values: string[] }[] = [
         <div class="rails">
             <header>
                 <h2 id="how-to-choose">How to choose</h2>
-                <p>
-                    Four questions settle it: who operates, where it runs, the
-                    governance you need and how you pay.
-                </p>
             </header>
             <div class="scroll">
                 <table>
@@ -90,11 +86,6 @@ const ROWS: { label: string; values: string[] }[] = [
             @include title;
             font-size: clamp(2rem, 3.6vw, 3rem);
             color: var(--ks-content-primary);
-        }
-
-        p {
-            @include lead;
-            max-width: 40rem;
         }
     }
 

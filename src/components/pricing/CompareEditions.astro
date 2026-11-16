@@ -16,15 +16,15 @@ type Row = [
 
 const EDITIONS = [
     { name: "Kestra Core", label: "Get started", href: "/get-started" },
-    { name: "Kestra Cloud", label: "Try Kestra Cloud", href: "/cloud" },
+    { name: "Kestra Cloud", label: "Request access", href: "/cloud" },
     {
         name: "Kestra Enterprise",
-        label: "Book a demo",
+        label: "Contact sales",
         href: "/demo",
         solid: true,
     },
 ]
-const SALES = "Talk to sales"
+const SALES = "Via sales"
 
 const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
     {
@@ -284,7 +284,7 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
             [
                 "Workers on your own infrastructure",
                 false,
-                "Coming soon, talk to sales",
+                "Coming soon",
                 true,
                 [
                     "Route tasks to dedicated workers by tag and reserve capacity for critical work",
@@ -326,12 +326,7 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
     <div class="container-xl">
         <div class="rails">
             <header>
-                <h2 id="comparison-table">Compare editions</h2>
-                <p>
-                    The complete feature matrix. Open source is the foundation.
-                    Kestra Cloud includes most Enterprise features, and the rest
-                    are available through sales.
-                </p>
+                <h2 id="comparison-table">All features</h2>
             </header>
             <div class="scroll">
                 <table>
@@ -458,11 +453,6 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
             @include title;
             font-size: clamp(2rem, 3.6vw, 3rem);
             color: var(--ks-content-primary);
-        }
-
-        p {
-            @include lead;
-            max-width: 44rem;
         }
     }
 
@@ -638,6 +628,12 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
         color: var(--ks-content-secondary);
         translate: -50% 0;
         visibility: hidden;
+
+        @include media-breakpoint-down(md) {
+            left: 0;
+            translate: none;
+        }
+
         opacity: 0;
         transition:
             opacity 0.2s,
