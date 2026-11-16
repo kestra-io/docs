@@ -1,5 +1,5 @@
 ---
-const EDITIONS = ["Open Source", "Kestra Cloud", "Enterprise"]
+const EDITIONS = ["Kestra Core", "Kestra Cloud", "Kestra Enterprise"]
 
 const ROWS: { label: string; values: string[] }[] = [
     { label: "Who operates", values: ["You", "Kestra", "You"] },
@@ -100,6 +100,7 @@ const ROWS: { label: string; values: string[] }[] = [
     .scroll {
         overflow-x: auto;
         border-top: var(--rule);
+        background: var(--ks-background-body);
     }
 
     table {
@@ -132,19 +133,19 @@ const ROWS: { label: string; values: string[] }[] = [
     }
 
     thead th {
-        font-size: $font-size-sm;
+        font-size: $font-size-md;
         font-weight: 600;
-        color: var(--ks-content-link);
+        color: var(--ks-content-primary);
     }
 
     tbody th {
-        font-size: $font-size-sm;
+        font-size: $font-size-md;
         font-weight: 400;
-        color: var(--ks-content-tertiary);
+        color: var(--ks-content-secondary);
     }
 
     tbody td {
-        font-size: $font-size-lg;
+        font-size: $font-size-md;
         font-weight: 500;
         line-height: 1.4;
         color: var(--ks-content-primary);

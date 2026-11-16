@@ -10,7 +10,7 @@ const totalPlugins = await fetchTotalPluginsCount()
 type Cell = boolean | string | { note: string }
 type Row = [feature: string, openSource: Cell, cloud: Cell, enterprise: Cell]
 
-const EDITIONS = ["Open Source", "Cloud", "Enterprise"]
+const EDITIONS = ["Kestra Core", "Kestra Cloud", "Kestra Enterprise"]
 const SALES = "Talk to sales"
 
 const GROUPS: { title: string; rows: Row[] }[] = [
@@ -268,13 +268,9 @@ const GROUPS: { title: string; rows: Row[] }[] = [
         color: var(--ks-content-primary);
 
         &:first-child {
-            font-size: $font-size-sm;
+            font-size: $font-size-md;
             font-weight: 400;
             color: var(--ks-content-tertiary);
-        }
-
-        &:last-child {
-            color: var(--ks-content-link);
         }
 
         @include media-breakpoint-down(md) {
@@ -292,7 +288,7 @@ const GROUPS: { title: string; rows: Row[] }[] = [
     }
 
     tbody th[scope="row"] {
-        font-size: 0.9375rem;
+        font-size: $font-size-md;
         font-weight: 400;
         line-height: 1.45;
         color: var(--ks-content-primary);
@@ -304,7 +300,7 @@ const GROUPS: { title: string; rows: Row[] }[] = [
 
     td {
         vertical-align: middle;
-        font-size: $font-size-sm;
+        font-size: $font-size-md;
         line-height: 1.35;
     }
 
