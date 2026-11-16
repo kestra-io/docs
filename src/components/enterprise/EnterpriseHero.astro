@@ -556,21 +556,10 @@ const DUST = [
         margin: -2.375rem;
         border: 2px solid rgba(255, 255, 255, calc(0.3 + var(--level) * 0.08));
         border-radius: 0.875rem;
-        background:
-            linear-gradient(155deg, rgba(255, 255, 255, 0.16), transparent 38%),
-            linear-gradient(180deg, #1c1c22, #060608);
+        background: #121118;
         box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.18),
             0 0 calc(18px + var(--level) * 16px) calc(var(--level) * 2px)
                 rgba(124, 102, 255, calc(0.16 + var(--level) * 0.19)),
-            1px 0.6px 0 #2a2466,
-            2px 1.2px 0 #2a2466,
-            3px 1.8px 0 #2a2466,
-            4px 2.4px 0 #2a2466,
-            5px 3px 0 #2a2466,
-            6px 3.6px 0 #2a2466,
-            7px 4.2px 0 #2a2466,
-            8px 4.8px 0 rgba(190, 180, 255, 0.3),
             0 0 0 1px rgba(0, 0, 0, 0.5);
         transform: translateZ(90px) scale(calc(1 + var(--level) * 0.04));
         transition:
@@ -712,7 +701,7 @@ const DUST = [
 
             order: 1;
             width: 100%;
-            height: 25rem;
+            height: 21rem;
             margin-top: 0.5rem;
         }
     }
@@ -734,7 +723,7 @@ const DUST = [
             transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 
         @include media-breakpoint-down(md) {
-            transform: rotateX(10deg) rotateY(-10deg) scale(0.84);
+            transform: rotateX(10deg) rotateY(-10deg) scale(0.7);
         }
 
         &::before,
@@ -835,21 +824,12 @@ const DUST = [
             align-items: center;
             gap: 0.5rem;
             padding: 0.25rem 0.625rem;
+            border-radius: 0.5rem;
             translate: -50% -50%;
-            background:
-                linear-gradient(
-                    160deg,
-                    rgba(255, 255, 255, 0.1),
-                    transparent 60%
-                ),
-                rgb(16, 15, 38);
+            background: rgb(16, 15, 38);
             box-shadow:
                 inset 0 0 0 1px rgba(190, 180, 255, 0.3),
-                1px 0.6px 0 #2a2466,
-                2px 1.2px 0 #2a2466,
-                3px 1.8px 0 #2a2466,
-                4px 2.4px 0 #2a2466,
-                8px 12px 24px -6px rgba(0, 0, 0, 0.8);
+                0 12px 24px -8px rgba(0, 0, 0, 0.8);
             font-size: 0.8125rem;
             font-weight: 500;
             white-space: nowrap;
@@ -929,7 +909,7 @@ const DUST = [
                 24px
             )
             scale(calc(0.88 + 0.12 * var(--c)));
-        opacity: calc(0.7 + 0.3 * var(--c));
+        filter: brightness(calc(0.78 + 0.22 * var(--c)));
 
         &:global(.spent) {
             visibility: hidden;
@@ -1233,23 +1213,9 @@ const DUST = [
         border-radius: 0.75rem;
 
         background-color: rgb(16, 15, 38);
-        background-image: linear-gradient(
-            160deg,
-            rgba(255, 255, 255, 0.18),
-            rgba(255, 255, 255, 0.04) 42%,
-            transparent 70%
-        );
         box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.34),
             inset 0 0 0 1px rgba(190, 180, 255, 0.3),
-            1px 0.6px 0 #2a2466,
-            2px 1.2px 0 #2a2466,
-            3px 1.8px 0 #2a2466,
-            4px 2.4px 0 #2a2466,
-            5px 3px 0 #2a2466,
-            6px 3.6px 0 #2a2466,
-            7px 4.2px 0 rgba(190, 180, 255, 0.28),
-            14px 22px 46px -10px rgba(0, 0, 0, 0.9);
+            0 18px 40px -12px rgba(0, 0, 0, 0.85);
 
         &::before {
             content: "";
