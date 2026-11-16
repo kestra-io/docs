@@ -180,11 +180,10 @@ const PLANS: {
     .rails {
         position: relative;
         padding: 0 clamp(1.5rem, 4vw, 3.5rem);
-        border-inline: var(--rule);
     }
 
-    // The grid: two inner rails that run the height of the section, a rule
-    // under the hero and one between each plan.
+    // The grid: two rails that run the height of the section, a rule under
+    // the hero that crosses the whole page, and one between each plan.
     .frame {
         max-width: 72rem;
         margin-inline: auto;
@@ -218,10 +217,20 @@ const PLANS: {
     .plans {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
+        position: relative;
         margin: 0;
         padding: 0;
-        border-top: var(--rule);
         list-style: none;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 100vw;
+            border-top: var(--rule);
+            translate: -50% 0;
+        }
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);
