@@ -68,6 +68,34 @@ In the Enterprise Edition, the bell also receives [Cases](../07.enterprise/02.go
 
 Read notifications are deleted after 7 days and unread ones after 30 days. A background job removes them every hour; it can be configured with `kestra.notifications.purge-expired.enabled`, `initial-delay`, and `fixed-delay`.
 
+### Send notifications from a flow
+
+To notify users from a flow, use the `io.kestra.plugin.core.notification.Notify` task. Each user in `users` gets a notification in their bell, titled with the rendered `title`:
+
+```yaml
+id: notify_on_call
+namespace: company.team
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: Hello World!
+
+  - id: notify
+    type: io.kestra.plugin.core.notification.Notify
+    users:
+      - alice@example.com
+      - bob@example.com
+    title: "{{ flow.id }} finished, execution {{ execution.id }}"
+    url: "/main/executions/{{ flow.namespace }}/{{ flow.id }}/{{ execution.id }}"
+```
+
+- `url` is optional. A Kestra UI path without the `/ui` prefix, starting with the tenant ID, such as `/main/executions`, opens when the user clicks the notification. An absolute `http` or `https` URL turns the title into a link. Any other value fails the task.
+- Set `read: true` to create the notification already read, so it appears in the list without raising the unread badge.
+- The task's `count` output is the number of notifications sent.
+
+In the open-source edition, the single user receives one notification whatever `users` lists. In the Enterprise Edition, `users` holds usernames, and each user must be able to access the flow's tenant. If any user is unknown or has no access, the task fails before sending anything, with the same message for both cases.
+
 <div class="video-container">
     <iframe
         src="https://www.youtube.com/embed/6o0PNVrA84k?si=QyjOSo5HMZ-wKHol"

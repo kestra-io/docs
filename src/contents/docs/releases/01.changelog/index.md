@@ -42,7 +42,7 @@ Infrastructure self-service in a dedicated tenant type, searchable execution val
 
 - **Execution timeline**: a time-axis view of executions grouped by namespace and flow. [Docs](../../09.ui/02.executions/index.md#timeline)
 - **Loop iterations in the Gantt**: expand a `Loop` to its iterations in place and step between failures. [Docs](../../09.ui/02.executions/index.md#loop-iterations)
-- **Notifications**: the notifications bell comes to the open-source edition, and bulk actions on executions, triggers, and backfills report their progress there. [Docs](../../09.ui/index.mdx)
+- **Notifications**: the notifications bell comes to the open-source edition, and bulk actions on executions, triggers, and backfills report their progress there. A new `Notify` task sends notifications to users from a flow. [Docs](../../09.ui/index.mdx#notifications)
 - **Bulk resume of breakpoints**: the **Resume** bulk action and the `resume/by-ids` and `resume/by-query` endpoints also resume executions stopped at a breakpoint. [Docs](../../15.how-to-guides/pause-resume/index.md)
 - **Context panel (EE)**: the flow editor shows inputs, variables, KV pairs, and secrets across the namespace hierarchy in one searchable tree. [Docs](../../09.ui/01.flows/index.md)
 - **Change password in OSS**: users with database-stored Basic Auth credentials can change their password from the user menu. [Docs](../../10.administrator-guide/basic-auth-troubleshooting/index.md)
