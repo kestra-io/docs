@@ -78,7 +78,8 @@ const PLANS: {
                 <header>
                     <h1 id="pricing-title">Three ways to run Kestra</h1>
                     <p class="lead">
-                        The right edition depends on who runs Kestra and how much governance your teams need.
+                        The right edition depends on who runs Kestra and how
+                        much governance your teams need.
                     </p>
                 </header>
                 <ul class="plans">
@@ -176,8 +177,16 @@ const PLANS: {
     }
 
     .frame {
+        position: relative;
         margin-inline: auto;
         border-inline: var(--rule);
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: -100vh -1px 100%;
+            border-inline: var(--rule);
+        }
 
         @include media-breakpoint-down(lg) {
             max-width: 32rem;
