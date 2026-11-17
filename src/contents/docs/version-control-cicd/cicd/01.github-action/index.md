@@ -318,11 +318,20 @@ jobs:
           override: true
 ```
 
+## Block broken flows with a branch ruleset
+
+When the deploy workflow runs on every push to `main`, a broken flow merged into `main` goes straight to your Kestra instance. A [branch ruleset](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets) on `main` makes the validate job a required gate.
+
+1. In your GitHub repository, open **Settings**, then **Rules** > **Rulesets**, and create a new branch ruleset targeting `main`.
+2. Enable **Require a pull request before merging** so no one commits directly to `main`.
+3. Enable **Require status checks to pass** and add the job that runs the Validate Flows Action.
+
+Every change now reaches `main` through a pull request, and the pull request can't merge until validation passes. For example, if a flow has incorrect indentation, the validate check fails and GitHub blocks the merge until the flow is fixed.
+
 ---
 
 ## Additional resources
 
-- [How-to Guide: GitHub Actions CI/CD](../../../15.how-to-guides/github-actions/index.md) — More examples and advanced workflows.
 - [Kestra Validate Flows Action](https://github.com/kestra-io/validate-flows-action-v2)
 - [Kestra Deploy Flows Action](https://github.com/kestra-io/deploy-flows-action-v2)
 - [Kestra Deploy Namespace Files Action](https://github.com/kestra-io/deploy-namespace-files-action)
