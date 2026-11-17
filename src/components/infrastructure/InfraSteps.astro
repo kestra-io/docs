@@ -1,0 +1,257 @@
+---
+import TopologyMock from "~/components/home/TopologyMock.astro"
+import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
+
+const STEPS = [
+    "Publish your existing Terraform, OpenTofu or Ansible code to the catalog, straight from Git.",
+    "Developers, data teams and AI agents request what they need from a form.",
+    "Production requests wait for a sign-off, while sandboxes go straight through.",
+    "Kestra provisions the resource and records who owns it, where it runs and when its lease ends.",
+    "Owners get a reminder before the lease ends, and your cleanup flow retires anything nobody extends.",
+]
+
+const TOPOLOGY = {
+    label: "Kestra topology of the provision_vm flow running: request form, owner approval, Terraform apply, Ansible config and asset registration run one after the other",
+    gantt: true,
+    nodes: [
+        {
+            id: "request_form",
+            type: "core.trigger.Webhook",
+            plugin: "core.trigger.Webhook",
+            fallback: "mdi:webhook",
+            x: 0,
+            y: 0,
+            status: "success" as const,
+            duration: "0.4s",
+            seconds: 0.4,
+        },
+        {
+            id: "owner_approval",
+            type: "core.flow.Pause",
+            plugin: "core.flow.Pause",
+            fallback: "mdi:pause-circle-outline",
+            x: 0,
+            y: 140,
+            status: "success" as const,
+            duration: "2m 31s",
+            seconds: 151,
+        },
+        {
+            id: "terraform_apply",
+            type: "terraform.cli.TerraformCLI",
+            plugin: "terraform.cli.TerraformCLI",
+            fallback: "mdi:terraform",
+            x: 310,
+            y: 0,
+            status: "success" as const,
+            duration: "3m 05s",
+            seconds: 185,
+            artifacts: 1,
+        },
+        {
+            id: "ansible_config",
+            type: "ansible.cli.AnsibleCLI",
+            plugin: "ansible.cli.AnsibleCLI",
+            fallback: "mdi:ansible",
+            x: 310,
+            y: 140,
+            status: "running" as const,
+            duration: "1m 12s",
+            seconds: 72,
+        },
+        {
+            id: "register_asset",
+            type: "core.kv.Set",
+            plugin: "core.kv.Set",
+            fallback: "mdi:database-sync-outline",
+            x: 620,
+            y: 0,
+            status: "created" as const,
+            duration: "0.8s",
+            seconds: 0.8,
+        },
+    ],
+}
+---
+
+<section class="infra-steps" aria-labelledby="infra-steps">
+    <div class="container-xl">
+        <div class="grid">
+            <header class="head">
+                <h2 id="infra-steps">
+                    Infrastructure without the ticket queue
+                </h2>
+                <p>
+                    Your platform team decides which resources teams can request
+                    and how long they last. Dev teams request what they need and
+                    get it in minutes.
+                </p>
+            </header>
+            <ol>
+                {STEPS.map((step, idx) => (
+                    <li>
+                        <span aria-hidden="true">{idx + 1}</span>
+                        <p>{step}</p>
+                    </li>
+                ))}
+            </ol>
+            <div class="visual" style={`--pixels: url("${pixelCluster}")`}>
+                <span class="pixels" aria-hidden="true"></span>
+                <TopologyMock {...TOPOLOGY} />
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .infra-steps {
+        position: relative;
+        background: var(--ks-background-body);
+        border-bottom: 1px solid var(--ks-border-primary);
+    }
+
+    .grid {
+        --rule: 1px solid var(--ks-border-primary);
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+        --accent: #7448e8;
+
+        :global(html.dark) & {
+            --accent: #b9a6ff;
+        }
+
+        border-inline: var(--rule);
+    }
+
+    .head {
+        padding: 8.5rem var(--inset) 3.5rem;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem 2.5rem;
+        }
+
+        h2 {
+            max-width: 18em;
+            margin: 0 auto;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            text-wrap: balance;
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            max-width: 40rem;
+            margin: 1.25rem auto 0;
+            font-size: 1.125rem;
+            line-height: 1.55;
+            color: var(--ks-content-tertiary);
+        }
+    }
+
+    ol {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        margin: 0;
+        padding: 0;
+        border-top: var(--rule);
+        list-style: none;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    li {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        padding: 2rem 1.5rem 2.5rem;
+
+        & + li {
+            border-left: var(--rule);
+        }
+
+        @include media-breakpoint-down(lg) {
+            flex-direction: row;
+            align-items: center;
+            padding: 1.25rem var(--inset);
+
+            & + li {
+                border-top: var(--rule);
+                border-left: 0;
+            }
+        }
+
+        span {
+            flex: none;
+            display: grid;
+            place-items: center;
+            width: 2.25rem;
+            height: 2.25rem;
+            border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+            border-radius: 0.5rem;
+            background: color-mix(in srgb, var(--accent) 10%, transparent);
+            font-family: var(--ks-font-monospace);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        p {
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--ks-content-secondary);
+        }
+    }
+
+    .visual {
+        --tint: #8405ff;
+
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 0;
+        height: 34rem;
+        overflow: hidden;
+        border-top: var(--rule);
+        background:
+            radial-gradient(
+                80% 90% at 100% 0%,
+                color-mix(in srgb, var(--tint) 20%, transparent),
+                transparent 70%
+            ),
+            color-mix(in srgb, var(--tint) 3%, var(--ks-background-body));
+
+        :global(html.dark) & {
+            --tint: #9869f7;
+
+            background:
+                radial-gradient(
+                    80% 90% at 100% 0%,
+                    color-mix(in srgb, var(--tint) 12%, transparent),
+                    transparent 70%
+                ),
+                color-mix(in srgb, var(--tint) 3%, var(--ks-background-body));
+        }
+
+        @include media-breakpoint-down(md) {
+            height: 22rem;
+        }
+    }
+
+    .pixels {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        width: 96px;
+        aspect-ratio: 194 / 168;
+        background: var(--tint);
+        mask: var(--pixels) no-repeat center / contain;
+        opacity: 0.3;
+        pointer-events: none;
+    }
+</style>

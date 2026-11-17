@@ -5,7 +5,23 @@ import SecretsMock from "~/components/enterprise/mocks/SecretsMock.astro"
 import OpsMock from "~/components/enterprise/mocks/OpsMock.astro"
 import AppsMock from "~/components/enterprise/mocks/AppsMock.astro"
 
-const PANELS = [
+interface Panel {
+    id: string
+    tab: string
+    icon: string
+    title: string
+    intro: string
+    points?: string[]
+    mock?: string
+}
+
+interface Props {
+    id?: string
+    label?: string
+    panels?: Panel[]
+}
+
+const DEFAULT_PANELS: Panel[] = [
     {
         id: "ux",
         tab: "User experience",
@@ -51,30 +67,51 @@ const PANELS = [
         mock: "gov",
     },
 ]
+
+const {
+    id = "ee-showcase",
+    label = "Enterprise features",
+    panels: PANELS = DEFAULT_PANELS,
+} = Astro.props
+
+const MOCKS: Record<string, string> = {}
+for (const panel of PANELS) {
+    if (Astro.slots.has(panel.id))
+        MOCKS[panel.id] = await Astro.slots.render(panel.id)
+}
 ---
 
-<section class="ee-showcase" aria-labelledby="ee-showcase" data-showcase>
+<section class="ee-showcase" aria-labelledby={id} data-showcase>
     <div class="container-xl">
         <div class="grid">
             <header class="head">
-                <h2 id="ee-showcase">
-                    Give every team the power to automate at scale.
+                <h2 {id}>
+                    <slot name="title">
+                        Give every team the power to automate at scale.
+                    </slot>
                 </h2>
                 <p>
-                    Customize the user experience, simplify operations, and
-                    strengthen governance to scale.
+                    <slot name="lead">
+                        Customize the user experience, simplify operations, and
+                        strengthen governance to scale.
+                    </slot>
                 </p>
             </header>
 
-            <div class="tabs" role="tablist" aria-label="Enterprise features">
+            <div
+                class="tabs"
+                role="tablist"
+                aria-label={label}
+                style={`--tabs: ${PANELS.length}`}
+            >
                 {PANELS.map((panel, idx) => (
                     <button
                         type="button"
                         role="tab"
-                        id={`ee-tab-${panel.id}`}
+                        id={`${id}-tab-${panel.id}`}
                         class:list={["tab", { active: idx === 0 }]}
                         aria-selected={idx === 0 ? "true" : "false"}
-                        aria-controls={`ee-panel-${panel.id}`}
+                        aria-controls={`${id}-panel-${panel.id}`}
                         tabindex={idx === 0 ? 0 : -1}
                     >
                         <Icon name={panel.icon} />
@@ -86,22 +123,24 @@ const PANELS = [
             <div class="panels">
                 {PANELS.map((panel, idx) => (
                     <div
-                        id={`ee-panel-${panel.id}`}
+                        id={`${id}-panel-${panel.id}`}
                         role="tabpanel"
-                        aria-labelledby={`ee-tab-${panel.id}`}
+                        aria-labelledby={`${id}-tab-${panel.id}`}
                         class:list={["panel", { active: idx === 0 }]}
                     >
                         <div class="copy">
                             <h3>{panel.title}</h3>
                             <p class="intro">{panel.intro}</p>
-                            <ul>
-                                {panel.points.map((point, i) => (
-                                    <li
-                                        style={`--i: ${i + 2}`}
-                                        set:html={point}
-                                    />
-                                ))}
-                            </ul>
+                            {panel.points && (
+                                <ul>
+                                    {panel.points.map((point, i) => (
+                                        <li
+                                            style={`--i: ${i + 2}`}
+                                            set:html={point}
+                                        />
+                                    ))}
+                                </ul>
+                            )}
                         </div>
                         <div class="media mock" data-tone={panel.id}>
                             <span
@@ -109,6 +148,9 @@ const PANELS = [
                                 aria-hidden="true"
                                 style={`--pixels: url("${pixelCluster}")`}
                             />
+                            {MOCKS[panel.id] && (
+                                <Fragment set:html={MOCKS[panel.id]} />
+                            )}
                             {panel.mock === "apps" && <AppsMock />}
                             {panel.mock === "ops" && <OpsMock />}
                             {panel.mock === "gov" && <SecretsMock />}
@@ -249,7 +291,7 @@ const PANELS = [
 
     .tabs {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(var(--tabs), minmax(0, 1fr));
         gap: 1px;
         border-block: var(--rule);
         background: var(--ks-border-primary);
@@ -370,7 +412,12 @@ const PANELS = [
         }
 
         .intro {
-            margin: 0.75rem 0 1.75rem;
+            margin: 0.75rem 0 0;
+
+            &:not(:last-child) {
+                margin-bottom: 1.75rem;
+            }
+
             font-size: 1.0625rem;
             line-height: 1.55;
             color: var(--ks-content-secondary);

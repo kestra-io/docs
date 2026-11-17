@@ -1,0 +1,797 @@
+---
+import { Icon } from "astro-icon/components"
+
+interface Props {
+    view: "requests" | "deployments" | "cases" | "assets"
+}
+
+const { view } = Astro.props
+
+const NAV = [
+    { id: "catalog", icon: "mdi:view-grid-outline" },
+    { id: "requests", icon: "mdi:file-document-outline" },
+    { id: "deployments", icon: "mdi:server-outline" },
+    { id: "runs", icon: "mdi:refresh" },
+    { id: "cases", icon: "mdi:alert-outline" },
+    { id: "assets", icon: "mdi:layers-outline" },
+]
+
+const VIEWS = {
+    requests: {
+        crumb: "New request",
+        title: "Request a Linux VM",
+        sub: "Fill in the form. A sign-off is added for production.",
+    },
+    deployments: {
+        crumb: "Deployments",
+        title: "Deployments",
+        sub: "Everything that exists, who owns it and when it expires.",
+    },
+    cases: {
+        crumb: "Cases",
+        title: "Cases",
+        sub: "Failed runs become incidents with an owner and an SLA.",
+    },
+    assets: {
+        crumb: "Assets",
+        title: "Assets",
+        sub: "Every resource you create, its owner and what depends on it.",
+    },
+}
+
+const FIELDS = [
+    { label: "Environment", value: "staging" },
+    { label: "Size", value: "medium · 4 vCPU · 16 GB" },
+    { label: "Owner", value: "j.kim · payments team" },
+    { label: "Lease", value: "14 days" },
+]
+
+const APPROVERS = [
+    {
+        initial: "J",
+        name: "j.kim",
+        role: "Requester",
+        tag: "Submitted",
+        tone: "ok",
+    },
+    {
+        initial: "M",
+        name: "m.chen",
+        role: "Platform",
+        tag: "Pending",
+        tone: "wait",
+    },
+]
+
+const DEPLOYMENTS = [
+    {
+        name: "dev-payments-api",
+        owner: "j.kim",
+        status: "Running",
+        tone: "ok",
+        lease: "3 days left",
+        due: "wait",
+    },
+    {
+        name: "stg-orders-db",
+        owner: "a.diaz",
+        status: "Running",
+        tone: "ok",
+        lease: "21 days",
+    },
+    {
+        name: "ml-gpu-sandbox",
+        owner: "l.martin",
+        status: "Provisioning",
+        tone: "run",
+        lease: "30 days",
+    },
+    {
+        name: "qa-k8s-ns-42",
+        owner: "r.patel",
+        status: "Expired",
+        tone: "fail",
+        lease: "retired today",
+        due: "fail",
+    },
+    {
+        name: "edge-fw-rules",
+        owner: "platform",
+        status: "Running",
+        tone: "ok",
+        lease: "no expiry",
+    },
+]
+
+const CASES = [
+    {
+        title: "Provisioning failed: stg-orders-db",
+        cause: "terraform apply · quota exceeded",
+        status: "Open",
+        tone: "fail",
+        assignee: "a.diaz",
+        sla: "SLA 1h 12m",
+        ticket: "INC0041872",
+    },
+    {
+        title: "Patch run failed on 3 hosts",
+        cause: "ansible · unreachable hosts",
+        status: "In progress",
+        tone: "wait",
+        assignee: "platform",
+        sla: "SLA 3h 40m",
+        ticket: "INC0041869",
+    },
+    {
+        title: "Lease cleanup skipped",
+        cause: "qa-k8s-ns-42 · namespace locked",
+        status: "Resolved",
+        tone: "ok",
+        assignee: "r.patel",
+        sla: "Resolved",
+        ticket: "JIRA-2231",
+    },
+]
+
+const ASSETS = [
+    { id: "vpc", name: "vpc-staging", kind: "network", icon: "mdi:web" },
+    {
+        id: "api",
+        name: "dev-payments-api",
+        kind: "server",
+        icon: "mdi:server-outline",
+        focus: true,
+    },
+    {
+        id: "dns",
+        name: "api.staging.acme",
+        kind: "dns record",
+        icon: "mdi:web",
+    },
+    {
+        id: "db",
+        name: "stg-orders-db",
+        kind: "database",
+        icon: "mdi:database-outline",
+    },
+    {
+        id: "flow",
+        name: "deploy_payments",
+        kind: "flow",
+        icon: "mdi:file-tree-outline",
+    },
+]
+
+const current = VIEWS[view]
+---
+
+<div class={`ui-mock infra-mock ${view}`} aria-hidden="true" data-ui-mock>
+    <div class="window">
+        <p class="bar">
+            <span class="brand">kestra</span>
+            <span class="crumb">
+                infra / <b>{current.crumb}</b>
+            </span>
+        </p>
+        <div class="body">
+            <p class="nav">
+                {NAV.map((item) => (
+                    <span class:list={{ on: item.id === view }}>
+                        <Icon name={item.icon} />
+                    </span>
+                ))}
+            </p>
+            <div class="main">
+                <p class="title">{current.title}</p>
+                <p class="sub">{current.sub}</p>
+
+                {view === "requests" && (
+                    <div class="request">
+                        <div class="form">
+                            {FIELDS.map((field) => (
+                                <p class="field">
+                                    <small>{field.label}</small>
+                                    <span>
+                                        {field.value}
+                                        <Icon name="mdi:chevron-down" />
+                                    </span>
+                                </p>
+                            ))}
+                            <span class="submit">Submit request</span>
+                        </div>
+                        <div class="approval">
+                            <p class="line">
+                                <b>Approval</b>
+                                <span class="tag wait">Waiting</span>
+                            </p>
+                            {APPROVERS.map((person) => (
+                                <p class="person">
+                                    <i>{person.initial}</i>
+                                    <span>
+                                        <b>{person.name}</b>
+                                        <small>{person.role}</small>
+                                    </span>
+                                    <span class={`tag ${person.tone}`}>
+                                        {person.tag}
+                                    </span>
+                                </p>
+                            ))}
+                            <p class="actions">
+                                <span class="approve">Approve</span>
+                                <span>Reject</span>
+                            </p>
+                        </div>
+                    </div>
+                )}
+
+                {view === "deployments" && (
+                    <div class="table">
+                        <p class="tr th">
+                            <span>Name</span>
+                            <span>Owner</span>
+                            <span>Status</span>
+                            <span>Lease</span>
+                        </p>
+                        {DEPLOYMENTS.map((row) => (
+                            <p class="tr">
+                                <span class="name">
+                                    <Icon name="mdi:server-outline" />
+                                    <b>{row.name}</b>
+                                </span>
+                                <span>{row.owner}</span>
+                                <span>
+                                    <span class={`tag ${row.tone}`}>
+                                        {row.status}
+                                    </span>
+                                </span>
+                                <span class={`lease ${row.due ?? ""}`}>
+                                    {row.lease}
+                                </span>
+                            </p>
+                        ))}
+                    </div>
+                )}
+
+                {view === "cases" && (
+                    <div class="cases">
+                        {CASES.map((item) => (
+                            <div class={`case ${item.tone}`}>
+                                <p class="line">
+                                    <b>{item.title}</b>
+                                    <span class="sla">{item.sla}</span>
+                                </p>
+                                <p class="cause">{item.cause}</p>
+                                <p class="line">
+                                    <span class="who">
+                                        <span class={`tag ${item.tone}`}>
+                                            {item.status}
+                                        </span>
+                                        Assigned to {item.assignee}
+                                    </span>
+                                    <span class="ticket">
+                                        <Icon name="mdi:file-document-outline" />
+                                        {item.ticket}
+                                    </span>
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                {view === "assets" && (
+                    <div class="map">
+                        <svg viewBox="0 0 100 60" preserveAspectRatio="none">
+                            <path d="M31 30 C35 30 33 15 37 15" />
+                            <path d="M31 30 C35 30 33 45 37 45" />
+                            <path d="M65 15 H71" />
+                            <path d="M65 15 C69 15 67 45 71 45" />
+                            <path d="M65 45 H71" />
+                        </svg>
+                        {ASSETS.map((asset) => (
+                            <p
+                                class:list={[
+                                    "asset",
+                                    asset.id,
+                                    { focus: asset.focus },
+                                ]}
+                            >
+                                <Icon name={asset.icon} />
+                                <span>
+                                    <b>{asset.name}</b>
+                                    <small>{asset.kind}</small>
+                                </span>
+                            </p>
+                        ))}
+                        <p class="owner">Owner j.kim · lease 3d</p>
+                    </div>
+                )}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style lang="scss">
+    @use "../enterprise/mocks/tokens" as *;
+
+    .infra-mock {
+        --fail: #c8322d;
+        --fail-bg: #fdecec;
+
+        @include tokens;
+
+        :global(html.dark) & {
+            --fail: #ff8a84;
+            --fail-bg: rgba(255, 107, 107, 0.14);
+        }
+    }
+
+    .window {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 0.9em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        font-size: calc(100cqw / 50);
+        line-height: 1.3;
+        color: var(--text);
+    }
+
+    p {
+        margin: 0;
+    }
+
+    b {
+        font-weight: 600;
+    }
+
+    small {
+        display: block;
+        font-size: 0.62em;
+        color: var(--muted);
+    }
+
+    [data-icon] {
+        flex: none;
+        width: 1.1em;
+        height: 1.1em;
+    }
+
+    .bar {
+        display: flex;
+        align-items: center;
+        gap: 1.4em;
+        padding: 0.8em 1.2em;
+        border-bottom: 1px solid var(--line);
+        background: var(--deep);
+    }
+
+    .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
+        font-size: 0.9em;
+        font-weight: 700;
+
+        &::before {
+            content: "";
+            width: 0.7em;
+            height: 0.7em;
+            border-radius: 0.15em;
+            background: var(--tile-ink);
+            rotate: 45deg;
+
+            :global(html.dark) & {
+                background: var(--run);
+            }
+        }
+    }
+
+    .crumb {
+        font-size: 0.68em;
+        color: var(--muted);
+
+        b {
+            color: var(--text);
+        }
+    }
+
+    .body {
+        display: grid;
+        grid-template-columns: 3.4em minmax(0, 1fr);
+    }
+
+    .nav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.7em;
+        padding-top: 1em;
+        border-right: 1px solid var(--line);
+        background: var(--deep);
+        color: var(--muted);
+
+        span {
+            display: grid;
+            place-items: center;
+            width: 2em;
+            height: 2em;
+            border-radius: 0.5em;
+        }
+
+        .on {
+            background: var(--chip);
+            color: var(--run);
+        }
+    }
+
+    .main {
+        min-height: 27em;
+        padding: 1.4em 1.5em 1.6em;
+    }
+
+    .title {
+        font-size: 1em;
+        font-weight: 700;
+    }
+
+    .sub {
+        margin: 0.2em 0 1.1em;
+        font-size: 0.66em;
+        color: var(--muted);
+    }
+
+    .line {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1em;
+    }
+
+    .tag {
+        display: inline-block;
+        padding: 0.25em 0.8em;
+        border-radius: 99em;
+        font-size: 0.56em;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        white-space: nowrap;
+
+        &.ok {
+            background: var(--ok-bg);
+            color: var(--ok);
+        }
+
+        &.wait {
+            background: var(--wait-bg);
+            color: var(--wait);
+        }
+
+        &.fail {
+            background: var(--fail-bg);
+            color: var(--fail);
+        }
+
+        &.run {
+            background: var(--chip);
+            color: var(--run);
+        }
+    }
+
+    .request {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+        align-items: start;
+        gap: 1.2em;
+    }
+
+    .form {
+        display: grid;
+        gap: 0.7em;
+        justify-items: start;
+    }
+
+    .field {
+        width: 100%;
+
+        small {
+            margin-bottom: 0.4em;
+            font-weight: 600;
+        }
+
+        span {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.7em 0.9em;
+            border: 1px solid var(--line);
+            border-radius: 0.6em;
+            background: var(--field);
+            font-size: 0.7em;
+            font-weight: 500;
+        }
+
+        [data-icon] {
+            color: var(--muted);
+        }
+    }
+
+    .submit,
+    .actions span {
+        padding: 0.7em 1.3em;
+        border-radius: 0.6em;
+        font-size: 0.68em;
+        font-weight: 600;
+    }
+
+    .submit,
+    .actions .approve {
+        background: var(--primary);
+        color: #ffffff;
+    }
+
+    .approval {
+        display: grid;
+        gap: 1em;
+        padding: 1.1em;
+        border: 1px solid var(--line);
+        border-radius: 0.8em;
+        background: var(--deep);
+
+        .line b {
+            font-size: 0.78em;
+        }
+    }
+
+    .person {
+        display: flex;
+        align-items: center;
+        gap: 0.6em;
+
+        i {
+            display: grid;
+            place-items: center;
+            width: 2.6em;
+            height: 2.6em;
+            border-radius: 50%;
+            background: var(--chip);
+            font-size: 0.62em;
+            font-style: normal;
+            font-weight: 700;
+            color: var(--run);
+        }
+
+        > span:not(.tag) {
+            flex: 1;
+        }
+
+        b {
+            font-size: 0.7em;
+        }
+    }
+
+    .actions {
+        display: flex;
+        gap: 0.5em;
+
+        span {
+            border: 1px solid var(--line);
+        }
+
+        .approve {
+            border-color: transparent;
+        }
+    }
+
+    .tr {
+        display: grid;
+        grid-template-columns: 1.5fr 0.9fr 1fr 1fr;
+        align-items: center;
+        gap: 0.8em;
+        padding: 0.95em 0.6em;
+        border-bottom: 1px solid var(--line);
+        font-size: 0.7em;
+        color: var(--muted);
+
+        &:last-child {
+            border-bottom: 0;
+        }
+
+        .tag {
+            font-size: 0.8em;
+        }
+    }
+
+    .th {
+        border: 0;
+        border-radius: 0.5em;
+        background: var(--deep);
+        font-size: 0.56em;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .name {
+        display: flex;
+        align-items: center;
+        gap: 0.6em;
+        color: var(--text);
+
+        [data-icon] {
+            color: var(--run);
+        }
+    }
+
+    .lease {
+        font-weight: 600;
+
+        &.wait {
+            color: var(--wait);
+        }
+
+        &.fail {
+            color: var(--fail);
+        }
+    }
+
+    .cases {
+        display: grid;
+        gap: 0.8em;
+    }
+
+    .case {
+        display: grid;
+        gap: 0.45em;
+        padding: 0.9em 1.1em;
+        border: 1px solid var(--line);
+        border-left: 0.25em solid var(--tone);
+        border-radius: 0.7em;
+
+        &.fail {
+            --tone: var(--fail);
+        }
+
+        &.wait {
+            --tone: var(--wait);
+        }
+
+        &.ok {
+            --tone: var(--ok);
+        }
+
+        b {
+            font-size: 0.76em;
+        }
+    }
+
+    .sla {
+        font-size: 0.66em;
+        font-weight: 700;
+        color: var(--tone);
+    }
+
+    .cause,
+    .who {
+        font-size: 0.64em;
+        color: var(--muted);
+    }
+
+    .who {
+        display: flex;
+        align-items: center;
+        gap: 0.8em;
+
+        .tag {
+            font-size: 0.9em;
+        }
+    }
+
+    .ticket {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4em;
+        padding: 0.35em 0.7em;
+        border: 1px solid var(--line);
+        border-radius: 0.5em;
+        background: var(--deep);
+        font-size: 0.6em;
+        font-weight: 700;
+        color: var(--run);
+    }
+
+    .map {
+        position: relative;
+        height: 19em;
+        border-radius: 0.7em;
+        background: radial-gradient(var(--line) 1px, transparent 1.5px) 0 0 /
+            1.1em 1.1em;
+
+        > svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        path {
+            fill: none;
+            stroke: var(--ring);
+            stroke-width: 1.5;
+            vector-effect: non-scaling-stroke;
+            opacity: 0.55;
+        }
+    }
+
+    .asset {
+        position: absolute;
+        translate: 0 -50%;
+        display: flex;
+        align-items: center;
+        gap: 0.6em;
+        width: 28%;
+        padding: 0.7em 0.8em;
+        border: 1px solid var(--line);
+        border-radius: 0.6em;
+        background: var(--panel);
+
+        [data-icon] {
+            color: var(--run);
+        }
+
+        b {
+            display: block;
+            overflow: hidden;
+            font-size: 0.64em;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        span {
+            min-width: 0;
+        }
+
+        &.focus {
+            border-color: var(--ring);
+            box-shadow: 0 0 0 1px var(--ring);
+        }
+
+        &.vpc {
+            top: 50%;
+            left: 3%;
+        }
+
+        &.api {
+            top: 25%;
+            left: 37%;
+        }
+
+        &.db {
+            top: 75%;
+            left: 37%;
+        }
+
+        &.dns {
+            top: 25%;
+            left: 71%;
+        }
+
+        &.flow {
+            top: 75%;
+            left: 71%;
+        }
+    }
+
+    .owner {
+        position: absolute;
+        top: 2%;
+        left: 37%;
+        padding: 0.35em 0.8em;
+        border: 1px solid var(--line);
+        border-radius: 0.5em;
+        background: var(--deep);
+        font-size: 0.58em;
+        font-weight: 600;
+        color: var(--muted);
+    }
+</style>

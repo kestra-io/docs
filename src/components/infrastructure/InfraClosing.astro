@@ -1,0 +1,82 @@
+---
+import { Icon } from "astro-icon/components"
+---
+
+<section
+    class="infra-closing surface-dark"
+    aria-labelledby="infra-closing"
+    data-header-dark
+>
+    <div class="container-xl">
+        <div class="rails">
+            <h2 id="infra-closing">
+                See Kestra for Infrastructure on your own catalog.
+            </h2>
+            <p>
+                Talk to our sales and solution engineering team. We’ll walk
+                through your requests, your code and the tools you want to
+                replace.
+            </p>
+            <div class="ctas">
+                <a href="/demo" class="btn-solid">
+                    Talk to our team <Icon name="mdi:chevron-right" />
+                </a>
+                <a href="/blueprints?tags=Infrastructure" class="btn-ghost">
+                    Browse infrastructure blueprints
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "../about/style/section" as *;
+
+    .infra-closing {
+        position: relative;
+        overflow: hidden;
+        background:
+            radial-gradient(
+                50% 80% at 50% 110%,
+                rgba(112, 88, 255, 0.38),
+                rgba(90, 84, 130, 0.08) 55%,
+                transparent 78%
+            ),
+            linear-gradient(180deg, #060609 0%, #0e0d14 55%, #060609 100%);
+        color: #ffffff;
+    }
+
+    .rails {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 7.5rem clamp(1.5rem, 4vw, 3.5rem);
+        border-inline: 1px solid #24232b;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem;
+        }
+    }
+
+    h2 {
+        @include title;
+        max-width: 16em;
+        font-size: clamp(2rem, 3.6vw, 3rem);
+        color: #ffffff;
+    }
+
+    p {
+        @include lead;
+        max-width: 40rem;
+        color: #9a9aa8;
+    }
+
+    .ctas {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-top: 2.25rem;
+    }
+</style>

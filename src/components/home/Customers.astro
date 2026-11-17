@@ -113,7 +113,12 @@ const {
                 </h2>
             </header>
 
-            <div class="tabs" role="tablist" aria-label="Customer stories">
+            <div
+                class="tabs"
+                role="tablist"
+                aria-label="Customer stories"
+                style={`--stories: ${STORIES.length}`}
+            >
                 {
                     STORIES.map((story, idx) => (
                         <button
@@ -400,7 +405,7 @@ const {
             color: var(--ks-content-primary);
             text-wrap: pretty;
 
-            span {
+            :global(span) {
                 display: block;
                 color: var(--ks-content-tertiary);
             }
@@ -450,7 +455,7 @@ const {
 
     .tabs {
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(var(--stories), minmax(0, 1fr));
         gap: var(--gap);
 
         @include media-breakpoint-down(md) {

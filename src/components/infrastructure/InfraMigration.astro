@@ -1,0 +1,146 @@
+---
+import { Icon } from "astro-icon/components"
+import PixelEdges from "~/components/about/PixelEdges.astro"
+---
+
+<section class="infra-migration" aria-labelledby="infra-migration">
+    <PixelEdges left="wide" right="cluster" />
+    <div class="container-xl">
+        <div class="rails">
+            <header>
+                <div>
+                    <h2 id="infra-migration">
+                        Moving off VMware Aria or the Ansible controller?
+                    </h2>
+                    <p>
+                        Swap the portal, not your automation. Your PowerCLI
+                        scripts and Ansible playbooks run as is, on any cloud or
+                        hypervisor.
+                    </p>
+                </div>
+                <div class="ctas">
+                    <a href="/vs/vmware-cloud-foundation" class="btn-solid">
+                        Kestra as a vRA alternative
+                    </a>
+                    <a href="/resources/migration/vra" class="btn-ghost">
+                        Read the vRA migration guide
+                    </a>
+                </div>
+            </header>
+            <aside>
+                <Icon name="mdi:ansible" class="glyph" />
+                <p>
+                    Leaving AWX or the AAP controller? Keep your playbooks and
+                    replace the controller.
+                </p>
+                <a href="/vs/ansible-automation-platform">
+                    Kestra vs Ansible Automation Platform
+                    <Icon name="mdi:arrow-right" />
+                </a>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "../about/style/section" as *;
+
+    .infra-migration {
+        position: relative;
+        background: var(--ks-background-body);
+    }
+
+    .rails {
+        --rule: 1px solid var(--ks-border-primary);
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+
+        position: relative;
+        border-inline: var(--rule);
+    }
+
+    header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: end;
+        justify-content: space-between;
+        gap: 2rem 3rem;
+        padding: 7.5rem var(--inset) 4rem;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem 2.5rem;
+        }
+
+        h2 {
+            @include title;
+            max-width: 14em;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            @include lead;
+            max-width: 40rem;
+        }
+    }
+
+    .ctas {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    aside {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem 1rem;
+        padding: 2.25rem var(--inset);
+        border-top: var(--rule);
+        font-size: 1rem;
+        line-height: 1.55;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background: var(--ks-background-secondary);
+        }
+
+        .glyph {
+            flex: none;
+            width: 1.375rem;
+            height: 1.375rem;
+            color: var(--ks-content-link);
+        }
+
+        p {
+            flex: 1 1 24rem;
+            margin: 0;
+            color: var(--ks-content-secondary);
+        }
+
+        a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-weight: 600;
+            color: var(--ks-content-link);
+            text-decoration: none;
+
+            &::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+            }
+
+            [data-icon] {
+                width: 1rem;
+                height: 1rem;
+                transition: translate 0.2s ease;
+            }
+        }
+
+        &:hover a [data-icon] {
+            translate: 0.1875rem 0;
+        }
+    }
+</style>
