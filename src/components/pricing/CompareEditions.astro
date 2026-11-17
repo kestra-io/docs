@@ -686,7 +686,12 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
 
     thead th {
         position: sticky;
-        top: 61px;
+        top: 59px;
+
+        @include media-breakpoint-down(xl) {
+            top: 55px;
+        }
+
         z-index: 2;
         padding-block: 1.125rem;
         border-top: var(--rule);
