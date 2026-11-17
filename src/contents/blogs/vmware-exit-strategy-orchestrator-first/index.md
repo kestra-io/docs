@@ -6,7 +6,7 @@ date: 2026-11-19T10:00:00
 category: Solutions
 author:
   name: Fernando Mattos
-  linkedin: https://www.linkedin.com/in/fernandomattos/
+  linkedin: https://www.linkedin.com/in/fbmattos/
   image: fmattos
   role: Solutions Marketing Lead
 # TODO: hero image pending from Nico. Add it to this folder as main.png and set `image: ./main.png`.
