@@ -142,7 +142,7 @@ These tools come with a significant price tag but offer proven reliability, exte
 
 **Best for:** Large enterprises with complex, mission-critical data environments requiring robust, proven, and often proprietary CDC and data integration capabilities.
 
-### 7. Estuary Flow (formerly OLake): Real-time Data Integration Platform
+### 7. Estuary Flow: Real-time Data Integration Platform
 
 Estuary Flow is a fully managed, real-time data integration platform built around CDC. It aims to provide a unified solution for capturing, transforming, and delivering data with strong guarantees of correctness and consistency.
 
@@ -158,6 +158,14 @@ A common pattern is to have Debezium publish changes to Kafka, and then have NiF
 
 **Best for:** Organizations with complex data routing, transformation, and governance needs for their CDC-derived data streams.
 
+### 9. OLake: Kafka-less CDC into Apache Iceberg
+
+[OLake](https://github.com/datazip-inc/olake-go) is an open-source (Apache 2.0) ingestion engine written in Go that replicates databases straight into Apache Iceberg or Parquet on object storage. It supports full loads and log-based CDC for PostgreSQL, MySQL, MongoDB and SQL Server, plus Oracle, DB2, Kafka and S3 sources, and writes through Glue, Hive, JDBC or REST catalogs such as Polaris, Nessie, Unity and Lakekeeper.
+
+Unlike a Debezium-based stack, OLake needs no Kafka, Kafka Connect, Spark or Flink: one process captures changes and commits them as Iceberg snapshots with automatic schema evolution and exactly-once delivery. It ships with a web UI and CLI, and runs on Docker Compose, Kubernetes (Helm) or Airflow, so it fits naturally into an orchestrated pipeline.
+
+**Best for:** Teams building an open lakehouse who want database CDC landing directly in Iceberg tables without operating Kafka.
+
 ## Comparison Table: Debezium Alternatives at a Glance
 
 | Tool | License | Deployment | Primary Use Case | Kafka Dependency | Best For |
@@ -170,6 +178,7 @@ A common pattern is to have Debezium publish changes to Kafka, and then have NiF
 | **Qlik/Talend/GoldenGate** | Commercial | Self-hosted, Cloud | Enterprise Data Integration | Varies | Large enterprises with complex, mission-critical requirements. |
 | **Estuary Flow** | Commercial | Cloud | Managed Real-time Pipelines | No | End-to-end managed CDC with strong consistency guarantees. |
 | **Apache NiFi** | Apache 2.0 | Self-hosted | Dataflow Management | No (but often used with it) | Complex data routing and processing of CDC streams. |
+| **OLake** | Apache 2.0 | Self-hosted | CDC into Apache Iceberg | No | Database CDC landing directly in Iceberg tables without Kafka. |
 
 ## How to Choose the Right Debezium Alternative for Your Stack
 
