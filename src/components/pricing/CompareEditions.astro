@@ -384,11 +384,16 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
                                         {[os, cloud, ee].map((cell) => (
                                             <td>
                                                 {cell === false ? (
-                                                    <Icon
-                                                        name="mdi:close"
-                                                        class="no"
-                                                        aria-label="Not included"
-                                                    />
+                                                    <>
+                                                        <Icon
+                                                            name="mdi:close"
+                                                            class="no"
+                                                            aria-hidden="true"
+                                                        />
+                                                        <span class="visually-hidden">
+                                                            Not included
+                                                        </span>
+                                                    </>
                                                 ) : typeof cell === "string" ? (
                                                     <span class="text">
                                                         {cell}
@@ -398,12 +403,18 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
                                                         <Icon
                                                             name="mdi:check"
                                                             class="yes"
-                                                            aria-label="Included"
+                                                            aria-hidden="true"
                                                         />
+                                                        <span class="visually-hidden">
+                                                            Included
+                                                        </span>
                                                         {cell !== true && (
-                                                            <span class="note">
-                                                                {cell.note}
-                                                            </span>
+                                                            <>
+                                                                {" "}
+                                                                <span class="note">
+                                                                    {cell.note}
+                                                                </span>
+                                                            </>
                                                         )}
                                                     </>
                                                 )}
