@@ -335,6 +335,11 @@ const PLANS: {
                             var(--ks-background-body)
                         );
 
+                @include media-breakpoint-down(lg) {
+                    margin: 1rem 0.75rem;
+                    padding-inline: 0;
+                }
+
                 :global(html.dark) & {
                     background:
                         linear-gradient(
