@@ -24,11 +24,11 @@ A metadata backup includes all data **not** related to executions: blueprints, f
 
 Namespace discovery during backup relies on each resource's metadata repository. Ensure the required [metadata migrations](/docs/migration-guide/v1.3.0/lts-migration) have been run so that namespaces containing only KV items, namespace files, or secrets — but no flows — are correctly included.
 
-A metadata backup is not a copy of internal storage. It keeps only the latest value of each KV entry, and `--include-data` adds execution records but not the input and output files stored for those executions. To move internal storage to a different backend, follow [Migrate internal storage to another backend](#migrate-internal-storage-to-another-backend) instead.
+A metadata backup is not a copy of internal storage. It keeps only the latest value of each KV entry and the latest revision of each namespace file, so a restore doesn't bring back a file's revision history. Empty namespace folders are kept. `--include-data` adds execution records but not the input and output files stored for those executions. To move internal storage to a different backend, follow [Migrate internal storage to another backend](#migrate-internal-storage-to-another-backend) instead.
 
-<!-- TODO: remove this alert once https://github.com/kestra-io/kestra-ee/issues/11801 is fixed. -->
+<!-- TODO(verify on backport merge): the namespace file fix (kestra-ee#11801, PR kestra-ee#12528) is merged to develop for 2.1. The backport to 1.3.x is labelled but not merged as of 2026-11-17. Add the fixed 1.3 patch version to the alert below once it ships. -->
 :::alert{type="warning"}
-Metadata restore does not preserve namespace file revisions. Each stored revision is restored as a separate file (for example, `run.py.v2` and `run.py.v3`), the original path serves the first revision, and empty folders are dropped.
+Archives created before the fix for namespace file revisions restore each stored revision as a separate file (for example, `run.py.v2` and `run.py.v3`), and the original path serves the first revision. They can't be repaired, so take a new backup after upgrading.
 :::
 
 ### Metadata backup
