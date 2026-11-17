@@ -110,6 +110,8 @@
   to: "/docs/version-control-cicd/git/sync-from-git#sync-flows"
 - regexp: "^/docs/how-to-guides/syncnamespacefiles/?$"
   to: "/docs/version-control-cicd/git/sync-from-git#sync-namespace-files"
+- regexp: "^/docs/version-control-cicd/cicd/helpers/?$"
+  to: "/docs/migration-guide/v2.0.0/server-cli-flow-commands-removed#include-helpers"
 - regexp: "^/docs/how-to-guides/github-actions/?$"
   to: "/docs/version-control-cicd/cicd/github-action"
 - regexp: "^/docs/how-to-guides/webhooks/?$"
