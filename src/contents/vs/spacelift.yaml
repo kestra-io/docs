@@ -1,0 +1,295 @@
+title: "Spacelift vs Kestra for Infrastructure Orchestration"
+description: "Compare Kestra vs Spacelift: open-source orchestration for Terraform, OpenTofu, Ansible and the workflows around them vs. a SaaS IaC management platform. See features, pricing model, deployment and when to choose each."
+competitorName: Spacelift
+category: Infrastructure Automation
+shortDescription: "SaaS IaC management platform vs. open-source orchestration for infrastructure changes and everything around them."
+seeHowTitle: "Getting Started with Infrastructure Orchestration"
+seeHowBody: "See how Kestra runs your Terraform, OpenTofu and Ansible, and the approvals, tickets and checks around them, from one YAML workflow."
+guideCta:
+  eyebrow: "Comparison guide"
+  title: "Comparing IaC platforms?"
+  description: "The Spacelift alternatives guide compares HCP Terraform, env0, Scalr, Pulumi Cloud, Atlantis, Terrateam and Kestra by scope, deployment model and policy support."
+  cta:
+    label: "Read the guide"
+    href: "/resources/infrastructure/spacelift-alternatives"
+
+brandColor:
+  color: "#5B4FE9"
+
+intro:
+  title: "Kestra vs. Spacelift: Orchestrate the Change, Not Just the Terraform Run"
+  description: "Spacelift is a SaaS platform for running and governing Terraform, OpenTofu, Pulumi and Ansible stacks. Kestra is an open-source orchestration platform that runs those same tools as steps in larger workflows: tickets, approvals, configuration, checks and notifications, in YAML you version in Git and run wherever you need."
+
+philosophy:
+  mainTitle: IaC Run Management vs. End-to-End Orchestration
+  kestra:
+    title: "Orchestration Around Every Infrastructure Change"
+    description: "Declarative YAML workflows that call Terraform, OpenTofu, Terragrunt, Ansible, Helm, cloud CLIs and any API in one execution, with approvals, retries and event triggers built in. The same engine also runs data, AI and business workflows. Open source, self-hosted on your own network or fully managed in Kestra Cloud."
+    subCardText: '"How do we automate the whole change, from the ticket to the Terraform apply to the Ansible run to the Slack message, in one place we own?"'
+  competitor:
+    title: IaC Management Platform
+    description: "Spacelift manages IaC stacks: it runs plans and applies from your VCS, stores state, chains stacks with dependencies, enforces Rego policies on runs, and detects drift. Spacelift Flows, launched in October 2026, adds a visual canvas for day 2 operations. The control plane is SaaS, with private workers and a self-hosted edition on higher tiers."
+    shadowColor: "#8B7FF5"
+    subCardBg: "var(--ks-background-blue-light)"
+    subCardText: '"How do we give every team a governed, GitOps workflow for Terraform and OpenTofu stacks?"'
+
+businessValue:
+  mainTitle: "Spacelift Governs the IaC Run.<br />Kestra Orchestrates Everything Around It."
+  kestra:
+    title: Open-Source Orchestration
+    list:
+      - "Terraform, OpenTofu, Terragrunt and Ansible as steps in multi-tool workflows"
+      - "Event-driven: webhooks, Git pushes, tickets, alerts, schedules and queues start workflows"
+      - "Approvals, retries, timeouts and error handling written in the same YAML"
+      - "Self-hosted on Kubernetes, VMs or air-gapped networks, or fully managed in Kestra Cloud"
+      - "Open source core with {totalPlugins}+ plugins; no per-worker or per-run metering on IaC"
+  competitor:
+    title: IaC Management Platform
+    list:
+      - "GitOps runs for Terraform, OpenTofu, Terragrunt, Pulumi, CloudFormation, Kubernetes and Ansible"
+      - "Managed state, stack dependencies and a private module registry"
+      - "Rego policies on plans, approvals, pushes and access"
+      - "Drift detection and remediation on Business and Enterprise tiers"
+      - "SaaS control plane; private workers and self-hosting on higher tiers"
+    shadowColor: "#8B7FF5"
+    bulletColor: "#8B7FF5"
+  footerText: "Spacelift is a strong choice when your main need is a governed, managed home for many Terraform and OpenTofu stacks. Kestra is the better fit when an infrastructure change is one step in a longer process, when the platform has to run inside your own network, or when you want a single orchestrator for infrastructure, data and business workflows instead of one tool per domain."
+
+setupSpeed:
+  title: Time to First Workflow
+  subtitle: "Spacelift is SaaS, so there is nothing to install, but each stack needs a VCS connection, a cloud integration and run settings before the first plan, and private workers need their own deployment. Kestra starts with one Docker Compose command and runs Terraform in a container with no extra setup."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Terraform or Ansible Blueprint, run it."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick a Terraform Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: "~30"
+      two: Minutes
+    description: "Sign up, connect your VCS provider, create a stack pointing at a repository and project root, attach a cloud integration for credentials, then trigger the first run. Running inside your network adds a private worker pool, which starts on the Business tier."
+    shadowColor: "#8B7FF5"
+    command: |
+      # 1. Sign up at spacelift.io
+      # 2. Install the GitHub / GitLab integration
+      # 3. Create a stack: repo, branch, project root
+      # 4. Attach an AWS / Azure / GCP integration
+      # 5. Add contexts for env vars and secrets
+      # 6. Trigger the first run, confirm the apply
+
+      # Private workers (Business tier and up):
+      # deploy a worker pool in your network
+      # (Docker launcher or Kubernetes operator)
+    lang: sh
+
+easeOfUse:
+  title: One Workflow vs. Stacks, Dependencies and Policies
+  kestra:
+    title: "Kestra: The whole change in one YAML file"
+    description: "Plan, approval, apply, configuration and notification live in one readable workflow, versioned in Git. Docs are embedded in the editor, the <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes flows for you, and Blueprints cover common Terraform and Ansible patterns."
+    code: |
+      id: provision_and_configure
+      namespace: infra.platform
+
+      inputs:
+        - id: environment
+          type: SELECT
+          values: [staging, prod]
+
+      tasks:
+        - id: plan
+          type: io.kestra.plugin.terraform.cli.TerraformCLI
+          beforeCommands:
+            - terraform init -input=false
+          commands:
+            - terraform plan -out=tfplan -var env={{ inputs.environment }}
+          outputFiles:
+            - tfplan
+
+        - id: approve
+          type: io.kestra.plugin.core.flow.Pause
+          pauseDuration: PT8H
+          behavior: CANCEL
+
+        - id: apply
+          type: io.kestra.plugin.terraform.cli.TerraformCLI
+          inputFiles:
+            tfplan: "{{ outputs.plan.outputFiles.tfplan }}"
+          beforeCommands:
+            - terraform init -input=false
+          commands:
+            - terraform apply tfplan
+            - terraform output -json > outputs.json
+          outputFiles:
+            - outputs.json
+
+        - id: configure
+          type: io.kestra.plugin.ansible.cli.AnsibleCLI
+          commands:
+            - ansible-playbook -i inventory.ini site.yml
+
+        - id: notify
+          type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          payload: |
+            {"text": "{{ inputs.environment }} provisioned and configured"}
+    lang: yaml
+  competitor:
+    title: "Spacelift: Stacks wired together with dependencies and policies"
+    description: "In Spacelift, each Terraform root and each Ansible playbook is its own stack. You chain them with stack dependencies, gate them with Rego policies, and configure them in the UI or with the Spacelift Terraform provider. Steps outside IaC, like tickets or notifications, go through hooks, webhooks or Spacelift Flows."
+    shadowColor: "#8B7FF5"
+    code: |
+      resource "spacelift_stack" "network" {
+        name              = "network-prod"
+        repository        = "infra"
+        branch            = "main"
+        project_root      = "network"
+        terraform_version = "1.9.0"
+      }
+
+      resource "spacelift_stack" "config" {
+        name         = "config-prod"
+        repository   = "infra"
+        branch       = "main"
+        project_root = "ansible"
+        ansible {
+          playbook = "site.yml"
+        }
+      }
+
+      resource "spacelift_stack_dependency" "config_after_network" {
+        stack_id            = spacelift_stack.config.id
+        depends_on_stack_id = spacelift_stack.network.id
+      }
+
+      resource "spacelift_policy" "approval" {
+        name = "require-approval"
+        type = "APPROVAL"
+        body = file("policies/approval.rego")
+      }
+
+      resource "spacelift_policy_attachment" "network_approval" {
+        policy_id = spacelift_policy.approval.id
+        stack_id  = spacelift_stack.network.id
+      }
+    lang: hcl
+
+visualPreview:
+  mainTitle: One Orchestrator for the Change and Everything Around It
+  kestra:
+    description: "Orchestrate Terraform, OpenTofu, Ansible, Kubernetes, cloud APIs, ITSM, data pipelines and AI agents from one open-source platform. Event-driven at its core, with {totalPlugins}+ plugins and secrets read from Vault, AWS, Azure, GCP, CyberArk or Delinea."
+  competitor:
+    description: "Spacelift centralizes IaC stacks across Terraform, OpenTofu, Pulumi, CloudFormation, Kubernetes and Ansible, with managed state, stack dependencies, Rego policies and drift detection. Spacelift Flows adds a visual canvas for day 2 automation, free until the end of 2026 with pricing to be announced in Q1 2027."
+    shadowColor: "#8B7FF5"
+
+featureGrid:
+  title: Kestra vs. Spacelift at a Glance
+  tableData:
+    - feature: Primary purpose
+      kestra: "Workflow orchestration across infrastructure, data, AI and business processes"
+      competitor: "IaC run management and governance"
+    - feature: Workflow definition
+      kestra: "Declarative YAML, versioned in Git"
+      competitor: "Stacks configured in the UI or Terraform provider; Flows on a visual canvas"
+    - feature: IaC tools
+      kestra: "Terraform, OpenTofu, Terragrunt, Ansible, Helm, Pulumi and any CLI in a container"
+      competitor: "Terraform, OpenTofu, Terragrunt, Pulumi, CloudFormation, Kubernetes, Ansible"
+    - feature: State management
+      kestra: "Your own backend (S3, GCS, Azure Blob, HCP Terraform)"
+      competitor: "Managed state or your own backend"
+    - feature: Steps outside IaC
+      kestra: "Native: {totalPlugins}+ plugins for ITSM, cloud APIs, databases, chat, AI"
+      competitor: "Hooks and webhooks; Spacelift Flows for day 2 automation"
+    - feature: Event-driven triggers
+      kestra: "Webhooks, Git, schedules, Kafka, SQS, file arrivals, flow triggers"
+      competitor: "VCS events, schedules, API and webhooks"
+    - feature: Policy as code
+      kestra: "OPA plugin, namespace RBAC, approvals in the workflow"
+      competitor: "Native Rego policies on plans, approvals, pushes and access"
+    - feature: Drift detection
+      kestra: "Scheduled plans that alert or open a ticket"
+      competitor: "Built in (Business and Enterprise tiers)"
+    - feature: External secrets managers
+      kestra: "Vault, AWS, Azure, GCP, CyberArk, Delinea, 1Password, Doppler and more"
+      competitor: "Contexts with secret environment variables; external vaults through hooks or OIDC"
+    - feature: Deployment model
+      kestra: "Self-hosted anywhere, including air-gapped, or Kestra Cloud"
+      competitor: "SaaS; private workers (Business and up); self-hosted on request"
+    - feature: Licensing
+      kestra: "Open source (Apache 2.0), Enterprise and Cloud editions"
+      competitor: "Proprietary; Free, Starter from $399/month, Business and Enterprise on quote"
+
+testimonials:
+  - quote: "Kestra allowed us to move from fragmented automation to a unified control plane: secure, scalable, and manageable by all our teams."
+    author: "Julien Legrand, Data Product Owner @ Crédit Agricole (CAGIP)"
+    kpis:
+      - value: "100+"
+        name: "Managed clusters"
+      - value: "7"
+        name: "Teams on one platform"
+      - value: "1"
+        name: "Control plane for Terraform, Git and scripts"
+    storyLink: "/stories/credit-agricole"
+
+platformStrengths:
+  title: Kestra Is Built for How Platform Teams Work
+  features:
+    - title: The change, not just the run
+      description: "A Terraform apply is rarely the whole job. The ticket comes before it; the Ansible run, the CMDB update and the notification come after. Kestra runs all of it in one workflow, with the plan file passed to the approval and the apply, so what was reviewed is what gets deployed."
+    - title: Runs where your infrastructure lives
+      description: "Kestra is open source and runs on Kubernetes, VMs or air-gapped networks, with secrets read from the vault you already use. In Kestra 2.0, workers connect to the control plane over gRPC, so they can run inside your network wherever the control plane is hosted."
+    - title: One orchestrator instead of several
+      description: "Teams often run Spacelift for IaC, AWX or Rundeck for playbooks, and n8n or scripts for the rest. Kestra covers infrastructure, data, AI and business workflows in one platform with one RBAC model, one audit trail and one place to look when something fails."
+
+decisionGuide:
+  mainTitle: The Right Tool for the Right Job
+  kestra:
+    title: Choose Kestra When
+    list:
+      - "Infrastructure changes are steps in longer processes: tickets, approvals, configuration, checks, notifications."
+      - "You run Ansible, scripts and cloud APIs alongside Terraform and want them in one workflow, without restructuring playbooks."
+      - "The platform must run in your own network or air-gapped, or data residency rules out a SaaS control plane."
+      - "You want to read secrets from Vault, CyberArk or Delinea instead of copying them into another tool."
+      - "You'd rather consolidate IaC, runbook and workflow tools into one open-source orchestrator."
+  competitor:
+    title: Choose Spacelift When
+    list:
+      - "Your main need is a managed GitOps workflow for many Terraform or OpenTofu stacks."
+      - "You want managed state, stack dependencies and a private module registry out of the box."
+      - "Rego policies on every plan and apply are central to your governance."
+      - "Built-in drift detection and remediation matter more than orchestrating steps outside IaC."
+      - "A SaaS control plane fits your security and residency requirements."
+    shadowColor: "#8B7FF5"
+    bulletColor: "#8B7FF5"
+
+commonQuestions:
+  - question: How is Kestra different from Spacelift?
+    answer: "Spacelift is an IaC management platform: it runs Terraform, OpenTofu, Pulumi and Ansible stacks from your VCS, manages state, chains stacks and enforces Rego policies on runs. Kestra is a general orchestration platform: it runs those same tools as tasks inside YAML workflows that also handle tickets, approvals, configuration, checks, notifications, data pipelines and AI steps. Spacelift governs the IaC run; Kestra orchestrates the process the run belongs to."
+  - question: Can Kestra replace Spacelift?
+    answer: "For teams whose Terraform runs are part of larger workflows, yes. Kestra plans, waits for approval, applies the reviewed plan file, runs Ansible and notifies, all in one flow, with state in your own backend. Kestra does not ship a managed state backend, a private module registry or native Rego policies on every plan. If those are the core of your requirement, Spacelift covers more of that surface, and the two tools can run side by side."
+  - question: Can Kestra and Spacelift work together?
+    answer: "Yes. Some teams keep Spacelift for stack management and use Kestra as the layer around it. A Kestra workflow can start from a ServiceNow ticket, a webhook or an alert, trigger a Spacelift run through its API, wait for the result, then continue with Ansible, CMDB updates, tests and notifications. Teams that do this usually wrap the call in a reusable subflow so every workflow triggers and polls Spacelift the same way."
+  - question: How does Kestra compare to Spacelift Flows?
+    answer: "Spacelift Flows, launched in October 2026, adds day 2 automation to Spacelift: workflows built on a visual canvas or with an AI assistant, with apps for AWS, Kubernetes, Datadog, PagerDuty, ServiceNow, Jira and Slack, and custom apps written in TypeScript. Kestra workflows are declarative YAML, with {totalPlugins}+ plugins and scripts in any language, and the same engine runs data, AI and business workflows. Flows is free until the end of 2026, with pricing to be announced in Q1 2027."
+  - question: Can Kestra run inside our own network or air-gapped?
+    answer: "Yes. Kestra is open source and runs on Docker, Kubernetes or VMs, including air-gapped environments, with no call home required. Kestra Enterprise adds RBAC, SSO, audit logs and worker isolation for regulated teams. Spacelift's control plane is SaaS; private workers start on the Business tier and the self-hosted edition is available on request."
+  - question: How do secrets work compared to Spacelift?
+    answer: "In Spacelift, secrets usually live in contexts as secret environment variables or mounted files, or are fetched from a cloud provider through OIDC or hooks. Kestra Enterprise reads secrets directly from HashiCorp Vault, AWS Secrets Manager, Azure Key Vault, Google Secret Manager, CyberArk, Delinea, 1Password, Doppler and others, scoped per namespace, so credentials stay in the vault you already govern."
+  - question: Does Kestra support Ansible without restructuring our playbooks?
+    answer: "Yes. The Ansible plugin runs ansible-playbook or Ansible Runner in a container against your existing repository layout, inventories and roles. Each playbook run is one task in a workflow, so you can run it after a Terraform apply, in parallel across inventories, or behind an approval, without reorganizing playbooks into a stack model."
+  - question: How does Kestra handle drift detection?
+    answer: "Spacelift ships drift detection on its Business and Enterprise tiers. In Kestra, drift detection is a scheduled workflow: run terraform plan -detailed-exitcode on a cron, and when drift is found, alert Slack, open a ticket or start a reviewed remediation apply. You choose the response per environment. See our <a href='/resources/infrastructure/terraform-drift-detection'>Terraform drift detection guide</a>."
+  - question: How does pricing compare between Kestra and Spacelift?
+    answer: "As of November 2026, Spacelift lists a Free plan for 2 users, Starter from $399 per month with 10 users and 2 public workers, and quote-based Business and Enterprise tiers; drift detection and private workers start on Business. Kestra's open-source edition is free with most plugins and unlimited workflows. Kestra Enterprise and Kestra Cloud add governance features without per-worker metering on your IaC runs."
+  - question: Is Kestra open source like Atlantis?
+    answer: "Yes, Kestra is open source under Apache 2.0. Atlantis is a focused pull-request bot for Terraform and OpenTofu plans and applies. Kestra covers IaC runs plus the workflow around them: approvals, configuration, ITSM, data and AI steps, with a UI, execution history and event triggers. Spacelift is proprietary."
+  - question: How hard is it to migrate from Spacelift to Kestra?
+    answer: "Your Terraform, OpenTofu and Ansible code does not change. Each Spacelift stack becomes a Kestra task or subflow that clones the repository and runs the same commands against the same state backend. Stack dependencies become task order or flow triggers, and approval policies become Pause tasks with RBAC. Most teams start by orchestrating new end-to-end workflows in Kestra, then move stacks over at renewal."
