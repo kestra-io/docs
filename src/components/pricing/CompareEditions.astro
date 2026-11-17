@@ -334,7 +334,7 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
                         <tr>
                             <th scope="col">Feature</th>
                             {EDITIONS.map((edition) => (
-                                <th scope="col">
+                                <th scope="col" aria-label={edition.name}>
                                     <span>{edition.name}</span>
                                     <a
                                         href={edition.href}
@@ -354,7 +354,7 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
                     {GROUPS.map((group) => (
                         <tbody>
                             <tr class="group">
-                                <th scope="colgroup" colspan="4">
+                                <th scope="rowgroup" colspan="4">
                                     <span>
                                         <Icon name={group.icon} />
                                         {group.title}
@@ -364,7 +364,7 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
                             {group.rows.map(
                                 ([feature, os, cloud, ee, info]) => (
                                     <tr>
-                                        <th scope="row">
+                                        <th scope="row" aria-label={feature}>
                                             {feature}
                                             {info && (
                                                 <span class="info" tabindex="0">
