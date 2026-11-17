@@ -36,7 +36,10 @@ jobs:
       npm-lockfile: package-lock.json
       exclude-path: |
         src/contents/**
+        tests/fixtures/**
       metadata: ${{ github.event.inputs.metadata }}
     secrets:
       OTLP_ENDPOINT: ${{ secrets.OTLP_ENDPOINT }}
       OTLP_HEADERS: ${{ secrets.OTLP_HEADERS }}
+      OTLP_SECURITY_ENDPOINT: ${{ secrets.OTLP_SECURITY_ENDPOINT }}
+      OTLP_SECURITY_HEADERS: ${{ secrets.OTLP_SECURITY_HEADERS }}

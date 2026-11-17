@@ -152,7 +152,7 @@ The lakehouse is not just a theoretical concept; it's being implemented by leadi
 - **Finance:** Financial institutions leverage lakehouses for fraud detection, risk management, and algorithmic trading, where processing large volumes of real-time data is critical. [Change data capture](/resources/data/change-data-capture) patterns are commonly used to stream transactional events into the lakehouse continuously.
 - **Public Sector:** Government agencies use lakehouse principles to manage large datasets for everything from urban planning to public health, often within sovereign infrastructure as seen in [public services use cases](/use-cases/public-services).
 
-Organizations like Apple and Toyota use unified orchestration platforms to manage large-scale ML and data pipelines, while JPMorgan Chase applies these principles to power cybersecurity analytics, demonstrating the versatility of this approach at enterprise scale.
+Organizations like Apple use unified orchestration platforms to manage large-scale ML and data pipelines, while JPMorgan Chase applies these principles to power cybersecurity analytics, demonstrating the versatility of this approach at enterprise scale.
 
 ### The Evolving Landscape of Data Lakehouse Technologies
 

@@ -20,16 +20,3 @@
 @import "vue-material-design-icons/styles.css";
 @import "medium-zoom/dist/style.css";
 @import "vue3-carousel/carousel.css";
-@import "@kestra-io/topology/style.css";
-
-.el-popper {
-    border-radius: 8px;
-    padding: 0.25rem 0.5rem;
-    font-size: $font-size-xs;
-    white-space: nowrap;
-    word-wrap: break-word;
-    pointer-events: none;
-    background: var(--ks-background-body);
-    border: 1px solid var(--ks-border-secondary);
-    color: var(--ks-content-primary);
-}

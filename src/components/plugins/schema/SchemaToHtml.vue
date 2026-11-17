@@ -185,7 +185,7 @@
         observer?.disconnect();
     });
 
-    const codeTheme = computed(() => isDark.value ? "github-dark-default" : "github-light-default");
+    const codeTheme = computed(() => isDark.value ? "kestra-dark" : "kestra-light");
 
     provide("highlighter", highlighter);
     provide("codeTheme", codeTheme);
@@ -229,7 +229,8 @@
         return found;
     };
 
-    const {getHighlighterCore} = await import("./shikiToolset");
+    const {getHighlighterCore, pebbleTransformer} = await import("./shikiToolset");
+    provide("pebbleTransformer", pebbleTransformer);
 
     const initialLanguages = new Set<string>(["yaml"])
     if (props.pluginArtifactCoordinate) initialLanguages.add("bash")
