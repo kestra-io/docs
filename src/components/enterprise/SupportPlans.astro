@@ -67,18 +67,28 @@ const hasLogos = logos.every(Boolean)
                                     <dt>{row.label}</dt>
                                     <dd>
                                         {row.values[idx] === true ? (
-                                            <Icon
-                                                name="mdi:check"
-                                                class="yes"
-                                                aria-label="Included"
-                                            />
+                                            <>
+                                                <Icon
+                                                    name="mdi:check"
+                                                    class="yes"
+                                                    aria-hidden="true"
+                                                />
+                                                <span class="visually-hidden">
+                                                    Included
+                                                </span>
+                                            </>
                                         ) : row.values[idx] === false ? (
-                                            <span
-                                                class="no"
-                                                aria-label="Not included"
-                                            >
-                                                —
-                                            </span>
+                                            <>
+                                                <span
+                                                    class="no"
+                                                    aria-hidden="true"
+                                                >
+                                                    —
+                                                </span>{" "}
+                                                <span class="visually-hidden">
+                                                    Not included
+                                                </span>
+                                            </>
                                         ) : hasLogos &&
                                           String(row.values[idx]).endsWith(
                                               TOOLS_TEXT,
