@@ -26,7 +26,7 @@ The pattern I recommend splits the work. The agent reasons and proposes: a diagn
 - **Who approves.** This depends on the risk. Low-risk changes run without a person, because a policy rule in the workflow approves them. Higher-risk changes pause until a person approves.
 - **What gets recorded.** One execution with the trigger, the agent's output, the approval, the change and the verification.
 
-The examples in this post use [Kestra](https://kestra.io). Infrastructure teams use it to run the [Terraform, Ansible, Shell and PowerShell code they already have](https://kestra.io/infra-automation) as declarative YAML flows, versioned in Git, with approvals, secrets and one execution record per run.
+The examples in this post use [Kestra](/). Infrastructure teams use it to run the [Terraform, Ansible, Shell and PowerShell code they already have](/infra-automation) as declarative YAML flows, versioned in Git, with approvals, secrets and one execution record per run.
 
 Here's how the split looks in Kestra:
 
@@ -40,7 +40,7 @@ For a broader view of where retries, approvals and audit belong around agents, s
 
 In Kestra, there are two ways:
 
-1. **Inside a flow.** An AI Agent task does the reasoning as one step, such as reading the logs of a failed run. Kestra has plugins for [OpenAI](https://kestra.io/plugins/plugin-openai), [Anthropic](https://kestra.io/plugins/plugin-anthropic) and [Google Gemini](https://kestra.io/plugins/plugin-gemini), and for open models through [Ollama](https://kestra.io/plugins/plugin-ollama). Decision models have their own plugins, covered below.
+1. **Inside a flow.** An AI Agent task does the reasoning as one step, such as reading the logs of a failed run. Kestra has plugins for [OpenAI](/plugins/plugin-openai), [Anthropic](/plugins/plugin-anthropic) and [Google Gemini](/plugins/plugin-gemini), and for open models through [Ollama](/plugins/plugin-ollama). Decision models have their own plugins, covered below.
 2. **From outside.** An agent such as Claude, Cursor or your own calls flows through the Model Context Protocol (MCP). Kestra exposes each flow as a named, typed tool, and the server lists exactly which flows it exposes, which is the list a security reviewer wants to see.
 
 ## Three Jobs AI Agents Can Take On Today
@@ -100,7 +100,7 @@ All three jobs contain a constrained choice: the catalog flow for a ticket, the 
 
 Decision models, also called System One models, are built for exactly this step. [Jev by TypeSafe AI](https://www.kai-waehner.de/blog/2026/10/20/how-decision-models-became-a-new-ai-category-after-jev/) was the first. A decision model answers typed questions (a choice, a score, or a yes/no probability) with a confidence value. The flow uses that confidence to route with a Switch or If task, or to pause for approval. The confidence says how sure the model is about the classification, which is different from how safe the change is, so the rules and approvals around it still bound the risk. As with any model, test the confidence against your own cases before you trust a threshold. The AI agent keeps the open reasoning work, such as reading logs and writing the fix proposal.
 
-Kestra's [TypeSafe plugin](https://kestra.io/plugins/plugin-typesafe) evaluates typed questions in a flow. Its base URL points either to TypeSafe's hosted Jev or to a Jev-compatible server such as Ollama inside your own network, for teams that cannot send infrastructure data to a vendor. The flow stays the same. Here is a simplified routing step for the change approval in Job 2:
+Kestra's [TypeSafe plugin](/plugins/plugin-typesafe) evaluates typed questions in a flow. Its base URL points either to TypeSafe's hosted Jev or to a Jev-compatible server such as Ollama inside your own network, for teams that cannot send infrastructure data to a vendor. The flow stays the same. Here is a simplified routing step for the change approval in Job 2:
 
 ```yaml
 id: score_change
@@ -160,8 +160,8 @@ AI agents are not the right tool for every infrastructure job. I would keep them
 
 AI agents can take real work off infrastructure teams, and request intake, change scoring and failure triage are good starting points, in this order of risk. Each of them needs the chain to run as a governed workflow first, because that workflow is where you control what the agent touches, who approves, and what gets recorded.
 
-So the first step is one chain that already hurts: one that crosses at least three tools, carries a compliance or SLA deadline, and is reconstructed by hand today. Run it as one workflow, then add the agent step. To try this pattern in Kestra, whose core is open source under Apache 2.0, start with the [quickstart](https://kestra.io/docs/quickstart). The [governed MCP action blueprint](https://kestra.io/blueprints/mcp-governed-action-request) then shows an agent calling a flow as an MCP tool, with production runs waiting for a person, the same pattern as this post.
+So the first step is one chain that already hurts: one that crosses at least three tools, carries a compliance or SLA deadline, and is reconstructed by hand today. Run it as one workflow, then add the agent step. To try this pattern in Kestra, whose core is open source under Apache 2.0, start with the [quickstart](/docs/quickstart). The [governed MCP action blueprint](/blueprints/mcp-governed-action-request) then shows an agent calling a flow as an MCP tool, with production runs waiting for a person, the same pattern as this post.
 
 If you're building the self-service side of this, Kestra for Infrastructure launches on December 1 with Kestra 2.1. It's part of Kestra Enterprise Edition and gives platform teams a catalog that developers, data teams and AI agents can request infrastructure from, with approval wherever the team wants one. In December, I'll publish a runnable version of the failure triage pattern from Job 3.
 
-For how to pick that first chain, and the case for one control plane above Terraform, Ansible and the other infrastructure tools, see the whitepaper [Infrastructure Automation Is Not Infrastructure Orchestration](https://kestra.io/resources/whitepapers/infrastructure-orchestration).
+For how to pick that first chain, and the case for one control plane above Terraform, Ansible and the other infrastructure tools, see the whitepaper [Infrastructure Automation Is Not Infrastructure Orchestration](/resources/whitepapers/infrastructure-orchestration).
