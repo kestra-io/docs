@@ -1,7 +1,7 @@
 ---
 title: 2.1.0
 h1: What Changed in Kestra 2.1.0 and How to Migrate
-description: Migration guide for upgrading from Kestra 2.0 to 2.1.0, covering the concurrency limit API, removed settings and impersonate permissions, deprecated server CLI commands, queue configuration keys, asset relations, namespace binding scope, dbt asset types, webhook responses, and flow output types.
+description: Migration guide for upgrading from Kestra 2.0 to 2.1.0, covering the concurrency limit API, removed settings and impersonate permissions, deprecated server CLI commands, queue configuration keys, asset relations, asset write timing, namespace binding scope, dbt asset types, webhook responses, and flow output types.
 sidebarTitle: 2.1.0
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 2.1.0
@@ -27,6 +27,7 @@ Kestra 2.1.0 requires no flow rewrites, except asset triggers and declarations t
 | [Queue configuration keys](./queue-backend-configuration) (EE) | Kafka, Redis, and AMQP deployments | Move settings under `kestra.queue.<type>`. The old keys still work but log a deprecation warning. |
 | [POST-only logout](./sso-logout-post-only) (EE) | SSO deployments, configurations with `get-allowed: true`, and direct links to `/logout` | Register `<your Kestra URL>/ui` as the post-logout redirect URI in your identity provider and remove `get-allowed` overrides. `GET /logout` now returns 405. |
 | [Asset relations](./asset-relations) (EE) | Users of the lineage-events API, `kestractl assets lineage-events`, or `PurgeAssets` lineage options | Read lineage from the relations API instead. Flows with an invalid asset `id` are now rejected on save. |
+| [Asset write timing](./asset-write-timing) (EE) | Tasks or flows that write the same declared asset concurrently, status filters on `active`, and API clients reading `assetEmits` | Expect `WARNING` on the task that finds the asset locked, include `pending` and `updating` in status filters, and read lineage from the relations API. |
 | [dbt asset types](./dbt-asset-types) (EE) | Asset triggers, `AssetShipper` mappings, and declared inputs that match dbt assets on the `Table` type | Match on `DbtModel`, `DbtSeed`, or `DbtSnapshot` instead. Existing dbt assets are retyped on their next run. |
 | [Webhook responses without `wait`](./webhook-response-without-wait) | Webhook triggers that set `responseCode` without `wait: true` | The immediate response now uses `responseCode`. If it reads `outputs`, set `wait: true` or remove it: otherwise the webhook responds with `500`. |
 | [Flow output types](./flow-output-types) | Flow outputs typed `SELECT`, `MULTISELECT`, `EMAIL`, `FORM`, or `REUSABLE_INPUTS` | Change the type to `STRING`, or `ARRAY` for a list. Existing flows still run, but saving them fails until you do. |

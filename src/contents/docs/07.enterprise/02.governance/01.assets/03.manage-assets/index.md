@@ -136,12 +136,13 @@ When you delete an asset that has parts, choose what happens to them with the `c
 
 A lock blocks writes to an asset for a limited time. Reads are never blocked. Use locks to protect a resource during maintenance or while one execution changes it.
 
-There are two kinds of lock:
+There are three kinds of lock:
 
 | Owner | Created by | Blocks |
 | --- | --- | --- |
 | Execution | The [`Acquire` task](../02.tasks-and-triggers/index.md#acquire-and-release), or the API with an execution ID | Writes from every other execution, the UI, and the API. The owning execution can still write, and each write extends the lock. |
 | User | The UI, or the API without an execution ID | Writes from every execution, including executions the locking user starts, and edits by other users through the UI and the API. The user who holds the lock can still edit and delete the asset. |
+| Task run | A task's declared `outputs`, from the start of each attempt until it ends. See [While the task runs](../01.declare-assets/index.md#while-the-task-runs). | Writes from every other task run, the UI, and the API. |
 
 To lock an asset in the UI, open the **⋮** menu on its detail page, select **Lock**, and choose a duration from 5 minutes to 24 hours, or **Custom** for any ISO 8601 duration. The detail page then shows who holds the lock and until when, with the banner *You might be seeing outdated metadata as this asset is currently locked for writing.* Select **Unlock** to release it. A user with the `UNLOCK` permission can release any lock, whatever its owner.
 

@@ -21,7 +21,7 @@ Every task accepts an `assets` property:
 | `inputs` | List of asset references | — | Assets the task reads. Each entry needs an `id`. Add `type` to type an asset that doesn't exist yet. |
 | `outputs` | List of assets | — | Assets the task creates or updates. Each entry needs an `id`. Add `type` to create a new asset with a real type. |
 | `enableAuto` | Boolean | `false` | Accept assets emitted by the plugin or by script log lines. See [Automatic emission](#automatic-emission). |
-| `assetFailureBehavior` | `WARN`, `FAIL`, or `IGNORE` | `WARN` | What happens to the task state when an asset can't be written. See [Failure behavior](#failure-behavior). |
+| `assetFailureBehavior` | `WARN`, `FAIL`, or `IGNORE` | `WARN` | What happens to the task state when an asset can't be written. See [Failure behavior](#failure-behavior). Tasks only: a trigger accepts the property but ignores it. |
 
 Asset declarations are an Enterprise Edition feature. In the open-source edition, a flow with an `assets` property fails validation with the message `assets are only available in Enterprise Edition`.
 
@@ -70,7 +70,7 @@ When `build_table` finishes:
 
 ### Rendering and task outputs
 
-Kestra renders the `assets` block after the task finishes, so expressions in it can read the task's own outputs with `outputs.<task_id>.<output>`. Use this when the resource name is only known at runtime:
+Kestra renders the `assets` block twice: when the task starts, to [lock its outputs](#while-the-task-runs), and when it ends. Expressions can read the task's own outputs with `outputs.<task_id>.<output>`, which only exist at the end. A field that needs them is left out at the start and written when the task ends. An output whose `id`, `type`, or `namespace` needs them isn't written or locked at the start, and the task logs a warning naming it. Use this when the resource name is only known at runtime:
 
 ```yaml
 - id: download
@@ -86,11 +86,27 @@ Kestra renders the `assets` block after the task finishes, so expressions in it 
 
 If an expression in `inputs` can't be rendered, Kestra still processes `outputs`, and the reverse.
 
+### While the task runs
+
+Kestra writes a task's declared outputs as soon as the task starts, and locks them until the attempt ends:
+
+- An output that doesn't exist yet is created with the status `pending`. An output that exists keeps its values and gets the status `updating`.
+- While the lock is held, writes from other task runs, the UI, and the API are refused, as with any [lock](../03.manage-assets/index.md#lock-an-asset). A task whose output another execution, or another task run of the same execution, has locked handles it with its [failure behavior](#failure-behavior). With `FAIL`, the task doesn't run.
+- When the task succeeds, Kestra writes the outputs rendered at the end, with the `status` the output entry declares, or `active`.
+
+If the execution already holds a lock on the asset, taken with the [`Acquire` task](../02.tasks-and-triggers/index.md#acquire-and-release), the task writes under that lock and the asset keeps its status during the run.
+
 ### What happens when a task fails
 
-When a task ends in `FAILED`, Kestra records lineage and usage for its inputs and outputs, and still creates placeholders for unknown inputs, but doesn't create or update its output assets. A failed run never overwrites an asset's metadata or `updated` timestamp.
+When a task ends in `FAILED` or is killed, Kestra records lineage and usage for its inputs and outputs, and still creates placeholders for unknown inputs. Its declared outputs are handled this way:
 
-A task with `allowFailure: true` that fails ends in `WARNING` instead, so Kestra writes its output assets.
+- An asset that existed before the task run is restored to the state it had before, so nothing the failed run wrote remains.
+- An asset the task run created stays, with the status `failed`.
+- An asset whose status the task set itself while running keeps what the task wrote.
+
+Assets the task [emitted](#automatic-emission) while running were written when they were emitted and aren't rolled back.
+
+A task with `allowFailure: true` that fails ends in `WARNING`, but its declared outputs are still handled as a failure: Kestra settles them with the state the task itself ended in, before `allowFailure` or `allowWarning` change it.
 
 ## Asset fields
 
@@ -118,6 +134,8 @@ Three more top-level fields describe a resource's lifecycle. Set them directly o
 | `owner` | Who the resource belongs to. Conventionally `user:<id>` or `group:<id>`. |
 
 Kestra stores these as `system.status`, `system.ttl`, and `system.owner`. Use those keys in dashboard queries and filter expressions. The fields apply to every asset type.
+
+While a task run writes an asset, Kestra sets its status to `pending`, `updating`, or `failed`. See [While the task runs](#while-the-task-runs). A task can also set `not_created` itself, for example when a plan is denied. A filter or query that selects `active` assets doesn't match an asset during those writes.
 
 ```yaml
 outputs:
@@ -266,6 +284,8 @@ You can also use any custom string as a type, such as `AWS_BUCKET` or `company.i
 ## Automatic emission
 
 Some plugins detect the resources a task reads and writes and emit assets themselves. Script tasks can do the same by printing a special log line. In both cases, set `assets.enableAuto: true` on the task. Without it, Kestra discards emitted assets.
+
+Kestra writes an emitted asset when the plugin or the log line emits it, while the task is still running, so the asset page and [asset triggers](../02.tasks-and-triggers/index.md) see it before the task ends.
 
 :::alert{type="warning"}
 Some plugins log that they emitted assets even when `enableAuto` is off, while Kestra records nothing. If a task logs asset emission but no asset appears, check that the task has `assets.enableAuto: true`.
