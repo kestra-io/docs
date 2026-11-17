@@ -25,6 +25,7 @@ For how to attach assets to a task, see the [asset declaration reference](../01.
 | [`PurgeAssets`](#purgeassets) | Task | `io.kestra.plugin.kestra.ee.assets.PurgeAssets` | Hard-delete old assets and asset usage records |
 | [`Acquire`](#acquire-and-release) | Task | `io.kestra.plugin.kestra.ee.locks.Acquire` | Lock an asset against writes from other executions |
 | [`Release`](#acquire-and-release) | Task | `io.kestra.plugin.kestra.ee.locks.Release` | Release a lock this execution holds |
+| [`asset()`](#asset-pebble-function) | Pebble function | — | Read one asset by ID, such as the asset picked in an `ASSET` input |
 | [`assets()`](#assets-pebble-function) | Pebble function | — | Look up assets inside any expression, including dynamic inputs |
 | [`AssetShipper`](#assetshipper) | Task | `io.kestra.plugin.ee.assets.AssetShipper` | Export lineage events to OpenLineage or a file |
 
@@ -397,6 +398,16 @@ If another owner already holds the lock, `Acquire` fails with HTTP 423. Add a [`
 
 For locking from the UI and how locks affect each write path, see [Lock an asset](../03.manage-assets/index.md#lock-an-asset). For a complete walkthrough, see [Prevent concurrent changes to a resource](../../../../15.how-to-guides/asset-locks/index.md).
 
+## asset() Pebble function
+
+The `asset()` function returns one asset by ID, with its current metadata. Use it to read the asset picked in an [`ASSET` input](../../../../05.workflow-components/05.inputs/index.md#asset-inputs) or returned by an `ASSET` output:
+
+```yaml
+message: "{{ asset(inputs.vm).metadata.region }}"
+```
+
+The function fails with `The asset '<id>' does not exist or is not allowed from the namespace '<namespace>'.` when the asset doesn't exist, or when the [allowed namespaces](../../07.namespace-management/index.md#allowed-namespaces) of the asset's namespace exclude the flow's namespace. Both cases return the same error, so the function doesn't reveal assets of other namespaces. An asset with no namespace can always be read.
+
 ## assets() Pebble function
 
 The `assets()` function returns the assets that match its arguments. Use it anywhere an expression is allowed, for example to fill a `SELECT` or `MULTISELECT` input with live asset IDs.
@@ -407,10 +418,12 @@ assets(id=null, type=null, namespace=null, metadata=null)
 
 | Argument | Description |
 | --- | --- |
-| `id` | Only return the asset with this ID. IDs are unique per tenant, so this returns at most one asset. |
+| `id` | Only return the asset with this ID. IDs are unique per tenant, so this returns at most one asset. Pass a list of IDs, such as the value of an `ASSET` input with `multiple: true`, to return those assets in the same order. A list can't be combined with the other arguments, and the function fails on the first ID that is missing or out of reach, with the same error as `asset()`. |
 | `type` | Only return assets of this exact type. |
-| `namespace` | Only return assets whose namespace starts with this value. This includes child namespaces, and also sibling namespaces that share the prefix: `company.infra` matches `company.infrastructure`. When omitted, the function doesn't filter by namespace. |
+| `namespace` | Only return assets in this namespace or its child namespaces: `company.infra` matches `company.infra.eu` but not `company.infrastructure`. When omitted, the function doesn't filter by namespace. |
 | `metadata` | Only return assets whose metadata contains every key-value pair in this map, for example `{"environment": "prod"}`. |
+
+The function only returns assets that the flow's namespace can reach, following the same rule as `asset()`.
 
 When you pass `namespace`, Kestra also checks [allowed namespaces](../../07.namespace-management/index.md#allowed-namespaces): if any namespace in the tenant restricts its allowed namespaces without listing the namespace you pass, the function fails with `All namespaces are not allowed`. Namespaces allow all others by default, so this only matters once you restrict them. To avoid the check, filter by `type` or `metadata` instead.
 

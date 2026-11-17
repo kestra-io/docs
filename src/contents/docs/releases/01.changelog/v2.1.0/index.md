@@ -14,6 +14,7 @@ Infrastructure self-service in a dedicated tenant type, searchable execution val
 - **App templates (EE)**: one template creates a flow and the app that runs it, with guardrails set by the platform team. [Docs](../../../07.enterprise/02.governance/tenants/infrastructure/app-templates/index.md)
 - **Inventory import (EE)**: import Terraform state, CSV, JSON, or YAML into the asset inventory. [Docs](../../../07.enterprise/02.governance/tenants/infrastructure/index.md#import-an-existing-inventory)
 - **Asset leases and day-2 actions (EE, Cloud)**: `ttl`, `owner`, and `status` fields on assets, the `TtlTrigger`, and asset actions with `when` conditions. [Docs](../../../07.enterprise/02.governance/01.assets/02.tasks-and-triggers/index.md#ttltrigger)
+- **ASSET input and output (EE, Cloud)**: let users pick assets from a searchable list filtered by type, ID, namespace, status, or metadata, and read them in tasks with the new `asset()` function. [Docs](../../../05.workflow-components/05.inputs/index.md#asset-inputs)
 - **Asset relations (EE, Cloud)**: `partOf` and `related` model deployments and their resources, and replace lineage events. [Migration guide](../../../11.migration-guide/v2.1.0/asset-relations/index.md)
 
 <!-- TODO(GA): Data Orchestration Artifacts (dbt, Airbyte, Fivetran, JDBC) are changelog-only for 2.1 (no blog or social mention). Add one bullet once their plugin releases are confirmed for GA; dbt asset types and the Airbyte asset row depend on unreleased plugin versions. -->
@@ -84,6 +85,7 @@ Infrastructure self-service in a dedicated tenant type, searchable execution val
 
 Smaller changes to existing behavior that don't need a migration guide.
 
+- **`assets()` function (EE)**: returns only assets the flow's namespace can reach under allowed namespaces, and `namespace` matches that namespace and its child namespaces instead of any namespace starting with the same characters. [Docs](../../../07.enterprise/02.governance/01.assets/02.tasks-and-triggers/index.md#assets-pebble-function)
 - **API sort direction**: the `sort` query parameter accepts `asc` and `desc` in any case, and any other direction returns `422` instead of silently sorting descending. Also in 2.0.x.
 - **`distinct` filter**: `{{ null | distinct }}` returns null instead of the string `"null"`, so `??`, `is null`, and `if` conditions behave as expected.
 - **Execution live view**: the execution page reconnects its live stream after a dropped connection. The `GET /executions/{id}/follow` stream sends a heartbeat every 30 seconds and always ends after one hour.

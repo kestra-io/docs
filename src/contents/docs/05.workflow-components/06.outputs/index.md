@@ -86,7 +86,9 @@ outputs:
     value: "{{ outputs.mytask.values.result }}"
 ```
 
-Supported output types: `ARRAY`, `BOOL`, `DATE`, `DATETIME`, `DURATION`, `EMAIL`, `FILE`, `FLOAT`, `INT`, `JSON`, `MULTISELECT`, `SECRET`, `SELECT`, `STRING`, `TIME`, `URI`, `YAML`.
+Supported output types: `ARRAY`, `ASSET` (Enterprise Edition), `BOOL`, `DATE`, `DATETIME`, `DURATION`, `FILE`, `FLOAT`, `INT`, `ION`, `JSON`, `SECRET`, `STRING`, `TIME`, `URI`, `YAML`.
+
+Input-only types such as `SELECT`, `MULTISELECT`, `EMAIL`, and `TABLE` can't be used as output types: use `STRING`, or `ARRAY` for a list. Saving a flow with one of them fails with `The output '<id>' has an unknown type`.
 
 ### Child flow output access
 
@@ -109,6 +111,13 @@ tasks:
 ```
 
 The double `outputs` is intentional: the first accesses the Subflow task's outputs, the second accesses the child flow's declared output `final`.
+
+### Asset outputs
+
+:::badge{version=">=2.1" editions="EE,Cloud"}
+:::
+
+An `ASSET` output holds an asset ID, or a list of IDs, like an [ASSET input](../05.inputs/index.md#asset-inputs). Each ID must name an existing asset that the flow's namespace can reach, or the output fails. A parent flow reads the asset with `{{ asset(outputs.subflow.outputs.vm) }}`, and a flow started by a [Flow trigger](../07.triggers/02.flow-trigger/index.md) with `{{ asset(trigger.outputs.vm) }}`.
 
 ### Conditional output values
 
@@ -177,7 +186,7 @@ Kestra stores each item of an `ARRAY` output separately, so a search for `ORD-88
 
 Searchable outputs follow these rules:
 
-- **Types:** `STRING`, `EMAIL`, `SELECT`, `INT`, `FLOAT`, `BOOL`, `URI`, `DATE`, `DATETIME`, `TIME`, `DURATION`, and `ARRAY` of those scalar values. Saving a flow that marks an output of any other type as searchable fails with an error that names the output.
+- **Types:** `STRING`, `INT`, `FLOAT`, `BOOL`, `URI`, `DATE`, `DATETIME`, `TIME`, `DURATION`, and `ARRAY` of those scalar values. Saving a flow that marks an output of any other type as searchable fails with an error that names the output.
 - **When values are stored:** at the end of the execution, in any final state, once the flow outputs render. A running execution has no searchable values yet. Executions of [Loop](../01.tasks/00.flowable-tasks/index.md#loop) iterations don't compute flow outputs, so only the execution that runs the Loop task stores searchable values.
 - **Size limits:** each value is stored up to 2,048 characters, and an array up to its first 1,000 items. Kestra truncates longer values and arrays and logs a warning in the execution logs.
 - **Errors:** if an array item is not a scalar value or the value can't be stored, Kestra logs an error and the output is not searchable. The execution state doesn't change.
@@ -190,7 +199,7 @@ Filters match the stored string exactly. Kestra normalizes each value before sto
 
 | Type | Searchable input | Searchable output |
 |---|---|---|
-| `STRING`, `EMAIL`, `SELECT`, `URI` | As entered | As rendered |
+| `STRING`, `URI`, and the `EMAIL` and `SELECT` inputs | As entered | As rendered |
 | `INT` | `42` | `42` |
 | `FLOAT` | `1.5` | `1.5` |
 | `BOOL` | `true` or `false` | `true` or `false` |

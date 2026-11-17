@@ -82,6 +82,7 @@ Inputs are strongly typed and validated before execution starts.
 | `FORM` | Groups child inputs as a multi-step wizard in the Execute modal | Cannot nest; no `defaults`/`prefill` on the FORM itself |
 | `TABLE` | Ordered list of typed records, entered as rows in a grid (Enterprise Edition) | `columns` (required), `minRows`, `maxRows`, `filters`, `allowRowDuplication`; see [TABLE inputs](#table-inputs) |
 | `REUSABLE_INPUTS` | References a namespace-level named input group (Enterprise Edition) | See [Reusable Inputs](../22.reusable-inputs/index.md) |
+| `ASSET` | One asset ID, or a list of IDs, picked from the assets the user can view (Enterprise Edition) | `assetType`, `assetId`, `namespace`, `status`, `metadata`, `multiple`; see [ASSET inputs](#asset-inputs) |
 
 :::alert{type="info"}
 Due to [YAML's scalar formats](https://yaml.org/spec/1.1/current.html#id864510), `yes`/`no` may be parsed as booleans. Wrap them in quotes when using them as `SELECT` values: `"Yes"`, `"No"`.
@@ -466,6 +467,116 @@ curl -X POST "http://localhost:8080/api/v1/main/executions/company.team/provisio
 Invalid rows return a `422` response whose `detail` lists every error.
 
 <!-- TODO(2.1 RC): confirm availability on Cloud. -->
+
+## ASSET inputs
+
+:::badge{version=">=2.1" editions="EE,Cloud"}
+:::
+
+<!-- TODO(runtime test): kestra-ee#11295 documented from source and QA's issue comment only. On an EE develop image newer than 2026-11-16 21:02 UTC, run the examples in this section: filters, dependsOn, multiple with Loop, defaults warning, the rejection error text, the API call, and the public app warning. Also check the ASSET output (subflow and Flow trigger), asset() and assets(id=[...]) errors, the assets() child-namespace match, and the flow-output-types migration page (SELECT output still runs, save fails). Add screenshots of the picker in the Execute modal and the asset rows on the Input/Output tab. -->
+
+`ASSET` lets the user pick one or more [assets](../../07.enterprise/02.governance/01.assets/index.md) when running the flow, such as the virtual machine to restart or the tables to refresh. The Execute modal and [Apps](../../07.enterprise/04.scalability/apps/index.md) forms show a searchable list of the assets the user can view. The search matches the asset ID, display name, and metadata values, and shows 20 results at a time.
+
+```yaml
+id: restart_vm
+namespace: infra.compute
+
+inputs:
+  - id: vm
+    type: ASSET
+    displayName: Virtual machine
+    assetType: io.kestra.plugin.ee.assets.VM
+    namespace: infra.compute
+    status: active
+
+tasks:
+  - id: restart
+    type: io.kestra.plugin.core.log.Log
+    message: "Restarting {{ asset(inputs.vm).displayName }} in {{ asset(inputs.vm).metadata.region }}"
+```
+
+These properties narrow the assets the list offers. All of them are optional:
+
+| Property | Offers only assets that |
+|---|---|
+| `assetType` | Have this type, such as `io.kestra.plugin.ee.assets.VM` or a custom type name |
+| `assetId` | Have an ID matching this regular expression anywhere, such as `^web-` for `web-01` and `web-02` |
+| `namespace` | Are in this namespace or one of its child namespaces |
+| `status` | Have this status, such as `active`. An asset with no status counts as `active`. |
+| `metadata` | Have each key-value pair of this map in their metadata |
+
+Properties can be expressions. This flow first asks for a deployment, then only offers the VMs whose `deployment` metadata matches it. The `vm` input lists `deployment` in [`dependsOn`](#conditional-inputs), so its list refreshes when the user picks a deployment:
+
+```yaml
+inputs:
+  - id: deployment
+    type: ASSET
+    displayName: Deployment
+    assetType: io.kestra.plugin.ee.assets.Deployment
+    status: active
+
+  - id: vm
+    type: ASSET
+    displayName: Virtual machine
+    assetType: io.kestra.plugin.ee.assets.VM
+    metadata:
+      deployment: "{{ inputs.deployment }}"
+    dependsOn:
+      inputs:
+        - deployment
+```
+
+Set `multiple: true` to let the user pick several assets. This flow stops each picked VM in a [Loop](../01.tasks/00.flowable-tasks/index.md#loop):
+
+```yaml
+id: stop_vms
+namespace: infra.compute
+
+inputs:
+  - id: vms
+    type: ASSET
+    displayName: Machines to stop
+    multiple: true
+    assetType: io.kestra.plugin.ee.assets.VM
+    status: active
+
+tasks:
+  - id: stop
+    type: io.kestra.plugin.core.flow.Loop
+    values: "{{ inputs.vms }}"
+    tasks:
+      - id: log
+        type: io.kestra.plugin.core.log.Log
+        message: "Stopping {{ item.value }} in {{ asset(item.value).metadata.region }}"
+```
+
+### Read the picked asset
+
+The input's value is the asset ID, or a list of IDs with `multiple: true`. Tasks, subflows, and the API receive only the IDs. Read an asset, with its current metadata, using the [`asset()` function](../../07.enterprise/02.governance/01.assets/02.tasks-and-triggers/index.md#asset-pebble-function), such as `{{ asset(inputs.vm).metadata.region }}`. For a list, use `{{ assets(id=inputs.vms) }}`, which returns the assets in the order picked.
+
+On the execution's **Input/Output** tab and in the inputs tooltip of the executions list, each asset shows its status, name, type, and namespace, with a link to the asset. If the viewer can't view assets, or the asset was deleted, the ID shows instead.
+
+### Validation and defaults
+
+Kestra checks each submitted ID against the input's properties, and against the [allowed namespaces](../../07.enterprise/02.governance/07.namespace-management/index.md#allowed-namespaces) of the asset's namespace. A mismatch rejects the execution:
+
+```text
+Asset 'web-07' does not exist, does not match the filters of input 'vm', or is not allowed from the namespace 'infra.compute'.
+```
+
+An execution created without a logged-in user, such as from a webhook, skips the user permission check. The namespace check still applies.
+
+Set `defaults` to an asset ID, or a list of IDs with `multiple: true`. When you save the flow, the editor warns if a default doesn't exist, doesn't match the input's properties, or can't be reached from the flow's namespace. The save still succeeds, because the asset may be created later. The editor also completes `status` values and the IDs of matching assets for `defaults`.
+
+To pass the input through the API, send the ID, or a JSON list of IDs:
+
+```bash
+curl -X POST "http://localhost:8080/api/v1/main/executions/infra.compute/restart_vm" \
+  -H "Content-Type: multipart/form-data" \
+  -F 'vm=web-01'
+```
+
+An app with public access can't use an `ASSET` input: its visitors can't view any asset, so the list stays empty and Kestra refuses the execution. The App builder shows a warning. In the open-source edition, an `ASSET` input fails with `The ASSET type requires Kestra Enterprise Edition.`
 
 ## Array inputs
 
