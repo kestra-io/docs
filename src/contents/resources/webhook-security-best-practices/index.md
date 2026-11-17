@@ -37,7 +37,7 @@ Common use cases for webhooks include:
 *   **SaaS Integration:** An updated customer record in Salesforce triggers a webhook to sync the changes with a support platform like Zendesk.
 *   **Payment Processing:** A successful payment on Stripe triggers a webhook to an application to grant access to a service.
 
-You can learn more about how to [set up webhooks to trigger flows](/docs/how-to-guides/webhooks) and explore the specifics of a [webhook trigger](/docs/workflow-components/triggers/webhook-trigger) in orchestration platforms.
+You can learn more about how to [set up a webhook trigger](/docs/workflow-components/triggers/webhook-trigger) to start Kestra flows.
 
 ## Why robust webhook security is non-negotiable
 

@@ -144,7 +144,7 @@ The difference isn't just syntax. Kestra's architecture addresses the persistent
 
 **Native governance built-in.** [RBAC](../../docs/07.enterprise/03.auth/rbac/index.md), [namespace isolation](../../docs/07.enterprise/02.governance/07.namespace-management/index.md), and [audit logging](../../docs/07.enterprise/02.governance/06.audit-logs/index.md) ship out of the box. You don't need to bolt on enterprise features later.
 
-**Event-driven from the start.** Trigger workflows from [webhooks](../../docs/15.how-to-guides/webhooks/index.md), file uploads, message queues, or API calls. Not just cron schedules.
+**Event-driven from the start.** Trigger workflows from [webhooks](../../docs/05.workflow-components/07.triggers/03.webhook-trigger/index.md), file uploads, message queues, or API calls. Not just cron schedules.
 
 **Gentler migration path.** You can run Kestra alongside Airflow, migrate incrementally, and even trigger Kestra flows from Airflow DAGs during the transition. No big-bang cutover required. Teams like Crédit Agricole used this approach to move from Jenkins and Ansible to Kestra, orchestrating infrastructure across 100+ clusters without downtime.
 
