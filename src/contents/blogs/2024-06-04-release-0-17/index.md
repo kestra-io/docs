@@ -92,7 +92,7 @@ With the release of Kestra 0.17.0, we are also [introducing](https://github.com/
 
 ### Push Flows to Git
 
-The `PushFlows` task allows you to easily commit and push your saved flows to a Git repository. Check the [following documentation](../../docs/15.how-to-guides/pushflows/index.md) and the video demonstration below to learn more about how you can use this task to automate your Git workflow.
+The `PushFlows` task allows you to easily commit and push your saved flows to a Git repository. Check the [following documentation](/docs/version-control-cicd/git/push-to-git#push-flows) and the video demonstration below to learn more about how you can use this task to automate your Git workflow.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/OPlNKQZFeho?si=ZvRQfLjnhjDYk1qN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
