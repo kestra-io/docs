@@ -66,6 +66,7 @@ The editor grid adds a few behaviors:
 - Renaming a column renames it in every row, and a new column is added to every row with an empty value.
 - An empty cell is stored as `null`, which is different from `0` or `""`.
 - When the input has [filters](../05.inputs/index.md#filter-rows-by-other-inputs), the grid still shows every row, with a note below it explaining that only the matching rows are shown at execution.
+
 ## Save a set as a draft
 
 :::badge{version=">=2.1" editions="EE,Cloud"}
@@ -203,7 +204,104 @@ The [Kestra API](../../api-reference/index.mdx) manages sets under `/api/v1/{ten
 
 You can also manage sets with [`kestractl reusable-inputs`](../../kestra-cli/kestractl/index.md#reusable-inputs-enterprise-edition).
 
-<!-- TODO(2.1): document the io.kestra.plugin.kestra.ee.reusableinputs Set, List, and Delete tasks once they can be verified against the plugin-kestra 2.1 release. -->
+## Manage sets from a flow
+
+:::badge{version=">=2.1" editions="EE,Cloud"}
+:::
+
+<!-- TODO(runtime test): the Set, List, and Delete tasks are documented from source only (plugin-kestra#215, merged to next/v2.1, not yet in a plugin-kestra release). Once the plugin-kestra release for 2.1 is out, run the three examples below against EE 2.1, including a CSV upload with a semicolon separator, a draft save, and the error on an unknown `defaults` key. -->
+
+The `io.kestra.plugin.kestra.ee.reusableinputs` tasks create, update, list, and delete sets from a flow, for example to refresh the defaults of a set from a nightly inventory export. They call the Kestra API, so they need credentials: set them on the task with `auth`, or let the task use the default credentials configured for the instance, or for the namespace or tenant with a [default service account](../../07.enterprise/02.governance/07.namespace-management/index.md#default-service-account-for-sdk-plugins). Each task defaults to the flow's namespace, and accepts `namespace` to target another one.
+
+### Create or update a set
+
+The `Set` task saves a new revision of a set, or creates the set. Pass `inputs` to replace every input of the set, as in a flow:
+
+```yaml
+id: reusable_inputs_set
+namespace: company.team
+
+tasks:
+  - id: set_bom
+    type: io.kestra.plugin.kestra.ee.reusableinputs.Set
+    reusableInputsId: bom
+    reusableInputsDescription: Bill of materials of the application
+    inputs:
+      - id: environment
+        type: SELECT
+        values: [dev, prod]
+        defaults: dev
+      - id: cpus
+        type: INT
+        min: 1
+        defaults: 2
+```
+
+Kestra saves the declarations as written, so an expression in them, such as a `SELECT` `expression`, is evaluated by the executions that use the set, not by the task.
+
+To change only the default values of an existing set, pass `defaults` instead, keyed by input ID. Use `form.child` for an input inside a `FORM`. Every other part of the set is kept, and the task fails on an ID the set doesn't have:
+
+```yaml
+- id: update_defaults
+  type: io.kestra.plugin.kestra.ee.reusableinputs.Set
+  reusableInputsId: bom
+  defaults:
+    environment: prod
+    cpus: 4
+```
+
+The task evaluates `defaults` values, so they can come from inputs or outputs. To save an expression as a default instead, wrap it in `{% raw %}`. Don't build a default from text an untrusted user can enter, such as a `STRING` input: every execution that uses the set would evaluate an expression hidden in it.
+
+The default of a `TABLE` input can be its rows, or the URI of a CSV or ION file that holds them, such as a `FILE` input. A file with a `.csv` extension is read as CSV, and any other file as ION. Kestra reads a CSV by its header, whose names are column IDs, and detects a comma, semicolon, or tab separator. `INT`, `FLOAT`, `BOOL`, and `MULTISELECT` cells are converted to their column's type, and an empty cell becomes `null`. The task fails on a header or key that isn't a column, and on a cell that holds an expression:
+
+```yaml
+id: reusable_inputs_import_csv
+namespace: company.team
+
+inputs:
+  - id: servers
+    type: FILE
+
+tasks:
+  - id: set_servers
+    type: io.kestra.plugin.kestra.ee.reusableinputs.Set
+    reusableInputsId: bom
+    defaults:
+      servers: "{{ inputs.servers }}"
+```
+
+The task validates the set the same way as **Save** in the editor, and fails with the same message on an invalid set. Set `draft: true` to save a [draft](#save-a-set-as-a-draft) instead, which may be invalid and which executions skip.
+
+Keep in mind:
+
+- The task writes the set from its content, so comments in the set's YAML aren't kept.
+- The new revision appears in **Revisions** and in the [audit logs](#audit-logs) under the user or service account the task authenticates with.
+- The task doesn't check whether someone else saved a revision since it read the set, so the last save wins.
+- Only a set defined in the target namespace is edited, never one inherited from a parent namespace. Creating a set requires `inputs`, so a task with only `defaults` fails when the target namespace has no set with that ID.
+
+The task outputs the set's `namespace`, `id`, the saved `revision`, and whether it's a `draft`.
+
+### List sets
+
+The `List` task lists the sets visible from a namespace, including those inherited from parent namespaces, with their ID, namespace, description, revision, and whether that revision is a draft:
+
+```yaml
+- id: list_reusable_inputs
+  type: io.kestra.plugin.kestra.ee.reusableinputs.List
+  fetchType: FETCH
+```
+
+Each set is listed with its latest revision, drafts included. Set `allowDraft: false` to list the revision executions use instead, which leaves out sets that only have drafts. The task fetches every page unless `page` is set. With the default `fetchType: STORE`, the list is written to an ION file in internal storage, and `FETCH` returns it in the task's `reusableInputs` output.
+
+### Delete a set
+
+The `Delete` task deletes a set from a namespace. A set inherited from a parent namespace can only be deleted in its own namespace:
+
+```yaml
+- id: delete_bom
+  type: io.kestra.plugin.kestra.ee.reusableinputs.Delete
+  reusableInputsId: bom
+```
 
 ## Validation
 
