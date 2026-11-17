@@ -85,10 +85,6 @@ const PLANS: {
                 <ul class="plans">
                     {PLANS.map((plan) => {
                         const [primary, secondary] = plan.actions
-                        const external = (href: string) =>
-                            href.startsWith("http")
-                                ? { target: "_blank", rel: "noopener" }
-                                : {}
                         return (
                             <li class:list={{ featured: plan.featured }}>
                                 <div class="panel">
@@ -107,16 +103,12 @@ const PLANS: {
                                                 ? "btn-solid"
                                                 : "btn-ghost"
                                         }
-                                        {...external(primary.href)}
                                     >
                                         {primary.label}
                                     </a>
                                     <p class="more">
                                         {secondary && (
-                                            <a
-                                                href={secondary.href}
-                                                {...external(secondary.href)}
-                                            >
+                                            <a href={secondary.href}>
                                                 {secondary.label}
                                                 <span
                                                     class="arrow"
@@ -167,20 +159,6 @@ const PLANS: {
         position: relative;
         border-bottom: var(--rule);
         background: var(--ks-background-body);
-    }
-
-    :global(.home-page:has(.pricing-plans)) {
-        overflow: clip visible;
-    }
-
-    :global(body:has(.pricing-plans) #top-bar:not(.open)) {
-        box-shadow: 0 1px 0 var(--ks-border-primary);
-    }
-
-    @include media-breakpoint-down(md) {
-        :global(.home-page:has(.pricing-plans) :is(.rails, .ee-faq .grid)) {
-            border-inline: 0;
-        }
     }
 
     .rails {
