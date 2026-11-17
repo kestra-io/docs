@@ -32,7 +32,7 @@ Here's how the split looks in Kestra:
 
 ![The AI agent proposes and the Kestra flow executes](./agent-proposes-flow-executes.png)
 
-The agent gets the same governed paths a human operator uses, and no direct access to Terraform, Ansible or the cloud console. Every run leaves one execution record that links all steps and subflows, which is the audit trail.
+The agent gets the same governed paths a human operator uses, and no direct access to Terraform, Ansible or the cloud console. Every run leaves [one execution record](/blogs/unified-orchestration-governed-agents) that links all steps and subflows, which is the audit trail.
 
 For a broader view of where retries, approvals and audit belong around agents, see my post on [agentic technical debt and where orchestration belongs in AI agent architecture](https://www.kai-waehner.de/blog/2026/11/03/agentic-technical-debt-and-where-orchestration-belongs-in-ai-agent-architecture/).
 
@@ -79,7 +79,7 @@ Below the threshold, the flow applies the change on its own, after locking the a
 
 ## Job 3: Wake Up to a Diagnosis and a Proposed Fix
 
-A request comes in for a new environment. Terraform provisions the network and the virtual machines, Ansible configures them, and one step fails. Typical causes are a cloud quota, an exhausted IP range in the IP address management (IPAM) system, an expired service credential, or a transient API error. In many teams, a person finds the failure the next morning and reads logs in three consoles to understand it.
+A request comes in for a new environment. Terraform provisions the network and the virtual machines, Ansible configures them, and one step fails. Typical causes are a cloud quota, an exhausted IP range in the IP address management (IPAM) system, an expired service credential, or a transient API error. In many teams, a person finds the failure the next morning and [reads logs in three consoles](/blogs/day-2-infrastructure-automation-breaks) to understand it.
 
 The flow's error handling starts the agent step. The agent reads the logs and the state of the affected resources, classifies the failure, and proposes a fix:
 
