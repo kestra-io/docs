@@ -37,19 +37,20 @@ const LANES = [
     <div class="stage">
         <div class="stack">
             {OTHER_TENANTS.map((tenant) => (
-                <span class="ghost">
-                    <code>{tenant}</code>
-                </span>
+                <>
+                    <span class="ghost">
+                        <code>{tenant}</code>
+                    </span>{" "}
+                </>
             ))}
             <div class="sheet">
                 <p class="head">
                     <span class="tenant">
-                        <small>Tenant</small>
-                        <code>data-platform</code>
-                    </span>
+                        <small>Tenant</small> <code>data-platform</code>
+                    </span>{" "}
                     <span class="flow">
                         <Icon name="mdi:file-tree-outline" />
-                        <code>daily_ingest</code>
+                        <code>daily_ingest</code>{" "}
                         <span class="tag">
                             <span class="doing">
                                 <i />
@@ -68,7 +69,7 @@ const LANES = [
                             <p class="where">
                                 <Icon name={lane.icon} />
                                 <span>
-                                    <code>{lane.group}</code>
+                                    <code>{lane.group}</code>{" "}
                                     <small>{lane.place}</small>
                                 </span>
                             </p>
@@ -78,7 +79,7 @@ const LANES = [
                                         <Icon name={lane.glyph} />
                                     </span>
                                     <span class="what">
-                                        <code>{lane.task}</code>
+                                        <code>{lane.task}</code>{" "}
                                         <small>{lane.type}</small>
                                     </span>
                                     <span class="st">
@@ -98,10 +99,13 @@ const LANES = [
         <p class="services">
             <span class="label">Cluster health</span>
             {SERVICES.map((service, idx) => (
-                <span class="service" style={`--k: ${idx}`}>
-                    <i />
-                    {service}
-                </span>
+                <>
+                    {" "}
+                    <span class="service" style={`--k: ${idx}`}>
+                        <i />
+                        {service}
+                    </span>
+                </>
             ))}
         </p>
     </div>
