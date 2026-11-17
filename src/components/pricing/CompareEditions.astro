@@ -482,19 +482,7 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
                     color-mix(in srgb, var(--ks-content-link) 6%, transparent),
                     transparent 34rem
                 );
-                box-shadow:
-                    0 0 0 1px
-                        color-mix(
-                            in srgb,
-                            var(--ks-content-link) 55%,
-                            var(--ks-background-body)
-                        ),
-                    0 0 0 6px
-                        color-mix(
-                            in srgb,
-                            var(--ks-content-link) 14%,
-                            var(--ks-background-body)
-                        );
+                @include featured-ring;
                 pointer-events: none;
             }
         }
@@ -556,19 +544,7 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
                         var(--ks-content-link) 6%,
                         transparent
                     );
-                    box-shadow:
-                        0 0 0 1px
-                            color-mix(
-                                in srgb,
-                                var(--ks-content-link) 55%,
-                                var(--ks-background-body)
-                            ),
-                        0 0 0 4px
-                            color-mix(
-                                in srgb,
-                                var(--ks-content-link) 14%,
-                                var(--ks-background-body)
-                            );
+                    @include featured-ring(4px);
                     pointer-events: none;
                 }
             }

@@ -336,19 +336,7 @@ const PLANS: {
                 background:
                     linear-gradient(180deg, #f5f4fb, transparent 34rem),
                     var(--ks-background-body);
-                box-shadow:
-                    0 0 0 1px
-                        color-mix(
-                            in srgb,
-                            var(--ks-content-link) 55%,
-                            var(--ks-background-body)
-                        ),
-                    0 0 0 6px
-                        color-mix(
-                            in srgb,
-                            var(--ks-content-link) 14%,
-                            var(--ks-background-body)
-                        );
+                @include featured-ring;
 
                 @include media-breakpoint-down(lg) {
                     margin: 1rem 0.75rem;
