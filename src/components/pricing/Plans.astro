@@ -176,6 +176,12 @@ const PLANS: {
         box-shadow: 0 1px 0 var(--ks-border-primary);
     }
 
+    @include media-breakpoint-down(md) {
+        :global(.home-page:has(.pricing-plans) :is(.rails, .ee-faq .grid)) {
+            border-inline: 0;
+        }
+    }
+
     .rails {
         position: relative;
     }
@@ -195,6 +201,14 @@ const PLANS: {
 
         @include media-breakpoint-down(lg) {
             max-width: 32rem;
+        }
+
+        @include media-breakpoint-down(md) {
+            border-inline: 0;
+
+            &::before {
+                content: none;
+            }
         }
     }
 
