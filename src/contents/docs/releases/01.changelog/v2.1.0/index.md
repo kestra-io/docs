@@ -21,6 +21,7 @@ Infrastructure self-service in a dedicated tenant type, searchable execution val
 
 ## Workflow components
 
+- **Approval task**: pause an execution until a reviewer approves or denies it, with tasks for each decision, review comments and inputs, automatic approval, and expiry. In EE and Cloud, assign reviewers, track requests on the **Approvals** page, and chain sign-offs. [Docs](../../../05.workflow-components/23.approvals/index.md)
 - **Searchable inputs and outputs**: mark an input or flow output `searchable: true` to find executions by a business value such as an order ID, from the **Inputs & Outputs** filter or the `searchableData` API filter. [Docs](../../../05.workflow-components/06.outputs/index.md#searchable-outputs)
 - **TABLE input (EE, Cloud)**: collect rows of typed records in a grid, validated per cell. [Docs](../../../05.workflow-components/05.inputs/index.md#table-inputs)
 - **Webhook responses**: set the headers and body returned to the caller, and set the status code without `wait`. [Docs](../../../05.workflow-components/07.triggers/03.webhook-trigger/index.md#customize-the-webhook-response)
