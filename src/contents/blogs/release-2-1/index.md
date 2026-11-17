@@ -18,7 +18,6 @@ DRAFT NOTES (remove before publishing)
 - Kestra for Infrastructure wording follows the positioning note: always the full name, presented as a product built on the Kestra platform. Never "tenant", "tenant type", "mode", "workspace", or "a setting you turn on" in this post; setup stays in the docs. No customer names, no roadmap, no dates beyond launch, no names of next products, no Cloud availability. Don't claim every request is approved, that expired leases are decommissioned automatically, or that the open-source Terraform/OpenTofu/Ansible tasks fill the Inventory on their own. Governed provisioning (EE beta) stays out until it ships.
 - Embargoed: Data Orchestration Artifacts (dbt/Airbyte/Fivetran/JDBC artifacts) and the deep dbt integration stay out of this post (changelog only, kept for a later announcement). Plugin endpoints are described generically for that reason. The dbt asset types migration guide is left out of the upgrade table.
 - Left out on purpose: Bring Your Own Worker, asset health (ee#11937 open), dataURL() (2.0.8), by-query flat-param rejection (2.0.7), Replay with modified inputs (2.0.0), auto-emitted Terraform/OpenTofu assets (ee#9222 not planned), plugin auto-install on EE (ee#11724 not planned), Failure Debug panel (closed as duplicate), Health Center/Diagnostics (open), Source Search (2.0), EmbeddedSubflow (ee#3501, no work done).
-- Pending: Reusable Inputs editor (ee#11446) gets docs first, then a section here (see TODO in Additional improvements).
 - TODO markers: TODO(arcade, priority N) for interactive demos, TODO(screenshot) for static images, VERIFY for facts to confirm before publishing.
 -->
 
@@ -38,6 +37,7 @@ The table below lists the main features in this release and the edition they bel
 | Asset relations | Model a deployment and the resources inside it | EE, Cloud |
 | Searchable inputs and outputs | Find executions by a business value such as an order ID | OSS, EE, Cloud |
 | TABLE input | Collect rows of typed records in a grid | EE, Cloud |
+| Reusable Inputs editor | Edit a set of reusable inputs with drafts and revisions, and update it from a flow | EE, Cloud |
 | Webhook responses | Choose the status code, headers, and body returned to the caller | OSS, EE, Cloud |
 | Script checkpoints (beta) | Resume a script from its last checkpoint after a retry or restart | OSS, EE, Cloud |
 | Execution timeline | See executions on a time axis, grouped by namespace and flow | OSS, EE, Cloud |
@@ -170,6 +170,26 @@ The `TABLE` input collects a list of records in a grid, for things like a set of
 <!-- TODO(screenshot): Reuse table-input-execute-modal.png from the inputs docs page (the Execute modal with a TABLE input grid and per-cell errors). -->
 
 <!-- VERIFY: TABLE input Cloud availability (TODO in source). -->
+
+## Reusable Inputs Editor
+
+Reusable Inputs, added in 2.0, define a set of inputs once per namespace and use it in any flow. Some of those sets have grown into real reference lists, like the bill of materials of an application, so in 2.1 each set gets its own editor. Edit it in No Code or YAML, with `TABLE` defaults in a grid that takes rows pasted from a spreadsheet. Save unfinished work as a draft without affecting the flows that use the set, and compare or restore earlier revisions.
+
+Sets can also be kept up to date from a flow. The new `Set` task can, for example, refresh a table's rows from a CSV export every night:
+
+```yaml
+- id: set_servers
+  type: io.kestra.plugin.kestra.ee.reusableinputs.Set
+  reusableInputsId: bom
+  defaults:
+    servers: "{{ inputs.servers }}"
+```
+
+See [Reusable Inputs](/docs/workflow-components/reusable-inputs#edit-a-set-in-the-ui).
+
+<!-- TODO(screenshot): Reuse reusable-inputs-editor.png from the Reusable Inputs docs page (the editor with the Code panel, the No Code panel, and a TABLE defaults grid). -->
+
+<!-- VERIFY: the Set, List, and Delete tasks ship in the plugin-kestra release for 2.1 (merged to next/v2.1 in plugin-kestra#215, not released as of 2026-11-17). Drop the second paragraph and the example if they don't make GA. -->
 
 ## Webhook Responses
 
@@ -351,8 +371,6 @@ A few plugin additions from this cycle:
 - [Executor loop intervals](/docs/configuration/plugins-and-execution#executor-loop-intervals): tune how often the executor checks SLA deadlines and delayed executions.
 - [`thinking-effort: none`](/docs/configuration/enterprise-and-advanced) (EE): use AI Copilot with OpenAI and Azure OpenAI reasoning deployments.
 - [Plugin endpoints](/docs/plugin-developer-guide/plugin-ui#running-backend-logic-with-plugin-endpoints) (preview): plugin UI components can call server-side logic defined in the plugin.
-
-<!-- TODO(docs first): Reusable Inputs editor (kestra-ee#11446): No-code and table editing with drafts and revisions. Write the docs on docs/release-2-1, then add a short section or bullet here with a link. -->
 
 ## Upgrade and Migration
 
