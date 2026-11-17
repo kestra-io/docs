@@ -384,10 +384,6 @@ const PLANS: {
                 max-width: none;
             }
 
-            > a {
-                width: 100%;
-            }
-
             > .more:not(:has(a)) {
                 display: none;
             }
@@ -442,6 +438,10 @@ const PLANS: {
         width: min(100%, 19rem);
         margin-top: 1rem;
         padding-block: 0.625rem;
+
+        @include media-breakpoint-down(lg) {
+            width: 100%;
+        }
     }
 
     .more {
