@@ -579,6 +579,11 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
                 border-bottom: 0;
             }
 
+            td + td,
+            thead th + th + th {
+                border-left: var(--rule);
+            }
+
             td {
                 padding: 0.75rem 0.5rem 0.875rem;
 
