@@ -48,6 +48,14 @@ describe("docs redirects", () => {
             "/docs/enterprise/auditing/audit-logs",
             "/docs/enterprise/governance/audit-logs",
         ],
+        [
+            "/docs/concepts/plugin-defaults",
+            "/docs/migration-guide/v2.0.0/plugin-defaults-removed",
+        ],
+        [
+            "/docs/concepts/plugin-defaults/foo",
+            "/docs/migration-guide/v2.0.0/plugin-defaults-removed",
+        ],
         // Still linked from the dashboard editor in released Kestra versions
         // (kestra-io/docs#6034).
         ["/docs/ui/dashboards", "/docs/ui/dashboard"],
@@ -119,6 +127,7 @@ describe("index redirects", () => {
         ["/blog", "/blogs"],
         ["/write-for-us", "/community"],
         ["/write-for-us/", "/community"],
+        ["/academy", "https://academy.kestra.io/"],
     ])("%s resolves to %s", (from, to) => {
         expect(resolveRedirect(from, indexRules)).toBe(to)
     })
@@ -127,6 +136,8 @@ describe("index redirects", () => {
         ["/blogs.md"],
         ["/blogss.md"],
         ["/write-for-usx"],
+        ["/academyx"],
+        ["/academy/courses"],
     ])("%s resolves to null", (from) => {
         expect(resolveRedirect(from, indexRules)).toBeNull()
     })
