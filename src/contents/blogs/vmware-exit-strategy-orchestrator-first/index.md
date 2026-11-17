@@ -6,7 +6,9 @@ date: 2026-11-19T10:00:00
 category: Solutions
 author:
   name: Fernando Mattos
+  linkedin: https://www.linkedin.com/in/fernandomattos/
   image: fmattos
+  role: Solutions Marketing Lead
 # TODO: hero image pending from Nico. Add it to this folder as main.png and set `image: ./main.png`.
 ---
 
@@ -16,13 +18,17 @@ In our November 4 webinar, Faizan Qazi and I made the case for starting with the
 
 ![Today vRA and vRO lock you to vSphere; with Kestra as the orchestrator you keep vSphere or move to Nutanix or Proxmox, and ServiceNow, Ansible, Terraform and Slack stay](./01-orchestrator-first.png)
 
+*Replace the orchestrator first, and the hypervisor becomes a separate decision.*
+
 ## Most VMware Exit Plans Start in the Wrong Place
 
 If you run VMware, vRA and vRO are most likely your orchestration layer, and they were built for vSphere. Every catalog request, lifecycle event and Day 2 action runs through them, along with the integrations to ServiceNow, Terraform, Ansible and your CMDB. That layer is what ties you to vSphere, and it's increasingly priced and scoped by VMware. vRA is now sold only as part of [VMware Cloud Foundation](https://kestra.io/vs/vmware-cloud-foundation), licensed per core on subscription, so the automation is now priced as part of the hypervisor. What it can reach is VMware's call too: several vRO plugins were deprecated in VCF 9, and native AWS, Azure and GCP management were deprecated and switched off by default.
 
-Replacing the orchestrator first turns the hypervisor into a separate decision. With Kestra running your automation, ServiceNow, Terraform, Ansible and your CMDB stay where they are, and you can keep vSphere, move some workloads to Nutanix or Proxmox, or move all of them, on your own schedule. Teams that move the hypervisor first tend to end up here anyway, because the workflows that provisioned and patched their VMs don't move with them.
+Replacing the orchestrator first turns the hypervisor into a separate decision. With Kestra running your automation, ServiceNow, Terraform, Ansible and your CMDB stay where they are, and you can keep vSphere, move some workloads to Nutanix or Proxmox, or move all of them, on your own schedule. If you're still choosing the hypervisor, Diego Arias compares [seven VMware alternatives, scored for your scenario](/blogs/vmware-alternatives-scorecard). Teams that move the hypervisor first tend to end up here anyway, because the workflows that provisioned and patched their VMs don't move with them.
 
 <div class="video-container"><iframe src="https://www.youtube.com/embed/oDmypfno4oc?start=286&end=356" title="You're not stuck on VMware because of vSphere" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+
+*Why vRA and vRO, not vSphere, are what keep teams on VMware (about a minute).*
 
 ## Why Moving Hypervisors Feels Impossible
 
@@ -36,6 +42,8 @@ Moving VMs is a problem with a known shape. The automation is what makes the mov
 So teams stay. The will to leave is usually there, and what holds them back is uncertainty. The teams we talk to tell us they don't see vRO as a long-term option, and the alternative many of them have landed on is writing their own scripts. Scripts can recreate the provisioning, but not what vRA gave you around it: a catalog people request from, a record of who ran what, and an inventory of what was provisioned.
 
 <div class="video-container"><iframe src="https://www.youtube.com/embed/oDmypfno4oc?start=593&end=623" title="Nobody knows what these workflows do" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+
+*Why the workflows themselves are what make the move feel risky (30 seconds).*
 
 ## Kestra Replaces Both vRA and vRO, and Keeps the Rest of Your Stack
 
@@ -54,11 +62,9 @@ Kestra is an open source orchestrator (Apache 2.0), with an Enterprise edition b
 
 This mapping is Kestra Enterprise (the vSphere and Nutanix plugins, Apps and external secrets managers are Enterprise features). Kestra for Infrastructure, arriving December 1, packages this for platform teams, with requests, deployments and inventory pages, and an owner and a lease on every deployment.
 
-<div class="video-container"><iframe src="https://www.youtube.com/embed/oDmypfno4oc?start=525&end=577" title="What vRO and vRA become in Kestra" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
-
-<div class="video-container"><iframe src="https://www.youtube.com/embed/oDmypfno4oc?start=1454&end=1502" title="A load balancer's lifecycle in vRA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
-
 <div class="video-container"><iframe src="https://www.youtube.com/embed/oDmypfno4oc?start=2074&end=2204" title="The same load balancer lifecycle in Kestra" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+
+*The load balancer lifecycle in Kestra, requested from an App and managed with Day 2 actions (about 2 minutes). Compare it with [the same lifecycle in vRA](https://www.youtube.com/watch?v=oDmypfno4oc&t=1454s).*
 
 ## Move Without a Big Rewrite, or Rebuild If That's Easier
 
@@ -69,23 +75,23 @@ The first step is finding out what you have. The open source Kestra Migration As
 - A recommendation for each workflow, including which ones to retire.
 - A migration plan in waves, from the lowest-risk workflows to the catalog itself.
 
-<div class="video-container"><iframe src="https://www.youtube.com/embed/oDmypfno4oc?start=715&end=763" title="The Migration Assistant in one breath" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
-
 It was built to be safe to run in a locked-down environment. It sanitizes secrets and IP addresses before anything goes to a model, sends no telemetry, works with whichever model your company has approved (or with no model at all), and doesn't need Kestra installed.
 
-<div class="video-container"><iframe src="https://www.youtube.com/embed/oDmypfno4oc?start=763&end=785" title="Nothing leaves your machine" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
-
-<div class="video-container"><iframe src="https://www.youtube.com/embed/oDmypfno4oc?start=2836&end=2881" title="Q&amp;A: how the Migration Assistant handles your data" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
-
 ![The Migration Assistant's plan in six waves: CMDB registration, load balancer lifecycle, DNS/IP/Active Directory, VM provisioning and Day 2, then the load-balanced web tier and standard Linux server catalog items as Kestra Apps](./02-migration-waves.png)
+
+*The Migration Assistant's plan for a sample environment, in six waves.*
 
 From there the move goes wave by wave, with vRA still running everything that hasn't moved yet. The conversion is the other half of the Migration Assistant, and we run it with your team. Each wave is converted and verified before it touches your systems. Tests are written from the original workflows first, the converted flows run in a lab that simulates vCenter and mocks the systems your workflows call (F5, Avi, ServiceNow and others), and the results are checked against what the vRO workflows did. The next wave starts once the last one is verified in production.
 
 ![The conversion harness: the original vRO workflows and the brief go into the VMware Migration Lab, which loops through writing tests, drafting flows and running them until every test passes, and out comes a green wave for an engineer to review](./03-conversion-harness.png)
 
-Some teams skip conversion and rebuild instead, and that's easier than it sounds when catalog items become Apps and plugins replace most of the custom JavaScript. One EU federal agency with roughly 1,600 vRO workflows chose to rebuild rather than convert. Most environments end up with a mix: convert the workflows that are clean, rebuild the ones that are messy, and retire the ones nobody uses.
+*How each wave is converted and verified before it reaches your systems.*
 
 <div class="video-container"><iframe src="https://www.youtube.com/embed/oDmypfno4oc?start=1919&end=2006" title="How do you know the AI conversion works?" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+
+*How we check that a converted flow does what the original vRO workflow did (about 90 seconds).*
+
+Some teams skip conversion and rebuild instead, and that's easier than it sounds when catalog items become Apps and plugins replace most of the custom JavaScript. One EU federal agency with roughly 1,600 vRO workflows chose to rebuild rather than convert. Most environments end up with a mix: convert the workflows that are clean, rebuild the ones that are messy, and retire the ones nobody uses.
 
 **[Talk to us](https://kestra.io/demo)** and we'll walk through the assessment with you, or [run the Migration Assistant yourself](https://kestra.io/resources/migration/vra/assistant) first.
 
@@ -97,6 +103,8 @@ Replacing the orchestrator is also a chance to get things vRA and vRO never offe
 
   <div class="video-container"><iframe src="https://www.youtube.com/embed/oDmypfno4oc?start=2252&end=2325" title="The blast radius of a change" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
 
+  *Seeing which machines a certificate change on a load balancer would affect (about a minute).*
+
 - **A safe place for AI agents.** vRO has no built-in way to run AI agents. In Kestra, an agent works inside a flow, and the flow defines what it can touch, who approves its changes, and what goes into the audit trail. [Kai's post on AI agents for infrastructure automation](https://kestra.io/blogs) covers what agents can realistically do for infrastructure teams today. **\[PLACEHOLDER: replace this link with Kai's post URL once it publishes on Nov 18\]**
 
 ## Where to Start
@@ -107,7 +115,7 @@ We asked Faizan Qazi, a Senior Solutions Engineer at Kestra who built vRA and vR
 - **Take stock of what you've built.** Your vRO libraries and JavaScript, and the Terraform modules and Ansible playbooks they call.
 - **Check what a new platform supports natively.** Anything it doesn't becomes boilerplate your team writes while still keeping business as usual running.
 
-[Watch his full answer](https://www.youtube.com/watch?v=oDmypfno4oc&t=2623s) (replay from 43:43, about a minute and a half).
+[Watch his full answer](https://www.youtube.com/watch?v=oDmypfno4oc&t=2623s) (about a minute and a half).
 
 When you're ready for the next step:
 
