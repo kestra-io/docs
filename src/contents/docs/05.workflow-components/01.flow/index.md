@@ -106,6 +106,6 @@ Every change to a flow creates a new revision. Kestra automatically manages revi
 ## See also
 
 - [Synchronize Local Flows](../../15.how-to-guides/local-flow-sync/index.md)
-- [Sync Flows from a Git Repository](../../15.how-to-guides/syncflows/index.md)
+- [Sync Flows from a Git Repository](../../version-control-cicd/04.git/02.sync-from-git/index.md#sync-flows)
 - [Draft revisions](../../06.concepts/03.revision/index.md#draft-revisions)
 - [Namespace Files](../../06.concepts/02.namespace-files/index.md)

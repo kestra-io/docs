@@ -79,7 +79,7 @@ You can schedule synchronization using:
 - A [Schedule trigger](../../05.workflow-components/07.triggers/01.schedule-trigger/index.md) to pull flows at regular intervals (e.g., nightly)
 - A [Webhook trigger](../../05.workflow-components/07.triggers/03.webhook-trigger/index.md) to pull updates whenever new commits are pushed to `main`
 
-See the [dedicated SyncFlows guide](../../15.how-to-guides/syncflows/index.md) for details.
+See [Sync from Git](../../version-control-cicd/04.git/02.sync-from-git/index.md#sync-flows) for details.
 
 To push flows from development to Git, use the [`git.PushFlows` task](/plugins/plugin-git/io.kestra.plugin.git.pushflows).
 This ensures flows are validated before being saved — Kestra will reject invalid flows automatically.

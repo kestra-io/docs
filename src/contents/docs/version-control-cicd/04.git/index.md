@@ -45,7 +45,7 @@ Here's how it works:
 - Modify files in Git whenever you need to change a flow or namespace file.
 - The sync flow applies those changes, overwriting any conflicting UI edits with the Git version.
 
-This pattern suits teams that treat Git as the single source of truth and prefer not to edit flows or namespace files in the UI. No CI/CD pipeline is required, so it's ideal if you already follow GitOps practices or come from a Kubernetes background.
+This pattern suits teams that treat Git as the single source of truth and prefer not to edit flows or namespace files in the UI. No CI/CD pipeline is required, so it's ideal if you already follow GitOps practices or come from a Kubernetes background. For a step-by-step setup, see [Sync from Git](./02.sync-from-git/index.md).
 
 Here is an example sync flow to declaratively apply changes from Git to Kestra:
 
@@ -117,7 +117,7 @@ triggers:
 The webhook key authenticates requests and prevents unauthorized access. For the flow above, paste the following URL into your repository’s **Webhooks** settings:
 
 ```bash
-http://your_kestra_host:8080/api/v1/<your_tenant>/executions/webhook/prod/sync_from_git/your_secret_key
+http://your_kestra_host:8080/api/v1/<your_tenant>/executions/webhook/company.ops/sync_from_git/your_secret_key
 ```
 
 ![github_webhook](./github_webhook.png)
@@ -157,7 +157,7 @@ tasks:
 triggers:
   - id: schedule
     type: io.kestra.plugin.core.trigger.Schedule
-    cron: "* */1 * * *" # every hour
+    cron: "0 * * * *" # every hour
 ```
 
 Example flow for pushing namespace files:
@@ -185,7 +185,7 @@ triggers:
     cron: "*/15 * * * *"
 ```
 
-Use this pattern to push to a feature branch and open a pull request for review.
+Use this pattern to push to a feature branch and open a pull request for review. For a step-by-step setup, see [Push to Git](./01.push-to-git/index.md).
 
 ## Git Clone
 
