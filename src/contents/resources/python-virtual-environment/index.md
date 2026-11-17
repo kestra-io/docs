@@ -50,7 +50,7 @@ Adopting virtual environments as a standard practice brings several significant 
 *   **Cleaner Global Environment:** Your system's global Python installation remains clean and minimal. This reduces clutter and prevents accidental modifications that could affect system scripts or other users.
 *   **Managing Multiple Python Versions:** You can have different virtual environments running different versions of the Python interpreter itself (e.g., Python 3.9 for one project, 3.11 for another), which is crucial for maintaining legacy applications while developing new ones.
 
-For a deeper dive into managing dependencies, explore the various strategies for [installing and caching Python dependencies in Kestra](/docs/how-to-guides/python-dependencies).
+For a deeper dive into managing dependencies, explore the various strategies for [installing and caching Python dependencies in Kestra](/docs/scripts/installing-dependencies).
 
 ## Under the Hood: How Virtual Environments Isolate Dependencies
 
@@ -165,7 +165,7 @@ uv venv
 uv pip install -r requirements.txt
 ```
 
-Kestra natively supports `uv` to [speed up Python dependency management](/docs/how-to-guides/python-uv), making automated workflows significantly more efficient. This is one of several ways to [manage Python dependencies in Kestra](/docs/how-to-guides/python-dependencies).
+Kestra natively supports `uv` to [speed up Python dependency management](/docs/scripts/installing-dependencies), making automated workflows significantly more efficient. This is one of several ways to [manage Python dependencies in Kestra](/docs/scripts/installing-dependencies).
 
 ## Troubleshooting Common Virtual Environment Challenges
 
@@ -235,7 +235,7 @@ tasks:
 *   **Fast Dependency Installation:** By using `uv`, package installation is significantly faster than with standard `pip`, which is a major advantage for workflows that run frequently.
 *   **Guaranteed Reproducibility:** Anyone with this Kestra flow can run it and get the exact same environment and outcome, eliminating "it works on my machine" problems.
 
-For more examples, see how to [run Python in your flows](/docs/how-to-guides/python) and explore advanced [dependency management techniques](/docs/how-to-guides/python-dependencies).
+For more examples, see how to [run Python in your flows](/docs/how-to-guides/python) and explore advanced [dependency management techniques](/docs/scripts/installing-dependencies).
 
 ## Where Virtual Environments Pay Off in Production Orchestration
 
@@ -255,4 +255,4 @@ To see these patterns in action, explore blueprints for [orchestrating Python wo
 *   [Run Your Code Across Any Environment with Task Runners](/blogs/2024-05-15-task-runners)
 *   [Run a Python script in a Kubernetes pod](/blueprints/kubernetes-script-runner)
 *   [Run Python Inside Your Flows](/docs/how-to-guides/python)
-*   [Manage Python Dependencies in Kestra](/docs/how-to-guides/python-dependencies)
+*   [Manage Python Dependencies in Kestra](/docs/scripts/installing-dependencies)

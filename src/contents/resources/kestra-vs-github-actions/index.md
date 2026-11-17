@@ -37,7 +37,7 @@ Key characteristics include:
 *   **YAML Definition:** Workflows are declarative, version-controlled, and managed as code alongside the application they support.
 *   **Repository Scope:** Actions is built around a single repository, so orchestration spanning data, infrastructure, and AI usually needs a second layer — see [CI/CD tools alternatives](/resources/infrastructure/ci-cd-tools-alternatives).
 
-While powerful, this focus on the code delivery pipeline also defines its boundaries. For a broader perspective on [what orchestration is](/blogs/orchestration-differences), it's important to differentiate between software delivery and enterprise-wide process automation. Many teams use GitHub Actions to [validate and deploy their Kestra flows](/docs/how-to-guides/github-actions), highlighting its role as a specialized CI/CD tool within a larger orchestration landscape.
+While powerful, this focus on the code delivery pipeline also defines its boundaries. For a broader perspective on [what orchestration is](/blogs/orchestration-differences), it's important to differentiate between software delivery and enterprise-wide process automation. Many teams use GitHub Actions to [validate and deploy their Kestra flows](/docs/version-control-cicd/cicd/github-action), highlighting its role as a specialized CI/CD tool within a larger orchestration landscape.
 
 ## Kestra: The Universal Orchestration Control Plane
 
@@ -123,7 +123,7 @@ jobs:
           directory: 'flows/'
           namespace: 'company.team.production'
 ```
-This approach combines the robust CI/CD capabilities of GitHub Actions with the powerful orchestration engine of Kestra. You can find more detailed guidance on how to [validate and deploy flows with GitHub Actions](/docs/how-to-guides/github-actions) in our documentation.
+This approach combines the robust CI/CD capabilities of GitHub Actions with the powerful orchestration engine of Kestra. You can find more detailed guidance on how to [validate and deploy flows with GitHub Actions](/docs/version-control-cicd/cicd/github-action) in our documentation.
 
 ### Triggering GitHub Actions from Kestra for Cross-Domain Orchestration
 

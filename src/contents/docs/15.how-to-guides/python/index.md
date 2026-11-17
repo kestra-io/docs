@@ -20,12 +20,7 @@ In this example, the flow will install the required pip packages, make an API re
 
 ## Managing Dependencies
 
-Managing Python Dependencies can be frustrating. There's 3 ways you can manage your dependencies in Kestra:
-- Install with pip using `beforeCommands`
-- Set Container Image with Docker Task Runner
-- Build Docker Image and set it with Docker Task Runner
-
-For more information, see the [dedicated guide](../python-dependencies/index.md).
+List the packages your script needs in the `dependencies` property, and Kestra installs and caches them for you. You can also install packages with `beforeCommands` or use a container image that already includes them. See [Install dependencies for script tasks](../../16.scripts/05.installing-dependencies/index.md) to choose an approach.
 
 ## Script Task
 
