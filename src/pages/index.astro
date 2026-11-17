@@ -10,9 +10,13 @@ import RunKestra from "~/components/home/RunKestra.astro"
 import Customers from "~/components/home/Customers.astro"
 import Enterprise from "~/components/home/Enterprise.astro"
 import PageShell from "~/components/home/PageShell.astro"
+
+const title = "Unified Orchestration for Infrastructure, Data, Business processes & AI"
+const description =
+    "Kestra is the open-source orchestration platform for infrastructure, IT operations, data and AI workflows. Use declarative YAML, work in any language, and run anywhere."
 ---
 
-<Layout headerClean headerClear headerOverDark>
+<Layout {title} {description} headerClean headerClear headerOverDark>
     <Fragment slot="head">
         <SchemaSoftwareApplication url="https://kestra.io" />
     </Fragment>
