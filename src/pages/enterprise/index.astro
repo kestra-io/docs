@@ -25,9 +25,9 @@ import SupportPlans from "~/components/enterprise/SupportPlans.astro"
 import ReplaceLegacy from "~/components/home/ReplaceLegacy.astro"
 import BuyerQuestions from "~/components/enterprise/BuyerQuestions.astro"
 
-const title = "Kestra Enterprise"
+const title = "Enterprise Edition: Secure, Self-Hosted Orchestration"
 const description =
-    "Kestra Enterprise gives your teams the security, governance, and operational capabilities to automate workflows across your organization."
+    "Kestra Enterprise adds SSO, RBAC, audit logs, multi-tenancy and worker groups to open-source Kestra. Self-hosted, hybrid or air-gapped, with SLA-backed support."
 
 const FEATURES = [
     {
@@ -190,7 +190,14 @@ const FAQ = [
 ]
 ---
 
-<Layout {title} {description} headerClean headerClear headerOverDark>
+<Layout
+    {title}
+    {description}
+    breadcrumbTitle="Kestra Enterprise"
+    headerClean
+    headerClear
+    headerOverDark
+>
     <Fragment slot="head">
         <SchemaSoftwareApplication
             id="https://kestra.io/#enterprise-edition"
