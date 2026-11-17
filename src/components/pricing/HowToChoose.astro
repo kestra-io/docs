@@ -84,10 +84,11 @@ const ROWS: { label: string; values: string[] }[] = [
     .pricing-choose {
         --ks-border-primary: #{$dark-band-line};
         --ks-content-primary: #ffffff;
-        --ks-content-secondary: #a9a8b3;
+        --ks-content-secondary: #cfcdd9;
         --ks-content-link: #a396ff;
         --rule: 1px solid var(--ks-border-primary);
         --inset: clamp(1.5rem, 4vw, 3.5rem);
+        --block-title-base: rgba(216, 214, 236, 0.42);
 
         position: relative;
         overflow: hidden;
@@ -191,7 +192,7 @@ const ROWS: { label: string; values: string[] }[] = [
     }
 
     thead th {
-        font-size: $font-size-md;
+        font-size: $font-size-lg;
         font-weight: 600;
         color: var(--ks-content-primary);
     }
@@ -203,7 +204,7 @@ const ROWS: { label: string; values: string[] }[] = [
     }
 
     tbody td {
-        font-size: $font-size-md;
+        font-size: $font-size-lg;
         font-weight: 500;
         line-height: 1.4;
         color: var(--ks-content-primary);
@@ -267,13 +268,13 @@ const ROWS: { label: string; values: string[] }[] = [
         dt {
             font-size: $font-size-sm;
             font-weight: 400;
-            line-height: 1.5;
+            line-height: 1.7;
             color: var(--ks-content-secondary);
         }
 
         dd {
             margin: 0;
-            font-size: $font-size-sm;
+            font-size: $font-size-md;
             font-weight: 500;
             line-height: 1.5;
             color: var(--ks-content-primary);
