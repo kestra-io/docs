@@ -573,10 +573,22 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
                 }
             }
 
+            tbody {
+                background: var(--ks-background-secondary);
+            }
+
+            tbody tr:not(.group) {
+                background: var(--ks-background-body);
+
+                & + tr:not(.group) {
+                    margin-top: 0.75rem;
+                    border-top: var(--rule);
+                }
+            }
+
             tbody th {
                 grid-column: 1 / -1;
-                padding: 1rem var(--inset) 0.5rem;
-                border-bottom: 0;
+                padding: 1rem var(--inset) 0.875rem;
             }
 
             td + td,
@@ -756,8 +768,10 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
         }
     }
 
-    tbody tr:not(.group):hover > * {
-        background: var(--ks-background-secondary);
+    @media (hover: hover) {
+        tbody tr:not(.group):hover > * {
+            background: var(--ks-background-secondary);
+        }
     }
 
     td {
