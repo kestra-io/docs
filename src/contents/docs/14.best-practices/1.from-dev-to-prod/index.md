@@ -61,7 +61,7 @@ Flows can be committed to Git using:
 CI/CD deployment to production can be automated with:
 - GitHub Actions, GitLab CI/CD, Jenkins, or Azure DevOps
 - Terraform
-- The Kestra CLI
+- [`kestractl`](../../kestra-cli/kestractl/index.md)
 
 For more details on CI/CD automation, refer to the [CI/CD guide](../../version-control-cicd/cicd/index.md).
 
