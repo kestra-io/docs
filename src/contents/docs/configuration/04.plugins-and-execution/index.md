@@ -205,6 +205,7 @@ This part of the configuration also includes:
 - retries
 - temporary task storage
 - HTTP task URL filtering
+- HTTP tasks behind a forward proxy
 - tutorial flows
 - system flows
 - local flow synchronization
@@ -283,6 +284,50 @@ kestra:
 | `kestra.tasks.http.denied-list` | `[]` | A request URI that matches any entry causes the task to fail. Evaluated after the allowed-list. |
 
 For security guidance and matching behavior, see [HTTP task URL filtering](../../security-hardening/index.md#http-task-url-filtering).
+
+### HTTP tasks behind a forward proxy
+
+:::badge{version=">=2.1.0" editions="OSS,EE"}
+:::
+
+By default, HTTP tasks and plugins built on Kestra's HTTP client ignore the JVM proxy settings and connect directly unless the task sets `options.proxy`. Set `use-system-proxy` to make them use the JVM proxy settings, the same ones plugin installation reads:
+
+```yaml
+kestra:
+  tasks:
+    http:
+      use-system-proxy: true
+```
+
+| Key | Default | Description |
+|---|---|---|
+| `kestra.tasks.http.use-system-proxy` | `false` | When `true`, an HTTP task that does not set `options.proxy` uses the JVM proxy settings, including `http.nonProxyHosts` and proxy authentication. Has no effect unless `http.proxyHost` or `https.proxyHost` is set. |
+
+The proxy itself is defined with JVM properties in `JAVA_OPTS`:
+
+```yaml
+services:
+  kestra:
+    environment:
+      JAVA_OPTS: >-
+        -Dhttps.proxyHost=proxy.example.com -Dhttps.proxyPort=3128
+        -Dhttps.proxyUser=kestra -Dhttps.proxyPassword=secret
+        -Dhttp.proxyHost=proxy.example.com -Dhttp.proxyPort=3128
+        -Dhttp.proxyUser=kestra -Dhttp.proxyPassword=secret
+        -Dhttp.nonProxyHosts=localhost|127.*|*.corp|*.svc.cluster.local
+```
+
+- `http.nonProxyHosts` lists the hosts reached directly, separated by `|`, with `*` as a wildcard. It applies to both HTTP and HTTPS URLs.
+- `http.nonProxyHosts` is matched against the host name in the URL, not the IP address it resolves to. `10.*` matches `http://10.1.2.3/` but not `https://wiki.example.local/` even when that host resolves to `10.1.2.3`, so list every internal domain.
+- `proxyUser` and `proxyPassword` are sent only when the proxy answers `407 Proxy Authentication Required`.
+- `options.proxy` on a task still takes precedence over the JVM proxy settings.
+- `denied-list` still applies to every request, whether it goes through the proxy or directly.
+
+:::alert{type="warning"}
+Before enabling `use-system-proxy` on an instance that already sets JVM proxy properties, check that `http.nonProxyHosts` lists every internal host your HTTP tasks call. A host missing from the list is sent to the proxy, which usually cannot reach internal services.
+:::
+
+Kestra is a Java application, so it does not read the `HTTP_PROXY`, `HTTPS_PROXY` or `NO_PROXY` environment variables. Use the JVM properties above instead.
 
 Reserve `system` for background workflows, or rename it if your organization already uses that namespace for something else:
 
