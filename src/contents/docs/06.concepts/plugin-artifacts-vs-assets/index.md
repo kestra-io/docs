@@ -52,7 +52,7 @@ Asset metadata also drives flows. An [`EventTrigger`](../../07.enterprise/02.gov
 
 If you develop a plugin, the two features cover different needs:
 
-- **Write asset metadata** for data that must outlast a single execution, appear alongside lineage, or trigger flows. Emit assets with `runContext.assets().emit(...)`. Emitted assets are recorded only when the task sets `assets.enableAuto: true`.
+- **Write asset metadata** for data that must outlast a single execution, appear alongside lineage, or trigger flows. Emit assets with `runContext.assets().emit(...)`. Emitted assets are recorded only when the task sets `assets.enableAuto: true`. Kestra writes them when they're emitted. A task that creates dynamic task runs emits the assets of each one with `runContext.assets().emitFor(taskRun, ...)` and registers the task run with `runContext.dynamicWorkerResult(...)`. Kestra sends those assets when the attempt ends, with each task run's state and dates, and drops the ones for a task run that wasn't registered.
 - **Build an artifact** to display data: a task run's results in the topology, or an asset's metadata on its card.
 
 An artifact displays the data Kestra passes to it, such as a task run's outputs and metrics or an asset's metadata, and doesn't call the Kestra API itself. When an artifact needs more data, the data should come from the task: as an output for a task run, or as metadata for an asset.

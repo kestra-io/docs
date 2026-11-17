@@ -110,4 +110,5 @@ Each breaking change has a dedicated migration guide. See the [2.1 migration gui
 | POST-only logout (EE) | [Guide](../../../11.migration-guide/v2.1.0/sso-logout-post-only/index.md) |
 | Asset lineage events replaced by relations (EE) | [Guide](../../../11.migration-guide/v2.1.0/asset-relations/index.md) |
 | dbt asset types (EE) | [Guide](../../../11.migration-guide/v2.1.0/dbt-asset-types/index.md) |
+| Asset write timing (EE) | [Guide](../../../11.migration-guide/v2.1.0/asset-write-timing/index.md) |
 | Webhook responses without `wait` | [Guide](../../../11.migration-guide/v2.1.0/webhook-response-without-wait/index.md) |
