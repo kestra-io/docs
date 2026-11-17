@@ -59,7 +59,7 @@ We evaluated each alternative on its core purpose, deployment model, license (op
 
 Most teams looking for an Ansible alternative don't want to throw away years of tested playbooks. What they are missing sits around the playbook: a scheduler, retries, an approval step before production, a run history someone can audit, and a way to connect `ansible-playbook` to the Terraform apply that precedes it and the ServiceNow ticket that follows it. Ansible itself was never designed to be that layer, and AWX or Ansible Automation Platform only provide it for Ansible.
 
-Kestra is an open-source, declarative orchestration platform that supplies that layer for every tool in your stack. Your playbooks stay in Git and run unchanged through the [Ansible plugin](/plugins/plugin-ansible); Kestra decides when they run, with which inputs and credentials, and what happens next. A weekly patch run, with a dry-run default and the playbook pulled straight from your repository, looks like this:
+Kestra is an open-source, declarative orchestration platform that supplies that layer for every tool in your stack. Your playbooks stay in Git and run unchanged through the [Ansible plugin](/plugins/plugin-ansible); Kestra decides when they run, with which inputs and credentials, and what happens next. A weekly patch run, with manual runs defaulting to a dry run and the playbook pulled straight from your repository, looks like this:
 
 ```yaml
 id: patch_web_servers
@@ -89,6 +89,8 @@ triggers:
   - id: weekly
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 3 * * 0"
+    inputs:
+      dry_run: false
 ```
 
 Every execution records the exact output of each host, and the same flow can be triggered by a webhook, a ticket, or an upstream workflow instead of a schedule. The [Ansible playbook from Git blueprint](/blueprints/ansible-playbook-from-git) is a ready-to-run starting point.
