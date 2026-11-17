@@ -12,6 +12,8 @@
   to: "/docs/enterprise/auth/authentication"
 - regexp: "/docs/workflow-components/plugin-defaults(.*)?$"
   to: "/docs/migration-guide/v2.0.0/plugin-defaults-removed"
+- regexp: "^/docs/concepts/plugin-defaults(/.*)?$"
+  to: "/docs/migration-guide/v2.0.0/plugin-defaults-removed"
 - regexp: "^/docs/enterprise/api-tokens(/.*)?$"
   to: "/docs/enterprise/auth/api-tokens"
 - regexp: "^/docs/enterprise/auditing/audit-logs(/.*)?$"
