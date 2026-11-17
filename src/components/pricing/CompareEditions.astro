@@ -581,6 +581,14 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
 
             td {
                 padding: 0.5rem 0.5rem 0.875rem;
+
+                &:last-child {
+                    background: color-mix(
+                        in srgb,
+                        var(--ks-content-link) 6%,
+                        transparent
+                    );
+                }
             }
 
             .group th {
