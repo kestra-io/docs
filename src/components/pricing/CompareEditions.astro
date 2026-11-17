@@ -545,6 +545,32 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
                     width: min-content;
                     margin-inline: auto;
                 }
+
+                &:last-child::after {
+                    content: "";
+                    position: absolute;
+                    inset: 0.375rem;
+                    border-radius: 0.75rem;
+                    background: color-mix(
+                        in srgb,
+                        var(--ks-content-link) 6%,
+                        transparent
+                    );
+                    box-shadow:
+                        0 0 0 1px
+                            color-mix(
+                                in srgb,
+                                var(--ks-content-link) 55%,
+                                var(--ks-background-body)
+                            ),
+                        0 0 0 4px
+                            color-mix(
+                                in srgb,
+                                var(--ks-content-link) 14%,
+                                var(--ks-background-body)
+                            );
+                    pointer-events: none;
+                }
             }
 
             tbody th {
