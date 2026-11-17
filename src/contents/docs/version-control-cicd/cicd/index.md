@@ -72,7 +72,7 @@ To make the repository the single source of truth and delete flows that aren't i
 
 ### Automate deployments within Kestra
 
-To deploy from Git without an external CI system, run the deployment as a Kestra flow. The [SyncFlows](/plugins/plugin-git/io.kestra.plugin.git.syncflows) and [SyncNamespaceFiles](/plugins/plugin-git/io.kestra.plugin.git.syncnamespacefiles) tasks read a Git branch and apply its flows and namespace files to Kestra, on a schedule or on every push through a GitHub webhook. See [Version control with Git](../04.git/index.md#git-syncflows-and-syncnamespacefiles).
+To deploy from Git without an external CI system, run the deployment as a Kestra flow. The [SyncFlows](/plugins/plugin-git/io.kestra.plugin.git.syncflows) and [SyncNamespaceFiles](/plugins/plugin-git/io.kestra.plugin.git.syncnamespacefiles) tasks read a Git branch and apply its flows and namespace files to Kestra, on a schedule or on every push through a GitHub webhook. See [Sync from Git](../04.git/02.sync-from-git/index.md).
 
 ### Deploy flows with GitHub Actions
 
