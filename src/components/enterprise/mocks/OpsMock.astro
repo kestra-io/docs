@@ -1,0 +1,627 @@
+---
+import { Icon } from "astro-icon/components"
+
+const SERVICES = ["executor-1", "executor-2", "scheduler", "webserver"]
+
+const OTHER_TENANTS = ["infrastructure", "finance-ops"]
+
+const LANES = [
+    {
+        group: "on-prem-dc1",
+        place: "Private datacenter",
+        icon: "mdi:server",
+        task: "extract_orders",
+        type: "postgresql.Query",
+        glyph: "mdi:database-outline",
+    },
+    {
+        group: "eu-west-k8s",
+        place: "Kubernetes · eu-west-1",
+        icon: "mdi:kubernetes",
+        task: "transform",
+        type: "python.Script",
+        glyph: "mdi:language-python",
+    },
+    {
+        group: "gpu-pool",
+        place: "GPU nodes",
+        icon: "mdi:expansion-card-variant",
+        task: "train_model",
+        type: "python.Commands",
+        glyph: "mdi:creation-outline",
+    },
+]
+---
+
+<div class="ui-mock ops-mock" aria-hidden="true" data-ui-mock>
+    <div class="stage">
+        <div class="stack">
+            {OTHER_TENANTS.map((tenant) => (
+                <span class="ghost">
+                    <code>{tenant}</code>
+                </span>
+            ))}
+            <div class="sheet">
+                <p class="head">
+                    <span class="tenant">
+                        <small>Tenant</small>
+                        <code>data-platform</code>
+                    </span>
+                    <span class="flow">
+                        <Icon name="mdi:file-tree-outline" />
+                        <code>daily_ingest</code>
+                        <span class="tag">
+                            <span class="doing">
+                                <i />
+                                Running
+                            </span>
+                            <span class="ok">
+                                <Icon name="mdi:check-circle-outline" />
+                                Success
+                            </span>
+                        </span>
+                    </span>
+                </p>
+                <div class="lanes">
+                    {LANES.map((lane, idx) => (
+                        <div class="lane">
+                            <p class="where">
+                                <Icon name={lane.icon} />
+                                <span>
+                                    <code>{lane.group}</code>
+                                    <small>{lane.place}</small>
+                                </span>
+                            </p>
+                            <div class="track">
+                                <p class={`node n${idx + 1}`}>
+                                    <span class="glyph">
+                                        <Icon name={lane.glyph} />
+                                    </span>
+                                    <span class="what">
+                                        <code>{lane.task}</code>
+                                        <small>{lane.type}</small>
+                                    </span>
+                                    <span class="st">
+                                        <i />
+                                        <Icon name="mdi:check-circle" />
+                                    </span>
+                                    {idx < LANES.length - 1 && (
+                                        <span class="edge" />
+                                    )}
+                                </p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+        <p class="services">
+            <span class="label">Cluster health</span>
+            {SERVICES.map((service, idx) => (
+                <span class="service" style={`--k: ${idx}`}>
+                    <i />
+                    {service}
+                </span>
+            ))}
+        </p>
+    </div>
+</div>
+
+<style lang="scss">
+    @use "./tokens" as *;
+
+    .ops-mock {
+        --loop: 12s;
+
+        @include tokens;
+    }
+
+    .stage {
+        position: relative;
+        padding-block: 2.4em;
+        font-size: calc(100cqw / 50);
+        line-height: 1.3;
+        color: var(--text);
+    }
+
+    p {
+        margin: 0;
+    }
+
+    code {
+        font-family: var(--ks-font-monospace);
+        color: inherit;
+    }
+
+    .stack {
+        position: relative;
+        margin: 2.6em 2.6em 0 0;
+    }
+
+    .ghost {
+        position: absolute;
+        inset: 0;
+        padding: 0.28em 1.2em;
+        border: 1px solid var(--line);
+        border-radius: 0.9em;
+        background: var(--panel);
+        opacity: 0.75;
+        translate: 1.3em -1.3em;
+
+        &:first-child {
+            opacity: 0.45;
+            translate: 2.6em -2.6em;
+        }
+
+        code {
+            font-size: 0.6em;
+            color: var(--muted);
+        }
+    }
+
+    .sheet {
+        position: relative;
+        border: 1px solid var(--line);
+        border-radius: 0.9em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+    }
+
+    .head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1em;
+        padding: 0.9em 1.3em;
+        border-bottom: 1px solid var(--line);
+
+        small {
+            font-size: 0.6em;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+    }
+
+    .tenant {
+        display: flex;
+        align-items: baseline;
+        gap: 0.7em;
+
+        code {
+            font-size: 0.84em;
+            font-weight: 600;
+        }
+    }
+
+    .flow {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+
+        > [data-icon] {
+            width: 1em;
+            height: 1em;
+            color: var(--muted);
+        }
+
+        > code {
+            font-size: 0.72em;
+            color: var(--soft);
+        }
+    }
+
+    .tag {
+        display: grid;
+        margin-left: 0.4em;
+        font-size: 0.62em;
+        font-weight: 600;
+
+        > span {
+            grid-area: 1 / 1;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4em;
+            white-space: nowrap;
+        }
+
+        .doing {
+            color: var(--run);
+            opacity: 0;
+
+            :global(html.dark) & {
+                color: #b9a6ff;
+            }
+        }
+
+        .ok {
+            color: var(--ok);
+        }
+
+        [data-icon] {
+            width: 1.3em;
+            height: 1.3em;
+        }
+    }
+
+    .doing i,
+    .st i {
+        width: 0.95em;
+        height: 0.95em;
+        border: 0.16em solid var(--run);
+        border-right-color: transparent;
+        border-radius: 50%;
+
+        :global(html.dark) & {
+            border-color: #b9a6ff;
+            border-right-color: transparent;
+        }
+    }
+
+    .lane {
+        display: grid;
+        grid-template-columns: 13em minmax(0, 1fr);
+        height: 6.2em;
+
+        & + & {
+            border-top: 1px dashed var(--line);
+        }
+    }
+
+    .where {
+        display: flex;
+        align-items: center;
+        gap: 0.7em;
+        padding-left: 1.3em;
+        border-right: 1px dashed var(--line);
+
+        [data-icon] {
+            flex: none;
+            width: 1.15em;
+            height: 1.15em;
+            color: var(--muted);
+        }
+
+        span {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15em;
+        }
+
+        code {
+            font-size: 0.72em;
+            font-weight: 600;
+        }
+
+        small {
+            font-size: 0.6em;
+            color: var(--muted);
+        }
+    }
+
+    .track {
+        position: relative;
+    }
+
+    .node {
+        position: absolute;
+        top: 50%;
+        left: 1.3em;
+        display: flex;
+        align-items: center;
+        gap: 0.7em;
+        width: 12.4em;
+        height: 3.4em;
+        padding: 0 0.8em 0 0.6em;
+        border: 1px solid var(--line);
+        border-radius: 0.6em;
+        background: var(--panel);
+        translate: 0 -50%;
+
+        &.n2 {
+            left: 10.2em;
+        }
+
+        &.n3 {
+            left: 19.1em;
+        }
+    }
+
+    .glyph {
+        display: grid;
+        place-items: center;
+        flex: none;
+        width: 2.2em;
+        height: 2.2em;
+        border-radius: 0.4em;
+        background: var(--field);
+        color: var(--soft);
+
+        [data-icon] {
+            width: 1.2em;
+            height: 1.2em;
+        }
+    }
+
+    .what {
+        display: flex;
+        flex-direction: column;
+        gap: 0.1em;
+        min-width: 0;
+
+        code {
+            font-size: 0.72em;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        small {
+            font-family: var(--ks-font-monospace);
+            font-size: 0.56em;
+            white-space: nowrap;
+            color: var(--muted);
+        }
+    }
+
+    .st {
+        display: grid;
+        place-items: center;
+        flex: none;
+        margin-left: auto;
+
+        > * {
+            grid-area: 1 / 1;
+        }
+
+        i {
+            opacity: 0;
+        }
+
+        [data-icon] {
+            width: 1.05em;
+            height: 1.05em;
+            color: var(--ok);
+        }
+    }
+
+    .edge {
+        position: absolute;
+        top: 50%;
+        left: 100%;
+        width: 3.1em;
+        height: 4.25em;
+        border: solid var(--muted);
+        border-width: 1px 1px 0 0;
+        border-top-right-radius: 0.6em;
+        opacity: 0.55;
+
+        &::after {
+            content: "";
+            position: absolute;
+            right: -0.26em;
+            bottom: 0;
+            width: 0.5em;
+            height: 0.5em;
+            border: solid var(--muted);
+            border-width: 0 1px 1px 0;
+            rotate: 45deg;
+        }
+    }
+
+    .services {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1.6em;
+        margin-top: 2.6em;
+        font-size: 0.68em;
+        white-space: nowrap;
+
+        .label {
+            font-weight: 600;
+            color: var(--soft);
+        }
+
+        .service {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6em;
+            font-family: var(--ks-font-monospace);
+            color: var(--muted);
+        }
+
+        i {
+            position: relative;
+            flex: none;
+            width: 0.7em;
+            height: 0.7em;
+            border-radius: 50%;
+            background: var(--ok);
+
+            &::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: 50%;
+                background: var(--ok);
+                opacity: 0;
+            }
+        }
+    }
+
+    $steps: (1 5 27, 2 33 55, 3 61 83);
+
+    @media (prefers-reduced-motion: no-preference) {
+        .ops-mock:not([data-play]) * {
+            animation-play-state: paused !important;
+        }
+
+        .services i::after {
+            animation: ops-mock-beat 2.4s ease-out infinite;
+            animation-delay: calc(var(--k) * 0.45s);
+        }
+
+        .doing i,
+        .st i {
+            animation: ops-mock-spin 0.9s linear infinite;
+        }
+
+        .tag .doing {
+            animation: ops-mock-tag-doing var(--loop) linear infinite both;
+        }
+
+        .tag .ok {
+            animation: ops-mock-tag-ok var(--loop) linear infinite both;
+        }
+
+        @each $n, $start, $end in $steps {
+            .n#{$n} {
+                animation: ops-mock-node-#{$n} var(--loop) linear infinite both;
+
+                .st i {
+                    animation:
+                        ops-mock-spin 0.9s linear infinite,
+                        ops-mock-busy-#{$n} var(--loop) linear infinite both;
+                }
+
+                .st [data-icon] {
+                    animation: ops-mock-done-#{$n}
+                        var(--loop)
+                        linear
+                        infinite
+                        both;
+                }
+
+                .edge {
+                    animation: ops-mock-edge-#{$n}
+                        var(--loop)
+                        linear
+                        infinite
+                        both;
+                }
+            }
+        }
+    }
+
+    @keyframes ops-mock-beat {
+        0% {
+            opacity: 0.5;
+            transform: scale(1);
+        }
+        70%,
+        100% {
+            opacity: 0;
+            transform: scale(2.8);
+        }
+    }
+
+    @keyframes ops-mock-spin {
+        to {
+            rotate: 1turn;
+        }
+    }
+
+    @keyframes ops-mock-tag-doing {
+        0%,
+        83% {
+            opacity: 1;
+        }
+        85%,
+        97% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes ops-mock-tag-ok {
+        0%,
+        83% {
+            opacity: 0;
+        }
+        85%,
+        97% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @each $n, $start, $end in $steps {
+        @keyframes ops-mock-node-#{$n} {
+            0%,
+            #{$start * 1%} {
+                border-color: var(--line);
+                box-shadow: none;
+            }
+            #{($start + 2) * 1%},
+            #{$end * 1%} {
+                border-color: var(--ring);
+                box-shadow: 0 0.5em 1.4em -0.6em
+                    color-mix(in srgb, var(--ring) 60%, transparent);
+            }
+            #{($end + 3) * 1%},
+            100% {
+                border-color: var(--line);
+                box-shadow: none;
+            }
+        }
+
+        @keyframes ops-mock-busy-#{$n} {
+            0%,
+            #{$start * 1%} {
+                opacity: 0;
+            }
+            #{($start + 2) * 1%},
+            #{$end * 1%} {
+                opacity: 1;
+            }
+            #{($end + 2) * 1%},
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes ops-mock-done-#{$n} {
+            0%,
+            #{$end * 1%} {
+                opacity: 0;
+                scale: 0.6;
+                animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+            }
+            #{($end + 3) * 1%},
+            96% {
+                opacity: 1;
+                scale: 1;
+            }
+            99%,
+            100% {
+                opacity: 0;
+                scale: 1;
+            }
+        }
+
+        @keyframes ops-mock-edge-#{$n} {
+            0%,
+            #{$end * 1%} {
+                clip-path: inset(-1em 100% calc(100% - 0.7em) 0);
+            }
+            #{($end + 3) * 1%} {
+                clip-path: inset(-1em -1em calc(100% - 0.7em) 0);
+            }
+            #{($end + 6) * 1%},
+            96% {
+                clip-path: inset(-1em -1em -1em 0);
+                opacity: 0.55;
+            }
+            99%,
+            100% {
+                clip-path: inset(-1em -1em -1em 0);
+                opacity: 0;
+            }
+        }
+    }
+</style>

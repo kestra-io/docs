@@ -1,0 +1,114 @@
+---
+import { Icon } from "astro-icon/components"
+
+const CONTROLS = [
+    {
+        icon: "mdi:shield-account-outline",
+        title: "Permissioned",
+        text: "An agent can only invoke authorized workflows and act within its service account’s permissions.",
+    },
+    {
+        icon: "mdi:account-check-outline",
+        title: "Approved",
+        text: "Actions that change production wait for a human. The approval, the approver and the context are logged.",
+    },
+    {
+        icon: "mdi:text-box-search-outline",
+        title: "Audited",
+        text: "Every agent action is an execution: inputs, outputs, duration, who or what triggered it. A kill switch stops it when needed.",
+    },
+]
+---
+
+<ul class="agent-controls">
+    {CONTROLS.map((control) => (
+        <li>
+            <h3>
+                <span class="badge">
+                    <Icon name={control.icon} />
+                </span>
+                {control.title}
+            </h3>
+            <p>{control.text}</p>
+        </li>
+    ))}
+</ul>
+
+<style lang="scss">
+    .agent-controls {
+        --rule: rgba(255, 255, 255, 0.11);
+
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin: 3.5rem 0 0;
+
+        @include media-breakpoint-up(md) {
+            margin-bottom: -2.5rem;
+        }
+        padding: 0;
+        border-top: 1px solid var(--rule);
+        list-style: none;
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: minmax(0, 1fr);
+            padding-inline: clamp(1.5rem, 4vw, 3.5rem);
+        }
+
+        li {
+            position: relative;
+            padding: 2rem clamp(1.5rem, 4vw, 3.5rem) 0;
+
+            @include media-breakpoint-up(md) {
+                & + li::before {
+                    content: "";
+                    position: absolute;
+                    inset: 0 auto -100vh 0;
+                    width: 1px;
+                    background: var(--rule);
+                }
+            }
+
+            @include media-breakpoint-down(md) {
+                padding: 1.5rem 0;
+
+                & + li {
+                    border-top: 1px solid var(--rule);
+                }
+            }
+        }
+
+        h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 0 0 0.75rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .badge {
+            display: grid;
+            place-items: center;
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: 6px;
+            background: rgba(180, 140, 255, 0.14);
+            color: #b48cff;
+
+            :global(svg) {
+                width: 1rem;
+                height: 1rem;
+            }
+        }
+
+        p {
+            margin: 0;
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            color: var(--muted);
+        }
+    }
+</style>
