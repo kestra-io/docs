@@ -162,6 +162,7 @@ const PLANS: {
 
     .pricing-plans {
         --rule: 1px solid var(--ks-border-primary);
+        --column: 21.25rem;
 
         position: relative;
         border-bottom: var(--rule);
@@ -449,7 +450,7 @@ const PLANS: {
     }
 
     .panel > a {
-        width: min(100%, 19rem);
+        width: min(100%, var(--column));
         margin-top: 1rem;
         padding-block: 0.625rem;
 
@@ -486,6 +487,11 @@ const PLANS: {
         padding: 0 1.5rem;
         list-style: none;
 
+        @include media-breakpoint-up(lg) {
+            width: min(100%, calc(var(--column) + 3rem));
+            margin: 0.5rem auto 0;
+        }
+
         li {
             display: grid;
             grid-template-columns: 1.125rem minmax(0, 1fr);
@@ -509,5 +515,10 @@ const PLANS: {
         font-size: $font-size-sm;
         line-height: 1.55;
         color: var(--ks-content-tertiary);
+
+        @include media-breakpoint-up(lg) {
+            width: min(100%, calc(var(--column) + 3rem));
+            margin-inline: auto;
+        }
     }
 </style>
