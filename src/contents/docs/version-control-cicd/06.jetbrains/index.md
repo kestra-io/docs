@@ -17,13 +17,7 @@ The Kestra plugin for JetBrains IDEs connects IntelliJ IDEA, PyCharm, WebStorm, 
 
 ## Installation
 
-### From the JetBrains Marketplace
-
-Open **Settings | Plugins | Marketplace**, search for **Kestra**, click **Install**, and restart the IDE. Updates arrive through the IDE.
-
-### From an archive
-
-On machines that can't reach the Marketplace, download the `.zip` attached to a [GitHub release](https://github.com/kestra-io/jetbrains-kestra/releases). Then open **Settings | Plugins | ⚙ | Install Plugin from Disk…**, select the archive, and restart the IDE.
+Install the plugin from the [JetBrains Marketplace](https://plugins.jetbrains.com/): open **Settings | Plugins | Marketplace**, search for **Kestra**, click **Install**, and restart the IDE. Updates arrive through the IDE.
 
 ## Setup
 
