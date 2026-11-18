@@ -4,6 +4,7 @@ import PageShell from "~/components/home/PageShell.astro"
 import Customers, { type Story } from "~/components/home/Customers.astro"
 import { flat } from "~/components/home/flatLogo"
 import EnterpriseShowcase from "~/components/enterprise/EnterpriseShowcase.astro"
+import BuyerQuestions from "~/components/enterprise/BuyerQuestions.astro"
 import InfraHero from "~/components/infrastructure/InfraHero.astro"
 import InfraGlue from "~/components/infrastructure/InfraGlue.astro"
 import AppsMock from "~/components/enterprise/mocks/AppsMock.astro"
@@ -116,6 +117,29 @@ const REQUEST = {
     },
 }
 
+const FAQ = [
+    {
+        question: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+        answer: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    },
+    {
+        question: "Ut enim ad minim veniam, quis nostrud exercitation?",
+        answer: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.",
+    },
+    {
+        question: "Duis aute irure dolor in reprehenderit in voluptate?",
+        answer: "Sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
+    },
+    {
+        question: "Excepteur sint occaecat cupidatat non proident?",
+        answer: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+    },
+    {
+        question: "Sed ut perspiciatis unde omnis iste natus error?",
+        answer: "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore.",
+    },
+]
+
 const STORIES: Story[] = [
     {
         company: "Amdocs",
@@ -197,5 +221,6 @@ const STORIES: Story[] = [
             <InfraMock slot="assets" view="assets" />
         </EnterpriseShowcase>
         <InfraClosing />
+        <BuyerQuestions items={FAQ} />
     </PageShell>
 </Layout>

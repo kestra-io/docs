@@ -2,13 +2,9 @@
 import { Icon } from "astro-icon/components"
 ---
 
-<section
-    class="infra-closing surface-dark"
-    aria-labelledby="infra-closing"
-    data-header-dark
->
+<section class="infra-closing" aria-labelledby="infra-closing">
     <div class="container-xl">
-        <div class="rails">
+        <div class="rails surface-dark" data-header-dark>
             <h2 id="infra-closing">
                 See Kestra for Infrastructure on your own catalog.
             </h2>
@@ -34,7 +30,14 @@ import { Icon } from "astro-icon/components"
 
     .infra-closing {
         position: relative;
-        overflow: hidden;
+        background: var(--ks-background-body);
+    }
+
+    .rails {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 7.5rem clamp(1.5rem, 4vw, 3.5rem);
         background:
             radial-gradient(
                 50% 80% at 50% 110%,
@@ -44,14 +47,6 @@ import { Icon } from "astro-icon/components"
             ),
             linear-gradient(180deg, #060609 0%, #0e0d14 55%, #060609 100%);
         color: #ffffff;
-    }
-
-    .rails {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 7.5rem clamp(1.5rem, 4vw, 3.5rem);
-        border-inline: 1px solid #24232b;
         text-align: center;
 
         @include media-breakpoint-down(md) {
