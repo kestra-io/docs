@@ -6,7 +6,7 @@ stage: Intermediate
 description: Use Ansible playbooks orchestrated by Kestra to audit machine resources, check tool versions, and automate infrastructure updates.
 ---
 
-Run Ansible playbooks from Kestra and coordinate downstream infrastructure tasks.
+Run Ansible playbooks from Kestra and coordinate downstream infrastructure tasks. For an overview of how Kestra orchestrates Ansible (scheduling, retries, chaining with Terraform), see [Orchestrate Ansible with Kestra](/orchestration/ansible).
 
 Ansible is an agentless automation tool that uses YAML playbooks to describe desired state and apply it over SSH or APIs. Teams rely on it to install software, manage configs, update systems, and provision cloud infrastructure.
 

@@ -37,7 +37,7 @@ This "handoff problem" manifests as:
 *   **Operational Silos:** Each tool is often owned by a different team, leading to coordination overhead and delays.
 *   **Inconsistent Governance:** Applying consistent security, compliance, and approval policies across a dozen different automation tools is nearly impossible.
 
-The goal is to move from fragmented islands of automation to a cohesive, observable, and governed system. This is where the concept of orchestration becomes critical to [solve complexity](/resources/infrastructure/orchestration-problems-complexity) without adding more tools.
+The goal is to move from fragmented islands of automation to a cohesive, observable, and governed system. This is where the concept of orchestration becomes critical to [solve complexity](/resources/orchestration) without adding more tools.
 
 ## What is Infrastructure Orchestration?
 
