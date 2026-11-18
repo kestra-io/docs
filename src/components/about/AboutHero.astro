@@ -76,8 +76,8 @@ import HeroFlows from "./HeroFlows.astro"
     }
 
     h1 {
-        margin: 0 0 2.5rem;
-        font-size: clamp(2.75rem, 6vw, 5rem);
+        margin: 0 0 1.5rem;
+        font-size: clamp(2.5rem, 4.6vw, 4rem);
         font-weight: 600;
         letter-spacing: -0.03em;
         line-height: 1.02;
@@ -85,7 +85,6 @@ import HeroFlows from "./HeroFlows.astro"
         text-wrap: balance;
 
         @include media-breakpoint-down(md) {
-            margin-bottom: 1.5rem;
             font-size: clamp(2.125rem, 9.6vw, 2.75rem);
         }
 
@@ -101,9 +100,10 @@ import HeroFlows from "./HeroFlows.astro"
     .intro {
         max-width: 640px;
         margin: 0;
-        font-size: $font-size-lg;
-        line-height: 1.65;
-        color: rgba(255, 255, 255, 0.72);
+        font-size: 1.1875rem;
+        line-height: 1.55;
+        color: rgba(255, 255, 255, 0.86);
+        text-wrap: pretty;
 
         @include media-breakpoint-down(md) {
             font-size: $font-size-md;
