@@ -1,16 +1,16 @@
 ---
 title: "Top AWX Alternatives for Modern Automation in 2026"
 description: "Explore the best AWX alternatives, from open-source tools to enterprise platforms, to find a flexible and scalable automation solution that fits your infrastructure needs."
-metaTitle: "AWX Alternatives: Top Automation Platforms for 2026"
-metaDescription: "Compare the top AWX alternatives for 2026 — Kestra, Ansible Semaphore, Rundeck and more — for flexible, scalable infrastructure automation and orchestration."
+metaTitle: "AWX Alternatives (2026): Options That Keep Your Playbooks"
+metaDescription: "AWX releases have been paused since July 2024. Compare Semaphore UI, Rundeck, Ansible Automation Platform and Kestra, and see which run playbooks unchanged."
 tag: "infrastructure"
 date: 2026-07-02
 slug: "awx-alternatives"
 faq:
   - question: "Is AWX still being actively developed?"
-    answer: "AWX is still maintained by Red Hat, but new releases have been paused since version 24.6.1 (July 2, 2024) while the team refactors it into a service-oriented architecture (and moves from semantic versioning to CalVer). Red Hat has acknowledged that the existing application architecture limits how far AWX can innovate, which is why many teams now evaluate alternatives."
+    answer: "Development continues, but AWX has not shipped a release since version 24.6.1 on July 2, 2024. Red Hat paused releases to refactor AWX into a pluggable, service-oriented architecture. The refactor was merged on the devel branch in January 2026, but no release date or supported install path has been announced, which is why many teams now evaluate alternatives."
   - question: "What is the difference between AWX and Ansible Semaphore?"
-    answer: "AWX is the upstream open-source project for Red Hat Ansible Automation Platform, providing a comprehensive web UI, RBAC, and job scheduling. Ansible Semaphore is a lighter, simpler open-source web UI specifically for managing Ansible playbooks, often favored for smaller-scale or less complex environments."
+    answer: "AWX is the upstream open-source project for Red Hat Ansible Automation Platform, providing a comprehensive web UI, RBAC, and job scheduling. Semaphore UI is a lighter, simpler open-source web UI that runs Ansible playbooks as well as Terraform, OpenTofu, Bash, PowerShell and Python tasks, often favored for smaller teams and less complex environments."
   - question: "What does AWX stand for?"
     answer: "AWX has no official expansion — Red Hat treats 'AWX' as the product name rather than an acronym (you may see informal backronyms like 'Ansible Worx,' but none are official). It is the open-source upstream project for Ansible Tower, now known as Red Hat Ansible Automation Platform (AAP), providing a web-based UI, REST API, and task engine on top of Ansible."
   - question: "What can replace Ansible?"
@@ -25,6 +25,8 @@ The landscape of IT automation is constantly evolving, with teams seeking more f
 
 This article dives into the top alternatives to AWX in 2026, helping you navigate the options available. The leading alternatives to AWX include Kestra, Ansible [Semaphore](/resources/infrastructure/semaphore-ui-alternatives), Rundeck, and Red Hat's own Ansible Automation Platform, each suited to different infrastructure and operational needs. We'll examine why teams are moving beyond AWX, the key criteria for evaluating new platforms, and provide a detailed comparison of open-source and commercial solutions.
 
+> **Short answer:** AWX alternatives fall into two groups. Web UIs that replace the AWX controller one for one: Semaphore UI, Ascender and Red Hat Ansible Automation Platform. And orchestrators that run your playbooks next to Terraform, tickets and events: Kestra, Rundeck and CI tools. All of them call `ansible-core`, so your playbooks don't change. AWX itself has not shipped a release since 24.6.1 on July 2, 2024.
+
 ## The Evolving Need for AWX Alternatives in Modern IT
 
 For years, AWX has been the go-to open-source solution for adding a web-based UI, REST API, and task engine to Ansible. As the upstream project for what became the Red Hat Ansible Automation Platform (AAP), it provided essential features for teams looking to operationalize their Ansible playbooks.
@@ -38,7 +40,7 @@ AWX brought structure to Ansible automation with key capabilities like:
 *   **Credential Management:** Secure storage for SSH keys and other secrets.
 *   **Inventory Management:** A centralized place to define and manage infrastructure inventories.
 
-However, as infrastructure has grown more complex, AWX's limitations have become more apparent. Red Hat has acknowledged that the existing monolithic architecture limits innovation. Since mid-2024, development has been paused while the project undergoes a significant refactor into a more modern, service-oriented architecture. This pause, combined with its inherent focus on a single tool, has accelerated the search for more versatile [automation](/resources/infrastructure/automation) platforms.
+As infrastructure has grown more complex, AWX's limits have become more visible. Its releases have been paused since 24.6.1, published on July 2, 2024, according to the [note at the top of the AWX repository](https://github.com/ansible/awx). Red Hat is refactoring AWX into a pluggable, service-oriented architecture: the work was [merged on the development branch in January 2026](https://forum.ansible.com/t/awx-modernization-moving-forward/45134), but no release date has been announced. This pause, combined with AWX's focus on a single tool, has accelerated the search for more versatile [automation](/resources/infrastructure/automation) platforms.
 
 ### Why Teams Seek Automation Beyond AWX's Scope
 
@@ -66,7 +68,7 @@ When choosing an AWX alternative, it's crucial to evaluate platforms based on a 
 
 Kestra is a modern, open-source orchestration platform that provides a unified control plane for all your workflows—not just Ansible. It's built on a declarative, language-agnostic foundation, allowing you to define complex workflows in simple YAML files.
 
-Instead of being just a UI for one tool, Kestra acts as the brain that coordinates your entire stack. A Kestra workflow can seamlessly integrate Ansible playbooks, Terraform plans, Kubernetes jobs, Python scripts, and SQL queries. This declarative approach aligns perfectly with [GitOps for operations](/resources/infrastructure/gitops), making your automation auditable, versionable, and easy to manage.
+Instead of being just a UI for one tool, Kestra acts as the brain that coordinates your entire stack. A Kestra workflow can seamlessly integrate Ansible playbooks, Terraform plans, Kubernetes jobs, Python scripts, and SQL queries. This declarative approach aligns perfectly with [GitOps for operations](/resources/infrastructure/gitops), making your automation auditable, versionable, and easy to manage. Existing playbooks run unchanged; see how teams [orchestrate Ansible playbooks with Kestra](/orchestration/ansible).
 
 For example, Germany's public-sector IT provider, Dataport, uses Kestra to standardize API-driven cloud orchestration on its private cloud, creating a government-grade control plane.
 
@@ -76,9 +78,9 @@ For example, Germany's public-sector IT provider, Dataport, uses Kestra to stand
 
 Ansible Semaphore is a straightforward, open-source web UI for Ansible. If your primary frustration with the command line is the lack of a simple, multi-user interface for running playbooks, Semaphore is a compelling alternative.
 
-It provides the core features you need—inventory and credential management, a job dashboard, and basic user access controls—without the complexity of a full AWX installation. It is lightweight, easy to deploy, and focuses exclusively on doing one thing well: providing a clean UI for Ansible.
+It provides the core features you need (inventory and credential management, a job dashboard, and basic user access controls) without the complexity of a full AWX installation. It also runs Terraform, OpenTofu, Terragrunt, Bash, PowerShell and Python tasks, and comes as a free, MIT-licensed Community edition with [paid Pro and Enterprise plans](https://semaphoreui.com/pricing).
 
-However, its strength is also its limitation. Semaphore is not a general-purpose orchestrator. It manages Ansible playbooks and nothing else. If your needs extend beyond Ansible, you will quickly outgrow it.
+Its simplicity is also its limit. Semaphore is built to run playbooks and infrastructure-as-code tasks from a clean UI, not to coordinate multi-step workflows that combine several tools, event triggers and approvals.
 
 **Best for:** Small to medium-sized teams who are committed to Ansible and need a simple, self-hosted UI without the operational overhead of AWX.
 
@@ -94,9 +96,9 @@ Rundeck excels at incident response and routine operational tasks. For example, 
 
 For organizations heavily invested in the Red Hat ecosystem, the Ansible Automation Platform (AAP) is the logical, enterprise-grade successor to AWX. AAP is a commercial product that includes everything in AWX plus enterprise support, certified content collections, advanced analytics, and features like Automation Mesh for scaling automation across different networks and locations.
 
-AAP is designed for large-scale, mission-critical Ansible deployments. It provides the governance, security, and scalability that enterprises require. The trade-off is cost and vendor lock-in. It solidifies your commitment to Ansible as the core automation engine, which may not align with a strategy aimed at embracing a more diverse set of automation tools.
+AAP is designed for large-scale, mission-critical Ansible deployments. It provides the governance, security, and scalability that enterprises require. It is sold as a subscription per managed node, and Red Hat [counts every endpoint the platform manages](https://access.redhat.com/articles/3331481), so the subscription grows with the size of your estate. In August 2026, Red Hat also [announced an Automation Orchestrator add-on](https://forum.ansible.com/t/introducing-automation-orchestrator-for-ansible-automation-platform/46221) for multi-step workflows. AAP keeps Ansible as the core automation engine, which may not fit a strategy built around a more diverse set of automation tools.
 
-**Best for:** Large enterprises that have standardized on Ansible and require a fully supported, scalable, and secure platform from a commercial vendor.
+**Best for:** Large enterprises that have standardized on Ansible and require a fully supported, scalable, and secure platform from a commercial vendor. For a direct comparison, see [Kestra vs Ansible Automation Platform](/vs/ansible-automation-platform). If you are leaving Tower or the AAP automation controller rather than AWX, read our guide to [Ansible Tower and automation controller alternatives](/resources/infrastructure/ansible-tower-alternatives).
 
 ## 5. Argo Workflows: Kubernetes-Native Container Orchestration
 
@@ -118,16 +120,16 @@ Jenkins is a highly extensible CI/CD server with a massive plugin ecosystem. Wit
 
 Modern, Git-native platforms like GitHub Actions and GitLab CI/CD provide a more streamlined approach. You can define pipelines as code directly in your repository, triggering Ansible playbook runs on events like a pull request or a merge. This tightly integrates your infrastructure automation with your source code management, which is ideal for [CI/CD orchestration](/resources/infrastructure/ci-cd-orchestration).
 
-However, these tools are fundamentally designed for software delivery pipelines, not as general-purpose orchestrators for scheduled or event-driven operational tasks. Using them for broader infrastructure automation can feel like forcing a square peg into a round hole. For a deeper look, compare [Kestra vs. GitHub Actions](/resources/infrastructure/kestra-vs-github-actions) or [Kestra vs. GitLab](/resources/infrastructure/kestra-vs-gitlab).
+These tools are designed for software delivery pipelines rather than for scheduled or event-driven operational work. In GitHub Actions, workflows start from repository events or a manual run whose launch form is limited to workflow inputs; outside triggers such as alerts or tickets need an API call; there is no inventory object and no single view of operational runs across repositories and teams; and a job on a self-hosted runner stops after [5 days of execution](https://docs.github.com/actions/reference/limits). For a deeper look, compare [Kestra vs. GitHub Actions](/resources/infrastructure/kestra-vs-github-actions) or [Kestra vs. GitLab](/resources/infrastructure/kestra-vs-gitlab).
 
 **Best for:** Engineering teams that want to integrate Ansible-based infrastructure changes directly into their existing software delivery pipelines.
 
 | Tool | License | Deployment | Best for | Language Support |
 |---|---|---|---|---|
 | **Kestra** | Open-Source (Apache 2.0) & Enterprise | Docker, Kubernetes, Bare Metal | Unified orchestration across all tools | Polyglot (Python, Shell, SQL, etc.) |
-| **Ansible Semaphore** | Open-Source (MIT) | Docker, Bare Metal | Simple, lightweight Ansible UI | Ansible only |
+| **Ansible Semaphore** | Open-Source (MIT) + paid Pro and Enterprise | Docker, Bare Metal | Simple, lightweight UI for Ansible and IaC tasks | Ansible, Terraform/OpenTofu, Bash, PowerShell, Python |
 | **Rundeck** | Open-Source & Commercial | Docker, Kubernetes, Bare Metal | Self-service runbook automation | Polyglot |
-| **Ansible Automation Platform** | Commercial | Kubernetes, On-premise | Enterprise-scale Ansible automation | Ansible only |
+| **Ansible Automation Platform** | Commercial (per managed node) | Kubernetes, On-premise | Enterprise-scale Ansible automation | Ansible only |
 | **Argo Workflows** | Open-Source (Apache 2.0) | Kubernetes only | Kubernetes-native container workflows | Container-based (any language) |
 | **CI/CD Tools** | Open-Source & Commercial | Cloud-hosted, Self-hosted | Integrating Ansible into code pipelines | Polyglot |
 
