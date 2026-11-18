@@ -12,7 +12,7 @@ The Kestra plugin for JetBrains IDEs connects IntelliJ IDEA, PyCharm, WebStorm, 
 
 ## Prerequisites
 
-- A JetBrains IDE, version 2025.3 or later. Free editions work too: the plugin only needs the bundled YAML support.
+- A JetBrains IDE, version 2024.3 or later. Free editions work too: the plugin only needs the bundled YAML support.
 - A running Kestra instance reachable from your machine, version 1.x or 2.x. `{{ }}` completion from the instance needs Kestra 2.0 or later.
 
 ## Installation
