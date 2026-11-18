@@ -74,7 +74,7 @@ The filters applied to the Executions page also apply to the timeline. The timel
 
 The **Gantt** tab visualizes each task's duration. From this view, a specific task can be replayed, its source code viewed, status changed, or metrics and outputs inspected.
 
-![Kestra User Interface Execution Gantt](./execution-gantt-view.png)
+![Gantt tab of an execution with a per_region Loop expanded to its EMEA, AMER, and APAC iterations, and the nested per_quarter Loop of APAC expanded to its four iterations](./execution-gantt-view.png)
 
 The **Gantt** view displays all successful and failed tasks in the execution. For failed tasks, use **Fix with AI** from the task menu to open the flow editor with [AI Copilot](../../develop-with-ai/01.ai-copilot/index.md) pre-loaded with the error context.
 
@@ -86,17 +86,19 @@ Each [`Loop`](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#l
 
 - A Loop row shows its number of iterations and, when some failed, a failed count. Expand the row with its chevron to list its iterations, each with its value, state, and duration. Click the failed count to expand the loop and keep only its failed iterations. A bar under the chips splits the iterations by state, including running and not started ones. Hover over or focus it to see the count of each state.
 - Expand an iteration to list its task runs. A Loop inside an iteration expands the same way, at any depth.
-- Select an iteration to see its first failure and its task runs in the panel. **Open iteration** opens its execution page.
+- Select an iteration to see its first failure, with **Go to failure**, its task runs, and its value and execution in the panel. **Open iteration** opens its execution page.
 - Select a Loop row to browse its iterations in the panel, 10 at a time. Filter them by state, search them by exact value, or select **Show all executions** to open the executions list filtered on this loop.
-- With a task run inside an iteration selected, press `[` or `]`, or use **Previous iteration** and **Next iteration**, to open the same task in the neighboring iteration.
+- With a task run inside an iteration selected, press `[` or `]`, or use the buttons on either side of the iteration's name in the panel, to open the same task in the neighboring iteration.
 
 Above the Gantt, **Failed only** keeps only failed task runs and iterations, so stepping between iterations hops from one failure to the next. **Go to first failure** walks down nested loops to the first task that failed and selects it.
+
+![Gantt tab after Go to first failure, with the failed check task of the APAC and Q3 iterations selected and its panel showing the iteration navigation, Open iteration, and the error log](./gantt-loop-first-failure.png)
 
 If the same Loop task runs more than once in an execution, for example after a retry, the Gantt can't tell its iterations apart and shows them together.
 
 The breadcrumb of an iteration's execution page shows where the iteration sits. For each loop level, it lists the Loop task, then the iteration, with its position and value. For example, the `Q3` iteration of a `per_quarter` Loop nested in the `APAC` iteration of a `per_region` Loop shows `Executions / company / team / nested_loop_demo / per_region / 3bNyUKo2 [3/3 - APAC] / per_quarter / 26a35QwXz9iHR7nzMCduJE [3/4 - Q3]`. Long breadcrumbs collapse the first levels into a `...` menu. Click a Loop task in the breadcrumb to open the **Iterations** list of that Loop, or an iteration to open its execution.
 
-<!-- TODO(runtime test): Gantt panel and in-place Loop iterations (kestra#19603, PRs kestra#19989 and kestra#21564, merged to develop 2026-10-21 and 2026-10-30) documented from source only. Check in the UI on a 2.1 build: chips and failed-chip filter, panel content per row type, [ / ] stepping, Failed only, Go to first failure, the duplicate-Loop behavior. Retake execution-gantt-view.png and add a screenshot of an expanded nested Loop with the panel open. -->
+<!-- Gantt panel and in-place Loop iterations (kestra#19603) live-verified on OSS develop fec96bba (2026-11-18). The duplicate-Loop sentence comes from kestra#20466 (open) and wasn't reproduced: restarting a failed execution re-runs only the failed iteration. -->
 
 ## Logs
 
