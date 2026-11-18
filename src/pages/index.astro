@@ -6,6 +6,7 @@ import ControlPlane from "~/components/home/ControlPlane.astro"
 import AiGovernance from "~/components/home/AiGovernance.astro"
 import HowItWorks from "~/components/home/HowItWorks.astro"
 import ReplaceLegacy from "~/components/home/ReplaceLegacy.astro"
+import HairlineFigure from "~/components/partners/HairlineFigure.astro"
 import RunKestra from "~/components/home/RunKestra.astro"
 import Customers from "~/components/home/Customers.astro"
 import Enterprise from "~/components/home/Enterprise.astro"
@@ -27,7 +28,9 @@ const description =
         <ControlPlane />
         <AiGovernance />
         <Enterprise />
-        <ReplaceLegacy />
+        <ReplaceLegacy>
+            <HairlineFigure name="replace" slot="visual" />
+        </ReplaceLegacy>
         <Customers />
         <RunKestra />
     </PageShell>
