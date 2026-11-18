@@ -626,9 +626,8 @@ Searchable inputs follow these rules:
 - **IDs:** an ID can be searchable on an input or on an output of the same flow, not both.
 - **Size limits, errors, replays, and cleanup:** the same as for [searchable outputs](../06.outputs/index.md#searchable-outputs). A value that can't be stored is logged as an error, and the execution still runs.
 - **Inputs inside a `FORM`:** use the dotted ID as the filter key, such as `environment.region` for a `region` input inside an `environment` form.
-- **Flow triggers:** executions started by a [Flow trigger](../07.triggers/02.flow-trigger/index.md) don't store searchable inputs.
 
-<!-- TODO(eng): Flow trigger executions don't go through FlowInputOutput.readExecutionInputs, the only path that indexes inputs (kestra-io/kestra#22542). Remove the Flow triggers bullet if this is fixed. -->
+<!-- TODO(runtime test): kestra-io/kestra#22774 indexes Flow trigger inputs, but Flow.evaluate only reads inputs when the trigger sets `inputs`. Check whether a Flow trigger without `inputs` stores the input defaults as searchable values. -->
 
 To find executions by a searchable input, use the **Inputs & Outputs** filter on the **Executions** page or the `searchableData` API filter. See [Find executions by searchable value](../06.outputs/index.md#find-executions-by-searchable-value).
 

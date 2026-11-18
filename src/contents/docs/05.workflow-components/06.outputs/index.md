@@ -192,23 +192,23 @@ Searchable outputs follow these rules:
 - **Errors:** if an array item is not a scalar value or the value can't be stored, Kestra logs an error and the output is not searchable. The execution state doesn't change.
 - **IDs:** an ID can be searchable on an input or on an output of the same flow, not both. Saving a flow that marks both as searchable fails.
 - **Existing executions:** adding `searchable: true` to a flow applies to new executions only.
-- **Replays:** a replayed execution starts with the searchable values of the original execution.
+- **Replays:** a replayed execution starts with the searchable values of the original execution. A [replay with new inputs](../../15.how-to-guides/replay/index.md) stores the new input values for the replay, and the original execution keeps its own.
 - **Cleanup:** purging executions, for example with the [PurgeExecutions](/plugins/core/execution/io.kestra.plugin.core.execution.purgeexecutions) task, also removes their searchable values.
 
-Filters match the stored string exactly. Kestra normalizes each value before storing it, so `1.50` is stored as `1.5` and a datetime is converted to UTC. Inputs and outputs of the same type can be stored differently:
+Filters match the stored string exactly. Kestra normalizes each value before storing it, so `1.50` is stored as `1.5` and a datetime is converted to UTC. An input and an output of the same type are stored in the same form:
 
-| Type | Searchable input | Searchable output |
-|---|---|---|
-| `STRING`, `URI`, and the `EMAIL` and `SELECT` inputs | As entered | As rendered |
-| `INT` | `42` | `42` |
-| `FLOAT` | `1.5` | `1.5` |
-| `BOOL` | `true` or `false` | `true` or `false` |
-| `DATE` | `2026-10-27` | `2026-10-27` |
-| `DATETIME` | UTC, such as `2026-10-27T10:00:00Z` | UTC with microseconds, such as `2026-10-27T10:00:00.000000Z` |
-| `TIME` | `10:15:30`, or `10:15` when the seconds are zero | `10:15:00` |
-| `DURATION` | ISO 8601, such as `PT1H30M` | Seconds with nine decimals, such as `5400.000000000` |
+| Type | Stored as |
+|---|---|
+| `STRING`, `URI`, and the `EMAIL` and `SELECT` inputs | The entered or rendered value |
+| `INT` | `42` |
+| `FLOAT` | `1.5` |
+| `BOOL` | `true` or `false` |
+| `DATE` | `2026-10-27` |
+| `DATETIME` | UTC in ISO 8601, such as `2026-10-27T10:00:00Z`. Fractions of a second appear only when they aren't zero. |
+| `TIME` | `10:15:00`. Fractions of a second appear only when they aren't zero. |
+| `DURATION` | ISO 8601, such as `PT1H30M` |
 
-<!-- TODO(eng): DATETIME and DURATION outputs are stored in a different form than inputs (SearchableDataUtils uses value.toString() on the typed input but on the serialized output). Update the table if engineering aligns them. Also: replay-with-inputs indexes the new inputs under the ORIGINAL execution id, overwriting its values, instead of the replay's. See kestra-io/kestra#22542. -->
+<!-- TODO(runtime test): table rewritten from SearchableDataUtils after kestra-io/kestra#22774 (merged 2026-11-17). Confirm the DATETIME, TIME, and DURATION forms for an input and an output on a 2.1 build. -->
 
 #### Find executions by searchable value
 
