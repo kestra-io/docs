@@ -1,0 +1,407 @@
+---
+import BlockTitle from "~/components/enterprise/BlockTitle.astro"
+---
+
+<section
+    class="lost surface-dark"
+    aria-labelledby="lost-title"
+    data-header-dark
+>
+    <canvas class="sky" aria-hidden="true" data-lost-rocket></canvas>
+    <div class="container-xl">
+        <div class="stage">
+            <p class="code" aria-label="Error 404">
+                <BlockTitle text="404" prefix="lost" />
+            </p>
+            <h1 id="lost-title">
+                We orchestrate a lot.
+                <br />
+                Not this page.
+            </h1>
+            <p class="lead">
+                The link you followed points to a page that moved or never
+                existed. Here is where to pick things up again.
+            </p>
+            <div class="ctas">
+                <a href="/" class="btn-solid">
+                    Back to home
+                </a>
+                <a href="/docs" class="btn-ghost">
+                    Read the docs
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    import { HEART, HULL, SPRITE } from "~/components/home/rocket"
+    import { watchDarkSections } from "~/utils/headerDarkSections"
+
+    function searchSky() {
+        const canvas =
+            document.querySelector<HTMLCanvasElement>("[data-lost-rocket]")
+        if (!canvas || canvas.dataset.wired) return
+        canvas.dataset.wired = "true"
+        const ctx = canvas.getContext("2d")
+        if (!ctx) return
+        const still = matchMedia("(prefers-reduced-motion: reduce)").matches
+
+        const STEPS = 3
+        const ink = Object.fromEntries(
+            Object.entries(HULL).map(([key, rgb]) => [
+                key,
+                `rgb(${rgb.join(", ")})`,
+            ]),
+        )
+        const cells: { u: number; v: number; ink: string }[] = []
+        SPRITE.forEach((line, row) =>
+            [...line].forEach((key, col) => {
+                if (HULL[key])
+                    cells.push({
+                        u: col - HEART.x,
+                        v: row - HEART.y,
+                        ink: ink[key],
+                    })
+            }),
+        )
+
+        const rand = (i: number, k: number) => {
+            const h = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453
+            return h - Math.floor(h)
+        }
+        const STARS = Array.from({ length: 120 }, (_, i) => {
+            const depth = rand(i, 11) < 0.55 ? 0 : rand(i, 12) < 0.7 ? 1 : 2
+            const tone = rand(i, 13)
+            return {
+                x: rand(i, 14),
+                y: rand(i, 15),
+                depth,
+                cross: depth === 2 && rand(i, 16) < 0.35,
+                colour:
+                    tone < 0.6
+                        ? "255, 255, 255"
+                        : tone < 0.82
+                          ? "196, 184, 255"
+                          : tone < 0.93
+                            ? "120, 140, 255"
+                            : "255, 90, 220",
+                pace: 0.6 + rand(i, 17) * 0.8,
+                phase: rand(i, 18) * 6.28,
+            }
+        })
+        const HEADING = (-29 * Math.PI) / 180
+        const FWD = { x: Math.cos(HEADING), y: Math.sin(HEADING) }
+        const SPREAD = 0.2
+        const TIP = 37 - HEART.x
+
+        let width = 0
+        let height = 0
+        let unit = 12
+        let home = { x: 0, y: 0 }
+        let reach = 600
+        let beam: HTMLCanvasElement | undefined
+
+        const paintBeam = () => {
+            const half = Math.ceil(reach * Math.tan(SPREAD))
+            const sheet = document.createElement("canvas")
+            sheet.width = Math.ceil(reach)
+            sheet.height = half * 2
+            const bctx = sheet.getContext("2d")
+            if (!bctx) return
+            const image = bctx.createImageData(sheet.width, sheet.height)
+            for (let y = 0; y < sheet.height; y++) {
+                for (let x = 1; x < sheet.width; x++) {
+                    const dy = y + 0.5 - half
+                    const off = Math.abs(Math.atan2(dy, x)) / SPREAD
+                    const r = Math.hypot(x, dy) / reach
+                    if (off >= 1 || r >= 1) continue
+                    const across = (1 - off * off) ** 2
+                    const along = (1 - r) ** 1.8
+                    const i = (y * sheet.width + x) * 4
+                    const k = Math.min(1, r * 2.5)
+                    image.data[i] = Math.round(255 - 125 * k)
+                    image.data[i + 1] = 110
+                    image.data[i + 2] = Math.round(250 + 5 * k)
+                    image.data[i + 3] = Math.round(255 * 0.55 * across * along)
+                }
+            }
+            bctx.putImageData(image, 0, 0)
+            return sheet
+        }
+
+        const layout = () => {
+            const box = canvas.getBoundingClientRect()
+            const ratio = Math.min(2, window.devicePixelRatio || 1)
+            width = box.width
+            height = box.height
+            canvas.width = Math.round(width * ratio)
+            canvas.height = Math.round(height * ratio)
+            ctx.setTransform(ratio, 0, 0, ratio, 0, 0)
+            const wide = width >= 992
+            unit = wide
+                ? Math.max(9, Math.min(15, width / 110))
+                : Math.max(6, width / 60)
+            home = wide
+                ? { x: width * 0.68, y: height * 0.62 }
+                : { x: width * 0.42, y: 67 + unit * 17 }
+            reach = wide ? Math.min(width * 0.5, 760) : width * 0.85
+            beam = paintBeam()
+        }
+
+        const haze = (
+            x: number,
+            stretch: number,
+            radius: number,
+            stops: [number, string][],
+        ) => {
+            ctx.save()
+            ctx.translate(x, 0)
+            ctx.scale(stretch, 1)
+            const g = ctx.createRadialGradient(0, 0, 0, 0, 0, radius)
+            for (const [stop, colour] of stops) g.addColorStop(stop, colour)
+            ctx.fillStyle = g
+            ctx.fillRect(-radius, -radius, radius * 2, radius * 2)
+            ctx.restore()
+        }
+
+        const frame = (time: number) => {
+            const t = time / 1000
+            ctx.clearRect(0, 0, width, height)
+
+            const at = {
+                x: home.x + Math.sin(t * 0.7) * unit * 0.6,
+                y: home.y + Math.sin(t * 0.9 + 1.3) * unit * 0.8,
+            }
+            const angle = still ? HEADING : HEADING + Math.sin(t * 0.45) * 0.22
+            const fine = unit / STEPS
+            const nose = {
+                x: at.x + Math.cos(angle) * TIP * fine,
+                y: at.y + Math.sin(angle) * TIP * fine,
+            }
+
+            const glow = ctx.createRadialGradient(
+                at.x,
+                at.y,
+                0,
+                at.x,
+                at.y,
+                unit * 26,
+            )
+            glow.addColorStop(0, "rgba(120, 90, 255, 0.14)")
+            glow.addColorStop(1, "rgba(120, 90, 255, 0)")
+            ctx.fillStyle = glow
+            ctx.fillRect(
+                at.x - unit * 26,
+                at.y - unit * 26,
+                unit * 52,
+                unit * 52,
+            )
+
+            const dot = Math.max(2, Math.round(unit / STEPS))
+            for (const star of STARS) {
+                const speed = [5, 14, 34][star.depth] * star.pace
+                const x =
+                    (((star.x * width - FWD.x * speed * t) % width) + width) %
+                    width
+                const y =
+                    (((star.y * height - FWD.y * speed * t) % height) +
+                        height) %
+                    height
+                const dx = x - nose.x
+                const dy = y - nose.y
+                const off = Math.abs(
+                    ((Math.atan2(dy, dx) - angle + Math.PI * 3) %
+                        (Math.PI * 2)) -
+                        Math.PI,
+                )
+                const lit =
+                    off < SPREAD && Math.hypot(dx, dy) < reach
+                        ? (1 - off / SPREAD) * (1 - Math.hypot(dx, dy) / reach)
+                        : 0
+                const twinkle =
+                    0.55 + 0.45 * Math.sin(t * 1.6 * star.pace + star.phase)
+                const alpha = Math.min(
+                    1,
+                    [0.22, 0.4, 0.7][star.depth] * twinkle + lit * 0.9,
+                )
+                const size = [0.5, 0.75, 1][star.depth] * dot * (1 + lit * 0.6)
+                const sx = Math.round(x)
+                const sy = Math.round(y)
+                ctx.fillStyle = `rgba(${star.colour}, ${alpha})`
+                ctx.fillRect(sx, sy, size, size)
+                if (star.cross || lit > 0.3) {
+                    ctx.fillStyle = `rgba(${star.colour}, ${alpha * 0.5})`
+                    ctx.fillRect(sx - size, sy, size, size)
+                    ctx.fillRect(sx + size, sy, size, size)
+                    ctx.fillRect(sx, sy - size, size, size)
+                    ctx.fillRect(sx, sy + size, size, size)
+                }
+            }
+
+            ctx.save()
+            ctx.translate(at.x, at.y)
+            ctx.rotate(angle)
+
+            if (beam) {
+                ctx.save()
+                ctx.globalCompositeOperation = "lighter"
+                ctx.drawImage(beam, TIP * fine, -beam.height / 2)
+                ctx.restore()
+                haze(TIP * fine, 1, unit * 1.6, [
+                    [0, "rgba(255, 120, 245, 0.6)"],
+                    [1, "rgba(255, 4, 254, 0)"],
+                ])
+            }
+
+            const beat = 0.85 + 0.15 * Math.sin(t * 8)
+            const tail = unit * 14
+            haze(-unit * 11, 2.6, unit * 8, [
+                [0, `rgba(92, 70, 255, ${0.38 * beat})`],
+                [0.2, `rgba(86, 68, 255, ${0.3 * beat})`],
+                [0.45, `rgba(64, 64, 255, ${0.15 * beat})`],
+                [0.7, `rgba(45, 62, 255, ${0.05 * beat})`],
+                [1, "rgba(33, 66, 255, 0)"],
+            ])
+            haze(-unit * 5.5, 2, unit * 3.2, [
+                [0, `rgba(170, 150, 255, ${0.32 * beat})`],
+                [0.4, `rgba(130, 100, 255, ${0.14 * beat})`],
+                [1, "rgba(130, 90, 255, 0)"],
+            ])
+
+            const flow = t * unit * 30
+            for (let row = 4; row * fine < tail; row += 1) {
+                const fade = 1 - (row * fine) / tail
+                const slot = Math.floor((row * fine + flow) / fine)
+                for (let lane = -12; lane <= 12; lane += 2) {
+                    if (rand(lane + 80, slot - row * 2) > fade * 0.08) continue
+                    ctx.fillStyle = `rgba(255, 235, 250, ${0.2 + 0.4 * fade})`
+                    ctx.fillRect(
+                        -row * fine - unit * 4,
+                        lane * fine,
+                        fine * 0.7,
+                        fine * 0.7,
+                    )
+                }
+            }
+
+            const gap = fine > 4 ? 0.6 : 0
+            for (const cell of cells) {
+                ctx.fillStyle = cell.ink
+                ctx.fillRect(
+                    cell.u * fine,
+                    cell.v * fine,
+                    fine - gap,
+                    fine - gap,
+                )
+            }
+            ctx.restore()
+        }
+
+        layout()
+        new ResizeObserver(() => {
+            layout()
+            if (still) frame(0)
+        }).observe(canvas)
+
+        if (still) {
+            frame(0)
+            return
+        }
+
+        let visible = false
+        let raf = 0
+        let last = 0
+        const tick = (time: number) => {
+            raf = 0
+            if (!visible) return
+            if (time - last > 40) {
+                last = time
+                frame(time)
+            }
+            raf = requestAnimationFrame(tick)
+        }
+        new IntersectionObserver(([entry]) => {
+            visible = entry.isIntersecting
+            if (visible && !raf) raf = requestAnimationFrame(tick)
+        }).observe(canvas)
+    }
+
+    document.addEventListener("astro:page-load", searchSky)
+    searchSky()
+    document.addEventListener("astro:page-load", watchDarkSections)
+    watchDarkSections()
+</script>
+
+<style lang="scss">
+    .lost {
+        position: relative;
+        overflow: hidden;
+        margin-top: -67px;
+        background:
+            radial-gradient(
+                50% 60% at 76% 45%,
+                rgba(120, 70, 255, 0.14),
+                transparent 70%
+            ),
+            #08070d;
+        color: #ffffff;
+    }
+
+    .sky {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
+    .stage {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: calc(clamp(3rem, 6vw, 5rem) + 67px) clamp(1.5rem, 4vw, 3.5rem)
+            clamp(3rem, 5vw, 4.5rem);
+
+        @include media-breakpoint-down(lg) {
+            padding-top: calc(11rem + 67px);
+        }
+    }
+
+    .code {
+        width: min(22rem, 72vw);
+        margin: 0 0 clamp(1.75rem, 3vw, 2.25rem);
+        user-select: none;
+    }
+
+    h1 {
+        max-width: 36rem;
+        margin: 0;
+        font-size: clamp(2.25rem, 4.4vw, 3.5rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+        text-wrap: balance;
+        color: #ffffff;
+        text-shadow: 0 0 1.5rem rgba(8, 7, 13, 0.8);
+    }
+
+    .lead {
+        max-width: 32rem;
+        margin: 1.25rem 0 0;
+        font-size: 1.125rem;
+        line-height: 1.55;
+        color: rgba(255, 255, 255, 0.72);
+        text-shadow: 0 0 1rem rgba(8, 7, 13, 0.8);
+    }
+
+    .ctas {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 2.25rem;
+    }
+</style>
