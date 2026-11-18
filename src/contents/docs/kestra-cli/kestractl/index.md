@@ -746,7 +746,7 @@ kestractl reusable-inputs namespaces
 
 ## MCP servers
 
-A [flow MCP server](../../ai-orchestration/03.mcp-server/index.md) exposes every flow with an MCP Tool trigger as a tool that AI agents can call. Every tenant has a `default` server, which you cannot delete. The `mcp-servers` commands act on the active tenant from your context.
+An MCP server in [MCP Flows](../../ai-orchestration/03.mcp-server/index.md) exposes every flow with an MCP Tool trigger as a tool that AI agents can call. Every tenant has a `default` server, which you cannot delete. The `mcp-servers` commands act on the active tenant from your context.
 
 ```bash
 # List MCP servers (alias: ls)

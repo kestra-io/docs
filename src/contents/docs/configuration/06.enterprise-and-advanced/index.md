@@ -1069,7 +1069,7 @@ When an event hub is deleted outside Kestra, the next publish to it fails, and K
 
 ## MCP server cache
 
-Each webserver node caches MCP server configuration in memory and hot-reloads it when a server is created, updated, or deleted. Two properties control this cache:
+Each webserver node caches the configuration of the MCP servers in [MCP Flows](../../ai-orchestration/03.mcp-server/index.md) in memory and hot-reloads it when a server is created, updated, or deleted. Two properties control this cache:
 
 | Property | Default | Description |
 |---|---|---|
@@ -1086,16 +1086,16 @@ kestra:
 
 Tune these only if you have a large number of MCP servers or tight memory constraints. The defaults are sufficient for most deployments.
 
-## Platform MCP server
+## Kestra MCP Server
 
 :::badge{version=">=2.1" editions="OSS,EE"}
 :::
 
-The [platform MCP server](../../ai-orchestration/03.mcp-server/index.md#platform-mcp-server) exposes the AI Copilot's tools at `/api/v1/mcp`. Configure it under `kestra.mcp.platform-server`:
+The [Kestra MCP Server](../../develop-with-ai/05.kestra-mcp-server/index.md) exposes the AI Copilot's tools at `/api/v1/mcp`. Configure it under `kestra.mcp.platform-server`:
 
 | Property | Description | Default |
 |---|---|---|
-| `kestra.mcp.platform-server.enabled` | Serves the platform MCP server. | `false` |
+| `kestra.mcp.platform-server.enabled` | Serves the Kestra MCP Server. | `false` |
 | `kestra.mcp.platform-server.tenants` | Tenants the tools can act on. Empty means every tenant the caller can access. | `[]` |
 | `kestra.mcp.platform-server.instructions` | Instructions sent to MCP clients when they connect. | None |
 | `kestra.mcp.platform-server.auth-methods` | Enterprise Edition only. Accepted authentication methods: `BASIC`, `API_TOKEN`, `OAUTH`. Empty accepts all three. | `[]` |
