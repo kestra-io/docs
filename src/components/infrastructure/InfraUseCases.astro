@@ -1,0 +1,195 @@
+---
+import { Icon } from "astro-icon/components"
+
+const CASES = [
+    {
+        icon: "mdi:server-outline",
+        title: "Provision a VM",
+        text: "Linux or Windows, on vSphere, Nutanix, Proxmox or any cloud.",
+    },
+    {
+        icon: "mdi:database-outline",
+        title: "A database for a week",
+        text: "For a test or a demo, removed once the week is over.",
+    },
+    {
+        icon: "mdi:source-branch",
+        title: "Test environments per branch",
+        text: "A full stack for each branch, ready for tests.",
+    },
+    {
+        icon: "mdi:kubernetes",
+        title: "Kubernetes namespaces",
+        text: "A namespace with its quotas and access, ready for a team.",
+    },
+    {
+        icon: "mdi:wall-fire",
+        title: "Firewall and network requests",
+        text: "Rule changes from a form, applied by your own code.",
+    },
+    {
+        icon: "mdi:ansible",
+        title: "Run Ansible playbooks",
+        text: "Playbooks, roles and collections from Git, on demand or on a schedule.",
+    },
+    {
+        icon: "mdi:terraform",
+        title: "Terraform and OpenTofu runs",
+        text: "Plan and apply your modules, with every run on record.",
+    },
+    {
+        icon: "mdi:wrench-outline",
+        title: "Day 2 operations",
+        text: "Resize, snapshot or extend what is already running.",
+    },
+    {
+        icon: "mdi:shield-sync-outline",
+        title: "Fleet patching",
+        text: "Patch thousands of servers in waves and keep a record of each host.",
+    },
+    {
+        icon: "mdi:delete-clock-outline",
+        title: "Decommissioning",
+        text: "Retire what nobody uses, after checking what depends on it.",
+    },
+    {
+        icon: "mdi:ticket-outline",
+        title: "ITSM as the front door",
+        text: "Requests stay in ServiceNow or Jira and run on Kestra for Infrastructure.",
+    },
+    {
+        icon: "mdi:robot-outline",
+        title: "Infrastructure for AI agents",
+        text: "Agents use the catalog over MCP and never hold credentials.",
+    },
+]
+---
+
+<section class="infra-cases" aria-labelledby="infra-cases">
+    <div class="container-xl">
+        <div class="rails">
+            <header>
+                <h2 id="infra-cases">
+                    What teams run with Kestra for Infrastructure
+                </h2>
+            </header>
+            <ul>
+                {CASES.map((item) => (
+                    <li>
+                        <Icon name={item.icon} />
+                        <h3>{item.title}</h3>
+                        <p>{item.text}</p>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "../about/style/section" as *;
+
+    .infra-cases {
+        --rule: 1px solid var(--ks-border-primary);
+        --inset: clamp(1.5rem, 3vw, 2.5rem);
+
+        position: relative;
+        border-bottom: var(--rule);
+        background: var(--ks-background-body);
+    }
+
+    .rails {
+        border-inline: var(--rule);
+
+        @include media-breakpoint-down(xl) {
+            border-inline: 0;
+        }
+    }
+
+    header {
+        padding: 6.5rem var(--inset) 3.5rem;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem 2.5rem;
+        }
+
+        h2 {
+            @include title;
+            max-width: 18em;
+            margin-inline: auto;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            text-wrap: balance;
+            color: var(--ks-content-primary);
+        }
+    }
+
+    ul {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        margin: 0;
+        padding: 0;
+        border-top: var(--rule);
+        list-style: none;
+
+        @include media-breakpoint-down(xl) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    li {
+        padding: 2rem var(--inset) 2.5rem;
+
+        @include media-breakpoint-up(xl) {
+            &:not(:nth-child(4n + 1)) {
+                border-left: var(--rule);
+            }
+
+            &:nth-child(n + 5) {
+                border-top: var(--rule);
+            }
+        }
+
+        @include media-breakpoint-between(md, xl) {
+            &:nth-child(even) {
+                border-left: var(--rule);
+            }
+
+            &:nth-child(n + 3) {
+                border-top: var(--rule);
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            & + li {
+                border-top: var(--rule);
+            }
+        }
+
+        > :global(svg) {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-bottom: 1.25rem;
+            color: var(--ks-content-link);
+        }
+    }
+
+    h3 {
+        margin: 0 0 0.625rem;
+        font-size: 1.125rem;
+        font-weight: 600;
+        line-height: 1.3;
+        color: var(--ks-content-primary);
+    }
+
+    li p {
+        margin: 0;
+        font-size: 0.9375rem;
+        line-height: 1.6;
+        color: var(--ks-content-secondary);
+    }
+</style>

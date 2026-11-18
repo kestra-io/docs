@@ -11,6 +11,7 @@ import AppsMock from "~/components/enterprise/mocks/AppsMock.astro"
 import InfraMock from "~/components/infrastructure/InfraMock.astro"
 import InfraMigration from "~/components/infrastructure/InfraMigration.astro"
 import InfraClosing from "~/components/infrastructure/InfraClosing.astro"
+import InfraUseCases from "~/components/infrastructure/InfraUseCases.astro"
 import manufacturerPhoto from "~/components/enterprise/assets/manufacturer.jpg"
 import dataportPhoto from "~/components/enterprise/assets/dataport.jpg"
 import amdocsPhoto from "~/contents/customer-stories/amdocs-delivers-integration-environments-as-a-service-with-kestra/hero.jpeg"
@@ -63,7 +64,7 @@ const PANELS = [
         tab: "Assets",
         icon: "mdi:layers-outline",
         title: "A live map of your resources",
-        intro: "Every resource Kestra for Infrastructure creates is recorded as an asset, so your inventory updates itself instead of drifting from reality. Before you change or retire something, you can see what depends on it.",
+        intro: "Your flows record each resource they create as an asset, so the inventory follows what you run. Before you change or retire something, you can see what depends on it.",
         points: [
             "Owner, status and lineage for every VM, database and network",
             "Dependencies visible before you change or retire anything",
@@ -119,24 +120,32 @@ const REQUEST = {
 
 const FAQ = [
     {
-        question: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-        answer: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        question: "What is Kestra for Infrastructure?",
+        answer: "The first product built on the Kestra platform. Platform and IT teams turn their own infrastructure code into a self-service catalog, then track every deployment with its owner, lease, Day 2 actions and cases.",
     },
     {
-        question: "Ut enim ad minim veniam, quis nostrud exercitation?",
-        answer: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.",
+        question: "How is it priced?",
+        answer: "It is part of Kestra Enterprise at no extra cost, with no price per managed node. Contact sales for a quote sized to your instances and support level.",
     },
     {
-        question: "Duis aute irure dolor in reprehenderit in voluptate?",
-        answer: "Sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
+        question: "Do we have to rewrite our Terraform, Ansible or PowerCLI code?",
+        answer: "No. Catalog items run the modules, playbooks and scripts you already have, from Git.",
     },
     {
-        question: "Excepteur sint occaecat cupidatat non proident?",
-        answer: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+        question: "Does it replace ServiceNow?",
+        answer: "ServiceNow can stay the front door. A request raised there runs on Kestra for Infrastructure, and cases link back to the ServiceNow or Jira ticket.",
     },
     {
-        question: "Sed ut perspiciatis unde omnis iste natus error?",
-        answer: "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore.",
+        question: "Can it replace VMware Aria Automation or Ansible Automation Platform?",
+        answer: "Yes. Teams move their vRO workflows and their AWX or AAP playbooks onto it, and the hypervisor becomes their choice again.",
+    },
+    {
+        question: "Does it run on-premises or air-gapped?",
+        answer: "Yes. Kestra for Infrastructure is self-hosted, in your data center, your cloud accounts or a fully air-gapped network.",
+    },
+    {
+        question: "Is it open source?",
+        answer: "Kestra for Infrastructure is part of Kestra Enterprise. The Terraform, OpenTofu and Ansible plugins it builds on stay open source.",
     },
 ]
 
@@ -190,16 +199,6 @@ const STORIES: Story[] = [
 <Layout {title} {description} headerClean headerClear headerOverDark>
     <PageShell>
         <InfraHero />
-        <InfraMigration />
-        <Customers stories={STORIES} foot={false} placeholder={false}>
-            <Fragment slot="title">
-                Infrastructure teams that made the move
-            </Fragment>
-            <Fragment slot="lead">
-                What platform teams in industry, the public sector and telecom
-                say after moving their infrastructure automation to Kestra.
-            </Fragment>
-        </Customers>
         <InfraGlue />
         <EnterpriseShowcase
             id="infra-showcase"
@@ -210,16 +209,27 @@ const STORIES: Story[] = [
                 One service catalog for IT automation
             </Fragment>
             <Fragment slot="lead">
-                Keep the flexibility of your own Terraform, Ansible and PowerCLI
-                code, on any cloud or hypervisor. Teams request from one
-                catalog, and Kestra for Infrastructure tracks every resource
-                from request to retirement.
+                Keep the flexibility of your own infrastructure as code, from
+                Terraform and Ansible to PowerCLI, on any cloud or hypervisor.
+                Teams self-serve from one service catalog, and Kestra for
+                Infrastructure tracks every resource from request to retirement.
             </Fragment>
             <AppsMock slot="requests" apps={APPS} request={REQUEST} />
             <InfraMock slot="deployments" view="deployments" />
             <InfraMock slot="cases" view="cases" />
             <InfraMock slot="assets" view="assets" />
         </EnterpriseShowcase>
+        <InfraUseCases />
+        <InfraMigration />
+        <Customers stories={STORIES} foot={false} placeholder={false}>
+            <Fragment slot="title">
+                Infrastructure teams that made the move
+            </Fragment>
+            <Fragment slot="lead">
+                What platform teams in industry, the public sector and telecom
+                say after moving their infrastructure automation to Kestra.
+            </Fragment>
+        </Customers>
         <InfraClosing />
         <BuyerQuestions items={FAQ} />
     </PageShell>
