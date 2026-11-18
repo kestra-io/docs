@@ -10,7 +10,7 @@ author:
   image: "mproset"
 ---
 
-Two weeks ago we [announced the Kestra Add-on for Splunk](/blogs/kestra-splunk-partnership). This post covers what production users do with it, and with the rest of the Splunk integration, once it's installed.
+We [announced the Kestra Add-on for Splunk](/blogs/kestra-splunk-partnership). This post covers what production users do with it, and with the rest of the Splunk integration, once it's installed.
 
 The same few patterns keep coming back, and so do the same design questions: how much of the alert to pass along, how to avoid running the same fix twice, where a human should sign off, and how to get the result back into Splunk.
 
