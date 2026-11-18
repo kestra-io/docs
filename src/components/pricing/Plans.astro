@@ -157,7 +157,6 @@ const PLANS: {
         --column: 21.25rem;
 
         position: relative;
-        border-bottom: var(--rule);
         background: var(--ks-background-body);
     }
 
@@ -168,7 +167,6 @@ const PLANS: {
     .frame {
         position: relative;
         margin-inline: auto;
-        padding-bottom: 4rem;
         border-inline: var(--rule);
 
         &::before {
@@ -246,6 +244,27 @@ const PLANS: {
     .customers::after {
         content: "";
         top: 100%;
+    }
+
+    .customers {
+        --ks-border-primary: #24232b;
+        --ks-border-secondary: #3a3944;
+        --ks-background-body: #060609;
+        --ks-background-secondary: rgba(255, 255, 255, 0.05);
+        --ks-content-primary: #ffffff;
+        --ks-content-tertiary: #a9a8b3;
+        --rule: 1px solid var(--ks-border-primary);
+
+        margin-inline: -1px;
+        border-inline: var(--rule);
+        background: var(--ks-background-body);
+        box-shadow: 0 0 0 100vmax var(--ks-background-body);
+        clip-path: inset(0 -100vmax -1px);
+
+        @include media-breakpoint-down(md) {
+            margin-inline: 0;
+            border-inline: 0;
+        }
     }
 
     .compare {
