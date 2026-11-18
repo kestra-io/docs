@@ -16,7 +16,7 @@ This page is for administrators who enable the server and for developers who con
 | --- | --- |
 | Operate your Kestra instance: read flows and executions, restart executions | Kestra MCP Server (this page) |
 | Run your own flows as tools | [MCP Flows](../../ai-orchestration/03.mcp-server/index.md) |
-| Look up plugin schemas, blueprints, and docs while it writes flows | [Docs MCP server](../02.kestra-mcp-resources/index.md) |
+| Look up plugin schemas, blueprints, and docs while it writes flows | [Docs MCP Server](../02.kestra-mcp-resources/index.md) |
 
 The Kestra MCP Server exposes the tools of the [AI Copilot](../01.ai-copilot/index.md) over the [Model Context Protocol](https://modelcontextprotocol.io). It is defined in the Kestra configuration rather than in the UI, belongs to no tenant, and doesn't appear on the **MCP Flows** page or in the `/api/v1/{tenant}/mcp-servers` API.
 
@@ -50,7 +50,7 @@ claude mcp add kestra <kestra-url>/api/v1/mcp \
   --header "Authorization: Basic $(echo -n 'username:password' | base64)"
 ```
 
-Other clients use the same configuration as an MCP Flows server, with this URL in place of the server URL. See [Connect an AI agent client](../../ai-orchestration/03.mcp-server/index.md#connect-an-ai-agent-client) for Claude Desktop, Cursor, and Codex snippets.
+Other clients use the same configuration as an MCP server in MCP Flows, with this URL in place of the server URL. See [Connect an AI agent client](../../ai-orchestration/03.mcp-server/index.md#connect-an-ai-agent-client) for Claude Desktop, Cursor, and Codex snippets.
 
 ## Authentication
 

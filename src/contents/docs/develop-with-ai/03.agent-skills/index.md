@@ -16,7 +16,7 @@ Agent Skills are structured knowledge files (`SKILL.md`) that give an external c
 
 Skills work best alongside two other pieces:
 
-- The [Docs MCP server](../02.kestra-mcp-resources/index.md) gives the agent live plugin schemas and docs, so it doesn't invent task properties.
+- The [Docs MCP Server](../02.kestra-mcp-resources/index.md) gives the agent live plugin schemas and docs, so it doesn't invent task properties.
 - [`kestractl`](../../kestra-cli/kestractl/index.md) lets the agent validate and deploy flows against your instance.
 
 ## Available skills
@@ -168,7 +168,7 @@ Repeat for any other skill you need, and use the skills directory your agent doc
 
 ### Write, validate, and deploy a flow in one prompt
 
-With the Docs MCP server connected, the skills installed, and `kestractl` configured, one prompt covers authoring and deployment:
+With the Docs MCP Server connected, the skills installed, and `kestractl` configured, one prompt covers authoring and deployment:
 
 ```plaintext
 Use kestra-flow to write a flow in namespace company.data that fetches

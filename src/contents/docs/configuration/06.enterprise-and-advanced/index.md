@@ -1069,7 +1069,7 @@ When an event hub is deleted outside Kestra, the next publish to it fails, and K
 
 ## MCP server cache
 
-Each webserver node caches the configuration of [MCP Flows](../../ai-orchestration/03.mcp-server/index.md) servers in memory and hot-reloads it when a server is created, updated, or deleted. Two properties control this cache:
+Each webserver node caches the configuration of the MCP servers in [MCP Flows](../../ai-orchestration/03.mcp-server/index.md) in memory and hot-reloads it when a server is created, updated, or deleted. Two properties control this cache:
 
 | Property | Default | Description |
 |---|---|---|

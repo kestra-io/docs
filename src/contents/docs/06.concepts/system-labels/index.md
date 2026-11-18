@@ -80,17 +80,17 @@ In the Enterprise Edition, updating a read-only flow server-side is restricted t
 ### `system.from`
 
 - Automatically set on every execution to indicate how it was triggered
-- Common values include `ui` (triggered from the Kestra UI) and `mcp` (triggered through an [MCP Flows](../../ai-orchestration/03.mcp-server/index.md) server)
+- Common values include `ui` (triggered from the Kestra UI) and `mcp` (triggered through an MCP server in [MCP Flows](../../ai-orchestration/03.mcp-server/index.md))
 - Filtering by this label finds executions by their trigger source
 
 ### `system.mcpServerId`
 
-- Automatically set on every execution created through an MCP Flows server
+- Automatically set on every execution created through an MCP server
 - Value is the `id` of the MCP server that invoked the tool
 - Used together with `system.from: mcp` to identify which server triggered a specific execution
 
 ### `system.mcpSessionId`
 
-- Automatically set on every execution created through an MCP Flows server
+- Automatically set on every execution created through an MCP server
 - Value is the session ID of the MCP client connection that triggered the execution
 - Correlates multiple executions that originated from the same agent session

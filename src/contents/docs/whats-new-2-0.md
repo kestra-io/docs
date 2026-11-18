@@ -39,7 +39,7 @@ Context pills attach the resource you are viewing automatically. The Copilot rea
 
 ### MCP Server and MCP Tool Trigger
 
-An [MCP Flows](./ai-orchestration/03.mcp-server/index.md) server exposes flows as tools AI agents can call. The complementary [MCP Tool Trigger](./05.workflow-components/07.triggers/06.mcp-tool-trigger/index.md) lets flows be invoked directly by MCP-compatible agents. [Agent Skills](./develop-with-ai/03.agent-skills/index.md) extend this with reusable tool definitions.
+An MCP server in [MCP Flows](./ai-orchestration/03.mcp-server/index.md) exposes flows as tools AI agents can call. The complementary [MCP Tool Trigger](./05.workflow-components/07.triggers/06.mcp-tool-trigger/index.md) lets flows be invoked directly by MCP-compatible agents. [Agent Skills](./develop-with-ai/03.agent-skills/index.md) extend this with reusable tool definitions.
 
 ---
 

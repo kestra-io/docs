@@ -3,16 +3,16 @@ title: Kestra Resources for AI Agents and LLMs
 h1: Docs for Agents
 sidebarTitle: Docs for Agents
 icon: /src/contents/docs/icons/ai.svg
-description: "Machine-readable resources for AI agents and LLMs: the Docs MCP server, Agent Skills, llms.txt, Markdown docs, plugin schemas, and OpenAPI specs."
+description: "Machine-readable resources for AI agents and LLMs: the Docs MCP Server, Agent Skills, llms.txt, Markdown docs, plugin schemas, and OpenAPI specs."
 ---
 
 A reference index of every machine-readable endpoint, format, and tool for connecting AI agents and LLMs to Kestra.
 
-Use this page when you build an AI tool, agent, or integration that needs to read Kestra documentation or schemas. For step-by-step setup in a coding agent, start with the [Docs MCP server](../02.kestra-mcp-resources/index.md) and [Agent Skills](../03.agent-skills/index.md).
+Use this page when you build an AI tool, agent, or integration that needs to read Kestra documentation or schemas. For step-by-step setup in a coding agent, start with the [Docs MCP Server](../02.kestra-mcp-resources/index.md) and [Agent Skills](../03.agent-skills/index.md).
 
-## Docs MCP server
+## Docs MCP Server
 
-The Kestra Docs MCP server gives AI tools live access to plugin documentation, blueprints, and product docs. Configure it in Claude Code, Cursor, or any MCP-compatible agent.
+The Docs MCP Server gives AI tools live access to plugin documentation, blueprints, and product docs. Configure it in Claude Code, Cursor, or any MCP-compatible agent.
 
 **Auto-discovery endpoint:**
 
@@ -26,7 +26,7 @@ https://kestra.io/.well-known/mcp.json
 https://api.kestra.io/v1/mcp
 ```
 
-No authentication required for the public server. For per-tool configuration, see [Docs MCP server](../02.kestra-mcp-resources/index.md). This server serves documentation only; to call your own flows from an agent, see [MCP Flows](../../ai-orchestration/03.mcp-server/index.md), and to operate your instance from an agent, see the [Kestra MCP Server](../05.kestra-mcp-server/index.md).
+No authentication required for the public server. For per-tool configuration, see [Docs MCP Server](../02.kestra-mcp-resources/index.md). This server serves documentation only; to call your own flows from an agent, see [MCP Flows](../../ai-orchestration/03.mcp-server/index.md), and to operate your instance from an agent, see the [Kestra MCP Server](../05.kestra-mcp-server/index.md).
 
 ## Agent Skills
 

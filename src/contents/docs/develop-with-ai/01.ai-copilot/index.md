@@ -10,7 +10,7 @@ docId: ai-copilot
 
 Build and edit flows, diagnose failed executions, and run multi-step plans from a chat sidebar in the Kestra UI.
 
-This page is for anyone who works in the Kestra UI. Administrators who need to enable Copilot or choose its model can go straight to [Configure an LLM provider](#configure-an-llm-provider). If you write flows in Claude Code, Cursor, or another coding agent instead, see the [Docs MCP server](../02.kestra-mcp-resources/index.md) and [Agent Skills](../03.agent-skills/index.md).
+This page is for anyone who works in the Kestra UI. Administrators who need to enable Copilot or choose its model can go straight to [Configure an LLM provider](#configure-an-llm-provider). If you write flows in Claude Code, Cursor, or another coding agent instead, see the [Docs MCP Server](../02.kestra-mcp-resources/index.md) and [Agent Skills](../03.agent-skills/index.md).
 
 Open Copilot with the **AI** button in the top toolbar. Click **New chat +** to start a conversation, or use **Recents** to return to a previous one. Conversations last for the browser session. Type a prompt, or click the microphone button to dictate it.
 
