@@ -162,6 +162,6 @@ AI agents can take real work off infrastructure teams, and request intake, chang
 
 So the first step is one chain that already hurts: one that crosses at least three tools, carries a compliance or SLA deadline, and is reconstructed by hand today. Run it as one workflow, then add the agent step. To try this pattern in Kestra, whose core is open source under Apache 2.0, start with the [quickstart](/docs/quickstart). The [governed MCP action blueprint](/blueprints/mcp-governed-action-request) then shows an agent calling a flow as an MCP tool, with production runs waiting for a person, the same pattern as this post.
 
-If you're building the self-service side of this, watch for December 1, when we have something new coming for infrastructure teams. Later in December, I'll publish a runnable version of the failure triage pattern from Job 3.
+If you're building the self-service side of this, save December 1. Something big is coming for infrastructure teams. A few weeks later, I'll publish a runnable version of the failure triage pattern from Job 3.
 
 For how to pick that first chain, and the case for one control plane above Terraform, Ansible and the other infrastructure tools, see the whitepaper [Infrastructure Automation Is Not Infrastructure Orchestration](/resources/whitepapers/infrastructure-orchestration).
