@@ -1,7 +1,34 @@
 ---
 import { Icon } from "astro-icon/components"
 
-const APPS = [
+interface App {
+    icon: string
+    title: string
+    text: string
+    tags: string[]
+}
+
+interface Field {
+    label: string
+    value: string
+    select?: boolean
+}
+
+interface Request {
+    name: string
+    lede: string
+    fields: Field[]
+    approver: string
+    notice: string
+    result: { icon: string; label: string; action: string; actionIcon: string }
+}
+
+interface Props {
+    apps?: App[]
+    request?: Request
+}
+
+const DEFAULT_APPS: App[] = [
     {
         icon: "mdi:database-export-outline",
         title: "Data Export Request",
@@ -45,11 +72,25 @@ const PEOPLE = [
     { id: "admin", name: "Admin", icon: "mdi:shield-account-outline" },
 ]
 
-const FIELDS = [
-    { label: "Requested by", value: "j.kim" },
-    { label: "Dataset", value: "customers", select: true },
-    { label: "Reason", value: "Quarterly churn analysis" },
-]
+const DEFAULT_REQUEST: Request = {
+    name: "Data Export Request",
+    lede: "Request a filtered dataset and download it as a file. Exports of customer data are approved by the data owners.",
+    fields: [
+        { label: "Requested by", value: "j.kim" },
+        { label: "Dataset", value: "customers", select: true },
+        { label: "Reason", value: "Quarterly churn analysis" },
+    ],
+    approver: "data-owners",
+    notice: "j.kim requests the customers dataset",
+    result: {
+        icon: "mdi:file-delimited-outline",
+        label: "customers.csv",
+        action: "Download",
+        actionIcon: "mdi:download",
+    },
+}
+
+const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
 ---
 
 <div class="ui-mock apps-mock" aria-hidden="true" data-ui-mock>
@@ -76,15 +117,12 @@ const FIELDS = [
             ))}
         </div>
         <div class="modal">
-            <strong class="name">Data Export Request</strong>
-            <p class="lede">
-                Request a filtered dataset and download it as a file. Exports of
-                customer data are approved by the data owners.
-            </p>
+            <strong class="name">{request.name}</strong>
+            <p class="lede">{request.lede}</p>
             <div class="views">
                 <div class="view form">
                     <strong class="section">Submit a request</strong>
-                    {FIELDS.map((field, idx) => (
+                    {request.fields.map((field, idx) => (
                         <label>
                             <span>
                                 <b>*</b> {field.label}
@@ -110,7 +148,7 @@ const FIELDS = [
                     <span class="state waiting">
                         <i></i> Waiting for approval
                     </span>
-                    <code>Approver: data-owners</code>
+                    <code>Approver: {request.approver}</code>
                 </div>
                 <div class="view done">
                     <span class="check">
@@ -120,10 +158,11 @@ const FIELDS = [
                         <i></i> Your request has completed.
                     </span>
                     <span class="added">
-                        <Icon name="mdi:file-delimited-outline" />
-                        customers.csv
+                        <Icon name={request.result.icon} />
+                        {request.result.label}
                         <b>
-                            <Icon name="mdi:download" /> Download
+                            <Icon name={request.result.actionIcon} />{" "}
+                            {request.result.action}
                         </b>
                     </span>
                 </div>
@@ -141,7 +180,7 @@ const FIELDS = [
             </span>
             <div>
                 <strong>Approval required</strong>
-                <p>j.kim requests the customers dataset</p>
+                <p>{request.notice}</p>
                 <span class="choices">
                     <span class="reject">Reject</span>
                     <span class="approve">Approve</span>

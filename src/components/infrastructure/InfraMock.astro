@@ -2,7 +2,7 @@
 import { Icon } from "astro-icon/components"
 
 interface Props {
-    view: "requests" | "deployments" | "cases" | "assets"
+    view: "deployments" | "cases" | "assets"
 }
 
 const { view } = Astro.props
@@ -17,11 +17,6 @@ const NAV = [
 ]
 
 const VIEWS = {
-    requests: {
-        crumb: "New request",
-        title: "Request a Linux VM",
-        sub: "Fill in the form. A sign-off is added for production.",
-    },
     deployments: {
         crumb: "Deployments",
         title: "Deployments",
@@ -38,30 +33,6 @@ const VIEWS = {
         sub: "Every resource you create, its owner and what depends on it.",
     },
 }
-
-const FIELDS = [
-    { label: "Environment", value: "staging" },
-    { label: "Size", value: "medium · 4 vCPU · 16 GB" },
-    { label: "Owner", value: "j.kim · payments team" },
-    { label: "Lease", value: "14 days" },
-]
-
-const APPROVERS = [
-    {
-        initial: "J",
-        name: "j.kim",
-        role: "Requester",
-        tag: "Submitted",
-        tone: "ok",
-    },
-    {
-        initial: "M",
-        name: "m.chen",
-        role: "Platform",
-        tag: "Pending",
-        tone: "wait",
-    },
-]
 
 const DEPLOYMENTS = [
     {
@@ -184,45 +155,6 @@ const current = VIEWS[view]
             <div class="main">
                 <p class="title">{current.title}</p>
                 <p class="sub">{current.sub}</p>
-
-                {view === "requests" && (
-                    <div class="request">
-                        <div class="form">
-                            {FIELDS.map((field) => (
-                                <p class="field">
-                                    <small>{field.label}</small>
-                                    <span>
-                                        {field.value}
-                                        <Icon name="mdi:chevron-down" />
-                                    </span>
-                                </p>
-                            ))}
-                            <span class="submit">Submit request</span>
-                        </div>
-                        <div class="approval">
-                            <p class="line">
-                                <b>Approval</b>
-                                <span class="tag wait">Waiting</span>
-                            </p>
-                            {APPROVERS.map((person) => (
-                                <p class="person">
-                                    <i>{person.initial}</i>
-                                    <span>
-                                        <b>{person.name}</b>
-                                        <small>{person.role}</small>
-                                    </span>
-                                    <span class={`tag ${person.tone}`}>
-                                        {person.tag}
-                                    </span>
-                                </p>
-                            ))}
-                            <p class="actions">
-                                <span class="approve">Approve</span>
-                                <span>Reject</span>
-                            </p>
-                        </div>
-                    </div>
-                )}
 
                 {view === "deployments" && (
                     <div class="table">
@@ -475,111 +407,6 @@ const current = VIEWS[view]
         &.run {
             background: var(--chip);
             color: var(--run);
-        }
-    }
-
-    .request {
-        display: grid;
-        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-        align-items: start;
-        gap: 1.2em;
-    }
-
-    .form {
-        display: grid;
-        gap: 0.7em;
-        justify-items: start;
-    }
-
-    .field {
-        width: 100%;
-
-        small {
-            margin-bottom: 0.4em;
-            font-weight: 600;
-        }
-
-        span {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.7em 0.9em;
-            border: 1px solid var(--line);
-            border-radius: 0.6em;
-            background: var(--field);
-            font-size: 0.7em;
-            font-weight: 500;
-        }
-
-        [data-icon] {
-            color: var(--muted);
-        }
-    }
-
-    .submit,
-    .actions span {
-        padding: 0.7em 1.3em;
-        border-radius: 0.6em;
-        font-size: 0.68em;
-        font-weight: 600;
-    }
-
-    .submit,
-    .actions .approve {
-        background: var(--primary);
-        color: #ffffff;
-    }
-
-    .approval {
-        display: grid;
-        gap: 1em;
-        padding: 1.1em;
-        border: 1px solid var(--line);
-        border-radius: 0.8em;
-        background: var(--deep);
-
-        .line b {
-            font-size: 0.78em;
-        }
-    }
-
-    .person {
-        display: flex;
-        align-items: center;
-        gap: 0.6em;
-
-        i {
-            display: grid;
-            place-items: center;
-            width: 2.6em;
-            height: 2.6em;
-            border-radius: 50%;
-            background: var(--chip);
-            font-size: 0.62em;
-            font-style: normal;
-            font-weight: 700;
-            color: var(--run);
-        }
-
-        > span:not(.tag) {
-            flex: 1;
-        }
-
-        b {
-            font-size: 0.7em;
-        }
-    }
-
-    .actions {
-        display: flex;
-        gap: 0.5em;
-
-        span {
-            border: 1px solid var(--line);
-        }
-
-        .approve {
-            border-color: transparent;
         }
     }
 

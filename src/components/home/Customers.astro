@@ -112,6 +112,13 @@ const {
                         >
                     </slot>
                 </h2>
+                {
+                    Astro.slots.has("lead") && (
+                        <p>
+                            <slot name="lead" />
+                        </p>
+                    )
+                }
             </header>
 
             <div
@@ -420,6 +427,15 @@ const {
                 display: block;
                 color: var(--ks-content-tertiary);
             }
+        }
+
+        p {
+            max-width: 38rem;
+            margin: -0.5rem 0 0;
+            font-size: 1.125rem;
+            line-height: 1.55;
+            color: var(--ks-content-tertiary);
+            text-wrap: pretty;
         }
     }
 

@@ -6,6 +6,7 @@ import { flat } from "~/components/home/flatLogo"
 import EnterpriseShowcase from "~/components/enterprise/EnterpriseShowcase.astro"
 import InfraHero from "~/components/infrastructure/InfraHero.astro"
 import InfraGlue from "~/components/infrastructure/InfraGlue.astro"
+import AppsMock from "~/components/enterprise/mocks/AppsMock.astro"
 import InfraMock from "~/components/infrastructure/InfraMock.astro"
 import InfraMigration from "~/components/infrastructure/InfraMigration.astro"
 import InfraClosing from "~/components/infrastructure/InfraClosing.astro"
@@ -70,6 +71,51 @@ const PANELS = [
     },
 ]
 
+const APPS = [
+    {
+        icon: "mdi:server-outline",
+        title: "Provision a virtual machine",
+        text: "Request a VM with a lease and an owner.",
+        tags: ["Compute", "Approval"],
+    },
+    {
+        icon: "mdi:database-outline",
+        title: "Request a database",
+        text: "Attach a managed database to a deployment.",
+        tags: ["Data"],
+    },
+    {
+        icon: "mdi:bucket-outline",
+        title: "Request object storage",
+        text: "Add a bucket to one of your deployments.",
+        tags: ["Storage"],
+    },
+    {
+        icon: "mdi:layers-outline",
+        title: "Request an environment",
+        text: "A machine and its database under one lease.",
+        tags: ["Environment", "Approval"],
+    },
+]
+
+const REQUEST = {
+    name: "Provision a virtual machine",
+    lede: "Fill in the form. The machine is created with a lease and an owner once the platform team signs off.",
+    fields: [
+        { label: "Requested by", value: "j.kim" },
+        { label: "Environment", value: "staging", select: true },
+        { label: "Lease", value: "14 days" },
+    ],
+    approver: "m.chen",
+    notice: "j.kim requests a Linux VM in staging",
+    result: {
+        icon: "mdi:server-outline",
+        label: "linux-vm-staging",
+        action: "Open",
+        actionIcon: "mdi:open-in-new",
+    },
+}
+
 const STORIES: Story[] = [
     {
         company: "Amdocs",
@@ -124,11 +170,10 @@ const STORIES: Story[] = [
         <Customers stories={STORIES} foot={false} placeholder={false}>
             <Fragment slot="title">
                 Infrastructure teams that made the move
-                <span>
-                    What platform teams in industry, the public sector and
-                    telecom say after moving their infrastructure automation to
-                    Kestra.
-                </span>
+            </Fragment>
+            <Fragment slot="lead">
+                What platform teams in industry, the public sector and telecom
+                say after moving their infrastructure automation to Kestra.
             </Fragment>
         </Customers>
         <InfraGlue />
@@ -146,9 +191,10 @@ const STORIES: Story[] = [
                 catalog, and Kestra for Infrastructure tracks every resource
                 from request to retirement.
             </Fragment>
-            {PANELS.map((panel) => (
-                <InfraMock slot={panel.id} view={panel.id} />
-            ))}
+            <AppsMock slot="requests" apps={APPS} request={REQUEST} />
+            <InfraMock slot="deployments" view="deployments" />
+            <InfraMock slot="cases" view="cases" />
+            <InfraMock slot="assets" view="assets" />
         </EnterpriseShowcase>
         <InfraClosing />
     </PageShell>
