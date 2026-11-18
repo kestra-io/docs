@@ -1,5 +1,5 @@
 ---
-title: "Splunk and Kestra in Practice: Alerts That Fix Things, Logs That Prove It"
+title: "How Teams Use Splunk and Kestra in Production"
 metaTitle: "Splunk and Kestra: Alert-Driven Remediation and Audit Logs"
 description: "How platform and security teams use Splunk and Kestra together: alerts that start remediation flows, SPL results inside workflows, and every execution logged back to Splunk."
 date: 2026-11-26T10:00:00
@@ -10,9 +10,9 @@ author:
   image: "mproset"
 ---
 
-Two weeks ago we [announced the Kestra Add-on for Splunk](/blogs/kestra-splunk-partnership). This post is about what teams do with it, and with the rest of the Splunk integration, once it's installed.
+Two weeks ago we [announced the Kestra Add-on for Splunk](/blogs/kestra-splunk-partnership). This post covers what production users do with it, and with the rest of the Splunk integration, once it's installed.
 
-Here's what we see production users doing with Splunk and Kestra. The same few patterns keep coming back, and so do the same design questions: how much of the alert to pass along, how to avoid running the same fix twice, where a human should sign off, and how to get the result back into Splunk.
+The same few patterns keep coming back, and so do the same design questions: how much of the alert to pass along, how to avoid running the same fix twice, where a human should sign off, and how to get the result back into Splunk.
 
 ## The integration in both directions
 
@@ -100,15 +100,23 @@ tasks:
     eventData: '{"host": "{{ inputs.host }}", "search_id": "{{ inputs.search_id }}", "execution_id": "{{ execution.id }}", "status": "restarted"}'
 ```
 
-A few details in this flow matter in production.
+### Map only what the flow needs
 
-**Map only what the flow needs as inputs.** The host and the search name drive the logic, so they arrive as typed inputs. Everything else stays in the CSV file, which the flow can parse or attach to the incident. If the alert definition in Splunk changes, the flow only breaks when a mapped field disappears, and Kestra rejects the execution with a clear input error instead of half-running.
+The host and the search name drive the logic, so they arrive as typed inputs. Everything else stays in the CSV file, which the flow can parse or attach to the incident. If the alert definition in Splunk changes, the flow only breaks when a mapped field disappears, and Kestra rejects the execution with a clear input error instead of half-running.
 
-**Stop the same fix from running twice.** An alert that fires every five minutes on a flapping host would otherwise start a new remediation each time. Splunk's alert throttling, set per host, removes most duplicates at the source. The flow's `concurrency` block queues whatever gets through, so two restarts never run against the same fleet at once. The `Labels` task tags each execution with the host and the Splunk search ID, which makes "what did we already do for this host today" a filter in the Kestra UI.
+### Stop the same fix from running twice
 
-**Put the approval where the risk is.** The `Pause` task holds the restart until someone resumes it from the UI or the API, with a reason recorded on the execution. After 30 minutes without an answer, the execution is cancelled rather than left hanging. Low-risk fixes, such as clearing a temp directory, usually skip the pause entirely.
+An alert that fires every five minutes on a flapping host would otherwise start a new remediation each time. Splunk's alert throttling, set per host, removes most duplicates at the source. The flow's `concurrency` block queues whatever gets through, so two restarts never run against the same fleet at once. The `Labels` task tags each execution with the host and the Splunk search ID, which makes "what did we already do for this host today" a filter in the Kestra UI.
 
-**Close the loop in Splunk.** The `Send` task writes the outcome to a dedicated index with the original search ID and the Kestra execution ID. An analyst investigating the alert in Splunk sees that it was remediated, when and by which execution, without leaving Splunk.
+### Put the approval where the risk is
+
+The `Pause` task holds the restart until someone resumes it from the UI or the API, with a reason recorded on the execution. After 30 minutes without an answer, the execution is cancelled rather than left hanging. Low-risk fixes, such as clearing a temp directory, usually skip the pause entirely.
+
+### Close the loop in Splunk
+
+The `Send` task writes the outcome to a dedicated index with the original search ID and the Kestra execution ID. An analyst investigating the alert in Splunk sees that it was remediated, when and by which execution, without leaving Splunk.
+
+### Run the fix inside isolated sites
 
 When sites sit on separate networks and no control plane may span IT and OT, remote worker groups run the playbook inside each site. The Splunk alert, the approval and the audit trail stay central, and the fix runs locally on a worker that only needs outbound access to Kestra.
 
@@ -134,15 +142,15 @@ tasks:
     query: 'search index=os sourcetype=syslog level=error earliest=-24h | stats count by host'
 ```
 
-Keep the heavy lifting in SPL. A `stats` or `dedup` in the query returns a few hundred rows instead of a few million raw events, and the next task in the flow, a Python script, a SQL query or a patch wave, works from that summary. `maxWaitSeconds` bounds how long the flow waits for a slow search, and a killed execution cancels the search job on the Splunk side.
+Keep the heavy lifting in SPL. A `stats` or `dedup` in the query returns a few hundred rows instead of a few million raw events, and the next task in the flow (a Python script, a SQL query or a patch wave) works from that summary. `maxWaitSeconds` bounds how long the flow waits for a slow search, and a killed execution cancels the search job on the Splunk side.
 
 The same task works as a gate. Before a change window, a flow can search for open critical alerts on the target hosts and stop the wave for any host that has one.
 
 ## Splunk in the provisioning chain
 
-When a platform team provisions a VM, Splunk registration is one of the steps, next to DNS and the CMDB. Those three steps run in parallel once vSphere or Nutanix has built the machine, usually inside a `Parallel` task, so the slowest one sets the pace instead of their sum.
+When a platform team provisions a VM, Splunk registration is one of the steps, next to DNS and the CMDB. Those three steps run in parallel once vSphere or Nutanix has built the machine, usually inside a `Parallel` task, so the chain waits only for the slowest of the three.
 
-The failure path matters more than the happy one. If any of the three fails, the flow's `errors` branch deregisters the host from Splunk and DNS, removes the CMDB entry and deletes the VM, so no machine is left half-registered. Because the whole chain is one execution, the record shows which step failed and what the rollback undid.
+If any of them fails, the flow's `errors` branch deregisters the host from Splunk and DNS, removes the CMDB entry and deletes the VM, so no machine is left half-registered. Because the whole chain is one execution, the record shows which step failed and what the rollback undid.
 
 ## Logs and audit trails in the SIEM
 
@@ -174,7 +182,7 @@ tasks:
 
 The `offsetKey` keeps a cursor between runs, so each run sends only new entries, with no duplicates and no gaps after a missed run. Most teams tune two things. They shorten the schedule to every 15 minutes or hourly so alerts on Kestra activity fire close to real time, and they raise `logLevelFilter` to `WARN` on busy instances to keep Splunk ingestion costs down. A separate HEC token and index for Kestra makes retention and access rules easier to set on the Splunk side.
 
-Teams moving scheduled jobs off cron and systemd timers get the same benefit. Their jobs gain a central view in Kestra, and the logs still end up in Splunk, where the rest of the company already searches.
+Teams moving scheduled jobs off cron and systemd timers use the same setup. Their jobs get a central view in Kestra, and the logs still end up in Splunk, where the rest of the company already searches.
 
 ## Get started
 
