@@ -48,7 +48,7 @@ The table below lists the main features in this release and the edition they bel
 | Cases tickets and events | Link cases to Jira, ServiceNow, and other ticketing tools, and trigger flows on case events | EE, Cloud |
 | Apps: Grid, Chart, and Assets blocks | Layouts, charts, and asset lists inside apps | EE, Cloud |
 | AI Copilot unit tests | Generate a unit test for an existing flow | EE, Cloud |
-| Platform MCP server | Give AI agents Kestra's own tools for flows and executions | OSS, EE |
+| Kestra MCP Server | Give AI agents Kestra's own tools for flows and executions | OSS, EE |
 | OIDC issuer | Reach AWS and Google Cloud without storing keys | EE, Cloud |
 | Default retention policy | Choose how long to keep executions and logs at setup | EE |
 | SAML 2.0 SSO | Sign in through a SAML identity provider | EE |
@@ -294,7 +294,7 @@ See [Apps](/docs/enterprise/scalability/apps).
 
 <!-- TODO(arcade, priority 6): Copilot unit test: flow menu > Generate a unit test, review the drafted fixtures and assertions, Apply, then run the test. -->
 
-In 2.0, MCP servers let AI agents call your flows as tools. The new platform MCP server gives them Kestra's own tools instead, the same ones the AI Copilot uses, so Claude, Cursor, or another MCP client can look at flows and executions or restart a failed run. It's off by default, and in the Enterprise Edition every call runs with the caller's permissions. See [Platform MCP server](/docs/ai-orchestration/mcp-server#platform-mcp-server).
+In 2.0, MCP servers let AI agents call your flows as tools. That feature is now called [MCP Flows](/docs/ai-orchestration/mcp-server), to tell it apart from the new Kestra MCP Server. The Kestra MCP Server gives agents Kestra's own tools instead, the same ones the AI Copilot uses, so Claude, Cursor, or another MCP client can look at flows and executions or restart a failed run. It's off by default, and in the Enterprise Edition every call runs with the caller's permissions. See [Kestra MCP Server](/docs/develop-with-ai/kestra-mcp-server).
 
 ## Keyless Cloud Access with an OIDC Issuer
 
