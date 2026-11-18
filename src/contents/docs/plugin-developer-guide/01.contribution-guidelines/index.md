@@ -65,6 +65,19 @@ public void kill() {
 - Prefer a shared base class when several tasks in a plugin submit the same kind of cancellable job: implement the hook once instead of duplicating it per task.
 - Annotate mutable lifecycle fields (`AtomicBoolean`, `AtomicReference`, `CountDownLatch`, …) with `@EqualsAndHashCode.Exclude` and `@ToString.Exclude` — they are runtime state, not part of the task's declarative identity.
 
+### Task durability (checkpoints)
+
+From Kestra 2.1, a task can persist small recovery points through `runContext.checkpoints()` (`get(key)`, `set(key, value)`, `list()`). Checkpoints are scoped to the task run, survive a worker crash, restart or task retry, and are purged with the execution.
+
+- **Use checkpoints when a task starts remote work it cannot cheaply redo and has no other way to find it again**: a submitted job ID (Spark, BigQuery, Dataproc, EMR, Glue, Databricks run, Airbyte or Fivetran sync, dbt Cloud run, batch API), or a pagination cursor or offset for a long export. Skip them when the remote system already lets you look the work up (labels, a deterministic ID, an idempotency key) or when redoing it is cheap.
+- **Pattern for a remote job**: right after the job ID is known, call `runContext.checkpoints().set("jobId", id)`. At the start of `run()`, read `checkpoints().get("jobId")`. If present, fetch the job state and reattach (still running), build the outputs (succeeded), or submit a new job and overwrite the checkpoint (failed, cancelled, unknown).
+- **`kill()` still cancels the remote job**: checkpoints complement the kill and stop hooks, they do not replace them. A task that stores a job ID in a checkpoint should also read it in `kill()` when the in-memory handle is missing.
+- **Store only IDs and cursors**: never secrets, tokens or large payloads. Values are strings.
+- **Script and CLI tasks**: a task extending `AbstractExecScript` already has a `durable` property. A task that builds a `CommandsWrapper` itself must declare `@PluginProperty(beta = true, group = "execution") Property<Boolean> durable = Property.ofValue(false)` and forward it with `.withDurable(...)`. Checkpoints are then exposed to the script as `CHECKPOINTS_<KEY>` environment variables and written back with the `::{"checkpoints": {"key": "value"}}::` log syntax.
+- **Version**: `runContext.checkpoints()` and `CommandsWrapper.withDurable` do not exist before Kestra 2.1. Bump `kestraVersion` to the 2.1 line and never bridge with reflection, as described in the version compatibility rule above.
+
+Without a checkpoint, a retry after a worker crash submits a second job while the first keeps running and billing, or restarts a multi-hour export from zero.
+
 When a service ships both a polling [`Trigger`](../04.trigger/index.md) and a `RealtimeTrigger`, extract a shared `Abstract<Service>Trigger extends AbstractTrigger implements <Service>ConnectionInterface` that holds the connection properties and client factory, so both triggers inherit them instead of redeclaring each field. A `Task` and a `Trigger` for the same service cannot share a superclass, so connection properties are an accepted exception — keep the two declarations in lockstep (same validation, defaults, `@Schema` wording, and secret annotations on both copies).
 
 **Polling triggers must never re-fire on an item they already delivered.** Persist a watermark (last-seen ID, sequence number, or timestamp) in the flow's namespace KV Store (`runContext.namespaceKv(namespace)`) and advance it on every poll, not only when the trigger fires. If the KV key concatenates several identifiers, length-prefix each segment (e.g. `svc_watermark_<flowId.length()>_<flowId>_<triggerId>`) so a plain `_` join can't let `("ab", "c")` and `("a", "bc")` collide onto the same key.
