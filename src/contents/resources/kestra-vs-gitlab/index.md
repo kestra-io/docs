@@ -157,7 +157,7 @@ The real power emerges when Kestra and GitLab are used together. They are comple
 Because Kestra flows are defined as YAML, they can be stored in a GitLab repository and managed like any other piece of code. A GitLab CI/CD pipeline can be configured to:
 1.  **Lint and Validate:** Check the Kestra YAML for syntax errors on every commit.
 2.  **Run Unit Tests:** Use Kestra's enterprise features to run automated tests against flow definitions.
-3.  **Deploy Flows:** Automatically [push flow definitions](/docs/how-to-guides/pushflows) to a Kestra instance using the Kestra CLI or API.
+3.  **Deploy Flows:** Automatically [push flow definitions](/docs/version-control-cicd/git/push-to-git#push-flows) to a Kestra instance using the Kestra CLI or API.
 
 This approach treats your orchestration logic as code, bringing full CI/CD discipline to your operational workflows.
 

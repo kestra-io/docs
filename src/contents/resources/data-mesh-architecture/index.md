@@ -391,7 +391,7 @@ rules:
 
 `target.namespaces` matches each listed namespace and all its children, so onboarding a new domain is a one-line change reviewed like any other code. Domains keep their autonomy inside the guardrails: a domain can add stricter rules on its own namespace but cannot relax the baseline, because child namespaces only tighten inherited policies. A good rollout starts new rules in `EVALUATE` mode, which reports violations without blocking, and switches to `ACTIVE` once existing flows comply.
 
-Open-source deployments do not include Policies. The same rules can run in CI instead: validate flow YAML with `kestra flow validate` and add a lint step that checks for required labels and the `sla` block before deployment.
+Open-source deployments do not include Policies. The same rules can run in CI instead: validate flow YAML with `kestractl flows validate` and add a lint step that checks for required labels and the `sla` block before deployment.
 
 ## Data mesh vs data fabric vs data lakehouse
 

@@ -79,7 +79,7 @@ Use this section when a flow needs to store or retrieve data that lives outside 
 - [Internal storage](https://kestra.io/docs/concepts/storage.md): Kestra's built-in file system for passing large files between tasks; tasks return internal storage URIs as output attributes (e.g. `uri`)
 - [Namespace files](https://kestra.io/docs/concepts/namespace-files.md): Scripts, configs, and SQL files stored at the namespace level and available to all flows in that namespace via `WorkingDirectory` or `{{ namespaceFiles }}`
 - [KV Store](https://kestra.io/docs/concepts/kv-store.md): Persistent key-value pairs scoped to a namespace; read with `{{ kv('key') }}`, written via tasks or the API; use for shared state and counters
-- [Secrets](https://kestra.io/docs/concepts/secret.md): Encrypted values referenced with `{{ secret('NAME') }}`; stored in Kestra or delegated to an external secrets manager
+- [Secrets](https://kestra.io/docs/concepts/secret.md): Sensitive values referenced with `{{ secret('NAME') }}`; base64-encoded environment variables in Open-Source, a secrets manager in Enterprise Edition and Cloud; log masking limits
 - [Backfill](https://kestra.io/docs/workflow-components/triggers/schedule-trigger.md#using-backfill): Re-execute a scheduled trigger over a past date range to reprocess historical data
 
 ## Best practices
@@ -91,7 +91,6 @@ Use this section when deciding *how* to structure a flow or *which* pattern to u
 - [Loop task best practices](https://kestra.io/docs/best-practices/loop.md): How to use the Loop task, how to access sibling outputs inside loops with `outputs.task_id[taskrun.value]`, and common mistakes
 - [Outputs patterns](https://kestra.io/docs/best-practices/outputs.md): Clean patterns for producing and consuming task outputs across tasks and flows
 - [Credentials vs Secrets vs KV Store](https://kestra.io/docs/best-practices/credentials-vs-secrets-vs-kv-store.md): Decision guide for choosing the right storage backend for each type of value
-- [Secrets management](https://kestra.io/docs/best-practices/secrets-management.md): How to handle credentials and sensitive values safely in flows
 - [Asset best practices](https://kestra.io/docs/best-practices/assets.md): Stable asset IDs that join with plugin-emitted IDs, shared metadata keys, namespaced vs Global assets, and trigger design
 - [Naming conventions](https://kestra.io/docs/best-practices/naming-conventions.md): Consistent `id`, `namespace`, and label conventions for maintainable flows
 
@@ -239,11 +238,9 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Dev to Production in Kestra: Promote Flows Safely](https://kestra.io/docs/best-practices/from-dev-to-prod.md)
 - [Version Control with Git in Kestra](https://kestra.io/docs/best-practices/git.md)
 - [Managing Environments in Kestra: Dev, Prod & Tenants](https://kestra.io/docs/best-practices/manage-environments.md)
-- [Managing pip Dependencies in Kestra: Docker & Caching](https://kestra.io/docs/best-practices/managing-pip-dependencies.md)
 - [Naming Conventions in Kestra: Flows and Namespaces](https://kestra.io/docs/best-practices/naming-conventions.md)
 - [Managing and Purging Flow Outputs in Kestra](https://kestra.io/docs/best-practices/outputs.md)
 - [Data Retention and Purging in Kestra: Choose a Strategy](https://kestra.io/docs/best-practices/purging-data.md)
-- [Secrets Management in Kestra: Avoid Accidental Exposure](https://kestra.io/docs/best-practices/secrets-management.md)
 - [Kestra Brand Assets: Logos and Visual Identity](https://kestra.io/docs/brand-assets.md)
 - [Core Concepts in Kestra: Architecture and Templating](https://kestra.io/docs/concepts.md)
 - [Blueprints in Kestra: Reusable Workflow Templates](https://kestra.io/docs/concepts/blueprints.md)
@@ -378,7 +375,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Create a Dynamic Dropdown for Inputs](https://kestra.io/docs/how-to-guides/dynamic-inputs.md)
 - [Build ETL Pipelines in Kestra](https://kestra.io/docs/how-to-guides/etl-pipelines.md)
 - [Generate and Pseudonymize Test Data in Kestra](https://kestra.io/docs/how-to-guides/generate-and-pseudonymize-data.md)
-- [Validate and Deploy Flows with GitHub Actions](https://kestra.io/docs/how-to-guides/github-actions.md)
 - [Back Up GitHub Repos with Kestra Playground](https://kestra.io/docs/how-to-guides/github-repo-backup.md)
 - [Configure a Google Service Account in Kestra](https://kestra.io/docs/how-to-guides/google-credentials.md)
 - [Connect Google Sheets to Kestra](https://kestra.io/docs/how-to-guides/google-sheets.md)
@@ -392,11 +388,9 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Set Up Secrets from a Helm Chart](https://kestra.io/docs/how-to-guides/kubernetes-secrets.md)
 - [Synchronize Local Flows in Kestra](https://kestra.io/docs/how-to-guides/local-flow-sync.md)
 - [Long-Running Tasks on Kubernetes in Kestra](https://kestra.io/docs/how-to-guides/long-running-intensive-tasks.md)
-- [Loop Over a List of Values](https://kestra.io/docs/how-to-guides/loop.md)
 - [Safeguard Microservices with Unit Tests](https://kestra.io/docs/how-to-guides/microservices-unit-tests.md)
 - [Configure Monitoring with Grafana and Prometheus](https://kestra.io/docs/how-to-guides/monitoring.md)
 - [MultipleCondition Listener in Kestra: How It Works](https://kestra.io/docs/how-to-guides/multiplecondition-listener.md)
-- [Namespace Variables vs. KV Store in Kestra](https://kestra.io/docs/how-to-guides/namespace-variables-vs-kvstore.md)
 - [Connect a Neon Database to Kestra](https://kestra.io/docs/how-to-guides/neon.md)
 - [Integrate Notion Webhooks with Kestra](https://kestra.io/docs/how-to-guides/notion-webhook.md)
 - [Handle Null and Undefined Values in Kestra](https://kestra.io/docs/how-to-guides/null-values.md)
@@ -406,15 +400,10 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Populate Your Instance with Sample Data](https://kestra.io/docs/how-to-guides/populate-demo-data.md)
 - [Run PowerShell Inside Your Flows](https://kestra.io/docs/how-to-guides/powershell.md)
 - [Trigger a Flow on a Prometheus Alert](https://kestra.io/docs/how-to-guides/prometheus-alert-trigger.md)
-- [Push Flows to a Git Repository](https://kestra.io/docs/how-to-guides/pushflows.md)
-- [Push Namespace Files to a Git Repository](https://kestra.io/docs/how-to-guides/pushnamespacefiles.md)
 - [Run Python Inside Your Flows](https://kestra.io/docs/how-to-guides/python.md)
-- [Manage Python Dependencies in Kestra](https://kestra.io/docs/how-to-guides/python-dependencies.md)
-- [Manage Python Dependencies with uv in Kestra](https://kestra.io/docs/how-to-guides/python-uv.md)
 - [Realtime Triggers in Kestra: Kafka, SQS, Pub/Sub](https://kestra.io/docs/how-to-guides/realtime-triggers.md)
 - [Replay Executions in Kestra: Rerun from Any Task](https://kestra.io/docs/how-to-guides/replay.md)
 - [Build SecOps Workflows with Kestra](https://kestra.io/docs/how-to-guides/secops-with-kestra.md)
-- [Configure Secrets in Kestra](https://kestra.io/docs/how-to-guides/secrets.md)
 - [Trigger Kestra Flows from ServiceNow](https://kestra.io/docs/how-to-guides/servicenow-trigger.md)
 - [Trigger Kestra Flows from Splunk Alerts](https://kestra.io/docs/how-to-guides/splunk-alert-trigger.md)
 - [Run Shell Scripts Inside Your Flows](https://kestra.io/docs/how-to-guides/shell.md)
@@ -423,15 +412,12 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Use SQLMesh to Run dbt Projects](https://kestra.io/docs/how-to-guides/sqlmesh.md)
 - [Subflow Retries, Restarts, and Replays in Kestra](https://kestra.io/docs/how-to-guides/subflow-executions.md)
 - [Connect a Supabase Database to Kestra](https://kestra.io/docs/how-to-guides/supabase-db.md)
-- [Sync Flows from a Git Repository](https://kestra.io/docs/how-to-guides/syncflows.md)
 - [Synchronous Executions API in Kestra](https://kestra.io/docs/how-to-guides/synchronous-executions-api.md)
-- [Sync Namespace Files from a Git Repository](https://kestra.io/docs/how-to-guides/syncnamespacefiles.md)
 - [Modularize Triggers and Schedules with Terraform](https://kestra.io/docs/how-to-guides/terraform-modules-for-triggers.md)
 - [Terraform for Flow Modularity in Kestra](https://kestra.io/docs/how-to-guides/terraform-templating.md)
 - [Kestra with Pulumi's Terraform Provider](https://kestra.io/docs/how-to-guides/using-pulumis-terraform-provider.md)
 - [Access Values Between Flows](https://kestra.io/docs/how-to-guides/values-between-flows.md)
 - [Use HashiCorp Vault as a Read-Only Secrets Backend in Kestra](https://kestra.io/docs/how-to-guides/vault-read-only-secrets.md)
-- [Set Up Webhooks to Trigger Flows](https://kestra.io/docs/how-to-guides/webhooks.md)
 - [Install Kestra: Docker, Kubernetes, VM, and JAR](https://kestra.io/docs/installation.md)
 - [Deploy Kestra on AWS EC2 – RDS and S3 Backend](https://kestra.io/docs/installation/aws-ec2.md)
 - [Deploy Kestra on Azure VM – Azure Database Backend](https://kestra.io/docs/installation/azure-vm.md)
@@ -560,6 +546,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [MySQL READ COMMITTED Isolation Level](https://kestra.io/docs/migration-guide/v2.0.0/mysql-read-committed.md)
 - [Execution Data in Internal Storage Removed](https://kestra.io/docs/migration-guide/v2.0.0/execution-data-internal-storage.md)
 - [Super Admin Renamed to Instance Owner](https://kestra.io/docs/migration-guide/v2.0.0/superadmin-renamed-instance-owner.md)
+- [Flow and Namespace File Server CLI Commands Removed](https://kestra.io/docs/migration-guide/v2.0.0/server-cli-flow-commands-removed.md)
 - [Open-Source vs. Enterprise Edition of Kestra](https://kestra.io/docs/oss-vs-paid.md)
 - [Performance in Kestra: Benchmarks and Tuning](https://kestra.io/docs/performance.md)
 - [Benchmarks: Orchestration Throughput & Latency](https://kestra.io/docs/performance/benchmark.md)
@@ -679,9 +666,10 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Bitbucket Pipes for Kestra: Build and Deploy Flows](https://kestra.io/docs/version-control-cicd/cicd/bitbucket-pipes.md)
 - [GitHub Actions for Kestra – CI/CD Workflow Examples](https://kestra.io/docs/version-control-cicd/cicd/github-action.md)
 - [GitLab CI for Kestra: Automate Flow Validation](https://kestra.io/docs/version-control-cicd/cicd/gitlab.md)
-- [CI/CD Helpers in Kestra: Local Dev and Read-Only Flows](https://kestra.io/docs/version-control-cicd/cicd/helpers.md)
 - [Terraform for Kestra – Manage Resources as Code](https://kestra.io/docs/version-control-cicd/cicd/terraform.md)
 - [Version Control with Git: Sync, Push, and Clone Flows](https://kestra.io/docs/version-control-cicd/git.md)
+- [Push Flows and Namespace Files to Git](https://kestra.io/docs/version-control-cicd/git/push-to-git.md)
+- [Sync Flows and Namespace Files from Git](https://kestra.io/docs/version-control-cicd/git/sync-from-git.md)
 - [Kestra VS Code Extension: Edit, Validate, and Run Flows](https://kestra.io/docs/version-control-cicd/vscode.md)
 - [Why Kestra: Simpler, More Powerful Orchestration](https://kestra.io/docs/why-kestra.md)
 - [Workflow Components in Kestra: Complete Reference](https://kestra.io/docs/workflow-components.md)

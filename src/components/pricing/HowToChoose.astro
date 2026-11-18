@@ -32,7 +32,8 @@ const ROWS: { label: string; values: string[] }[] = [
     <div class="container-xl">
         <div class="rails">
             <header>
-                <h2 id="how-to-choose" aria-label="How to choose">
+                <h2 id="how-to-choose">
+                    <span class="visually-hidden">How to choose</span>
                     <BlockTitle text="HOW TO CHOOSE" prefix="pricing-choose" />
                 </h2>
             </header>
@@ -81,24 +82,17 @@ const ROWS: { label: string; values: string[] }[] = [
     @use "../about/style/section" as *;
 
     .pricing-choose {
-        --ks-border-primary: #24232b;
-        --ks-background-body: #0b0a10;
+        --ks-border-primary: #{$dark-band-line};
         --ks-content-primary: #ffffff;
-        --ks-content-secondary: #a9a8b3;
+        --ks-content-secondary: #cfcdd9;
         --ks-content-link: #a396ff;
         --rule: 1px solid var(--ks-border-primary);
         --inset: clamp(1.5rem, 4vw, 3.5rem);
+        --block-title-base: rgba(216, 214, 236, 0.68);
 
         position: relative;
         overflow: hidden;
-        background:
-            radial-gradient(
-                60% 70% at 50% 55%,
-                rgba(120, 110, 165, 0.16),
-                rgba(90, 84, 130, 0.05) 55%,
-                transparent 75%
-            ),
-            linear-gradient(180deg, #060609 0%, #0e0d14 55%, #060609 100%);
+        @include dark-band;
     }
 
     .rails {
@@ -198,7 +192,7 @@ const ROWS: { label: string; values: string[] }[] = [
     }
 
     thead th {
-        font-size: $font-size-md;
+        font-size: $font-size-lg;
         font-weight: 600;
         color: var(--ks-content-primary);
     }
@@ -210,7 +204,7 @@ const ROWS: { label: string; values: string[] }[] = [
     }
 
     tbody td {
-        font-size: $font-size-md;
+        font-size: $font-size-lg;
         font-weight: 500;
         line-height: 1.4;
         color: var(--ks-content-primary);
@@ -274,13 +268,13 @@ const ROWS: { label: string; values: string[] }[] = [
         dt {
             font-size: $font-size-sm;
             font-weight: 400;
-            line-height: 1.5;
+            line-height: 1.7;
             color: var(--ks-content-secondary);
         }
 
         dd {
             margin: 0;
-            font-size: $font-size-sm;
+            font-size: $font-size-md;
             font-weight: 500;
             line-height: 1.5;
             color: var(--ks-content-primary);

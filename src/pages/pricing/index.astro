@@ -22,14 +22,10 @@ const SUPPORT_ROWS = [
             "E-mail + dedicated Teams/Slack",
         ],
     },
-    { label: "P0 response", values: ["12h", "2h", "1h"] },
+    { label: "P0 response", values: ["24h", "6h", "1h"] },
     {
         label: "Coverage",
-        values: [
-            "08:00 to 18:00, weekdays",
-            "08:00 to 18:00, weekdays",
-            "24×7 for P0",
-        ],
+        values: ["8×5", "8×5", "24×7"],
     },
     { label: "Customer Success program", values: [false, true, true] },
     {
@@ -77,3 +73,19 @@ const FAQ = [
         <BuyerQuestions title="Questions about pricing" items={FAQ} />
     </PageShell>
 </Layout>
+
+<style lang="scss">
+    :global(.home-page:has(.pricing-plans)) {
+        overflow: clip visible;
+    }
+
+    :global(body:has(.pricing-plans) #top-bar:not(.open)) {
+        box-shadow: 0 1px 0 var(--ks-border-primary);
+    }
+
+    @include media-breakpoint-down(md) {
+        :global(.home-page:has(.pricing-plans) :is(.rails, .ee-faq .grid)) {
+            border-inline: 0;
+        }
+    }
+</style>

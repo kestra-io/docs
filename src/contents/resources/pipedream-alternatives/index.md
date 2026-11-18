@@ -259,7 +259,7 @@ Give the rest a verdict: convert as-is, rebuild because the Pipedream version wa
 ## Where to start
 
 1. Export every Pipedream project this week, and save the secrets, env vars, data stores and webhook senders the export leaves out.
-2. [Request Kestra Cloud access](/cloud) for a managed setup like the one you had on Pipedream, or start Kestra Open Source with [Docker Compose](/docs/installation/docker-compose) if you prefer to self-host, and have the people doing the migration take the free courses on [Kestra Academy](https://kestra.io/academy).
+2. [Request Kestra Cloud access](/cloud) for a managed setup like the one you had on Pipedream, or start Kestra Open Source with [Docker Compose](/docs/installation/docker-compose) if you prefer to self-host, and have the people doing the migration take the free courses on [Kestra Academy](https://academy.kestra.io/).
 3. Convert two or three real workflows first: one webhook-triggered, one scheduled, and the most complex one you have. Measure the hours each took; that rate, across your triage count, is the estimate.
 4. Plan the waves backwards from March 31, 2027 with the [migration guide](/resources/migration/pipedream), and [talk to us](/demo) if you want help with the conversion or a review of the plan.
 

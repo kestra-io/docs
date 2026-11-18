@@ -75,7 +75,7 @@ kestractl executions run prod nightly-refresh --wait --output json
 
 ```bash
 # Sync namespace files for a release
-kestractl nsfiles upload prod ./assets --path resources --override --fail-fast
+kestractl nsfiles upload prod ./assets resources --override --fail-fast
 ```
 
 ```bash
@@ -448,7 +448,7 @@ kestractl nsfiles list my.namespace --output json
 kestractl nsfiles get my.namespace workflows/my-flow.yml
 
 # Upload files or directories
-kestractl nsfiles upload my.namespace ./assets --path resources --override --fail-fast
+kestractl nsfiles upload my.namespace ./assets resources --override --fail-fast
 
 # Search files in a namespace
 kestractl nsfiles search my.namespace

@@ -134,4 +134,4 @@ If the service account has the required permissions on the target project, the r
 Avoid storing long-lived secrets directly in flow YAML. Prefer credentials + secrets so Kestra can handle token minting/refresh and reduce exposure risk.
 :::
 
-See [Best Practices for Secrets](../../../14.best-practices/9.secrets-management/index.md) for guidance on token exposure and key rotation.
+See [Keep secrets out of logs](../../../06.concepts/04.secret/index.md#keep-secrets-out-of-logs) for guidance on avoiding token exposure.

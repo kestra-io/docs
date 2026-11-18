@@ -91,7 +91,7 @@ Best practice:
 - Avoid placing broadly scoped secrets at the root [namespace](../../07.enterprise/02.governance/07.namespace-management/index.md) unless they truly need to be inherited everywhere. If you need inheritance without allowing downstream edits, consider [read-only secrets](../../07.enterprise/02.governance/secrets-manager/index.md).
 - Avoid logging secrets or transforming them in ways that could bypass masking.
 
-For more details, see [Secrets](../../06.concepts/04.secret/index.md) and [Best Practices for Secrets in Kestra](../9.secrets-management/index.md).
+For more details, see [Secrets](../../06.concepts/04.secret/index.md).
 
 ## When to use the KV Store
 

@@ -1,7 +1,7 @@
 ---
-import { API_URL } from "astro:env/client"
 import { Icon } from "astro-icon/components"
 import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
+import { fetchPluginIcon } from "~/utils/pluginIcon"
 
 const GUARDS = [
     "Permissions",
@@ -39,10 +39,8 @@ const ZONES = [
 
 async function logo(plugin: string) {
     try {
-        const response = await fetch(`${API_URL}/plugins/icons/${plugin}`)
-        if (!response.ok) return null
-        const svg = Buffer.from(await response.arrayBuffer())
-        return `data:image/svg+xml;base64,${svg.toString("base64")}`
+        const svg = await fetchPluginIcon(plugin)
+        return `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`
     } catch {
         return null
     }

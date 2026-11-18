@@ -108,7 +108,7 @@ tasks:
 
 This orchestrated workflow is more than just a script. Here's what's worth noticing:
 
-*   **Managed Environment**: Kestra's `python.Script` task creates an isolated Docker container for the execution. The `beforeCommands` property handles the installation of dependencies like `httpx`, ensuring the environment is reproducible. For more on managing dependencies, refer to our guide on [Python dependencies in Kestra](/docs/how-to-guides/python-dependencies).
+*   **Managed Environment**: Kestra's `python.Script` task creates an isolated Docker container for the execution. The `beforeCommands` property handles the installation of dependencies like `httpx`, ensuring the environment is reproducible. For more on managing dependencies, refer to our guide on [Python dependencies in Kestra](/docs/scripts/installing-dependencies).
 *   **Integrated Outputs**: The script uses the `kestra.Kestra.outputs` function to pass its results back to the Kestra platform. This makes the data available to subsequent tasks in the flow, such as the `log-results` task, enabling clean data handoff.
 *   **Centralized Logging and Monitoring**: All `print` statements from the script are captured and displayed in the Kestra UI. This provides a centralized place to monitor execution and debug issues without needing to access server logs.
 *   **Scheduling and Retries**: Although not shown in this specific example, the Kestra flow can be scheduled to run on a cron-based schedule. You can also configure automatic retries with backoff policies at the task level to handle transient network failures, making the entire workflow more resilient. You can explore similar patterns in our [API to SQL blueprint](/blueprints/api-python-sql).

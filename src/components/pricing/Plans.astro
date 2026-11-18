@@ -85,10 +85,6 @@ const PLANS: {
                 <ul class="plans">
                     {PLANS.map((plan) => {
                         const [primary, secondary] = plan.actions
-                        const external = (href: string) =>
-                            href.startsWith("http")
-                                ? { target: "_blank", rel: "noopener" }
-                                : {}
                         return (
                             <li class:list={{ featured: plan.featured }}>
                                 <div class="panel">
@@ -107,16 +103,12 @@ const PLANS: {
                                                 ? "btn-solid"
                                                 : "btn-ghost"
                                         }
-                                        {...external(primary.href)}
                                     >
                                         {primary.label}
                                     </a>
                                     <p class="more">
                                         {secondary && (
-                                            <a
-                                                href={secondary.href}
-                                                {...external(secondary.href)}
-                                            >
+                                            <a href={secondary.href}>
                                                 {secondary.label}
                                                 <span
                                                     class="arrow"
@@ -165,22 +157,7 @@ const PLANS: {
         --column: 21.25rem;
 
         position: relative;
-        border-bottom: var(--rule);
         background: var(--ks-background-body);
-    }
-
-    :global(.home-page:has(.pricing-plans)) {
-        overflow: clip visible;
-    }
-
-    :global(body:has(.pricing-plans) #top-bar:not(.open)) {
-        box-shadow: 0 1px 0 var(--ks-border-primary);
-    }
-
-    @include media-breakpoint-down(md) {
-        :global(.home-page:has(.pricing-plans) :is(.rails, .ee-faq .grid)) {
-            border-inline: 0;
-        }
     }
 
     .rails {
@@ -190,7 +167,6 @@ const PLANS: {
     .frame {
         position: relative;
         margin-inline: auto;
-        padding-bottom: 4rem;
         border-inline: var(--rule);
 
         &::before {
@@ -214,11 +190,11 @@ const PLANS: {
     }
 
     header {
-        padding: 2.75rem 1.5rem 3rem;
+        padding: 4.5rem 1.5rem 4.75rem;
         text-align: center;
 
         @include media-breakpoint-down(md) {
-            padding-block: 2.25rem 2.5rem;
+            padding-block: 3rem 3.25rem;
         }
     }
 
@@ -268,6 +244,33 @@ const PLANS: {
     .customers::after {
         content: "";
         top: 100%;
+    }
+
+    .customers {
+        --ks-border-primary: #24232b;
+        --ks-border-secondary: #3a3944;
+        --ks-background-body: #060609;
+        --ks-background-secondary: rgba(255, 255, 255, 0.05);
+        --ks-content-primary: #ffffff;
+        --ks-content-tertiary: #a9a8b3;
+        --rule: 1px solid var(--ks-border-primary);
+
+        margin-inline: -1px;
+        padding-bottom: 1px;
+        border-inline: var(--rule);
+        background: var(--ks-background-body);
+        box-shadow: 0 0 0 100vmax var(--ks-background-body);
+        clip-path: inset(0 -100vmax);
+
+        &::after {
+            top: auto;
+            bottom: 0;
+        }
+
+        @include media-breakpoint-down(md) {
+            margin-inline: 0;
+            border-inline: 0;
+        }
     }
 
     .compare {
@@ -336,19 +339,7 @@ const PLANS: {
                 background:
                     linear-gradient(180deg, #f5f4fb, transparent 34rem),
                     var(--ks-background-body);
-                box-shadow:
-                    0 0 0 1px
-                        color-mix(
-                            in srgb,
-                            var(--ks-content-link) 55%,
-                            var(--ks-background-body)
-                        ),
-                    0 0 0 6px
-                        color-mix(
-                            in srgb,
-                            var(--ks-content-link) 14%,
-                            var(--ks-background-body)
-                        );
+                @include featured-ring;
 
                 @include media-breakpoint-down(lg) {
                     margin: 1rem 0.75rem;

@@ -82,13 +82,13 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
                 ],
             ],
             [
-                "Task runners",
+                "Remote task runners (Kubernetes, cloud batch)",
                 false,
                 { note: "usage-based" },
                 true,
                 [
                     "Run tasks on Kubernetes, cloud batch services, or dedicated VMs on AWS, Azure, Google Cloud, and Huawei Cloud",
-                    "/docs/task-runners",
+                    "/docs/task-runners/types",
                 ],
             ],
             [
@@ -190,7 +190,7 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
                 true,
                 [
                     "Give each namespace or tenant its own internal storage",
-                    "/docs/enterprise/governance/worker-isolation",
+                    "/docs/best-practices/business-unit-separation",
                 ],
             ],
         ],
@@ -334,7 +334,7 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
                         <tr>
                             <th scope="col">Feature</th>
                             {EDITIONS.map((edition) => (
-                                <th scope="col">
+                                <th scope="col" aria-label={edition.name}>
                                     <span>{edition.name}</span>
                                     <a
                                         href={edition.href}
@@ -351,10 +351,10 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
                             ))}
                         </tr>
                     </thead>
-                    {GROUPS.map((group) => (
+                    {GROUPS.map((group, groupIdx) => (
                         <tbody>
                             <tr class="group">
-                                <th scope="colgroup" colspan="4">
+                                <th scope="rowgroup" colspan="4">
                                     <span>
                                         <Icon name={group.icon} />
                                         {group.title}
@@ -362,55 +362,101 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
                                 </th>
                             </tr>
                             {group.rows.map(
-                                ([feature, os, cloud, ee, info]) => (
-                                    <tr>
-                                        <th scope="row">
-                                            {feature}
-                                            {info && (
-                                                <span class="info" tabindex="0">
-                                                    <Icon name="mdi:information-slab-circle-outline" />
-                                                    <span
-                                                        class="tip"
-                                                        role="tooltip"
-                                                    >
-                                                        {info[0]}
-                                                        <a href={info[1]}>
-                                                            Learn more
-                                                        </a>
-                                                    </span>
-                                                </span>
-                                            )}
-                                        </th>
-                                        {[os, cloud, ee].map((cell) => (
-                                            <td>
-                                                {cell === false ? (
-                                                    <Icon
-                                                        name="mdi:close"
-                                                        class="no"
-                                                        aria-label="Not included"
-                                                    />
-                                                ) : typeof cell === "string" ? (
-                                                    <span class="text">
-                                                        {cell}
-                                                    </span>
-                                                ) : (
+                                ([feature, os, cloud, ee, info], rowIdx) => {
+                                    const tipId = `compare-tip-${groupIdx}-${rowIdx}`
+                                    return (
+                                        <tr>
+                                            <th
+                                                scope="row"
+                                                aria-label={feature}
+                                            >
+                                                {feature}
+                                                {info && (
                                                     <>
-                                                        <Icon
-                                                            name="mdi:check"
-                                                            class="yes"
-                                                            aria-label="Included"
-                                                        />
-                                                        {cell !== true && (
-                                                            <span class="note">
-                                                                {cell.note}
+                                                        {" "}
+                                                        <span class="info">
+                                                            <button
+                                                                type="button"
+                                                                class="trigger"
+                                                                aria-label={`More about ${feature}`}
+                                                                aria-describedby={
+                                                                    tipId
+                                                                }
+                                                            >
+                                                                <Icon
+                                                                    name="mdi:information-slab-circle-outline"
+                                                                    aria-hidden="true"
+                                                                />
+                                                            </button>
+                                                            <span
+                                                                class="tip"
+                                                                id={tipId}
+                                                            >
+                                                                {info[0]}{" "}
+                                                                <a
+                                                                    href={
+                                                                        info[1]
+                                                                    }
+                                                                >
+                                                                    Learn more
+                                                                    <span class="visually-hidden">
+                                                                        {" "}
+                                                                        about{" "}
+                                                                        {
+                                                                            feature
+                                                                        }
+                                                                    </span>
+                                                                </a>
                                                             </span>
-                                                        )}
+                                                        </span>
                                                     </>
                                                 )}
-                                            </td>
-                                        ))}
-                                    </tr>
-                                ),
+                                            </th>
+                                            {[os, cloud, ee].map((cell) => (
+                                                <td>
+                                                    {cell === false ? (
+                                                        <>
+                                                            <Icon
+                                                                name="mdi:close"
+                                                                class="no"
+                                                                aria-hidden="true"
+                                                            />
+                                                            <span class="visually-hidden">
+                                                                Not included
+                                                            </span>
+                                                        </>
+                                                    ) : typeof cell ===
+                                                      "string" ? (
+                                                        <span class="text">
+                                                            {cell}
+                                                        </span>
+                                                    ) : (
+                                                        <>
+                                                            <Icon
+                                                                name="mdi:check"
+                                                                class="yes"
+                                                                aria-hidden="true"
+                                                            />
+                                                            <span class="visually-hidden">
+                                                                Included
+                                                            </span>
+                                                            {cell !== true && (
+                                                                <>
+                                                                    {" "}
+                                                                    <span class="note">
+                                                                        {
+                                                                            cell.note
+                                                                        }
+                                                                    </span>
+                                                                </>
+                                                            )}
+                                                        </>
+                                                    )}
+                                                </td>
+                                            ))}
+                                        </tr>
+                                    )
+                                },
                             )}
                         </tbody>
                     ))}
@@ -419,6 +465,27 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
         </div>
     </div>
 </section>
+
+<script>
+    document.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape") return
+        for (const info of document.querySelectorAll<HTMLElement>(
+            ".pricing-compare .info",
+        ))
+            if (info.matches(":hover, :focus-within"))
+                info.toggleAttribute("data-dismissed", true)
+    })
+
+    const reset = (event: FocusEvent | PointerEvent) => {
+        const info = (event.target as Element | null)?.closest?.(
+            ".pricing-compare .info",
+        )
+        if (info && !info.contains(event.relatedTarget as Node | null))
+            info.removeAttribute("data-dismissed")
+    }
+    document.addEventListener("focusout", reset)
+    document.addEventListener("pointerout", reset)
+</script>
 
 <style lang="scss">
     @use "../about/style/section" as *;
@@ -482,19 +549,7 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
                     color-mix(in srgb, var(--ks-content-link) 6%, transparent),
                     transparent 34rem
                 );
-                box-shadow:
-                    0 0 0 1px
-                        color-mix(
-                            in srgb,
-                            var(--ks-content-link) 55%,
-                            var(--ks-background-body)
-                        ),
-                    0 0 0 6px
-                        color-mix(
-                            in srgb,
-                            var(--ks-content-link) 14%,
-                            var(--ks-background-body)
-                        );
+                @include featured-ring;
                 pointer-events: none;
             }
         }
@@ -556,19 +611,7 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
                         var(--ks-content-link) 6%,
                         transparent
                     );
-                    box-shadow:
-                        0 0 0 1px
-                            color-mix(
-                                in srgb,
-                                var(--ks-content-link) 55%,
-                                var(--ks-background-body)
-                            ),
-                        0 0 0 4px
-                            color-mix(
-                                in srgb,
-                                var(--ks-content-link) 14%,
-                                var(--ks-background-body)
-                            );
+                    @include featured-ring(4px);
                     pointer-events: none;
                 }
             }
@@ -643,7 +686,12 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
 
     thead th {
         position: sticky;
-        top: 61px;
+        top: 59px;
+
+        @include media-breakpoint-down(xl) {
+            top: 55px;
+        }
+
         z-index: 2;
         padding-block: 1.125rem;
         border-top: var(--rule);
@@ -702,7 +750,6 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
         margin-left: 0.375rem;
         vertical-align: -0.15em;
         color: var(--ks-content-tertiary);
-        cursor: pointer;
 
         @include media-breakpoint-down(md) {
             position: static;
@@ -717,6 +764,25 @@ const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
         &:focus-within .tip {
             visibility: visible;
             opacity: 1;
+        }
+
+        &[data-dismissed] .tip {
+            visibility: hidden;
+            opacity: 0;
+        }
+    }
+
+    .trigger {
+        display: inline-flex;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: none;
+        color: inherit;
+        cursor: pointer;
+
+        &:hover {
+            color: var(--ks-content-primary);
         }
     }
 
