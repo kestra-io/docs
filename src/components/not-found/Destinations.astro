@@ -1,0 +1,214 @@
+---
+import { Icon } from "astro-icon/components"
+
+const LINKS = [
+    {
+        href: "/pricing",
+        title: "Pricing",
+        text: "Compare Open Source, Cloud and Enterprise, and find the edition that fits your team.",
+    },
+    {
+        href: "/demo",
+        title: "Book a demo",
+        text: "Walk through Kestra on your own use case with an engineer who has run the migration before.",
+    },
+    {
+        href: "/docs/why-kestra",
+        title: "Why Kestra",
+        text: "What sets a declarative, language-agnostic orchestrator apart from the tools you run today.",
+    },
+    {
+        href: "/get-started",
+        title: "Get started",
+        text: "Run Kestra locally with Docker and launch your first flow in a few minutes.",
+    },
+    {
+        href: "/blueprints",
+        title: "Blueprints",
+        text: "Start from ready-made flows for data, infrastructure, AI and business processes.",
+    },
+    {
+        href: "/enterprise",
+        title: "Enterprise",
+        text: "Security, governance and support for teams running Kestra across an organization.",
+    },
+]
+---
+
+<section class="destinations" aria-labelledby="destinations-title">
+    <div class="container-xl">
+        <div class="grid">
+            <h2 id="destinations-title">Where most people head next</h2>
+            <nav aria-labelledby="destinations-title">
+                <ul>
+                    {LINKS.map((link) => (
+                        <li>
+                            <a href={link.href}>
+                                <span class="title">
+                                    {link.title}
+                                    <Icon
+                                        name="mdi:arrow-right"
+                                        class="arrow"
+                                    />
+                                </span>
+                                <span class="text">{link.text}</span>
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .destinations {
+        position: relative;
+        background: var(--ks-background-body);
+        color: var(--ks-content-primary);
+    }
+
+    .grid {
+        --rule: 1px solid var(--ks-border-primary);
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+
+        position: relative;
+        padding-bottom: clamp(3rem, 6vw, 5rem);
+        border-inline: var(--rule);
+
+        @include media-breakpoint-down(xl) {
+            border-inline: 0;
+        }
+    }
+
+    h2 {
+        margin: 0;
+        padding: clamp(3rem, 5vw, 4rem) var(--inset) clamp(1.75rem, 3vw, 2.5rem);
+        font-size: clamp(1.5rem, 2.4vw, 2rem);
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        line-height: 1.2;
+        text-wrap: balance;
+        color: var(--ks-content-primary);
+    }
+
+    ul {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            left: -100vw;
+            right: -100vw;
+            height: 1px;
+            background: var(--ks-border-primary);
+            pointer-events: none;
+        }
+
+        &::before {
+            top: 0;
+        }
+
+        &::after {
+            bottom: 0;
+        }
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    li {
+        position: relative;
+        border-left: var(--rule);
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100vw;
+            right: -100vw;
+            height: 1px;
+            background: var(--ks-border-primary);
+            pointer-events: none;
+        }
+
+        @include media-breakpoint-up(lg) {
+            &:nth-child(3n + 1) {
+                border-left: 0;
+            }
+        }
+
+        @include media-breakpoint-between(sm, lg) {
+            &:nth-child(2n + 1) {
+                border-left: 0;
+            }
+        }
+
+        @include media-breakpoint-down(sm) {
+            border-left: 0;
+        }
+    }
+
+    a {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        height: 100%;
+        padding: 2rem var(--inset) 2.25rem;
+        color: inherit;
+        text-decoration: none;
+        transition: background-color 0.25s ease;
+
+        &:hover,
+        &:focus-visible {
+            background: var(--ks-background-secondary);
+
+            .title {
+                color: var(--ks-content-link);
+            }
+
+            .arrow {
+                translate: 0.25em 0;
+            }
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: -2px;
+        }
+    }
+
+    .title {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--ks-content-primary);
+        transition: color 0.2s ease;
+    }
+
+    .arrow {
+        width: 1.125rem;
+        height: 1.125rem;
+        transition: translate 0.2s ease;
+    }
+
+    .text {
+        max-width: 26rem;
+        font-size: 0.9375rem;
+        line-height: 1.55;
+        color: var(--ks-content-tertiary);
+    }
+</style>
