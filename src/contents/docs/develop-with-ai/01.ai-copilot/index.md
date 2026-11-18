@@ -494,9 +494,7 @@ kestra:
     enabled: false
 ```
 
-:::alert{type="warning"}
-**Known issue (Kestra 2.0.0):** `kestra.ai.enabled: false` does not fully disable AI Copilot in the current release. The Copilot UI button and other AI features such as "Fix with AI" remain visible and the feature continues to respond. This is being tracked and will be resolved in an upcoming release.
-:::
+With Copilot disabled, Kestra doesn't serve the Copilot API endpoints, and the [free tier](#free-tier) is off. The UI hides the Copilot entry in the left menu, the **AI** button in the top toolbar, the Copilot tab in the flow editor's context panel, and the **Fix with AI** actions. Opening `/ai` redirects to the home dashboard.
 
 ### Control access with RBAC
 
