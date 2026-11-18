@@ -191,6 +191,7 @@
         let unit = 14
         let at = { x: 0, y: 0 }
         let reach = 600
+        let wide = false
         let plumes: Partial<Record<Mode, HTMLCanvasElement>> = {}
         let cells: { u: number; v: number; ink: string }[] = []
         let clock = 0
@@ -251,7 +252,7 @@
             canvas.height = Math.round(height * ratio)
             ctx.setTransform(ratio, 0, 0, ratio, 0, 0)
 
-            const wide = width >= 992
+            wide = width >= 992
             unit = wide
                 ? Math.max(10, Math.min(19, width / 100))
                 : Math.max(6, width / 60)
@@ -272,38 +273,41 @@
                 })
             })
 
+            plumes = {}
+        }
+
+        const plumeFor = (mode: Mode) => {
+            if (plumes[mode]) return plumes[mode]
             const w = unit * 20
             const pad = unit * 6
-            plumes = {}
-            for (const mode of Object.keys(PLUMES) as Mode[]) {
-                const sheet = document.createElement("canvas")
-                sheet.width = Math.round(w + pad * 2)
-                sheet.height = Math.round(reach + pad * 2)
-                const pctx = sheet.getContext("2d")
-                if (!pctx) continue
-                const W = sheet.width
-                const H = sheet.height
-                const g = pctx.createLinearGradient(0, pad, 0, pad + reach)
-                for (const [stop, colour] of PLUMES[mode])
-                    g.addColorStop(stop, colour)
-                pctx.fillStyle = g
-                pctx.fillRect(0, 0, W, H)
-                pctx.globalCompositeOperation = "destination-in"
-                const sides = pctx.createLinearGradient(0, 0, W, 0)
-                sides.addColorStop(0, "rgba(0, 0, 0, 0)")
-                sides.addColorStop(0.22, "rgba(0, 0, 0, 0.55)")
-                sides.addColorStop(0.5, "rgba(0, 0, 0, 1)")
-                sides.addColorStop(0.78, "rgba(0, 0, 0, 0.55)")
-                sides.addColorStop(1, "rgba(0, 0, 0, 0)")
-                pctx.fillStyle = sides
-                pctx.fillRect(0, 0, W, H)
-                const head = pctx.createLinearGradient(0, 0, 0, pad + w * 0.6)
-                head.addColorStop(0, "rgba(0, 0, 0, 0)")
-                head.addColorStop(1, "rgba(0, 0, 0, 1)")
-                pctx.fillStyle = head
-                pctx.fillRect(0, 0, W, H)
-                plumes[mode] = sheet
-            }
+            const sheet = document.createElement("canvas")
+            sheet.width = Math.round(w + pad * 2)
+            sheet.height = Math.round(reach + pad * 2)
+            const pctx = sheet.getContext("2d")
+            if (!pctx) return
+            const W = sheet.width
+            const H = sheet.height
+            const g = pctx.createLinearGradient(0, pad, 0, pad + reach)
+            for (const [stop, colour] of PLUMES[mode])
+                g.addColorStop(stop, colour)
+            pctx.fillStyle = g
+            pctx.fillRect(0, 0, W, H)
+            pctx.globalCompositeOperation = "destination-in"
+            const sides = pctx.createLinearGradient(0, 0, W, 0)
+            sides.addColorStop(0, "rgba(0, 0, 0, 0)")
+            sides.addColorStop(0.22, "rgba(0, 0, 0, 0.55)")
+            sides.addColorStop(0.5, "rgba(0, 0, 0, 1)")
+            sides.addColorStop(0.78, "rgba(0, 0, 0, 0.55)")
+            sides.addColorStop(1, "rgba(0, 0, 0, 0)")
+            pctx.fillStyle = sides
+            pctx.fillRect(0, 0, W, H)
+            const head = pctx.createLinearGradient(0, 0, 0, pad + w * 0.6)
+            head.addColorStop(0, "rgba(0, 0, 0, 0)")
+            head.addColorStop(1, "rgba(0, 0, 0, 1)")
+            pctx.fillStyle = head
+            pctx.fillRect(0, 0, W, H)
+            plumes[mode] = sheet
+            return sheet
         }
 
         const frame = (time: number) => {
@@ -334,7 +338,12 @@
                 g.addColorStop(0, `rgba(${glow}, ${halo})`)
                 g.addColorStop(1, `rgba(${glow}, 0)`)
                 ctx.fillStyle = g
-                ctx.fillRect(0, 0, width, height)
+                ctx.fillRect(
+                    at.x - radius,
+                    at.y - radius,
+                    radius * 2,
+                    radius * 2,
+                )
             }
 
             const dot = Math.max(2, Math.round(unit / STEPS))
@@ -408,8 +417,9 @@
                 power,
             }
             for (const mode of Object.keys(shares) as Mode[]) {
-                const sheet = plumes[mode]
-                if (!sheet || shares[mode] < 0.01) continue
+                if (shares[mode] < 0.01) continue
+                const sheet = plumeFor(mode)
+                if (!sheet) continue
                 ctx.save()
                 ctx.translate(at.x, at.y)
                 ctx.rotate(HEADING + Math.PI / 2)
@@ -515,33 +525,48 @@
             ctx.restore()
         }
 
-        layout()
-        new ResizeObserver(() => {
-            layout()
-            if (still) frame(0)
-        }).observe(canvas)
-
         const editions = canvas
             .closest(".run-kestra")
             ?.querySelector<HTMLElement>(".editions")
-        const aim = (edition?: string) => {
+        let hovered: string | undefined
+        let focused: string | undefined
+        const editionOf = (target: EventTarget | null) =>
+            (target as Element | null)?.closest<HTMLElement>("[data-edition]")
+                ?.dataset.edition
+        const aim = () => {
+            const edition = wide ? (hovered ?? focused) : undefined
             goal.cloud = edition === "cloud" ? 1 : 0
             goal.power = edition === "enterprise" ? 1 : 0
             if (still) frame(0)
         }
-        const pick = (event: Event) =>
-            aim(
-                (event.target as Element).closest<HTMLElement>(
-                    "[data-edition]",
-                )?.dataset.edition,
-            )
+
+        layout()
+        new ResizeObserver(() => {
+            layout()
+            aim()
+        }).observe(canvas)
+
         if (editions) {
             if (matchMedia("(hover: hover)").matches) {
-                editions.addEventListener("pointerover", pick)
-                editions.addEventListener("pointerleave", () => aim())
+                editions.addEventListener("pointerover", (event) => {
+                    hovered = editionOf(event.target)
+                    aim()
+                })
+                editions.addEventListener("pointerleave", () => {
+                    hovered = undefined
+                    aim()
+                })
             }
-            editions.addEventListener("focusin", pick)
-            editions.addEventListener("focusout", () => aim())
+            editions.addEventListener("focusin", (event) => {
+                focused = editionOf(event.target)
+                aim()
+            })
+            editions.addEventListener("focusout", (event) => {
+                if (editions.contains(event.relatedTarget as Node | null))
+                    return
+                focused = undefined
+                aim()
+            })
         }
         if (still) {
             frame(0)
