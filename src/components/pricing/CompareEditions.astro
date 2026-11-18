@@ -1,0 +1,872 @@
+---
+import { Icon } from "astro-icon/components"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
+
+type Cell = boolean | string | { note: string }
+type Info = [text: string, link: string]
+type Row = [
+    feature: string,
+    openSource: Cell,
+    cloud: Cell,
+    enterprise: Cell,
+    info?: Info,
+]
+
+const EDITIONS = [
+    { name: "Kestra Core", label: "Get started", href: "/get-started" },
+    { name: "Kestra Cloud", label: "Request access", href: "/cloud" },
+    {
+        name: "Kestra Enterprise",
+        label: "Contact sales",
+        href: "/demo",
+        solid: true,
+    },
+]
+const SALES = "Via sales"
+
+const GROUPS: { title: string; icon: string; rows: Row[] }[] = [
+    {
+        title: "Platform",
+        icon: "mdi:layers-outline",
+        rows: [
+            [
+                `Declarative workflows, ${totalPlugins}+ plugins, unlimited flows and executions`,
+                true,
+                true,
+                true,
+                [
+                    "No limit on the number of workflows or executions",
+                    "/docs/workflow-components",
+                ],
+            ],
+            [
+                "Code and no-code editors, draft revisions",
+                true,
+                true,
+                true,
+                [
+                    "Write YAML or use the guided form editor; both stay in sync",
+                    "/docs/ui/flows",
+                ],
+            ],
+            [
+                "AI Copilot, AI agents and MCP server",
+                true,
+                true,
+                true,
+                [
+                    "Generate and edit flows from a natural language prompt with Gemini",
+                    "/docs/develop-with-ai/ai-copilot",
+                ],
+            ],
+            [
+                "AI Copilot on your own LLM",
+                false,
+                SALES,
+                true,
+                [
+                    "Edit, Plan, and Ask modes with memory and a confirmation step, on any cloud or self-hosted LLM",
+                    "/docs/develop-with-ai/ai-copilot",
+                ],
+            ],
+            [
+                "Apps and human-in-the-loop approvals",
+                false,
+                true,
+                true,
+                [
+                    "Build forms, approvals, and dashboards on top of your workflows",
+                    "/docs/enterprise/scalability/apps",
+                ],
+            ],
+            [
+                "Remote task runners (Kubernetes, cloud batch)",
+                false,
+                { note: "usage-based" },
+                true,
+                [
+                    "Run tasks on Kubernetes, cloud batch services, or dedicated VMs on AWS, Azure, Google Cloud, and Huawei Cloud",
+                    "/docs/task-runners/types",
+                ],
+            ],
+            [
+                "Enterprise plugins",
+                false,
+                true,
+                true,
+                [
+                    "Integrations for infrastructure, security, and governance at scale",
+                    "/plugins",
+                ],
+            ],
+        ],
+    },
+    {
+        title: "Authentication and access",
+        icon: "mdi:account-key-outline",
+        rows: [
+            [
+                "SSO (OIDC)",
+                false,
+                true,
+                true,
+                [
+                    "Sign in with your identity provider",
+                    "/docs/enterprise/auth/sso",
+                ],
+            ],
+            [
+                "SCIM",
+                false,
+                SALES,
+                true,
+                [
+                    "Provision users and groups from your identity provider automatically",
+                    "/docs/enterprise/auth/scim",
+                ],
+            ],
+            [
+                "LDAP",
+                false,
+                false,
+                true,
+                [
+                    "Authenticate with existing LDAP credentials and sync groups",
+                    "/docs/enterprise/auth/sso/ldap",
+                ],
+            ],
+            [
+                "Role-based access control (RBAC) and user management",
+                false,
+                true,
+                true,
+                [
+                    "Grant actions on resources per namespace, for users, groups, and service accounts",
+                    "/docs/enterprise/auth/rbac",
+                ],
+            ],
+            [
+                "Service accounts and API tokens",
+                false,
+                true,
+                true,
+                [
+                    "Programmatic access with service accounts, API tokens, OAuth2, and JWT",
+                    "/docs/enterprise/auth/service-accounts",
+                ],
+            ],
+        ],
+    },
+    {
+        title: "Secrets and security",
+        icon: "mdi:shield-lock-outline",
+        rows: [
+            [
+                "Built-in secrets manager",
+                false,
+                true,
+                true,
+                [
+                    "Scope secrets and variables to a namespace or tenant",
+                    "/docs/enterprise/governance/namespace-management#namespace-level-features",
+                ],
+            ],
+            [
+                "External secret managers (Vault, AWS, GCP, Azure and more)",
+                false,
+                SALES,
+                true,
+                [
+                    "Store secrets in Kestra, or read them from Vault, AWS, Azure, Google Cloud, and other backends",
+                    "/docs/enterprise/governance/secrets-manager",
+                ],
+            ],
+            [
+                "Dedicated storage per namespace",
+                false,
+                SALES,
+                true,
+                [
+                    "Give each namespace or tenant its own internal storage",
+                    "/docs/best-practices/business-unit-separation",
+                ],
+            ],
+        ],
+    },
+    {
+        title: "Governance and observability",
+        icon: "mdi:clipboard-check-outline",
+        rows: [
+            [
+                "Policies and restricted plugins",
+                false,
+                true,
+                true,
+                [
+                    "Rules per namespace that set, check, or block task configuration in every flow",
+                    "/docs/enterprise/governance/policies",
+                ],
+            ],
+            [
+                "Promote from dev to production",
+                false,
+                true,
+                true,
+                [
+                    "Move flows from dev to prod from the UI, with a diff and a review step",
+                    "/docs/enterprise/governance/promote",
+                ],
+            ],
+            [
+                "Assets and lineage",
+                false,
+                true,
+                true,
+                [
+                    "A live inventory of the tables, files, and systems your workflows touch",
+                    "/docs/enterprise/governance/assets",
+                ],
+            ],
+            [
+                "Audit logs",
+                false,
+                true,
+                true,
+                [
+                    "Record every action by every user on every resource",
+                    "/docs/enterprise/governance/audit-logs",
+                ],
+            ],
+            [
+                "Audit log export and log shipping to your SIEM or observability tools",
+                false,
+                SALES,
+                true,
+                [
+                    "Send logs and audit logs to Datadog, Splunk, Elasticsearch, your SIEM, and more",
+                    "/docs/enterprise/governance/logshipper",
+                ],
+            ],
+            [
+                "Cases and quotas",
+                false,
+                SALES,
+                true,
+                [
+                    "Track incidents next to the executions that caused them, from creation to resolution",
+                    "/docs/enterprise/governance/cases",
+                ],
+            ],
+        ],
+    },
+    {
+        title: "Development and customization",
+        icon: "mdi:code-braces",
+        rows: [
+            [
+                "Unit tests, plugin versioning, custom blueprints",
+                false,
+                true,
+                true,
+                [
+                    "Test flows in isolation with fixtures and assertions, including expected failures",
+                    "/docs/enterprise/governance/unit-tests",
+                ],
+            ],
+        ],
+    },
+    {
+        title: "Infrastructure and scalability",
+        icon: "mdi:server-network",
+        rows: [
+            [
+                "Workers on your own infrastructure",
+                false,
+                "Coming soon",
+                true,
+                [
+                    "Route tasks to dedicated workers by tag and reserve capacity for critical work",
+                    "/docs/enterprise/scalability/worker-group",
+                ],
+            ],
+            [
+                "Multiple tenants",
+                false,
+                "1 included, more as an add-on",
+                true,
+                [
+                    "Isolate teams or environments inside one Kestra instance",
+                    "/docs/enterprise/governance/tenants",
+                ],
+            ],
+            [
+                "Custom queue and storage backends (Kafka, Redis, Elasticsearch)",
+                false,
+                false,
+                true,
+                [
+                    "Move the queue off PostgreSQL or MySQL when your scale calls for it",
+                    "/docs/architecture/main-components#queue",
+                ],
+            ],
+            [
+                "Fully managed hosting: upgrades, backups, monitoring and scaling",
+                false,
+                true,
+                false,
+            ],
+        ],
+    },
+]
+---
+
+<section class="pricing-compare" aria-labelledby="comparison-table">
+    <div class="container-xl">
+        <div class="rails">
+            <header>
+                <h2 id="comparison-table">All features</h2>
+            </header>
+            <div class="scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Feature</th>
+                            {EDITIONS.map((edition) => (
+                                <th scope="col" aria-label={edition.name}>
+                                    <span>{edition.name}</span>
+                                    <a
+                                        href={edition.href}
+                                        class:list={[
+                                            edition.solid
+                                                ? "btn-solid"
+                                                : "btn-ghost",
+                                            "compact",
+                                        ]}
+                                    >
+                                        {edition.label}
+                                    </a>
+                                </th>
+                            ))}
+                        </tr>
+                    </thead>
+                    {GROUPS.map((group, groupIdx) => (
+                        <tbody>
+                            <tr class="group">
+                                <th scope="rowgroup" colspan="4">
+                                    <span>
+                                        <Icon name={group.icon} />
+                                        {group.title}
+                                    </span>
+                                </th>
+                            </tr>
+                            {group.rows.map(
+                                ([feature, os, cloud, ee, info], rowIdx) => {
+                                    const tipId = `compare-tip-${groupIdx}-${rowIdx}`
+                                    return (
+                                        <tr>
+                                            <th
+                                                scope="row"
+                                                aria-label={feature}
+                                            >
+                                                {feature}
+                                                {info && (
+                                                    <>
+                                                        {" "}
+                                                        <span class="info">
+                                                            <button
+                                                                type="button"
+                                                                class="trigger"
+                                                                aria-label={`More about ${feature}`}
+                                                                aria-describedby={
+                                                                    tipId
+                                                                }
+                                                            >
+                                                                <Icon
+                                                                    name="mdi:information-slab-circle-outline"
+                                                                    aria-hidden="true"
+                                                                />
+                                                            </button>
+                                                            <span
+                                                                class="tip"
+                                                                id={tipId}
+                                                            >
+                                                                {info[0]}{" "}
+                                                                <a
+                                                                    href={
+                                                                        info[1]
+                                                                    }
+                                                                >
+                                                                    Learn more
+                                                                    <span class="visually-hidden">
+                                                                        {" "}
+                                                                        about{" "}
+                                                                        {
+                                                                            feature
+                                                                        }
+                                                                    </span>
+                                                                </a>
+                                                            </span>
+                                                        </span>
+                                                    </>
+                                                )}
+                                            </th>
+                                            {[os, cloud, ee].map((cell) => (
+                                                <td>
+                                                    {cell === false ? (
+                                                        <>
+                                                            <Icon
+                                                                name="mdi:close"
+                                                                class="no"
+                                                                aria-hidden="true"
+                                                            />
+                                                            <span class="visually-hidden">
+                                                                Not included
+                                                            </span>
+                                                        </>
+                                                    ) : typeof cell ===
+                                                      "string" ? (
+                                                        <span class="text">
+                                                            {cell}
+                                                        </span>
+                                                    ) : (
+                                                        <>
+                                                            <Icon
+                                                                name="mdi:check"
+                                                                class="yes"
+                                                                aria-hidden="true"
+                                                            />
+                                                            <span class="visually-hidden">
+                                                                Included
+                                                            </span>
+                                                            {cell !== true && (
+                                                                <>
+                                                                    {" "}
+                                                                    <span class="note">
+                                                                        {
+                                                                            cell.note
+                                                                        }
+                                                                    </span>
+                                                                </>
+                                                            )}
+                                                        </>
+                                                    )}
+                                                </td>
+                                            ))}
+                                        </tr>
+                                    )
+                                },
+                            )}
+                        </tbody>
+                    ))}
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape") return
+        for (const info of document.querySelectorAll<HTMLElement>(
+            ".pricing-compare .info",
+        ))
+            if (info.matches(":hover, :focus-within"))
+                info.toggleAttribute("data-dismissed", true)
+    })
+
+    const reset = (event: FocusEvent | PointerEvent) => {
+        const info = (event.target as Element | null)?.closest?.(
+            ".pricing-compare .info",
+        )
+        if (info && !info.contains(event.relatedTarget as Node | null))
+            info.removeAttribute("data-dismissed")
+    }
+    document.addEventListener("focusout", reset)
+    document.addEventListener("pointerout", reset)
+</script>
+
+<style lang="scss">
+    @use "../about/style/section" as *;
+
+    .pricing-compare {
+        --rule: 1px solid var(--ks-border-primary);
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+
+        position: relative;
+        border-bottom: var(--rule);
+        background: var(--ks-background-body);
+    }
+
+    .rails {
+        padding-bottom: 5rem;
+        border-inline: var(--rule);
+
+        @include media-breakpoint-down(md) {
+            padding-bottom: 3rem;
+        }
+    }
+
+    header {
+        padding: 7.5rem var(--inset) 3.5rem;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem 2.5rem;
+        }
+
+        h2 {
+            @include title;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            color: var(--ks-content-primary);
+        }
+    }
+
+    .scroll {
+        position: relative;
+
+        @include media-breakpoint-up(md) {
+            &::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 50%;
+                width: 100vw;
+                border-top: var(--rule);
+                translate: -50% 0;
+                pointer-events: none;
+            }
+
+            &::after {
+                content: "";
+                position: absolute;
+                inset: 0 0 0 auto;
+                z-index: 3;
+                width: 18%;
+                border-radius: 1rem;
+                background: linear-gradient(
+                    180deg,
+                    color-mix(in srgb, var(--ks-content-link) 6%, transparent),
+                    transparent 34rem
+                );
+                @include featured-ring;
+                pointer-events: none;
+            }
+        }
+    }
+
+    table {
+        width: 100%;
+        margin: 0;
+        border-collapse: separate;
+        border-spacing: 0;
+        table-layout: fixed;
+
+        @include media-breakpoint-down(lg) {
+            thead a {
+                display: none;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            display: block;
+
+            thead,
+            tbody {
+                display: block;
+            }
+
+            thead {
+                position: sticky;
+                top: 55px;
+                z-index: 2;
+            }
+
+            tr {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            thead th {
+                padding: 0.75rem 0.5rem;
+                font-size: $font-size-sm;
+                line-height: 1.3;
+
+                &:first-child {
+                    display: none;
+                }
+
+                span {
+                    width: min-content;
+                    margin-inline: auto;
+                }
+
+                &:last-child::after {
+                    content: "";
+                    position: absolute;
+                    inset: 0.375rem;
+                    border-radius: 0.75rem;
+                    background: color-mix(
+                        in srgb,
+                        var(--ks-content-link) 6%,
+                        transparent
+                    );
+                    @include featured-ring(4px);
+                    pointer-events: none;
+                }
+            }
+
+            tbody {
+                background: var(--ks-background-secondary);
+            }
+
+            tbody tr:not(.group) {
+                background: var(--ks-background-body);
+
+                & + tr:not(.group) {
+                    margin-top: 0.75rem;
+                    border-top: var(--rule);
+                }
+            }
+
+            tbody th {
+                grid-column: 1 / -1;
+                padding: 1rem var(--inset) 0.875rem;
+            }
+
+            td + td,
+            thead th + th + th {
+                border-left: var(--rule);
+            }
+
+            td {
+                padding: 0.75rem 0.5rem 0.875rem;
+
+                &:last-child {
+                    background: color-mix(
+                        in srgb,
+                        var(--ks-content-link) 6%,
+                        transparent
+                    );
+                }
+            }
+
+            .group th {
+                padding: 1.25rem var(--inset);
+                border-bottom: var(--rule);
+                background: var(--ks-background-secondary);
+            }
+        }
+    }
+
+    th,
+    td {
+        padding: 0.875rem 1rem;
+        border-bottom: var(--rule);
+
+        &:first-child {
+            padding-left: var(--inset);
+            text-align: left;
+        }
+
+        &:not(:first-child) {
+            text-align: center;
+        }
+
+        @include media-breakpoint-up(md) {
+            &:first-child {
+                width: 46%;
+            }
+
+            &:not(:first-child) {
+                border-left: var(--rule);
+            }
+        }
+    }
+
+    thead th {
+        position: sticky;
+        top: 59px;
+
+        @include media-breakpoint-down(xl) {
+            top: 55px;
+        }
+
+        z-index: 2;
+        padding-block: 1.125rem;
+        border-top: var(--rule);
+        background: var(--ks-background-body);
+        font-size: $font-size-md;
+        font-weight: 600;
+        color: var(--ks-content-primary);
+
+        &:first-child {
+            font-size: $font-size-md;
+            font-weight: 400;
+            color: var(--ks-content-tertiary);
+        }
+    }
+
+    thead span {
+        display: block;
+    }
+
+    thead a {
+        margin-top: 0.625rem;
+    }
+
+    .group th {
+        padding-block: 1.5rem;
+        border-left: 0;
+        font-size: $font-size-md;
+        font-weight: 700;
+        text-align: left;
+        color: var(--ks-content-primary);
+
+        span {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+        }
+
+        :global(svg) {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: var(--ks-content-tertiary);
+        }
+    }
+
+    tbody th[scope="row"] {
+        position: relative;
+        font-size: $font-size-md;
+        font-weight: 400;
+        line-height: 1.45;
+        color: var(--ks-content-primary);
+    }
+
+    .info {
+        position: relative;
+        display: inline-flex;
+        margin-left: 0.375rem;
+        vertical-align: -0.15em;
+        color: var(--ks-content-tertiary);
+
+        @include media-breakpoint-down(md) {
+            position: static;
+        }
+
+        :global(svg) {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        &:hover .tip,
+        &:focus-within .tip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        &[data-dismissed] .tip {
+            visibility: hidden;
+            opacity: 0;
+        }
+    }
+
+    .trigger {
+        display: inline-flex;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: none;
+        color: inherit;
+        cursor: pointer;
+
+        &:hover {
+            color: var(--ks-content-primary);
+        }
+    }
+
+    .tip {
+        position: absolute;
+        top: calc(100% + 0.625rem);
+        left: 50%;
+        z-index: 4;
+        width: 15rem;
+        padding: 0.625rem 0.75rem;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 0.5rem;
+        background: var(--ks-background-body);
+        box-shadow: 0 10px 30px var(--ks-shadows-light);
+        font-size: $font-size-xs;
+        line-height: 1.5;
+        color: var(--ks-content-secondary);
+        translate: -50% 0;
+        visibility: hidden;
+
+        @include media-breakpoint-down(md) {
+            top: 100%;
+            left: var(--inset);
+            translate: none;
+        }
+
+        opacity: 0;
+        transition:
+            opacity 0.2s,
+            visibility 0.2s;
+        cursor: default;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: -0.625rem 0 100%;
+        }
+
+        a {
+            display: block;
+            margin-top: 0.25rem;
+            font-weight: 600;
+            color: var(--ks-content-link);
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    @media (hover: hover) {
+        tbody tr:not(.group):hover > * {
+            background: var(--ks-background-secondary);
+        }
+    }
+
+    td {
+        vertical-align: middle;
+        font-size: $font-size-md;
+        line-height: 1.35;
+    }
+
+    .yes,
+    .no {
+        display: block;
+        width: 1.125rem;
+        height: 1.125rem;
+        margin-inline: auto;
+        color: var(--ks-content-link);
+    }
+
+    .no {
+        color: var(--ks-content-tertiary);
+    }
+
+    .text,
+    .note {
+        font-size: $font-size-sm;
+        color: var(--ks-content-secondary);
+    }
+
+    .note {
+        display: block;
+        margin-top: 0.125rem;
+    }
+</style>
