@@ -28,11 +28,11 @@ const PANELS = [
         tab: "Requests",
         icon: "mdi:file-document-outline",
         title: "Requests instead of tickets",
-        intro: "Turn the infrastructure as code you already have into catalog items with a simple form. Developers, ops teams and AI agents pick what they need, and the request runs straight away instead of waiting in a queue.",
+        intro: "Turn the infrastructure as code you already have into a simple form. Developers, ops teams and AI agents pick what they need, and the request runs straight away instead of waiting in a queue.",
         points: [
             "Forms built on your own code, with defaults and guardrails your team sets",
             "Sign-offs only where you want them, such as production or high-cost requests",
-            "One catalog for people and AI agents over MCP, under the same RBAC",
+            "People and AI agents over MCP request under the same RBAC",
         ],
     },
     {
@@ -129,7 +129,7 @@ const FAQ = [
     },
     {
         question: "Do we have to rewrite our Terraform, Ansible or PowerCLI code?",
-        answer: "No. Catalog items run the modules, playbooks and scripts you already have, from Git.",
+        answer: "No. Requests run the modules, playbooks and scripts you already have, from Git.",
     },
     {
         question: "Does it replace ServiceNow?",
@@ -206,13 +206,13 @@ const STORIES: Story[] = [
             panels={PANELS}
         >
             <Fragment slot="title">
-                One service catalog for IT automation
+                How Kestra for Infrastructure works
             </Fragment>
             <Fragment slot="lead">
                 Keep the flexibility of your own infrastructure as code, from
                 Terraform and Ansible to PowerCLI, on any cloud or hypervisor.
-                Teams self-serve from one service catalog, and Kestra for
-                Infrastructure tracks every resource from request to retirement.
+                Teams request what they need, and Kestra for Infrastructure
+                tracks every resource from request to retirement.
             </Fragment>
             <AppsMock slot="requests" apps={APPS} request={REQUEST} />
             <InfraMock slot="deployments" view="deployments" />
@@ -220,7 +220,6 @@ const STORIES: Story[] = [
             <InfraMock slot="assets" view="assets" />
         </EnterpriseShowcase>
         <InfraUseCases />
-        <InfraMigration />
         <Customers stories={STORIES} foot={false} placeholder={false}>
             <Fragment slot="title">
                 Infrastructure teams that made the move
@@ -230,6 +229,7 @@ const STORIES: Story[] = [
                 say after moving their infrastructure automation to Kestra.
             </Fragment>
         </Customers>
+        <InfraMigration />
         <InfraClosing />
         <BuyerQuestions items={FAQ} />
     </PageShell>

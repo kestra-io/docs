@@ -5,22 +5,22 @@ const JOBS = [
     {
         icon: "mdi:file-search-outline",
         title: "Know what ran, what broke and why",
-        text: "Kestra for Infrastructure runs every Terraform, Ansible and PowerCLI step as one execution with one record. When something fails, you trace it in one place instead of four consoles, and the failure opens a case with an owner.",
+        text: "Every Terraform, Ansible and PowerCLI step runs as one execution with one record. When something fails, you trace it in one place instead of four consoles.",
     },
     {
         icon: "mdi:timer-sand",
         title: "Give your platform team its time back",
-        text: "Teams request what they need from a service catalog, and the request closes itself when the work is done. Nobody carries a ticket forward by hand, and approvals only stop the requests that need them.",
+        text: "Teams request what they need, and the request closes itself when the work is done. Nobody carries a ticket forward by hand.",
     },
     {
         icon: "mdi:account-clock-outline",
         title: "Stop paying for forgotten environments",
-        text: "Every resource gets an owner and a lease, so idle environments are retired by a cleanup flow before they turn into line items. And no per-node licence grows with every server you automate.",
+        text: "Every resource gets an owner and an end date, so idle environments are retired before they turn into line items. And no per-node licence grows with every server you automate.",
     },
     {
         icon: "mdi:robot-outline",
         title: "Run AI agents safely",
-        text: "AI agents request through the same governed catalog as people, over MCP. Approvals, RBAC, SSO and an audit trail cover every action, self-hosted or air-gapped, and agents never hold credentials.",
+        text: "Agents request infrastructure under the same rules as people. RBAC, SSO and an audit trail cover every action, self-hosted or air-gapped, and agents never hold credentials.",
     },
 ]
 ---
@@ -132,7 +132,7 @@ const JOBS = [
 
     li {
         position: relative;
-        padding: 2.5rem var(--inset) 6rem;
+        padding: 2.5rem var(--inset) 3.5rem;
         transition: background-color 0.3s ease;
 
         &::before {
