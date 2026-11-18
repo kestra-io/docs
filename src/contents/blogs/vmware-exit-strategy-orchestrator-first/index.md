@@ -44,7 +44,7 @@ If you run VMware, vRA and vRO are most likely your orchestration layer, and the
 
 Replacing the orchestrator first turns the hypervisor into a separate decision. With Kestra running your automation, ServiceNow, Terraform, Ansible and your CMDB stay where they are, and you can keep vSphere, move some workloads to Nutanix or Proxmox, or move all of them, on your own schedule. If you're still choosing the hypervisor, Diego Arias compares [seven VMware alternatives, scored for your scenario](/blogs/vmware-alternatives-scorecard). Teams that move the hypervisor first tend to end up here anyway, because the workflows that provisioned and patched their VMs don't move with them.
 
-<div class="video-container"><iframe src="https://www.youtube.com/embed/YoDeNilAXug" title="You're not stuck on VMware because of vSphere" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/oDmypfno4oc?start=286&end=356" title="You're not stuck on VMware because of vSphere" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
 
 *Why vRA and vRO keep teams on VMware more than vSphere does.*
 
