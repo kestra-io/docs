@@ -45,7 +45,7 @@ However, as infrastructure has grown more complex, AWX's limitations have become
 The primary driver for seeking AWX alternatives is the need for a tool that can orchestrate more than just Ansible. Modern infrastructure stacks are polyglot, relying on a mix of Terraform, Kubernetes, custom scripts, and cloud APIs. AWX's Ansible-centric model creates an automation silo.
 
 Teams are looking for solutions that address challenges like:
-*   **Multi-Tool Orchestration:** Coordinating workflows that involve Terraform provisioning, Ansible configuration, Kubernetes deployments, and database updates in a single, auditable sequence.
+*   **Multi-Tool Orchestration:** Coordinating workflows that involve [Terraform provisioning, Ansible configuration](/resources/infrastructure/terraform-and-ansible), Kubernetes deployments, and database updates in a single, auditable sequence.
 *   **Operational Complexity:** The operational overhead of maintaining a standalone AWX instance, its database, and dependencies can be significant.
 *   **Architectural Rigidity:** The need for more flexible, event-driven, and API-first automation that fits naturally into a GitOps workflow.
 
