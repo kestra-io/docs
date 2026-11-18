@@ -87,7 +87,7 @@ Click **Execute** on the flow page to trigger a run manually.
 
 Add a [Schedule trigger](../07.triggers/01.schedule-trigger/index.md) to launch executions on a time interval, or a [Flow trigger](../07.triggers/index.mdx) to launch an execution when another flow completes, useful for namespace-level error handling or event-driven patterns where flows are decoupled rather than explicitly calling each other as subflows.
 
-Use a [Webhook trigger](../07.triggers/03.webhook-trigger/index.md) to launch an execution from an external HTTP request. Access the request body with `{{ trigger.body }}` and headers with `{{ trigger.headers }}`. See the [Webhooks how-to guide](../../15.how-to-guides/webhooks/index.md) for setup and real-world examples.
+Use a [Webhook trigger](../07.triggers/03.webhook-trigger/index.md) to launch an execution from an external HTTP request. Access the request body with `{{ trigger.body }}` and headers with `{{ trigger.headers }}`.
 
 ```bash
 http://<kestra-host>:<kestra-port>/api/v1/main/executions/webhook/<namespace>/<flow-id>/<webhook-key>

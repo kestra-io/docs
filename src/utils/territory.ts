@@ -1,6 +1,12 @@
 export const TERRITORY_ATTR = "data-kestra-territory"
 
-export type Territory = "us-west" | "us-east" | "canada" | "latam" | "row"
+export type Territory =
+    | "us-west"
+    | "us-east"
+    | "canada"
+    | "latam"
+    | "dach"
+    | "row"
 export type VisitorTerritory = Territory | "unknown"
 
 const US_WEST_STATES = new Set([
@@ -13,6 +19,8 @@ const LATAM_COUNTRIES = new Set([
     "CU", "DO", "HT", "JM", "PR", "TT", "BS", "BB", "AG", "DM", "GD", "KN", "LC", "VC",
     "CO", "VE", "GY", "SR", "GF", "EC", "PE", "BO", "BR", "PY", "UY", "AR", "CL",
 ])
+
+const DACH_COUNTRIES = new Set(["DE", "AT", "CH"])
 
 const COUNTRY_CODES: Record<string, string> = {
     "united states": "US",
@@ -54,6 +62,13 @@ const COUNTRY_CODES: Record<string, string> = {
     uruguay: "UY",
     argentina: "AR",
     chile: "CL",
+    germany: "DE",
+    deutschland: "DE",
+    austria: "AT",
+    "österreich": "AT",
+    switzerland: "CH",
+    schweiz: "CH",
+    suisse: "CH",
 }
 
 const OTHER_COUNTRY = "ZZ"
@@ -128,6 +143,7 @@ export function territoryFor(
     if (c === "US") return US_WEST_STATES.has(r) ? "us-west" : "us-east"
     if (c === "CA") return "canada"
     if (LATAM_COUNTRIES.has(c)) return "latam"
+    if (DACH_COUNTRIES.has(c)) return "dach"
     return "row"
 }
 

@@ -305,7 +305,7 @@ GET /api/v1/{tenant}/namespaces/{namespace}/policies/{id}/evaluate
 2. Remove `kestra.plugins.defaults` from server config and add equivalent static policies under `kestra.policies`.
 3. For each namespace that had Plugin Defaults, review the auto-migrated Policies and adjust if needed.
 4. For each flow with a `pluginDefaults:` block, either inline the values onto tasks or create a reference Policy and add `policyRefs:` to the flow.
-5. Verify flows parse correctly: `kestra flow validate /path/to/flow.yml`
+5. Verify flows parse correctly: `kestractl flows validate /path/to/flow.yml`
 6. Grant teams that managed namespace defaults the `POLICY` permission (`VIEW`, `CREATE`, `UPDATE`, `DELETE`) — it is separate from namespace edit rights.
 
 :::alert{type="info"}

@@ -43,11 +43,11 @@ docker exec -it kestra /app/kestra plugins list
 
 These options can be used with **any** Kestra CLI command.
 
-- `-v, --verbose` — Increase log verbosity (use `-vv` for more).
-- `-l, --log-level` — Set a specific level: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`.
-- `--internal-log` — Also change the level for internal logs.
-- `-c, --config` — Path to a configuration file (default: `~/.kestra/config.yml`).
-- `-p, --plugins` — Path to the plugins directory.
+- `-v, --verbose`: Increase log verbosity (use `-vv` for more).
+- `-l, --log-level`: Set a specific level: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`.
+- `--internal-log`: Also change the level for internal logs.
+- `-c, --config`: Path to a configuration file (default: `~/.kestra/config.yml`).
+- `-p, --plugins`: Path to the plugins directory.
 
 **Examples**
 
@@ -58,19 +58,19 @@ kestra plugins install --log-level DEBUG
 
 ## API options
 
-Available for commands that talk to the server API.
+Available for the server commands that call the Kestra API, such as `kestra flow export` and `kestra namespace kv update`. For API operations from CI/CD or your workstation, use [`kestractl`](../kestractl/index.md) instead; it covers these commands and many more.
 
-- `--server` — Kestra server URL (default: `http://localhost:8080`).
-- `--headers` — Add custom headers (`<name=value>`).
-- `--user` — Basic auth (`user:password`).
-- `--tenant` — Tenant identifier (**EE and Cloud only**).
-- `--api-token` — API token (**EE and Cloud only**).
+- `--server`: Kestra server URL (default: `http://localhost:8080`).
+- `--headers`: Add custom headers (`<name=value>`).
+- `--user`: Basic auth (`user:password`).
+- `--tenant`: Tenant identifier (**EE and Cloud only**).
+- `--api-token`: API token (**EE and Cloud only**).
 
 **Examples**
 
 ```bash
-kestra flow list --server http://my-kestra:8080
-kestra flow list --user admin:secret
+kestra flow export --namespace company.team /tmp/export --server http://my-kestra:8080
+kestra flow export --namespace company.team /tmp/export --user admin:secret
 ```
 
 ---
@@ -123,15 +123,7 @@ kestra configs properties
 
 ## Flow commands
 
-### `kestra flow validate`
-
-Validate a flow file.
-
-**Input**: `file` (path)
-
-```bash
-kestra flow validate /path/to/my-flow.yml
-```
+To validate, create, or update flows on a Kestra instance, use [`kestractl`](../kestractl/index.md). The server commands for those tasks were removed in 2.0; see [Server CLI flow commands removed](../../11.migration-guide/v2.0.0/server-cli-flow-commands-removed/index.md).
 
 ### `kestra flow test`
 
@@ -163,44 +155,6 @@ Export flows to a ZIP file.
 
 ```bash
 kestra flow export --namespace my-namespace /path/to/export-directory
-```
-
-### `kestra flow update`
-
-Update a single flow on the server from a local file. You must specify the flow's namespace and its unique ID.
-
-**Inputs**: `flowFile` (path), `namespace` (string), `id` (string)
-
-```bash
-kestra flow update /path/to/my-updated-flow.yml my-namespace my-flow-id
-```
-
-### `kestra flow updates`
-
-Bulk update flows from a directory. Point the command to a directory, and Kestra will create or update all the flows it finds. The `--delete` flag removes any flows on the server that are no longer in the specified directory.
-
-**Inputs**: `directory` (path), `--delete` (optional), `--namespace` (optional)
-
-```bash
-kestra flow updates /path/to/my-flows --delete --namespace my-namespace
-```
-
-### `kestra flow namespace update`
-
-Update **all** flows within a namespace from a directory.
-
-**Option**: `--override-namespaces` (optional)
-
-```bash
-kestra flow namespace update --override-namespaces /path/to/flows
-```
-
-### `kestra flow create`
-
-Create a new flow from a YAML file.
-
-```bash
-kestra flow create /path/to/new-flow.yml
 ```
 
 ### `kestra flow delete`
@@ -276,15 +230,7 @@ The command exits with code `1` if another process holds the migration lock, the
 
 ## Namespace commands
 
-### `kestra namespace files update`
-
-Sync namespace files from a local directory.
-
-**Inputs**: `namespace`, `from` (local path), `to` (remote path, default `/`), `--delete` (optional)
-
-```bash
-kestra namespace files update my-namespace /path/to/local/files / --delete
-```
+To upload namespace files, use [`kestractl nsfiles upload`](../kestractl/index.md).
 
 ### `kestra namespace kv update`
 

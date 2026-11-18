@@ -813,7 +813,7 @@ If a layout uses a block on a stage that isn't listed for it, saving the app fai
 | `Chart`                  | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `chart`: a dashboard chart definition                                                     | `- type: io.kestra.plugin.ee.apps.core.blocks.Chart`<br> &nbsp;&nbsp;&nbsp;&nbsp;`chart:`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`id: executions`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`type: io.kestra.plugin.core.dashboard.chart.Bar` |
 | `Loading`                | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | None                                                                                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Loading`                                                                                                                                                                                |
 | `Alert`                  | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `style`: SUCCESS, WARNING, ERROR, INFO <br> - `showIcon`: true, false                     | `- type: io.kestra.plugin.ee.apps.core.blocks.Alert`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "WARNING"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`showIcon: true`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "An error occurred!"`                          |
-| `Button`                 | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `text` <br> - `url` <br> - `style`: DEFAULT, PRIMARY, SUCCESS, INFO, WARNING, DANGER <br> - `size`: DEFAULT, SMALL, LARGE <br> - `fullWidth`                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Button`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "More examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`url: "https://github.com/kestra-io/examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "INFO"`      |
+| `Button`                 | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `text` <br> - `url` <br> - `style`: DEFAULT, PRIMARY, SUCCESS, INFO, WARNING, DANGER <br> - `size`: DEFAULT, SMALL, LARGE <br> - `fullWidth` | `- type: io.kestra.plugin.ee.apps.core.blocks.Button`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "More examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`url: "https://github.com/kestra-io/examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "INFO"`      |
 | `TaskOutputs`            | PAUSE, RESUME, SUCCESS, FAILURE                                          | - `outputs`: list of outputs with `displayName`, `value`, and `type`                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.TaskOutputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`outputs:`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`- displayName: My Task Output`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`value: "{{ outputs.test.value }}"`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`type: FILE` |
 
 ### Pebble expressions in Markdown blocks
@@ -857,11 +857,13 @@ layout:
 When the flow uses [`FORM` inputs](../../../05.workflow-components/05.inputs/index.md#form-inputs), `CreateExecutionForm` renders a multi-step Next/Back wizard — one step per FORM group, a step for ungrouped inputs, then a recap. No additional App configuration is required; the wizard is driven entirely by the flow's input definition.
 :::
 
-### Embedding namespace file images
+### Embedding images
 
-`nsfile://` URIs resolve in the top-level `thumbnail` field but not in block properties such as `Image.source` or image references inside `Markdown` content. Passing `nsfile:///logo.svg` directly to `source` results in a broken image with no error in the server log.
+`Image` and `Markdown` blocks render images from a URL or a `data:` URI. To show an image stored in Kestra, such as a namespace file or a file produced by the flow, use the [`dataURL()`](../../../expressions/04.functions/02.data-access/index.mdx#dataurl) expression function to convert it into a `data:` URI.
 
-Use the [`dataURL()`](../../../expressions/04.functions/02.data-access/index.mdx#dataurl) expression function to convert a namespace file into a `data:` URI the block can render:
+#### Namespace files
+
+`nsfile://` URIs resolve in the top-level `thumbnail` field but **not** in block properties such as `Image.source` or image references inside `Markdown` content. Passing `nsfile:///logo.svg` directly to `source` results in a broken image with no error in the server log. Wrap the URI in `dataURL()` instead:
 
 ```yaml
 # Image block
@@ -885,6 +887,39 @@ To read from a different namespace, pass `namespace`:
 
 ```twig
 {{ dataURL('nsfile:///logo.svg', namespace='other.namespace') }}
+```
+
+#### Files produced by the flow
+
+To show an image that the flow generates, such as a chart or a report preview, expose the file as a [flow output](../../../05.workflow-components/06.outputs/index.md#flow-outputs). The following flow writes an SVG file and exposes it as the `chart` output:
+
+```yaml
+id: render_chart
+namespace: company.team
+
+tasks:
+  - id: chart
+    type: io.kestra.plugin.core.storage.Write
+    content: '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="40"><rect width="120" height="40" fill="#8405FF"/></svg>'
+    extension: .svg
+
+outputs:
+  - id: chart
+    type: FILE
+    value: "{{ outputs.chart.uri }}"
+```
+
+On the `SUCCESS` stage, pass `execution.outputs.<id>` to `dataURL()`. The function infers the MIME type from the file extension, so the output file needs an image extension such as `.svg` or `.png`:
+
+```yaml
+- on: SUCCESS
+  blocks:
+    - type: io.kestra.plugin.ee.apps.core.blocks.Image
+      source: "{{ dataURL(execution.outputs.chart) }}"
+      altText: "Generated chart"
+    - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+      content: |
+        ![Generated chart]({{ dataURL(execution.outputs.chart) }})
 ```
 
 ### Assets emitted by an execution

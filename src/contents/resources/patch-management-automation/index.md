@@ -184,7 +184,7 @@ When selecting a platform, look for a true orchestration engine rather than a po
 *   **Scalability:** can it keep pace as your infrastructure grows?
 *   **Flexibility:** does it support hybrid and multi-cloud environments and a wide range of operating systems?
 *   **Integration:** how easily does it connect to your CMDB, ITSM, and monitoring tools?
-*   **Security:** does it offer RBAC, audit logs, and secure [secrets management](/docs/best-practices/secrets-management)?
+*   **Security:** does it offer RBAC, audit logs, and secure [secrets management](/docs/concepts/secret#keep-secrets-out-of-logs)?
 *   **Observability:** can you see the status of every patch wave in one place, and prove it later?
 
 ## The Future of Patch Management: Proactive and Intelligent

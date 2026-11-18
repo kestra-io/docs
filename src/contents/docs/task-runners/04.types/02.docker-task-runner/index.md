@@ -50,6 +50,29 @@ Additionally, when using the Docker task runner, you can configure memory alloca
 The Docker task runner executes the script task as a container in a Docker-compatible engine. This means you can use it to run scripts within a Kubernetes cluster using Docker-In-Docker (DinD) or in a local Docker engine.
 :::
 
+### File handling strategy
+
+`fileHandlingStrategy` sets how the task's files, such as input files, output files, and namespace files, reach the container:
+
+- `VOLUME` (default): Kestra creates a Docker volume and copies the files into it.
+- `MOUNT`: Kestra bind-mounts the worker's working directory into the container at the same path, so no files are copied. This saves time when a task reads or writes large files.
+
+```yaml
+id: docker_mount
+namespace: company.team
+
+tasks:
+  - id: script
+    type: io.kestra.plugin.scripts.python.Script
+    containerImage: python:3.13-slim
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+      fileHandlingStrategy: MOUNT
+    script: print("hello")
+```
+
+With `MOUNT`, the Docker daemon must reach the worker's temporary directory, set by `kestra.tasks.tmp-dir.path`, at the same absolute path. Otherwise, the task fails. When Kestra runs in a container, bind-mount that directory from the Docker host at the same path, as the [Kestra Docker Compose file](../../../02.installation/03.docker-compose/index.md) does with `/tmp/kestra-wd:/tmp/kestra-wd`. If the Docker daemon can't access the worker's file system, for example a remote Docker engine, use `VOLUME`.
+
 ### In-memory mounts (tmpfs)
 
 :::badge{version=">=2.1" editions="OSS,EE"}
@@ -82,8 +105,7 @@ tasks:
 
 Kestra checks the mounts before pulling the image and fails the task if a path isn't absolute, is `/`, or is declared twice, or if an option or value isn't supported.
 
-A tmpfs mount doesn't keep the task's `inputFiles` and `outputFiles` in memory, because Docker can't copy files into or out of it. With the default `VOLUME` file handling strategy, a mount at, inside, or above the working directory is rejected, because script tasks always copy at least their output directory through it. With `fileHandlingStrategy: MOUNT`, only a mount exactly at the working directory is rejected. To keep task files in memory, use `MOUNT`, bind-mount the worker's `kestra.tasks.tmp-dir.path` from the Docker host at the same path (`/tmp/kestra-wd:/tmp/kestra-wd` in the [Kestra Docker Compose file](../../../02.installation/03.docker-compose/index.md)), and make that host directory a tmpfs.
-
+A tmpfs mount doesn't keep the task's `inputFiles` and `outputFiles` in memory, because Docker can't copy files into or out of it. With the default `VOLUME` [file handling strategy](#file-handling-strategy), a mount at, inside, or above the working directory is rejected, because script tasks always copy at least their output directory through it. With `fileHandlingStrategy: MOUNT`, only a mount exactly at the working directory is rejected. To keep task files in memory, use `MOUNT`, bind-mount the worker's `kestra.tasks.tmp-dir.path` from the Docker host at the same path (`/tmp/kestra-wd:/tmp/kestra-wd` in the [Kestra Docker Compose file](../../../02.installation/03.docker-compose/index.md)), and make that host directory a tmpfs.
 
 ---
 

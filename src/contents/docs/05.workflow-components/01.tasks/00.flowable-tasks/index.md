@@ -293,6 +293,8 @@ tasks:
               - "echo done {{ item.value }}"
 ```
 
+When several iterations pause at once, for example on a [`Pause`](#pause) task, the execution that runs the Loop stays `PAUSED` until every paused iteration is resumed. It then continues with the next task.
+
 #### Failure propagation
 
 By default (`transmitFailed: true`), a failed iteration causes the Loop task itself to fail. Set `transmitFailed: false` to let the loop continue even when individual iterations fail.

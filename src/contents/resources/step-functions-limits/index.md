@@ -84,7 +84,7 @@ The most common solution for the payload size limit is the "Claim Check" pattern
 3.  It then passes a small JSON object containing the S3 bucket name and object key (the "claim check") to the next state.
 4.  Subsequent tasks use this reference to download the data from S3, process it, and upload the results back to S3, passing a new claim check forward.
 
-This pattern keeps the state machine's internal payload minimal, effectively bypassing the 256KB limit. Managing access to this data often involves using [secrets](/docs/how-to-guides/secrets) for credentials and permissions.
+This pattern keeps the state machine's internal payload minimal, effectively bypassing the 256KB limit. Managing access to this data often involves using [secrets](/docs/concepts/secret#secrets-in-open-source) for credentials and permissions.
 
 ### Optimizing Execution History for Long-Running Workflows
 

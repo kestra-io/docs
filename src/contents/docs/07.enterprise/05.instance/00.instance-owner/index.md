@@ -90,6 +90,15 @@ The user's detail page includes an Instance Owner toggle:
 
 ### Through the CLI
 
+With [`kestractl`](../../../kestra-cli/kestractl/index.md), pass the user's ID:
+
+```bash
+kestractl users set-super-admin <user_id> --super-admin        # grant
+kestractl users set-super-admin <user_id> --super-admin=false  # revoke
+```
+
+The `kestra` server CLI takes the username instead and writes directly to the database:
+
 ```bash
 kestra auths users set-instance-owner admin@kestra.io true   # grant
 kestra auths users set-instance-owner admin@kestra.io false  # revoke

@@ -1,23 +1,12 @@
 ---
 import { Icon } from "astro-icon/components"
-import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+import type { SvgComponent } from "astro/types"
 
-/* mdi glyphs with the design's vertical gradient baked in — a paint server in
- * a separate <svg> does not resolve through astro-icon's <symbol>/<use> pair,
- * so these ship as standalone assets rather than <Icon> calls. Generated from
- * @iconify-json/mdi: database-arrow-up-outline, folder-cog-outline,
- * view-dashboard-edit-outline, plus-circle-outline. */
-import DataPipelinesIcon from "./assets/stack-data-pipelines.svg"
-import InfraPlatformIcon from "./assets/stack-infra-platform.svg"
-import AppMicroservicesIcon from "./assets/stack-app-microservices.svg"
-import BusinessProcessesIcon from "./assets/stack-business-processes.svg"
-
-interface Props {
-    heading?: string
-    /** Pass null to drop the line under the heading. */
-    sub?: string | null
-    columns?: {
-        Glyph: typeof DataPipelinesIcon
+export interface Props {
+    heading: string
+    sub?: string
+    columns: {
+        Glyph: SvgComponent
         title: string
         items: string[]
     }[]
@@ -25,57 +14,7 @@ interface Props {
     glyphSize?: number
 }
 
-const totalPlugins = await fetchTotalPluginsCount()
-
-const defaultColumns = [
-    {
-        Glyph: DataPipelinesIcon,
-        title: "Data pipelines",
-        items: [
-            "Ingestion from warehouses, lakes, APIs and SaaS sources",
-            "Dbt runs that start only once ingestion has actually finished",
-            "Data-quality gates before anything downstream reads the table",
-            "Backfills across hundreds of days without hand-rolling a loop",
-        ],
-    },
-    {
-        Glyph: InfraPlatformIcon,
-        title: "Infra & platform",
-        items: [
-            "VM, cluster and environment provisioning with Terraform or Ansible",
-            "Certificate rotation, patching and scheduled maintenance",
-            "Self-service platform actions your teams can trigger safely",
-            "Cron entries and legacy scheduler jobs, moved across as they are",
-        ],
-    },
-    {
-        Glyph: AppMicroservicesIcon,
-        title: "App & microservices",
-        items: [
-            "API and microservice calls sequenced with retries, timeouts and state",
-            "Event-driven choreography on top of streaming and messaging layer",
-            "Handoffs picked up where ServiceNow or Salesforce automation stops",
-            "ERP and core-banking migrations where the workflows keep running through the cutover",
-        ],
-    },
-    {
-        Glyph: BusinessProcessesIcon,
-        title: "Business processes",
-        items: [
-            "Employee onboarding and offboarding across directory, cloud and email",
-            "Order, invoice and settlement steps across internal systems",
-            "Reports generated and distributed on a schedule or an event",
-            "Approvals with a human step in the middle of the flow",
-        ],
-    },
-]
-
-const {
-    heading = "Unified Orchestration Across Your Stack",
-    sub = `API-first, with ${totalPlugins}+ plugins for your databases, clouds, and internal systems`,
-    columns = defaultColumns,
-    glyphSize = 120,
-} = Astro.props
+const { heading, sub, columns, glyphSize = 120 } = Astro.props
 ---
 
 <section class="stack" style={`--glyph-size: ${glyphSize}px`}>

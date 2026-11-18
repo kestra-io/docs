@@ -31,6 +31,7 @@ interface Props {
     features?: Feature[]
     layers?: boolean
     actions?: boolean
+    light?: boolean
 }
 
 const DEFAULT_FEATURES: Feature[] = [
@@ -60,6 +61,7 @@ const {
     features: FEATURES = DEFAULT_FEATURES,
     layers = true,
     actions = true,
+    light = false,
 } = Astro.props
 
 const ROOT = "acme"
@@ -211,9 +213,9 @@ const WORKERS = [
 ---
 
 <section
-    class="enterprise surface-dark"
+    class:list={["enterprise", light ? "light" : "surface-dark"]}
     aria-labelledby="enterprise"
-    data-header-dark
+    data-header-dark={light ? undefined : ""}
 >
     {
         ["left", "right"].map((side) => (
@@ -530,6 +532,13 @@ const WORKERS = [
                                             class="glimpse-body notes"
                                             data-audit
                                         >
+                                            <span class="defs" aria-hidden="true">
+                                                {Object.values(
+                                                    ACTION_ICONS,
+                                                ).map((icon) => (
+                                                    <Icon name={icon} />
+                                                ))}
+                                            </span>
                                             <div class="stack" data-stack>
                                                 {AUDIT.slice(0, 3).map(
                                                     (line) => (
@@ -889,6 +898,49 @@ const WORKERS = [
         }
     }
 
+    .enterprise.light {
+        --rule-color: var(--ks-border-primary);
+
+        border-bottom: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-body);
+        color: var(--ks-content-primary);
+
+        &::before {
+            display: none;
+        }
+
+        .squares {
+            opacity: 0.75;
+
+            rect {
+                fill: rgba(99, 27, 255, 0.035);
+            }
+        }
+
+        .head h2,
+        .head h2 em,
+        .features h3 {
+            color: var(--ks-content-primary);
+        }
+
+        .head p {
+            color: var(--ks-content-tertiary);
+        }
+
+        .features .text {
+            color: var(--ks-content-secondary);
+        }
+
+        .features > li:hover {
+            background: var(--ks-background-secondary);
+        }
+
+        .glimpse {
+            background: #0d0d10;
+            box-shadow: 0 30px 60px -36px rgba(13, 13, 16, 0.55);
+        }
+    }
+
     .squares {
         position: absolute;
         width: 520px;
@@ -969,6 +1021,11 @@ const WORKERS = [
 
         &.solo {
             grid-template-columns: minmax(0, 1fr);
+
+            h2 {
+                max-width: 16em;
+                text-wrap: balance;
+            }
 
             p {
                 max-width: 48rem;
@@ -1549,6 +1606,7 @@ const WORKERS = [
         .name {
             flex: none;
             width: 6.5rem;
+            white-space: nowrap;
             color: #c9c9d2;
         }
 
@@ -1613,7 +1671,7 @@ const WORKERS = [
         display: none;
     }
 
-    @include media-breakpoint-down(md) {
+    @include media-breakpoint-down(xl) {
         .attempt {
             padding-left: 0.25rem;
         }
@@ -1702,6 +1760,13 @@ const WORKERS = [
             justify-content: center;
             padding: 1.5rem 1.75rem;
         }
+    }
+
+    .defs {
+        position: absolute;
+        width: 0;
+        height: 0;
+        overflow: hidden;
     }
 
     .notes {
@@ -1876,7 +1941,11 @@ const WORKERS = [
         font-size: 0.875rem;
 
         @include media-breakpoint-down(xl) {
-            zoom: 0.8;
+            zoom: 0.74;
+        }
+
+        @include media-breakpoint-down(lg) {
+            zoom: 0.55;
         }
 
         @include media-breakpoint-down(md) {

@@ -37,7 +37,17 @@ The `key` is embedded in the webhook URL: `/api/v1/main/executions/webhook/{name
 https://{kestra_domain}/api/v1/main/executions/webhook/{namespace}/{flowId}/{key}
 ```
 
-Replace `kestra_domain`, `namespace`, `flowId`, and `key` with your values. You can also copy the webhook URL from the **Triggers** tab.
+Replace `kestra_domain`, `namespace`, `flowId`, and `key` with your values. In Enterprise Edition and Kestra Cloud, replace `main` with your tenant ID. You can also copy the webhook URL from the **Triggers** tab.
+
+To send a test request with a JSON body from the command line:
+
+```bash
+curl http://localhost:8080/api/v1/main/executions/webhook/company.team/trigger/<your-key> \
+  -H 'Content-Type: application/json' \
+  -d '{"event":"example","message":"Hello from webhook"}'
+```
+
+If your provider sends an idempotency key header such as `Idempotency-Key`, store it in a custom label and add a duplicate guard to avoid processing the same event twice. See [Webhook-triggered flows](../../../15.how-to-guides/idempotency/index.md#webhook-triggered-flows) in the idempotency guide.
 
 ## Handling the request body
 

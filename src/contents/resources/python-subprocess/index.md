@@ -219,7 +219,7 @@ Kestra provides the necessary control plane to manage these `subprocess`-driven 
 - **[Python Orchestration](/features/code-in-any-language/python):** Explore how Kestra provides first-class support for Python workflows.
 - **[Orchestrate Python Workflows](/docs/use-cases/python-workflows):** A deeper dive into patterns for building complex Python-based pipelines.
 - **[YAML vs Python Workflows](/blogs/yaml-vs-python-workflow):** Understand the trade-offs between declarative and imperative workflow definitions.
-- **[Manage Python Dependencies in Kestra](/docs/how-to-guides/python-dependencies):** Learn how to handle external libraries for your Python scripts.
+- **[Manage Python Dependencies in Kestra](/docs/scripts/installing-dependencies):** Learn how to handle external libraries for your Python scripts.
 - **[Process Task Runner](/docs/task-runners/types/process-task-runner):** Discover how to run tasks as local processes for maximum performance.
 - **[Access Local Files in Kestra](/docs/how-to-guides/access-local-files):** Learn how to interact with the local filesystem from your orchestrated tasks.
 

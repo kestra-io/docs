@@ -41,7 +41,7 @@ Use [OutputValues](/plugins/core/output/io.kestra.plugin.core.output.outputvalue
 
 File outputs are previewable and downloadable from the execution's **Input/Output** tab; any output can be inspected and debugged using the built-in expression evaluator on the same tab. See [Outputs](../../03.tutorial/03.outputs/index.md) in the tutorial.
 
-For loop iteration outputs, sibling task outputs, and the `loopOutputs()` function, see [Flowable tasks](../01.tasks/00.flowable-tasks/index.md#loop) and the [Loop how-to guide](../../15.how-to-guides/loop/index.md).
+For loop iteration outputs, sibling task outputs, and the `loopOutputs()` function, see [Flowable tasks](../01.tasks/00.flowable-tasks/index.md#loop) and [Loop best practices](../../14.best-practices/11.loop/index.md).
 
 ## Internal storage
 

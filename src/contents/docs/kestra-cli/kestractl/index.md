@@ -68,14 +68,14 @@ For basic auth contexts, `auth_method` is `basicAuth` and the file stores `usern
 ### Examples
 
 ```bash
-# Deploy flows, then run one and wait for completion
+# Deploy flows, then run one and wait for completion; the run exits non-zero if the execution fails, so the CI job fails too
 kestractl flows deploy ./flows --namespace prod --override --fail-fast
 kestractl executions run prod nightly-refresh --wait --output json
 ```
 
 ```bash
 # Sync namespace files for a release
-kestractl nsfiles upload prod ./assets --path resources --override --fail-fast
+kestractl nsfiles upload prod ./assets resources --override --fail-fast
 ```
 
 ```bash
@@ -227,8 +227,10 @@ kestractl flows usage-report --detailed                               # include 
 ## Execution management
 
 ```bash
-# Run a flow and optionally wait for completion
+# Run a flow
 kestractl executions run my.namespace my-flow
+
+# Run a flow and wait for completion — exits non-zero on FAILED, KILLED, or CANCELLED
 kestractl executions run my.namespace my-flow --wait --output json
 
 # List executions
@@ -446,7 +448,7 @@ kestractl nsfiles list my.namespace --output json
 kestractl nsfiles get my.namespace workflows/my-flow.yml
 
 # Upload files or directories
-kestractl nsfiles upload my.namespace ./assets --path resources --override --fail-fast
+kestractl nsfiles upload my.namespace ./assets resources --override --fail-fast
 
 # Search files in a namespace
 kestractl nsfiles search my.namespace

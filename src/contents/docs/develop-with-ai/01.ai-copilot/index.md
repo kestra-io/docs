@@ -218,7 +218,7 @@ The menu entry appears if you have the `TESTSUITE` `CREATE` permission on the fl
 
 ## Configure an LLM provider
 
-Copilot needs an LLM provider. Add providers under `kestra.ai.providers` in your Kestra configuration. An open-source instance with no provider uses the [free tier](#free-tier) until you add one.
+Copilot needs an LLM provider. Add providers under `kestra.ai.providers` in your Kestra configuration. An open-source instance with no provider uses the [free tier](#free-tier) until you add one. Without a provider or the free tier, the Copilot panel opens with a notice that no provider is configured, and its prompt box, mode selector, and suggestions stay disabled.
 
 Kestra Open Source supports Google Gemini:
 

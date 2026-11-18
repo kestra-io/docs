@@ -35,19 +35,15 @@ Each service account can be attached to one or more groups, such as a “Bots”
 
 ## CLI token usage
 
-The Kestra CLI accepts an API token via `--api-token`:
+[`kestractl`](../../../kestra-cli/kestractl/index.md) authenticates with a service account's API token through the `--token` flag or the `KESTRACTL_TOKEN` environment variable. This uploads the contents of the local `scripts` folder to the `scripts` folder of the `prod` namespace's files:
 
 ```bash
-./kestra namespace files update prod scripts . \
---server=https://demo.kestra.io --api-token yourtoken
+export KESTRACTL_HOST=https://kestra.example.com
+export KESTRACTL_TOKEN=<service-account-api-token>
+kestractl nsfiles upload prod ./scripts scripts --no-root --override
 ```
 
-Basic Auth credentials are passed via `--user`:
-
-```bash
-./kestra namespace files update prod scripts . \
---server=https://demo.kestra.io --user=rick.astely@kestra.io:password42
-```
+In CI pipelines, store the token as a masked secret instead of writing it in the pipeline file.
 
 ## Service account name convention
 

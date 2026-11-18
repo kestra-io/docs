@@ -45,6 +45,9 @@ The request is validated as a whole: an invalid or already-invited address retur
 
 ## Accepting invitations
 
+:::badge{version=">=2.0.10" editions="EE,Cloud"}
+:::
+
 When a user receives an invitation, they open the link in the email. If they're already signed in to Kestra, the invitation is accepted right away and they land in the tenant they were invited to.
 
 Otherwise, the link opens a **Create your Kestra account** page. What it shows depends on the authentication methods enabled on the instance:
