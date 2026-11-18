@@ -93,7 +93,11 @@ const DEFAULT_REQUEST: Request = {
 const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
 ---
 
-<div class="ui-mock apps-mock" aria-hidden="true" data-ui-mock>
+<div
+    class:list={["ui-mock", "apps-mock", { tall: APPS.length <= 4 }]}
+    aria-hidden="true"
+    data-ui-mock
+>
     <div class="stage">
         <div class="apps">
             {APPS.map((app, idx) => (
@@ -208,6 +212,16 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
         --loop: 14s;
 
         @include tokens;
+    }
+
+    @media (min-width: 576px) {
+        .tall {
+            --press: 12em;
+
+            .app {
+                min-height: 11.15em;
+            }
+        }
     }
 
     .stage {
@@ -976,7 +990,7 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
         9%,
         15% {
             opacity: 1;
-            transform: translate(20.6em, 8em);
+            transform: translate(20.6em, var(--press, 8em));
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
         18%,
