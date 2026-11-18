@@ -5,7 +5,7 @@ description: Review our privacy policy, which outlines our commitment to protect
 
 # Privacy Policy
 
-**Last updated: April 14, 2025**
+**Last updated: September 23, 2026**
 
 This Privacy Policy describes how Kestra Technologies ("Kestra", "we", "us", or "our") collects, uses, and discloses your personal information when you visit or use our website [kestra.io](https://kestra.io/) (the "Website"). By using our Website, you agree to the terms of this Privacy Policy.
 
