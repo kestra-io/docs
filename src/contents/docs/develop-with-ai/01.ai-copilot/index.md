@@ -482,7 +482,7 @@ A provider without `usage-limit` shows and enforces nothing. When a limit is rea
 
 To read the current usage, call `GET /api/v1/{tenant}/ai/usage`. It reports on the default provider, or on the provider set in the `providerId` query parameter.
 
-<!-- TODO(runtime test): free tier and usage limits written from source (kestra#18193, kestra-ee#9960, merged 2026-11-17). Check the free tier on a fresh OSS 2.1 instance, the "% left" tag and refusal message with a small max-weight, and the /ai/usage response. Screenshot of the usage tag pending. -->
+<!-- TODO(runtime test): free tier and usage limits written from source (kestra#18193, kestra-ee#9960, merged 2026-11-17). Live test on OSS develop fec96bba (2026-11-18): with no provider, Copilot registers "Kestra (free tier)" as the default provider and /ai/usage answers for kestra-free-tier, but every chat fails with `LLM streaming call failed: {"message":"Unauthorized"}` from the relay, and the relay's /limits answers 401, so no "% left" tag shows (AiFreeTierLimitProvider sends no identity headers). Ask engineering whether the relay (api.kestra.io#482) is live. Still to test: a working free-tier answer, the "% left" tag and refusal message with a small max-weight on your own provider. Screenshot of the usage tag pending. -->
 
 ### Disable AI Copilot
 
