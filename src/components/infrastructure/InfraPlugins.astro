@@ -26,7 +26,7 @@ const PLUGINS = [
         slug: "kubernetes",
         name: "Kubernetes",
     },
-    { type: "aws.cli.AwsCLI", slug: "aws", name: "AWS" },
+    { type: "aws", slug: "aws", name: "AWS", ink: "#ffffff" },
     { type: "azure.cli.AzCLI", slug: "azure", name: "Azure" },
     { type: "gcp.cli.GCloudCLI", slug: "gcp", name: "Google Cloud" },
     { type: "servicenow.Post", slug: "servicenow", name: "ServiceNow" },
@@ -49,6 +49,11 @@ const cropped = (svg: string, viewBox: string) =>
                     .replace(/\s(?:width|height)="[^"]*"/g, "")
                     .replace(/viewBox="[^"]*"/, `viewBox="${viewBox}"`),
             ),
+    ).toString("base64")
+
+const inked = (svg: string, ink: string) =>
+    Buffer.from(
+        Buffer.from(svg, "base64").toString().replaceAll("currentColor", ink),
     ).toString("base64")
 
 const fetchIcon = async (type: string) => {
@@ -94,7 +99,8 @@ const tiles = (
         PLUGINS.map(async (plugin, idx) => {
             const raw = fetched[idx]
             if (!raw || raw === generic) return null
-            const svg = plugin.crop ? cropped(raw, plugin.crop) : raw
+            const sized = plugin.crop ? cropped(raw, plugin.crop) : raw
+            const svg = plugin.ink ? inked(sized, plugin.ink) : sized
             return {
                 name: plugin.name,
                 href: `/plugins/plugin-${plugin.slug}`,

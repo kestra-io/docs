@@ -79,6 +79,7 @@ const PATHS = [
 
     .infra-migration {
         position: relative;
+        border-bottom: 1px solid var(--ks-border-primary);
         background: var(--ks-background-body);
     }
 
@@ -115,7 +116,7 @@ const PATHS = [
         grid-template-columns: repeat(2, minmax(0, 1fr));
         margin: 0;
         padding: 0;
-        border-block: var(--rule);
+        border-top: var(--rule);
         list-style: none;
 
         @include media-breakpoint-down(lg) {
