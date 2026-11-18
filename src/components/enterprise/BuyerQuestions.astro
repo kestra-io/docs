@@ -7,16 +7,17 @@ import gdprImg from "~/components/layout/assets/gdpr.svg"
 
 interface Props {
     items: { question: string; answer: string }[]
+    title?: string
 }
 
-const { items } = Astro.props
+const { items, title = "Frequently asked questions" } = Astro.props
 ---
 
 <section class="ee-faq" aria-labelledby="ee-faq">
     <div class="container-xl">
         <div class="grid">
             <header class="head">
-                <h2 id="ee-faq">Frequently asked questions</h2>
+                <h2 id="ee-faq">{title}</h2>
                 <div class="trust">
                     <div class="badges">
                         <Image src={soc2Img} alt="SOC 2" height="56" />
@@ -60,7 +61,7 @@ const { items } = Astro.props
     }
 
     .head {
-        padding: 8.5rem var(--inset) 4rem;
+        padding: 8.5rem var(--inset);
 
         @include media-breakpoint-down(lg) {
             padding-bottom: 1rem;

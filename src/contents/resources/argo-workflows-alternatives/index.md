@@ -33,7 +33,7 @@ While powerful within its niche, Argo Workflows presents certain trade-offs that
 *   **Kubernetes-centric limitations:** Its tight coupling to Kubernetes is a double-edged sword. While ideal for K8s-native teams, it limits flexibility for hybrid environments or scenarios requiring orchestration on non-Kubernetes infrastructure.
 *   **Plugin ecosystem and polyglot support:** While any container can run in an Argo workflow, its native plugin ecosystem is less extensive than more general-purpose orchestrators. This often means more manual effort in creating custom containers for tasks like SQL queries, API calls, or scripts in various languages.
 *   **Operational complexity:** Managing Argo Workflows requires deep Kubernetes expertise. The setup, maintenance, and debugging of the engine itself can introduce significant operational overhead.
-*   **Scope beyond container orchestration:** Argo Workflows is built to orchestrate containers. For complex, cross-system workflows involving data, AI agents, or business processes that span multiple external systems, its model can feel less intuitive and lead to [complex orchestration problems](https://kestra.io/resources/infrastructure/orchestration-problems-complexity).
+*   **Scope beyond container orchestration:** Argo Workflows is built to orchestrate containers. For complex, cross-system workflows involving data, AI agents, or business processes that span multiple external systems, its model can feel less intuitive and lead to [complex orchestration problems](https://kestra.io/resources/orchestration).
 
 ## How We Evaluated These Alternatives
 
