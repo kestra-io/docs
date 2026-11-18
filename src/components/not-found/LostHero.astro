@@ -228,10 +228,11 @@ import BlockTitle from "~/components/enterprise/BlockTitle.astro"
                 const size = [0.5, 0.75, 1][star.depth] * dot * (1 + lit * 0.6)
                 const sx = Math.round(x)
                 const sy = Math.round(y)
-                ctx.fillStyle = `rgba(${star.colour}, ${alpha})`
+                const colour = lit > 0.1 ? "230, 140, 255" : star.colour
+                ctx.fillStyle = `rgba(${colour}, ${alpha})`
                 ctx.fillRect(sx, sy, size, size)
                 if (star.cross || lit > 0.3) {
-                    ctx.fillStyle = `rgba(${star.colour}, ${alpha * 0.5})`
+                    ctx.fillStyle = `rgba(${colour}, ${alpha * 0.5})`
                     ctx.fillRect(sx - size, sy, size, size)
                     ctx.fillRect(sx + size, sy, size, size)
                     ctx.fillRect(sx, sy - size, size, size)
@@ -264,8 +265,8 @@ import BlockTitle from "~/components/enterprise/BlockTitle.astro"
                 [1, "rgba(33, 66, 255, 0)"],
             ])
             haze(-unit * 5.5, 2, unit * 3.2, [
-                [0, `rgba(170, 150, 255, ${0.32 * beat})`],
-                [0.4, `rgba(130, 100, 255, ${0.14 * beat})`],
+                [0, `rgba(140, 90, 255, ${0.4 * beat})`],
+                [0.4, `rgba(120, 80, 255, ${0.16 * beat})`],
                 [1, "rgba(130, 90, 255, 0)"],
             ])
 
@@ -275,7 +276,11 @@ import BlockTitle from "~/components/enterprise/BlockTitle.astro"
                 const slot = Math.floor((row * fine + flow) / fine)
                 for (let lane = -12; lane <= 12; lane += 2) {
                     if (rand(lane + 80, slot - row * 2) > fade * 0.08) continue
-                    ctx.fillStyle = `rgba(255, 235, 250, ${0.2 + 0.4 * fade})`
+                    const ink =
+                        rand(lane + 40, slot) < 0.3
+                            ? "255, 4, 254"
+                            : "150, 120, 255"
+                    ctx.fillStyle = `rgba(${ink}, ${0.3 + 0.5 * fade})`
                     ctx.fillRect(
                         -row * fine - unit * 4,
                         lane * fine,
