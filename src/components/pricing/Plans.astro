@@ -256,10 +256,16 @@ const PLANS: {
         --rule: 1px solid var(--ks-border-primary);
 
         margin-inline: -1px;
+        padding-bottom: 1px;
         border-inline: var(--rule);
         background: var(--ks-background-body);
         box-shadow: 0 0 0 100vmax var(--ks-background-body);
-        clip-path: inset(0 -100vmax -1px);
+        clip-path: inset(0 -100vmax);
+
+        &::after {
+            top: auto;
+            bottom: 0;
+        }
 
         @include media-breakpoint-down(md) {
             margin-inline: 0;
