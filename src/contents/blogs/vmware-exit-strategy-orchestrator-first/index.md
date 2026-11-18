@@ -20,19 +20,19 @@ In our November 4 webinar, Faizan Qazi and I made the case for starting with the
 
 Jump to a part of the webinar:
 
-- [0:00](https://www.youtube.com/watch?v=oDmypfno4oc&t=0s) Welcome and introductions
-- [1:38](https://www.youtube.com/watch?v=oDmypfno4oc&t=98s) Why start with the orchestrator
-- [3:37](https://www.youtube.com/watch?v=oDmypfno4oc&t=217s) Challenges with VMware infrastructure
-- [5:58](https://www.youtube.com/watch?v=oDmypfno4oc&t=358s) Introduction to Kestra
-- [8:45](https://www.youtube.com/watch?v=oDmypfno4oc&t=525s) Managing vRA and vRO with Kestra
-- [9:51](https://www.youtube.com/watch?v=oDmypfno4oc&t=591s) The vRA migration guide
-- [11:27](https://www.youtube.com/watch?v=oDmypfno4oc&t=687s) Overview of the Migration Assistant
-- [14:27](https://www.youtube.com/watch?v=oDmypfno4oc&t=867s) Migration Assistant demo
-- [30:01](https://www.youtube.com/watch?v=oDmypfno4oc&t=1801s) Migration waves and strategy
-- [32:00](https://www.youtube.com/watch?v=oDmypfno4oc&t=1920s) Conversion and testing approach
-- [33:46](https://www.youtube.com/watch?v=oDmypfno4oc&t=2026s) Demonstration of migrated workflows
-- [40:35](https://www.youtube.com/watch?v=oDmypfno4oc&t=2435s) Summary and migration path
-- [42:39](https://www.youtube.com/watch?v=oDmypfno4oc&t=2559s) Getting started and Q&A
+- [Welcome and introductions](https://www.youtube.com/watch?v=oDmypfno4oc&t=0s)
+- [Why start with the orchestrator](https://www.youtube.com/watch?v=oDmypfno4oc&t=98s)
+- [Challenges with VMware infrastructure](https://www.youtube.com/watch?v=oDmypfno4oc&t=217s)
+- [Introduction to Kestra](https://www.youtube.com/watch?v=oDmypfno4oc&t=358s)
+- [Managing vRA and vRO with Kestra](https://www.youtube.com/watch?v=oDmypfno4oc&t=525s)
+- [The vRA migration guide](https://www.youtube.com/watch?v=oDmypfno4oc&t=591s)
+- [Overview of the Migration Assistant](https://www.youtube.com/watch?v=oDmypfno4oc&t=687s)
+- [Migration Assistant demo](https://www.youtube.com/watch?v=oDmypfno4oc&t=867s)
+- [Migration waves and strategy](https://www.youtube.com/watch?v=oDmypfno4oc&t=1801s)
+- [Conversion and testing approach](https://www.youtube.com/watch?v=oDmypfno4oc&t=1920s)
+- [Demonstration of migrated workflows](https://www.youtube.com/watch?v=oDmypfno4oc&t=2026s)
+- [Summary and migration path](https://www.youtube.com/watch?v=oDmypfno4oc&t=2435s)
+- [Getting started and Q&A](https://www.youtube.com/watch?v=oDmypfno4oc&t=2559s)
 
 ![Today vRA and vRO lock you to vSphere; with Kestra as the orchestrator you keep vSphere or move to Nutanix or Proxmox, and ServiceNow, Ansible, Terraform and Slack stay](./01-orchestrator-first.png)
 
@@ -44,7 +44,7 @@ If you run VMware, vRA and vRO are most likely your orchestration layer, and the
 
 Replacing the orchestrator first turns the hypervisor into a separate decision. With Kestra running your automation, ServiceNow, Terraform, Ansible and your CMDB stay where they are, and you can keep vSphere, move some workloads to Nutanix or Proxmox, or move all of them, on your own schedule. If you're still choosing the hypervisor, Diego Arias compares [seven VMware alternatives, scored for your scenario](/blogs/vmware-alternatives-scorecard). Teams that move the hypervisor first tend to end up here anyway, because the workflows that provisioned and patched their VMs don't move with them.
 
-<div class="video-container"><iframe src="https://www.youtube.com/embed/oDmypfno4oc?start=286&end=356" title="You're not stuck on VMware because of vSphere" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/YoDeNilAXug" title="You're not stuck on VMware because of vSphere" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
 
 *Why vRA and vRO keep teams on VMware more than vSphere does.*
 
