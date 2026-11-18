@@ -51,6 +51,8 @@ Infrastructure self-service in a dedicated tenant type, searchable execution val
 
 - **Platform MCP server**: expose the AI Copilot's tools for flows and executions to external MCP clients at `/api/v1/mcp`. [Docs](../../../ai-orchestration/03.mcp-server/index.md#platform-mcp-server)
 - **Copilot unit tests (EE, Cloud)**: generate a unit test for an existing flow. [Docs](../../../develop-with-ai/01.ai-copilot/index.md#generate-a-unit-test)
+- **Copilot free tier (OSS)**: an instance with no LLM provider uses a free Copilot hosted by Kestra. Turn it off with `kestra.ai.free-tier.enabled: false`. [Docs](../../../develop-with-ai/01.ai-copilot/index.md#free-tier)
+- **Copilot usage limits**: cap each provider's spend for the whole instance and per user, by day, week, or month. Copilot shows the share left. [Docs](../../../develop-with-ai/01.ai-copilot/index.md#set-usage-limits)
 - **`thinking-effort: none` (EE)**: AI Copilot works with OpenAI and Azure OpenAI reasoning deployments that reject tool calls unless reasoning is off. [Docs](../../../configuration/06.enterprise-and-advanced/index.md)
 
 ## Security and governance

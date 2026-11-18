@@ -218,7 +218,7 @@ The menu entry appears if you have the `TESTSUITE` `CREATE` permission on the fl
 
 ## Configure an LLM provider
 
-Copilot needs an LLM provider. Until you configure one, the Copilot panel opens but can't answer prompts. Add providers under `kestra.ai.providers` in your Kestra configuration.
+Copilot needs an LLM provider. Add providers under `kestra.ai.providers` in your Kestra configuration. An open-source instance with no provider uses the [free tier](#free-tier) until you add one.
 
 Kestra Open Source supports Google Gemini:
 
@@ -240,6 +240,25 @@ For every configuration property, including generation parameters, extended reas
 
 :::alert{type="info"}
 Legacy single-provider configurations (`kestra.ai.type` plus a provider block) still work. Use the `providers` array to register several providers and choose a default.
+:::
+
+### Free tier
+
+When an open-source instance has no provider configured, Copilot uses a free tier hosted by Kestra. It appears as **Kestra (free tier)** in the Copilot panel, which shows how much of the free allowance is left.
+
+On the free tier, Copilot sends your prompts, the flow YAML you're editing, and tool results to `api.kestra.io`. Tool results can include flow source and execution logs. To keep this data on your instance, configure your own provider, or turn the free tier off:
+
+```yaml
+kestra:
+  ai:
+    free-tier:
+      enabled: false
+```
+
+Kestra uses the free tier only when no provider is declared. If a declared provider can't start, for example because of an invalid API key, Copilot is unavailable instead of falling back to the free tier.
+
+:::alert{type="info"}
+In Enterprise Edition, the free tier is off by default. Set `kestra.ai.free-tier.enabled: true` to use it.
 :::
 
 ### Register multiple providers
@@ -426,6 +445,44 @@ kestra:
           api-key: OPENROUTER_API_KEY
           model-name: "anthropic/claude-sonnet-4"
 ```
+
+### Set usage limits
+
+Kestra records the tokens of every Copilot call. To cap what a provider spends, add a `usage-limit` block to its `configuration`. Copilot then shows the share of the allowance left, warns users as it runs low, and refuses new prompts once it's reached, until the period ends.
+
+```yaml
+kestra:
+  ai:
+    providers:
+      - id: gemini
+        display-name: Gemini
+        type: gemini
+        configuration:
+          api-key: YOUR_GEMINI_API_KEY
+          usage-limit:
+            max-weight: 50000000
+            user-max-weight: 5000000
+            window: MONTHLY
+```
+
+Limits count weighted tokens, so that cached input and generated output count at their relative cost. One uncached input token weighs `1`.
+
+| Property | Default | Description |
+|---|---|---|
+| `max-weight` | `0` | Limit for the whole instance, across all users and tenants. `0` sets no limit. |
+| `user-max-weight` | `0` | Limit for each user, across all the tenants they use. `0` sets no limit. |
+| `window` | `MONTHLY` | Period a limit counts over: `DAILY`, `WEEKLY` (starting Monday), or `MONTHLY` (starting on the 1st). Periods start at midnight UTC. |
+| `warning-threshold-percent` | `10` | Copilot warns users when this share of the allowance or less is left. With `0`, users see no warning before the limit is reached. |
+| `enabled` | `true` | Set to `false` to stop showing and enforcing the limits. Kestra still records usage. |
+| `cold-input-weight` | `1.0` | Weight of an uncached input token. |
+| `cached-input-weight` | `0.1` | Weight of an input token served from the provider's cache. If a provider doesn't report its cached share, the whole prompt counts as uncached input. |
+| `output-weight` | `6.0` | Weight of a generated token, reasoning tokens included. |
+
+A provider without `usage-limit` shows and enforces nothing. When a limit is reached, Copilot tells users whether they reached their own limit or the instance did, and when the period resets.
+
+To read the current usage, call `GET /api/v1/{tenant}/ai/usage`. It reports on the default provider, or on the provider set in the `providerId` query parameter.
+
+<!-- TODO(runtime test): free tier and usage limits written from source (kestra#18193, kestra-ee#9960, merged 2026-11-17). Check the free tier on a fresh OSS 2.1 instance, the "% left" tag and refusal message with a small max-weight, and the /ai/usage response. Screenshot of the usage tag pending. -->
 
 ### Disable AI Copilot
 

@@ -1150,6 +1150,8 @@ AI Copilot configuration lives under `kestra.ai` and controls which LLM provider
 
 `kestra.ai.enabled` (default: `true`) controls whether AI Copilot is active. Set it to `false` to disable the feature entirely.
 
+`kestra.ai.free-tier.enabled` controls the [free tier](../../develop-with-ai/01.ai-copilot/index.md#free-tier) that Copilot uses when no provider is declared. It defaults to `true` in the open-source edition and `false` in Enterprise Edition. On the free tier, prompts, flow YAML, and tool results are sent to `api.kestra.io`.
+
 #### Providers
 
 Enterprise Edition lets you configure multiple providers in a single deployment. Each entry in `kestra.ai.providers` is an independent provider the UI can offer to users.
@@ -1254,6 +1256,12 @@ These properties appear inside the `configuration:` block of a provider entry. N
 | `log-requests` | When `true`, logs the full request body sent to the provider. Useful for debugging prompt construction. Avoid in production — request bodies may contain sensitive data. |
 | `log-responses` | When `true`, logs the full response body received from the provider. Same caveats as `log-requests`. |
 | `log-requests-and-responses` | Azure OpenAI equivalent of `log-requests` + `log-responses` combined in a single toggle. |
+
+**Usage limits**
+
+| Property | Description |
+|---|---|
+| `usage-limit` | Caps the provider's spend in weighted tokens, for the whole instance and per user, over a day, week, or month. Available on every provider. See [Set usage limits](../../develop-with-ai/01.ai-copilot/index.md#set-usage-limits) for its properties. |
 
 #### Provider types
 
