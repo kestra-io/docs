@@ -49,6 +49,8 @@ On a secured instance, click **Sign In…** on the settings page or in **Tools |
 
 Credentials are stored in the IDE password safe, per instance URL. **Tools | Kestra | Sign Out** clears them. When the instance refuses a request, a notification offers to sign in.
 
+To check the connection, open a flow file and start typing a task `type`: the task types installed on your instance appear in the completion list.
+
 ## Features
 
 All Kestra actions are in the **Tools | Kestra** menu. The flow actions are also in the editor's context menu.
@@ -128,7 +130,7 @@ To push local files to a namespace:
 - **Upload to Kestra Namespace…**, in the **Project** view's context menu or in **Tools | Kestra**, uploads the selected files and folders. A single file goes to the exact path you enter. A multi-selection goes under a base path, each folder keeping its name. Open files are uploaded with their unsaved changes. If the namespace doesn't exist, the plugin offers to create it.
 - **Sync Folder to Kestra Namespace…** uploads every file of a folder. Files at the same remote path are overwritten. Files that exist only on the instance are kept.
 
-Both actions skip the names listed in **Settings | Tools | Kestra | Excluded names**, and stop with the instance's reason when it refuses an upload.
+Both actions skip the names listed in **Settings | Tools | Kestra | Excluded names**. If the instance refuses an upload, the action stops and shows the reason.
 
 ## Settings reference
 
