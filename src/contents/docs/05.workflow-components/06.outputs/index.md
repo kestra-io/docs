@@ -208,8 +208,6 @@ Filters match the stored string exactly. Kestra normalizes each value before sto
 | `TIME` | `10:15:00`. Fractions of a second appear only when they aren't zero. |
 | `DURATION` | ISO 8601, such as `PT1H30M` |
 
-<!-- TODO(runtime test): table rewritten from SearchableDataUtils after kestra-io/kestra#22774 (merged 2026-11-17). Confirm the DATETIME, TIME, and DURATION forms for an input and an output on a 2.1 build. -->
-
 #### Find executions by searchable value
 
 Searchable inputs and searchable outputs share one filter. On the **Executions** page, add the **Inputs & Outputs** filter, enter the input or output ID as the key, and enter the value. The filter supports equals, not equals, in, and not in. Matching is exact and case-sensitive, and the filter combines with the namespace, flow, state, and date filters. The search box does not match searchable values.
