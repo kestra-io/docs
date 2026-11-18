@@ -1,5 +1,4 @@
 ---
-
 ---
 
 <section class="run-kestra" aria-labelledby="run-kestra">
@@ -63,6 +62,8 @@
 </section>
 
 <script>
+    import { HEART, HULL, SPRITE, type Rgb } from "./rocket"
+
     function flyRocket() {
         const canvas =
             document.querySelector<HTMLCanvasElement>("[data-rocket]")
@@ -75,68 +76,6 @@
         const HEADING = (-29 * Math.PI) / 180
         const FWD = { x: Math.cos(HEADING), y: Math.sin(HEADING) }
 
-        const SPRITE = [
-            "..BBBBBBBBBBBBBBBBBBBBBPPPPPP",
-            "..BBBBBBBBBBBBBBBBBBBBBPPPPPP",
-            "..BBBBBBBBBBBBBBBBBBBBBPPPPPP",
-            ".....BBBBBBBBBBBB",
-            ".....BBBBBBBBBBBB",
-            ".....BBBBBBBBBBBB",
-            "........BBBBBBBBBBBB",
-            "........BBBBBBBBBBBB",
-            "........BBBBBBBBBBBB",
-            "...........BBBBBBBBBBBBBBBPPPPPP",
-            "...........BBBBBBBBBBBBBBBPPPPPP",
-            "...........BBBBBBBBBBBBBBBPPPPPP",
-            ".......DDDDBBBBBBBBBDDD",
-            "..DDDDDDDDDBBBBBBBBBDDD",
-            "..DDDDDDDDDBBBBBBBBBDDD",
-            "......DDDDDDBBBBBBBBBBBDDD",
-            "......DDDDDBBBBBBBBBBBBBDD",
-            "......DDDDDDBBBBBBBBBBBBDD",
-            "......BBBBBBBBBBBBLLLBBBBBDDD",
-            "......BBBBBBBBBBBBLLLBBBBBBDD",
-            "......BBBBBBBBBBBBLLLBBBBBBDD",
-            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
-            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
-            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
-            ".........BBBLLLBBBLLLBBBLLLBBBBBBBBBBBBBBBBBBPPPPPP",
-            "BBBBBBBBBBBBLLLBBBLLLBBBLLLBBBBBBBBBBBBBBBBBBPPPPPP",
-            "BBBBBBBBBBBBLLLBBBLLLBBBLLLBBBBBBBBBBBBBBBBBBPPPPPP",
-            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
-            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
-            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
-            "......BBBBBBBBBBBBLLLBBBBBBDDD",
-            "......BBBBBBBBBBBBLLLBBBBBBDDD",
-            "......BBBBBBBBBBBBLLLBBBBBBDDD",
-            "......DDDDDDBBBBBBBBBBBBDDD",
-            "......DDDDDDBBBBBBBBBBBBDDD",
-            "......DDDDDDBBBBBBBBBBBBDDD",
-            "......DDDDDDBBBBBBBBBDDD",
-            "...DDDDDDDDDBBBBBBBBBDDD",
-            "...DDDDDDDDDBBBBBBBBBDDD",
-            "............BBBBBBBBBBBBBBBPPPPPP",
-            "............BBBBBBBBBBBBBBBPPPPPP",
-            "............BBBBBBBBBBBBBBBPPPPPP",
-            "............BBBBBBBBB",
-            ".........BBBBBBBBBBBB",
-            ".........BBBBBBBBBBBB",
-            ".........BBBBBBBBB",
-            "......BBBBBBBBBBBB",
-            "......BBBBBBBBBBBB",
-            "......BBBBBBBBBBBB",
-            "...BBBBBBBBBBBBBBBBBBBBBPPPPPP",
-            "...BBBBBBBBBBBBBBBBBBBBBPPPPPP",
-            "...BBBBBBBBBBBBBBBBBBBBBPPPPPP",
-        ]
-        const HEART = { x: 14, y: 25.5 }
-        type Rgb = [number, number, number]
-        const HULL: Record<string, Rgb> = {
-            B: [92, 84, 255],
-            D: [33, 66, 255],
-            L: [184, 176, 255],
-            P: [255, 4, 254],
-        }
         const FLAGSHIP: Record<string, Rgb> = {
             B: [238, 236, 250],
             D: [150, 152, 196],
