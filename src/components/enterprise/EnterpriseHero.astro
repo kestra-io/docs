@@ -401,10 +401,11 @@ const DUST = [
 
     .frame {
         --success: #5ee3ae;
-        --running: #9d78ff;
+        --running: #b39aff;
         --warning: #f28c5c;
         --danger: #ff6b6b;
         --neutral: #b9b9c6;
+        --card: rgb(52, 44, 118);
 
         position: relative;
         overflow: hidden;
@@ -537,7 +538,7 @@ const DUST = [
         margin: -2.375rem;
         border: 2px solid rgba(255, 255, 255, calc(0.3 + var(--level) * 0.08));
         border-radius: 0.875rem;
-        background: rgb(52, 44, 118);
+        background: var(--card);
         box-shadow:
             0 0 calc(18px + var(--level) * 16px) calc(var(--level) * 2px)
                 rgba(124, 102, 255, calc(0.16 + var(--level) * 0.19)),
@@ -792,7 +793,7 @@ const DUST = [
             padding: 0.25rem 0.625rem;
             border-radius: 0.5rem;
             translate: -50% -50%;
-            background: rgb(52, 44, 118);
+            background: var(--card);
             box-shadow: inset 0 0 0 1px rgba(214, 204, 255, 0.45);
             font-size: 0.8125rem;
             font-weight: 500;
@@ -1176,7 +1177,7 @@ const DUST = [
 
         border-radius: 0.75rem;
 
-        background-color: rgb(52, 44, 118);
+        background-color: var(--card);
         box-shadow: inset 0 0 0 1px rgba(214, 204, 255, 0.45);
 
         &::before {
@@ -1202,7 +1203,7 @@ const DUST = [
             background-color: color-mix(
                 in srgb,
                 var(--tone) 14%,
-                rgb(52, 44, 118)
+                var(--card)
             );
             transition-duration: 0.15s;
         }
