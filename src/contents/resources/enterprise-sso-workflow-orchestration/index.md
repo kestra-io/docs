@@ -76,7 +76,7 @@ An onboarding workflow can be triggered automatically from an HR system like Ser
 
 Manual user provisioning and de-provisioning are time-consuming and error-prone. Orchestration automates these repetitive tasks, freeing up IT and security teams to focus on more strategic initiatives. By defining access policies as code within an orchestration platform, enterprises can ensure that every user receives the correct permissions based on their role, and that these permissions are updated automatically as their role changes.
 
-This approach to [infrastructure automation](https://kestra.io/resources/infrastructure/automation) not only reduces the administrative burden but also helps [solve orchestration complexity](https://kestra.io/resources/infrastructure/orchestration-problems-complexity) by providing a single, auditable source of truth for access control logic.
+This approach to [infrastructure automation](https://kestra.io/resources/infrastructure/automation) not only reduces the administrative burden but also helps [solve orchestration complexity](https://kestra.io/resources/orchestration) by providing a single, auditable source of truth for access control logic.
 
 ## Implementing Enterprise SSO Workflow Orchestration
 
