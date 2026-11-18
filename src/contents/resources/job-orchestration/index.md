@@ -53,7 +53,7 @@ Without a centralized orchestration platform, teams often resort to a patchwork 
 *   **Reduced Manual Toil:** By automating complex sequences, orchestration eliminates the need for engineers to manually monitor and trigger dependent jobs.
 *   **Auditability and Governance:** Centralized logs and version-controlled workflow definitions provide a clear audit trail for compliance and security.
 
-Attempting to manage modern IT and data systems without orchestration often leads to significant [orchestration problems and complexity](/resources/infrastructure/orchestration-problems-complexity), including siloed automation efforts, inconsistent error handling, and slow incident response times.
+Attempting to manage modern IT and data systems without orchestration often leads to significant [orchestration problems and complexity](/resources/orchestration), including siloed automation efforts, inconsistent error handling, and slow incident response times.
 
 ## Orchestrate Your Jobs with Kestra: An End-to-End Deployment Example
 
