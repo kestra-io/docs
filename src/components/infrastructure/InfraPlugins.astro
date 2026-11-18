@@ -1,0 +1,385 @@
+---
+import { API_URL } from "astro:env/client"
+import sharp from "sharp"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
+
+const PLUGINS = [
+    {
+        type: "terraform.cli.TerraformCLI",
+        slug: "terraform",
+        name: "Terraform",
+    },
+    {
+        type: "ansible.cli.AnsibleCLI",
+        slug: "ansible",
+        name: "Ansible",
+        crop: "0 0 256 256",
+        twoTone: true,
+    },
+    { type: "ee.vmware", slug: "ee-vmware", name: "VMware vSphere" },
+    { type: "ee.nutanix", slug: "ee-nutanix", name: "Nutanix" },
+    { type: "proxmox", slug: "proxmox", name: "Proxmox" },
+    {
+        type: "kubernetes.core.PodCreate",
+        slug: "kubernetes",
+        name: "Kubernetes",
+    },
+    { type: "aws.cli.AwsCLI", slug: "aws", name: "AWS" },
+    { type: "azure.cli.AzCLI", slug: "azure", name: "Azure" },
+    { type: "gcp.cli.GCloudCLI", slug: "gcp", name: "Google Cloud" },
+    { type: "servicenow.Post", slug: "servicenow", name: "ServiceNow" },
+    { type: "jira.issues.Create", slug: "jira", name: "Jira" },
+    {
+        type: "scripts.powershell.Script",
+        slug: "script-powershell",
+        name: "PowerShell",
+    },
+    { type: "docker.Run", slug: "docker", name: "Docker" },
+    { type: "git.Clone", slug: "git", name: "Git" },
+]
+
+const cropped = (svg: string, viewBox: string) =>
+    Buffer.from(
+        Buffer.from(svg, "base64")
+            .toString()
+            .replace(/<svg[^>]*>/, (tag) =>
+                tag
+                    .replace(/\s(?:width|height)="[^"]*"/g, "")
+                    .replace(/viewBox="[^"]*"/, `viewBox="${viewBox}"`),
+            ),
+    ).toString("base64")
+
+const fetchIcon = async (type: string) => {
+    try {
+        const response = await fetch(
+            `${API_URL}/plugins/icons/io.kestra.plugin.${type}`,
+        )
+        if (!response.ok) return null
+        return Buffer.from(await response.arrayBuffer()).toString("base64")
+    } catch {
+        return null
+    }
+}
+
+const isDark = async (svg: string) => {
+    try {
+        const { data } = await sharp(Buffer.from(svg, "base64"))
+            .resize(24, 24)
+            .ensureAlpha()
+            .raw()
+            .toBuffer({ resolveWithObject: true })
+        let light = 0
+        let ink = 0
+        for (let i = 0; i < data.length; i += 4) {
+            const alpha = data[i + 3] / 255
+            light +=
+                alpha *
+                (0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2])
+            ink += alpha
+        }
+        return ink > 0 && light / ink < 70
+    } catch {
+        return false
+    }
+}
+
+const [generic, ...fetched] = await Promise.all(
+    ["unknown.Plugin", ...PLUGINS.map((plugin) => plugin.type)].map(fetchIcon),
+)
+
+const tiles = (
+    await Promise.all(
+        PLUGINS.map(async (plugin, idx) => {
+            const raw = fetched[idx]
+            if (!raw || raw === generic) return null
+            const svg = plugin.crop ? cropped(raw, plugin.crop) : raw
+            return {
+                name: plugin.name,
+                href: `/plugins/plugin-${plugin.slug}`,
+                src: `data:image/svg+xml;base64,${svg}`,
+                tone: plugin.twoTone
+                    ? "flip"
+                    : (await isDark(svg))
+                      ? "dark"
+                      : undefined,
+            }
+        }),
+    )
+).filter((tile) => tile !== null)
+---
+
+<section class="infra-plugins" aria-labelledby="infra-plugins">
+    <div class="container-xl">
+        <div class="lead-in"></div>
+    </div>
+    <div class="stage surface-dark" data-header-dark>
+        <div class="container-xl">
+            <div class="rails">
+                <header>
+                    <div>
+                        <h2 id="infra-plugins">
+                            <span>Works with the tools</span>{" "}
+                            <em>you already run.</em>
+                        </h2>
+                        <p>
+                            Your infrastructure as code, hypervisors, clouds and
+                            ITSM are a plugin away. Kestra ships {totalPlugins}+
+                            of them.
+                        </p>
+                    </div>
+                    <a href="/plugins" class="btn-ghost">
+                        See all plugins
+                    </a>
+                </header>
+                <div class="marquee" data-dock>
+                    {[false, true].map((copy) => (
+                        <ul aria-hidden={copy ? "true" : undefined}>
+                            {tiles.map((tile) => (
+                                <li>
+                                    <a
+                                        href={tile.href}
+                                        tabindex={copy ? -1 : undefined}
+                                    >
+                                        <span
+                                            class:list={["tile", tile.tone]}
+                                            style={`--icon: url(${tile.src})`}
+                                        />
+                                        {tile.name}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    ))}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const dock = document.querySelector<HTMLElement>("[data-dock]")
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+
+    if (dock && !still) {
+        const tiles = [...dock.querySelectorAll<HTMLElement>(".tile")]
+        const REACH = 130
+        const GROW = 0.55
+        let pointer: number | null = null
+        let frame = 0
+
+        const magnify = () => {
+            for (const tile of tiles) {
+                const box = tile.getBoundingClientRect()
+                const away = (box.left + box.width / 2 - pointer!) / REACH
+                const zoom = 1 + GROW * Math.exp(-away * away)
+                tile.style.setProperty("--zoom", zoom.toFixed(3))
+            }
+            frame = requestAnimationFrame(magnify)
+        }
+
+        dock.addEventListener("pointermove", (event) => {
+            if (event.pointerType !== "mouse") return
+            if (pointer === null) frame = requestAnimationFrame(magnify)
+            pointer = event.clientX
+        })
+
+        dock.addEventListener("pointerleave", () => {
+            cancelAnimationFrame(frame)
+            pointer = null
+            for (const tile of tiles) tile.style.removeProperty("--zoom")
+        })
+    }
+</script>
+
+<style lang="scss">
+    .infra-plugins {
+        background: var(--ks-background-body);
+    }
+
+    .lead-in {
+        height: clamp(4.5rem, 8vw, 7rem);
+        border-inline: 1px solid var(--ks-border-primary);
+
+        @include media-breakpoint-down(xl) {
+            border-inline: 0;
+        }
+    }
+
+    .stage {
+        --rule-color: rgba(255, 255, 255, 0.11);
+        --rule: 1px solid var(--rule-color);
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(180deg, #000000 30%, #17181e 100%);
+        color: #ffffff;
+    }
+
+    .rails {
+        border-inline: var(--rule);
+
+        @include media-breakpoint-down(xl) {
+            border-inline: 0;
+        }
+    }
+
+    header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 2rem 3rem;
+        padding: 6.5rem var(--inset) 4.5rem;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem 3rem;
+        }
+
+        h2 {
+            max-width: 14em;
+            margin: 0;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            text-wrap: balance;
+            color: #ffffff;
+
+            span {
+                color: #a9a9b8;
+            }
+
+            em {
+                font-style: normal;
+            }
+        }
+
+        p {
+            max-width: 36rem;
+            margin: 1.25rem 0 0;
+            font-size: 1.125rem;
+            line-height: 1.55;
+            text-wrap: pretty;
+            color: rgba(255, 255, 255, 0.6);
+        }
+    }
+
+    .marquee {
+        --gap: 3.5rem;
+
+        @include media-breakpoint-down(md) {
+            --gap: 1.25rem;
+        }
+
+        display: flex;
+        gap: var(--gap);
+        padding-block: 4rem 4.5rem;
+        border-top: var(--rule);
+        overflow: hidden;
+        mask-image: linear-gradient(
+            90deg,
+            transparent,
+            #000 12%,
+            #000 88%,
+            transparent
+        );
+
+        ul {
+            display: flex;
+            flex: none;
+            gap: var(--gap);
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            animation: infra-plugins-slide 45s linear infinite;
+        }
+    }
+
+    li {
+        width: 6.5rem;
+    }
+
+    li a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.875rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        line-height: 1.3;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.86);
+        text-decoration: none;
+        transition: color 0.2s ease;
+
+        &:hover,
+        &:focus-visible {
+            color: #ffffff;
+        }
+    }
+
+    .tile {
+        position: relative;
+        width: 4rem;
+        height: 4rem;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 0.75rem;
+        background: linear-gradient(180deg, #26262c, #18181c);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.12),
+            0 10px 30px rgba(0, 0, 0, 0.5);
+        transform-origin: 50% 100%;
+        scale: var(--zoom, 1);
+        transition:
+            scale 0.18s ease-out,
+            border-color 0.25s ease;
+
+        a:hover > &,
+        a:focus-visible > & {
+            border-color: rgba(255, 255, 255, 0.45);
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 24%;
+            background: var(--icon) center / contain no-repeat;
+        }
+
+        &.dark::before {
+            filter: brightness(0) invert(1);
+        }
+
+        &.flip::before {
+            filter: invert(1);
+        }
+    }
+
+    @keyframes infra-plugins-slide {
+        to {
+            transform: translateX(calc(-100% - var(--gap)));
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .marquee {
+            flex-wrap: wrap;
+            justify-content: center;
+            mask-image: none;
+
+            ul {
+                flex: 0 1 auto;
+                flex-wrap: wrap;
+                justify-content: center;
+                animation: none;
+            }
+
+            ul[aria-hidden] {
+                display: none;
+            }
+        }
+    }
+</style>

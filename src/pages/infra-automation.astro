@@ -11,6 +11,7 @@ import AppsMock from "~/components/enterprise/mocks/AppsMock.astro"
 import InfraMock from "~/components/infrastructure/InfraMock.astro"
 import InfraMigration from "~/components/infrastructure/InfraMigration.astro"
 import InfraClosing from "~/components/infrastructure/InfraClosing.astro"
+import InfraPlugins from "~/components/infrastructure/InfraPlugins.astro"
 import InfraUseCases from "~/components/infrastructure/InfraUseCases.astro"
 import manufacturerPhoto from "~/components/enterprise/assets/manufacturer.jpg"
 import dataportPhoto from "~/components/enterprise/assets/dataport.jpg"
@@ -220,6 +221,7 @@ const STORIES: Story[] = [
             <InfraMock slot="assets" view="assets" />
         </EnterpriseShowcase>
         <InfraUseCases />
+        <InfraPlugins />
         <Customers stories={STORIES} foot={false} placeholder={false}>
             <Fragment slot="title">
                 Infrastructure teams that made the move
@@ -230,7 +232,7 @@ const STORIES: Story[] = [
             </Fragment>
         </Customers>
         <InfraMigration />
-        <InfraClosing />
         <BuyerQuestions items={FAQ} />
+        <InfraClosing />
     </PageShell>
 </Layout>

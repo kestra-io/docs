@@ -25,11 +25,7 @@ const JOBS = [
 ]
 ---
 
-<section
-    class="infra-glue surface-dark"
-    aria-labelledby="as-code"
-    data-header-dark
->
+<section class="infra-glue" aria-labelledby="as-code">
     <div class="container-xl">
         <div class="rails">
             <header>
@@ -59,18 +55,12 @@ const JOBS = [
 
 <style lang="scss">
     .infra-glue {
-        --rule: 1px solid rgba(255, 255, 255, 0.1);
+        --rule: 1px solid var(--ks-border-primary);
         --inset: clamp(1.5rem, 3vw, 2.5rem);
 
         position: relative;
-        background:
-            radial-gradient(
-                60% 70% at 50% 0%,
-                rgba(112, 88, 255, 0.2),
-                transparent 70%
-            ),
-            linear-gradient(180deg, #060609 0%, #0c0b12 100%);
-        color: #ffffff;
+        background: var(--ks-background-body);
+        border-bottom: var(--rule);
     }
 
     .rails {
@@ -100,7 +90,7 @@ const JOBS = [
             letter-spacing: -0.02em;
             line-height: 1.1;
             text-wrap: balance;
-            color: #ffffff;
+            color: var(--ks-content-primary);
         }
 
         p {
@@ -109,7 +99,7 @@ const JOBS = [
             font-size: 1.125rem;
             line-height: 1.55;
             text-wrap: pretty;
-            color: rgba(255, 255, 255, 0.68);
+            color: var(--ks-content-secondary);
         }
     }
 
@@ -142,14 +132,14 @@ const JOBS = [
             right: 0;
             left: 0;
             height: 2px;
-            background: #b9a6ff;
+            background: var(--ks-content-primary);
             transform: scaleX(0);
             transform-origin: left;
             transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         &:hover {
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--ks-background-secondary);
 
             &::before {
                 transform: none;
@@ -184,7 +174,7 @@ const JOBS = [
             width: 1.5rem;
             height: 1.5rem;
             margin-bottom: 1.5rem;
-            color: #b9a6ff;
+            color: var(--ks-content-primary);
         }
     }
 
@@ -194,14 +184,14 @@ const JOBS = [
         font-weight: 600;
         letter-spacing: -0.01em;
         line-height: 1.25;
-        color: #ffffff;
+        color: var(--ks-content-primary);
     }
 
     li p {
         margin: 0;
         font-size: 0.9375rem;
         line-height: 1.6;
-        color: rgba(255, 255, 255, 0.68);
+        color: var(--ks-content-secondary);
     }
 
     @media (prefers-reduced-motion: reduce) {

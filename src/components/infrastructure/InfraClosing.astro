@@ -2,9 +2,19 @@
 import { Icon } from "astro-icon/components"
 ---
 
-<section class="infra-closing" aria-labelledby="infra-closing">
+<section
+    class="infra-closing surface-dark"
+    aria-labelledby="infra-closing"
+    data-header-dark
+>
+    <div class="haze" aria-hidden="true">
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+    </div>
     <div class="container-xl">
-        <div class="rails surface-dark" data-header-dark>
+        <div class="rails">
             <h2 id="infra-closing">
                 See Kestra for Infrastructure on your own code.
             </h2>
@@ -27,7 +37,20 @@ import { Icon } from "astro-icon/components"
 
     .infra-closing {
         position: relative;
-        background: var(--ks-background-body);
+        isolation: isolate;
+        overflow: hidden;
+        background: linear-gradient(180deg, #000000 30%, #17181e 100%);
+        color: #ffffff;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.11);
+        }
     }
 
     .rails {
@@ -35,19 +58,85 @@ import { Icon } from "astro-icon/components"
         flex-direction: column;
         align-items: center;
         padding: 7.5rem clamp(1.5rem, 4vw, 3.5rem);
-        background:
-            radial-gradient(
-                50% 80% at 50% 110%,
-                rgba(112, 88, 255, 0.38),
-                rgba(90, 84, 130, 0.08) 55%,
-                transparent 78%
-            ),
-            linear-gradient(180deg, #060609 0%, #0e0d14 55%, #060609 100%);
-        color: #ffffff;
+        border-inline: 1px solid rgba(255, 255, 255, 0.11);
         text-align: center;
+
+        @include media-breakpoint-down(xl) {
+            border-inline: 0;
+        }
 
         @include media-breakpoint-down(md) {
             padding-block: 4.5rem;
+        }
+    }
+
+    .haze {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        filter: blur(90px);
+
+        i {
+            position: absolute;
+            width: 42%;
+            aspect-ratio: 1.6;
+            border-radius: 50%;
+            background: #8a8c9c;
+            opacity: 0.22;
+            animation: infra-closing-drift 22s ease-in-out infinite alternate;
+        }
+
+        i:nth-child(1) {
+            top: -40%;
+            left: -6%;
+        }
+
+        i:nth-child(2) {
+            top: 15%;
+            right: -8%;
+            background: #5c5e6c;
+            opacity: 0.3;
+            animation-duration: 27s;
+            animation-delay: -9s;
+        }
+
+        i:nth-child(3) {
+            bottom: -50%;
+            left: 22%;
+            background: #c9cbd8;
+            opacity: 0.14;
+            animation-duration: 31s;
+            animation-delay: -15s;
+        }
+
+        i:nth-child(4) {
+            top: -25%;
+            left: 44%;
+            width: 26%;
+            background: #a3a5b6;
+            opacity: 0.18;
+            animation-duration: 19s;
+            animation-delay: -5s;
+        }
+    }
+
+    @keyframes infra-closing-drift {
+        0% {
+            transform: translate(-12%, -8%) scale(0.9);
+        }
+
+        50% {
+            transform: translate(18%, 14%) scale(1.15);
+        }
+
+        100% {
+            transform: translate(34%, -6%) scale(1);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .haze i {
+            animation: none;
         }
     }
 
@@ -61,7 +150,7 @@ import { Icon } from "astro-icon/components"
     p {
         @include lead;
         max-width: 40rem;
-        color: #9a9aa8;
+        color: rgba(255, 255, 255, 0.72);
     }
 
     .ctas {
