@@ -90,7 +90,7 @@ import BlockTitle from "~/components/enterprise/BlockTitle.astro"
                 phase: rand(i, 18) * 6.28,
             }
         })
-        const HEADING = (-29 * Math.PI) / 180
+        const HEADING = (-6 * Math.PI) / 180
         const FWD = { x: Math.cos(HEADING), y: Math.sin(HEADING) }
         const SPREAD = 0.2
         const TIP = 37 - HEART.x
@@ -143,7 +143,7 @@ import BlockTitle from "~/components/enterprise/BlockTitle.astro"
                 ? Math.max(9, Math.min(15, width / 110))
                 : Math.max(6, width / 60)
             home = wide
-                ? { x: width * 0.68, y: height * 0.62 }
+                ? { x: width * 0.64, y: height * 0.5 }
                 : { x: width * 0.42, y: 67 + unit * 17 }
             reach = wide ? Math.min(width * 0.5, 760) : width * 0.85
             beam = paintBeam()
@@ -173,7 +173,7 @@ import BlockTitle from "~/components/enterprise/BlockTitle.astro"
                 x: home.x + Math.sin(t * 0.7) * unit * 0.6,
                 y: home.y + Math.sin(t * 0.9 + 1.3) * unit * 0.8,
             }
-            const angle = still ? HEADING : HEADING + Math.sin(t * 0.45) * 0.22
+            const angle = still ? HEADING : HEADING + Math.sin(t * 0.45) * 0.14
             const fine = unit / STEPS
             const nose = {
                 x: at.x + Math.cos(angle) * TIP * fine,
