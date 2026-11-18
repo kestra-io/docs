@@ -423,8 +423,8 @@ const {
         }
     }
 
-    .panels:last-child {
-        margin-bottom: clamp(4.5rem, 8vw, 7rem);
+    .grid:has(> .panels:last-child) {
+        padding-bottom: clamp(4.5rem, 8vw, 7rem);
     }
 
     .foot {

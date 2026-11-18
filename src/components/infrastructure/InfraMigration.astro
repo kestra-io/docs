@@ -197,6 +197,12 @@ const PATHS = [
             font-weight: 600;
             color: var(--ks-content-primary);
             text-decoration: none;
+            transition: color 0.2s ease;
+
+            &:hover,
+            &:focus-visible {
+                color: var(--ks-content-link);
+            }
 
             span {
                 background: linear-gradient(currentColor, currentColor) left

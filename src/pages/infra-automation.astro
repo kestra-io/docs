@@ -1,11 +1,11 @@
 ---
 import Layout from "~/components/layout.astro"
 import PageShell from "~/components/home/PageShell.astro"
-import ReplaceLegacy from "~/components/home/ReplaceLegacy.astro"
 import Customers, { type Story } from "~/components/home/Customers.astro"
 import { flat } from "~/components/home/flatLogo"
 import EnterpriseShowcase from "~/components/enterprise/EnterpriseShowcase.astro"
 import InfraHero from "~/components/infrastructure/InfraHero.astro"
+import InfraGlue from "~/components/infrastructure/InfraGlue.astro"
 import InfraMock from "~/components/infrastructure/InfraMock.astro"
 import InfraMigration from "~/components/infrastructure/InfraMigration.astro"
 import InfraClosing from "~/components/infrastructure/InfraClosing.astro"
@@ -18,29 +18,6 @@ import amdocs from "~/components/home/assets/companies/amdocs.svg?raw"
 const title = "Kestra for Infrastructure"
 const description =
     "Kestra for Infrastructure turns your infrastructure as code into a governed service catalog for platform engineering teams."
-
-const JOBS = [
-    {
-        icon: "mdi:file-search-outline",
-        title: "Know what ran, what broke and why",
-        text: "Kestra for Infrastructure runs every Terraform, Ansible and PowerCLI step as one execution with one record. When something fails, you trace it in one place instead of four consoles, and the failure opens a case with an owner.",
-    },
-    {
-        icon: "mdi:timer-sand",
-        title: "Give your platform team its time back",
-        text: "Teams request what they need from a service catalog, and the request closes itself when the work is done. Nobody carries a ticket forward by hand, and approvals only stop the requests that need them.",
-    },
-    {
-        icon: "mdi:account-clock-outline",
-        title: "Stop paying for forgotten environments",
-        text: "Every resource gets an owner and a lease, so idle environments are retired by a cleanup flow before they turn into line items. And no per-node licence grows with every server you automate.",
-    },
-    {
-        icon: "mdi:robot-outline",
-        title: "Run AI agents safely",
-        text: "AI agents request through the same governed catalog as people, over MCP. Approvals, RBAC, SSO and an audit trail cover every action, self-hosted or air-gapped, and agents never hold credentials.",
-    },
-]
 
 const PANELS = [
     {
@@ -154,16 +131,7 @@ const STORIES: Story[] = [
                 </span>
             </Fragment>
         </Customers>
-        <ReplaceLegacy id="as-code" items={JOBS} ctas={[]}>
-            <Fragment slot="title">
-                Ditch disparate glue scripts with Kestra for Infrastructure
-            </Fragment>
-            <Fragment slot="lead">
-                Cron jobs, CI pipelines and ticket queues each work on their
-                own. Together, they hide what ran, slow every request, leave
-                nobody accountable and give AI agents no safe way in.
-            </Fragment>
-        </ReplaceLegacy>
+        <InfraGlue />
         <EnterpriseShowcase
             id="infra-showcase"
             label="Product areas"
