@@ -25,14 +25,6 @@ Open **Settings | Plugins | Marketplace**, search for **Kestra**, click **Instal
 
 On machines that can't reach the Marketplace, download the `.zip` attached to a [GitHub release](https://github.com/kestra-io/jetbrains-kestra/releases). Then open **Settings | Plugins | ⚙ | Install Plugin from Disk…**, select the archive, and restart the IDE.
 
-### Pre-releases
-
-Pre-release versions are published to the `beta` channel. To get them, open **Settings | Plugins | ⚙ | Manage Plugin Repositories…** and add:
-
-```
-https://plugins.jetbrains.com/plugins/beta/list
-```
-
 ## Setup
 
 Open **Settings | Tools | Kestra** and set the instance **URL**, for example `http://localhost:8080`. For a multi-tenant instance, also set the **Tenant**. On an Enterprise Edition instance, signing in fills the tenant for you. These settings apply to every project.
