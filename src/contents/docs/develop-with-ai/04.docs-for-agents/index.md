@@ -26,7 +26,7 @@ https://kestra.io/.well-known/mcp.json
 https://api.kestra.io/v1/mcp
 ```
 
-No authentication required for the public server. For per-tool configuration, see [Docs MCP server](../02.kestra-mcp-resources/index.md). This server serves documentation only; to call your own flows from an agent, see [Flow MCP servers](../../ai-orchestration/03.mcp-server/index.md).
+No authentication required for the public server. For per-tool configuration, see [Docs MCP server](../02.kestra-mcp-resources/index.md). This server serves documentation only; to call your own flows from an agent, see [MCP Flows](../../ai-orchestration/03.mcp-server/index.md), and to operate your instance from an agent, see the [Kestra MCP Server](../05.kestra-mcp-server/index.md).
 
 ## Agent Skills
 

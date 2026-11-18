@@ -49,7 +49,7 @@ Infrastructure self-service in a dedicated tenant type, searchable execution val
 
 ## AI
 
-- **Platform MCP server**: expose the AI Copilot's tools for flows and executions to external MCP clients at `/api/v1/mcp`. [Docs](../../../ai-orchestration/03.mcp-server/index.md#platform-mcp-server)
+- **Kestra MCP Server**: expose the AI Copilot's tools for flows and executions to external MCP clients at `/api/v1/mcp`. [Docs](../../../develop-with-ai/05.kestra-mcp-server/index.md)
 - **Copilot unit tests (EE, Cloud)**: generate a unit test for an existing flow. [Docs](../../../develop-with-ai/01.ai-copilot/index.md#generate-a-unit-test)
 - **Copilot free tier (OSS)**: an instance with no LLM provider uses a free Copilot hosted by Kestra. Turn it off with `kestra.ai.free-tier.enabled: false`. [Docs](../../../develop-with-ai/01.ai-copilot/index.md#free-tier)
 - **Copilot usage limits**: cap each provider's spend for the whole instance and per user, by day, week, or month. Copilot shows the share left. [Docs](../../../develop-with-ai/01.ai-copilot/index.md#set-usage-limits)
@@ -94,6 +94,7 @@ Smaller changes to existing behavior that don't need a migration guide.
 - **API sort direction**: the `sort` query parameter accepts `asc` and `desc` in any case, and any other direction returns `422` instead of silently sorting descending. Also in 2.0.x.
 - **`distinct` filter**: `{{ null | distinct }}` returns null instead of the string `"null"`, so `??`, `is null`, and `if` conditions behave as expected.
 - **Execution live view**: the execution page reconnects its live stream after a dropped connection. The `GET /executions/{id}/follow` stream sends a heartbeat every 30 seconds and always ends after one hour.
+- **MCP Flows**: the **Tenant → MCP Servers** page is renamed **MCP Flows**, so it isn't confused with the Kestra MCP Server. Server IDs, the `/api/v1/{tenant}/mcp-servers` API, and the `kestractl mcp-servers` commands don't change. [Docs](../../../ai-orchestration/03.mcp-server/index.md)
 - **Triggers list**: Webhook, MCP Tool, Flow, and asset event triggers now appear in **Tenant → Triggers** and the triggers API with the type `UNSCHEDULED`, including on existing flows after the upgrade. Disable them in the flow source, since they can't be toggled there. [Docs](../../../05.workflow-components/07.triggers/index.mdx#disabling-a-trigger-from-the-ui)
 - **Versioned Plugins screen (EE)**: the Instance Owner menu no longer has a Versioned Plugins entry. Plugin versions are managed from the **Plugins** page, and links to the former screen redirect there.
 

@@ -3,12 +3,12 @@ title: "Kestra Docs MCP Server for AI Coding Agents"
 h1: Connect Your Coding Agent to Kestra Docs and Plugin Schemas
 sidebarTitle: Docs MCP Server
 icon: /src/contents/docs/icons/ai.svg
-description: Connect Claude Code, Cursor, or another coding agent to the hosted Kestra MCP server for live plugin schemas, blueprints, and docs while you write flows.
+description: Connect Claude Code, Cursor, or another coding agent to the hosted Kestra Docs MCP server for live plugin schemas, blueprints, and docs while you write flows.
 ---
 
 Give your coding agent live access to Kestra plugin schemas, blueprints, and documentation through a hosted MCP server.
 
-This page is for developers who write flows in Claude Code, Cursor, Codex, or another coding agent. The server is public, read-only, and hosted by Kestra; it doesn't connect to your Kestra instance. To let external AI agents run *your* flows as tools, see [Flow MCP servers](../../ai-orchestration/03.mcp-server/index.md).
+This page is for developers who write flows in Claude Code, Cursor, Codex, or another coding agent. The server is public, read-only, and hosted by Kestra; it doesn't connect to your Kestra instance. To let external AI agents run *your* flows as tools, see [MCP Flows](../../ai-orchestration/03.mcp-server/index.md). To let an agent read flows and executions on your instance, see the [Kestra MCP Server](../05.kestra-mcp-server/index.md).
 
 ## What the server provides
 

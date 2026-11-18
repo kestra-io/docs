@@ -156,7 +156,7 @@ If you are upgrading from Kestra 1.x, see the [RBAC action model migration guide
 
 ### MCP server permissions
 
-`MCP_SERVER` is a first-class RBAC resource that controls access to [flow MCP servers](../../../ai-orchestration/03.mcp-server/index.md). Supported actions are `VIEW`, `LIST`, `CREATE`, `UPDATE`, and `DELETE`.
+`MCP_SERVER` is a first-class RBAC resource that controls access to [MCP Flows](../../../ai-orchestration/03.mcp-server/index.md) servers. Supported actions are `VIEW`, `LIST`, `CREATE`, `UPDATE`, and `DELETE`.
 
 Default role assignments:
 

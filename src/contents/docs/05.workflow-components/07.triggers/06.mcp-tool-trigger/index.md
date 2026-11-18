@@ -7,7 +7,7 @@ icon: /src/contents/docs/icons/flow.svg
 version: ">= 2.0.0"
 ---
 
-Expose a flow as a named tool on a Kestra MCP server.
+Expose a flow as a named tool on an MCP Flows server.
 
 The `McpToolTrigger` makes any flow discoverable and callable by MCP-compatible AI agents such as Claude Desktop, Claude Code, and Cursor. Flow inputs are automatically converted to a JSON schema tool spec so the AI agent knows exactly what parameters to pass. Each invocation creates a new flow execution tagged with `system.from:mcp` for observability.
 
@@ -16,7 +16,7 @@ type: io.kestra.plugin.core.trigger.McpToolTrigger
 ```
 
 :::alert{type="info"}
-Every tenant has a `default` MCP server provisioned on startup, so the trigger works without creating a server first. See [Flow MCP servers](../../../ai-orchestration/03.mcp-server/index.md) to create additional servers and connect AI agent clients.
+Every tenant has a `default` MCP server provisioned on startup, so the trigger works without creating a server first. See [MCP Flows](../../../ai-orchestration/03.mcp-server/index.md) to create additional servers and connect AI agent clients.
 :::
 
 ## Example
@@ -61,7 +61,7 @@ triggers:
 | `toolName` | Yes | — | Tool identifier shown to the AI agent. Must contain only alphanumeric characters, hyphens, underscores, or dots, and must start and end with an alphanumeric character. Maximum 64 characters. |
 | `title` | Yes | — | Human-readable name shown to the AI agent. |
 | `toolDescription` | Yes | — | Description of the tool shown to the AI agent, used to decide when to invoke it. Describe when and why to invoke the tool rather than just what it does; this significantly improves tool-selection accuracy. |
-| `mcpServer` | No | `"default"` | ID of the MCP server to register this tool on. Must match the `id` of an existing [flow MCP server](../../../ai-orchestration/03.mcp-server/index.md). |
+| `mcpServer` | No | `"default"` | ID of the MCP server to register this tool on. Must match the `id` of an existing [MCP Flows](../../../ai-orchestration/03.mcp-server/index.md) server. |
 | `annotations.readOnly` | No | `false` | Hint that this tool does not modify its environment. |
 | `annotations.destructive` | No | `true` | Hint that this tool may perform destructive updates. Only meaningful when `readOnly` is `false`. |
 | `annotations.openWorld` | No | `true` | Hint that this tool may interact with entities outside its closed domain. |

@@ -19,12 +19,12 @@ This section is for flow authors who put AI into production. Everything here run
 | Summarize, classify, or extract structured data at a fixed step | [LLM tasks](./01.ai-agents/index.md#call-an-llm-as-a-task) |
 | Give a model a goal and tools, and let it choose the steps | [`AIAgent` tasks](./01.ai-agents/index.md#build-an-ai-agent) |
 | Answer questions from your own documents or live web results | [RAG workflows](./02.ai-rag-workflows/index.md) |
-| Let Claude, Cursor, or another external AI agent run your flows | [Flow MCP servers](./03.mcp-server/index.md) |
+| Let Claude, Cursor, or another external AI agent run your flows | [MCP Flows](./03.mcp-server/index.md) |
 
 ## MCP in both directions
 
-Kestra works with the [Model Context Protocol](https://modelcontextprotocol.io/) both ways. As a client, an `AIAgent` task calls tools on external MCP servers through [MCP client tools](./01.ai-agents/index.md#mcp-clients). As a server, a [flow MCP server](./03.mcp-server/index.md) exposes your flows as tools that external agents call.
+Kestra works with the [Model Context Protocol](https://modelcontextprotocol.io/) both ways. As a client, an `AIAgent` task calls tools on external MCP servers through [MCP client tools](./01.ai-agents/index.md#mcp-clients). As a server, [MCP Flows](./03.mcp-server/index.md) exposes your flows as tools that external agents call.
 
-Neither is the [Docs MCP server](../develop-with-ai/02.kestra-mcp-resources/index.md), which gives coding agents Kestra documentation and plugin schemas while you write flows.
+Two other MCP servers serve development rather than flow runs. The [Kestra MCP Server](../develop-with-ai/05.kestra-mcp-server/index.md) lets an agent read flows and executions and restart executions on your instance. The [Docs MCP server](../develop-with-ai/02.kestra-mcp-resources/index.md) gives coding agents Kestra documentation and plugin schemas while you write flows.
 
 <ChildCard />
