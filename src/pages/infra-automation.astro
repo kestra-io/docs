@@ -5,10 +5,8 @@ import ReplaceLegacy from "~/components/home/ReplaceLegacy.astro"
 import Customers, { type Story } from "~/components/home/Customers.astro"
 import { flat } from "~/components/home/flatLogo"
 import EnterpriseShowcase from "~/components/enterprise/EnterpriseShowcase.astro"
-import Deployments from "~/components/enterprise/Deployments.astro"
 import InfraHero from "~/components/infrastructure/InfraHero.astro"
 import InfraMock from "~/components/infrastructure/InfraMock.astro"
-import InfraSteps from "~/components/infrastructure/InfraSteps.astro"
 import InfraMigration from "~/components/infrastructure/InfraMigration.astro"
 import InfraClosing from "~/components/infrastructure/InfraClosing.astro"
 import manufacturerPhoto from "~/components/enterprise/assets/manufacturer.jpg"
@@ -19,28 +17,28 @@ import amdocs from "~/components/home/assets/companies/amdocs.svg?raw"
 
 const title = "Kestra for Infrastructure"
 const description =
-    "Kestra automates every request, approval, and action on the Terraform and Ansible code you already have."
+    "Kestra for Infrastructure turns your infrastructure as code into a governed service catalog for platform engineering teams."
 
 const JOBS = [
     {
-        icon: "mdi:lightning-bolt-outline",
-        title: "Requests handled in minutes",
-        text: "Teams and AI agents request a VM, a database or a full environment from a form. Your code provisions it, with a sign-off where you want one.",
+        icon: "mdi:file-search-outline",
+        title: "Know what ran, what broke and why",
+        text: "Kestra for Infrastructure runs every Terraform, Ansible and PowerCLI step as one execution with one record. When something fails, you trace it in one place instead of four consoles, and the failure opens a case with an owner.",
     },
     {
-        icon: "mdi:view-grid-plus-outline",
-        title: "A self-service portal you own",
-        text: "Rebuild self-service on your existing Terraform, Ansible and PowerCLI code, on any hypervisor or cloud.",
+        icon: "mdi:timer-sand",
+        title: "Give your platform team its time back",
+        text: "Teams request what they need from a service catalog, and the request closes itself when the work is done. Nobody carries a ticket forward by hand, and approvals only stop the requests that need them.",
     },
     {
         icon: "mdi:account-clock-outline",
-        title: "Nothing left running without an owner",
-        text: "Every resource has an owner and a lease. Owners are reminded before it expires, and forgotten resources retire on their own.",
+        title: "Stop paying for forgotten environments",
+        text: "Every resource gets an owner and a lease, so idle environments are retired by a cleanup flow before they turn into line items. And no per-node licence grows with every server you automate.",
     },
     {
-        icon: "mdi:code-braces",
-        title: "Automation as code",
-        text: "Write workflows in declarative YAML, or let the AI Copilot draft them. Retries, logs and Git-based deploys come built in.",
+        icon: "mdi:robot-outline",
+        title: "Run AI agents safely",
+        text: "AI agents request through the same governed catalog as people, over MCP. Approvals, RBAC, SSO and an audit trail cover every action, self-hosted or air-gapped, and agents never hold credentials.",
     },
 ]
 
@@ -50,41 +48,67 @@ const PANELS = [
         tab: "Requests",
         icon: "mdi:file-document-outline",
         title: "Requests instead of tickets",
-        intro: "People and AI agents request what they need. Add a sign-off where your team wants one.",
+        intro: "Turn the infrastructure as code you already have into catalog items with a simple form. Developers, ops teams and AI agents pick what they need, and the request runs straight away instead of waiting in a queue.",
+        points: [
+            "Forms built on your own code, with defaults and guardrails your team sets",
+            "Sign-offs only where you want them, such as production or high-cost requests",
+            "One catalog for people and AI agents over MCP, under the same RBAC",
+        ],
     },
     {
         id: "deployments" as const,
         tab: "Deployments",
         icon: "mdi:server-outline",
         title: "Know what exists and who owns it",
-        intro: "Every deployment has a status, an owner and a lease.",
+        intro: "Every request becomes a deployment you can see and act on. Teams find what they own in one place, and platform engineers stop chasing spreadsheets to work out what is still in use.",
+        points: [
+            "A status, an owner and a lease on every deployment",
+            "Extend a lease or retire a resource from the same view",
+            "Expired leases trigger a cleanup flow automatically",
+        ],
     },
     {
         id: "cases" as const,
         tab: "Cases",
         icon: "mdi:alert-outline",
         title: "Failures become cases",
-        intro: "A failed run opens a case with an SLA, an assignee and a linked ServiceNow or Jira ticket.",
+        intro: "When a run fails, Kestra for Infrastructure opens a case with the execution attached: inputs, logs and the step that broke. Someone owns the fix from the start, and the requester can follow progress without chasing anyone.",
+        points: [
+            "An assignee and an SLA on every case",
+            "Linked to your ServiceNow or Jira ticket",
+            "Full context for the fix, with no digging through four consoles",
+        ],
     },
     {
         id: "assets" as const,
         tab: "Assets",
         icon: "mdi:layers-outline",
         title: "A live map of your resources",
-        intro: "Every resource you create is known, with its owner, its status and what depends on it.",
+        intro: "Every resource Kestra for Infrastructure creates is recorded as an asset, so your inventory updates itself instead of drifting from reality. Before you change or retire something, you can see what depends on it.",
+        points: [
+            "Owner, status and lineage for every VM, database and network",
+            "Dependencies visible before you change or retire anything",
+            "One inventory across clouds and hypervisors",
+        ],
     },
 ]
 
 const STORIES: Story[] = [
     {
-        company: "Fortune 500",
-        photo: manufacturerPhoto,
-        story: "Fortune 500 Company",
-        industry: "Heavy industry",
-        stat: "−90%",
-        label: "in licensing cost vs Aria Automation",
-        quote: "We eliminated the high cost and risk of VMware vRA. What used to take 6 months now takes 6 days with Kestra!",
-        author: "Principal Hosting",
+        company: "Amdocs",
+        photo: amdocsPhoto,
+        story: "Amdocs",
+        logo: flat(amdocs),
+        height: 22,
+        industry: "Telecom",
+        stat: "Days → hours",
+        label: "environment delivery time",
+        more: [
+            { stat: "Test-ready", label: "environments on delivery" },
+            { stat: "2 months", label: "from evaluation to production" },
+        ],
+        quote: "From a technical point of view, Kestra sits at the first place.",
+        author: "Alex Lernerman, DevOps Engineer, Amdocs",
     },
     {
         company: "Dataport",
@@ -95,38 +119,23 @@ const STORIES: Story[] = [
         industry: "Public sector",
         stat: "3 weeks",
         label: "to validate compliance",
+        more: [
+            { stat: "1", label: "control plane for private-cloud automation" },
+            { stat: "0", label: "external dependencies, fully self-hosted" },
+        ],
         quote: "Kestra gives us a modern orchestration platform we can run ourselves without compromising on governance.",
         author: "Platform Architect, Dataport",
     },
     {
-        company: "Amdocs",
-        photo: amdocsPhoto,
-        story: "Amdocs",
-        logo: flat(amdocs),
-        height: 22,
-        industry: "Telecom",
-        stat: "Days → hours",
-        label: "environment delivery time",
-        quote: "From a technical point of view, Kestra sits at the first place.",
-        author: "Alex Lernerman, DevOps Engineer, Amdocs",
-    },
-]
-
-const BUILT_IN = [
-    {
-        figure: "padlock" as const,
-        title: "Access and audit",
-        text: "RBAC, SSO, secrets management and audit logs on every request and every action.",
-    },
-    {
-        figure: "servers" as const,
-        title: "Runs where your infrastructure is",
-        text: "Self-hosted, on-premise or air-gapped, with isolated workers close to the systems they manage.",
-    },
-    {
-        figure: "patch" as const,
-        title: "Dashboards and alerts",
-        text: "See what is running, failing or about to expire, and alert the right team when something needs attention.",
+        company: "Fortune 500",
+        photo: manufacturerPhoto,
+        story: "Fortune 500 Company",
+        industry: "Heavy industry",
+        stat: "−90%",
+        label: "in licensing cost vs Aria Automation",
+        more: [{ stat: "30×", label: "faster time to deliver" }],
+        quote: "We eliminated the high cost and risk of VMware vRA. What used to take 6 months now takes 6 days with Kestra!",
+        author: "Principal Hosting",
     },
 ]
 ---
@@ -134,32 +143,7 @@ const BUILT_IN = [
 <Layout {title} {description} headerClean headerClear headerOverDark>
     <PageShell>
         <InfraHero />
-        <ReplaceLegacy id="as-code" items={JOBS} ctas={[]}>
-            <Fragment slot="title">
-                Give every team the infrastructure it needs, without the ticket
-                queue
-            </Fragment>
-            <Fragment slot="lead">
-                Teams and AI agents request what they need. Your existing code
-                delivers it in minutes, with approvals and owners built in.
-            </Fragment>
-        </ReplaceLegacy>
-        <EnterpriseShowcase
-            id="infra-showcase"
-            label="Product areas"
-            panels={PANELS}
-        >
-            <Fragment slot="title">
-                Self-service infrastructure, end to end
-            </Fragment>
-            <Fragment slot="lead">
-                From the first request to the day a resource retires.
-            </Fragment>
-            {PANELS.map((panel) => (
-                <InfraMock slot={panel.id} view={panel.id} />
-            ))}
-        </EnterpriseShowcase>
-        <InfraSteps />
+        <InfraMigration />
         <Customers stories={STORIES} foot={false} placeholder={false}>
             <Fragment slot="title">
                 Infrastructure teams that made the move
@@ -170,14 +154,34 @@ const BUILT_IN = [
                 </span>
             </Fragment>
         </Customers>
-        <Deployments id="infra-built-in" items={BUILT_IN} extras={false}>
-            <Fragment slot="title">Built in from day one</Fragment>
-            <Fragment slot="lead">
-                Every request is logged, retried when it fails and kept in a
-                full audit trail.
+        <ReplaceLegacy id="as-code" items={JOBS} ctas={[]}>
+            <Fragment slot="title">
+                Ditch disparate glue scripts with Kestra for Infrastructure
             </Fragment>
-        </Deployments>
-        <InfraMigration />
+            <Fragment slot="lead">
+                Cron jobs, CI pipelines and ticket queues each work on their
+                own. Together, they hide what ran, slow every request, leave
+                nobody accountable and give AI agents no safe way in.
+            </Fragment>
+        </ReplaceLegacy>
+        <EnterpriseShowcase
+            id="infra-showcase"
+            label="Product areas"
+            panels={PANELS}
+        >
+            <Fragment slot="title">
+                One service catalog for IT automation
+            </Fragment>
+            <Fragment slot="lead">
+                Keep the flexibility of your own Terraform, Ansible and PowerCLI
+                code, on any cloud or hypervisor. Teams request from one
+                catalog, and Kestra for Infrastructure tracks every resource
+                from request to retirement.
+            </Fragment>
+            {PANELS.map((panel) => (
+                <InfraMock slot={panel.id} view={panel.id} />
+            ))}
+        </EnterpriseShowcase>
         <InfraClosing />
     </PageShell>
 </Layout>

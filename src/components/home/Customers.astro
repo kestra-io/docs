@@ -30,6 +30,7 @@ export interface Story {
     industry?: string
     stat: string
     label: string
+    more?: { stat: string; label: string }[]
     quote?: string
     author?: string
     detail?: string
@@ -169,6 +170,16 @@ const {
                                         {story.stat}{" "}
                                         <span set:html={story.label} />
                                     </p>
+                                    {story.more && (
+                                        <ul class="more">
+                                            {story.more.map((item) => (
+                                                <li>
+                                                    <strong>{item.stat}</strong>{" "}
+                                                    {item.label}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
                                 </div>
                                 <figcaption class="words">
                                     {(story.quote || story.detail) && (
@@ -627,6 +638,24 @@ const {
 
             :global(a) {
                 color: var(--ks-content-link);
+            }
+        }
+
+        .more {
+            display: grid;
+            gap: 0.5rem;
+            max-width: 22rem;
+            margin: 1.5rem 0 0;
+            padding: 1.25rem 0 0;
+            border-top: 1px solid var(--ks-border-primary);
+            list-style: none;
+            font-size: 0.9375rem;
+            line-height: 1.45;
+            color: var(--ks-content-tertiary);
+
+            strong {
+                font-weight: 600;
+                color: var(--ks-content-primary);
             }
         }
 

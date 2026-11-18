@@ -3,21 +3,7 @@ import { Icon } from "astro-icon/components"
 import PixelEdges from "~/components/about/PixelEdges.astro"
 import HairlineFigure from "~/components/partners/HairlineFigure.astro"
 
-type Figure =
-    | "deploy"
-    | "plugins"
-    | "padlock"
-    | "servers"
-    | "patch"
-    | "opensource"
-
-interface Props {
-    id?: string
-    items?: { figure: Figure; title: string; text: string }[]
-    extras?: boolean
-}
-
-const DEFAULT_DEPLOYMENTS = [
+const DEPLOYMENTS = [
     {
         figure: "servers" as const,
         title: "Self-hosted",
@@ -34,17 +20,11 @@ const DEFAULT_DEPLOYMENTS = [
         text: "Control plane in one place, worker groups next to the systems they act on: on-prem, in each cloud, at the edge.",
     },
 ]
-
-const {
-    id = "where-kestra-runs",
-    items: DEPLOYMENTS = DEFAULT_DEPLOYMENTS,
-    extras = true,
-} = Astro.props
 ---
 
 <section
     class="ee-deployments surface-dark"
-    aria-labelledby={id}
+    aria-labelledby="where-kestra-runs"
     data-header-dark
 >
     <PixelEdges />
@@ -52,27 +32,21 @@ const {
         <div class="rails">
             <header>
                 <div>
-                    <h2 {id}><slot name="title">Where Kestra runs</slot></h2>
+                    <h2 id="where-kestra-runs">Where Kestra runs</h2>
                     <p>
-                        <slot name="lead">
-                            Run Kestra Enterprise in any environment you choose:
-                            your data center, your cloud accounts, across
-                            network zones, or fully air-gapped.
-                        </slot>
+                        Run Kestra Enterprise in any environment you choose:
+                        your data center, your cloud accounts, across network
+                        zones, or fully air-gapped.
                     </p>
                 </div>
-                {
-                    extras && (
-                        <a
-                            href="https://hs.kestra.io/hubfs/kestra-deployment-options-enterprise-edition.pdf"
-                            class="btn-ghost"
-                            target="_blank"
-                            rel="noopener"
-                        >
-                            Download the PDF
-                        </a>
-                    )
-                }
+                <a
+                    href="https://hs.kestra.io/hubfs/kestra-deployment-options-enterprise-edition.pdf"
+                    class="btn-ghost"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    Download the PDF
+                </a>
             </header>
             <ul>
                 {DEPLOYMENTS.map((deployment) => (
@@ -88,22 +62,18 @@ const {
                     </li>
                 ))}
             </ul>
-            {
-                extras && (
-                    <aside class="cloud" aria-labelledby="ee-cloud">
-                        <Icon name="mdi:cloud-outline" class="glyph" />
-                        <p>
-                            <strong id="ee-cloud">Looking for a managed Kestra?</strong>
-                            Kestra Cloud takes care of hosting, scaling and upgrades,
-                            with a selection of Enterprise features and usage-based
-                            pricing.
-                        </p>
-                        <a href="/cloud">
-                            Explore Kestra Cloud <Icon name="mdi:arrow-right" />
-                        </a>
-                    </aside>
-                )
-            }
+            <aside class="cloud" aria-labelledby="ee-cloud">
+                <Icon name="mdi:cloud-outline" class="glyph" />
+                <p>
+                    <strong id="ee-cloud">Looking for a managed Kestra?</strong>
+                    Kestra Cloud takes care of hosting, scaling and upgrades,
+                    with a selection of Enterprise features and usage-based
+                    pricing.
+                </p>
+                <a href="/cloud">
+                    Explore Kestra Cloud <Icon name="mdi:arrow-right" />
+                </a>
+            </aside>
         </div>
     </div>
 </section>

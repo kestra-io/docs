@@ -1,0 +1,55 @@
+<svg viewBox="0 0 616 224" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-label="With vRO your workflows only run on vSphere; on Kestra they run on vSphere, Nutanix or Proxmox">
+<title>With vRO your workflows only run on vSphere; on Kestra they run on vSphere, Nutanix or Proxmox</title>
+<defs><filter id="vmware-kd-shadow" x="-20%" y="-20%" width="140%" height="180%" filterUnits="objectBoundingBox" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="bg"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="a0"/><feOffset dy="1"/><feGaussianBlur stdDeviation="1.0"/><feComposite in2="a0" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0.227451 0 0 0 0 0.113725 0 0 0 0 0.427451 0 0 0 0.051 0"/><feBlend mode="normal" in2="bg" result="s0"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="a1"/><feOffset dy="6"/><feGaussianBlur stdDeviation="7.0"/><feComposite in2="a1" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0.227451 0 0 0 0 0.113725 0 0 0 0 0.427451 0 0 0 0.082 0"/><feBlend mode="normal" in2="s0" result="s1"/><feBlend mode="normal" in="SourceGraphic" in2="s1" result="shape"/></filter></defs>
+
+
+<path d="M100.0 83.0 L100.0 126.6" fill="none" stroke="#ADADBF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M100.0 133.0 L95.6 125.0 L104.4 125.0 Z" fill="#ADADBF"/>
+<path d="M196.0 45.3 L224.0 45.3 L224.0 34.6 L252.0 52.0 L224.0 69.4 L224.0 58.7 L196.0 58.7 Z" fill="#631BF3" stroke="#631BF3" stroke-width="3" stroke-linejoin="round"/>
+<path d="M314.0 83.0 L314.0 126.6" fill="none" stroke="#631BF3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M314.0 133.0 L309.6 125.0 L318.4 125.0 Z" fill="#631BF3"/>
+<path d="M424.0 83.0 L424.0 126.6" fill="none" stroke="#631BF3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M424.0 133.0 L419.6 125.0 L428.4 125.0 Z" fill="#631BF3"/>
+<path d="M534.0 83.0 L534.0 126.6" fill="none" stroke="#631BF3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M534.0 133.0 L529.6 125.0 L538.4 125.0 Z" fill="#631BF3"/>
+<g filter="url(#vmware-kd-shadow)"><rect x="16.0" y="24.0" width="168.0" height="56.0" rx="8" fill="#08090A"/></g>
+<text font-family="&#x27;Mona Sans&#x27;, -apple-system, &#x27;Segoe UI&#x27;, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#FFFFFF" text-anchor="middle" data-fit="1" data-maxw="144.0"><tspan x="100.0" y="48.3">vRO</tspan></text>
+<text font-family="&#x27;Mona Sans&#x27;, -apple-system, &#x27;Segoe UI&#x27;, Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#FFFFFF" text-anchor="middle" data-fit="2" data-maxw="144.0"><tspan x="100.0" y="65.3">your workflows</tspan></text>
+<g filter="url(#vmware-kd-shadow)"><rect x="16.0" y="136.0" width="168.0" height="56.0" rx="8" fill="#FFFFFF"/><rect x="16.5" y="136.5" width="167.0" height="55.0" rx="7.5" fill="none" stroke="#D0D0DA" stroke-width="1"/></g>
+<svg data-icon="ui:server" x="28.0" y="154.0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5F5F7C" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" color="#5F5F7C">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M3 4m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" />
+  <path d="M3 12m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" />
+  <path d="M7 8l0 .01" />
+  <path d="M7 16l0 .01" />
+</svg>
+<text font-family="&#x27;Mona Sans&#x27;, -apple-system, &#x27;Segoe UI&#x27;, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#08090A" text-anchor="start" data-fit="3" data-maxw="114.0"><tspan x="58.0" y="168.8">vSphere only</tspan></text>
+<g filter="url(#vmware-kd-shadow)"><rect x="264.0" y="24.0" width="320.0" height="56.0" rx="8" fill="#EEE7FE"/><rect x="264.5" y="24.5" width="319.0" height="55.0" rx="7.5" fill="none" stroke="#631BF3" stroke-width="1"/></g>
+<svg data-icon="kestra-badge" x="276.0" y="42.0" width="20" height="20" viewBox="0 0 600 601" preserveAspectRatio="xMidYMid meet" color="#08090A" fill="currentColor">
+<g clip-path="url(#vmware-i2-clip0_380_149)">
+<path d="M0 68.0229C0 30.9784 30.0305 0.947876 67.075 0.947876H532.925C569.97 0.947876 600 30.9784 600 68.0229V533.873C600 570.917 569.969 600.948 532.925 600.948H67.075C30.0305 600.948 0 570.917 0 533.873V68.0229Z" fill="#2C0059"/>
+<path d="M285.264 252.767C293.401 244.63 306.594 244.63 314.731 252.767L348.179 286.215C356.317 294.352 356.317 307.545 348.179 315.682L314.731 349.13C306.594 357.268 293.401 357.268 285.264 349.13L251.816 315.682C243.679 307.545 243.679 294.352 251.816 286.215L285.264 252.767Z" fill="#A950FF"/>
+<path d="M439.322 252.5C447.313 244.509 460.27 244.509 468.261 252.5L502.237 286.476C510.228 294.467 510.228 307.424 502.237 315.415L468.261 349.391C460.27 357.382 447.313 357.383 439.322 349.391L405.346 315.415C397.355 307.424 397.355 294.467 405.346 286.476L439.322 252.5Z" fill="#A950FF"/>
+<path d="M285.528 98.7109C293.519 90.7194 306.476 90.7194 314.468 98.7109L348.443 132.686C356.435 140.678 356.435 153.635 348.443 161.626L314.468 195.602C306.476 203.593 293.519 203.593 285.528 195.602L251.552 161.626C243.561 153.635 243.561 140.678 251.552 132.686L285.528 98.7109Z" fill="#E9C1FF"/>
+<path d="M271.29 209.32C279.427 217.457 279.427 230.65 271.29 238.787L237.842 272.235C229.705 280.372 216.512 280.372 208.375 272.235L174.927 238.787C166.789 230.65 166.789 217.457 174.927 209.32L208.375 175.871C216.512 167.734 229.705 167.734 237.842 175.871L271.29 209.32Z" fill="#CD88FF"/>
+<path d="M194.654 286.476C202.645 294.467 202.645 307.424 194.654 315.415L160.678 349.391C152.687 357.382 139.73 357.382 131.738 349.391L97.7629 315.415C89.7714 307.424 89.7714 294.467 97.7629 286.476L131.738 252.5C139.73 244.509 152.687 244.509 160.678 252.5L194.654 286.476Z" fill="#A950FF"/>
+<path d="M425.078 209.32C433.215 217.457 433.215 230.65 425.078 238.787L391.63 272.235C383.492 280.372 370.3 280.372 362.163 272.235L328.714 238.787C320.577 230.65 320.577 217.457 328.714 209.32L362.163 175.871C370.3 167.734 383.492 167.734 391.63 175.871L425.078 209.32Z" fill="#CD88FF"/>
+<path d="M332.916 428.992C351.095 447.171 351.095 476.645 332.916 494.824C314.737 513.003 285.263 513.003 267.084 494.824C248.905 476.645 248.905 447.171 267.084 428.992C285.263 410.813 314.737 410.813 332.916 428.992Z" fill="#F62E76"/>
+</g>
+<defs>
+<clipPath id="vmware-i2-clip0_380_149">
+<rect width="600" height="600" fill="white" transform="translate(0 0.947876)"/>
+</clipPath>
+</defs>
+</svg>
+<text font-family="&#x27;Mona Sans&#x27;, -apple-system, &#x27;Segoe UI&#x27;, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#08090A" text-anchor="start" data-fit="4" data-maxw="266.0"><tspan x="306.0" y="48.3">Kestra</tspan></text>
+<text font-family="&#x27;Mona Sans&#x27;, -apple-system, &#x27;Segoe UI&#x27;, Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#08090A" text-anchor="start" data-fit="5" data-maxw="266.0"><tspan x="306.0" y="65.3">the same workflows</tspan></text>
+<g filter="url(#vmware-kd-shadow)"><rect x="264.0" y="136.0" width="100.0" height="56.0" rx="8" fill="#FFFFFF"/><rect x="264.5" y="136.5" width="99.0" height="55.0" rx="7.5" fill="none" stroke="#D0D0DA" stroke-width="1"/></g>
+<text font-family="&#x27;Mona Sans&#x27;, -apple-system, &#x27;Segoe UI&#x27;, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#08090A" text-anchor="middle" data-fit="6" data-maxw="76.0"><tspan x="314.0" y="168.8">vSphere</tspan></text>
+<g filter="url(#vmware-kd-shadow)"><rect x="374.0" y="136.0" width="100.0" height="56.0" rx="8" fill="#FFFFFF"/><rect x="374.5" y="136.5" width="99.0" height="55.0" rx="7.5" fill="none" stroke="#D0D0DA" stroke-width="1"/></g>
+<text font-family="&#x27;Mona Sans&#x27;, -apple-system, &#x27;Segoe UI&#x27;, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#08090A" text-anchor="middle" data-fit="7" data-maxw="76.0"><tspan x="424.0" y="168.8">Nutanix</tspan></text>
+<g filter="url(#vmware-kd-shadow)"><rect x="484.0" y="136.0" width="100.0" height="56.0" rx="8" fill="#FFFFFF"/><rect x="484.5" y="136.5" width="99.0" height="55.0" rx="7.5" fill="none" stroke="#D0D0DA" stroke-width="1"/></g>
+<text font-family="&#x27;Mona Sans&#x27;, -apple-system, &#x27;Segoe UI&#x27;, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#08090A" text-anchor="middle" data-fit="8" data-maxw="76.0"><tspan x="534.0" y="168.8">Proxmox</tspan></text>
+
+
+</svg>

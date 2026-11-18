@@ -1,0 +1,20 @@
+{
+  "title": "With vRO your workflows only run on vSphere; on Kestra they run on vSphere, Nutanix or Proxmox",
+  "style": "illustration",
+  "background": "none",
+  "items": [
+    { "id": "vro", "x": 16, "y": 24, "w": 168, "h": 56, "label": "vRO", "sub": "your workflows", "role": "vendor" },
+    { "id": "only", "x": 16, "y": 136, "w": 168, "h": 56, "label": "vSphere only", "role": "neutral", "icon": "ui:server" },
+    { "id": "kestra", "x": 264, "y": 24, "w": 320, "h": 56, "label": "Kestra", "sub": "the same workflows", "role": "kestra", "icon": "kestra-badge" },
+    { "id": "vsphere", "x": 264, "y": 136, "w": 100, "h": 56, "label": "vSphere", "role": "neutral" },
+    { "id": "nutanix", "x": 374, "y": 136, "w": 100, "h": 56, "label": "Nutanix", "role": "neutral" },
+    { "id": "proxmox", "x": 484, "y": 136, "w": 100, "h": 56, "label": "Proxmox", "role": "neutral" }
+  ],
+  "edges": [
+    { "from": "vro", "to": "only" },
+    { "from": "vro", "to": "kestra", "kind": "transition" },
+    { "from": "kestra", "to": "vsphere", "emphasis": true, "midY": 108, "arrow": "end" },
+    { "from": "kestra", "to": "nutanix", "emphasis": true, "midY": 108 },
+    { "from": "kestra", "to": "proxmox", "emphasis": true, "midY": 108 }
+  ]
+}

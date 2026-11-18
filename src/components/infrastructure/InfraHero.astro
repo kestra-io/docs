@@ -60,24 +60,45 @@ const ARC = "M0 102.4 A131.1 1342.5 0 0 1 100 102.4"
     <div class="frame surface-dark" data-header-dark>
         <div class="container-xl">
             <div class="stage">
-                <p class="eyebrow">
-                    <img src={kestraMark.src} alt="" width="16" height="16" />
-                    Kestra for Infrastructure
-                </p>
-                <h1 id="infra-hero-title">
-                    Scale infrastructure requests in minutes
-                </h1>
-                <p class="lead">
-                    Kestra automates every request, approval, and action on the
-                    Terraform and Ansible code you already have.
-                </p>
-                <div class="buttons">
-                    <a href="/demo" class="btn-solid">
-                        Talk to our team <Icon name="mdi:chevron-right" />
-                    </a>
-                    <a href="#as-code" class="btn-ghost">
-                        See how it works
-                    </a>
+                <div class="top">
+                    <div class="intro">
+                        <p class="eyebrow">
+                            <img
+                                src={kestraMark.src}
+                                alt=""
+                                width="16"
+                                height="16"
+                            />
+                            Kestra for Infrastructure
+                        </p>
+                        <h1 id="infra-hero-title">
+                            Clean up your DevOps dumping ground
+                        </h1>
+                        <p class="lead">
+                            Kestra for Infrastructure turns your infrastructure
+                            as code into a governed service catalog for platform
+                            engineering teams.
+                        </p>
+                        <div class="buttons">
+                            <a href="/demo" class="btn-solid">
+                                Talk to our team{" "}
+                                <Icon name="mdi:chevron-right" />
+                            </a>
+                            <a href="#as-code" class="btn-ghost">
+                                See how it works
+                            </a>
+                        </div>
+                    </div>
+                    <div
+                        class="video"
+                        role="img"
+                        aria-label="Placeholder: Kestra for Infrastructure explainer video"
+                    >
+                        <span class="play">
+                            <Icon name="mdi:play" />
+                        </span>
+                        <span class="caption">Video placeholder · 16:9</span>
+                    </div>
                 </div>
 
                 <div class="life" data-life style="--step: 2.4">
@@ -90,9 +111,7 @@ const ARC = "M0 102.4 A131.1 1342.5 0 0 1 100 102.4"
                     >
                         <path d={ARC} />
                     </svg>
-                    <ol
-                        aria-label="The life of an infrastructure request, from request to retirement"
-                    >
+                    <ol aria-label="The life of an infrastructure request, from request to retirement">
                         {STAGES.map((stage, index) => (
                             <li
                                 class:list={{
@@ -103,7 +122,10 @@ const ARC = "M0 102.4 A131.1 1342.5 0 0 1 100 102.4"
                                 <span class="glyph">
                                     <Icon name={stage.icon} />
                                     <span class="sparks" aria-hidden="true">
-                                        <i /><i /><i /><i />
+                                        <i />
+                                        <i />
+                                        <i />
+                                        <i />
                                     </span>
                                 </span>
                                 <strong>{stage.title}</strong>
@@ -186,6 +208,72 @@ const ARC = "M0 102.4 A131.1 1342.5 0 0 1 100 102.4"
         }
     }
 
+    .top {
+        display: grid;
+        gap: 3rem;
+        justify-items: center;
+        width: 100%;
+
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+            align-items: center;
+            gap: clamp(2rem, 4vw, 3.5rem);
+            text-align: left;
+        }
+    }
+
+    .intro {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        @include media-breakpoint-up(lg) {
+            align-items: flex-start;
+        }
+    }
+
+    .video {
+        display: grid;
+        place-content: center;
+        justify-items: center;
+        gap: 0.875rem;
+        width: 100%;
+        max-width: 44rem;
+        aspect-ratio: 16 / 9;
+        border: 1px dashed rgba(185, 166, 255, 0.45);
+        border-radius: 0.875rem;
+        background:
+            radial-gradient(
+                120% 120% at 50% 0%,
+                rgba(112, 88, 255, 0.24),
+                rgba(112, 88, 255, 0.05) 60%
+            ),
+            rgba(12, 11, 22, 0.7);
+
+        .play {
+            display: grid;
+            place-items: center;
+            width: 3.5rem;
+            height: 3.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+
+            [data-icon] {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+        }
+
+        .caption {
+            font-family: $font-family-monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.6);
+        }
+    }
+
     .eyebrow {
         display: inline-flex;
         align-items: center;
@@ -209,6 +297,11 @@ const ARC = "M0 102.4 A131.1 1342.5 0 0 1 100 102.4"
         max-width: 15em;
         margin: 0;
         font-size: clamp(2.5rem, 5vw, 4rem);
+
+        @include media-breakpoint-up(lg) {
+            font-size: clamp(2.5rem, 4.2vw, 3.75rem);
+        }
+
         font-weight: 600;
         letter-spacing: -0.02em;
         line-height: 1.05;
@@ -231,6 +324,10 @@ const ARC = "M0 102.4 A131.1 1342.5 0 0 1 100 102.4"
         justify-content: center;
         gap: 0.75rem;
         margin-top: 2.25rem;
+
+        @include media-breakpoint-up(lg) {
+            justify-content: flex-start;
+        }
     }
 
     .life {
