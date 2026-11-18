@@ -150,6 +150,32 @@ npx skills add kestra-io/agent-skills
 
 To install a single skill, add its name: `npx skills add kestra-io/agent-skills@kestra-ops`.
 
+### Install as a plugin
+
+Claude Code, Codex, and Cursor can also install the skills as a plugin that bundles all of them.
+
+In Claude Code, add the repository as a plugin marketplace, then install the `kestra` plugin from it:
+
+```text
+/plugin marketplace add kestra-io/agent-skills
+/plugin install kestra@kestra-agent-skills
+```
+
+The skills are namespaced as `kestra:<skill>`, for example `kestra:kestra-flow`. Run `/skills` to check that they're listed. The plugin follows the repository's `main` branch, so each new commit there counts as a plugin update.
+
+In Codex, run the same two steps from the command line, then start a new Codex session:
+
+```bash
+codex plugin marketplace add kestra-io/agent-skills
+codex plugin add kestra@kestra-agent-skills
+```
+
+In Cursor, add the plugin, then check that the skills appear under **Settings → Rules, Skills, Subagents**:
+
+```text
+/add-plugin kestra-io/agent-skills
+```
+
 ### Manual installation
 
 You can also manually download skill files from the [kestra-io/agent-skills](https://github.com/kestra-io/agent-skills) repository. Each skill is a `SKILL.md` file under `skills/<skill-name>/`.
