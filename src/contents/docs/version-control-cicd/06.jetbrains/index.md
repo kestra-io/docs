@@ -8,6 +8,8 @@ description: Install the Kestra plugin for IntelliJ IDEA, PyCharm, WebStorm, and
 
 The Kestra plugin for JetBrains IDEs connects IntelliJ IDEA, PyCharm, WebStorm, GoLand, and other IntelliJ Platform IDEs to a Kestra instance. It gives you instance-aware completion, live validation, a topology preview, and lets you run flows from the editor.
 
+![A flow open in IntelliJ IDEA, with its graph in the Kestra Topology tool window and a successful execution in the Run tool window](./jetbrains-editor-topology-run.png)
+
 ## Prerequisites
 
 - A JetBrains IDE, version 2025.3 or later. Free editions work too: the plugin only needs the bundled YAML support.
@@ -33,7 +35,9 @@ https://plugins.jetbrains.com/plugins/beta/list
 
 ## Setup
 
-Open **Settings | Tools | Kestra** and set the instance **URL**, for example `http://localhost:8080`. For a multi-tenant instance, also set the **Tenant**. These settings apply to every project.
+Open **Settings | Tools | Kestra** and set the instance **URL**, for example `http://localhost:8080`. For a multi-tenant instance, also set the **Tenant**. On an Enterprise Edition instance, signing in fills the tenant for you. These settings apply to every project.
+
+![The Kestra settings page in Settings | Tools | Kestra, with the instance URL, tenant, credentials, default log level, and excluded names](./jetbrains-kestra-settings.png)
 
 On Kestra Cloud, your tenant ID is the path segment right after `app.kestra.io/` in the URL. On self-hosted multi-tenant instances, your administrator sets the tenant ID.
 
