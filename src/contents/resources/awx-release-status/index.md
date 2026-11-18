@@ -45,7 +45,7 @@ The following table summarizes the verified state of AWX and its related project
 | **Next release timeline** | No target date or ETA announced | [Ansible Forum Discussions](https://forum.ansible.com/t/is-there-an-estimated-timeline-for-the-next-awx-release/46156) |
 | **Web interface rewrite** | Moved to separate repository (`ansible/ansible-ui`) | [Ansible Forum Announcement (April 2026)](https://forum.ansible.com/t/awx-modernization-ansible-ui/45757) |
 | **Jewel proxy layer** | Source code and dev container available; no releases planned | [Ansible Forum Announcement (May 2026)](https://forum.ansible.com/t/awx-modernization-ansible-jewel/45775) |
-| **Red Hat AAP** | Actively developed and supported commercially | [Red Hat Documentation](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/) |
+| **Red Hat AAP** | Actively developed and supported commercially | <a href="https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.7" rel="nofollow">Red Hat Documentation</a> |
 | **Ascender (CIQ fork)** | Regular releases, latest version 25.6.3 (October 28, 2026) | [GitHub Releases (`ctrliq/ascender`)](https://github.com/ctrliq/ascender/releases) |
 
 ---

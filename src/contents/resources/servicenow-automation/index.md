@@ -35,8 +35,8 @@ ServiceNow automation is the use of the platform's workflow capabilities to auto
 
 ServiceNow provides a suite of tools to build and manage these automated processes:
 
-*   **[Flow Designer](https://www.servicenow.com/docs/bundle/zurich-build-workflows/page/administer/flow-designer/concept/flow-designer.html):** the primary visual interface for creating and managing workflows. It lets users, including those with limited coding experience, design multi-step processes in a low-code visual editor. Workflows can include conditional logic, parallel branches, and calls to various system actions.
-*   **[IntegrationHub](https://www.servicenow.com/docs/bundle/zurich-integrate-applications/page/administer/integrationhub/concept/integrationhub.html):** while Flow Designer manages processes within ServiceNow, IntegrationHub extends automation to external systems. It provides pre-built connectors (called "Spokes") for third-party applications and APIs, so workflows can fetch data and trigger actions outside ServiceNow.
+*   **<a href="https://www.servicenow.com/docs/" rel="nofollow">Flow Designer</a>:** the primary visual interface for creating and managing workflows. It lets users, including those with limited coding experience, design multi-step processes in a low-code visual editor. Workflows can include conditional logic, parallel branches, and calls to various system actions.
+*   **<a href="https://www.servicenow.com/docs/r/zurich/integrate-applications/integration-hub/integrationhub.html" rel="nofollow">IntegrationHub</a>:** while Flow Designer manages processes within ServiceNow, IntegrationHub extends automation to external systems. It provides pre-built connectors (called "Spokes") for third-party applications and APIs, so workflows can fetch data and trigger actions outside ServiceNow.
 *   **Robotic Process Automation (RPA) Hub:** For systems that lack modern APIs, ServiceNow offers RPA capabilities. This allows you to build bots that mimic human actions to interact with legacy applications, websites, or desktop software, integrating them into modern automated workflows.
 
 Together, these components are the base of automation inside ServiceNow.
@@ -78,7 +78,7 @@ ServiceNow automation finds practical application across nearly every department
 
 Here are some concrete examples of automated workflows in ServiceNow:
 
-*   **IT Service Management (ITSM):** This is ServiceNow's original domain and remains its strongest. Automation is key to efficient [incident response automation](/resources/infrastructure/incident-response-automation), where new tickets are automatically categorized, prioritized, and assigned to the correct team based on predefined rules. [Change management](https://www.servicenow.com/docs/bundle/zurich-it-service-management/page/product/change-management/concept/c_ITILChangeManagement.html) workflows ensure that infrastructure changes are requested, approved, and documented, reducing the risk of outages.
+*   **IT Service Management (ITSM):** This is ServiceNow's original domain and remains its strongest. Automation is key to efficient [incident response automation](/resources/infrastructure/incident-response-automation), where new tickets are automatically categorized, prioritized, and assigned to the correct team based on predefined rules. <a href="https://www.servicenow.com/docs/r/zurich/it-service-management/change-management/c_ITILChangeManagement.html" rel="nofollow">Change management</a> workflows ensure that infrastructure changes are requested, approved, and documented, reducing the risk of outages.
 *   **HR Onboarding:** When a new employee is hired, ServiceNow can trigger a sequence of tasks across different departments: IT provisions a laptop and creates accounts, facilities arranges a workspace, and HR schedules orientation sessions.
 *   **Customer Service Management (CSM):** Incoming customer queries can be automatically converted into cases, routed to agents with the right expertise, and tracked until resolution. Integration with a knowledge base can provide agents with instant access to relevant articles.
 *   **Security Operations (SecOps):** When a security tool detects a threat, it can automatically create a security incident in ServiceNow. The platform can then orchestrate the initial response, such as quarantining an affected device or triggering a [vulnerability remediation](/resources/infrastructure/vulnerability-remediation) scan.
@@ -89,7 +89,7 @@ ServiceNow manages the request, the approval, and the record. Kestra complements
 
 ### Bridging ServiceNow with External Systems and Infrastructure
 
-Kestra's [ServiceNow plugin](/plugins/plugin-servicenow) reads, creates, and updates ServiceNow records through the [Table API](https://www.servicenow.com/docs/bundle/zurich-api-reference/page/integrate/inbound-rest/concept/c_TableAPI.html), and a Webhook trigger lets ServiceNow start Kestra flows. This enables event-driven architectures where actions in one system trigger coordinated responses in another.
+Kestra's [ServiceNow plugin](/plugins/plugin-servicenow) reads, creates, and updates ServiceNow records through the <a href="https://www.servicenow.com/docs/r/zurich/api-reference/rest-apis/c_TableAPI.html" rel="nofollow">Table API</a>, and a Webhook trigger lets ServiceNow start Kestra flows. This enables event-driven architectures where actions in one system trigger coordinated responses in another.
 
 For example, a developer can create a Kestra workflow that is triggered by a webhook from ServiceNow. When a change request is approved in ServiceNow, the webhook fires, and Kestra automatically executes a series of infrastructure tasks:
 1.  Clones a Git repository with the latest configuration.
