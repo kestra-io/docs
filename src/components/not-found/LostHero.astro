@@ -93,7 +93,7 @@ import BlockTitle from "~/components/enterprise/BlockTitle.astro"
         const HEADING = (-6 * Math.PI) / 180
         const FWD = { x: Math.cos(HEADING), y: Math.sin(HEADING) }
         const SPREAD = 0.2
-        const TIP = 37 - HEART.x
+        const TIP = Math.max(...SPRITE.map((row) => row.length)) - HEART.x
 
         let width = 0
         let height = 0
