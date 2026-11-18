@@ -473,7 +473,7 @@ Set only the properties you want to change. The others keep their defaults. For 
 
 To share one Kafka cluster between several Kestra instances, give each instance a different `kestra.queue.prefix`. The prefix starts every topic name, and Kestra derives consumer group IDs from topic names, so instances don't consume each other's messages.
 
-To reject oversized messages early, use `kestra.queue.message-protection`, described in [Queue prefix and message protection](#queue-prefix-and-message-protection). It applies to every queue backend, including Kafka.
+To reject oversized messages early, use `kestra.queue.message-protection`. Both properties apply to every queue backend and are described in [Queue prefix and message protection](../02.runtime-and-storage/index.md#queue-prefix-and-message-protection).
 
 The Indexer has no settings of its own. It runs with every queue and repository backend and writes logs, metrics, execution statistics, audit logs, and asset lineage events in batches. With a JDBC queue, the batch size is `kestra.jdbc.queues.poll-size` (default `100`).
 
@@ -481,26 +481,7 @@ The Indexer has no settings of its own. It runs with every queue and repository 
 
 Redis and AMQP (RabbitMQ) are Enterprise Edition queue backends, alongside Kafka which is covered above. Both use the same internal queue contracts as the JDBC and Kafka backends. You switch the backend with a single configuration value; no producer or consumer code changes. Both require a JDBC repository (PostgreSQL or MySQL) unless you are also deploying Elasticsearch.
 
-### Queue prefix and message protection
-
-These properties apply to all queue backends:
-
-| Property | Description | Default |
-|---|---|---|
-| `kestra.queue.prefix` | Name prefix added to every queue. Use this when multiple Kestra clusters share one backend to prevent stream collisions. | — |
-| `kestra.queue.message-protection.enabled` | Reject messages larger than `limit` before they reach the backend. Terminal execution states are always allowed through regardless of size. | `true` |
-| `kestra.queue.message-protection.limit` | Maximum serialized message size in bytes. Required when `message-protection.enabled` is `true`. | `1048576` (1 MiB) |
-
-```yaml
-kestra:
-  queue:
-    prefix: prod
-    message-protection:
-      enabled: true
-      limit: 1048576   # 1 MiB
-```
-
-Set `prefix` when multiple Kestra clusters share one backend (for example, staging and production on the same Redis instance). Each cluster's queues are namespaced independently.
+To share one Redis instance or RabbitMQ broker between several Kestra clusters, or to cap message size, use the backend-neutral `kestra.queue.prefix` and `kestra.queue.message-protection` properties described in [Queue prefix and message protection](../02.runtime-and-storage/index.md#queue-prefix-and-message-protection).
 
 ### Redis
 

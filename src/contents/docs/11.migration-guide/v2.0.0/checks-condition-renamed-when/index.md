@@ -36,6 +36,10 @@ The behavior is identical — the same Pebble rendering and `BLOCK_EXECUTION` / 
 
 ## Migration steps
 
+`kestra-migrate` renames `condition` to `when` in flow-level `checks`. It skips this rewrite under `--stay-v1-compatible`, because 1.3 does not accept `when` there.
+
+To update flows by hand:
+
 1. **Search your flows** for `condition:` inside `checks` blocks and replace each occurrence with `when:`. The property value and any Pebble expressions stay the same.
 2. **Validate** by saving the updated flows in the Kestra UI or via the API.
 

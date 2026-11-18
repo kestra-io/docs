@@ -10,7 +10,7 @@ How to use Bitbucket Pipes to create a CI/CD pipeline for your Kestra flows.
 
 ## Automate Kestra deployments with Bitbucket Pipes
 
-With the Kestra Docker image and CLI, you can validate and deploy flows from Bitbucket repositories through [Bitbucket Pipes](https://support.atlassian.com/bitbucket-cloud/docs/configure-your-first-pipeline/).
+With the [`kestractl`](../../../kestra-cli/kestractl/index.md) Docker image, you can validate and deploy flows from Bitbucket repositories through [Bitbucket Pipelines](https://support.atlassian.com/bitbucket-cloud/docs/configure-your-first-pipeline/).
 
 :::alert{type="info"}
 For flows managed via CI/CD, add the [`system.readOnly`](../../../06.concepts/system-labels/index.md#systemreadonly) label set to `"true"` so the UI editor is disabled and production configurations stay immutable. This is especially recommended for critical production flows:
@@ -21,40 +21,53 @@ labels:
 ```
 :::
 
-Here is a basic pipeline:
+## Example pipeline
 
+This `bitbucket-pipelines.yml` validates the flows in the `flows/` directory on every branch. On `main`, it also deploys them to the `prod` namespace:
 
 ```yaml
+image: kestra/kestractl:latest
 
-image: kestra/kestra
+definitions:
+  steps:
+    - step: &validate
+        name: Validate Kestra flows
+        script:
+          - kestractl flows validate flows/
 
 pipelines:
   default:
-    - step:
-        name: 'Validate Kestra flows'
-        deployment: staging
-        script:
-          - /bin/sh /app/kestra flow validate flows/ --server $SERVER --tenant $TENANT --user $KESTRA_USER:$KESTRA_PASSWORD
-
-    - step:
-        name: 'Deploy Kestra flows'
-        deployment: production
-        script:
-          - echo $SERVER
-          - echo $KESTRA_USER
-          - echo $KESTRA_PASSWORD
-          - /bin/sh /app/kestra flow namespace update dev flows/ --server=$SERVER --tenant=$TENANT --user=$KESTRA_USER:$KESTRA_PASSWORD
+    - step: *validate
+  branches:
+    main:
+      - step: *validate
+      - step:
+          name: Deploy Kestra flows
+          deployment: production
+          script:
+            - kestractl flows deploy flows/ --namespace prod --override --fail-fast
 ```
 
-Variables such as `$SERVER`, `$KESTRA_USER`, `$KESTRA_PASSWORD`, and optionally `$TENANT` (for multi-tenant environments) are set in the Bitbucket variable configuration:
+- `flows validate` checks each flow against your Kestra instance and fails the step if any flow is invalid.
+- `flows deploy` creates the flows, and `--override` updates flows that already exist. `--namespace prod` deploys every flow to `prod`; omit it to keep the namespace written in each flow file.
+- `--fail-fast` stops at the first flow that fails to deploy.
 
-![Bitbucket Pipes Variable](./bitbucket_pipe_variable.png)
+## Configure the connection
 
-:::alert{type="info"}
-If you're using Kestra Enterprise Edition, you can replace ``--user $KESTRA_USER:$KESTRA_PASSWORD`` with the `--api-token` option to authenticate with a service account API token.
-:::
+`kestractl` reads its connection settings from environment variables, so the pipeline doesn't pass credentials on the command line. Define these variables in Bitbucket under **Repository settings** > **Repository variables**, or per environment under **Deployments** so that the `production` deployment can target a different Kestra instance:
 
-This example uses the Kestra CLI to:
+| Variable | Value |
+| --- | --- |
+| `KESTRACTL_HOST` | URL of your Kestra instance, such as `https://kestra.example.com` |
+| `KESTRACTL_TENANT` | Tenant ID. Optional in Open-Source, which uses `main` |
+| `KESTRACTL_TOKEN` | An [API token](../../../07.enterprise/03.auth/api-tokens/index.md) (Enterprise Edition and Cloud) |
+| `KESTRACTL_USERNAME` and `KESTRACTL_PASSWORD` | Basic authentication credentials, if you don't use an API token |
 
-1. Validate flows contained in the `flows/` directory of the repository.
-2. Deploy flows into the `dev` namespace of your Kestra instance.
+Mark `KESTRACTL_TOKEN` and `KESTRACTL_PASSWORD` as **Secured** so Bitbucket masks them in build logs. Never print them in a step.
+
+The Bitbucket runner must be able to reach your Kestra instance. For a Kestra instance on a private network, use a [self-hosted runner](https://support.atlassian.com/bitbucket-cloud/docs/runners/).
+
+## Tips
+
+- Pin the image to a release tag, `kestra/kestractl:X.Y.Z`, so that a new `kestractl` version doesn't change your pipeline unexpectedly.
+- For more commands, such as deploying namespace files with `kestractl nsfiles upload`, see the [`kestractl` reference](../../../kestra-cli/kestractl/index.md).

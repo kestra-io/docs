@@ -281,10 +281,18 @@ faq:
 resources:
   title: "More on OPA and Kestra"
   items:
+    - kind: "resource"
+      title: "Policy as code: what it is and how to automate it"
+      description: "How policy engines such as OPA evaluate rules inside CI/CD and infrastructure pipelines."
+      href: "/resources/infrastructure/policy-as-code"
     - kind: "docs"
       title: "Policy-as-code with OPA in Kestra flows"
       description: "How to wire OPA into Kestra flows: connection setup, evaluate before destructive steps, policy lifecycle from Git, audit decisions in execution history."
       href: "/docs/use-cases/infrastructure"
+    - kind: "resource"
+      title: "Policy as code: tools and examples"
+      description: "What policy as code is, where to enforce it, Rego examples, and how OPA compares with Sentinel, Kyverno, and Checkov."
+      href: "/resources/infrastructure/policy-as-code"
     - kind: "resource"
       title: "Pair OPA with Terraform"
       description: "The common pattern: terraform plan output evaluated by OPA, apply gated on the decision, every change has a policy decision_id attached."

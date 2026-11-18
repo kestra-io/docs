@@ -116,6 +116,7 @@ Emitted by worker servers. Every metric except `kestra_worker_killed_count_total
 * `kestra_worker_queued_duration_seconds_max` (gauge): Maximum observed task queued duration inside the Worker.
 * `kestra_worker_running_count` (gauge): The number of tasks currently running inside the Worker.
 * `kestra_worker_started_count_total` (counter): The total number of tasks started by the Worker.
+* `kestra_worker_tasks_running_count` (gauge): The number of tasks currently running inside the Worker, also tagged by `task_type`, `namespace_id`, `flow_id`, and `tenant_id`.
 * `kestra_worker_timeout_count_total` (counter): The total number of tasks and polling trigger evaluations that timed out inside the Worker.
 * `kestra_worker_trigger_duration_seconds` (summary): Trigger evaluation duration inside the Worker.
 * `kestra_worker_trigger_duration_seconds_max` (gauge): Maximum observed trigger evaluation duration inside the Worker.

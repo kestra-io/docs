@@ -399,6 +399,37 @@ Multiple `Expression` conditions combine into a single `when` expression using `
 
 Custom Condition plugins, which extend `io.kestra.core.models.conditions.Condition`, are no longer supported because the `Condition` class is removed. Rewrite the logic of a custom condition as a `when` expression.
 
+### Conditions with a custom `date`
+
+The `DayWeek`, `DayWeekInMonth`, `Weekend`, `PublicHoliday`, `DateTimeBetween`, and `TimeBetween` conditions accept a `date` property that defaults to `{{ trigger.date }}`. If a condition sets `date` to another value, pass that value to the replacement function instead of `trigger.date`. Otherwise the migrated trigger checks a different day.
+
+`kestra-migrate` does not rewrite these conditions. It leaves the trigger's entire `conditions` list in place and prints a warning, so convert them by hand.
+
+For example, a schedule that runs on the day before a public holiday:
+
+**Before**
+
+```yaml
+triggers:
+  - id: schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 9 * * *"
+    conditions:
+      - type: io.kestra.plugin.core.condition.PublicHoliday
+        date: "{{ trigger.date | dateAdd(1, 'DAYS') }}"
+        country: FR
+```
+
+**After**
+
+```yaml
+triggers:
+  - id: schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 9 * * *"
+    when: "{{ isPublicHoliday(trigger.date | dateAdd(1, 'DAYS'), 'FR') }}"
+```
+
 For the full list of Pebble calendar helper functions (`isWeekend`, `isPublicHoliday`, `isDayWeekInMonth`, `isLastWorkingDay`, `hourOfDay`, `isDateBetween`, etc.), see the [date and calendar helpers](../../../expressions/04.functions/06.dates/index.mdx) reference. The `timestamp` filter used for 2.0.0 to 2.0.3 is documented with the [date filters](../../../expressions/03.filters/04.dates/index.mdx).
 
 ## `conditions` and `preconditions` → `dependsOn` on Flow triggers

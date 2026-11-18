@@ -1,9 +1,13 @@
 ---
 import { Icon } from "astro-icon/components"
-import TwoZeroMark from "./assets/hero/two-zero-mark.svg"
-import beam from "./assets/hero/beam.svg?url"
-import LogoBar from "./LogoBar.astro"
+import { Image } from "astro:assets"
+import { API_URL } from "astro:env/client"
+import sharp from "sharp"
+import kestraMark from "./assets/ai/kestra-logo-mark-on-dark.svg"
+import PixelEdges from "~/components/about/PixelEdges.astro"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+import { getCollection } from "astro:content"
+import { toSlug } from "~/utils/stories"
 
 const totalPlugins = await fetchTotalPluginsCount()
 
@@ -16,478 +20,1025 @@ const KEY_FACTS = [
     "API-First",
 ]
 
-const FLARES = [
-    { x: 12, y: 6.5, w: 86.8, h: 31.1, kind: "haze", color: "#f524a5" },
-    { x: 15.2, y: 5.5, w: 75.9, h: 32.2, kind: "core", color: "#006cd8" },
-    { x: 11.25, y: 9.5, w: 82.7, h: 25, kind: "glow", color: "#e027f1" },
-    { x: 23.2, y: 58.3, w: 86.8, h: 31.1, kind: "haze", color: "#fc16d5" },
-    { x: 26.4, y: 57.2, w: 75.9, h: 32.2, kind: "core", color: "#008cd8" },
-    { x: 22.4, y: 61.3, w: 82.7, h: 25, kind: "glow", color: "#ff2cbc" },
+const CUSTOMERS = [
+    {
+        file: "jpmorgan",
+        name: "JPMorgan Chase",
+        scale: 1.12,
+        story: "JPMorgan Chase",
+    },
+    { file: "apple", name: "Apple", scale: 1, lift: 0.12, story: "Apple" },
+    { file: "bloomberg", name: "Bloomberg", scale: 0.86 },
+    { file: "amdocs", name: "Amdocs", scale: 0.9, story: "Amdocs" },
+    { file: "t-system", name: "T-Systems", scale: 0.86 },
+    { file: "fila", name: "FILA", scale: 0.72, story: "Fila" },
+    { file: "xiaomi", name: "Xiaomi", scale: 0.95 },
+    { file: "brainlab", name: "Brainlab", scale: 1.1 },
 ]
+const stories = await getCollection("customerStories")
+const storyHref = (company?: string) => {
+    const entry = company && stories.find((e) => e.data.companyName === company)
+    return entry ? `/stories/${toSlug(entry)}` : undefined
+}
+const SPARKS = Array.from({ length: 14 }, (_, idx) => ({
+    a: Math.round((idx % 2 ? 180 : 0) + (((idx * 37) % 50) - 25)),
+    r: (3.4 + ((idx * 7) % 5) * 0.55).toFixed(2),
+    s: 2 + (idx % 3),
+    delay: -((idx * 0.83) % 4.2).toFixed(2),
+}))
+const PLUGINS = [
+    "aws.s3.Upload",
+    "jdbc.postgresql.Query",
+    "scripts.python.Script",
+    "azure.storage.blob.Upload",
+    "gcp.bigquery.Query",
+    "notifications.slack.SlackIncomingWebhook",
+    "openai.ChatCompletion",
+    "docker.Run",
+    "dbt.cli.DbtCLI",
+    "kafka.Produce",
+    "jdbc.snowflake.Query",
+    "databricks.job.CreateJob",
+    "kubernetes.core.PodCreate",
+    "terraform.cli.TerraformCLI",
+    "mongodb.Find",
+    "github.issues.Create",
+    "airbyte.connections.Sync",
+    "ansible.cli.AnsibleCLI",
+    "anthropic.ChatCompletion",
+    "servicenow.Post",
+    "elasticsearch.Search",
+    "fivetran.connectors.Sync",
+    "spark.SparkCLI",
+    "redis.list.ListPush",
+    "jdbc.mysql.Query",
+    "huggingface.Inference",
+    "gcp.vertexai.ChatCompletion",
+    "scripts.node.Script",
+    "scripts.shell.Commands",
+    "git.Clone",
+    "jira.issues.Create",
+    "jdbc.duckdb.Query",
+    "jdbc.oracle.Query",
+    "gcp.gcs.Upload",
+    "aws.lambda.Invoke",
+    "notifications.teams.TeamsIncomingWebhook",
+]
+const fetchIcon = async (type: string) => {
+    try {
+        const response = await fetch(
+            `${API_URL}/plugins/icons/io.kestra.plugin.${type}`,
+        )
+        if (!response.ok) return null
+        return Buffer.from(await response.arrayBuffer()).toString("base64")
+    } catch {
+        return null
+    }
+}
+const [generic, ...fetched] = await Promise.all(
+    ["unknown.Plugin", ...PLUGINS].map(fetchIcon),
+)
+const isDark = async (svg: string) => {
+    try {
+        const { data } = await sharp(Buffer.from(svg, "base64"))
+            .resize(24, 24)
+            .ensureAlpha()
+            .raw()
+            .toBuffer({ resolveWithObject: true })
+        let light = 0
+        let ink = 0
+        for (let i = 0; i < data.length; i += 4) {
+            const alpha = data[i + 3] / 255
+            light +=
+                alpha *
+                (0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2])
+            ink += alpha
+        }
+        return ink > 0 && light / ink < 70
+    } catch {
+        return false
+    }
+}
+const icons = await Promise.all(
+    fetched
+        .filter((svg): svg is string => !!svg && svg !== generic)
+        .map(async (svg) => ({
+            src: `data:image/svg+xml;base64,${svg}`,
+            dark: await isDark(svg),
+        })),
+)
+const GOLDEN = 2.39996
+const flights = [...icons, ...icons]
+const iconVars = icons
+    .map((icon, idx) => `--icon-${idx}: url(${icon.src})`)
+    .join("; ")
+const tiles = flights.map((icon, idx) => {
+    const angle = idx * GOLDEN
+    const reach = 0.5 + ((idx * 7) % 11) / 18
+    return {
+        icon: idx % icons.length,
+        dark: icon.dark,
+        dx: (Math.cos(angle) * reach * 30).toFixed(2),
+        dy: (Math.sin(angle) * reach * 30).toFixed(2),
+        size: (3 + ((idx * 5) % 4) * 0.45).toFixed(2),
+        delay: (-(idx / flights.length) * 22).toFixed(2),
+        lit: idx % 5 === 2,
+    }
+})
+
+const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
+    "/src/components/home/assets/companies/*.svg",
+    { eager: true },
+)
 ---
 
-{
-    /* Deliberately not `.hero`: app.scss owns that class as a site component
-    and its `.hero h1, .hero p { max-width }` would clamp the copy here. */
-}
 <section class="home-hero" aria-labelledby="hero-title">
-    <div class="content">
-        <a href="/two-zero" class="release">
-            <span class="visually-hidden">Kestra 2.0</span>
-            <TwoZeroMark class="version" aria-hidden="true" />
-            <span class="label">Available now!</span>
-            <Icon name="mdi:arrow-right" />
-        </a>
-
-        <div class="copy">
-            <h1 id="hero-title">
-                <span>One orchestrator.</span>
-                <span class="highlight">Every workflow.</span>
-            </h1>
-
-            <div class="emblem" aria-hidden="true">
+    <PixelEdges left="tall" right="wide" />
+    <div class="frame surface-dark" data-hero-frame data-header-dark>
+        <div class="field" aria-hidden="true" style={iconVars}>
+            <div class="space">
+                <span class="orbit" style="--d: 34rem"></span>
+                <span class="orbit" style="--d: 58rem"></span>
+                <span class="orbit" style="--d: 86rem"></span>
+                <span class="orbit" style="--d: 120rem"></span>
                 {
-                    FLARES.map((flare) => (
+                    tiles.map((tile) => (
                         <span
-                            class:list={["flare", flare.kind]}
-                            style={`left:${flare.x}px;top:${flare.y}px;width:${flare.w}px;height:${flare.h}px;--flare-color:${flare.color}`}
-                        />
+                            class:list={[
+                                "tile",
+                                { lit: tile.lit, dark: tile.dark },
+                            ]}
+                            style={`--dx: ${tile.dx}; --dy: ${tile.dy}; --s: ${tile.size}rem; --delay: ${tile.delay}s; --icon: var(--icon-${tile.icon})`}
+                        >
+                            <span class="face" />
+                        </span>
                     ))
                 }
-                <span class="tile">
-                    <img src="/icon-simple.svg" alt="" width="87" height="87" />
-                </span>
             </div>
-
-            <p class="lead">
-                Build, run, and govern across your entire organization.
-            </p>
-            <p class="support">Agentic AI under the same controls.</p>
         </div>
-
-        <div class="buttons">
-            <a href="/get-started" class="btn btn-lg btn-primary">Get started</a
-            >
-            <a href="/demo" class="btn btn-lg btn-secondary">Book a Demo</a>
-        </div>
-
-        <ul class="key">
-            {KEY_FACTS.map((fact) => <li>{fact}</li>)}
-        </ul>
-
-        <div class="logos">
-            <LogoBar />
+        <div class="container-xl stage">
+            <div class="intro">
+                <div class="copy">
+                    <h1 id="hero-title">
+                        <span class="beat">Orchestrate everything,</span>
+                        <span class="beat"
+                            >everywhere<span
+                                class="brand-dot"
+                                aria-hidden="true"></span><span
+                                class="visually-hidden">.</span
+                            ></span
+                        >
+                    </h1>
+                    <span class="hero-mark" aria-hidden="true" data-hero-mark>
+                        {
+                            SPARKS.map((spark) => (
+                                <span
+                                    class="spark"
+                                    style={`--a: ${spark.a}deg; --r: ${spark.r}rem; --s: ${spark.s}px; --delay: ${spark.delay}s`}
+                                />
+                            ))
+                        }
+                        <img src={kestraMark.src} alt="" />
+                    </span>
+                    <p class="lead">
+                        Use any language, connect your systems, and run
+                        anywhere. Open source under Apache 2.0.
+                    </p>
+                    <div class="buttons">
+                        <a href="/get-started" class="btn-solid">
+                            Get started <Icon name="mdi:chevron-right" />
+                        </a>
+                        <a href="/demo" class="btn-ghost">Book a demo</a>
+                    </div>
+                </div>
+            </div>
+            <ul class="key" aria-label="Kestra at a glance" data-key-facts>
+                {
+                    KEY_FACTS.map((fact, idx) => (
+                        <li style={`--i: ${idx}`}>{fact}</li>
+                    ))
+                }
+            </ul>
         </div>
     </div>
+    <ul class="customers" aria-label="Companies running Kestra in production">
+        {
+            CUSTOMERS.map((company) => {
+                const logo =
+                    companyLogos[
+                        `/src/components/home/assets/companies/${company.file}.svg`
+                    ].default
+                const height = Math.min(
+                    1.75,
+                    1.3 / Math.sqrt(logo.width / logo.height / 4.5),
+                )
+                const href = storyHref(company.story)
+                const image = (
+                    <Image
+                        src={logo}
+                        alt={company.name}
+                        class="brand-logo"
+                        style={`--h: ${(height * (company.scale ?? 1)).toFixed(3)}rem; translate: 0 ${-(company.lift ?? 0)}rem`}
+                    />
+                )
+                return (
+                    <li>
+                        {href ? (
+                            <a class="has-story" href={href}>
+                                {image}
+                                <span class="read">
+                                    Read story <span class="arrow">→</span>
+                                </span>
+                            </a>
+                        ) : (
+                            image
+                        )}
+                    </li>
+                )
+            })
+        }
+    </ul>
 </section>
 
-<style lang="scss" define:vars={{ beam: `url(${beam})` }}>
-    .home-hero {
-        --header-h: var(--top-bar-height, 67px);
+<script>
+    const REPLAY_MS = 9000
 
-        position: relative;
-        margin-top: calc(-1 * var(--header-h));
-        padding: calc(var(--header-h) + 5rem) 1rem 1.25rem;
-        isolation: isolate;
-        overflow: clip;
-        background: #120321;
-        color: $white;
-        text-align: center;
-
-        @include media-breakpoint-down(md) {
-            padding-top: calc(var(--header-h) + 3.5rem);
-        }
-
-        &::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: var(--beam) no-repeat 50% -13px / auto 886px;
-            will-change: opacity;
-            animation: beam-pulse 3.6s infinite;
-            pointer-events: none;
-
-            @include media-breakpoint-down(md) {
-                background-position: 50% -105px;
+    function loopKeyFacts() {
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+        for (const strip of document.querySelectorAll<HTMLElement>(
+            "[data-key-facts]:not([data-looping])",
+        )) {
+            strip.dataset.looping = "true"
+            const run = () => {
+                strip.classList.remove("running")
+                void strip.offsetWidth
+                strip.classList.add("running")
             }
+            let visible = false
+            const observer = new IntersectionObserver(([entry]) => {
+                if (entry.isIntersecting && !visible) run()
+                visible = entry.isIntersecting
+            })
+            observer.observe(strip)
+            const timer = setInterval(() => {
+                if (!strip.isConnected) {
+                    clearInterval(timer)
+                    observer.disconnect()
+                    return
+                }
+                if (visible && !document.hidden) run()
+            }, REPLAY_MS)
         }
     }
 
-    @keyframes beam-pulse {
-        0% {
-            opacity: 0.82;
-            animation-timing-function: steps(34, end);
-        }
+    document.addEventListener("astro:page-load", loopKeyFacts)
+    loopKeyFacts()
 
-        38% {
-            opacity: 1;
-            animation-timing-function: steps(1, end);
-        }
+    function clearMenu() {
+        if (!document.querySelector("[data-hero-frame]")) return
+        document.body.setAttribute("data-header-clear", "")
+        document.addEventListener(
+            "astro:before-swap",
+            () => document.body.removeAttribute("data-header-clear"),
+            { once: true },
+        )
+    }
 
-        52% {
-            opacity: 1;
-            animation-timing-function: steps(43, end);
-        }
+    document.addEventListener("astro:page-load", clearMenu)
+    clearMenu()
 
-        100% {
-            opacity: 0.82;
+    function centreOnMark() {
+        for (const frame of document.querySelectorAll<HTMLElement>(
+            "[data-hero-frame]",
+        )) {
+            const mark = frame.querySelector<HTMLElement>("[data-hero-mark]")
+            if (!mark) continue
+            const place = () => {
+                const box = frame.getBoundingClientRect()
+                const at = mark.getBoundingClientRect()
+                const centre = at.top + at.height / 2 - box.top
+                frame.style.setProperty("--oy", `${centre}px`)
+                const rest = frame.querySelector<HTMLElement>(".orbit")
+                if (rest)
+                    frame.style.setProperty(
+                        "--oy-shift",
+                        `${centre - parseFloat(getComputedStyle(rest).top)}px`,
+                    )
+            }
+            place()
+            new ResizeObserver(place).observe(frame)
         }
     }
 
-    .content {
+    document.addEventListener("astro:page-load", centreOnMark)
+    centreOnMark()
+
+    function pauseHeroFrame() {
+        const frame = document.querySelector<HTMLElement>("[data-hero-frame]")
+        if (!frame) return
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                entry.target.toggleAttribute("data-offscreen", !entry.isIntersecting)
+            },
+            { rootMargin: "-20% 0px 0px 0px" },
+        )
+        observer.observe(frame)
+        document.addEventListener(
+            "astro:before-swap",
+            () => observer.disconnect(),
+            { once: true },
+        )
+    }
+
+    document.addEventListener("astro:page-load", pauseHeroFrame)
+    pauseHeroFrame()
+</script>
+
+<style lang="scss">
+    .home-hero {
+        position: relative;
+        margin-top: -67px;
+        border-bottom: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-body);
+    }
+
+    .frame {
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+
         position: relative;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        gap: 2rem;
-        max-width: 1246px;
-        margin-inline: auto;
+        --menu: calc(67px - 1rem);
+        padding-top: var(--menu);
+        min-height: calc(min(80vh, 800px) + var(--menu));
+        border-radius: 0;
+        overflow: hidden;
+        contain: layout paint;
+        background:
+            radial-gradient(
+                ellipse 62% 78% at 50% 82%,
+                rgba(80, 56, 255, 0.26),
+                rgba(80, 56, 255, 0.16) 40%,
+                rgba(70, 44, 255, 0.06) 70%,
+                transparent 100%
+            ),
+            radial-gradient(
+                90% 80% at 85% 10%,
+                rgba(150, 130, 255, 0.1),
+                transparent 60%
+            ),
+            #111114;
+        color: #ffffff;
 
         @include media-breakpoint-down(md) {
-            gap: 1.5rem;
-        }
-    }
-
-    .release {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.875rem;
-        padding: 0.375rem 1.875rem;
-        border-radius: 75px;
-        box-shadow:
-            3px 3px 0 0 rgba(173, 41, 250, 0.2),
-            inset 2px 2px 0 0 rgba(255, 255, 255, 0.4);
-        color: $white;
-        font-size: 0.875rem;
-        font-weight: 700;
-        line-height: 1.5rem;
-        text-decoration: none;
-        text-transform: uppercase;
-        text-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
-        transition:
-            border-color 0.2s ease-in-out,
-            box-shadow 0.2s ease-in-out;
-
-        /* 1px purple-to-blue gradient ring on a transparent pill: the gradient
-         * is painted on a pseudo-element and masked down to its 1px padding. */
-        &::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            padding: 1px;
-            border-radius: inherit;
-            background: linear-gradient(90deg, #a77af6, #1f9bf3);
-            -webkit-mask:
-                linear-gradient(#000 0 0) content-box,
-                linear-gradient(#000 0 0);
-            -webkit-mask-composite: xor;
-            mask:
-                linear-gradient(#000 0 0) content-box,
-                linear-gradient(#000 0 0);
-            mask-composite: exclude;
-            pointer-events: none;
+            min-height: 560px;
         }
 
-        &:hover,
-        &:focus-visible {
-            color: $white;
-            box-shadow:
-                3px 3px 0 0 rgba(173, 41, 250, 0.35),
-                inset 2px 2px 0 0 rgba(255, 255, 255, 0.55);
-        }
-
-        .version {
-            flex: none;
-            width: 40px;
-            height: 20px;
-            filter: drop-shadow(0 1px 2px #9039fa)
-                drop-shadow(0 0 6px rgba(160, 100, 255, 0.75));
-        }
-
-        > :global(svg:last-child) {
-            flex: none;
-            width: 1rem;
-            height: 1rem;
-            margin-bottom: 3px;
-        }
-
-        @include media-breakpoint-down(md) {
-            gap: 0.625rem;
-            padding: 0.375rem 1.25rem;
-            font-size: 0.75rem;
+        > .stage {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex: 1;
+            flex-direction: column;
         }
     }
 
     .copy {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1.25rem;
-        width: 100%;
+        min-width: 0;
+        margin-inline: auto;
+        text-align: center;
     }
 
     h1 {
-        display: flex;
-        flex-direction: column;
-        margin: 0;
-        font-size: clamp(2.5rem, 5vw, 4.5rem);
+        max-width: none;
+        margin: 0 auto;
+        font-size: clamp(2.5rem, 5.2vw, 4.25rem);
         font-weight: 600;
-        font-feature-settings: "ss01", "ss06", "ss07";
-        letter-spacing: -0.02em;
-        line-height: 1;
-        color: $white;
+        letter-spacing: -0.03em;
+        line-height: 1.04;
+        color: #ffffff;
+        text-wrap: balance;
 
-        .highlight {
-            font-weight: 500;
-            color: #c37aff;
-            text-shadow:
-                0 4.5px 2.3px rgba(140, 30, 214, 0.19),
-                0 9.2px 5.2px rgba(140, 30, 214, 0.25),
-                0 17px 13.7px rgba(140, 30, 214, 0.31),
-                0 47px 56px rgba(140, 30, 214, 0.5);
+        .beat {
+            display: block;
+            animation: beat-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
         }
 
-        @include media-breakpoint-down(md) {
-            text-wrap: balance;
+        .beat + .beat {
+            animation-delay: 0.45s;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .beat {
+                animation: none;
+            }
+        }
+
+        .brand-dot {
+            display: inline-block;
+            width: 0.15em;
+            height: 0.15em;
+            margin-left: 0.05em;
+            background: #fe0071;
         }
     }
 
-    .emblem {
+    .hero-mark {
+        display: grid;
+        place-items: center;
         position: relative;
-        width: 122px;
-        height: 90px;
-    }
-
-    .flare {
-        position: absolute;
-        border-radius: 82px;
-        background: var(--flare-color);
-        will-change: opacity, transform;
-        animation: flare-breathe 3.6s infinite;
-
-        &.haze {
-            filter: blur(37.5px);
-            box-shadow: 0 0 41px #5c29dc;
-            mix-blend-mode: color-dodge;
-        }
-
-        &.core {
-            background: #f2fdfc;
-            filter: blur(3.4px);
-            box-shadow:
-                0 0 41px var(--flare-color),
-                0 0 41px #8405ff,
-                0 0 41px #a950ff;
-            animation: none;
-        }
-
-        &.glow {
-            filter: blur(12px);
-            mix-blend-mode: color-dodge;
-        }
-
-        &:nth-child(n + 4) {
-            animation-delay: -1.8s;
-        }
-    }
-
-    @keyframes flare-breathe {
-        0% {
-            opacity: 0.62;
-            transform: scale(0.97);
-            animation-timing-function: steps(34, end);
-        }
-
-        38% {
-            opacity: 1;
-            transform: scale(1.04);
-            animation-timing-function: steps(1, end);
-        }
-
-        52% {
-            opacity: 1;
-            transform: scale(1.04);
-            animation-timing-function: steps(43, end);
-        }
-
-        100% {
-            opacity: 0.62;
-            transform: scale(0.97);
-        }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .flare,
-        .home-hero::before {
-            animation: none;
-        }
-    }
-
-    .tile {
-        position: absolute;
-        left: calc(50% - 2.3px);
-        top: calc(50% + 2.2px);
-        width: 81px;
-        height: 81px;
-        translate: -50% -50%;
-        border: 1px solid transparent;
-        border-radius: 9.6px;
+        width: 5rem;
+        aspect-ratio: 1;
+        margin: 1.75rem auto 0;
+        border: 1.5px solid transparent;
+        border-radius: 0.875rem;
         background:
-            linear-gradient(rgba(3, 2, 4, 0.91), rgba(3, 2, 4, 0.91))
+            radial-gradient(
+                    120% 90% at 30% 0%,
+                    rgba(120, 110, 255, 0.22),
+                    transparent 60%
+                )
                 padding-box,
+            linear-gradient(160deg, #15153a, #0b0b16) padding-box,
             conic-gradient(
-                    from 180deg,
-                    #da4077,
-                    #f62e76 60%,
-                    #fefaff 90%,
-                    #da4077
+                    from var(--edge-turn),
+                    #6d8bff,
+                    #a950ff 20%,
+                    #ffffff 30%,
+                    #f62e76 40%,
+                    #a950ff 60%,
+                    #2a2a5a 75%,
+                    #6d8bff
                 )
                 border-box;
+        animation: edge-turn 5s linear infinite;
         box-shadow:
-            0 24px 54px rgba(255, 255, 255, 0.4),
-            inset 0 1.7px 14px #0036d8;
-        backdrop-filter: blur(1.7px);
+            inset 0 1px 0 rgba(255, 255, 255, 0.2),
+            0 0 18px rgba(200, 190, 255, 0.3),
+            0 0 48px rgba(150, 125, 255, 0.4),
+            0 0 110px rgba(95, 77, 255, 0.35),
+            0 22px 50px rgba(0, 0, 0, 0.6);
 
-        /* The public monogram has more padding than the tile, so it is drawn
-         * slightly larger than the tile and centred over it. */
         img {
+            position: relative;
+            width: 80%;
+            height: auto;
+        }
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        &::before {
+            inset: -60% -120%;
+            background: radial-gradient(
+                closest-side,
+                rgba(178, 166, 255, 0.24),
+                rgba(95, 77, 255, 0.1) 50%,
+                transparent
+            );
+            animation: breathe 6s ease-in-out infinite;
+        }
+
+        &::after {
+            inset: -160%;
+            background:
+                radial-gradient(
+                    ellipse 34% 26% at 36% 42%,
+                    rgba(169, 80, 255, 0.45),
+                    transparent 100%
+                ),
+                radial-gradient(
+                    ellipse 30% 24% at 64% 60%,
+                    rgba(246, 46, 118, 0.24),
+                    transparent 100%
+                ),
+                radial-gradient(
+                    ellipse 28% 22% at 60% 34%,
+                    rgba(233, 193, 255, 0.2),
+                    transparent 100%
+                );
+            filter: blur(24px);
+            animation: mist 26s ease-in-out infinite;
+        }
+
+        .spark {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 87px;
-            height: 87px;
-            max-width: none;
-            translate: -50% -50%;
+            width: var(--s);
+            height: var(--s);
+            margin: calc(var(--s) / -2);
+            border-radius: 50%;
+            background: #fff;
+            box-shadow:
+                0 0 6px rgba(233, 193, 255, 0.9),
+                0 0 14px rgba(169, 80, 255, 0.5);
+            opacity: 0;
+            transform: rotate(var(--a)) translateX(var(--r));
+            animation: twinkle 4.2s ease-in-out var(--delay) infinite;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            animation: none;
+
+            &::before,
+            &::after {
+                animation: none;
+            }
+
+            .spark {
+                display: none;
+            }
         }
     }
 
-    .lead,
-    .support {
-        margin: 0;
-        font-size: 1.25rem;
-        line-height: 1.2;
-        letter-spacing: -0.1px;
+    @keyframes beat-in {
+        from {
+            opacity: 0;
+            transform: translateY(0.35em);
+            filter: blur(6px);
+        }
+    }
 
-        @include media-breakpoint-down(md) {
-            font-size: 1.0625rem;
-            line-height: 1.4;
+    @keyframes breathe {
+        50% {
+            opacity: 0.65;
+            transform: scale(0.92);
+        }
+    }
+
+    @keyframes mist {
+        0%,
+        100% {
+            transform: rotate(0deg) scale(1);
+        }
+
+        50% {
+            transform: rotate(180deg) scale(1.1);
+        }
+    }
+
+    @property --edge-turn {
+        syntax: "<angle>";
+        inherits: false;
+        initial-value: 0deg;
+    }
+
+    @keyframes edge-turn {
+        to {
+            --edge-turn: 360deg;
+        }
+    }
+
+    @keyframes twinkle {
+        0%,
+        100% {
+            opacity: 0;
+            transform: rotate(var(--a)) translateX(var(--r)) scale(0.4);
+        }
+
+        45% {
+            opacity: 1;
+            transform: rotate(var(--a)) translateX(calc(var(--r) + 0.4rem))
+                scale(1);
+        }
+
+        70% {
+            opacity: 0;
+            transform: rotate(var(--a)) translateX(calc(var(--r) + 0.7rem))
+                scale(0.6);
         }
     }
 
     .lead {
-        color: #dadafe;
-    }
-
-    .support {
-        font-weight: 700;
-        color: $white;
+        max-width: 36rem;
+        margin: 1.25rem auto 2rem;
+        font-size: 1.125rem;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.8);
+        text-wrap: balance;
     }
 
     .buttons {
-        /* Re-point the tokens the global `.btn-secondary` reads so the button
-         * stays white on the dark hero in both themes without out-ranking its
-         * `!important` colours. */
-        --ks-background-button-secondary: #{$white};
-        --ks-background-button-secondary-hover: #f1efff;
-        --ks-border-button-secondary: #adadbf;
-        --ks-content-primary: #14181f;
-        --ks-content-btn-secondary-hover: #14181f;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+    }
+
+    .key {
+        --run: 0.25s;
 
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 1.125rem;
-        width: 100%;
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 180px;
-            min-height: 56px;
-            border-radius: 8px;
-            font-size: 1.125rem;
-            line-height: 1.5;
+        gap: 0.625rem 1.5rem;
+        margin: 0;
+        padding: 0 0 clamp(3rem, 5vw, 4.5rem);
+        list-style: none;
+        @include media-breakpoint-up(lg) {
+            gap: 0;
         }
 
-        @include media-breakpoint-down(md) {
-            gap: 0.75rem;
+        font-size: 0.875rem;
+        letter-spacing: 0.01em;
 
-            .btn {
-                width: 100%;
+        li {
+            color: rgba(255, 255, 255, 0.55);
+            white-space: nowrap;
+
+            @include media-breakpoint-up(lg) {
+                & + li::before {
+                    content: "·";
+                    margin-inline: 0.875rem;
+                    color: rgba(255, 255, 255, 0.3);
+                }
+            }
+        }
+
+        &.running li {
+            animation: fact-lit 1.2s ease;
+            animation-delay: calc(0.6s + var(--i) * var(--run));
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            &.running li {
+                animation: none;
             }
         }
     }
 
-    .key {
-        position: relative;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem 1.125rem;
-        margin: 0;
-        padding: 0.625rem 1.875rem;
-        border-radius: 66px;
-        list-style: none;
-        font-size: 0.875rem;
-        line-height: 1.25rem;
-        color: $white;
+    @keyframes fact-lit {
+        20% {
+            color: #ffffff;
+        }
+    }
+
+    .field {
+        --spread: 1;
+
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+        mask-image: radial-gradient(
+            ellipse 30% 34% at 50% var(--oy, 46%),
+            transparent 45%,
+            #000 100%
+        );
+    }
+
+    .space {
+        position: absolute;
+        inset: 0;
+    }
+
+    // The rings and tiles rest at 48% and are moved onto the mark with a
+    // translate, which, unlike `top`, does not count as a layout shift.
+    .orbit {
+        position: absolute;
+        top: 48%;
+        left: 50%;
+        width: var(--d);
+        aspect-ratio: 1;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 50%;
+        translate: -50% calc(-50% + var(--oy-shift, 0px));
+    }
+
+    .tile {
+        position: absolute;
+        top: 48%;
+        left: 50%;
+        translate: 0 var(--oy-shift, 0px);
+        width: var(--s);
+        aspect-ratio: 1;
+        margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+        animation: fly 22s linear infinite;
+        animation-delay: var(--delay);
+        will-change: transform, opacity;
+        opacity: 0;
+
+        @media (prefers-reduced-motion: reduce) {
+            animation: none;
+            opacity: 0.6;
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 0.7500vw),
+                    calc(var(--dy) * 0.7500vh)
+                )
+                scale(0.7500);
+        }
+    }
+
+    .face {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, #26262c, #18181c);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 0.625rem;
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.12),
+            0 10px 30px rgba(0, 0, 0, 0.5);
+        animation: sharp 22s linear infinite;
+        animation-delay: var(--delay);
 
         &::before {
             content: "";
             position: absolute;
-            inset: 0;
-            border: 1px solid rgba(255, 255, 255, 0.55);
-            border-radius: inherit;
-            -webkit-mask: linear-gradient(
-                90deg,
-                #000 0%,
-                rgba(0, 0, 0, 0.4) 18%,
-                rgba(0, 0, 0, 0.4) 82%,
-                #000 100%
-            );
-            mask: linear-gradient(
-                90deg,
-                #000 0%,
-                rgba(0, 0, 0, 0.4) 18%,
-                rgba(0, 0, 0, 0.4) 82%,
-                #000 100%
-            );
-            pointer-events: none;
+            inset: 24%;
+            background: var(--icon) center / contain no-repeat;
         }
 
-        li {
-            display: flex;
-            align-items: center;
-            gap: 1.125rem;
-            white-space: nowrap;
-
-            &:not(:last-child)::after {
-                content: "";
-                width: 1px;
-                height: 2rem;
-                background: rgba(255, 255, 255, 0.35);
-            }
+        .dark > &::before {
+            filter: brightness(0) invert(1);
         }
 
-        @include media-breakpoint-down(md) {
-            gap: 0.5rem 1rem;
-            padding-inline: 1.25rem;
+        .lit > & {
+            border-color: rgba(255, 255, 255, 0.45);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                0 0 22px rgba(255, 255, 255, 0.12),
+                0 10px 30px rgba(0, 0, 0, 0.5);
+        }
 
-            &::before {
-                display: none;
-            }
+        @media (prefers-reduced-motion: reduce) {
+            animation: none;
+        }
+    }
 
-            li::after {
+    @keyframes sharp {
+        0%,
+        86% {
+            opacity: 1;
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    // A flight toward the viewer, drawn in plain 2D: at each stop the tile
+    // sits where a 900px perspective would put it between 1600px behind
+    // and 350px in front, and is scaled to match. No 3D transform is
+    // involved, so the browser paints each tile once and only moves it.
+    @keyframes fly {
+        0% {
+            opacity: 0;
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 0.3600vw),
+                    calc(var(--dy) * 0.3600vh)
+                )
+                scale(0.3600);
+        }
+
+        10% {
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 0.3905vw),
+                    calc(var(--dy) * 0.3905vh)
+                )
+                scale(0.3905);
+        }
+
+        15% {
+            opacity: 1;
+        }
+
+        20% {
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 0.4265vw),
+                    calc(var(--dy) * 0.4265vh)
+                )
+                scale(0.4265);
+        }
+
+        30% {
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 0.4700vw),
+                    calc(var(--dy) * 0.4700vh)
+                )
+                scale(0.4700);
+        }
+
+        40% {
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 0.5233vw),
+                    calc(var(--dy) * 0.5233vh)
+                )
+                scale(0.5233);
+        }
+
+        50% {
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 0.5902vw),
+                    calc(var(--dy) * 0.5902vh)
+                )
+                scale(0.5902);
+        }
+
+        60% {
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 0.6767vw),
+                    calc(var(--dy) * 0.6767vh)
+                )
+                scale(0.6767);
+        }
+
+        70% {
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 0.7930vw),
+                    calc(var(--dy) * 0.7930vh)
+                )
+                scale(0.7930);
+        }
+
+        80% {
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 0.9574vw),
+                    calc(var(--dy) * 0.9574vh)
+                )
+                scale(0.9574);
+        }
+
+        85% {
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 1.0682vw),
+                    calc(var(--dy) * 1.0682vh)
+                )
+                scale(1.0682);
+        }
+
+        90% {
+            opacity: 1;
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 1.2081vw),
+                    calc(var(--dy) * 1.2081vh)
+                )
+                scale(1.2081);
+        }
+
+        95% {
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 1.3900vw),
+                    calc(var(--dy) * 1.3900vh)
+                )
+                scale(1.3900);
+        }
+
+        100% {
+            opacity: 0;
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 1.6364vw),
+                    calc(var(--dy) * 1.6364vh)
+                )
+                scale(1.6364);
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        .field {
+            --spread: 1.9;
+
+            opacity: 0.6;
+            mask-image: radial-gradient(
+                ellipse 58% 36% at 50% var(--oy, 46%),
+                transparent 50%,
+                #000 100%
+            );
+        }
+
+        .orbit:nth-child(n + 3) {
+            display: none;
+        }
+
+        .tile {
+            scale: 0.7;
+
+            &:not(:nth-child(4n)) {
                 display: none;
             }
         }
     }
 
-    .logos {
-        width: 100%;
-        padding-top: 1.3rem;
+    .intro {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        padding-block: clamp(3rem, 6vw, 5rem) clamp(1rem, 2vw, 1.5rem);
+    }
+
+    .customers {
+        display: grid;
+        grid-template-columns: repeat(10, minmax(0, 1fr));
+        align-items: center;
+        gap: 1.75rem clamp(0.75rem, 3vw, 2.5rem);
+        max-width: 92rem;
+        margin: 0 auto;
+        padding: clamp(2.5rem, 4vw, 3.5rem) var(--bs-gutter-x, 1.5rem);
+        list-style: none;
+
+        > li {
+            display: flex;
+            justify-content: center;
+            grid-column: span 2;
+            min-width: 0;
+        }
+
+        > li:nth-child(6) {
+            grid-column: 3 / span 2;
+        }
+
+        :global(.brand-logo) {
+            max-width: 100%;
+            object-fit: contain;
+
+            @include media-breakpoint-down(xl) {
+                height: calc(var(--h) * 0.85);
+            }
+
+            @include media-breakpoint-down(md) {
+                height: calc(var(--h) * 0.62);
+            }
+        }
+
+        @include media-breakpoint-up(xl) {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 108rem;
+            padding-inline: clamp(2.5rem, 6.4vw, 7rem);
+        }
+    }
+
+    .has-story {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        color: inherit;
+        text-decoration: none;
+
+        .read {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            padding-top: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
+            color: var(--ks-content-secondary);
+            opacity: 0;
+            translate: -50% -4px;
+            transition:
+                opacity 0.2s ease,
+                translate 0.2s ease;
+        }
+
+        .arrow {
+            display: inline-block;
+            transition: transform 0.2s ease;
+        }
+
+        &:hover .read,
+        &:focus-visible .read {
+            opacity: 1;
+            translate: -50% 0;
+        }
+
+        &:hover .arrow {
+            transform: translateX(0.2em);
+        }
+
+        &:hover .read {
+            color: var(--ks-content-primary);
+        }
+
+        @media (hover: none) {
+            .read {
+                display: none;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            .read {
+                display: none;
+            }
+        }
+    }
+
+    .brand-logo {
+        flex-shrink: 0;
+        width: auto;
+        height: var(--h);
+        filter: brightness(0);
+
+        :global(html.dark) & {
+            filter: brightness(0) invert(1);
+        }
     }
 </style>

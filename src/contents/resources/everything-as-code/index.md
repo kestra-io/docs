@@ -45,7 +45,7 @@ The journey to EaC began with Infrastructure as Code (IaC). IaC revolutionized I
 
 However, IaC was just the beginning. As teams adopted IaC, they realized the same principles could bring value to other domains. This led to the expansion of the "as code" philosophy:
 - **Configuration as Code (CaC):** Managing application and system configurations.
-- **Policy as Code (PaC):** Defining security and compliance rules in code.
+- **[Policy as Code (PaC)](/resources/infrastructure/policy-as-code):** Defining security and compliance rules in code.
 - **Data as Code:** Versioning and managing data schemas, transformations, and pipelines.
 - **Security as Code (SaC):** Integrating security practices into the development lifecycle through code.
 

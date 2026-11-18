@@ -87,7 +87,7 @@ Kestra is an open-source, declarative orchestration platform designed to unify d
 
 Its language-agnostic architecture allows you to run tasks in Python, SQL, Bash, Go, Java, or as Docker containers, providing maximum flexibility for polyglot teams. Kestra is event-driven by default, making it ideal for modern, real-time data stacks. With over 1,400 [plugins](https://kestra.io/plugins), it integrates seamlessly with your existing tools, including Databricks: see [how Kestra orchestrates Databricks jobs](/orchestration/databricks).
 
-Leading enterprises like Apple, JPMorgan Chase, and Toyota use Kestra to manage large-scale data and AI pipelines, demonstrating its scalability and reliability in mission-critical environments.
+Leading enterprises like Apple and JPMorgan Chase use Kestra to manage large-scale data and AI pipelines, demonstrating its scalability and reliability in mission-critical environments.
 
 **Best for**: Organizations seeking a flexible, vendor-agnostic, and scalable orchestrator that unifies diverse workloads across clouds and on-premises environments.
 

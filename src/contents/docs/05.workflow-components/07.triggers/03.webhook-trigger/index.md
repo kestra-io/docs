@@ -37,7 +37,17 @@ The `key` is embedded in the webhook URL: `/api/v1/main/executions/webhook/{name
 https://{kestra_domain}/api/v1/main/executions/webhook/{namespace}/{flowId}/{key}
 ```
 
-Replace `kestra_domain`, `namespace`, `flowId`, and `key` with your values. You can also copy the webhook URL from the **Triggers** tab.
+Replace `kestra_domain`, `namespace`, `flowId`, and `key` with your values. In Enterprise Edition and Kestra Cloud, replace `main` with your tenant ID. You can also copy the webhook URL from the **Triggers** tab.
+
+To send a test request with a JSON body from the command line:
+
+```bash
+curl http://localhost:8080/api/v1/main/executions/webhook/company.team/trigger/<your-key> \
+  -H 'Content-Type: application/json' \
+  -d '{"event":"example","message":"Hello from webhook"}'
+```
+
+If your provider sends an idempotency key header such as `Idempotency-Key`, store it in a custom label and add a duplicate guard to avoid processing the same event twice. See [Webhook-triggered flows](../../../15.how-to-guides/idempotency/index.md#webhook-triggered-flows) in the idempotency guide.
 
 ## Handling the request body
 
@@ -183,6 +193,51 @@ Pass the value through `env` instead. The interpreter receives it as data and ne
 The same applies to other languages: in a Python `Script`, read the value with `os.environ["NAME"]` rather than writing `{{ trigger.body.name }}` into the script. To pass a whole JSON body, set `BODY: "{{ trigger.body | toJson }}"` and parse it in the script. Never wrap request data in the `render()` function, which evaluates any expression the caller sends.
 
 See [Security hardening](../../../security-hardening/index.md#webhook-endpoints) for how to protect the webhook endpoint itself.
+
+## Verify the request signature
+
+:::badge{version=">=2.0.10" editions="OSS,EE,Cloud"}
+:::
+
+Many providers sign each webhook request with a shared secret and send the HMAC of the request body in a header, such as GitHub's `X-Hub-Signature-256`. Set `signature` on the trigger to check it: Kestra computes the HMAC over the raw request body and rejects a request whose signature is missing or wrong before any execution is created.
+
+```yaml
+id: signed_webhook
+namespace: company.team
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Received a verified webhook"
+
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: "{{ secret('WEBHOOK_KEY') }}"
+    signature:
+      header: X-Hub-Signature-256
+      algorithm: HMAC_SHA256
+      secret: "{{ secret('GITHUB_WEBHOOK_SECRET') }}"
+      prefix: "sha256="
+```
+
+| Property | Required | Description |
+|---|---|---|
+| `header` | Yes | The request header that carries the signature. The name is not case-sensitive. |
+| `algorithm` | No | `HMAC_SHA1`, `HMAC_SHA256`, or `HMAC_SHA512`. Defaults to `HMAC_SHA256`. |
+| `secret` | Yes | The shared signing secret. Store it as a [secret](../../../06.concepts/04.secret/index.md) and reference it with `{{ secret('...') }}`. |
+| `prefix` | No | Text the header value must start with before the signature, such as `sha256=` for GitHub. |
+
+Kestra returns `401` with `Invalid webhook signature.` and creates no execution when:
+
+- The header is missing or sent more than once.
+- The header value doesn't start with the configured `prefix`.
+- The signature isn't a hexadecimal string of the length the algorithm produces. Uppercase and lowercase hex are both accepted; base64-encoded signatures are not.
+- The signature doesn't match the HMAC of the request body.
+
+Verification works with `fetchType` set to `FETCH`, `STORE`, or `NONE`. With `STORE`, the body is checked while it's streamed to internal storage and deleted if the signature doesn't match. Signed `multipart/form-data` requests are always rejected, because Kestra no longer has their original bytes once the parts are parsed.
+
+A valid signature proves the payload came from someone who knows the secret and wasn't changed, but it doesn't stop the same signed request from being sent again.
 
 ## Filtering webhook executions with `when`
 

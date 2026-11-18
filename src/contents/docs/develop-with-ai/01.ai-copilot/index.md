@@ -207,7 +207,7 @@ From the **Logs** and **Gantt** views of an execution, open the three-dot menu o
 
 ## Configure an LLM provider
 
-Copilot needs an LLM provider. Until you configure one, the Copilot panel opens but can't answer prompts. Add providers under `kestra.ai.providers` in your Kestra configuration.
+Copilot needs an LLM provider. Until you configure one, the Copilot panel opens with a notice that no provider is configured, and its prompt box, mode selector and suggestions stay disabled. Add providers under `kestra.ai.providers` in your Kestra configuration.
 
 Kestra Open Source supports Google Gemini:
 

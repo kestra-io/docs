@@ -22,7 +22,7 @@ faq:
 author: "elliot"
 ---
 
-Managing virtual machines (VMs) effectively across their entire lifespan is a core challenge for platform and infrastructure engineers. From initial provisioning to ongoing operations, security, and eventual decommissioning, the VM lifecycle is complex, often fragmented, and prone to manual errors. Traditional tools struggle to provide a unified view or automate across heterogeneous virtualization platforms.
+Managing virtual machines (VMs) effectively across their entire lifespan is a core challenge for platform and infrastructure engineers. From initial provisioning to [ongoing day 2 operations](/resources/infrastructure/day-2-operations), security, and eventual decommissioning, the VM lifecycle is complex, often fragmented, and prone to manual errors. Traditional tools struggle to provide a unified view or automate across heterogeneous virtualization platforms.
 
 This guide delves into VM lifecycle management, outlining its key stages, critical security considerations, and the immense benefits of automation. We'll explore how modern orchestration platforms like Kestra provide a declarative, event-driven control plane to streamline VM operations, integrate with your existing IaC tools, and ensure auditability from cloud to edge.
 
@@ -32,7 +32,7 @@ This guide delves into VM lifecycle management, outlining its key stages, critic
 
 Virtual machine lifecycle management is the comprehensive process of overseeing every phase of a VM's existence, from the initial request to its final retirement. It's a strategic approach that ensures VMs are provisioned correctly, operated efficiently, secured consistently, and decommissioned cleanly.
 
-The primary goal is to treat VMs not as static assets but as dynamic resources that serve a specific purpose for an application or service. This application-centric view is crucial for modern infrastructure, where agility and reliability are paramount. Without a structured lifecycle management process, organizations face challenges like VM sprawl, inconsistent configurations, security vulnerabilities, and wasted resources. Effective [infrastructure automation](https://kestra.io/resources/infrastructure/automation) helps [solve these orchestration problems](https://kestra.io/resources/infrastructure/orchestration-problems-complexity) by standardizing and governing the entire process.
+The primary goal is to treat VMs not as static assets but as dynamic resources that serve a specific purpose for an application or service. This application-centric view is crucial for modern infrastructure, where agility and reliability are paramount. Without a structured lifecycle management process, organizations face challenges like VM sprawl, inconsistent configurations, security vulnerabilities, and wasted resources. Effective [infrastructure automation](https://kestra.io/resources/infrastructure/automation) helps [solve these orchestration problems](https://kestra.io/resources/orchestration) by standardizing and governing the entire process.
 
 ### The stages of VM lifecycle management
 
@@ -76,7 +76,7 @@ By codifying your VM deployment workflows, you can turn a complex manual process
 
 - **Infrastructure as Code (IaC)**: Use tools like [Terraform](https://kestra.io/orchestration/terraform) and [Ansible](https://kestra.io/orchestration/ansible) to define your VMs and their configurations in code. This allows you to version, test, and review infrastructure changes just like application code.
 - **GitOps for VM Configurations**: Store your IaC definitions in a Git repository. A [GitOps](https://kestra.io/resources/infrastructure/gitops) approach uses the Git repository as the single source of truth, with an orchestration engine automatically applying changes to your environment.
-- **[Self-Service](/resources/infrastructure/self-service-infrastructure) Portals**: Build self-service portals that allow development teams to request and provision VMs based on pre-approved, automated workflows. This empowers teams while maintaining central governance and control.
+- **[Self-Service Portals](/resources/infrastructure/self-service-infrastructure)**: Build self-service portals that allow development teams to request and provision VMs based on pre-approved, automated workflows. This empowers teams while maintaining central governance and control.
 
 ### Tools and strategies for efficient VM operations
 
