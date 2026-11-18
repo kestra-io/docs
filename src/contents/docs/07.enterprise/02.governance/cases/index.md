@@ -177,7 +177,7 @@ Cases sit in the left menu between Executions and System Flows.
 
 - Board view (default): a kanban board grouped by status, severity, or assignee. Dragging a card between columns updates the case; dropping onto Resolved opens the resolve modal, because a reason is mandatory. Cards show the case ID, severity, title, assignees, and a live SLA countdown.
 - List view: columns for Case, Title, Severity, Status, Resolution SLA, and Assignee, with an inline next-step button per row (Acknowledge, Investigating, Resolve) and bulk Acknowledge/Delete.
-- Toolbar: full-text search, which also matches the key and URL of a case's external ticket; filters on namespace, status, severity, assignee, and time range; an "Assigned to me" toggle; and one chip per status with live counts.
+- Toolbar: full-text search, which also matches the key and URL of a case's external ticket; filters on namespace, status, severity, assignee, and time range; a **Mine** / **Everyone** scope, where **Mine** shows the cases assigned to you or to one of your groups in the current tenant; and one chip per status with live counts.
 
 ![Cases board view showing Open, Acknowledged, Investigating, and Resolved columns with a case card and the notifications panel](./cases-board-view.png)
 

@@ -91,7 +91,7 @@ An approval case follows its request, so its status can't be changed by hand. Th
 | Cancelled | `CANCELLED` | `Cancelled` |
 | Execution killed | `CANCELLED` | `Killed` |
 
-The resolution note is the reviewer's comment. The timeline records an `APPROVAL_DECIDED` event with the decision, the reviewer, and the comment.
+The resolution note is the reviewer's comment. The timeline records an `APPROVAL_DECIDED` event with the decision, the reviewer, and the comment. When the execution is killed or deleted, the timeline also records who did it, if your license includes audit logs.
 
 Approval cases keep the other case features: comments, watchers, linked assets, custom fields, and [`CaseEvent` triggers](../cases/index.md#react-to-case-events). For example, a flow with a `CaseEvent` trigger on `APPROVAL_DECIDED` can post every decision to a channel.
 
@@ -99,7 +99,7 @@ Set `case.enabled: false` to skip the approval case. The request then doesn't ap
 
 ## The Approvals page
 
-**Approvals** in the left menu lists every approval request you can see, with a **Resolution** column that shows how each request ended. Open a request to see its details and timeline, and click **Review** to approve or deny it.
+**Approvals** in the left menu lists every approval request you can see, with a **Resolution** column that shows how each request ended. Switch the scope to **Mine** to see only the requests assigned to you or to one of your groups. Open a request to see its details and timeline, and click **Review** to approve or deny it.
 
 To cancel pending requests in bulk, select them and click **Cancel**. Each request ends without a decision: no decision branch runs, and its execution ends in `CANCELLED`. Requests you aren't allowed to review are left untouched and listed in the result.
 
