@@ -12,7 +12,7 @@ author:
 
 We [announced the Kestra Add-on for Splunk](/blogs/kestra-splunk-partnership). This post covers what production users do with it, and with the rest of the Splunk integration, once it's installed.
 
-The same few patterns keep coming back, and so do the same design questions: how much of the alert to pass along, how to avoid running the same fix twice, where a human should sign off, and how to get the result back into Splunk.
+The same few patterns keep coming back, and so do the same design questions: how much of the alert to pass along, how to keep the same fix from running twice at once, where a human should sign off, and how to get the result back into Splunk.
 
 ## The integration in both directions
 
@@ -26,13 +26,13 @@ API tokens sit encrypted in Splunk's credential store, and the `kestra_alert_use
 
 Kestra to Splunk goes through the [Splunk plugin](/plugins/plugin-ee-splunk) in Kestra Enterprise:
 
-- `Search` runs an SPL query against the management API, polls until the job finishes and stores the results in Kestra's internal storage for the next task. If the execution is killed or a worker shuts down, the Splunk search job is cancelled too, so nothing keeps running on your search head.
+- `Search` runs an SPL query against the management API, polls until the job finishes and stores the results in Kestra's internal storage for the next task. Killing the execution, or a graceful worker shutdown, cancels the Splunk search job too, so nothing keeps running on your search head.
 - `Send` posts events to the HTTP Event Collector, either a raw payload or a file from internal storage, with the index and sourcetype you choose.
 - The Splunk `LogExporter`, used with `LogShipper` or `AuditLogShipper`, ships execution logs and audit events to HEC.
 
 ## Alert-driven remediation
 
-The most common pattern starts with an alert that fires every week: a server stuck at 100% CPU, a service that stopped responding, a disk filling up. Teams measure it by mean time to recovery.
+Remediation usually starts from an alert that fires every week: a server stuck at 100% CPU, a service that stopped responding, a disk filling up. The goal is a shorter mean time to recovery.
 
 Without automation, an engineer reads the alert, works out the cause and opens or updates the ServiceNow incident by hand. With the add-on, the Splunk alert starts a Kestra flow that opens the incident, runs the Ansible playbook that fixes the host, and records the result. Restarting or killing a service waits for an approval.
 
@@ -102,11 +102,11 @@ tasks:
 
 ### Map only what the flow needs
 
-The host and the search name drive the logic, so they arrive as typed inputs. Everything else stays in the CSV file, which the flow can parse or attach to the incident. If the alert definition in Splunk changes, the flow only breaks when a mapped field disappears, and Kestra rejects the execution with a clear input error instead of half-running.
+The host and the search name drive the logic, so they arrive as typed inputs. Everything else stays in the CSV file, which the flow can parse or attach to the incident. If the alert definition in Splunk changes and a mapped field disappears from the payload, the flow fails fast on the missing required input instead of half-running. If a token resolves to an empty value, the flow receives an empty string and runs anyway, so check `host` before the first task acts on it.
 
-### Stop the same fix from running twice
+### Don't run the same fix in parallel
 
-An alert that fires every five minutes on a flapping host would otherwise start a new remediation each time. Splunk's alert throttling, set per host, removes most duplicates at the source. The flow's `concurrency` block queues whatever gets through, so two restarts never run against the same fleet at once. The `Labels` task tags each execution with the host and the Splunk search ID, which makes "what did we already do for this host today" a filter in the Kestra UI.
+An alert that fires every five minutes on a flapping host would otherwise start a new remediation each time. Splunk's alert throttling, set per host, removes most duplicates at the source. The flow's `concurrency` block queues whatever gets through and runs it one execution at a time, so two restarts never run at the same time. The `Labels` task tags each execution with the host and the Splunk search ID, which makes "what did we already do for this host today" a filter in the Kestra UI.
 
 ### Put the approval where the risk is
 
@@ -118,7 +118,7 @@ The `Send` task writes the outcome to a dedicated index with the original search
 
 ### Run the fix inside isolated sites
 
-When sites sit on separate networks and no control plane may span IT and OT, remote worker groups run the playbook inside each site. The Splunk alert, the approval and the audit trail stay central, and the fix runs locally on a worker that only needs outbound access to Kestra.
+When sites sit on separate networks and no control plane may span IT and OT, remote worker groups run the playbook inside each site. The Splunk alert, the approval and the audit trail stay central, and the fix runs locally on a worker that only needs outbound access to Kestra. Remote worker groups are a Kestra Enterprise feature.
 
 ## Splunk as a data source inside a flow
 
@@ -142,7 +142,7 @@ tasks:
     query: 'search index=os sourcetype=syslog level=error earliest=-24h | stats count by host'
 ```
 
-Keep the heavy lifting in SPL. A `stats` or `dedup` in the query returns a few hundred rows instead of a few million raw events, and the next task in the flow (a Python script, a SQL query or a patch wave) works from that summary. `maxWaitSeconds` bounds how long the flow waits for a slow search, and a killed execution cancels the search job on the Splunk side.
+Keep the heavy lifting in SPL. A `stats` or `dedup` in the query returns a few hundred rows instead of a few million raw events, and the next task in the flow (a Python script, a SQL query or a patch wave) works from that summary. `maxWaitSeconds` bounds how long the flow waits for a slow search.
 
 The same task works as a gate. Before a change window, a flow can search for open critical alerts on the target hosts and stop the wave for any host that has one.
 
@@ -154,7 +154,7 @@ If any of them fails, the flow's `errors` branch deregisters the host from Splun
 
 ## Logs and audit trails in the SIEM
 
-The simplest setup is also the most widespread. Kestra's logs go to Splunk, because that's where security teams and auditors already look.
+The simplest setup sends Kestra's logs to Splunk, where security teams and auditors already look.
 
 `LogShipper` sends execution logs and `AuditLogShipper` sends audit events (who created, changed or ran which flow, and when), both through the Splunk `LogExporter`. The [Ship Kestra logs to Splunk](/blueprints/splunk-log-shipper) blueprint runs it as a daily system flow:
 
@@ -180,7 +180,7 @@ tasks:
         token: "{{ secret('SPLUNK_API_KEY') }}"
 ```
 
-The `offsetKey` keeps a cursor between runs, so each run sends only new entries, with no duplicates and no gaps after a missed run. Most teams tune two things. They shorten the schedule to every 15 minutes or hourly so alerts on Kestra activity fire close to real time, and they raise `logLevelFilter` to `WARN` on busy instances to keep Splunk ingestion costs down. A separate HEC token and index for Kestra makes retention and access rules easier to set on the Splunk side.
+The `offsetKey` keeps a cursor between runs, so each run sends only new entries. Two settings are worth tuning: shorten the schedule to every 15 minutes or hourly so alerts on Kestra activity fire close to real time, and raise `logLevelFilter` to `WARN` on busy instances to keep Splunk ingestion costs down. A separate HEC token and index for Kestra makes retention and access rules easier to set on the Splunk side.
 
 Teams moving scheduled jobs off cron and systemd timers use the same setup. Their jobs get a central view in Kestra, and the logs still end up in Splunk, where the rest of the company already searches.
 
