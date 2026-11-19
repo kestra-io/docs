@@ -749,11 +749,46 @@ For more details, refer to the [Subflow Task documentation](/plugins/core/flow/i
 
 ### WorkingDirectory
 
-`WorkingDirectory` runs all nested tasks sequentially in the same directory on the same worker, so downstream tasks can read files written by earlier ones.
+`WorkingDirectory` runs its tasks in order, like `Sequential`, in one directory on one worker, so downstream tasks can read files written by earlier ones. It can hold flowable tasks such as `Parallel`, `If`, and `Switch`, and the tasks inside them run in the same directory on the same worker.
 
-:::alert{type="warning"}
-Only runnable tasks are accepted as children of a `WorkingDirectory`. Nesting a flowable task such as `Parallel` or `Loop` inside a `WorkingDirectory` is rejected at save time.
-:::
+`Loop` iterations and `Subflow` executions are separate executions, so they don't run in the directory. Pass files to and from them with inputs and outputs instead.
+
+The following flow writes two files in parallel, then reads both of them:
+
+```yaml
+id: working_dir_parallel
+namespace: company.team
+
+tasks:
+  - id: working_dir
+    type: io.kestra.plugin.core.flow.WorkingDirectory
+    tasks:
+      - id: fetch
+        type: io.kestra.plugin.core.flow.Parallel
+        tasks:
+          - id: fetch_orders
+            type: io.kestra.plugin.scripts.shell.Commands
+            taskRunner:
+              type: io.kestra.plugin.core.runner.Process
+            commands:
+              - echo "orders" > orders.txt
+
+          - id: fetch_customers
+            type: io.kestra.plugin.scripts.shell.Commands
+            taskRunner:
+              type: io.kestra.plugin.core.runner.Process
+            commands:
+              - echo "customers" > customers.txt
+
+      - id: combine
+        type: io.kestra.plugin.scripts.shell.Commands
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
+        commands:
+          - cat orders.txt customers.txt
+```
+
+The following flow passes a file between two tasks:
 
 ```yaml
 id: working_dir_flow
@@ -779,7 +814,7 @@ tasks:
             echo '::{"outputs": {"stay":"'$(cat {{ workingDir }}/stay.txt)'"}}::'
 ```
 
-This task can also cache files inside the working directory, for example, to cache script dependencies like the `node_modules` of a node `Script` task.
+Use `cache` to keep files from the directory between executions, such as the `node_modules` of a Node.js `Script` task:
 
 ```yaml
 id: node_with_cache
@@ -802,10 +837,10 @@ tasks:
           console.log(colors.red("Hello"));
 ```
 
-This task can also fetch files from [namespace files](../../../06.concepts/02.namespace-files/index.md) and make them available to all child tasks.
+Use `namespaceFiles` to copy [namespace files](../../../06.concepts/02.namespace-files/index.md) into the directory for every task:
 
 ```yaml
-id: node_with_cache
+id: working_dir_namespace_files
 namespace: company.team
 
 tasks:
@@ -824,7 +859,26 @@ tasks:
           - cat dir1/file1.txt
 ```
 
-For more details, refer to the [WorkingDirectory Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.workingdirectory).
+#### Open and close task runs
+
+Each `WorkingDirectory` adds two task runs to the execution:
+
+- `<id>_open` runs first. It creates the directory on a worker and adds the namespace files, input files, and cached files. Every other task in the `WorkingDirectory` runs on that worker.
+- `<id>_close` runs last, after the `finally` tasks, even when a task failed. It saves the output files and the cache, then deletes the directory. If it fails, the `WorkingDirectory` fails.
+
+A task inside the `WorkingDirectory` can't use the ID `<id>_open` or `<id>_close`. Saving such a flow fails with a duplicate task ID error.
+
+#### Retries and reruns
+
+A task's own `retry` reruns it in the same directory, so it still sees the files written by earlier tasks.
+
+The whole `WorkingDirectory` reruns from `<id>_open`, because its directory is deleted when it ends, in these cases:
+
+- A `retry` set on the `WorkingDirectory`, on a task that contains it, or on the flow.
+- A restart or replay of the execution.
+- The loss of the worker during the run.
+
+See the [WorkingDirectory task reference](/plugins/core/flow/io.kestra.plugin.core.flow.workingdirectory) for all properties.
 
 ### Pause
 
