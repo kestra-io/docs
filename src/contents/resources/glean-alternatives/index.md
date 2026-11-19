@@ -93,10 +93,10 @@ Workato is an enterprise-grade integration platform (iPaaS) that combines robust
 - **Honest limitation:** High cost structure and steeper learning curve compared to lightweight search tools.
 
 ### 7. Mithrandir (Best for self-hosted company memory shared by every AI agent)
-Mithrandir installs in a company's own cloud account (AWS, Azure or Google Cloud) or on-premises and builds one sourced record of company knowledge from 26 work tools, including Slack, Gmail, Google Drive, Jira and GitHub. It serves that record over the Model Context Protocol (MCP), so Claude, ChatGPT, Microsoft Copilot, Cursor and other agents answer from the same knowledge. Answers are limited to what each person can already access in the source tools, and every answer cites its sources.
+Mithrandir installs in a company's own cloud account (AWS, Azure or Google Cloud) or on-premises and builds one sourced record of company knowledge from the work tools a team already uses, including Slack, Gmail, Google Drive, Jira and GitHub. It serves that record over the Model Context Protocol (MCP), so Claude, Cursor, GitHub Copilot and other MCP clients answer from the same knowledge. Answers are limited to what each person can already access in the source tools, and every answer cites its sources.
 
-- **Best for:** Companies of 20 to 300 people that want the AI agents they already use to work from company knowledge without moving data into a vendor's cloud.
-- **Distinctive feature:** One MCP endpoint for every agent, with per-person access mirrored from each source tool.
+- **Best for:** Companies that want the AI agents they already use to work from company knowledge, with the deployment running in their own cloud or on their own servers.
+- **Distinctive feature:** One MCP server for every agent, with per-person access mirrored from each source tool.
 - **Honest limitation:** Not open source and no hosted version; the customer runs the deployment in their own environment.
 
 ## Comparing leading Glean competitors
