@@ -545,7 +545,6 @@ kestra:
 | `prefix` | string | No | `""` | Prefix applied to all secret paths. |
 | `secret-path-prefix` | string | No | `""` | Path prefix within the engine to scope Kestra's access. |
 | `role` | string | No | — | Vault role name (used with some auth methods). |
-| `read-only` | boolean | No | `false` | Enable read-only mode for this backend. |
 | `connect-timeout` | duration | No | `PT15S` | Vault API connection timeout. |
 | `read-timeout` | duration | No | `PT1M` | Vault API read timeout. |
 | `tags` | map | No | — | Default tags added to every new or updated secret. |
@@ -556,19 +555,17 @@ In Vault, secrets created through Kestra are stored under `TENANT_ID/NAMESPACE_P
 
 ### Read-only mode
 
-Set `read-only: true` inside the `vault` config block (unlike other backends which use `kestra.secret.read-only`):
-
 ```yaml
 kestra:
   secret:
     type: vault
+    read-only: true
     vault:
       address: https://my-vault:8200/
       root-engine: secret
       secret-path-prefix: app1
       token:
         token: my-vault-access-token
-      read-only: true
 ```
 
 `secret-path-prefix` scopes Kestra's view to a specific path within the engine. In the example above, only secrets under the `app1` path are visible. Reference a subkey in a flow with:

@@ -2,56 +2,34 @@
 import Meeting from "~/components/demo/Meeting.vue"
 import LogoBar from "~/components/home/LogoBar.astro"
 
-interface Props {
-    /** Passed to HubSpot as the originating page URI. */
+export interface Props {
     routePath: string
-    formTitle?: string
-    /** Forwarded to the form, e.g. its button label. */
+    formTitle: string
     formProps?: Record<string, unknown>
-    /** Logo order for the strip under the hero. */
     companies?: string[]
 }
 
-/* The headline, lead and form subtitle are slots with this page's copy as the
- * fallback, so another campaign can reuse the hero with its own words. */
-const {
-    routePath,
-    formTitle = "Discuss your orchestration strategy",
-    formProps = {},
-    companies,
-} = Astro.props
+const { routePath, formTitle, formProps = {}, companies } = Astro.props
 ---
 
 <section class="lp-hero">
     <div class="container-fluid inner">
         <div class="copy">
             <h1 data-usal="fade-r delay-0 duration-500 ease-out">
-                <slot name="title">
-                    Unified <span class="grad grad-a">Workflow</span>{" "}
-                    <span class="grad grad-b">Orchestration</span> Platform for <br
-                        class="wrap"
-                    />the AI era.
-                </slot>
+                <slot name="title" />
             </h1>
             <p
                 class="lead-copy"
                 data-usal="fade-r delay-100 duration-500 ease-out"
             >
-                <slot name="lead">
-                    Build, run, and govern every workflow across data,
-                    infrastructure, agent, and business processes.<br />
-                    <strong>Any language, on your own infrastructure.</strong>
-                </slot>
+                <slot name="lead" />
             </p>
         </div>
 
         <div class="form-card">
             <h2>{formTitle}</h2>
             <p class="form-sub">
-                <slot name="form-sub">
-                    Your Architecture is Unique.<br />
-                    Your Challenges are Specific.
-                </slot>
+                <slot name="form-sub" />
             </p>
             <slot name="form">
                 <Meeting
@@ -138,10 +116,6 @@ const {
         }
     }
 
-    /* The design breaks the headline before "the AI era."; below lg the
-     * narrower column wraps better on its own. */
-    /* :global because slotted headlines are authored in the page, outside this
-     * component's style scope. */
     .lp-hero :global(.wrap) {
         display: none;
         @include media-breakpoint-up(lg) {

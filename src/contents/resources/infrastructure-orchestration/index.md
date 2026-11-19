@@ -23,7 +23,7 @@ faq:
 
 > **TL;DR** — Infrastructure orchestration is the coordination layer that sequences provisioning, configuration, deployment, and day-2 operations across tools like Terraform, Ansible, and Kubernetes, with dependencies, approvals, and an audit trail between them. Most teams already have the automation; what they lack is the layer that turns separate tools into one governed process.
 
-Modern IT environments are rarely simple. Teams often run a collection of specialized tools—[Terraform](https://developer.hashicorp.com/terraform/intro) for provisioning, [Ansible](https://docs.ansible.com/ansible/latest/getting_started/index.html) for configuration, Kubernetes for deployment—each automating a piece of the puzzle. The challenge isn't a lack of automation; it's the "handoff problem" between these fragmented systems, leading to manual steps, delays, and a lack of end-to-end visibility.
+Modern IT environments are rarely simple. Teams often run a collection of specialized tools—[Terraform](https://developer.hashicorp.com/terraform/intro) for provisioning, [Ansible](https://docs.ansible.com/ansible/latest/getting_started/index.html) for configuration, Kubernetes for deployment—each automating a piece of the puzzle. The challenge isn't a lack of automation; it's the "handoff problem" between these fragmented systems, leading to manual steps, delays, and a lack of end-to-end visibility. The handoff between [Terraform and Ansible](/resources/infrastructure/terraform-and-ansible) is the most common example.
 
 This guide explores infrastructure orchestration: the critical layer that unifies these disparate automations into cohesive, governed workflows. We'll define what it is, examine the triggers that push organizations to adopt it, detail common use cases, and outline the key capabilities to look for in a platform that truly integrates your entire infrastructure stack.
 
@@ -37,7 +37,7 @@ This "handoff problem" manifests as:
 *   **Operational Silos:** Each tool is often owned by a different team, leading to coordination overhead and delays.
 *   **Inconsistent Governance:** Applying consistent security, compliance, and approval policies across a dozen different automation tools is nearly impossible.
 
-The goal is to move from fragmented islands of automation to a cohesive, observable, and governed system. This is where the concept of orchestration becomes critical to [solve complexity](/resources/infrastructure/orchestration-problems-complexity) without adding more tools.
+The goal is to move from fragmented islands of automation to a cohesive, observable, and governed system. This is where the concept of orchestration becomes critical to [solve complexity](/resources/orchestration) without adding more tools.
 
 ## What is Infrastructure Orchestration?
 

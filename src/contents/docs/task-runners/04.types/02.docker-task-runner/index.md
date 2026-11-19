@@ -50,6 +50,29 @@ Additionally, when using the Docker task runner, you can configure memory alloca
 The Docker task runner executes the script task as a container in a Docker-compatible engine. This means you can use it to run scripts within a Kubernetes cluster using Docker-In-Docker (DinD) or in a local Docker engine.
 :::
 
+### File handling strategy
+
+`fileHandlingStrategy` sets how the task's files, such as input files, output files, and namespace files, reach the container:
+
+- `VOLUME` (default): Kestra creates a Docker volume and copies the files into it.
+- `MOUNT`: Kestra bind-mounts the worker's working directory into the container at the same path, so no files are copied. This saves time when a task reads or writes large files.
+
+```yaml
+id: docker_mount
+namespace: company.team
+
+tasks:
+  - id: script
+    type: io.kestra.plugin.scripts.python.Script
+    containerImage: python:3.13-slim
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+      fileHandlingStrategy: MOUNT
+    script: print("hello")
+```
+
+With `MOUNT`, the Docker daemon must reach the worker's temporary directory, set by `kestra.tasks.tmp-dir.path`, at the same absolute path. Otherwise, the task fails. When Kestra runs in a container, bind-mount that directory from the Docker host at the same path, as the [Kestra Docker Compose file](../../../02.installation/03.docker-compose/index.md) does with `/tmp/kestra-wd:/tmp/kestra-wd`. If the Docker daemon can't access the worker's file system, for example a remote Docker engine, use `VOLUME`.
+
 ---
 
 ## Task runner behavior in a failure scenario

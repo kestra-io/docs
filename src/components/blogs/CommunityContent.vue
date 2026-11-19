@@ -5,7 +5,7 @@
     <section class="contents">
         <div class="container" ref="blogs">
             <div v-if="slug === '/blogs/community'">
-                <div class="row row-gap-4 mt-5" data-usal="fade-u">
+                <div class="row row-gap-4 mt-5">
                     <div v-for="news in externalNews" :key="news.id" class="col-lg-4 col-md-6 col-12">
                         <BlogCard :blog="news" />
                     </div>

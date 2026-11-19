@@ -61,7 +61,7 @@ Flows can be committed to Git using:
 CI/CD deployment to production can be automated with:
 - GitHub Actions, GitLab CI/CD, Jenkins, or Azure DevOps
 - Terraform
-- The Kestra CLI
+- [`kestractl`](../../kestra-cli/kestractl/index.md)
 
 For more details on CI/CD automation, refer to the [CI/CD guide](../../version-control-cicd/cicd/index.md).
 
@@ -79,7 +79,7 @@ You can schedule synchronization using:
 - A [Schedule trigger](../../05.workflow-components/07.triggers/01.schedule-trigger/index.md) to pull flows at regular intervals (e.g., nightly)
 - A [Webhook trigger](../../05.workflow-components/07.triggers/03.webhook-trigger/index.md) to pull updates whenever new commits are pushed to `main`
 
-See the [dedicated SyncFlows guide](../../15.how-to-guides/syncflows/index.md) for details.
+See [Sync from Git](../../version-control-cicd/04.git/02.sync-from-git/index.md#sync-flows) for details.
 
 To push flows from development to Git, use the [`git.PushFlows` task](/plugins/plugin-git/io.kestra.plugin.git.pushflows).
 This ensures flows are validated before being saved — Kestra will reject invalid flows automatically.

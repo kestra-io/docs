@@ -1,39 +1,12 @@
 ---
 import { Icon } from "astro-icon/components"
-import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
-const totalPlugins = await fetchTotalPluginsCount()
-
-interface Props {
-    heading?: string
-    cards?: { kicker: string; title: string; body: string; icon: string }[]
+export interface Props {
+    heading: string
+    cards: { kicker: string; title: string; body: string; icon: string }[]
 }
 
-const defaultCards = [
-    {
-        kicker: "Control",
-        title: "One control plane for data, infra, AI, and business processes.",
-        body: "Replace your legacy schedulers with one governed platform, running on top of the tools you already have.",
-        icon: "mdi:monitor-dashboard",
-    },
-    {
-        kicker: "Declarative workflows",
-        title: "Every job visible, owned, and audited.",
-        body: "Including the ones that used to live in cron tabs and legacy scripts. Declarative workflows versioned in Git, editable from a full UI, with RBAC and audit logs built in.",
-        icon: "mdi:eye-outline",
-    },
-    {
-        kicker: "Language-agnostic",
-        title: "Any language. Every engineer builds.",
-        body: `Python, Java, Shell, Node, and ${totalPlugins}+ plugins for your databases, clouds, and SaaS tools. No rewrites to adopt, so one platform actually replaces many.`,
-        icon: "mdi:cube-outline",
-    },
-]
-
-const {
-    heading = "One platform. Every workflow. Your infrastructure.",
-    cards = defaultCards,
-} = Astro.props
+const { heading, cards } = Astro.props
 ---
 
 <section class="platform">

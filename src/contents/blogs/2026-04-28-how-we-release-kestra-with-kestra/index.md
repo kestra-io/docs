@@ -50,7 +50,7 @@ A few releases later, after a few fixes on my CLI tool, I went further and creat
 
 Nothing fancy:
 - a **start_release** shell task installing and using [GH CLI](https://cli.github.com/) to trigger a GitHub workflow
-- and a **poll_release_status** [LoopUntil](../../docs/15.how-to-guides/loop/index.md) task checking this workflow job every 5 minutes, with a maximal timeout of 6 hours
+- and a **poll_release_status** [LoopUntil](/plugins/core/flow/io.kestra.plugin.core.flow.loopuntil) task checking this workflow job every 5 minutes, with a maximal timeout of 6 hours
 
 ![release-oss_flow.png](release-oss_flow.png)
 
