@@ -296,6 +296,17 @@ kestra:
 
 Platform emails for invitations and notifications use the Enterprise Edition [mail service](../06.enterprise-and-advanced/index.md#mail-service), configured under `kestra.ee.mail-service`.
 
+### Default time range for charts
+
+`kestra.ui.charts.default-duration` sets the time range the UI applies when you haven't selected one: on dashboards, on the flow and namespace overview charts, and on lists that filter by date. It takes an ISO 8601 duration and defaults to `PT24H`. For example, to show the last 7 days by default:
+
+```yaml
+kestra:
+  ui:
+    charts:
+      default-duration: P7D
+```
+
 ### Security response headers
 
 Kestra adds browser security response headers to every HTTP response, including error responses (401, 403) and static file responses.
