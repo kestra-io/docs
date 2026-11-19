@@ -152,7 +152,7 @@ Many import tools read VM disks through VMware's Virtual Disk Development Kit (V
 
 ## Keeping the self-service when the hypervisor changes
 
-The hypervisor is half of what VMware did; vRA's self-service on top is the other half. In Kestra, the request is a flow: its typed inputs are what the team fills in, one task creates and powers on the VM on Proxmox VE, and one runs the Ansible playbook that configures it. Both plugins are open source, Apache 2.0. If the hypervisor changes, only the create task changes; the inputs and the Ansible step stay. Fernando Mattos covers what happens to the vRA and vRO automation on top of the hypervisor in [Leaving VMware? Start With the Orchestrator, Not the Hypervisor](/blogs/vmware-exit-strategy-orchestrator-first).
+The hypervisor is half of what VMware did; vRA's self-service on top is the other half. In Kestra, the request is a flow: its typed inputs are what the team fills in, one task creates and powers on the VM on Proxmox VE, and one runs the Ansible playbook that configures it. Both plugins are open source, Apache 2.0. If the hypervisor changes, only the create task changes; the inputs and the Ansible step stay. What happens to the vRA and vRO automation on top of the hypervisor is covered in this other post: [Leaving VMware? Start With the Orchestrator, Not the Hypervisor](/blogs/vmware-exit-strategy-orchestrator-first).
 
 <div style="max-width: 600px; margin: 0 auto;">
 
