@@ -245,6 +245,12 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
     .tall {
         @include soft;
 
+        .input,
+        .added,
+        code {
+            font-family: inherit;
+        }
+
         --press-x: 21.1em;
         --submit-x: 33.3em;
         --submit-y: 27.2em;

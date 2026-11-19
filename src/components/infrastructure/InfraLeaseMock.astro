@@ -57,7 +57,7 @@ const CODE = [
         value: "io.kestra.plugin.core.kv.Delete",
         group: 2,
     },
-    { indent: 2, key: "key", value: '"{{ inputs.deployment }}"', group: 2 },
+    { indent: 2, key: "key", pebble: "inputs.deployment", group: 2 },
 ]
 ---
 
@@ -145,9 +145,19 @@ const CODE = [
                         ]}
                         style={`--indent: ${line.indent}`}
                     >
-                        {line.dash && <i class="dash">- </i>}
-                        {line.key && <i class="key">{line.key}:</i>}
-                        {line.value && <i class="value"> {line.value}</i>}
+                        {line.dash && <i class="dash">-</i>}
+                        {line.key && (
+                            <>
+                                <i class="key">{line.key}</i>
+                                <i class="punct">:</i>
+                            </>
+                        )}
+                        {line.value && <i class="value">{line.value}</i>}
+                        {line.pebble && (
+                            <i class="value">
+                                "<i class="pebble">{`{{ ${line.pebble} }}`}</i>"
+                            </i>
+                        )}
                         {line.task && (
                             <span class={`tick t${line.task}`}>
                                 <Icon name="mdi:loading" class="spin" />
@@ -288,7 +298,6 @@ const CODE = [
 
         b {
             overflow: hidden;
-            font-family: var(--ks-font-monospace);
             font-size: 0.68em;
             font-weight: 600;
             text-overflow: ellipsis;
@@ -432,7 +441,6 @@ const CODE = [
         }
 
         span {
-            font-family: var(--ks-font-monospace);
             font-size: 0.62em;
             color: var(--muted);
         }
@@ -447,11 +455,23 @@ const CODE = [
         display: grid;
         margin: 0 -1.1em -1em;
         padding: 0.7em 0 0.9em;
+        --c-key: #631bf3;
+        --c-punct: #424256;
+        --c-text: #001233;
+        --c-pebble: #1a7a55;
+
         border-top: 1px solid var(--line);
         font-family: var(--ks-font-monospace);
+
+        :global(html.dark) & {
+            --c-key: #cdb6fb;
+            --c-punct: #adadbf;
+            --c-text: #f7f7f8;
+            --c-pebble: #80fac5;
+        }
         font-size: 0.62em;
         line-height: 1.75;
-        white-space: pre;
+        white-space: nowrap;
         color: var(--text);
     }
 
@@ -466,8 +486,28 @@ const CODE = [
         }
 
         .dash,
+        .punct {
+            color: var(--c-punct);
+        }
+
+        .dash {
+            margin-right: 1ch;
+        }
+
+        .punct + .value {
+            margin-left: 1ch;
+        }
+
         .key {
-            color: var(--muted);
+            color: var(--c-key);
+        }
+
+        .value {
+            color: var(--c-text);
+        }
+
+        .pebble {
+            color: var(--c-pebble);
         }
 
         .tick {
