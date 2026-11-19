@@ -189,7 +189,7 @@ errors:
 *   **Human-in-the-Loop Approval:** The `Pause` task waits up to four hours for a network engineer to approve; without an answer the execution is cancelled, so nothing is deployed by default.
 *   **Idempotent Deployment:** Ansible ensures that the configuration is applied idempotently, meaning running the playbook multiple times has the same result as running it once.
 *   **Automated Rollback:** The rollback is attached to the deployment step only: if the playbook or the verification fails, the rollback playbook runs, and the flow-level `errors` block alerts the team. A failed validation never triggers a rollback.
-*   **Secure Credential Management:** All sensitive information, such as API keys and passwords, is handled using Kestra's [secrets management](/docs/best-practices/secrets-management).
+*   **Secure Credential Management:** All sensitive information, such as API keys and passwords, is handled using Kestra's [secrets management](/docs/concepts/secret).
 
 ## Best Practices for Automated Network Change Control
 

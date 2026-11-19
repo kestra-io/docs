@@ -8,13 +8,13 @@ date: 2026-11-18
 slug: "awx-release-status"
 faq:
   - question: "Is AWX dead?"
-    answer: "No, AWX is not dead. Red Hat paused official tagged releases in July 2024 to refactor the software into a modular, service-oriented architecture. Development remains active on the devel branch on GitHub, but Red Hat has announced no release date or supported installation path for the next stable build."
+    answer: "AWX is not abandoned: code still lands on the devel branch on GitHub. But packaged releases have stopped. The last one is 24.6.1, published on July 2, 2024, and on November 16, 2026 the maintainers removed the release pipeline from the repository, noting that AWX releases are no longer published. No announcement says whether releases will resume."
   - question: "What is the latest version of AWX?"
     answer: "The latest official release of AWX is version 24.6.1, published on July 2, 2024. The companion AWX Operator project also published its latest release, version 2.19.1, on the same day. No packaged release has shipped since that date."
   - question: "When is the next AWX release?"
-    answer: "There is no announced release date or estimated timeline for the next version of AWX. While the core refactor was merged into the devel branch in early 2026, members of the Ansible Steering Committee confirmed in late 2026 that no official release timeline exists."
+    answer: "None is planned. The refactor was merged into the devel branch in January 2026, but Red Hat never announced a release date. In August 2026, a member of the Ansible Steering Committee replied on the forum that they were not involved in AWX and did not know of any plans or ETAs. On November 16, 2026, the AWX maintainers removed the release staging and publishing workflows, stating that AWX releases are no longer published."
   - question: "Is AWX still maintained?"
-    answer: "AWX receives commits on its devel branch, but it is not maintained through regular stable releases or backported bug fixes. Teams running AWX 24.6.1 do not receive security patches unless they build custom container images directly from untagged development commits."
+    answer: "AWX receives commits on its devel branch, including dependency updates, but it is not maintained through stable releases or backported bug fixes. Teams running AWX 24.6.1 do not receive security patches unless they build custom container images directly from untagged development commits."
   - question: "Is there a fork of AWX?"
     answer: "Yes. Ascender, maintained by CIQ, is an open-source downstream project derived from AWX under the Apache 2.0 license. Ascender ships regular packaged releases (such as version 25.6.3 in late October 2026) and offers commercial enterprise support through Ascender Pro."
   - question: "What is the difference between AWX and Ansible Automation Platform?"
@@ -25,7 +25,7 @@ faq:
     answer: "AWX is a recursive acronym standing for 'AWX Is Not X'. It was introduced in 2017 when Red Hat open-sourced the web management and API layer originally developed for the proprietary Ansible Tower product."
 ---
 
-> **TL;DR** — No, AWX is not dead, but it has not shipped a release since 24.6.1 on July 2, 2024. Red Hat paused releases to refactor AWX into a service-oriented architecture. The refactor is merged into the `devel` branch, but as of November 2026 there is no release date and no supported install path for the new version.
+> **TL;DR** — AWX is still developed, but it no longer ships releases. The last one is 24.6.1, from July 2, 2024. Red Hat paused releases to refactor AWX into a service-oriented architecture, and the refactor is merged into the `devel` branch. On November 16, 2026, the maintainers removed the release pipeline from the repository, noting that AWX releases are no longer published. As of November 2026 there is no release date and no supported install path for the new version.
 
 Engineers and platform administrators managing Ansible environments frequently ask whether AWX is still viable for production operations. While commits continue to land in source control, the absence of packaged builds for over two years has forced infrastructure teams to evaluate their ongoing operational posture.
 
@@ -42,10 +42,10 @@ The following table summarizes the verified state of AWX and its related project
 | **Latest AWX release** | Version 24.6.1, published July 2, 2024 | [GitHub Releases (`ansible/awx`)](https://github.com/ansible/awx/releases) |
 | **Latest AWX Operator release** | Version 2.19.1, published July 2, 2024 | [GitHub Releases (`ansible/awx-operator`)](https://github.com/ansible/awx-operator/releases) |
 | **Active development** | Active commits on `devel` branch (November 2026) | [GitHub Commit Log (`ansible/awx`)](https://github.com/ansible/awx/commits/devel) |
-| **Next release timeline** | No target date or ETA announced | [Ansible Forum Discussions](https://forum.ansible.com/t/is-there-an-estimated-timeline-for-the-next-awx-release/46156) |
-| **Web interface rewrite** | Moved to separate repository (`ansible/ansible-ui`) | [Ansible Forum Announcement (April 2026)](https://forum.ansible.com/t/awx-modernization-ansible-ui/45757) |
+| **Next release timeline** | None planned: release pipeline removed on November 16, 2026 | [Pull request `ansible/awx#16803`](https://github.com/ansible/awx/pull/16803) |
+| **Web interface** | Removed from AWX during the refactor; development resumed in `ansible/ansible-ui` | [Ansible Forum Announcement (April 2026)](https://forum.ansible.com/t/awx-modernization-ansible-ui/45757) |
 | **Jewel proxy layer** | Source code and dev container available; no releases planned | [Ansible Forum Announcement (May 2026)](https://forum.ansible.com/t/awx-modernization-ansible-jewel/45775) |
-| **Red Hat AAP** | Actively developed and supported commercially | <a href="https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.7" rel="nofollow">Red Hat Documentation</a> |
+| **Red Hat AAP** | Actively developed and supported commercially | [Red Hat Documentation](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.7) |
 | **Ascender (CIQ fork)** | Regular releases, latest version 25.6.3 (October 28, 2026) | [GitHub Releases (`ctrliq/ascender`)](https://github.com/ctrliq/ascender/releases) |
 
 ---
@@ -72,12 +72,12 @@ The following chronological timeline records the major milestones, community upd
 
 * **July 2, 2024**: Red Hat publishes AWX 24.6.1 and AWX Operator 2.19.1. These remain the final stable builds distributed by the upstream maintainers.
 * **July 2024**: Maintainers officially announce the release pause and publish technical notes detailing plans to break AWX into modular services.
-* **September 2025**: A thread titled *"Is there a future for AWX?"* on the official Ansible forum receives 76 replies. Community administrators express concern over unpatched vulnerabilities and lack of operational updates. A Red Hat representative acknowledges communication gaps and commits to providing quarterly status updates.
+* **September 22, 2025**: A thread titled *"Is there a future for AWX?"* opens on the official Ansible forum. Community members ask for a status update and a timeline. In October and November 2025, a member of the Red Hat community team acknowledges the communication gap and announces a plan to provide more regular updates.
 * **January 20, 2026**: Red Hat posts an update titled *"AWX modernization: Moving forward"*. The post confirms that the architectural refactoring work is merged into the `devel` branch and nearing completion. The update does not provide a release target or a documented installation procedure.
-* **April 30, 2026**: The legacy user interface is removed from the primary AWX repository. Maintainers direct developers to the newly created `ansible/ansible-ui` repository, noting that the standalone front-end remains in active development and warning that "not everything is going to work out of the box."
+* **April 30, 2026**: Red Hat announces that development of the web interface, removed from AWX during the refactor, has resumed in the public `ansible/ansible-ui` repository. The post describes the UI as in active development and warns that "not everything is going to work out of the box" when running AWX from the `devel` branch.
 * **May 6, 2026**: Maintainers publish the source code for Jewel, a lightweight reverse proxy and authentication routing layer designed to connect AWX with peripheral pluggable services. The post explicitly clarifies that Jewel is an upstream development project with no planned standalone packaged releases.
-* **August 2026**: In a follow-up forum discussion regarding release estimates, an Ansible Steering Committee member notes that they are not aware of any firm plans, dates, or ETAs for an upcoming public release.
-* **November 2026**: Git commits continue to land on the `devel` branch of `ansible/awx`, but tagged releases remain absent.
+* **August 11, 2026**: Asked on the forum whether a release is possible in 2026, an Ansible Steering Committee member replies that they are not involved in AWX and do not know of any plans or ETAs.
+* **November 16, 2026**: The maintainers merge a pull request that removes the release staging and publishing workflows from `ansible/awx`. Its description states that "AWX releases are no longer published, so the release pipeline in this repo is dead code." Commits continue to land on the `devel` branch.
 
 ---
 
@@ -95,11 +95,11 @@ A related indicator is the companion `awx.awx` collection on Ansible Galaxy. The
 
 While developers can build container images directly from the Git `devel` branch, doing so in production introduces substantial stability risks. The upstream maintainers explicitly acknowledge that documentation, migration scripts, and component glue remain incomplete. Pulling development commits risks encountering breaking schema changes, missing UI screens, and unverified API contracts.
 
-### 3. A migration is required regardless of your path
+### 3. There is no release to wait for
 
-Based on published design documents and forum announcements, the next generation of AWX will not be an in-place drop-in upgrade. Because the architecture decouples the user interface, introduces the Jewel routing proxy, and reorganizes deployment manifests, platform teams waiting for the next AWX release will still have to redesign their deployment infrastructure. 
+With the release pipeline removed in November 2026, there is no packaged version of the new architecture to upgrade to, and no announcement says one is coming. Based on Red Hat's forum posts, running the refactored AWX would in any case mean a new deployment rather than an in-place upgrade: the user interface is now a separate project, Jewel adds a routing layer, and the installation methods have changed.
 
-Because rebuilding the control plane will be mandatory whenever the new architecture arrives, infrastructure teams have a natural window to evaluate whether staying on AWX aligns with their broader operational requirements.
+Either way, staying on AWX means owning a control plane that no longer ships releases, which gives infrastructure teams a natural moment to evaluate whether AWX still fits their operational requirements.
 
 ---
 
@@ -110,7 +110,7 @@ Platform engineers running AWX have five distinct operational paths. For a wider
 | Option | Operational Effort | Licensing / Cost | Support Model | Architecture & Portability |
 |---|---|---|---|---|
 | **1. Stay on AWX 24.6.1** | None initially; grows as base packages age | Free (Apache 2.0) | None (community forum only) | Frozen legacy deployment; unpatched CVEs |
-| **2. Wait for next AWX release** | High when released (full deployment rebuild) | Free (Apache 2.0) | Community | Microservice-based; breaking deployment changes |
+| **2. Wait for AWX releases to resume** | Unknown: no release planned | Free (Apache 2.0) | Community | Microservice-based; breaking deployment changes |
 | **3. Migrate to Ascender (CIQ)** | Low to moderate (direct AWX fork) | Free (Apache 2.0) or paid Pro | Community or commercial SLA from CIQ | AWX-compatible controller; regular upstream releases |
 | **4. Red Hat AAP** | Moderate (migration tooling provided) | Commercial (per managed node) | Enterprise SLA from Red Hat | Official commercial platform; automated installation |
 | **5. Decouple orchestration from playbooks** | Moderate (reconfigure jobs as workflows) | Open source or enterprise | Community or enterprise SLA | Standard `ansible-core` execution; multi-tool control plane |
@@ -119,9 +119,9 @@ Platform engineers running AWX have five distinct operational paths. For a wider
 
 For teams with isolated network boundaries, low change frequency, and strict change freezes, continuing to run AWX 24.6.1 is technically possible, as long as platform engineers accept that security vulnerabilities in the web interface and API will remain unpatched.
 
-### Option 2: Wait for the next AWX architecture
+### Option 2: Wait for AWX releases to resume
 
-Teams with deep investments in AWX-specific workflows can wait for Red Hat to finalize packaging for the refactored architecture. When a build is eventually tagged, teams must prepare for a complete redeployment of the control plane. Playbook code will remain compatible, but existing Helm charts, operator manifests, and integration configurations will need to be rebuilt.
+Teams with deep investments in AWX-specific workflows can wait in case packaged releases return. Since the release pipeline was removed in November 2026, nothing indicates when or whether that will happen. If a build is tagged again, expect a full redeployment of the control plane: playbook code will remain compatible, but existing Helm charts, operator manifests, and integration configurations will need to be rebuilt.
 
 ### Option 3: Ascender by CIQ
 
@@ -169,6 +169,7 @@ The factual assertions in this guide are drawn directly from the following publi
 * **AWX Modernization Moving Forward (January 2026)**: [https://forum.ansible.com/t/awx-modernization-moving-forward/45134](https://forum.ansible.com/t/awx-modernization-moving-forward/45134)
 * **Ansible UI Extraction (April 2026)**: [https://forum.ansible.com/t/awx-modernization-ansible-ui/45757](https://forum.ansible.com/t/awx-modernization-ansible-ui/45757)
 * **Jewel Service Proxy Overview (May 2026)**: [https://forum.ansible.com/t/awx-modernization-ansible-jewel/45775](https://forum.ansible.com/t/awx-modernization-ansible-jewel/45775)
+* **Release Pipeline Removal (November 2026)**: [https://github.com/ansible/awx/pull/16803](https://github.com/ansible/awx/pull/16803)
 * **Release Timeline Discussion (August 2026)**: [https://forum.ansible.com/t/is-there-an-estimated-timeline-for-the-next-awx-release/46156](https://forum.ansible.com/t/is-there-an-estimated-timeline-for-the-next-awx-release/46156)
 * **Ascender Releases (CIQ)**: [https://github.com/ctrliq/ascender/releases](https://github.com/ctrliq/ascender/releases)
 * **Ansible Galaxy Collection Record (`awx.awx`)**: [https://galaxy.ansible.com/ui/repo/published/awx/awx/](https://galaxy.ansible.com/ui/repo/published/awx/awx/)

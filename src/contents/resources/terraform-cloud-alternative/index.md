@@ -185,6 +185,7 @@ tasks:
         type: io.kestra.plugin.git.Clone
         url: https://github.com/your-org/your-infra-repo
         branch: main
+        username: "{{ secret('GITHUB_USERNAME') }}"
         password: "{{ secret('GITHUB_TOKEN') }}"
 
       - id: terraform_plan
@@ -212,6 +213,7 @@ tasks:
         type: io.kestra.plugin.git.Clone
         url: https://github.com/your-org/your-infra-repo
         branch: main
+        username: "{{ secret('GITHUB_USERNAME') }}"
         password: "{{ secret('GITHUB_TOKEN') }}"
 
       - id: terraform_apply

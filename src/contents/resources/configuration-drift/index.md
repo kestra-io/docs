@@ -143,6 +143,7 @@ tasks:
         commands:
           - chmod 600 id_rsa
           - |
+            set -o pipefail
             ansible-playbook -i inventory/production.yml playbooks/configure-servers.yml \
               --private-key id_rsa --check --diff | tee check.log
             changed=$(grep -oE 'changed=[0-9]+' check.log | cut -d= -f2 | awk '{s+=$1} END {print s+0}')
@@ -182,7 +183,7 @@ tasks:
 
 A few things are worth noticing:
 - **Check mode first:** `terraform plan -refresh-only -detailed-exitcode` and `ansible-playbook --check --diff` only report what differs. Each check publishes its result as an output (`drift`, `changed`), so the `If` condition reads a value instead of guessing from logs.
-- **Errors stay errors:** a Terraform exit code of 1 still fails the task, so a broken check never looks like "no drift".
+- **Errors stay errors:** a Terraform exit code of 1 still fails the task, and `set -o pipefail` makes a failed or unreachable Ansible run fail its task instead of reporting `changed: 0`, so a broken check never looks like "no drift".
 - **Human approval before any change:** the `Pause` task holds the run for up to eight hours. A team member reviews the diff in the execution logs and resumes; with no answer, the execution is cancelled and nothing is changed.
 - **Terraform remediation left out on purpose:** reverting cloud drift with `terraform apply` can destroy manual fixes, so this example only reapplies the Ansible baseline. The Terraform drift guide linked above covers when to apply and when to import the change into code.
 - **One history:** every check, approval, and remediation is recorded in the same execution, which is the audit trail compliance teams ask for.
