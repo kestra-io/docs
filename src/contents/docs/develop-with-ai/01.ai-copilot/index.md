@@ -69,7 +69,7 @@ Create a flow that downloads a CSV from S3 and loads it into Postgres
 
 ![AI Copilot Edit mode showing the Copilot searching plugins and proposing a validated S3-to-Postgres flow](./edit-step-1-build.png)
 
-The Copilot searches for the S3 and Postgres plugins, authors the flow with secrets referenced via `{{ secret('...') }}`, and presents the proposal. Select **Apply** to write it to the editor, or **Open in editor** to review the diff before accepting.
+The Copilot searches for the S3 and Postgres plugins, authors the flow with secrets referenced via `{{ secret('...') }}`, and presents the proposal as a draft card. Select **Apply** to save it, or **Open in editor** to edit it first. To see what the draft changes before you apply it, use the [Graph tab](#review-a-flow-change).
 
 **Step 2: Add error handling**
 
@@ -91,7 +91,25 @@ Parameterize the S3 bucket name and Postgres table as flow inputs
 
 The Copilot reads the current flow (note the `read-flow` step in the sidebar), adds an `inputs` block with `s3_bucket`, `s3_key`, and `postgres_table`, and rewires the hardcoded values to `{{ inputs.* }}` references throughout the flow. The flow and namespace context pills are attached automatically while working inside the editor.
 
-Each accepted change is saved as a revision. You can track the full edit history from the **Revisions** tab, or use [Git sync](../../version-control-cicd/04.git/index.md) to push revisions to your repository.
+### Review a flow change
+
+<!-- TODO(runtime test + screenshot): kestra-ee#12605 documented from source (kestra#22893, merged 2026-11-19). Check the Graph tab and the apply dialog on a develop image with a working LLM provider, and add a screenshot of the Graph tab with added, changed, and removed tasks. -->
+
+A valid flow draft card has a **YAML** tab and a **Graph** tab. The **Graph** tab shows the flow topology with each task and trigger marked by what the draft does to it. The draft is compared with the flow open in the editor, or with the saved flow when you're on another page. For a new flow, every task is added.
+
+| Mark | Meaning |
+|---|---|
+| Added | The task or trigger is new. |
+| Changed | Same ID and position, with different properties. |
+| Renamed | Same task under a new ID, with the same properties and child tasks. A task whose ID and properties both change shows as removed and added. |
+| Moved | Same task in another block, such as from `tasks` to `errors`, or into a different flowable task. |
+| Removed | The task or trigger is no longer in the flow. |
+
+Above the graph, a summary counts each kind of change and the unchanged tasks. If the graph can't be drawn, use the **YAML** tab instead.
+
+Selecting **Apply** opens a confirmation with the same summary and a text diff of the YAML. Applying saves the draft as a [draft revision](../../06.concepts/03.revision/index.md#draft-revisions): triggers and subflows ignore it until you publish it.
+
+Each applied change is saved as a revision. You can track the full edit history from the **Revisions** tab, or use [Git sync](../../version-control-cicd/04.git/index.md) to push revisions to your repository.
 
 ## Ask mode
 
