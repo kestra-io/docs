@@ -279,6 +279,17 @@ kestra:
 
 Mail server settings are useful when you need platform emails for invitations and notifications.
 
+### Default time range for charts
+
+`kestra.ui.charts.default-duration` sets the time range the UI applies when you haven't selected one: on dashboards, on the flow and namespace overview charts, and on lists that filter by date. It takes an ISO 8601 duration and defaults to `PT24H`. For example, to show the last 7 days by default:
+
+```yaml
+kestra:
+  ui:
+    charts:
+      default-duration: P7D
+```
+
 ## Typical use cases
 
 Use this section when you need to:
