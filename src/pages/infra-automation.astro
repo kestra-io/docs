@@ -119,7 +119,11 @@ const REQUEST = {
     lede: "Fill in the form. The machine is created with a lease and an owner once the platform team signs off.",
     fields: [
         { label: "Requested by", value: "j.kim" },
-        { label: "Environment", value: "staging", select: true },
+        {
+            label: "Environment",
+            value: "staging",
+            options: ["dev", "staging", "production"],
+        },
         { label: "Lease", value: "14 days" },
     ],
     approver: "m.chen",

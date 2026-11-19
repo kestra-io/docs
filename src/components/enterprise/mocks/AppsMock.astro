@@ -11,7 +11,7 @@ interface App {
 interface Field {
     label: string
     value: string
-    select?: boolean
+    options?: string[]
 }
 
 interface Request {
@@ -77,7 +77,11 @@ const DEFAULT_REQUEST: Request = {
     lede: "Request a filtered dataset and download it as a file. Exports of customer data are approved by the data owners.",
     fields: [
         { label: "Requested by", value: "j.kim" },
-        { label: "Dataset", value: "customers", select: true },
+        {
+            label: "Dataset",
+            value: "customers",
+            options: ["customers", "orders", "invoices"],
+        },
         { label: "Reason", value: "Quarterly churn analysis" },
     ],
     approver: "data-owners",
@@ -132,13 +136,37 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
                                 <b>*</b> {field.label}
                             </span>
                             <span
-                                class:list={["input", { select: field.select }]}
+                                class:list={[
+                                    "input",
+                                    `f${idx + 1}`,
+                                    { select: field.options },
+                                ]}
                             >
-                                <span class={`val v${idx + 1}`}>
+                                <span
+                                    class:list={[
+                                        "val",
+                                        field.options ? "pick" : "type",
+                                    ]}
+                                >
                                     {field.value}
                                 </span>
-                                {field.select && (
-                                    <Icon name="mdi:chevron-down" />
+                                {field.options && (
+                                    <>
+                                        <Icon name="mdi:chevron-down" />
+                                        <span class="menu">
+                                            {field.options.map((option) => (
+                                                <i
+                                                    class:list={{
+                                                        on:
+                                                            option ===
+                                                            field.value,
+                                                    }}
+                                                >
+                                                    {option}
+                                                </i>
+                                            ))}
+                                        </span>
+                                    </>
                                 )}
                             </span>
                         </label>
@@ -541,9 +569,36 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
         font-weight: 400;
 
         &.select {
+            position: relative;
             border-color: var(--line);
             font-family: inherit;
             font-weight: 500;
+        }
+
+        .menu {
+            position: absolute;
+            top: calc(100% + 0.3em);
+            right: -1px;
+            left: -1px;
+            z-index: 2;
+            display: grid;
+            padding: 0.3em;
+            border: 1px solid var(--line);
+            border-radius: calc(0.45em * var(--round, 1));
+            background: var(--panel);
+            box-shadow: var(--shadow);
+            opacity: 0;
+
+            i {
+                padding: 0.45em 0.6em;
+                border-radius: calc(0.3em * var(--round, 1));
+                font-size: 0.85em;
+                font-style: normal;
+            }
+
+            .on {
+                background: var(--chip);
+            }
         }
 
         [data-icon] {
@@ -841,20 +896,45 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
             animation: apps-mock-done var(--loop) linear infinite both;
         }
 
-        .val {
+        .val,
+        .menu {
             animation: var(--loop) linear infinite both;
+        }
 
-            &.v1 {
-                animation-name: apps-mock-type-1;
-            }
+        .f1 .type {
+            animation-name: apps-mock-type-1;
+        }
 
-            &.v2 {
-                animation-name: apps-mock-type-2;
-            }
+        .f2 .type {
+            animation-name: apps-mock-type-2;
+        }
 
-            &.v3 {
-                animation-name: apps-mock-type-3;
-            }
+        .f3 .type {
+            animation-name: apps-mock-type-3;
+        }
+
+        .f1 .pick {
+            animation-name: apps-mock-pick-1;
+        }
+
+        .f2 .pick {
+            animation-name: apps-mock-pick-2;
+        }
+
+        .f3 .pick {
+            animation-name: apps-mock-pick-3;
+        }
+
+        .f1 .menu {
+            animation-name: apps-mock-menu-1;
+        }
+
+        .f2 .menu {
+            animation-name: apps-mock-menu-2;
+        }
+
+        .f3 .menu {
+            animation-name: apps-mock-menu-3;
         }
 
         .steps {
@@ -1040,10 +1120,83 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
     @keyframes apps-mock-type-3 {
         0%,
         32% {
+            clip-path: inset(0 100% 0 0);
+            animation-timing-function: steps(12);
+        }
+        37%,
+        100% {
+            clip-path: inset(0);
+        }
+    }
+
+    @keyframes apps-mock-pick-1 {
+        0%,
+        20.9% {
+            opacity: 0;
+        }
+        21%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes apps-mock-pick-2 {
+        0%,
+        28.9% {
+            opacity: 0;
+        }
+        29%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes apps-mock-pick-3 {
+        0%,
+        35.9% {
+            opacity: 0;
+        }
+        36%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes apps-mock-menu-1 {
+        0%,
+        17%,
+        22%,
+        100% {
+            opacity: 0;
+        }
+        18%,
+        21% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes apps-mock-menu-2 {
+        0%,
+        25%,
+        30%,
+        100% {
+            opacity: 0;
+        }
+        26%,
+        29% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes apps-mock-menu-3 {
+        0%,
+        32.5%,
+        37%,
+        100% {
             opacity: 0;
         }
         33%,
-        100% {
+        36% {
             opacity: 1;
         }
     }
