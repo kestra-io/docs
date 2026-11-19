@@ -73,12 +73,14 @@ Use the [Worker sizing methodology](#worker-sizing-methodology) to compute the n
 
 ### Executors
 
-Executors scale with orchestration load. In the [benchmarks](../benchmark/index.md), run on a single node with 4 vCPUs and 16 GB RAM:
+Executors scale with orchestration load, measured in task runs per minute. Each task in an execution is one task run, so a flow with 10 tasks costs the Executor more than a flow with 2.
 
-- **Simple flow (2 tasks)**: Kestra OSS on Postgres sustains about 4,000 executions/min (8,000 task runs/min) with under 1 second of latency. Kestra Enterprise Edition on RabbitMQ and Postgres sustains at least 7,000 executions/min (14,000 task runs/min), the most the benchmark harness could send.
-- **Complex flow (5 `If` tasks)**: both editions sustain about 1,200 executions/min with under 2 seconds of latency, and the Enterprise Edition has lower latency at each rate.
+In the [benchmarks](../benchmark/index.md), run on a single node with 4 vCPUs and 16 GB RAM:
 
-The Executor sustains a similar number of task runs per minute in both benchmarks, so size Executors by task runs rather than by executions.
+- Kestra OSS on Postgres sustains about 8,000 task runs/min with under 1 second of execution latency.
+- Kestra Enterprise Edition on RabbitMQ and Postgres sustains at least 14,000 task runs/min, the most the benchmark harness could send.
+
+The benchmark flows are deliberately simple. Production flows that use concurrency limits, SLAs, and other features add work for the Executor, so they need more capacity than these figures suggest. Size from the [baseline recommendations](#baseline-infrastructure-recommendations), and use the benchmarks as an upper bound.
 
 **Add Executors when**:
 - execution latency exceeds a few seconds under normal load;
@@ -90,19 +92,16 @@ The following factors affect Executor throughput, with examples from the [benchm
 
 | Factor | Effect on throughput | Example from the benchmarks |
 |---|---|---|
-| **Number of tasks per execution** | More tasks per execution increase orchestration work and lower the sustainable execution rate. | On OSS, the simple flow sustains about 4,000 executions/min and the complex flow about 1,200. |
-| **Execution rate (load)** | Latency stays flat until the system reaches its limit, then rises sharply. | Simple flow on OSS: average latency is 150 ms at 4,000 executions/min and 10.8 s at 5,000. |
+| **Load** | Latency stays flat until the system reaches its limit, then rises sharply. | On OSS, average execution latency is 150 ms at 8,000 task runs/min and 10.8 s at 10,000. |
 | **Concurrency** | Unbounded concurrency in a loop adds orchestration overhead, since each iteration runs as a sub-execution. | A `Loop` with 100 unbounded iterations (101 task runs) completes in about 1.5 s, about 67 task runs/s. |
-| **Execution context size** | Large outputs and many task runs per execution make each orchestration step heavier. | Not covered by the current benchmarks. Keep large payloads in internal storage instead of passing them between tasks. |
 | **System resources** | Fixed CPU and RAM cap throughput. More resources, or more Executors and Workers, raise capacity. | All benchmarks run on 4 vCPUs and 16 GB RAM. |
-| **Queue backend** | A message broker lowers latency and raises the throughput ceiling compared to the database queue. | Simple flow: the Enterprise Edition on RabbitMQ has 55% lower latency than OSS on Postgres and sustains higher rates. |
+| **Queue backend** | A message broker lowers latency and raises the throughput ceiling compared to the database queue. | The Enterprise Edition on RabbitMQ has 55% lower latency than OSS on Postgres and sustains more task runs per minute. |
 
 #### Improve Executor throughput
 
 To improve Executor throughput:
 
-- Keep **tasks per execution low** where possible. A flow with 5 tasks delivers higher throughput than a flow with 10. Use subflows to break up complex flows.
-- Watch **execution context size**. Avoid passing large raw payloads between tasks, keep them in internal storage instead, for example with `store: true` on tasks that support it, and avoid large loops in a single flow.
+- Keep **tasks per execution low** where you can. With fewer tasks in each execution, the same Executors handle more executions per minute.
 - Apply **concurrency limits** in your flows to avoid orchestration bottlenecks.
 - Scale horizontally with more Executors and Workers for higher loads.
 
