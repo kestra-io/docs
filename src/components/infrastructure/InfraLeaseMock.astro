@@ -265,7 +265,7 @@ const CODE = [
         &::after {
             content: "";
             position: absolute;
-            inset: 0 -0.2em;
+            inset: -0.15em -0.5em;
             z-index: -1;
             border: 1.5px solid var(--select);
             border-radius: 0.5em;
@@ -404,6 +404,8 @@ const CODE = [
         position: absolute;
         right: 0;
         bottom: 5.2em;
+        left: 0;
+        margin-inline: auto;
         display: grid;
         gap: 0.65em;
         width: 27em;
@@ -443,11 +445,9 @@ const CODE = [
 
     .code {
         display: grid;
-        margin: 0;
-        padding: 0.6em 0;
-        border: 1px solid var(--line);
-        border-radius: 0.32em;
-        background: var(--deep);
+        margin: 0 -1.1em -1em;
+        padding: 0.7em 0 0.9em;
+        border-top: 1px solid var(--line);
         font-family: var(--ks-font-monospace);
         font-size: 0.62em;
         line-height: 1.75;
@@ -459,7 +459,7 @@ const CODE = [
         position: relative;
         display: flex;
         align-items: center;
-        padding: 0 0.9em 0 calc(0.9em + var(--indent) * 1.2em);
+        padding: 0 1.8em 0 calc(1.8em + var(--indent) * 1.2em);
 
         i {
             font-style: normal;
@@ -537,7 +537,7 @@ const CODE = [
         flex-direction: column;
         align-items: flex-start;
         gap: 0.1em;
-        translate: 8em 31em;
+        translate: 3em 31em;
         pointer-events: none;
 
         :global(html.dark) & {
@@ -585,7 +585,7 @@ const CODE = [
             animation: lease-cursor var(--loop) infinite both;
         }
 
-        .extend {
+        .entry.r-extend .extend {
             animation: lease-press var(--loop) linear infinite both;
         }
 
@@ -595,10 +595,6 @@ const CODE = [
 
         .list {
             animation: lease-list var(--loop) ease-in-out infinite both;
-        }
-
-        .entry.r-extend {
-            animation: lease-zoom-extend var(--loop) ease-out infinite both;
         }
 
         .entry.r-extend::after {
@@ -631,13 +627,7 @@ const CODE = [
         }
 
         .entry.r-retire {
-            animation:
-                lease-fade-retire var(--loop) linear infinite both,
-                lease-zoom-retire var(--loop) ease-out infinite both;
-        }
-
-        .entry.r-retire::after {
-            animation: lease-ring-retire var(--loop) linear infinite both;
+            animation: lease-fade-retire var(--loop) linear infinite both;
         }
 
         .cleanup {
@@ -704,36 +694,6 @@ const CODE = [
         }
     }
 
-    @keyframes lease-zoom-extend {
-        0%,
-        10% {
-            scale: 1;
-        }
-        11%,
-        20% {
-            scale: 1.025;
-        }
-        22%,
-        100% {
-            scale: 1;
-        }
-    }
-
-    @keyframes lease-zoom-retire {
-        0%,
-        40% {
-            scale: 1;
-        }
-        41%,
-        64% {
-            scale: 1.025;
-        }
-        66%,
-        100% {
-            scale: 1;
-        }
-    }
-
     @keyframes lease-stage {
         0%,
         94% {
@@ -751,22 +711,22 @@ const CODE = [
     @keyframes lease-cursor {
         0%,
         4% {
-            translate: 8em 31em;
+            translate: 3em 31em;
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
         9%,
         11% {
-            translate: 47.4em 15.85em;
+            translate: 46.85em 15.85em;
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
         14%,
         16% {
-            translate: 46.4em 19.6em;
+            translate: 45.9em 19.55em;
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
         24%,
         100% {
-            translate: 8em 31em;
+            translate: 3em 31em;
         }
     }
 
@@ -806,14 +766,17 @@ const CODE = [
         0%,
         10% {
             opacity: 0;
+            scale: 0.97;
         }
         11%,
         20% {
             opacity: 1;
+            scale: 1;
         }
         22%,
         100% {
             opacity: 0;
+            scale: 0.97;
         }
     }
 
@@ -913,21 +876,6 @@ const CODE = [
         68%,
         100% {
             opacity: 0.45;
-        }
-    }
-
-    @keyframes lease-ring-retire {
-        0%,
-        40% {
-            opacity: 0;
-        }
-        41%,
-        64% {
-            opacity: 1;
-        }
-        66%,
-        100% {
-            opacity: 0;
         }
     }
 
