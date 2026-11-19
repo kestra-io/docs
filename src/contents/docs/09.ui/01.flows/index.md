@@ -27,17 +27,19 @@ From the main Flows page, filter flows by namespace, scope, labels, or free text
 
 Pick what to search under **Search in**:
 
-- **Flows**: searches the flow source. Narrow it with a namespace and a **Scope** (**All source**, **Tasks**, **Triggers**, or **Inputs**), and turn on **Match case**, **Match whole word**, or **Use regular expression**.
+- **Flows**: searches the flow source. Narrow it with a namespace and a **Flow section** (**All source**, **Tasks**, **Triggers**, or **Inputs**), and use the **Aa**, **ab**, and **.\*** toggles next to the search box to match case, match whole words, or use a regular expression.
 - **Namespace files**: matches file paths only, not file content.
 - **KV keys** and **Secret keys**: match key names only. Values are never searched or shown.
 
-Results are grouped by flow, with a preview of each match. Select **Show replace** to enter a replacement, then use **Replace this match**, **Replace all in flow**, or **Replace all** for every selected match. Kestra shows a diff of the change before applying it. Replace applies to flows only; the other result types are search-only.
+Results are grouped by flow, with a preview of each match. Select the **Show replace** button left of the search box to enter a replacement, then use **Replace** on a match, **Replace all in flow**, or **Replace all** for every selected match. Kestra shows a diff of the change and the number of matches and flows it will update, and applies it only when you confirm with **Replace all**. Replace applies to flows only; the other result types are search-only.
+
+![Source search with a replacement entered, the selected matches in two flows, and the diff preview with its confirmation bar](./source-search-replace.png)
 
 Some flows are excluded from a replace and are marked **Read-only**: flows synced from Git (with the `system.readOnly` label) and, in the Enterprise Edition, flows in namespaces where you don't have the `UPDATE` permission on `FLOW`. A flow is also skipped if the replacement would make it invalid. Kestra reports how many flows were updated and why any were skipped.
 
 When a search returns more matches than it can show, **Replace all** applies only to the matches shown, so narrow the query first.
 
-<!-- Source-verified against kestra#17438 (2.0, merged 2026-08-10) and releases/v2.0.x en.json; not runtime-tested. TODO: screenshot. -->
+<!-- kestra#17438 live-verified 2026-11-19 on EE develop 3d69e8a: search, Show replace, diff preview, Replace all, and the "2 flows updated" result. Read-only flows and invalid replacements are from source only. -->
 
 ## Edit
 

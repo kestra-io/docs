@@ -64,11 +64,13 @@ The chart at the top of the Executions page has two modes: **Counts**, which sho
 - **Bars**: each bar takes its color from the execution state, and running executions extend to the current time. When a row has too many executions to draw individually, bars are aggregated into buckets tinted by the most common state. Zoom in for execution-level detail.
 - **Bar details**: click a bar to see its namespace, flow, state, and dates, then **Open execution** or **Show only this flow**.
 - **Legend**: shows the count per state. Click a state to dim it.
-- **Time range**: zoom, pan, or jump to **Now** from the toolbar, or drag across the density bar to select a range. The default range is 24 hours, from 5 minutes up to 1 year.
+- **Time range**: the timeline follows the page's date filter, such as the default **Last 30 days**, or 24 hours when no date filter is set. Zoom, pan, or jump to **Now** from the toolbar, or drag across the density bar at the top to select a range from 5 minutes up to 1 year.
 
-The filters applied to the Executions page also apply to the timeline. The timeline loads at most 1,000 executions, newest first; narrow the time range or filters to see the rest.
+![Executions timeline over the last 30 days, with the density bar at the top, executions grouped by namespace, and run and failed counts per row](./executions-timeline.png)
 
-<!-- TODO: screenshot. kestra#19334 merged to develop 2026-10-30, not in the v2.1.x RC cut; confirm it ships in 2.1 GA. Not verified: which filters the density bar ignores. -->
+The filters applied to the Executions page also apply to the timeline. The density bar applies the namespace, flow, state, and label filters, but not the search box, the **Inputs & Outputs** filter, or the parent and trigger execution filters. The timeline loads at most 1,000 executions, newest first; narrow the time range or filters to see the rest.
+
+<!-- kestra#19334 live-verified 2026-11-19 on EE develop 3d69e8a. TODO: kestra#19334 merged to develop 2026-10-30, not in the v2.1.x RC cut; confirm it ships in 2.1 GA. The density bar's "does not apply these filters" note never shows: the chart preview returns an empty ignoredFilters list for the filters it drops. -->
 
 ## Gantt
 
