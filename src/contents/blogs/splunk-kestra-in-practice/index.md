@@ -2,7 +2,7 @@
 title: "How Teams Use Splunk and Kestra in Production"
 metaTitle: "Splunk and Kestra: Alert-Driven Remediation and Audit Logs"
 description: "How platform and security teams use Splunk and Kestra together: alerts that start remediation flows, SPL results inside workflows, and every execution logged back to Splunk."
-date: 2026-11-26T10:00:00
+date: 2026-11-19T10:00:00
 category: Solutions
 author:
   name: Martin-Pierre Roset
