@@ -112,6 +112,7 @@ Each breaking change has a dedicated migration guide. See the [2.1 migration gui
 | `SYSTEM_SETTINGS` and `TENANT_SETTINGS` removed (EE) | [Guide](../../../11.migration-guide/v2.1.0/settings-permissions-removed/index.md) |
 | `USER: IMPERSONATE` removed (EE) | [Guide](../../../11.migration-guide/v2.1.0/impersonate-permission-removed/index.md) |
 | Namespace binding scope (EE) | [Guide](../../../11.migration-guide/v2.1.0/namespace-binding-scope/index.md) |
+| Allowed Namespaces for internal storage URIs (EE) | [Guide](../../../11.migration-guide/v2.1.0/storage-uri-allowed-namespaces/index.md) |
 | Server CLI commands deprecated | [Guide](../../../11.migration-guide/v2.1.0/server-cli-commands-deprecated/index.md) |
 | Queue configuration keys (EE) | [Guide](../../../11.migration-guide/v2.1.0/queue-backend-configuration/index.md) |
 | POST-only logout (EE) | [Guide](../../../11.migration-guide/v2.1.0/sso-logout-post-only/index.md) |
