@@ -2,7 +2,7 @@
 import { Icon } from "astro-icon/components"
 
 interface Props {
-    view: "deployments" | "cases" | "inventory"
+    view: "cases" | "inventory"
 }
 
 const { view } = Astro.props
@@ -17,11 +17,6 @@ const NAV = [
 ]
 
 const VIEWS = {
-    deployments: {
-        crumb: "Deployments",
-        title: "Deployments",
-        sub: "Everything that exists, who owns it and when it expires.",
-    },
     cases: {
         crumb: "Cases",
         title: "Cases",
@@ -33,46 +28,6 @@ const VIEWS = {
         sub: "Every resource you create, its owner and what depends on it.",
     },
 }
-
-const DEPLOYMENTS = [
-    {
-        name: "dev-payments-api",
-        owner: "j.kim",
-        status: "Running",
-        tone: "ok",
-        lease: "3 days left",
-        due: "wait",
-    },
-    {
-        name: "stg-orders-db",
-        owner: "a.diaz",
-        status: "Running",
-        tone: "ok",
-        lease: "21 days",
-    },
-    {
-        name: "ml-gpu-sandbox",
-        owner: "l.martin",
-        status: "Provisioning",
-        tone: "run",
-        lease: "30 days",
-    },
-    {
-        name: "qa-k8s-ns-42",
-        owner: "r.patel",
-        status: "Expired",
-        tone: "fail",
-        lease: "retired today",
-        due: "fail",
-    },
-    {
-        name: "edge-fw-rules",
-        owner: "platform",
-        status: "Running",
-        tone: "ok",
-        lease: "no expiry",
-    },
-]
 
 const CASES = [
     {
@@ -155,34 +110,6 @@ const current = VIEWS[view]
             <div class="main">
                 <p class="title">{current.title}</p>
                 <p class="sub">{current.sub}</p>
-
-                {view === "deployments" && (
-                    <div class="table">
-                        <p class="tr th">
-                            <span>Name</span>
-                            <span>Owner</span>
-                            <span>Status</span>
-                            <span>Lease</span>
-                        </p>
-                        {DEPLOYMENTS.map((row) => (
-                            <p class="tr">
-                                <span class="name">
-                                    <Icon name="mdi:server-outline" />
-                                    <b>{row.name}</b>
-                                </span>
-                                <span>{row.owner}</span>
-                                <span>
-                                    <span class={`tag ${row.tone}`}>
-                                        {row.status}
-                                    </span>
-                                </span>
-                                <span class={`lease ${row.due ?? ""}`}>
-                                    {row.lease}
-                                </span>
-                            </p>
-                        ))}
-                    </div>
-                )}
 
                 {view === "cases" && (
                     <div class="cases">
@@ -408,58 +335,6 @@ const current = VIEWS[view]
         &.run {
             background: var(--chip);
             color: var(--run);
-        }
-    }
-
-    .tr {
-        display: grid;
-        grid-template-columns: 1.5fr 0.9fr 1fr 1fr;
-        align-items: center;
-        gap: 0.8em;
-        padding: 0.95em 0.6em;
-        border-bottom: 1px solid var(--line);
-        font-size: 0.7em;
-        color: var(--muted);
-
-        &:last-child {
-            border-bottom: 0;
-        }
-
-        .tag {
-            font-size: 0.8em;
-        }
-    }
-
-    .th {
-        border: 0;
-        border-radius: 0.36em;
-        background: var(--deep);
-        font-size: 0.56em;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-    }
-
-    .name {
-        display: flex;
-        align-items: center;
-        gap: 0.6em;
-        color: var(--text);
-
-        [data-icon] {
-            color: var(--run);
-        }
-    }
-
-    .lease {
-        font-weight: 600;
-
-        &.wait {
-            color: var(--wait);
-        }
-
-        &.fail {
-            color: var(--fail);
         }
     }
 
