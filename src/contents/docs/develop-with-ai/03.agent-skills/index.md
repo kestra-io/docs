@@ -25,7 +25,7 @@ Kestra publishes five skills in the [kestra-io/agent-skills](https://github.com/
 
 ### kestra-flow
 
-Generate, modify, or debug Kestra Flow YAML grounded in the live flow schema (the same approach used by Kestra's AI Copilot).
+Generate, modify, or debug Kestra Flow YAML grounded in live plugin schemas, with the same guardrails as Kestra's AI Copilot.
 
 **Use when:**
 - Generating a new flow from a description
@@ -33,7 +33,8 @@ Generate, modify, or debug Kestra Flow YAML grounded in the live flow schema (th
 - Debugging invalid YAML or incorrect task/trigger references
 
 **Covers:**
-- Fetching and validating against the live flow schema from `https://api.kestra.io/v1/plugins/schemas/flow`
+- Fetching the schema of each task and trigger type on demand from the [Docs MCP server](../02.kestra-mcp-resources/index.md), then validating the whole flow, instead of downloading the full flow schema
+- Using your Kestra instance's own schema instead when you have one, so the flow matches your version and installed plugins
 - Schema-validated task and trigger generation
 - Partial modifications that touch only the relevant part of a flow
 - Guardrails: no invented types, no hardcoded secrets, correct looping and trigger patterns
@@ -137,7 +138,8 @@ Use migrate-airflow-kestra to migrate dags/ingest_pipeline.py from Airflow to Ke
 ## Prerequisites
 
 - **AI coding agent**: Claude Code, Cursor, Windsurf, OpenAI Codex, OpenCode, or any agent that supports skill files
-- **For kestra-flow, kestra-flow-hardening, and migrate-airflow-kestra**: `curl` and network access to `https://api.kestra.io`
+- **For kestra-flow**: the [Docs MCP server](../02.kestra-mcp-resources/index.md) connected to your agent. Installing the skills with skills.sh or copying them manually doesn't connect it, so add the server to your agent yourself.
+- **For kestra-flow-hardening and migrate-airflow-kestra**: `curl` and network access to `https://api.kestra.io`
 - **For kestra-ops and migrate-kestra-2**: [`kestractl`](../../kestra-cli/kestractl/index.md) installed with valid credentials
 
 ## Setup
