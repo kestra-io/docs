@@ -5,35 +5,42 @@
         ref="root"
         :class="{ open }"
     >
-        <button
-            class="markdown-actions-trigger"
-            type="button"
-            :aria-expanded="open"
-            aria-label="Markdown actions"
-            @click="toggle"
-        >
-            <component :is="triggerIcon" class="action-icon" />
-            <span class="action-text">{{ triggerLabel }}</span>
-            <ChevronDown class="chevron-icon" />
-        </button>
+        <div class="markdown-actions-anchor">
+            <button
+                class="markdown-actions-trigger"
+                type="button"
+                :aria-expanded="open"
+                aria-label="Markdown actions"
+                @click="toggle"
+            >
+                <component :is="triggerIcon" class="action-icon" />
+                <span class="action-text">{{ triggerLabel }}</span>
+                <ChevronDown class="chevron-icon" />
+            </button>
 
-        <ul class="markdown-actions-menu" v-show="open">
-            <li v-for="action in visibleActions" :key="action.id">
-                <button
-                    class="markdown-actions-item"
-                    type="button"
-                    @click="handleAction(action.id)"
-                >
-                    <component :is="actionIcons[action.id]" class="action-icon" />
-                    <span>{{ actionLabel(action) }}</span>
-                </button>
-            </li>
-        </ul>
+            <ul
+                class="markdown-actions-menu"
+                ref="menu"
+                :class="{ 'align-end': alignEnd }"
+                v-show="open"
+            >
+                <li v-for="action in visibleActions" :key="action.id">
+                    <button
+                        class="markdown-actions-item"
+                        type="button"
+                        @click="handleAction(action.id)"
+                    >
+                        <component :is="actionIcons[action.id]" class="action-icon" />
+                        <span>{{ actionLabel(action) }}</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { computed, useTemplateRef } from "vue"
+    import { computed, nextTick, ref, useTemplateRef, watch } from "vue"
     import ContentCopy from "vue-material-design-icons/ContentCopy.vue"
     import Check from "vue-material-design-icons/Check.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
@@ -102,6 +109,17 @@
     const root = useTemplateRef<HTMLElement>("root")
     const { open, close, toggle } = useDropdown(root)
 
+    const menu = useTemplateRef<HTMLElement>("menu")
+    const alignEnd = ref(false)
+
+    watch(open, async (isOpen) => {
+        if (!isOpen) return
+        alignEnd.value = false
+        await nextTick()
+        const rect = menu.value?.getBoundingClientRect()
+        alignEnd.value = !!rect && rect.right > document.documentElement.clientWidth
+    })
+
     const handleAction = async (actionId: MarkdownActionId) => {
         await executeAction(actionId)
         close()
@@ -111,11 +129,14 @@
 <style lang="scss" scoped>
     .markdown-actions {
         display: flex;
-        position: relative;
         padding: 1.25rem 0;
         @include media-breakpoint-up(lg) {
             padding: 1.25rem;
         }
+    }
+
+    .markdown-actions-anchor {
+        position: relative;
     }
 
     .markdown-actions-trigger {
@@ -165,8 +186,8 @@
 
     .markdown-actions-menu {
         position: absolute;
-        inset-block-start: calc(100% - 1.25rem);
-        inset-inline-end: 0;
+        inset-block-start: 100%;
+        inset-inline-start: 0;
         z-index: 1000;
         margin-block-start: 0.125rem;
         list-style: none;
@@ -175,6 +196,11 @@
         border-radius: 0.25rem;
         padding: 0;
         min-width: 12rem;
+
+        &.align-end {
+            inset-inline-start: auto;
+            inset-inline-end: 0;
+        }
     }
 
     .markdown-actions-item {
