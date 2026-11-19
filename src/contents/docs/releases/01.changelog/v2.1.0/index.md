@@ -94,6 +94,7 @@ Smaller changes to existing behavior that don't need a migration guide.
 - **API sort direction**: the `sort` query parameter accepts `asc` and `desc` in any case, and any other direction returns `422` instead of silently sorting descending. Also in 2.0.x.
 - **`distinct` filter**: `{{ null | distinct }}` returns null instead of the string `"null"`, so `??`, `is null`, and `if` conditions behave as expected.
 - **Execution live view**: the execution page reconnects its live stream after a dropped connection. The `GET /executions/{id}/follow` stream sends a heartbeat every 30 seconds and always ends after one hour.
+- **Schedule trigger and daylight saving time**: when clocks spring forward and the cron time falls in the skipped hour, the schedule runs once that day at the time moved forward by the gap, such as `03:00` instead of `02:00`. Before, that day's run was skipped. [Docs](../../../05.workflow-components/07.triggers/01.schedule-trigger/index.md#daylight-saving-time)
 - **Triggers list**: Webhook, MCP Tool, Flow, and asset event triggers now appear in **Tenant → Triggers** and the triggers API with the type `UNSCHEDULED`, including on existing flows after the upgrade. Disable them in the flow source, since they can't be toggled there. [Docs](../../../05.workflow-components/07.triggers/index.mdx#disabling-a-trigger-from-the-ui)
 - **Versioned Plugins screen (EE)**: the Instance Owner menu no longer has a Versioned Plugins entry. Plugin versions are managed from the **Plugins** page, and links to the former screen redirect there.
 
