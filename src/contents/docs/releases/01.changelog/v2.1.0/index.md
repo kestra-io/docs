@@ -92,6 +92,7 @@ Infrastructure self-service in a dedicated tenant type, searchable execution val
 Smaller changes to existing behavior that don't need a migration guide.
 
 - **`assets()` function (EE)**: returns only assets the flow's namespace can reach under allowed namespaces, and `namespace` matches that namespace and its child namespaces instead of any namespace starting with the same characters. [Docs](../../../07.enterprise/02.governance/01.assets/02.tasks-and-triggers/index.md#assets-pebble-function)
+- **Metadata backup of namespace files (EE)**: a backup keeps the latest revision of each namespace file and empty folders, and a restore no longer creates `run.py.v2`-style copies. Archives from earlier versions still restore each revision as a separate file, so take a new backup after upgrading. [Docs](../../../10.administrator-guide/backup-and-restore/index.md#what-is-included)
 - **API sort direction**: the `sort` query parameter accepts `asc` and `desc` in any case, and any other direction returns `422` instead of silently sorting descending. Also in 2.0.x.
 - **`distinct` filter**: `{{ null | distinct }}` returns null instead of the string `"null"`, so `??`, `is null`, and `if` conditions behave as expected.
 - **Execution live view**: the execution page reconnects its live stream after a dropped connection. The `GET /executions/{id}/follow` stream sends a heartbeat every 30 seconds and always ends after one hour.
