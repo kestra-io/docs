@@ -270,6 +270,31 @@ triggers:
       user: John Smith
 ```
 
+Input values can use the schedule dates `{{ trigger.date }}`, `{{ trigger.next }}`, and `{{ trigger.previous }}`. In this example, each execution receives the day it was scheduled for:
+
+```yaml
+id: daily_report
+namespace: company.team
+
+inputs:
+  - id: run_date
+    type: STRING
+
+tasks:
+  - id: report
+    type: io.kestra.plugin.core.log.Log
+    message: "Building the report for {{ inputs.run_date }}"
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 6 * * *"
+    inputs:
+      run_date: "{{ trigger.date | date('yyyy-MM-dd') }}"
+```
+
+In a [backfill](#using-backfill), `trigger.date` is the date being replayed, so each backfilled execution receives its own day. Inputs you pass to the backfill can use the same variables and override the trigger's values.
+
 ## Disable a schedule trigger after a specified execution state
 
 The `stopAfter` property disables the trigger when the execution reaches one of the specified states (for example, `FAILED` or `KILLED`), preventing repeated runs of a broken flow until you manually re-enable it.
