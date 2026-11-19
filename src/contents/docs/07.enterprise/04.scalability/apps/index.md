@@ -720,7 +720,7 @@ Expiration is evaluated against the server clock at the moment a user opens or s
 
 Add a thumbnail to give catalog users a visual indicator of what the app does. Upload an image file as a [namespace file](../../../06.concepts/02.namespace-files/index.md) to the same namespace as the app's connected flow. Supported formats include `.svg`, `.jpg`, and `.png`. The example below adds `kestra-icon.svg`.
 
-![Image Namespace File](./app-namespace-file.png)
+![Namespace Files tab of company.team with kestra-icon.svg open in the editor](./app-namespace-file.png)
 
 In your app code, add the `thumbnail` string property and point it toward the correct namespace file using `nsfiles:///<your-file>`. For example:
 
@@ -740,7 +740,7 @@ tags:
 
 Once added, open the **Apps Catalog** — a new thumbnail displays on the connected app:
 
-![App with thumbnail](./app-with-icon.png)
+![Apps Catalog with the Form to request and download data app showing its Kestra icon thumbnail](./app-with-icon.png)
 
 ---
 

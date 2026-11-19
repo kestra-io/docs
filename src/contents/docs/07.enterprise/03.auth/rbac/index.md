@@ -302,11 +302,11 @@ kestra:
 
 ### Reset a password as an Instance Owner
 
-Users can reset their password via the Forgot Password link on the login page. An Instance Owner can also reset a user's password from the User Edit page at **Instance Owner → Instance IAM → Users**.
+Users can reset their password via the Forgot Password link on the login page. An Instance Owner can also set a user's password: open the user from **Instance Owner → Instance IAM → Users**, then select **Create User Password** from the **⋮** menu.
 
 ![Reset Password](./forgot-password.png)
 
-![Instance Owner Change Password](./create-user-password.png)
+![Create User Password dialog with the New password and Confirm password fields and the password policy criteria](./create-user-password.png)
 
 ## Password expiration and reuse
 

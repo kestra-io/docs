@@ -211,8 +211,6 @@ kestra:
 
 Keep `expire-after-write` short if secret rotation happens often. Set `negative-cache-enabled: true` to also cache lookups that find no secret, which avoids repeated queries for parent namespaces that don't hold the secret. See [Secret caching](../../07.enterprise/02.governance/secrets-manager/index.md#secret-caching) for how each setting behaves.
 
-![Secrets UI Configuration](../is-secrets-configuration.png)
-
 ## Security settings
 
 This section is about hardening the running platform rather than managing secret values. Reach for it when you are locking down access, controlling invitations and roles, or tuning how the server reacts to component health issues.
