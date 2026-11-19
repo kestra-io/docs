@@ -148,7 +148,7 @@ AWX is the open-source upstream project for Red Hat's Ansible Automation Platfor
 - **Weaknesses:** As an upstream project, AWX lacks the enterprise support, hardening, and some of the advanced features (like analytics and certified content collections) found in the commercial Red Hat product.
 - **Best for:** Teams looking for a web UI and API for their Ansible automation without committing to a Red Hat subscription, often serving as a stepping stone to AAP.
 
-For an enterprise perspective, see our comparison of [Ansible Automation Platform vs Kestra](/vs/ansible-automation-platform). If you already run AWX and are hitting its limits, our guide to [AWX alternatives](/resources/infrastructure/awx-alternatives) compares the options in detail.
+For an enterprise perspective, see our comparison of [Ansible Automation Platform vs Kestra](/vs/ansible-automation-platform). If you already run AWX and are hitting its limits, our guide to [AWX alternatives](/resources/infrastructure/awx-alternatives) compares the options in detail. If you run Ansible Tower or the automation controller in Red Hat Ansible Automation Platform, see our guide to [Ansible Tower and automation controller alternatives](/resources/infrastructure/ansible-tower-alternatives).
 
 ## 7. GitLab CI/CD: Integrated DevOps Automation
 

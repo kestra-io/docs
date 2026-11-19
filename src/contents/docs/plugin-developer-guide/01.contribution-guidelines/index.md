@@ -134,6 +134,11 @@ Ensure properties are declared and validated consistently.
 - You can model JSON with a simple `Property<Map<String, Object>>`.
 - Inputs that accept either an inline list or a `kestra://` internal-storage URI (a batch of records, rows, messages, …) must use `io.kestra.core.models.property.Data` — never hand-roll URI detection or ION/NDJSON parsing.
 - `version` is a reserved property name — never use it in custom plugins; it conflicts with Kestra internals.
+- Never reuse a base-class property name with a different type. These names keep the meaning and type they have in the base class, even if your task does not extend it yet:
+  - `Task`: `id`, `type`, `version`, `description`, `retry`, `timeout`, `disabled`, `workerSelector`, `logLevel`, `allowFailure`, `allowWarning`, `logToFile`, `runIf`, `taskCache`, `assets`.
+  - `AbstractExecScript`: `runner`, `taskRunner`, `containerImage`, `docker`, `beforeCommands`, `env`, `interpreter`, `failFast`, `warningOnStdErr`, `namespaceFiles`, `inputFiles`, `outputFiles`, `outputDirectory`, `executionContext`, `targetOS`, `durable`.
+
+  For example, `env` is always `Property<Map<String, String>>`. A task that declares `env` as a nested object can never extend `AbstractExecScript` (and inherit features such as `durable`) without a breaking rename. Name task-specific configuration after what it holds instead.
 
 ### Secret properties
 
