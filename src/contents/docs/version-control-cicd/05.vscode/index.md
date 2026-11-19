@@ -10,14 +10,14 @@ The Kestra VS Code extension connects your editor to a Kestra instance for insta
 
 ## Prerequisites
 
-- VS Code, or an editor based on it, with the [Red Hat YAML extension](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) installed. The Kestra extension depends on it for YAML schema support.
+- VS Code, or an editor based on it. The [Red Hat YAML extension](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml), which provides YAML schema support, installs automatically when you install Kestra from the Marketplace or Open VSX.
 - A running Kestra instance reachable from your machine.
 
 ## Installation
 
 Install the extension from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=kestra-io.kestra) or by searching for **Kestra** in the Extensions panel.
 
-Editors based on VS Code that install extensions from [Open VSX](https://open-vsx.org/extension/kestra-io/kestra) instead, such as VSCodium, Cursor, and Windsurf, get the same release there. Search for **Kestra** in their Extensions panel.
+Editors based on VS Code that install extensions from [Open VSX](https://open-vsx.org/extension/kestra-io/kestra) instead, such as VSCodium, Cursor, and Devin Desktop (formerly Windsurf), get the same release there. Search for **Kestra** in their Extensions panel.
 
 ## Setup
 
