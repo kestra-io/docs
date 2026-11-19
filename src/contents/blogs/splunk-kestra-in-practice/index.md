@@ -63,16 +63,18 @@ tasks:
       splunk_search_id: "{{ inputs.search_id }}"
 
   - id: open_incident
-    type: io.kestra.plugin.servicenow.Post
+    type: io.kestra.plugin.servicenow.CreateIncident
     domain: "{{ secret('SNOW_DOMAIN') }}"
     username: "{{ secret('SNOW_USERNAME') }}"
     password: "{{ secret('SNOW_PASSWORD') }}"
-    table: incident
-    data:
-      short_description: "{{ inputs.search_name }} on {{ inputs.host }}"
+    shortDescription: "{{ inputs.search_name }} on {{ inputs.host }}"
+    urgency: "2"
 
   - id: approve_restart
-    type: io.kestra.plugin.core.flow.Pause
+    type: io.kestra.plugin.ee.flow.HumanTask
+    assignment:
+      groups:
+        - Platform On-Call
     pauseDuration: PT30M
     behavior: CANCEL
     onResume:
@@ -98,7 +100,7 @@ tasks:
     token: "{{ secret('SPLUNK_HEC_TOKEN') }}"
     index: remediation
     sourcetype: kestra:remediation
-    eventData: '{"host": "{{ inputs.host }}", "search_id": "{{ inputs.search_id }}", "execution_id": "{{ execution.id }}", "status": "restarted"}'
+    eventData: '{"host": "{{ inputs.host }}", "search_id": "{{ inputs.search_id }}", "incident": "{{ outputs.open_incident.number }}", "execution_id": "{{ execution.id }}", "status": "restarted"}'
 ```
 
 ### Map only what the flow needs
@@ -111,11 +113,11 @@ An alert that fires every five minutes on a flapping host would otherwise start 
 
 ### Put the approval where the risk is
 
-The `Pause` task holds the restart until someone resumes it from the UI or the API, with a reason recorded on the execution. After 30 minutes without an answer, the execution is cancelled rather than left hanging. Low-risk fixes, such as clearing a temp directory, usually skip the pause entirely.
+The `HumanTask` holds the restart and assigns the approval to the on-call group, so the request lands with the people allowed to approve it. They resume it from the UI or the API, and the reason is recorded on the execution. After 30 minutes without an answer, the execution is cancelled rather than left hanging. Low-risk fixes, such as clearing a temp directory, usually skip the approval entirely.
 
 ### Close the loop in Splunk
 
-The `Send` task writes the outcome to a dedicated index with the original search ID and the Kestra execution ID. An analyst investigating the alert in Splunk sees that it was remediated, when and by which execution, without leaving Splunk.
+The `Send` task writes the outcome to a dedicated index with the original search ID, the ServiceNow incident number and the Kestra execution ID. An analyst investigating the alert in Splunk sees that it was remediated, when and by which execution, without leaving Splunk.
 
 ### Run the fix inside isolated sites
 
