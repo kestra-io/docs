@@ -1,5 +1,6 @@
 ---
 import { Icon } from "astro-icon/components"
+import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
 
 const ROWS = [
     {
@@ -128,15 +129,21 @@ const CODE = [
             ))}
         </div>
         <div class="cleanup">
-            <p class="title">
-                <Icon name="mdi:broom" />
-                <b>Cleanup flow</b>
-                <span>qa-k8s-ns-42</span>
-                <i class="chip ok c-running">Running</i>
-                <i class="chip ok c-done">Success</i>
+            <p class="tabs">
+                <span class="tab">
+                    <span class="logo">
+                        <img src={kestraMark.src} alt="" />
+                    </span>
+                    YAML
+                </span>
+                <span class="meta">qa-k8s-ns-42</span>
+                <span class="state">
+                    <i class="chip ok c-running">Running</i>
+                    <i class="chip ok c-done">Success</i>
+                </span>
             </p>
             <pre class="code">{
-                CODE.map((line) => (
+                CODE.map((line, idx) => (
                     <span
                         class:list={[
                             "ln",
@@ -145,6 +152,7 @@ const CODE = [
                         ]}
                         style={`--indent: ${line.indent}`}
                     >
+                        <i class="no">{idx + 1}</i>
                         {line.dash && <i class="dash">-</i>}
                         {line.key && (
                             <>
@@ -154,8 +162,8 @@ const CODE = [
                         )}
                         {line.value && <i class="value">{line.value}</i>}
                         {line.pebble && (
-                            <i class="value">
-                                "<i class="pebble">{`{{ ${line.pebble} }}`}</i>"
+                            <i class="value string">
+                                "<i>{`{{ ${line.pebble} }}`}</i>"
                             </i>
                         )}
                         {line.task && (
@@ -414,11 +422,9 @@ const CODE = [
         right: 0;
         bottom: 5.2em;
         left: 0;
-        margin-inline: auto;
-        display: grid;
-        gap: 0.65em;
         width: 27em;
-        padding: 1em 1.1em;
+        margin-inline: auto;
+        overflow: hidden;
         border: 1px solid var(--line);
         border-radius: 0.5em;
         background: var(--panel);
@@ -426,88 +432,123 @@ const CODE = [
         opacity: 0;
     }
 
-    .title {
-        display: grid;
-        grid-template-columns: auto auto 1fr auto;
+    .tabs {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.6em;
+        height: 2.6em;
+        padding: 0 0.9em;
+        border-bottom: 1px solid var(--line);
+        background: var(--deep);
+    }
+
+    .tab {
+        display: inline-flex;
         align-items: center;
-        gap: 0.5em;
+        gap: 0.4em;
+        height: 2.1em;
+        margin-bottom: -1px;
+        padding: 0 0.75em;
+        border: 1px solid var(--line);
+        border-bottom: 0;
+        border-radius: 0.42em 0.42em 0 0;
+        background: var(--panel);
+        font-size: 0.72em;
+        font-weight: 500;
 
-        [data-icon] {
-            color: var(--soft);
+        .logo {
+            display: grid;
+            place-items: center;
+            width: 1.4em;
+            height: 1.4em;
+            border-radius: 0.32em;
+            background: #0d0d10;
+
+            img {
+                width: 1em;
+                height: 1em;
+            }
         }
+    }
 
-        b {
-            font-size: 0.78em;
-        }
+    .meta {
+        align-self: center;
+        margin-left: auto;
+        font-size: 0.62em;
+        color: var(--muted);
+    }
 
-        span {
-            font-size: 0.62em;
-            color: var(--muted);
-        }
+    .state {
+        display: grid;
+        align-self: center;
 
-        .chip {
-            grid-column: 4;
-            grid-row: 1;
+        > * {
+            grid-area: 1 / 1;
+            justify-self: end;
         }
     }
 
     .code {
-        display: grid;
-        margin: 0 -1.1em -1em;
-        padding: 0.7em 0 0.9em;
-        --c-key: #631bf3;
-        --c-punct: #424256;
-        --c-text: #001233;
-        --c-pebble: #1a7a55;
+        --c-key: #6d52f5;
+        --c-text: #4a4a57;
+        --c-string: #1c7e57;
+        --c-no: #6d6d86;
 
-        border-top: 1px solid var(--line);
+        display: grid;
+        margin: 0;
+        padding: 0.8em 0 1.1em;
         font-family: var(--ks-font-monospace);
+        font-size: 0.62em;
+        line-height: 1.7;
+        white-space: nowrap;
 
         :global(html.dark) & {
-            --c-key: #cdb6fb;
-            --c-punct: #adadbf;
-            --c-text: #f7f7f8;
-            --c-pebble: #80fac5;
+            --c-key: #b9a6ff;
+            --c-text: #d6d6e0;
+            --c-string: #7fd8b0;
+            --c-no: #9696a5;
         }
-        font-size: 0.62em;
-        line-height: 1.75;
-        white-space: nowrap;
-        color: var(--text);
     }
 
     .ln {
         position: relative;
         display: flex;
         align-items: center;
-        padding: 0 1.8em 0 calc(1.8em + var(--indent) * 1.2em);
+        padding-right: 1.6em;
 
         i {
             font-style: normal;
         }
 
-        .dash,
-        .punct {
-            color: var(--c-punct);
+        .no {
+            box-sizing: border-box;
+            flex: none;
+            width: calc(3em + var(--indent) * 1.6em);
+            padding-right: calc(1.4em + var(--indent) * 1.6em);
+            text-align: right;
+            color: var(--c-no);
         }
 
         .dash {
             margin-right: 1ch;
+            color: var(--c-no);
+        }
+
+        .key,
+        .punct {
+            color: var(--c-key);
         }
 
         .punct + .value {
             margin-left: 1ch;
         }
 
-        .key {
-            color: var(--c-key);
-        }
-
         .value {
             color: var(--c-text);
         }
 
-        .pebble {
-            color: var(--c-pebble);
+        .string {
+            color: var(--c-string);
         }
 
         .tick {
@@ -567,7 +608,7 @@ const CODE = [
     }
 
     .cursor {
-        --tone: 204, 62, 138;
+        --tone: 24, 24, 30;
 
         position: absolute;
         top: 0;
@@ -581,7 +622,7 @@ const CODE = [
         pointer-events: none;
 
         :global(html.dark) & {
-            --tone: 240, 140, 190;
+            --tone: 247, 247, 248;
         }
 
         svg {
