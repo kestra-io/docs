@@ -37,7 +37,7 @@ For teams still on previous versions of Kestra, Bitovi has a migration package f
 With a handful of flows, you can work through the [2.0 migration guide](/docs/migration-guide/v2.0.0) yourself. With a few hundred across namespaces and teams, it's worth having someone who has done it before. In the replay below, Bitovi engineering team's walk through the process: sizing the work with `kestra-migrate --check`, applying the automated rewrites, fixing what's left by hand, and validating with `kestractl` before the switch.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/REPLAY_VIDEO_ID" title="Best Practices for Upgrading to Kestra 2.0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/afVQsI9uNyI?si=7K4vsqQ6sr-wHRKC" title="Best Practices for Upgrading to Kestra 2.0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Choosing a Kestra edition
