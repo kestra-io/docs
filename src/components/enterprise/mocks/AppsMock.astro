@@ -216,11 +216,134 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
 
     .tall {
         @include soft;
+
+        --press-x: 21.1em;
+        --submit-x: 33.3em;
+        --submit-y: 27.2em;
+        --press-x-sm: 31.5em;
+        --press-sm: 10.25em;
+        --submit-y-sm: 26.2em;
+
+        .modal {
+            left: 50%;
+        }
+
+        .app {
+            grid-template-columns: minmax(0, 1fr) auto;
+            grid-template-rows: auto auto 1fr auto;
+            gap: 0.35em 0.75em;
+            padding: 1em;
+
+            .tile {
+                grid-column: 1;
+                width: auto;
+                height: auto;
+                margin-bottom: 0.6em;
+                justify-self: start;
+                background: none;
+                color: var(--soft);
+
+                [data-icon] {
+                    width: 1.4em;
+                    height: 1.4em;
+                }
+            }
+
+            > div {
+                grid-column: 1 / -1;
+            }
+
+            strong {
+                font-size: 0.82em;
+            }
+
+            p {
+                margin-top: 0.3em;
+                font-size: 0.62em;
+            }
+
+            .tags {
+                grid-column: 1;
+                grid-row: 4;
+
+                span {
+                    color: var(--muted);
+                }
+            }
+        }
+
+        .request {
+            grid-row: 4;
+            height: auto;
+            padding: 0.35em 0.8em;
+            background: var(--panel);
+            font-size: 0.6em;
+            color: var(--text);
+        }
+
+        .notice {
+            top: auto;
+            right: 0;
+            bottom: 1.2em;
+            left: 0;
+            align-items: center;
+            width: max-content;
+            margin-inline: auto;
+            padding: 0.8em 1em 0.8em 1.1em;
+            border: 0;
+            background: #18181e;
+            box-shadow: 0 10px 28px -10px rgba(0, 0, 0, 0.45);
+            color: #ffffff;
+
+            :global(html.dark) & {
+                background: #ffffff;
+                color: #18181e;
+            }
+
+            > div {
+                display: grid;
+                grid-template-columns: auto auto;
+                align-items: center;
+                column-gap: 1.6em;
+            }
+
+            strong {
+                font-size: 0.86em;
+            }
+
+            p {
+                grid-column: 1;
+                margin: 0.2em 0 0;
+                color: inherit;
+                opacity: 0.65;
+            }
+
+            .choices {
+                grid-column: 2;
+                grid-row: 1 / span 2;
+            }
+
+            .choices span {
+                border-color: rgba(255, 255, 255, 0.18);
+                background: transparent;
+                color: inherit;
+            }
+
+            :global(html.dark) & .choices span {
+                border-color: var(--line);
+            }
+
+            .choices .approve {
+                border-color: transparent;
+                background: var(--primary);
+                color: #ffffff;
+            }
+        }
     }
 
     @media (min-width: 576px) {
         .tall {
-            --press: 16.4em;
+            --press: 16.1em;
 
             .app {
                 min-height: 15.5em;
@@ -752,6 +875,16 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
             animation: apps-mock-notice var(--loop) linear infinite both;
         }
 
+        .tall .cursor.admin {
+            animation-name: apps-mock-admin-tall;
+        }
+
+        @media (max-width: 575.98px) {
+            .tall .cursor.admin {
+                animation-name: apps-mock-admin-tall-sm;
+            }
+        }
+
         .approve {
             animation: apps-mock-press-3 var(--loop) linear infinite both;
         }
@@ -994,7 +1127,7 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
         9%,
         15% {
             opacity: 1;
-            transform: translate(20.6em, var(--press, 8em));
+            transform: translate(var(--press-x, 20.6em), var(--press, 8em));
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
         18%,
@@ -1006,7 +1139,10 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
         40%,
         48% {
             opacity: 1;
-            transform: translate(31em, 23.1em);
+            transform: translate(
+                var(--submit-x, 31em),
+                var(--submit-y, 23.1em)
+            );
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
         56%,
@@ -1049,6 +1185,64 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
         }
     }
 
+    @keyframes apps-mock-admin-tall {
+        0%,
+        54% {
+            opacity: 0;
+            transform: translate(44em, 40em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        58% {
+            opacity: 1;
+            transform: translate(41em, 38em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        65%,
+        72% {
+            opacity: 1;
+            transform: translate(34.8em, 33.7em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        79% {
+            opacity: 1;
+            transform: translate(38em, 37em);
+        }
+        84%,
+        100% {
+            opacity: 0;
+            transform: translate(38em, 37em);
+        }
+    }
+
+    @keyframes apps-mock-admin-tall-sm {
+        0%,
+        54% {
+            opacity: 0;
+            transform: translate(34em, 37em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        58% {
+            opacity: 1;
+            transform: translate(32em, 35em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        65%,
+        72% {
+            opacity: 1;
+            transform: translate(27.8em, 31.8em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        79% {
+            opacity: 1;
+            transform: translate(30em, 33.5em);
+        }
+        84%,
+        100% {
+            opacity: 0;
+            transform: translate(30em, 33.5em);
+        }
+    }
+
     @keyframes apps-mock-launcher-sm {
         0% {
             opacity: 0;
@@ -1062,7 +1256,10 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
         9%,
         15% {
             opacity: 1;
-            transform: translate(29.8em, 8.8em);
+            transform: translate(
+                var(--press-x-sm, 29.8em),
+                var(--press-sm, 8.8em)
+            );
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
         18%,
@@ -1074,7 +1271,7 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
         40%,
         48% {
             opacity: 1;
-            transform: translate(26em, 23.9em);
+            transform: translate(26em, var(--submit-y-sm, 23.9em));
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
         56%,

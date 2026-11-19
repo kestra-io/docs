@@ -30,38 +30,38 @@ const APPS = [
         icon: "mdi:server-outline",
         name: "VM request",
         text: "Linux or Windows, with a lease",
-        tag: "Compute",
+        tags: ["Compute", "Approval"],
         fresh: true,
     },
     {
         icon: "mdi:database-outline",
         name: "Database",
         text: "Postgres or MySQL, with backups",
-        tag: "Data",
+        tags: ["Data", "Backup"],
     },
     {
         icon: "mdi:bucket-outline",
         name: "Object storage",
         text: "A bucket with lifecycle rules",
-        tag: "Storage",
+        tags: ["Storage"],
     },
     {
         icon: "mdi:layers-outline",
         name: "Environment",
         text: "App, database and VM together",
-        tag: "Environment",
+        tags: ["Environment", "Approval"],
     },
     {
         icon: "mdi:kubernetes",
         name: "Kubernetes namespace",
         text: "Quotas and access for a team",
-        tag: "Compute",
+        tags: ["Compute"],
     },
     {
         icon: "mdi:wall-fire",
         name: "Firewall rule",
         text: "Applied by your own code",
-        tag: "Network",
+        tags: ["Network", "Approval"],
     },
 ]
 ---
@@ -100,10 +100,6 @@ const APPS = [
                         <div class="block is-alert">
                             <Icon name="mdi:information-outline" />
                             <span>Production requests need a sign-off.</span>
-                            <Icon
-                                name="mdi:hand-back-right-outline"
-                                class="grab"
-                            />
                         </div>
                     </div>
                 </div>
@@ -174,8 +170,14 @@ const APPS = [
                                 <b>{app.name}</b>
                                 <small>{app.text}</small>
                                 <p>
-                                    <span class="tag">{app.tag}</span>
-                                    <span class="request">Request</span>
+                                    <span class="tags">
+                                        {app.tags.map((tag) => (
+                                            <span class="tag">{tag}</span>
+                                        ))}
+                                    </span>
+                                    <span class="request">
+                                        <Icon name="mdi:monitor" /> View App
+                                    </span>
                                 </p>
                                 {app.fresh && <span class="new">New</span>}
                             </div>
@@ -188,6 +190,18 @@ const APPS = [
                 VM request is now in the catalog
             </p>
         </div>
+        <span class="cursor">
+            <span class="pointer">
+                <svg class="arrow" viewBox="0 0 10 10">
+                    <path d="M0 0 L10 4 L5.5 5.5 L4 10 Z"></path>
+                </svg>
+                <Icon name="mdi:hand-back-right" class="hand" />
+            </span>
+            <span class="who">
+                <Icon name="mdi:account-cog-outline" />
+                Platform team
+            </span>
+        </span>
     </div>
 </div>
 
@@ -240,11 +254,16 @@ const APPS = [
         margin-top: auto;
         padding: 0.7em 1em;
         border-radius: 0.32em;
-        background: var(--primary);
+        background: #18181e;
         font-size: 0.66em;
         font-weight: 600;
         text-align: center;
         color: #ffffff;
+
+        :global(html.dark) & {
+            background: #ffffff;
+            color: #18181e;
+        }
     }
 
     .body {
@@ -384,12 +403,6 @@ const APPS = [
         span {
             font-size: 0.66em;
             font-weight: 500;
-        }
-
-        .grab {
-            margin-left: auto;
-            color: var(--muted);
-            opacity: 0;
         }
     }
 
@@ -636,15 +649,17 @@ const APPS = [
         }
     }
 
-    .tag,
-    .new {
-        padding: 0.25em 0.7em;
-        border-radius: 99em;
+    .tags {
+        display: flex;
+        gap: 0.35em;
+    }
+
+    .tag {
+        padding: 0.3em 0.6em;
+        border-radius: 0.21em;
         background: var(--chip);
-        font-size: 0.56em;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
+        font-size: 0.6em;
+        font-weight: 600;
         color: var(--muted);
     }
 
@@ -652,11 +667,23 @@ const APPS = [
         position: absolute;
         top: 1em;
         right: 1em;
-        background: var(--primary);
-        color: #ffffff;
+        padding: 0.3em 0.7em;
+        border-radius: 0.28em;
+        background: var(--tile);
+        font-size: 0.6em;
+        font-weight: 600;
+        color: var(--tile-ink);
+
+        :global(html.dark) & {
+            background: rgba(185, 166, 255, 0.16);
+            color: var(--run);
+        }
     }
 
     .request {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35em;
         padding: 0.35em 0.8em;
         border: 1px solid var(--line);
         border-radius: 0.24em;
@@ -693,6 +720,79 @@ const APPS = [
             width: 1.3em;
             height: 1.3em;
             color: #2fd197;
+        }
+    }
+
+    .cursor {
+        --tone: 38, 112, 214;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.1em;
+        translate: 36em 27em;
+        pointer-events: none;
+
+        :global(html.dark) & {
+            --tone: 140, 196, 255;
+        }
+    }
+
+    .pointer {
+        position: relative;
+        display: block;
+        width: 1.1em;
+        height: 1.1em;
+
+        > * {
+            position: absolute;
+            inset: 0;
+        }
+
+        .arrow {
+            width: 1.1em;
+            height: 1.1em;
+            fill: rgb(var(--tone));
+            filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
+        }
+
+        .hand {
+            top: -0.3em;
+            left: -0.4em;
+            width: 1.4em;
+            height: 1.4em;
+            color: rgb(var(--tone));
+            opacity: 0;
+            filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
+        }
+    }
+
+    .who {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3em;
+        margin-left: 0.7em;
+        padding: 0.15em 0.55em;
+        border-radius: 0.32em;
+        background: rgb(var(--tone));
+        font-size: 0.7em;
+        font-weight: 600;
+        white-space: nowrap;
+        color: #ffffff;
+
+        :global(html.dark) & {
+            border: 1px solid rgba(var(--tone), 0.45);
+            background: rgb(20, 20, 24);
+            color: rgb(var(--tone));
+        }
+
+        [data-icon] {
+            width: 1.1em;
+            height: 1.1em;
         }
     }
 
@@ -803,10 +903,6 @@ const APPS = [
             animation: app-builder-ring-alert var(--loop) linear infinite both;
         }
 
-        .grab {
-            animation: app-builder-grab var(--loop) linear infinite both;
-        }
-
         .list {
             animation: app-builder-list var(--loop) ease infinite both;
         }
@@ -833,6 +929,129 @@ const APPS = [
 
         .publish {
             animation: app-builder-press var(--loop) linear infinite both;
+        }
+
+        .cursor {
+            animation: app-builder-cursor var(--loop) infinite both;
+        }
+
+        .arrow {
+            animation: app-builder-arrow var(--loop) linear infinite both;
+        }
+
+        .hand {
+            animation: app-builder-hand var(--loop) linear infinite both;
+        }
+    }
+
+    @keyframes app-builder-cursor {
+        0% {
+            translate: 36em 27em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        1.5%,
+        2.5% {
+            translate: 43.2em 10em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        3.6%,
+        5% {
+            translate: 30.2em 10.4em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        6.6%,
+        8.5% {
+            translate: 43.25em 12.5em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        9.6%,
+        11% {
+            translate: 30.2em 14.8em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        12.6%,
+        14.5% {
+            translate: 43.25em 14.9em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        15.6%,
+        17% {
+            translate: 30.2em 19.1em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        18.6%,
+        20.5% {
+            translate: 43.25em 17.4em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        21.6%,
+        23.2% {
+            translate: 30.2em 23.5em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        25.5%,
+        27.5% {
+            translate: 17.65em 21em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        30%,
+        43% {
+            translate: 46.6em 11.4em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        47%,
+        50% {
+            translate: 32.9em 24.6em;
+            animation-timing-function: ease-in-out;
+        }
+        56%,
+        58% {
+            translate: 32.9em 12.7em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        61.5%,
+        64% {
+            translate: 43.25em 30.2em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        72%,
+        90% {
+            translate: 12.65em 17.2em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        97%,
+        100% {
+            translate: 36em 27em;
+        }
+    }
+
+    @keyframes app-builder-arrow {
+        0%,
+        49% {
+            opacity: 1;
+        }
+        49.5%,
+        57.5% {
+            opacity: 0;
+        }
+        58%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes app-builder-hand {
+        0%,
+        49% {
+            opacity: 0;
+        }
+        49.5%,
+        57.5% {
+            opacity: 1;
+        }
+        58%,
+        100% {
+            opacity: 0;
         }
     }
 
@@ -1216,21 +1435,6 @@ const APPS = [
             opacity: 1;
         }
         61%,
-        100% {
-            opacity: 0;
-        }
-    }
-
-    @keyframes app-builder-grab {
-        0%,
-        48% {
-            opacity: 0;
-        }
-        49%,
-        58% {
-            opacity: 1;
-        }
-        60%,
         100% {
             opacity: 0;
         }

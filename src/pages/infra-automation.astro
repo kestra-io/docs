@@ -142,7 +142,8 @@ const FAQ = [
         answer: "It is part of Kestra Enterprise at no extra cost, with no price per managed node. Contact sales for a quote sized to your instances and support level.",
     },
     {
-        question: "Do we have to rewrite our Terraform, Ansible or PowerShell code?",
+        question:
+            "Do we have to rewrite our Terraform, Ansible or PowerShell code?",
         answer: "No. Requests run the modules, playbooks and scripts you already have, from Git.",
     },
     {
@@ -226,9 +227,8 @@ const STORIES: Story[] = [
             <Fragment slot="lead">
                 Keep the flexibility of your own infrastructure as code, whether
                 Terraform, Ansible, PowerShell or any other tool, on any cloud
-                or hypervisor.
-                Teams request what they need, and Kestra for Infrastructure
-                tracks every resource from request to retirement.
+                or hypervisor. Teams request what they need, and Kestra for
+                Infrastructure tracks every resource from request to retirement.
             </Fragment>
             <InfraAppBuilderMock slot="catalog" />
             <AppsMock slot="requests" apps={APPS} request={REQUEST} />
