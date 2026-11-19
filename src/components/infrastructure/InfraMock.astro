@@ -2,7 +2,7 @@
 import { Icon } from "astro-icon/components"
 
 interface Props {
-    view: "cases" | "inventory"
+    view: "inventory"
 }
 
 const { view } = Astro.props
@@ -17,47 +17,12 @@ const NAV = [
 ]
 
 const VIEWS = {
-    cases: {
-        crumb: "Cases",
-        title: "Cases",
-        sub: "Failed runs become incidents with an owner and an SLA.",
-    },
     inventory: {
         crumb: "Inventory",
         title: "Inventory",
         sub: "Every resource you create, its owner and what depends on it.",
     },
 }
-
-const CASES = [
-    {
-        title: "Provisioning failed: stg-orders-db",
-        cause: "terraform apply · quota exceeded",
-        status: "Open",
-        tone: "fail",
-        assignee: "a.diaz",
-        sla: "SLA 1h 12m",
-        ticket: "INC0041872",
-    },
-    {
-        title: "Patch run failed on 3 hosts",
-        cause: "ansible · unreachable hosts",
-        status: "In progress",
-        tone: "wait",
-        assignee: "platform",
-        sla: "SLA 3h 40m",
-        ticket: "INC0041869",
-    },
-    {
-        title: "Lease cleanup skipped",
-        cause: "qa-k8s-ns-42 · namespace locked",
-        status: "Resolved",
-        tone: "ok",
-        assignee: "r.patel",
-        sla: "Resolved",
-        ticket: "JIRA-2231",
-    },
-]
 
 const ASSETS = [
     { id: "vpc", name: "vpc-staging", kind: "network", icon: "mdi:web" },
@@ -111,32 +76,6 @@ const current = VIEWS[view]
                 <p class="title">{current.title}</p>
                 <p class="sub">{current.sub}</p>
 
-                {view === "cases" && (
-                    <div class="cases">
-                        {CASES.map((item) => (
-                            <div class={`case ${item.tone}`}>
-                                <p class="line">
-                                    <b>{item.title}</b>
-                                    <span class="sla">{item.sla}</span>
-                                </p>
-                                <p class="cause">{item.cause}</p>
-                                <p class="line">
-                                    <span class="who">
-                                        <span class={`tag ${item.tone}`}>
-                                            {item.status}
-                                        </span>
-                                        Assigned to {item.assignee}
-                                    </span>
-                                    <span class="ticket">
-                                        <Icon name="mdi:file-document-outline" />
-                                        {item.ticket}
-                                    </span>
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                )}
-
                 {view === "inventory" && (
                     <div class="map">
                         <svg viewBox="0 0 100 60" preserveAspectRatio="none">
@@ -173,16 +112,8 @@ const current = VIEWS[view]
     @use "../enterprise/mocks/tokens" as *;
 
     .infra-mock {
-        --fail: #c8322d;
-        --fail-bg: #fdecec;
-
         @include tokens;
         @include soft;
-
-        :global(html.dark) & {
-            --fail: #ff8a84;
-            --fail-bg: rgba(255, 107, 107, 0.14);
-        }
     }
 
     .window {
@@ -298,109 +229,6 @@ const current = VIEWS[view]
         margin: 0.2em 0 1.1em;
         font-size: 0.66em;
         color: var(--muted);
-    }
-
-    .line {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1em;
-    }
-
-    .tag {
-        display: inline-block;
-        padding: 0.25em 0.8em;
-        border-radius: 99em;
-        font-size: 0.56em;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        white-space: nowrap;
-
-        &.ok {
-            background: var(--ok-bg);
-            color: var(--ok);
-        }
-
-        &.wait {
-            background: var(--wait-bg);
-            color: var(--wait);
-        }
-
-        &.fail {
-            background: var(--fail-bg);
-            color: var(--fail);
-        }
-
-        &.run {
-            background: var(--chip);
-            color: var(--run);
-        }
-    }
-
-    .cases {
-        display: grid;
-        gap: 0.8em;
-    }
-
-    .case {
-        display: grid;
-        gap: 0.45em;
-        padding: 0.9em 1.1em;
-        border: 1px solid var(--line);
-        border-left: 0.25em solid var(--tone);
-        border-radius: 0.5em;
-
-        &.fail {
-            --tone: var(--fail);
-        }
-
-        &.wait {
-            --tone: var(--wait);
-        }
-
-        &.ok {
-            --tone: var(--ok);
-        }
-
-        b {
-            font-size: 0.76em;
-        }
-    }
-
-    .sla {
-        font-size: 0.66em;
-        font-weight: 700;
-        color: var(--tone);
-    }
-
-    .cause,
-    .who {
-        font-size: 0.64em;
-        color: var(--muted);
-    }
-
-    .who {
-        display: flex;
-        align-items: center;
-        gap: 0.8em;
-
-        .tag {
-            font-size: 0.9em;
-        }
-    }
-
-    .ticket {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4em;
-        padding: 0.35em 0.7em;
-        border: 1px solid var(--line);
-        border-radius: 0.36em;
-        background: var(--deep);
-        font-size: 0.6em;
-        font-weight: 700;
-        color: var(--run);
     }
 
     .map {

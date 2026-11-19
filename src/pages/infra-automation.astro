@@ -9,6 +9,7 @@ import InfraHero from "~/components/infrastructure/InfraHero.astro"
 import InfraGlue from "~/components/infrastructure/InfraGlue.astro"
 import AppsMock from "~/components/enterprise/mocks/AppsMock.astro"
 import InfraAppBuilderMock from "~/components/infrastructure/InfraAppBuilderMock.astro"
+import InfraCaseMock from "~/components/infrastructure/InfraCaseMock.astro"
 import InfraLeaseMock from "~/components/infrastructure/InfraLeaseMock.astro"
 import InfraMock from "~/components/infrastructure/InfraMock.astro"
 import InfraMigration from "~/components/infrastructure/InfraMigration.astro"
@@ -238,7 +239,7 @@ const STORIES: Story[] = [
             <InfraAppBuilderMock slot="catalog" />
             <AppsMock slot="requests" apps={APPS} request={REQUEST} />
             <InfraLeaseMock slot="deployments" />
-            <InfraMock slot="cases" view="cases" />
+            <InfraCaseMock slot="cases" />
             <InfraMock slot="inventory" view="inventory" />
         </EnterpriseShowcase>
         <InfraUseCases />
