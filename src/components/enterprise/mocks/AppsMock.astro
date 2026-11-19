@@ -214,6 +214,10 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
         @include tokens;
     }
 
+    .tall {
+        @include soft;
+    }
+
     @media (min-width: 576px) {
         .tall {
             --press: 16.4em;
@@ -237,7 +241,7 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
         display: inline-flex;
         align-items: center;
         gap: 0.4em;
-        border-radius: 0.4em;
+        border-radius: calc(0.4em * var(--round, 1));
         font-weight: 600;
         white-space: nowrap;
 
@@ -265,7 +269,7 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
         gap: 1.4em 0.75em;
         padding: 0.95em 0.85em 0.85em;
         border: 1px solid var(--line);
-        border-radius: 0.8em;
+        border-radius: calc(0.8em * var(--round, 1));
         background: var(--panel);
         box-shadow: var(--shadow);
 
@@ -274,7 +278,7 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
             place-items: center;
             width: 2.2em;
             height: 2.2em;
-            border-radius: 0.4em;
+            border-radius: calc(0.4em * var(--round, 1));
             background: var(--tile);
             color: var(--tile-ink);
 
@@ -306,7 +310,7 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
 
             span {
                 padding: 0.3em 0.6em;
-                border-radius: 0.3em;
+                border-radius: calc(0.3em * var(--round, 1));
                 background: var(--chip);
                 font-size: 0.62em;
                 font-weight: 600;
@@ -333,7 +337,7 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
         width: 26em;
         padding: 2.2em 2.2em 1.9em;
         border: 1px solid var(--line);
-        border-radius: 1.1em;
+        border-radius: calc(1.1em * var(--round, 1));
         background: var(--panel);
         box-shadow: var(--shadow);
         transform: translate(-50%, -50%);
@@ -407,7 +411,7 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
         margin-top: 0.45em;
         padding: 0 0.85em;
         border: 1px solid transparent;
-        border-radius: 0.45em;
+        border-radius: calc(0.45em * var(--round, 1));
         background: var(--field);
         font-family: var(--ks-font-monospace);
         font-size: 1.05em;
@@ -473,7 +477,7 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
         width: 17em;
         padding: 0.9em 1em 1em;
         border: 1px solid var(--line);
-        border-radius: 0.9em;
+        border-radius: calc(0.9em * var(--round, 1));
         background: var(--panel);
         box-shadow: var(--shadow);
         opacity: 0;
@@ -484,7 +488,7 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
             flex: none;
             width: 2em;
             height: 2em;
-            border-radius: 0.5em;
+            border-radius: calc(0.5em * var(--round, 1));
             background: var(--wait-bg);
             color: var(--wait);
 
@@ -517,7 +521,7 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
             height: 2.5em;
             padding: 0 1em;
             border: 1px solid var(--line);
-            border-radius: 0.4em;
+            border-radius: calc(0.4em * var(--round, 1));
             background: var(--chip);
             font-size: 0.68em;
             font-weight: 600;
@@ -574,7 +578,7 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
         gap: 0.5em;
         padding: 0.5em 0.6em 0.5em 0.9em;
         border: 1px solid var(--line);
-        border-radius: 0.5em;
+        border-radius: calc(0.5em * var(--round, 1));
         font-family: var(--ks-font-monospace);
         font-size: 0.72em;
 
@@ -590,7 +594,7 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
             gap: 0.3em;
             margin-left: 0.6em;
             padding: 0.4em 0.8em;
-            border-radius: 0.35em;
+            border-radius: calc(0.35em * var(--round, 1));
             background: var(--chip);
             font-family: var(--bs-font-sans-serif);
             font-weight: 600;
@@ -639,7 +643,7 @@ const { apps: APPS = DEFAULT_APPS, request = DEFAULT_REQUEST } = Astro.props
         margin-left: 0.6em;
         padding: 0.15em 0.55em;
         border: 1px solid rgb(var(--tone));
-        border-radius: 0.45em;
+        border-radius: calc(0.45em * var(--round, 1));
         background: rgb(var(--tone));
         font-size: 0.7em;
         font-weight: 600;

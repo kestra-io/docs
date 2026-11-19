@@ -2,7 +2,7 @@
 import { Icon } from "astro-icon/components"
 
 interface Props {
-    view: "catalog" | "deployments" | "cases" | "inventory"
+    view: "deployments" | "cases" | "inventory"
 }
 
 const { view } = Astro.props
@@ -17,11 +17,6 @@ const NAV = [
 ]
 
 const VIEWS = {
-    catalog: {
-        crumb: "Catalog",
-        title: "Catalog",
-        sub: "Request what you need. No ticket, no Terraform code.",
-    },
     deployments: {
         crumb: "Deployments",
         title: "Deployments",
@@ -38,35 +33,6 @@ const VIEWS = {
         sub: "Every resource you create, its owner and what depends on it.",
     },
 }
-
-const FILTERS = ["All", "Compute", "Data", "Storage"]
-
-const ENTRIES = [
-    {
-        icon: "mdi:server-outline",
-        name: "Virtual machine",
-        text: "Linux or Windows, sized for you",
-        tag: "Compute",
-    },
-    {
-        icon: "mdi:bucket-outline",
-        name: "Object storage",
-        text: "A bucket with lifecycle rules",
-        tag: "Storage",
-    },
-    {
-        icon: "mdi:database-outline",
-        name: "Database",
-        text: "Postgres or MySQL, with backups",
-        tag: "Data",
-    },
-    {
-        icon: "mdi:layers-outline",
-        name: "Environment",
-        text: "App, database and VM together",
-        tag: "Environment",
-    },
-]
 
 const DEPLOYMENTS = [
     {
@@ -190,32 +156,6 @@ const current = VIEWS[view]
                 <p class="title">{current.title}</p>
                 <p class="sub">{current.sub}</p>
 
-                {view === "catalog" && (
-                    <div class="catalog">
-                        <p class="filters">
-                            {FILTERS.map((filter, i) => (
-                                <span class:list={{ on: i === 0 }}>
-                                    {filter}
-                                </span>
-                            ))}
-                            <span class="manage">Manage apps</span>
-                        </p>
-                        <div class="entries">
-                            {ENTRIES.map((entry) => (
-                                <div class="entry">
-                                    <Icon name={entry.icon} />
-                                    <b>{entry.name}</b>
-                                    <small>{entry.text}</small>
-                                    <p class="line">
-                                        <span class="tag run">{entry.tag}</span>
-                                        <span class="request">Request</span>
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
-
                 {view === "deployments" && (
                     <div class="table">
                         <p class="tr th">
@@ -310,6 +250,7 @@ const current = VIEWS[view]
         --fail-bg: #fdecec;
 
         @include tokens;
+        @include soft;
 
         :global(html.dark) & {
             --fail: #ff8a84;
@@ -320,7 +261,7 @@ const current = VIEWS[view]
     .window {
         overflow: hidden;
         border: 1px solid var(--line);
-        border-radius: 0.9em;
+        border-radius: 0.64em;
         background: var(--panel);
         box-shadow: var(--shadow);
         font-size: calc(100cqw / 50);
@@ -368,7 +309,7 @@ const current = VIEWS[view]
             content: "";
             width: 0.7em;
             height: 0.7em;
-            border-radius: 0.15em;
+            border-radius: 0.1em;
             background: var(--tile-ink);
             rotate: 45deg;
 
@@ -407,7 +348,7 @@ const current = VIEWS[view]
             place-items: center;
             width: 2em;
             height: 2em;
-            border-radius: 0.5em;
+            border-radius: 0.36em;
         }
 
         .on {
@@ -491,7 +432,7 @@ const current = VIEWS[view]
 
     .th {
         border: 0;
-        border-radius: 0.5em;
+        border-radius: 0.36em;
         background: var(--deep);
         font-size: 0.56em;
         font-weight: 700;
@@ -522,72 +463,6 @@ const current = VIEWS[view]
         }
     }
 
-    .filters {
-        display: flex;
-        align-items: center;
-        gap: 0.5em;
-        margin-bottom: 1em;
-        font-size: 0.62em;
-        font-weight: 600;
-        color: var(--muted);
-
-        span {
-            padding: 0.35em 0.9em;
-            border: 1px solid var(--line);
-            border-radius: 99em;
-        }
-
-        .on {
-            border-color: var(--ring);
-            background: var(--chip);
-            color: var(--run);
-        }
-
-        .manage {
-            margin-left: auto;
-            border-radius: 0.5em;
-            background: var(--deep);
-        }
-    }
-
-    .entries {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.8em;
-    }
-
-    .entry {
-        display: grid;
-        gap: 0.35em;
-        padding: 1em 1.1em;
-        border: 1px solid var(--line);
-        border-radius: 0.7em;
-
-        > [data-icon] {
-            width: 1.4em;
-            height: 1.4em;
-            margin-bottom: 0.3em;
-            color: var(--run);
-        }
-
-        b {
-            font-size: 0.76em;
-        }
-
-        .line {
-            margin-top: 0.5em;
-        }
-    }
-
-    .request {
-        padding: 0.35em 0.9em;
-        border-radius: 0.5em;
-        background: var(--run);
-        font-size: 0.6em;
-        font-weight: 700;
-        color: var(--panel);
-    }
-
     .cases {
         display: grid;
         gap: 0.8em;
@@ -599,7 +474,7 @@ const current = VIEWS[view]
         padding: 0.9em 1.1em;
         border: 1px solid var(--line);
         border-left: 0.25em solid var(--tone);
-        border-radius: 0.7em;
+        border-radius: 0.5em;
 
         &.fail {
             --tone: var(--fail);
@@ -646,7 +521,7 @@ const current = VIEWS[view]
         gap: 0.4em;
         padding: 0.35em 0.7em;
         border: 1px solid var(--line);
-        border-radius: 0.5em;
+        border-radius: 0.36em;
         background: var(--deep);
         font-size: 0.6em;
         font-weight: 700;
@@ -656,7 +531,7 @@ const current = VIEWS[view]
     .map {
         position: relative;
         height: 19em;
-        border-radius: 0.7em;
+        border-radius: 0.5em;
         background: radial-gradient(var(--line) 1px, transparent 1.5px) 0 0 /
             1.1em 1.1em;
 
@@ -685,7 +560,7 @@ const current = VIEWS[view]
         width: 28%;
         padding: 0.7em 0.8em;
         border: 1px solid var(--line);
-        border-radius: 0.6em;
+        border-radius: 0.42em;
         background: var(--panel);
 
         [data-icon] {
@@ -705,8 +580,10 @@ const current = VIEWS[view]
         }
 
         &.focus {
-            border-color: var(--ring);
-            box-shadow: 0 0 0 1px var(--ring);
+            --select: color-mix(in srgb, var(--text) 28%, transparent);
+
+            border-color: var(--select);
+            box-shadow: 0 0 0 1px var(--select);
         }
 
         &.vpc {
@@ -741,7 +618,7 @@ const current = VIEWS[view]
         left: 37%;
         padding: 0.35em 0.8em;
         border: 1px solid var(--line);
-        border-radius: 0.5em;
+        border-radius: 0.36em;
         background: var(--deep);
         font-size: 0.58em;
         font-weight: 600;

@@ -45,3 +45,12 @@
         --shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.6);
     }
 }
+
+@mixin soft {
+    --round: 0.7;
+    --shadow: 0 4px 14px -8px rgba(43, 43, 51, 0.14);
+
+    :global(html.dark) & {
+        --shadow: 0 6px 18px -10px rgba(0, 0, 0, 0.5);
+    }
+}

@@ -8,6 +8,7 @@ import BuyerQuestions from "~/components/enterprise/BuyerQuestions.astro"
 import InfraHero from "~/components/infrastructure/InfraHero.astro"
 import InfraGlue from "~/components/infrastructure/InfraGlue.astro"
 import AppsMock from "~/components/enterprise/mocks/AppsMock.astro"
+import InfraAppBuilderMock from "~/components/infrastructure/InfraAppBuilderMock.astro"
 import InfraMock from "~/components/infrastructure/InfraMock.astro"
 import InfraMigration from "~/components/infrastructure/InfraMigration.astro"
 import InfraClosing from "~/components/infrastructure/InfraClosing.astro"
@@ -149,7 +150,8 @@ const FAQ = [
         answer: "ServiceNow can stay the front door. A request raised there runs on Kestra for Infrastructure, and cases link back to the ServiceNow or Jira ticket.",
     },
     {
-        question: "Can it replace VMware Aria Automation or Ansible Automation Platform?",
+        question:
+            "Can it replace VMware Aria Automation or Ansible Automation Platform?",
         answer: "Yes. Teams move their vRO workflows and their AWX or AAP playbooks onto it, and the hypervisor becomes their choice again.",
     },
     {
@@ -228,7 +230,7 @@ const STORIES: Story[] = [
                 Teams request what they need, and Kestra for Infrastructure
                 tracks every resource from request to retirement.
             </Fragment>
-            <InfraMock slot="catalog" view="catalog" />
+            <InfraAppBuilderMock slot="catalog" />
             <AppsMock slot="requests" apps={APPS} request={REQUEST} />
             <InfraMock slot="deployments" view="deployments" />
             <InfraMock slot="cases" view="cases" />

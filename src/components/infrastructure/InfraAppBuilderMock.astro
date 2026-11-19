@@ -1,0 +1,1349 @@
+---
+import { Icon } from "astro-icon/components"
+
+const FIELDS = [
+    { label: "Environment", value: "staging" },
+    { label: "VM size", value: "medium · 4 vCPU" },
+    { label: "Region", value: "eu-west-1" },
+    { label: "Lease", value: "14 days" },
+]
+
+const ROWS = [
+    { id: "is-md", icon: "mdi:format-text", name: "Markdown" },
+    { id: "is-form", icon: "mdi:form-textbox", name: "Input form" },
+    { id: "is-btn", icon: "mdi:gesture-tap-button", name: "Submit button" },
+    { id: "is-alert", icon: "mdi:information-outline", name: "Alert" },
+]
+
+const PICKER = [
+    { icon: "mdi:format-text", name: "Markdown" },
+    { icon: "mdi:form-textbox", name: "Input form" },
+    { icon: "mdi:gesture-tap-button", name: "Submit button" },
+    { icon: "mdi:information-outline", name: "Alert" },
+    { icon: "mdi:text-box-outline", name: "Logs" },
+    { icon: "mdi:image-outline", name: "Image" },
+    { icon: "mdi:loading", name: "Loading" },
+]
+
+const APPS = [
+    {
+        icon: "mdi:server-outline",
+        name: "VM request",
+        text: "Linux or Windows, with a lease",
+        tag: "Compute",
+        fresh: true,
+    },
+    {
+        icon: "mdi:database-outline",
+        name: "Database",
+        text: "Postgres or MySQL, with backups",
+        tag: "Data",
+    },
+    {
+        icon: "mdi:bucket-outline",
+        name: "Object storage",
+        text: "A bucket with lifecycle rules",
+        tag: "Storage",
+    },
+    {
+        icon: "mdi:layers-outline",
+        name: "Environment",
+        text: "App, database and VM together",
+        tag: "Environment",
+    },
+    {
+        icon: "mdi:kubernetes",
+        name: "Kubernetes namespace",
+        text: "Quotas and access for a team",
+        tag: "Compute",
+    },
+    {
+        icon: "mdi:wall-fire",
+        name: "Firewall rule",
+        text: "Applied by your own code",
+        tag: "Network",
+    },
+]
+---
+
+<div class="ui-mock app-builder" aria-hidden="true" data-ui-mock>
+    <div class="window">
+        <div class="editor">
+            <div class="body">
+                <div class="canvas">
+                    <div class="app">
+                        <div class="block is-md">
+                            <b>Request a virtual machine</b>
+                            <small>
+                                Validated, then provisioned by your own code.
+                            </small>
+                        </div>
+                        <div class="block is-form">
+                            {FIELDS.map((field) => (
+                                <p class="field">
+                                    <small>
+                                        <i>*</i> {field.label}
+                                    </small>
+                                    <span>
+                                        {field.value}
+                                        <Icon name="mdi:chevron-down" />
+                                    </span>
+                                </p>
+                            ))}
+                        </div>
+                        <div class="block is-btn">
+                            <span class="submit">
+                                <span class="before">Submit</span>
+                                <span class="after">Submit request</span>
+                            </span>
+                        </div>
+                        <div class="block is-alert">
+                            <Icon name="mdi:information-outline" />
+                            <span>Production requests need a sign-off.</span>
+                            <Icon
+                                name="mdi:hand-back-right-outline"
+                                class="grab"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="side">
+                    <div class="list">
+                        <small class="heading">Open blocks</small>
+                        {ROWS.map((row) => (
+                            <p class={`layer ${row.id}`}>
+                                <Icon name="mdi:drag-vertical" class="grip" />
+                                <Icon name={row.icon} />
+                                <span>{row.name}</span>
+                            </p>
+                        ))}
+                        <p class="add">
+                            <Icon name="mdi:plus" /> <span>Add block</span>
+                        </p>
+                        <span class="publish">Publish to the catalog</span>
+                        <div class="picker">
+                            <i class="pick"></i>
+                            {PICKER.map((item) => (
+                                <p>
+                                    <Icon name={item.icon} />
+                                    <span>{item.name}</span>
+                                </p>
+                            ))}
+                        </div>
+                    </div>
+                    <div class="props">
+                        <p class="back">
+                            <Icon name="mdi:chevron-left" /> Submit button
+                        </p>
+                        <p class="prop">
+                            <small>
+                                text <em>String</em>
+                            </small>
+                            <span class="input">
+                                <span class="typed">Submit request</span>
+                                <i></i>
+                            </span>
+                        </p>
+                        <p class="prop">
+                            <small>
+                                style <em>Enum</em>
+                            </small>
+                            <span class="input">
+                                PRIMARY <Icon name="mdi:chevron-down" />
+                            </span>
+                        </p>
+                        <p class="prop">
+                            <small>
+                                size <em>Enum</em>
+                            </small>
+                            <span class="input">
+                                LARGE <Icon name="mdi:chevron-down" />
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="catalog">
+            <div class="body">
+                <div class="shelf">
+                    <div class="apps">
+                        {APPS.map((app) => (
+                            <div class:list={["entry", { fresh: app.fresh }]}>
+                                <Icon name={app.icon} />
+                                <b>{app.name}</b>
+                                <small>{app.text}</small>
+                                <p>
+                                    <span class="tag">{app.tag}</span>
+                                    <span class="request">Request</span>
+                                </p>
+                                {app.fresh && <span class="new">New</span>}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+            <p class="toast">
+                <Icon name="mdi:check-circle" />
+                VM request is now in the catalog
+            </p>
+        </div>
+    </div>
+</div>
+
+<style lang="scss">
+    @use "../enterprise/mocks/tokens" as *;
+
+    .app-builder {
+        --loop: 24s;
+        --gap: 0.7em;
+        --lift: 11.9em;
+        --drop: 3.1em;
+        --step: 2.45em;
+        --select: color-mix(in srgb, var(--text) 28%, transparent);
+
+        @include tokens;
+        @include soft;
+    }
+
+    .window {
+        position: relative;
+        display: grid;
+        align-items: center;
+        min-height: 38.8em;
+        font-size: calc(100cqw / 50);
+        line-height: 1.3;
+        color: var(--text);
+
+        > * {
+            grid-area: 1 / 1;
+        }
+    }
+
+    p {
+        margin: 0;
+    }
+
+    small {
+        display: block;
+        font-size: 0.62em;
+        color: var(--muted);
+    }
+
+    [data-icon] {
+        flex: none;
+        width: 1.1em;
+        height: 1.1em;
+    }
+
+    .publish {
+        margin-top: auto;
+        padding: 0.7em 1em;
+        border-radius: 0.32em;
+        background: var(--primary);
+        font-size: 0.66em;
+        font-weight: 600;
+        text-align: center;
+        color: #ffffff;
+    }
+
+    .body {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 13.5em;
+        align-items: start;
+        gap: 1.2em;
+    }
+
+    .canvas {
+        min-width: 0;
+    }
+
+    .app {
+        display: grid;
+        gap: var(--gap);
+        padding: 1.1em;
+        border: 1px solid var(--line);
+        border-radius: 0.5em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+    }
+
+    .block {
+        position: relative;
+        padding: 0 0.7em;
+        border-radius: 0.32em;
+        background: var(--panel);
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border: 1.5px solid var(--select);
+            border-radius: inherit;
+            opacity: 0;
+            pointer-events: none;
+        }
+    }
+
+    .block.is-md {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 3.2em;
+
+        b {
+            font-size: 1.05em;
+        }
+
+        small {
+            margin-top: 0.3em;
+            font-size: 0.66em;
+        }
+    }
+
+    .block.is-form {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-content: center;
+        gap: 0.7em 0.8em;
+        height: 7.2em;
+    }
+
+    .field {
+        small {
+            margin-bottom: 0.35em;
+            font-weight: 600;
+            color: var(--soft);
+        }
+
+        i {
+            font-style: normal;
+            color: #d6336c;
+        }
+
+        span {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5em;
+            padding: 0.55em 0.7em;
+            border: 1px solid var(--line);
+            border-radius: 0.28em;
+            background: var(--field);
+            font-size: 0.66em;
+            white-space: nowrap;
+
+            [data-icon] {
+                color: var(--muted);
+            }
+        }
+    }
+
+    .block.is-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 3.3em;
+    }
+
+    .submit {
+        display: grid;
+        padding: 0.6em 2.4em;
+        border-radius: 0.32em;
+        background: var(--primary);
+        font-size: 0.7em;
+        font-weight: 600;
+        color: #ffffff;
+
+        span {
+            grid-area: 1 / 1;
+            text-align: center;
+        }
+
+        .before {
+            opacity: 0;
+        }
+    }
+
+    .block.is-alert {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        height: 2.4em;
+        border: 1px solid color-mix(in srgb, #2f6df2 30%, transparent);
+        background: color-mix(in srgb, #2f6df2 8%, var(--panel));
+
+        > :first-child {
+            color: #2f6df2;
+        }
+
+        :global(html.dark) & > :first-child {
+            color: #6f93fb;
+        }
+
+        span {
+            font-size: 0.66em;
+            font-weight: 500;
+        }
+
+        .grab {
+            margin-left: auto;
+            color: var(--muted);
+            opacity: 0;
+        }
+    }
+
+    .side {
+        display: grid;
+        min-height: 26em;
+        border: 1px solid var(--line);
+        border-radius: 0.5em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+
+        > * {
+            grid-area: 1 / 1;
+        }
+    }
+
+    .list {
+        position: relative;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.45em;
+        padding: 1.2em 1em;
+    }
+
+    .heading {
+        margin-bottom: 0.3em;
+        font-size: 0.56em;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+    }
+
+    .layer,
+    .add {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 0.45em;
+        height: 2em;
+        padding: 0 0.6em;
+        border: 1px solid var(--line);
+        border-radius: 0.32em;
+        background: var(--panel);
+        font-weight: 600;
+        white-space: nowrap;
+
+        span {
+            overflow: hidden;
+            font-size: 0.68em;
+            text-overflow: ellipsis;
+        }
+    }
+
+    .layer {
+        position: relative;
+
+        .grip {
+            width: 0.9em;
+            color: var(--muted);
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            border: 1.5px solid var(--select);
+            border-radius: inherit;
+            opacity: 0;
+        }
+    }
+
+    .add {
+        border-style: dashed;
+        color: var(--muted);
+    }
+
+    .picker {
+        position: absolute;
+        top: 12.3em;
+        right: calc(100% - 0.6em);
+        width: 11em;
+        padding: 0.4em;
+        border: 1px solid var(--line);
+        border-radius: 0.42em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        opacity: 0;
+
+        p {
+            position: relative;
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            gap: 0.5em;
+            height: 1.9em;
+            padding: 0 0.6em;
+            font-weight: 600;
+
+            [data-icon] {
+                color: var(--muted);
+            }
+        }
+
+        span {
+            font-size: 0.68em;
+        }
+
+        .pick {
+            position: absolute;
+            top: 0.4em;
+            right: 0.4em;
+            left: 0.4em;
+            height: 1.9em;
+            border-radius: 0.28em;
+            background: var(--chip);
+            opacity: 0;
+        }
+    }
+
+    .props {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.9em;
+        padding: 1.2em 1em;
+        background: var(--panel);
+        opacity: 0;
+    }
+
+    .back {
+        display: flex;
+        align-items: center;
+        gap: 0.3em;
+        font-size: 0.8em;
+        font-weight: 700;
+    }
+
+    .prop {
+        small {
+            margin-bottom: 0.4em;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        em {
+            margin-left: 0.4em;
+            padding: 0.1em 0.5em;
+            border-radius: 99em;
+            background: var(--chip);
+            font-style: normal;
+            font-weight: 500;
+            color: var(--muted);
+        }
+    }
+
+    .input {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 2.2em;
+        padding: 0 0.7em;
+        border: 1px solid var(--line);
+        border-radius: 0.28em;
+        background: var(--field);
+        font-family: var(--ks-font-monospace, monospace);
+        font-size: 0.66em;
+
+        [data-icon] {
+            color: var(--muted);
+        }
+    }
+
+    .prop:nth-child(2) .input {
+        justify-content: flex-start;
+        border-color: var(--ring);
+    }
+
+    .typed {
+        display: inline-block;
+        overflow: hidden;
+        width: 14ch;
+        white-space: nowrap;
+    }
+
+    .typed + i {
+        width: 1px;
+        height: 1.1em;
+        margin-left: 1px;
+        background: var(--text);
+    }
+
+    .catalog .body {
+        display: block;
+    }
+
+    .catalog {
+        position: relative;
+        align-self: stretch;
+        display: grid;
+        align-content: center;
+        opacity: 0;
+    }
+
+    .apps {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.9em;
+    }
+
+    .entry {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35em;
+        min-height: 12.5em;
+        padding: 1em;
+        border: 1px solid var(--line);
+        border-radius: 0.42em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+
+        > [data-icon] {
+            width: 1.4em;
+            height: 1.4em;
+            margin-bottom: 0.6em;
+            color: var(--soft);
+        }
+
+        b {
+            font-size: 0.82em;
+        }
+
+        p {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+
+        &.fresh {
+            border-color: var(--select);
+        }
+    }
+
+    .tag,
+    .new {
+        padding: 0.25em 0.7em;
+        border-radius: 99em;
+        background: var(--chip);
+        font-size: 0.56em;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--muted);
+    }
+
+    .new {
+        position: absolute;
+        top: 1em;
+        right: 1em;
+        background: var(--primary);
+        color: #ffffff;
+    }
+
+    .request {
+        padding: 0.35em 0.8em;
+        border: 1px solid var(--line);
+        border-radius: 0.24em;
+        background: var(--panel);
+        font-size: 0.6em;
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    .toast {
+        position: absolute;
+        right: 0;
+        bottom: 2.4em;
+        left: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.6em;
+        width: max-content;
+        margin-inline: auto;
+        padding: 0.8em 1.3em;
+        border-radius: 0.5em;
+        background: #18181e;
+        box-shadow: 0 10px 28px -10px rgba(0, 0, 0, 0.45);
+        font-size: 0.86em;
+        font-weight: 600;
+        color: #ffffff;
+
+        :global(html.dark) & {
+            background: #ffffff;
+            color: #18181e;
+        }
+
+        [data-icon] {
+            width: 1.3em;
+            height: 1.3em;
+            color: #2fd197;
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .app-builder:not([data-play]) * {
+            animation-play-state: paused !important;
+        }
+
+        .editor {
+            animation: app-builder-editor var(--loop) ease infinite both;
+        }
+
+        .catalog {
+            animation: app-builder-catalog var(--loop) ease infinite both;
+        }
+
+        .toast {
+            animation: app-builder-toast var(--loop) ease-out infinite both;
+        }
+
+        .entry.fresh {
+            animation: app-builder-fresh var(--loop) ease-out infinite both;
+        }
+
+        .picker {
+            animation:
+                app-builder-picker var(--loop) ease-out infinite both,
+                app-builder-picker-slide var(--loop) ease-out infinite both;
+        }
+
+        .pick {
+            animation: app-builder-pick var(--loop) linear infinite both;
+        }
+
+        .add {
+            animation:
+                app-builder-add var(--loop) linear infinite both,
+                app-builder-add-slide var(--loop) ease-out infinite both;
+        }
+
+        .is-md,
+        .layer.is-md {
+            animation: app-builder-in-md var(--loop) ease-out infinite both;
+        }
+
+        .is-form,
+        .layer.is-form {
+            animation: app-builder-in-form var(--loop) ease-out infinite both;
+        }
+
+        .is-btn,
+        .layer.is-btn {
+            animation: app-builder-in-btn var(--loop) ease-out infinite both;
+        }
+
+        .block.is-alert {
+            animation: app-builder-alert var(--loop) ease-in-out infinite both;
+        }
+
+        .layer.is-alert {
+            animation: app-builder-row-alert var(--loop) ease-in-out infinite
+                both;
+        }
+
+        .block.is-form,
+        .block.is-btn {
+            animation-name: app-builder-in-form, app-builder-make-room;
+            animation-duration: var(--loop);
+            animation-iteration-count: infinite;
+            animation-fill-mode: both;
+            animation-timing-function: ease-out, ease-in-out;
+        }
+
+        .block.is-btn {
+            animation-name: app-builder-in-btn, app-builder-make-room;
+        }
+
+        .layer.is-form,
+        .layer.is-btn {
+            animation-name: app-builder-in-form, app-builder-row-room;
+            animation-duration: var(--loop);
+            animation-iteration-count: infinite;
+            animation-fill-mode: both;
+            animation-timing-function: ease-out, ease-in-out;
+        }
+
+        .layer.is-btn {
+            animation-name: app-builder-in-btn, app-builder-row-room;
+        }
+
+        .is-md::after,
+        .layer.is-md::after {
+            animation: app-builder-ring-md var(--loop) linear infinite both;
+        }
+
+        .is-form::after,
+        .layer.is-form::after {
+            animation: app-builder-ring-form var(--loop) linear infinite both;
+        }
+
+        .is-btn::after,
+        .layer.is-btn::after {
+            animation: app-builder-ring-btn var(--loop) linear infinite both;
+        }
+
+        .is-alert::after,
+        .layer.is-alert::after {
+            animation: app-builder-ring-alert var(--loop) linear infinite both;
+        }
+
+        .grab {
+            animation: app-builder-grab var(--loop) linear infinite both;
+        }
+
+        .list {
+            animation: app-builder-list var(--loop) ease infinite both;
+        }
+
+        .props {
+            animation: app-builder-props var(--loop) ease infinite both;
+        }
+
+        .typed {
+            animation: app-builder-type var(--loop) steps(14, end) infinite both;
+        }
+
+        .typed + i {
+            animation: app-builder-caret var(--loop) step-end infinite both;
+        }
+
+        .submit .before {
+            animation: app-builder-before var(--loop) linear infinite both;
+        }
+
+        .submit .after {
+            animation: app-builder-after var(--loop) linear infinite both;
+        }
+
+        .publish {
+            animation: app-builder-press var(--loop) linear infinite both;
+        }
+    }
+
+    @keyframes app-builder-editor {
+        0% {
+            opacity: 0;
+        }
+        2%,
+        66% {
+            opacity: 1;
+        }
+        69%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-builder-catalog {
+        0%,
+        67% {
+            opacity: 0;
+        }
+        70%,
+        95% {
+            opacity: 1;
+        }
+        98%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-builder-toast {
+        0%,
+        72% {
+            opacity: 0;
+            translate: 0 0.8em;
+        }
+        75%,
+        91% {
+            opacity: 1;
+            translate: 0 0;
+        }
+        94%,
+        100% {
+            opacity: 0;
+            translate: 0 0;
+        }
+    }
+
+    @keyframes app-builder-fresh {
+        0%,
+        70% {
+            scale: 0.94;
+            opacity: 0;
+        }
+        74%,
+        100% {
+            scale: 1;
+            opacity: 1;
+        }
+    }
+
+    @keyframes app-builder-picker {
+        0%,
+        2%,
+        6%,
+        8%,
+        12%,
+        14%,
+        18%,
+        20%,
+        24%,
+        100% {
+            opacity: 0;
+            translate: 0 0.4em;
+        }
+        3%,
+        5%,
+        9%,
+        11%,
+        15%,
+        17%,
+        21%,
+        23% {
+            opacity: 1;
+            translate: 0 0;
+        }
+    }
+
+    @keyframes app-builder-pick {
+        0%,
+        3.9% {
+            opacity: 0;
+            translate: 0 0;
+        }
+        4%,
+        5% {
+            opacity: 1;
+            translate: 0 0;
+        }
+        5.1%,
+        9.9% {
+            opacity: 0;
+            translate: 0 1.9em;
+        }
+        10%,
+        11% {
+            opacity: 1;
+            translate: 0 1.9em;
+        }
+        11.1%,
+        15.9% {
+            opacity: 0;
+            translate: 0 3.8em;
+        }
+        16%,
+        17% {
+            opacity: 1;
+            translate: 0 3.8em;
+        }
+        17.1%,
+        21.9% {
+            opacity: 0;
+            translate: 0 5.7em;
+        }
+        22%,
+        23% {
+            opacity: 1;
+            translate: 0 5.7em;
+        }
+        23.1%,
+        100% {
+            opacity: 0;
+            translate: 0 5.7em;
+        }
+    }
+
+    @keyframes app-builder-add {
+        0%,
+        1.5%,
+        3%,
+        7.5%,
+        9%,
+        13.5%,
+        15%,
+        19.5%,
+        21%,
+        100% {
+            background: var(--panel);
+        }
+        2%,
+        8%,
+        14%,
+        20% {
+            background: var(--chip);
+        }
+    }
+
+    @keyframes app-builder-add-slide {
+        0%,
+        5% {
+            translate: 0 calc(-4 * var(--step));
+        }
+        7%,
+        11% {
+            translate: 0 calc(-3 * var(--step));
+        }
+        13%,
+        17% {
+            translate: 0 calc(-2 * var(--step));
+        }
+        19%,
+        23% {
+            translate: 0 calc(-1 * var(--step));
+        }
+        25%,
+        100% {
+            translate: 0 0;
+        }
+    }
+
+    @keyframes app-builder-picker-slide {
+        0%,
+        5% {
+            margin-top: calc(-4 * var(--step));
+        }
+        7%,
+        11% {
+            margin-top: calc(-3 * var(--step));
+        }
+        13%,
+        17% {
+            margin-top: calc(-2 * var(--step));
+        }
+        19%,
+        23% {
+            margin-top: calc(-1 * var(--step));
+        }
+        25%,
+        100% {
+            margin-top: 0;
+        }
+    }
+
+    @keyframes app-builder-in-md {
+        0%,
+        5% {
+            opacity: 0;
+            translate: 0 0.6em;
+        }
+        7%,
+        100% {
+            opacity: 1;
+            translate: 0 0;
+        }
+    }
+
+    @keyframes app-builder-in-form {
+        0%,
+        11% {
+            opacity: 0;
+        }
+        13%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes app-builder-in-btn {
+        0%,
+        17% {
+            opacity: 0;
+        }
+        19%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes app-builder-make-room {
+        0%,
+        50% {
+            translate: 0 0;
+        }
+        56%,
+        100% {
+            translate: 0 var(--drop);
+        }
+    }
+
+    @keyframes app-builder-row-room {
+        0%,
+        50% {
+            translate: 0 0;
+        }
+        56%,
+        100% {
+            translate: 0 var(--step);
+        }
+    }
+
+    @keyframes app-builder-alert {
+        0%,
+        23% {
+            opacity: 0;
+            translate: 0 0;
+            scale: 1;
+            box-shadow: none;
+        }
+        25%,
+        48% {
+            opacity: 1;
+            translate: 0 0;
+            scale: 1;
+            box-shadow: none;
+        }
+        50% {
+            opacity: 1;
+            translate: 0 0;
+            scale: 1.02;
+            box-shadow: var(--shadow);
+        }
+        56% {
+            opacity: 1;
+            translate: 0 calc(-1 * var(--lift));
+            scale: 1.02;
+            box-shadow: var(--shadow);
+        }
+        58%,
+        100% {
+            opacity: 1;
+            translate: 0 calc(-1 * var(--lift));
+            scale: 1;
+            box-shadow: none;
+        }
+    }
+
+    @keyframes app-builder-row-alert {
+        0%,
+        23% {
+            opacity: 0;
+            translate: 0 0;
+        }
+        25%,
+        50% {
+            opacity: 1;
+            translate: 0 0;
+        }
+        56%,
+        100% {
+            opacity: 1;
+            translate: 0 calc(-2 * var(--step));
+        }
+    }
+
+    @keyframes app-builder-ring-md {
+        0%,
+        6% {
+            opacity: 0;
+        }
+        7%,
+        11% {
+            opacity: 1;
+        }
+        12%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-builder-ring-form {
+        0%,
+        12% {
+            opacity: 0;
+        }
+        13%,
+        17% {
+            opacity: 1;
+        }
+        18%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-builder-ring-btn {
+        0%,
+        18% {
+            opacity: 0;
+        }
+        19%,
+        23% {
+            opacity: 0.4;
+        }
+        27%,
+        45% {
+            opacity: 1;
+        }
+        47%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-builder-ring-alert {
+        0%,
+        24% {
+            opacity: 0;
+        }
+        25%,
+        27% {
+            opacity: 1;
+        }
+        28%,
+        48% {
+            opacity: 0;
+        }
+        49%,
+        59% {
+            opacity: 1;
+        }
+        61%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-builder-grab {
+        0%,
+        48% {
+            opacity: 0;
+        }
+        49%,
+        58% {
+            opacity: 1;
+        }
+        60%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-builder-list {
+        0%,
+        28% {
+            opacity: 1;
+        }
+        30%,
+        44% {
+            opacity: 0;
+        }
+        46%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes app-builder-props {
+        0%,
+        29% {
+            opacity: 0;
+        }
+        31%,
+        43% {
+            opacity: 1;
+        }
+        45%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-builder-type {
+        0%,
+        32% {
+            width: 6ch;
+        }
+        39%,
+        100% {
+            width: 14ch;
+        }
+    }
+
+    @keyframes app-builder-caret {
+        0%,
+        31% {
+            opacity: 0;
+        }
+        32%,
+        34%,
+        36%,
+        38%,
+        40%,
+        42% {
+            opacity: 1;
+        }
+        33%,
+        35%,
+        37%,
+        39%,
+        41%,
+        43%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-builder-before {
+        0%,
+        39% {
+            opacity: 1;
+        }
+        39.1%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-builder-after {
+        0%,
+        39% {
+            opacity: 0;
+        }
+        39.1%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes app-builder-press {
+        0%,
+        62% {
+            scale: 1;
+        }
+        63.5% {
+            scale: 0.88;
+        }
+        65%,
+        100% {
+            scale: 1;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .editor {
+            opacity: 0;
+        }
+
+        .catalog {
+            opacity: 1;
+        }
+    }
+</style>
