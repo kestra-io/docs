@@ -100,7 +100,6 @@
     import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
-    import { useGtm } from "@gtm-support/vue-gtm"
     import { useFormErrors } from "~/composables/useFormErrors"
     import Squared from "~/components/layout/Squared.vue"
 
@@ -108,7 +107,6 @@
 
     const HUBSPOT_FORM_ID = "77f32ae3-0f49-404a-a28d-6dfe92c8bc78"
 
-    const gtm = useGtm()
     const formRef = useTemplateRef("contact-form")
     const valid = ref(false)
     const validMessage = ref("")
@@ -204,7 +202,12 @@
         }
 
         posthog.capture("contact_form_submission")
-        gtm?.trackEvent({
+        // Push directly to the dataLayer: the vue-gtm plugin is
+        // initialized with `enabled: false` (GTM is loaded manually
+        // after cookie consent in cookieconsent.ts), so
+        // gtm.trackEvent() is a no-op and never reaches the dataLayer.
+        window.dataLayer = window.dataLayer || []
+        window.dataLayer.push({
             event: "contact_form_submission",
             noninteraction: false,
         })
