@@ -473,7 +473,7 @@ Invalid rows return a `422` response whose `detail` lists every error.
 :::badge{version=">=2.1" editions="EE,Cloud"}
 :::
 
-<!-- TODO(runtime test): kestra-ee#11295 documented from source and QA's issue comment only. On an EE develop image newer than 2026-11-16 21:02 UTC, run the examples in this section: filters, dependsOn, multiple with Loop, defaults warning, the rejection error text, the API call, and the public app warning. Also check the ASSET output (subflow and Flow trigger), asset() and assets(id=[...]) errors, the assets() child-namespace match, and the flow-output-types migration page (SELECT output still runs, save fails). Add screenshots of the picker in the Execute modal and the asset rows on the Input/Output tab. -->
+<!-- TODO(runtime test): kestra-ee#11295 live-verified 2026-11-19 on EE develop 3d69e8a: filters, dependsOn, multiple with Loop, defaults warning, rejection error text, API call, ASSET output (subflow and Flow trigger), asset() and assets(id=[...]) errors, assets() child-namespace match, and the SELECT output save error. Still from source only: the executions-list inputs tooltip, the webhook skip of the user check, the public app warning, and an existing flow with a SELECT output still running. -->
 
 `ASSET` lets the user pick one or more [assets](../../07.enterprise/02.governance/01.assets/index.md) when running the flow, such as the virtual machine to restart or the tables to refresh. The Execute modal and [Apps](../../07.enterprise/04.scalability/apps/index.md) forms show a searchable list of the assets the user can view. The search matches the asset ID, display name, and metadata values, and shows 20 results at a time.
 
@@ -494,6 +494,10 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: "Restarting {{ asset(inputs.vm).displayName }} in {{ asset(inputs.vm).metadata.region }}"
 ```
+
+The Execute modal lists each matching asset with its display name, ID, type, namespace, and status:
+
+![Execute modal with the Virtual machine asset picker open, listing Web server 01 in infra.compute and Web server 02 in infra.compute.eu](./asset-input-picker.png)
 
 These properties narrow the assets the list offers. All of them are optional:
 
@@ -554,7 +558,9 @@ tasks:
 
 The input's value is the asset ID, or a list of IDs with `multiple: true`. Tasks, subflows, and the API receive only the IDs. Read an asset, with its current metadata, using the [`asset()` function](../../07.enterprise/02.governance/01.assets/02.tasks-and-triggers/index.md#asset-pebble-function), such as `{{ asset(inputs.vm).metadata.region }}`. For a list, use `{{ assets(id=inputs.vms) }}`, which returns the assets in the order picked.
 
-On the execution's **Input/Output** tab and in the inputs tooltip of the executions list, each asset shows its status, name, type, and namespace, with a link to the asset. If the viewer can't view assets, or the asset was deleted, the ID shows instead.
+On the execution's **Input/Output** tab, select the input to see each asset's status, name, type, and namespace, with a link to the asset. The inputs tooltip of the executions list shows the same details. If the viewer can't view assets, or the asset was deleted, the ID shows instead.
+
+![Input/Output tab with the vm input selected, showing the active asset Web server 01 of type VM in the infra.compute namespace](./asset-input-output-tab.png)
 
 ### Validation and defaults
 
