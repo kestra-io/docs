@@ -1,9 +1,6 @@
 ---
 import { API_URL } from "astro:env/client"
 import sharp from "sharp"
-import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
-
-const totalPlugins = await fetchTotalPluginsCount()
 
 const PLUGINS = [
     {
@@ -130,9 +127,9 @@ const tiles = (
                             <em>you already run.</em>
                         </h2>
                         <p>
-                            Your infrastructure as code, hypervisors, clouds and
-                            ITSM are a plugin away. Kestra ships {totalPlugins}+
-                            of them.
+                            Kestra orchestrates your infrastructure as code,
+                            hypervisors, clouds and ITSM, each through its own
+                            plugin.
                         </p>
                     </div>
                     <a href="/plugins" class="btn-ghost">
