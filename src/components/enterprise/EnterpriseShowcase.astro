@@ -547,6 +547,42 @@ for (const panel of PANELS) {
             }
         }
 
+        &.mock[data-tone="catalog"] {
+            --tint: #8405ff;
+        }
+
+        &.mock[data-tone="requests"] {
+            --tint: #2f6df2;
+
+            :global(html.dark) & {
+                --tint: #6f93fb;
+            }
+        }
+
+        &.mock[data-tone="deployments"] {
+            --tint: #12a06c;
+
+            :global(html.dark) & {
+                --tint: #1fc48a;
+            }
+        }
+
+        &.mock[data-tone="cases"] {
+            --tint: #e8590c;
+
+            :global(html.dark) & {
+                --tint: #ff8a4c;
+            }
+        }
+
+        &.mock[data-tone="inventory"] {
+            --tint: #0f9fb3;
+
+            :global(html.dark) & {
+                --tint: #3cc8db;
+            }
+        }
+
         &.mock[data-tone="gov"] {
             --tint: #12a06c;
 
