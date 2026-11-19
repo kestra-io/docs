@@ -25,6 +25,18 @@ const description =
 
 const PANELS = [
     {
+        id: "catalog" as const,
+        tab: "Catalog",
+        icon: "mdi:view-grid-outline",
+        title: "Start from the catalog",
+        intro: "The catalog is the home page of Kestra for Infrastructure. Each entry is a request form with a flow behind it, so anyone who needs a VM, a database, object storage or a whole environment picks it from the catalog without opening a ticket or reading Terraform code.",
+        points: [
+            "Starter entries for VMs, databases, storage and environments, ready to swap for your own",
+            "Filter entries by tag and group them by namespace",
+            "Platform teams publish new entries from templates or existing flows",
+        ],
+    },
+    {
         id: "requests" as const,
         tab: "Requests",
         icon: "mdi:file-document-outline",
@@ -61,11 +73,11 @@ const PANELS = [
         ],
     },
     {
-        id: "assets" as const,
-        tab: "Assets",
+        id: "inventory" as const,
+        tab: "Inventory",
         icon: "mdi:layers-outline",
-        title: "A live map of your resources",
-        intro: "Your flows record each resource they create as an asset, so the inventory follows what you run. Before you change or retire something, you can see what depends on it.",
+        title: "An inventory of every resource",
+        intro: "Your flows declare each resource they create, so the inventory follows what you run. Import what you already have from Terraform state, CSV, JSON or YAML, and see what depends on a resource before you change or retire it.",
         points: [
             "Owner, status and lineage for every VM, database and network",
             "Dependencies visible before you change or retire anything",
@@ -215,10 +227,11 @@ const STORIES: Story[] = [
                 Teams request what they need, and Kestra for Infrastructure
                 tracks every resource from request to retirement.
             </Fragment>
+            <InfraMock slot="catalog" view="catalog" />
             <AppsMock slot="requests" apps={APPS} request={REQUEST} />
             <InfraMock slot="deployments" view="deployments" />
             <InfraMock slot="cases" view="cases" />
-            <InfraMock slot="assets" view="assets" />
+            <InfraMock slot="inventory" view="inventory" />
         </EnterpriseShowcase>
         <InfraUseCases />
         <InfraPlugins />

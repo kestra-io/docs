@@ -2,7 +2,7 @@
 import { Icon } from "astro-icon/components"
 
 interface Props {
-    view: "deployments" | "cases" | "assets"
+    view: "catalog" | "deployments" | "cases" | "inventory"
 }
 
 const { view } = Astro.props
@@ -13,10 +13,15 @@ const NAV = [
     { id: "deployments", icon: "mdi:server-outline" },
     { id: "runs", icon: "mdi:refresh" },
     { id: "cases", icon: "mdi:alert-outline" },
-    { id: "assets", icon: "mdi:layers-outline" },
+    { id: "inventory", icon: "mdi:layers-outline" },
 ]
 
 const VIEWS = {
+    catalog: {
+        crumb: "Catalog",
+        title: "Catalog",
+        sub: "Request what you need. No ticket, no Terraform code.",
+    },
     deployments: {
         crumb: "Deployments",
         title: "Deployments",
@@ -27,12 +32,41 @@ const VIEWS = {
         title: "Cases",
         sub: "Failed runs become incidents with an owner and an SLA.",
     },
-    assets: {
-        crumb: "Assets",
-        title: "Assets",
+    inventory: {
+        crumb: "Inventory",
+        title: "Inventory",
         sub: "Every resource you create, its owner and what depends on it.",
     },
 }
+
+const FILTERS = ["All", "Compute", "Data", "Storage"]
+
+const ENTRIES = [
+    {
+        icon: "mdi:server-outline",
+        name: "Virtual machine",
+        text: "Linux or Windows, sized for you",
+        tag: "Compute",
+    },
+    {
+        icon: "mdi:bucket-outline",
+        name: "Object storage",
+        text: "A bucket with lifecycle rules",
+        tag: "Storage",
+    },
+    {
+        icon: "mdi:database-outline",
+        name: "Database",
+        text: "Postgres or MySQL, with backups",
+        tag: "Data",
+    },
+    {
+        icon: "mdi:layers-outline",
+        name: "Environment",
+        text: "App, database and VM together",
+        tag: "Environment",
+    },
+]
 
 const DEPLOYMENTS = [
     {
@@ -156,6 +190,32 @@ const current = VIEWS[view]
                 <p class="title">{current.title}</p>
                 <p class="sub">{current.sub}</p>
 
+                {view === "catalog" && (
+                    <div class="catalog">
+                        <p class="filters">
+                            {FILTERS.map((filter, i) => (
+                                <span class:list={{ on: i === 0 }}>
+                                    {filter}
+                                </span>
+                            ))}
+                            <span class="manage">Manage apps</span>
+                        </p>
+                        <div class="entries">
+                            {ENTRIES.map((entry) => (
+                                <div class="entry">
+                                    <Icon name={entry.icon} />
+                                    <b>{entry.name}</b>
+                                    <small>{entry.text}</small>
+                                    <p class="line">
+                                        <span class="tag run">{entry.tag}</span>
+                                        <span class="request">Request</span>
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
                 {view === "deployments" && (
                     <div class="table">
                         <p class="tr th">
@@ -210,7 +270,7 @@ const current = VIEWS[view]
                     </div>
                 )}
 
-                {view === "assets" && (
+                {view === "inventory" && (
                     <div class="map">
                         <svg viewBox="0 0 100 60" preserveAspectRatio="none">
                             <path d="M31 30 C35 30 33 15 37 15" />
@@ -460,6 +520,72 @@ const current = VIEWS[view]
         &.fail {
             color: var(--fail);
         }
+    }
+
+    .filters {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        margin-bottom: 1em;
+        font-size: 0.62em;
+        font-weight: 600;
+        color: var(--muted);
+
+        span {
+            padding: 0.35em 0.9em;
+            border: 1px solid var(--line);
+            border-radius: 99em;
+        }
+
+        .on {
+            border-color: var(--ring);
+            background: var(--chip);
+            color: var(--run);
+        }
+
+        .manage {
+            margin-left: auto;
+            border-radius: 0.5em;
+            background: var(--deep);
+        }
+    }
+
+    .entries {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.8em;
+    }
+
+    .entry {
+        display: grid;
+        gap: 0.35em;
+        padding: 1em 1.1em;
+        border: 1px solid var(--line);
+        border-radius: 0.7em;
+
+        > [data-icon] {
+            width: 1.4em;
+            height: 1.4em;
+            margin-bottom: 0.3em;
+            color: var(--run);
+        }
+
+        b {
+            font-size: 0.76em;
+        }
+
+        .line {
+            margin-top: 0.5em;
+        }
+    }
+
+    .request {
+        padding: 0.35em 0.9em;
+        border-radius: 0.5em;
+        background: var(--run);
+        font-size: 0.6em;
+        font-weight: 700;
+        color: var(--panel);
     }
 
     .cases {
