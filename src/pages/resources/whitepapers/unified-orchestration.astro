@@ -3,6 +3,8 @@ import { getEntry, render } from "astro:content"
 import Layout from "~/components/layout.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Faq from "~/components/common/Faq.vue"
+import SchemaArticle from "~/components/common/SchemaArticle.astro"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 import BlogToc from "~/components/blogs/BlogToc.vue"
 import BlogSocials from "~/components/blogs/BlogSocials.vue"
 import ResourceDetails from "~/components/resources/ResourceDetails.vue"
@@ -11,6 +13,7 @@ import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vu
 import WhitepaperHero from "~/components/whitepaper/WhitepaperHero.astro"
 import WhoItsFor from "~/components/whitepaper/WhoItsFor.astro"
 import AuthorBlock from "~/components/whitepaper/AuthorBlock.astro"
+import { authorSchema } from "~/components/whitepaper/author"
 import Link from "~/components/common/Link.astro"
 import LivePluginCount from "~/components/content/LivePluginCount.astro"
 
@@ -34,46 +37,7 @@ const tocLinks = headings
     .filter((h) => h.depth === 2)
     .map((h) => ({ text: h.text, id: h.slug, depth: h.depth }))
 
-const jsonLinkedData = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    mainEntityOfPage: { "@type": "WebPage", "@id": Astro.url.href },
-    headline: title,
-    image: [`${Astro.url.origin}/og-image.png`],
-    author: {
-        "@type": "Person",
-        name: "Kai Waehner",
-        jobTitle: "Global Field CTO",
-        worksFor: { "@id": "https://kestra.io/#organization" },
-        sameAs: [
-            "https://www.kai-waehner.de",
-            "https://www.linkedin.com/in/kaiwaehner",
-        ],
-    },
-    ...(page.date ? { datePublished: page.date } : {}),
-    ...(page.lastUpdated ? { dateModified: page.lastUpdated } : {}),
-    publisher: {
-        "@type": "Organization",
-        "@id": "https://kestra.io/#organization",
-        name: "Kestra",
-        logo: { "@type": "ImageObject", url: "https://kestra.io/logo.svg" },
-    },
-    description,
-}
-
 const faqItems = page.faq ?? []
-const faqSchema =
-    faqItems.length > 0
-        ? {
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              mainEntity: faqItems.map((item) => ({
-                  "@type": "Question",
-                  name: item.question,
-                  acceptedAnswer: { "@type": "Answer", text: item.answer },
-              })),
-          }
-        : null
 
 const INSIDE = [
     "Why orchestration fragmented into four tool categories, and why agentic AI is not a fifth one",
@@ -117,10 +81,12 @@ const PERSONAS = [
                 />
             )
         }
-        <script
-            is:inline
-            type="application/ld+json"
-            set:html={JSON.stringify(jsonLinkedData)}
+        <SchemaArticle
+            headline={title}
+            {description}
+            author={authorSchema()}
+            datePublished={page.date}
+            dateModified={page.lastUpdated}
         />
         {
             page.schema && (
@@ -131,15 +97,7 @@ const PERSONAS = [
                 />
             )
         }
-        {
-            faqSchema && (
-                <script
-                    is:inline
-                    type="application/ld+json"
-                    set:html={JSON.stringify(faqSchema)}
-                />
-            )
-        }
+        <SchemaFAQ items={faqItems} />
     </Fragment>
 
     <WhitepaperHero pdfHref={PDF_HREF} book={bookMockup} inside={INSIDE}>
