@@ -19,6 +19,7 @@ interface Props {
     id?: string
     label?: string
     panels?: Panel[]
+    align?: "center" | "start"
 }
 
 const DEFAULT_PANELS: Panel[] = [
@@ -72,6 +73,7 @@ const {
     id = "ee-showcase",
     label = "Enterprise features",
     panels: PANELS = DEFAULT_PANELS,
+    align = "center",
 } = Astro.props
 
 const MOCKS: Record<string, string> = {}
@@ -84,7 +86,7 @@ for (const panel of PANELS) {
 <section class="ee-showcase" aria-labelledby={id} data-showcase>
     <div class="container-xl">
         <div class="grid">
-            <header class="head">
+            <header class:list={["head", align]}>
                 <h2 {id}>
                     <slot name="title">
                         Give every team the power to automate at scale.
@@ -286,6 +288,19 @@ for (const panel of PANELS) {
             font-size: 1.125rem;
             line-height: 1.55;
             color: var(--ks-content-tertiary);
+        }
+
+        &.start {
+            text-align: left;
+
+            h2 {
+                margin: 0;
+            }
+
+            p {
+                max-width: 38rem;
+                margin: 1.5rem 0 0;
+            }
         }
     }
 

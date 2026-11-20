@@ -142,7 +142,30 @@ const CASES = [
     }
 
     li {
+        position: relative;
         padding: 2rem var(--inset) 2.5rem;
+        transition: background-color 0.3s ease;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: -1px;
+            right: 0;
+            left: 0;
+            height: 2px;
+            background: var(--ks-content-primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        &:hover {
+            background: var(--ks-background-secondary);
+
+            &::before {
+                transform: none;
+            }
+        }
 
         @include media-breakpoint-up(xl) {
             &:not(:nth-child(4n + 1)) {
@@ -191,5 +214,12 @@ const CASES = [
         font-size: 0.9375rem;
         line-height: 1.6;
         color: var(--ks-content-secondary);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        li,
+        li::before {
+            transition: none;
+        }
     }
 </style>
