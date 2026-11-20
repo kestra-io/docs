@@ -777,7 +777,7 @@ kestractl policies export prod-cost-controls cost-alerts --output-file policies.
 
 `validate` exits with code `1` when the policy is invalid, such as a rule with an unknown `type`, so a CI job that runs it fails. `create` accepts a file written by `export` that holds a single policy, so you can copy a policy to another tenant or instance.
 
-`list` also returns namespace-scoped policies, but `get`, `update`, and `delete` only find tenant-scoped policies. Manage namespace-scoped policies in the UI or through the API. `kestractl` has no command for importing several policies at once, evaluating a policy against saved flows, or previewing a flow's policies.
+The `policies` commands only work with tenant-scoped policies. Manage namespace-scoped policies in the UI or through the API. `kestractl` has no command for importing several policies at once, evaluating a policy against saved flows, or previewing a flow's policies.
 
 ## MCP servers
 
