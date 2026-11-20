@@ -11,6 +11,7 @@ const NUMBERS = [
         text: "Engineers star, fork and contribute to the engine on GitHub.",
         href: "https://github.com/kestra-io/kestra",
         cta: "Star the project",
+        live: "github-stars",
     },
     {
         value: totalPlugins,
@@ -47,7 +48,11 @@ const NUMBERS = [
                         <span class="arrow" aria-hidden="true">
                             ↑
                         </span>
-                        <span class="value" data-count={n.value}>
+                        <span
+                            class="value"
+                            data-count={n.value}
+                            data-live={n.live}
+                        >
                             {n.value}
                         </span>
                         <span class="suffix">{n.suffix}</span>
@@ -60,30 +65,52 @@ const NUMBERS = [
 
 <script>
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches
+    const format = new Intl.NumberFormat("en-US")
     const io = new IntersectionObserver(
         (entries) => {
             entries.forEach((entry) => {
                 if (!entry.isIntersecting) return
                 io.unobserve(entry.target)
                 const el = entry.target as HTMLElement
-                const final = el.dataset.count!
-                const prefix = final.match(/^\D*/)![0]
-                const end = Number(final.replace(/\D/g, ""))
-                const format = new Intl.NumberFormat("en-US")
                 const start = performance.now()
                 const step = (now: number) => {
+                    const final = el.dataset.count!
+                    const prefix = final.match(/^\D*/)![0]
+                    const end = Number(final.replace(/\D/g, ""))
                     const t = Math.min(1, (now - start) / 1400)
                     const eased = 1 - Math.pow(1 - t, 3)
                     el.textContent =
                         prefix + format.format(Math.round(end * eased))
                     if (t < 1) requestAnimationFrame(step)
-                    else el.textContent = final
+                    else {
+                        el.textContent = final
+                        el.dataset.counted = "true"
+                    }
                 }
                 requestAnimationFrame(step)
             })
         },
         { threshold: 0.6 },
     )
+    async function loadGithubStars() {
+        const stars = document.querySelectorAll<HTMLElement>(
+            '.numbers [data-live="github-stars"]',
+        )
+        if (!stars.length) return
+        try {
+            const response = await fetch("/api/github")
+            if (!response.ok) return
+            const { stargazers } = (await response.json()) as {
+                stargazers?: number
+            }
+            if (!stargazers) return
+            const value = format.format(Math.floor(stargazers / 100) * 100)
+            stars.forEach((el) => {
+                el.dataset.count = value
+                if (reduced || el.dataset.counted) el.textContent = value
+            })
+        } catch {}
+    }
     function init() {
         document
             .querySelectorAll<HTMLElement>(
@@ -93,6 +120,7 @@ const NUMBERS = [
                 el.dataset.ready = "true"
                 if (!reduced) io.observe(el)
             })
+        loadGithubStars()
     }
     document.addEventListener("astro:page-load", init)
     init()
