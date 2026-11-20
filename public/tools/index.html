@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Free Tools for Data & Platform Teams — Kestra</title>
+  <style>
+  :root {
+    --bg: #fbfbfd; --surface: #ffffff; --surface-2: #f4f3f9; --border: #e6e4ee;
+    --ink: #1c1926; --ink-2: #5d5870; --ink-3: #8b86a0;
+    --accent: #6d3df5; --accent-soft: #efe9ff; --accent-ink: #ffffff;
+    --good: #0f7d3c; --good-soft: #e7f5ec; --warn: #955e00; --warn-soft: #fdf3e0; --bad: #c02c2c; --bad-soft: #fdecec;
+    --s1: #2a78d6; --s2: #1baf7a; --s3: #eda100; --s4: #008300;
+    --code-bg: #14121c; --code-ink: #e8e5f4;
+    --shadow: 0 1px 2px rgba(28,25,38,.05), 0 4px 16px rgba(28,25,38,.06);
+  }
+  @media (prefers-color-scheme: dark) { :root {
+    --bg: #131118; --surface: #191723; --surface-2: #201d2c; --border: #2c2938;
+    --ink: #f0eef7; --ink-2: #aaa5c0; --ink-3: #737085;
+    --accent: #9a72ff; --accent-soft: #291f45; --accent-ink: #14101f;
+    --good: #4cc07a; --good-soft: #12291b; --warn: #e0a33e; --warn-soft: #2d2312; --bad: #ea6a6a; --bad-soft: #331717;
+    --s1: #3987e5; --s2: #199e70; --s3: #c98500; --s4: #008300;
+    --code-bg: #0e0c15; --code-ink: #dcd8ec;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
+  }}
+  :root[data-theme="light"] {
+    --bg: #fbfbfd; --surface: #ffffff; --surface-2: #f4f3f9; --border: #e6e4ee;
+    --ink: #1c1926; --ink-2: #5d5870; --ink-3: #8b86a0;
+    --accent: #6d3df5; --accent-soft: #efe9ff; --accent-ink: #ffffff;
+    --good: #0f7d3c; --good-soft: #e7f5ec; --warn: #955e00; --warn-soft: #fdf3e0; --bad: #c02c2c; --bad-soft: #fdecec;
+    --s1: #2a78d6; --s2: #1baf7a; --s3: #eda100; --s4: #008300;
+    --code-bg: #14121c; --code-ink: #e8e5f4;
+    --shadow: 0 1px 2px rgba(28,25,38,.05), 0 4px 16px rgba(28,25,38,.06);
+  }
+  :root[data-theme="dark"] {
+    --bg: #131118; --surface: #191723; --surface-2: #201d2c; --border: #2c2938;
+    --ink: #f0eef7; --ink-2: #aaa5c0; --ink-3: #737085;
+    --accent: #9a72ff; --accent-soft: #291f45; --accent-ink: #14101f;
+    --good: #4cc07a; --good-soft: #12291b; --warn: #e0a33e; --warn-soft: #2d2312; --bad: #ea6a6a; --bad-soft: #331717;
+    --s1: #3987e5; --s2: #199e70; --s3: #c98500; --s4: #008300;
+    --code-bg: #0e0c15; --code-ink: #dcd8ec;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); margin: 0;
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 32px 24px 80px; }
+  .eyebrow { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+  h1 { font-size: 28px; letter-spacing: -.02em; margin: 6px 0 4px; text-wrap: balance; }
+  .sub { color: var(--ink-2); max-width: 62ch; margin: 0 0 24px; }
+  .proto-badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .1em; padding: 3px 8px;
+    border-radius: 99px; background: var(--warn-soft); color: var(--warn); vertical-align: middle; margin-left: 10px; }
+  .tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--border); margin-bottom: 28px; flex-wrap: wrap; }
+  .tab { background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 14px; font: inherit;
+    font-weight: 600; color: var(--ink-2); cursor: pointer; margin-bottom: -1px; }
+  .tab:hover { color: var(--ink); }
+  .tab[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab:focus-visible, button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .grid { display: grid; grid-template-columns: minmax(300px, 5fr) minmax(340px, 7fr); gap: 20px; align-items: start; }
+  @media (max-width: 840px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; box-shadow: var(--shadow); }
+  .card h2 { font-size: 16px; margin: 0 0 14px; letter-spacing: -.01em; }
+  .card h3 { font-size: 13px; margin: 18px 0 8px; color: var(--ink-2); text-transform: uppercase; letter-spacing: .08em; }
+  label { display: block; font-size: 13px; font-weight: 600; color: var(--ink-2); margin: 12px 0 4px; }
+  input[type="number"], input[type="email"], input[type="text"], select, textarea { width: 100%; padding: 8px 10px;
+    border: 1px solid var(--border); border-radius: 7px; background: var(--bg); color: var(--ink); font: inherit; }
+  input[type="number"] { font-variant-numeric: tabular-nums; }
+  textarea.code { font: 12.5px/1.5 ui-monospace, "SF Mono", Menlo, Consolas, monospace; min-height: 320px;
+    white-space: pre; overflow-x: auto; resize: vertical; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .btn { display: inline-block; background: var(--accent); color: var(--accent-ink); border: none; border-radius: 7px;
+    padding: 9px 16px; font: inherit; font-weight: 700; cursor: pointer; }
+  .btn:hover { filter: brightness(1.08); }
+  .btn.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); font-weight: 600; }
+  .banner { display: flex; gap: 8px; align-items: baseline; background: var(--warn-soft); color: var(--warn);
+    border-radius: 8px; padding: 10px 12px; font-size: 13px; margin-bottom: 16px; }
+  details.assump { margin-top: 16px; border: 1px dashed var(--border); border-radius: 8px; padding: 10px 14px; }
+  details.assump summary { cursor: pointer; font-weight: 600; font-size: 13px; color: var(--ink-2); }
+  .stat { display: flex; flex-direction: column; gap: 2px; padding: 14px 16px; border-radius: 9px; background: var(--good-soft); margin-bottom: 18px; }
+  .stat .n { font-size: 30px; font-weight: 800; letter-spacing: -.02em; color: var(--good); font-variant-numeric: tabular-nums; }
+  .stat .l { font-size: 13px; color: var(--ink-2); }
+  .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
+  @media (max-width: 560px) { .cols { grid-template-columns: 1fr; } }
+  .col { border: 1px solid var(--border); border-radius: 9px; padding: 12px 14px; background: var(--surface-2); }
+  .col.win { border-color: var(--accent); background: var(--accent-soft); }
+  .col .t { font-size: 12px; font-weight: 700; color: var(--ink-2); text-transform: uppercase; letter-spacing: .06em; }
+  .col .v { font-size: 21px; font-weight: 800; font-variant-numeric: tabular-nums; margin-top: 2px; }
+  .col .d { font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .chart { margin: 6px 0 4px; }
+  .bar-row { display: grid; grid-template-columns: 118px 1fr 70px; gap: 10px; align-items: center; margin: 9px 0; }
+  .bar-label { font-size: 12.5px; font-weight: 600; color: var(--ink-2); text-align: right; }
+  .bar-total { font-size: 12.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .bar { display: flex; height: 22px; border-radius: 4px; overflow: hidden; background: var(--surface-2); }
+  .seg { height: 100%; margin-right: 2px; border-radius: 2px; min-width: 0; transition: width .25s ease; position: relative; }
+  .seg:last-child { margin-right: 0; }
+  .seg:hover { filter: brightness(1.15); }
+  @media (prefers-reduced-motion: reduce) { .seg { transition: none; } }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12.5px; color: var(--ink-2); margin: 10px 0 4px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .sw { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+  table.break { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+  table.break th, table.break td { text-align: right; padding: 6px 8px; border-bottom: 1px solid var(--border); font-variant-numeric: tabular-nums; }
+  table.break th:first-child, table.break td:first-child { text-align: left; }
+  table.break th { color: var(--ink-3); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+  .gate { margin-top: 16px; padding: 14px; border: 1px solid var(--border); border-radius: 9px; background: var(--surface-2); }
+  .gate p { margin: 0 0 8px; font-size: 13px; color: var(--ink-2); }
+  .gate form { display: flex; gap: 8px; }
+  pre.yaml { background: var(--code-bg); color: var(--code-ink); border-radius: 9px; padding: 16px;
+    font: 12.5px/1.55 ui-monospace, "SF Mono", Menlo, Consolas, monospace; overflow-x: auto; margin: 0; }
+  .report { list-style: none; padding: 0; margin: 12px 0 0; display: flex; flex-direction: column; gap: 6px; }
+  .report li { display: flex; gap: 8px; align-items: baseline; font-size: 13px; padding: 8px 10px; border-radius: 7px; }
+  .report li.ok { background: var(--good-soft); } .report li.ok .b { color: var(--good); }
+  .report li.wa { background: var(--warn-soft); } .report li.wa .b { color: var(--warn); }
+  .report li.ko { background: var(--bad-soft); } .report li.ko .b { color: var(--bad); }
+  .report .b { font-weight: 800; flex-shrink: 0; }
+  .convscore { font-size: 14px; font-weight: 700; margin-top: 14px; }
+  .scope-strip { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 22px; padding: 12px 16px; border-radius: 9px;
+    background: var(--surface-2); border: 1px solid var(--border); font-size: 12.5px; color: var(--ink-2); }
+  .scope-strip b { color: var(--ink); }
+  .q { margin: 0 0 18px; }
+  .q p { font-weight: 700; margin: 0 0 8px; }
+  .q label { display: flex; gap: 8px; align-items: baseline; font-weight: 500; color: var(--ink); margin: 5px 0; cursor: pointer; }
+  .q input { width: auto; }
+  .quiz-result { display: none; margin-top: 4px; }
+  .quiz-result.show { display: block; }
+  .quiz-result h3 { font-size: 19px; margin: 0 0 6px; color: var(--accent); text-transform: none; letter-spacing: -.01em; }
+  .toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg);
+    padding: 9px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; opacity: 0; pointer-events: none; transition: opacity .2s; }
+  .toast.on { opacity: 1; }
+  footer.note { margin-top: 40px; font-size: 12.5px; color: var(--ink-3); max-width: 70ch; }
+
+  .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; margin-top: 26px; }
+  .tool-card { display: block; text-decoration: none; color: var(--ink); background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px; box-shadow: var(--shadow); transition: border-color .15s ease, transform .15s ease; }
+  .tool-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  @media (prefers-reduced-motion: reduce) { .tool-card { transition: none; } .tool-card:hover { transform: none; } }
+  .tool-card .ic { font-size: 26px; }
+  .tool-card h2 { font-size: 17px; margin: 10px 0 6px; letter-spacing: -.01em; }
+  .tool-card p { font-size: 13.5px; color: var(--ink-2); margin: 0 0 12px; }
+  .tool-card .go { color: var(--accent); font-weight: 700; font-size: 13.5px; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Kestra · Free tools</div>
+  <h1>Free tools for data &amp; platform teams <span class="proto-badge">PROTOTYPE V1</span></h1>
+  <p class="sub">Practical, no-signup tools built by the Kestra team. Every calculator shows its assumptions; every converter shows its work.</p>
+  <div class="tool-grid">
+    <a class="tool-card" href="/tools/tco-calculator/">
+      <div class="ic">🧮</div><h2>Orchestration TCO Calculator</h2>
+      <p>Compare the real annual cost of self-managed Airflow, managed services, and Kestra — assumptions included, all editable.</p>
+      <span class="go">Calculate your TCO →</span></a>
+    <a class="tool-card" href="/tools/airflow-to-kestra-converter/">
+      <div class="ic">🔁</div><h2>Airflow DAG → Kestra Converter</h2>
+      <p>Paste a DAG, get declarative YAML — with an honest report of what converted, what needs review, and what didn't.</p>
+      <span class="go">Convert a DAG →</span></a>
+    <a class="tool-card" href="/tools/orchestrator-quiz/">
+      <div class="ic">🎯</div><h2>Which Orchestrator Are You?</h2>
+      <p>Five questions, four personas, zero mercy. Find out where your orchestration really stands.</p>
+      <span class="go">Take the quiz →</span></a>
+  </div>
+  <footer class="note">Prototype v1 — 07/2026. URLs and content pending product validation (scoping doc: free-tools-scoping.md).</footer>
+</div>
+</body>
+</html>
