@@ -10,7 +10,7 @@ import InfraGlue from "~/components/infrastructure/InfraGlue.astro"
 import AppsMock from "~/components/enterprise/mocks/AppsMock.astro"
 import InfraAppBuilderMock from "~/components/infrastructure/InfraAppBuilderMock.astro"
 import InfraCaseMock from "~/components/infrastructure/InfraCaseMock.astro"
-import InfraLeaseMock from "~/components/infrastructure/InfraLeaseMock.astro"
+import InfraDeploymentMock from "~/components/infrastructure/InfraDeploymentMock.astro"
 import InfraInventoryMock from "~/components/infrastructure/InfraInventoryMock.astro"
 import InfraMigration from "~/components/infrastructure/InfraMigration.astro"
 import InfraClosing from "~/components/infrastructure/InfraClosing.astro"
@@ -248,7 +248,7 @@ const STORIES: Story[] = [
                     { name: "Approver", icon: "mdi:account-check-outline" },
                 ]}
             />
-            <InfraLeaseMock slot="deployments" />
+            <InfraDeploymentMock slot="deployments" />
             <InfraCaseMock slot="cases" />
             <InfraInventoryMock slot="inventory" />
         </EnterpriseShowcase>
