@@ -6,6 +6,7 @@ import { withConsentRegion } from "./consentRegion";
 import { previewAuth } from "./previewAuth";
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, PREVIEW_AUTH_SECRET } from "astro:env/server";
 import { VERSIONED_DOCS_PATH } from "../utils/versionedDocs";
+import { isStaticAssetPath } from "./staticAssets";
 
 const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) => {
     // disable for tracking
@@ -160,6 +161,8 @@ const TRACKING_PARAMS = new Set([
     "igshid",
     "_hsenc",
     "_hsmi",
+    // emailing personalisation token, see the GA4 Direct-traffic notes
+    "ke",
 ])
 
 // `caches.default` is a Cloudflare Workers runtime extension that is absent
@@ -230,8 +233,12 @@ export default {
             return Response.redirect(url.toString(), 301)
         }
 
-        // Serve static assets directly without middleware overhead
-        if (/\.[a-zA-Z0-9]+$/.test(url.pathname)) {
+        // Serve static assets directly without middleware overhead. Matched on
+        // a known-extension allowlist: plugin element pages and release pages
+        // end in something that looks like an extension (`…flow.subflow`,
+        // `…/v1.3.39`) but are SSR/HTML pages that need the headers and the
+        // edge cache below.
+        if (isStaticAssetPath(url.pathname)) {
             return handle(request, env, ctx)
         }
 
