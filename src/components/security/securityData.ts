@@ -268,6 +268,11 @@ export const TRUST_LINKS: TrustLink[][] = [
             href: ADVISORIES_URL,
         },
         {
+            label: "Release SBOM and attestations",
+            text: "kestra.io/docs/security-hardening#release-verification",
+            href: `${HARDENING_GUIDE_URL}#release-verification`,
+        },
+        {
             label: "Kestra Cloud Privacy Policy",
             text: "kestra.io/kestra-cloud-privacy-policy",
             href: "/kestra-cloud-privacy-policy",
