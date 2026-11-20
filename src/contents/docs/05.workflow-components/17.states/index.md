@@ -22,8 +22,9 @@ States represent where an execution or task run is in its lifecycle. Each state 
 | `SUBMITTED` | Transient | Submitted to the Executor queue but not yet running. Appears briefly between `CREATED` and `RUNNING`. |
 | `QUEUED` | Transient | Waiting for a free slot. Only occurs when [concurrency](../14.concurrency/index.md) limits are set and all slots are occupied. |
 | `RUNNING` | Transient | Currently in progress. Continues until all task runs complete. |
-| `PAUSED` | Transient | Awaiting manual approval or a fixed delay before continuing. Transitions directly back to `RUNNING` when resumed; there is no `RESUMING` or `RESUMED` state. |
-| `BREAKPOINT` | Transient | The execution is paused at a debug breakpoint, set in the **Breakpoints** field when the execution is created or replayed. Distinct from `PAUSED`, which handles manual approvals and configured delays. Resume with the **Resume** button on the execution, choosing which breakpoints to keep. |
+| `PAUSING` | Transient | An [`Approval`](../23.approvals/index.md) task is running its `onWait` tasks before it pauses. Transitions to `PAUSED` once they finish. |
+| `PAUSED` | Transient | Awaiting manual approval or a fixed delay before continuing. Transitions directly back to `RUNNING` when resumed or when an `Approval` request is decided; there is no `RESUMING` or `RESUMED` state. |
+| `BREAKPOINT` | Transient | The execution is paused at a debug breakpoint, set in the **Breakpoints** field when the execution is created or replayed. Distinct from `PAUSED`, which handles manual approvals and configured delays. Resume with the **Resume** button on the execution, choosing which breakpoints to keep, or [bulk-resume](../../15.how-to-guides/pause-resume/index.md#bulk-resuming-paused-workflows) from the **Executions** page, which removes the remaining breakpoints. |
 | `RESTARTED` | Transient | Equivalent to `CREATED` but for a failed execution that has been manually restarted from the UI. Transitions to `RUNNING` once processed. |
 | `RETRYING` | Transient | One or more failed task runs are being retried under a [flow-level retry policy](../12.retries/index.md#flow-level-retries). Transitions to `SUCCESS`, `WARNING`, or `FAILED` once all attempts are exhausted. |
 | `KILLING` | Transient | The user has issued a kill command. The system is terminating any task runs still in progress. Transitions to `KILLED` once all task runs are terminated. |
@@ -33,14 +34,14 @@ States represent where an execution or task run is in its lifecycle. Each state 
 | `RETRIED` | Terminal | The original execution failed and was retried under a flow-level retry policy set to `CREATE_NEW_EXECUTION`. The original execution is marked `RETRIED` and a new execution is created in its place. |
 | `RESUBMITTED` | Terminal | The execution was resubmitted directly (not via an automatic retry policy). The original execution is marked `RESUBMITTED` and a new execution continues in its place. |
 | `SKIPPED` | Terminal | The execution was skipped. A condition, SLA policy, or concurrency behavior prevented it from starting. |
-| `CANCELLED` | Terminal | Automatically cancelled by the system because the [concurrency](../14.concurrency/index.md) limit was reached and `behavior` was set to `CANCEL`. A parent execution also ends `CANCELLED` when a subflow execution it waits on is cancelled; see [Cancelled subflow executions](../10.subflows/index.md#cancelled-subflow-executions). |
+| `CANCELLED` | Terminal | Automatically cancelled by the system because the [concurrency](../14.concurrency/index.md) limit was reached and `behavior` was set to `CANCEL`. A parent execution also ends `CANCELLED` when a subflow execution it waits on is cancelled; see [Cancelled subflow executions](../10.subflows/index.md#cancelled-subflow-executions). An execution also ends `CANCELLED` when an [`Approval`](../23.approvals/index.md) request is denied, expires, or is cancelled, with the default behaviors. |
 | `KILLED` | Terminal | Killed on request by the user. No further tasks will run. |
 
 ## CANCELLED vs. KILLED
 
 Both are terminal states that stop an execution, but they have different causes:
 
-- **`CANCELLED`**: triggered by the **system** when the concurrency limit is reached and `behavior: CANCEL` is configured. No user action required. A cancelled subflow execution doesn't stop its parent, which runs its next tasks.
+- **`CANCELLED`**: triggered by the **system** when the concurrency limit is reached and `behavior: CANCEL` is configured, or by an `Approval` request that is denied, expires, or is cancelled. A cancelled subflow execution doesn't stop its parent, which runs its next tasks.
 - **`KILLED`**: triggered by the **user** via the **Kill** button in the UI or an API call. The execution first passes through `KILLING` while in-progress task runs are terminated, then settles in `KILLED`.
 
 ## Task run states
@@ -65,6 +66,7 @@ Task run states represent the status of a single task run within an execution. T
 | `KILLING` | Kill in progress. |
 | `KILLED` | Killed on request by the user. |
 | `SKIPPED` | Skipped. Did not run due to a condition or policy. |
-| `PAUSED` | Paused, for example by a [`Pause`](/plugins/core/flow/io.kestra.plugin.core.flow.pause) task, until the execution is resumed. |
+| `PAUSING` | An `Approval` task run is running its `onWait` tasks before it pauses. |
+| `PAUSED` | Paused, for example by a [`Pause`](/plugins/core/flow/io.kestra.plugin.core.flow.pause) task until the execution is resumed, or by an [`Approval`](../23.approvals/index.md) task until the request is decided. |
 | `BREAKPOINT` | Stopped at a debug breakpoint before running, until the execution is resumed. |
 | `CANCELLED` | Cancelled by the system, for example a sibling task of a failed task in `Parallel` or `Dag` with `onChildFailure: CANCEL`, or a `Subflow` task whose subflow execution was cancelled. See [Cancelled subflow executions](../10.subflows/index.md#cancelled-subflow-executions). |

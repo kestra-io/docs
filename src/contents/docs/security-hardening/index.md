@@ -203,9 +203,9 @@ Configure plugin restrictions and worker isolation under [Worker Isolation](../0
 
 Kestra adds browser security headers to every HTTP response the Webserver sends, including error responses. Three are on by default: `X-Frame-Options`, `X-Content-Type-Options`, and `Referrer-Policy`.
 
-`Content-Security-Policy` and `Strict-Transport-Security` (HSTS) are off until you set them under `kestra.webserver.security-headers`. Kestra sends HSTS only when it terminates TLS itself, so behind a TLS-terminating reverse proxy, set HSTS at the proxy.
+`Content-Security-Policy` and `Strict-Transport-Security` (HSTS) are off until you set them under `kestra.webserver.security-headers`. Kestra sends HSTS only on HTTPS requests. Behind a TLS-terminating reverse proxy, configure the proxy to send `X-Forwarded-Proto: https` so Kestra recognizes the request as HTTPS and also marks its cookies `Secure`.
 
-See [Security response headers](../configuration/03.observability-and-networking/index.md#security-response-headers) for the configuration properties, a report-only CSP example, and how to disable headers.
+See [Security response headers](../configuration/03.observability-and-networking/index.md#security-response-headers) for the configuration properties, a report-only CSP example, and how to disable headers. To force the `Secure` cookie attribute regardless of the request, see [Secure cookies](../configuration/03.observability-and-networking/index.md#secure-cookies).
 
 ## Management endpoint access
 

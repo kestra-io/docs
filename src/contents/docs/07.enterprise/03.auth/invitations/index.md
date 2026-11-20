@@ -21,12 +21,27 @@ Administrators can invite users with pre-configured RBAC permissions. If an [ema
 
 1. Go to **IAM** in the sidebar and open the **Users** tab.
 2. Click **+ Add**.
-3. Enter the user's email address and select a group (via the **Groups** tab) or assign a role directly (via the **Roles** tab).
+3. Enter the user's email address and select a group (via the **Groups** tab) or assign a role directly (via the **Roles** tab). Starting in 2.1, to invite several users at once, type an email address and press Enter, then repeat for each one, or paste a list separated by commas, semicolons, spaces, or new lines. Each address becomes a tag below the field that you can remove, and an address that is not valid is shown in red with an icon. Every address receives an invitation with the same groups and roles, and you can invite up to 25 addresses at once.
 4. Click **+ Add** to send the invitation email or display the shareable link.
 
 :::alert{type="info"}
 Check **Create user directly (skip invitation)** to bypass the email flow. Use this only with third-party authentication such as SSO or LDAP.
 :::
+
+:::alert{type="info"}
+When you invite several users at once, Kestra validates every address before sending anything. If an address is malformed, already invited, or already has access to the tenant, no invitation is sent and the dialog lists the addresses to fix so you can submit again.
+:::
+
+To invite several users with the API, send up to 25 addresses to the bulk invitations endpoint. Every invitation gets the same roles and groups:
+
+```bash
+curl -X POST "https://kestra.example.com/api/v1/{tenant}/invitations/bulk" \
+  -H "Authorization: Bearer $KESTRA_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"emails": ["ana@example.com", "li@example.com"], "groups": ["<group-id>"]}'
+```
+
+The request is validated as a whole: an invalid or already-invited address returns `400` with one error per address, and more than 25 addresses returns `422`. In both cases, no invitation is created. If the mail server fails partway through sending, the invitations created before the failure are kept.
 
 ## Accepting invitations
 
@@ -39,7 +54,7 @@ Otherwise, the link opens a **Create your Kestra account** page. What it shows d
 
 - **Password login**, the default: a form with first name, last name, and password. **Continue** creates the account and joins the tenant. If [passwordless OTP](../04.authentication/index.md#passwordless-one-time-password) is also enabled, the password is optional.
 - **Passwordless OTP without password login**: the form asks only for first and last name.
-- **[SSO](../sso/index.md)**: a button for each identity provider. After signing in with the provider, the user comes back to the invitation and joins the tenant without going through the Kestra login page.
+- **SSO** ([OIDC](../sso/index.md) or [SAML](../sso/saml/index.md)): a button for each identity provider. After signing in with the provider, the user comes back to the invitation and joins the tenant without going through the Kestra login page.
 
 When the form is shown, **Already have an account?** lets an existing user log in instead and then return to the invitation.
 

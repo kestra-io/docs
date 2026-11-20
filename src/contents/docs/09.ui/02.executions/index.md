@@ -33,19 +33,74 @@ The **Overview** tab also supports [**Replay**](../../15.how-to-guides/replay/in
 
 The Overview tab also embeds a **topology diagram** showing each task's state in the execution graph — green for `SUCCESS`, red for `FAILED`. Click any task node to access its logs, replay it, or change its status.
 
+### Loop iterations in the topology
+
+Each [`Loop`](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop) iteration runs as its own execution, and the topology of the parent execution summarizes them:
+
+- A Loop lane shows how its iterations ended, for example `1 of 3 failed`, or `2 of 10 done · 1 failed` while the Loop runs.
+- To show a single iteration in the diagram, open the **All iterations** picker on the Loop lane. It lists failed iterations first, and you can search by index. Use the arrows next to the picker to move to the previous or next iteration. The tasks of the iteration then show their state and duration. A Loop nested in another one is scoped inside the outer iteration, so its picker reads **Pick <outer loop> first** until you pick one.
+- Click the failure count of a Loop lane to show the iteration that failed, down to the innermost failed Loop.
+
+The **Scope** bar above the diagram lists the iterations shown, or **Whole execution**. **Jump to first failure** shows the first failed iteration, **Loops with failures** collapses the Loop lanes that have none, and **Clear scopes** returns to the whole execution.
+
+![Topology of a nested Loop scoped to the failed Q3 iteration of the APAC region, with the Scope bar, failure chips, and iteration pickers](./loop-topology-scoped.png)
+
+Iterations are labeled by their value. An iteration with an empty value shows `index N` instead, where `N` starts at 0. The scope is kept in the URL, so a link opens the topology on the same iteration.
+
 ## Filters
 
 Executions can be filtered by namespace, flow ID, labels, state, start date, or free text. Applied filters can be saved and results exported. The following video demonstrates the filters in action:
 
 <div style="position: relative; padding-bottom: calc(54.828% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/1zqBYvR7JifFkwNSa7Qh?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Executions | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
+## Timeline
+
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
+The chart at the top of the Executions page has two modes: **Counts**, which shows the number of executions per state over time, and **Timeline**, which draws each execution as a bar from its start date to its end date. Use the timeline to spot overlapping runs, gaps in a schedule, or an execution that held a concurrency slot longer than expected. Kestra remembers the mode you last picked.
+
+- **Rows**: executions are grouped by namespace. Click a namespace to drill into its flows; the breadcrumb shows the total and failed run counts for the current level.
+- **Bars**: each bar takes its color from the execution state, and running executions extend to the current time. When a row has too many executions to draw individually, bars are aggregated into buckets tinted by the most common state. Zoom in for execution-level detail.
+- **Bar details**: click a bar to see its namespace, flow, state, and dates, then **Open execution** or **Show only this flow**.
+- **Legend**: shows the count per state. Click a state to dim it.
+- **Time range**: the timeline follows the page's date filter, such as the default **Last 30 days**, or 24 hours when no date filter is set. Zoom, pan, or jump to **Now** from the toolbar, or drag across the density bar at the top to select a range from 5 minutes up to 1 year.
+
+![Executions timeline over the last 30 days, with the density bar at the top, executions grouped by namespace, and run and failed counts per row](./executions-timeline.png)
+
+The filters applied to the Executions page also apply to the timeline. The density bar applies the namespace, flow, state, and label filters, but not the search box, the **Inputs & Outputs** filter, or the parent and trigger execution filters. The timeline loads at most 1,000 executions, newest first; narrow the time range or filters to see the rest.
+
+<!-- kestra#19334 live-verified 2026-11-19 on EE develop 3d69e8a. TODO: kestra#19334 merged to develop 2026-10-30, not in the v2.1.x RC cut; confirm it ships in 2.1 GA. The density bar's "does not apply these filters" note never shows: the chart preview returns an empty ignoredFilters list for the filters it drops. -->
+
 ## Gantt
 
 The **Gantt** tab visualizes each task's duration. From this view, a specific task can be replayed, its source code viewed, status changed, or metrics and outputs inspected.
 
-![Kestra User Interface Execution Gantt](./execution-gantt-view.png)
+![Gantt tab of an execution with a per_region Loop expanded to its EMEA, AMER, and APAC iterations, and the nested per_quarter Loop of APAC expanded to its four iterations](./execution-gantt-view.png)
 
 The **Gantt** view displays all successful and failed tasks in the execution. For failed tasks, use **Fix with AI** from the task menu to open the flow editor with [AI Copilot](../../develop-with-ai/01.ai-copilot/index.md) pre-loaded with the error context.
+
+Click a row, or select it and press Enter, to open its details in a resizable panel next to the Gantt. For a task run, the panel shows where the task sits in the flow, its attempts, and its logs. Press Escape to close the panel.
+
+### Loop iterations
+
+Each [`Loop`](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop) iteration runs as its own execution, and the Gantt shows those iterations in place, without leaving the execution you have open:
+
+- A Loop row shows its number of iterations and, when some failed, a failed count. Expand the row with its chevron to list its iterations, each with its value, state, and duration. Click the failed count to expand the loop and keep only its failed iterations. A bar under the chips splits the iterations by state, including running and not started ones. Hover over or focus it to see the count of each state.
+- Expand an iteration to list its task runs. A Loop inside an iteration expands the same way, at any depth.
+- Select an iteration to see its first failure, with **Go to failure**, its task runs, and its value and execution in the panel. **Open iteration** opens its execution page.
+- Select a Loop row to browse its iterations in the panel, 10 at a time. Filter them by state, search them by exact value, or select **Show all executions** to open the executions list filtered on this loop.
+- With a task run inside an iteration selected, press `[` or `]`, or use the buttons on either side of the iteration's name in the panel, to open the same task in the neighboring iteration.
+
+Above the Gantt, **Failed only** keeps only failed task runs and iterations, so stepping between iterations hops from one failure to the next. **Go to first failure** walks down nested loops to the first task that failed and selects it.
+
+![Gantt tab after Go to first failure, with the failed check task of the APAC and Q3 iterations selected and its panel showing the iteration navigation, Open iteration, and the error log](./gantt-loop-first-failure.png)
+
+If the same Loop task runs more than once in an execution, for example after a retry, the Gantt can't tell its iterations apart and shows them together.
+
+The breadcrumb of an iteration's execution page shows where the iteration sits. For each loop level, it lists the Loop task, then the iteration, with its position and value. For example, the `Q3` iteration of a `per_quarter` Loop nested in the `APAC` iteration of a `per_region` Loop shows `Executions / company / team / nested_loop_demo / per_region / 3bNyUKo2 [3/3 - APAC] / per_quarter / 26a35QwXz9iHR7nzMCduJE [3/4 - Q3]`. Long breadcrumbs collapse the first levels into a `...` menu. Click a Loop task in the breadcrumb to open the **Iterations** list of that Loop, or an iteration to open its execution.
+
+<!-- Gantt panel and in-place Loop iterations (kestra#19603) live-verified on OSS develop fec96bba (2026-11-18). The duplicate-Loop sentence comes from kestra#20466 (open) and wasn't reproduced: restarting a failed execution re-runs only the failed iteration. -->
 
 ## Logs
 
@@ -56,6 +111,12 @@ The **Logs** tab displays task logs, filterable by log level. Logs can be copied
 For failed tasks, use **Fix with AI** from the task menu to open the flow editor with [AI Copilot](../../develop-with-ai/01.ai-copilot/index.md) pre-loaded with the error context.
 
 ![Fix with AI](./fix-with-ai-logs.png)
+
+For a flow with a `Loop`, the **Logs** tab opens on **With loop iterations**. It shows the logs of the execution and of its failed iterations together, at the `ERROR` level unless you pick another level, and labels each line with its loop and iteration. Failed iterations load in batches. Click a line's label to scope the logs and the topology to that iteration, and **Show in Overview** to open the topology on the same iteration. Select **This execution** to see only the logs of the execution you have open.
+
+![Logs tab with loop iterations, showing ERROR lines labeled by loop iteration with Show in Overview links](./loop-merged-logs.png)
+
+<!-- Verified 2026-11-13 on EE develop 30473aa (nested 3x4 Loop): topology chips, picker, scope bar, failure jump, merged logs, Gantt state bar, breadcrumb. Not documented: per-task run counts and the state bar on topology lanes, which need kestra-io/kestra#20603 (open) and kestra-io/kestra#22619. -->
 
 ## Input/Output
 

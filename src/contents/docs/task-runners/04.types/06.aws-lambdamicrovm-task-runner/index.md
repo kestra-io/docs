@@ -45,7 +45,7 @@ The following Pebble expressions and environment variables are available inside 
 | `{{ outputDir }}` | `OUTPUT_DIR` | Path to the output directory; all files written here are automatically captured |
 
 :::alert{type="info"}
-If a run fails, look up the failure detail in `{{ outputs.<taskId>.vars.kestraTaskRunner }}`. This output includes the MicroVM identifier and any error message from the run.
+If a run fails, look up the failure detail in `{{ outputs.<taskId>.vars.kestraTaskRunner }}`. This output includes the MicroVM identifier, its state and state reason, and the configuration the run used: region, bucket, memory, build and execution role ARNs, and the effective `waitUntilCompletion`.
 :::
 
 ## IAM permissions

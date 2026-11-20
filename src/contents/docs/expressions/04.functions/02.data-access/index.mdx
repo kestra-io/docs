@@ -103,6 +103,26 @@ tasks:
       token: "{{ credential('my_oauth') }}"
 ```
 
+## `oidcToken()`
+
+In Enterprise Edition, with the [OIDC issuer](../../../07.enterprise/03.auth/oidc-issuer/index.md) enabled, use `oidcToken()` to get a short-lived token that identifies the running execution. AWS and Google Cloud exchange it for temporary credentials, so the task needs no stored keys:
+
+```twig
+{{ oidcToken(audience='sts.amazonaws.com') }}
+```
+
+The `audience` argument is required and must be in the issuer's `allowed-audiences` when that list is set. Kestra masks the token in logs. Pass it to a task's identity property, such as `webIdentityToken` on AWS tasks or `workloadIdentityToken` on Google Cloud tasks:
+
+```yaml
+tasks:
+  - id: list
+    type: io.kestra.plugin.aws.s3.List
+    region: eu-west-1
+    bucket: my-bucket
+    stsRoleArn: arn:aws:iam::123456789012:role/kestra-team-data
+    webIdentityToken: "{{ oidcToken(audience='sts.amazonaws.com') }}"
+```
+
 ## `read()`
 
 `read()` is the simplest way to turn a file URI back into inline content for a later expression:

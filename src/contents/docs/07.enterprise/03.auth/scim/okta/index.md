@@ -27,7 +27,7 @@ Tenants are enabled by default. Please refer to the [Migration Guide](../../../.
 
 ## Kestra SCIM setup: create a new provisioning integration
 
-1. Go to **Instance Owner**, select your tenant from the sidebar, open **IAM**, and click the **SCIM Provisioning** tab.
+1. Go to **Instance Owner**, open **IAM** under **Tenant**, click **Administer** next to your tenant, and open the **SCIM Provisioning** tab.
 2. Click **+ Create**.
 3. Fill in the following fields:
    - **Name**: Enter a name for the provisioning integration.
@@ -36,7 +36,7 @@ Tenants are enabled by default. Please refer to the [Migration Guide](../../../.
 
 These steps generate a SCIM endpoint URL and a Secret Token. Save both — you will need them in the next steps.
 
-![scim2](./scim2.png)
+![SCIM Provisioning Integration Details dialog with the tenant endpoint and the masked secret token](./scim2.png)
 
 The endpoint should look as follows:
 
@@ -59,10 +59,10 @@ You can disable the integration while configuring Okta, then enable it once setu
 When creating a new Provisioning Integration, Kestra will automatically create two additional objects:
 
 1. Role `SCIMProvisioner` with every action of the **User**, **Group**, and **Binding** permissions, so the integration can create, update, and delete users, groups, and their role bindings in the tenant.
-  ![scim4](./scim4.png)
+  ![SCIMProvisioner role with every User, Group, and Binding action selected](./scim4.png)
 
 2. A service account named `default-scim-provisioner-` followed by an ID derived from the tenant. It's bound to the `SCIMProvisioner` role on all namespaces, and its API token is the Secret Token shown when you created the integration:
-  ![scim5](./scim5.png)
+  ![default-scim-provisioner service account bound to the SCIMProvisioner role, with its API token](./scim5.png)
 
 :::alert{type="info"}
 Deleting a user through SCIM removes their access to the tenant. Kestra deletes the user only when they have no access to any other tenant.
@@ -76,7 +76,7 @@ Deleting a user through SCIM removes their access to the tenant. Kestra deletes 
    - Name: `Kestra`
    - Grant Type: Client Credentials
    - Sign-in redirect URIs: `http://<kestra-hostname>/oauth/callback/okta`
-   - Sign-out redirect URIs: `http://<kestra-hostname>/logout`
+   - Sign-out redirect URIs: `http://<kestra-hostname>/ui`
 
    Note the client ID and client secret once the application is created.
 

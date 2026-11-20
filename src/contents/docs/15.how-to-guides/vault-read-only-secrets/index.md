@@ -40,9 +40,9 @@ secret/
 
 ## Configure Vault as a read-only backend
 
-In Kestra, navigate to the namespace you want to connect to Vault and open the **Edit** tab. Under **Dedicated secrets manager**, enter the Vault configuration:
+In Kestra, navigate to the namespace you want to connect to Vault and open the **Edit** tab. In the **Secrets manager** section, turn on **Dedicated secrets manager**, select `vault` as the **Secret type**, and turn on **Read Only**. Fill in the Vault properties in the form, or select **Code** and paste them as YAML using camelCase names such as `rootEngine` and `secretPathPrefix`:
 
-![Vault read-only configuration in Kestra namespace](./read-only-secrets-3.png)
+![Namespace Edit tab with the vault secret type selected, Read Only on, and the Vault properties form](./read-only-secrets-3.png)
 
 The equivalent YAML configuration is:
 

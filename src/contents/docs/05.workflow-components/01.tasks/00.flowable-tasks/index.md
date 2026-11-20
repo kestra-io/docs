@@ -38,7 +38,7 @@ tasks:
     message: "{{ task.id }} > {{ taskrun.startDate }}"
 ```
 
-For more details, check out the [Sequential Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.sequential).
+For more details, see the [Sequential Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.sequential).
 
 ### Parallel
 
@@ -115,7 +115,7 @@ With any value, the `Parallel` task ends in `FAILED` and its `errors` and `final
         duration: PT1M
 ```
 
-For more task details, refer to the [Parallel Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.parallel).
+For more details, refer to the [Parallel Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.parallel).
 
 ### Switch
 
@@ -199,7 +199,7 @@ Inside each iteration, use the `item` variable to access the iteration context:
 | Expression | Description |
 |---|---|
 | `{{ item.index }}` | Zero-based iteration index |
-| `{{ item.value }}` | Current iteration value |
+| `{{ item.value }}` | Current iteration value; a string, or a map when the Loop sets `parseValues: true` |
 | `{{ item.key }}` | Current map key when `values` is a map; not set for list or URI values |
 | `{{ item.parent.index }}` | Index of the nearest enclosing loop (nested loops only) |
 | `{{ item.parent.value }}` | Value of the nearest enclosing loop (nested loops only) |
@@ -209,7 +209,7 @@ For more details on `item`, see [loop iteration context](../../../expressions/01
 
 #### Iterating over objects
 
-When `values` contains a list of objects, each `item.value` is a JSON string. Use `fromJson(item.value).field` to read fields; `item.value.field` does not work.
+When `values` contains a list of objects, each `item.value` is a JSON string by default. Use `fromJson(item.value).field` to read fields, or set [`parseValues: true`](#read-object-fields-with-parsevalues) to read them as `item.value.field`.
 
 ```yaml
 id: parallel_tasks_example
@@ -234,6 +234,41 @@ tasks:
         type: io.kestra.plugin.core.log.Log
         message: "User {{ fromJson(item.value).id }} -> {{ fromJson(item.value).email }}"
 ```
+
+#### Read object fields with `parseValues`
+
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
+Set `parseValues: true` to parse each value as a JSON object before the iteration starts. `item.value` is then a map, so `item.value.field` works in every task inside the loop, in the Loop `outputs` block, and in `breakWhen`.
+
+```yaml
+id: loop-parse-values
+namespace: company.team
+
+tasks:
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values:
+      - { id: 101, email: "a@example.com" }
+      - { id: 102, email: "b@example.com" }
+    parseValues: true
+    outputs:
+      - id: user_id
+        type: INT
+        value: "{{ item.value.id }}"
+    tasks:
+      - id: log_user
+        type: io.kestra.plugin.core.log.Log
+        message: "User {{ item.value.id }} -> {{ item.value.email }}"
+```
+
+Keep the following in mind when you set `parseValues: true`:
+
+- Only JSON objects become maps. If a value is a JSON array, a number, a plain string, or invalid JSON, `item.value` stays a string and Kestra logs a warning. The iteration still runs.
+- Remove `fromJson(item.value)` from the loop. `fromJson()` expects a string, so it fails when `item.value` is a map.
+- In nested loops, `item.parent.value` and `item.parents[n].value` follow the `parseValues` setting of the loop they come from.
+- Kestra still stores each value as a string. The `item.value` recorded in the Loop's `outputs` stays a string.
 
 #### Concurrent execution
 
@@ -537,7 +572,7 @@ tasks:
       Kestra.outputs({"total": sum(squared_values)})
 ```
 
-`outputs.process_items.iterationCount` is always available after the loop finishes. `outputs.process_items.outputs` is a list of iteration results: each entry contains an `item` object (`value`, the zero-based `iteration`, and `key` when `values` is a map) and an `outputs` map of the declared output values. The list follows the order in which iterations finished, so `outputs.process_items.outputs[0]` isn't necessarily the first iteration. To read a specific iteration, filter on `item.iteration`: `{{ outputs.process_items.outputs | jq('.[] | select(.item.iteration == 0) | .outputs.squared') | first }}`. To extract one output across all iterations as a list, use the `loopOutputs()` function: `{{ loopOutputs(outputs.process_items.outputs, 'squared') }}`. That list is also in completion order and holds the output values only, so to pair each result with its input, read `item.iteration` from the same entry of `outputs.process_items.outputs`. Use the iteration index rather than `item.value`, because `values` can contain duplicates.
+`outputs.process_items.iterationCount` is always available after the loop finishes. With an empty `values` list, the loop ends in `SUCCESS` with an `iterationCount` of `0`, and when the Loop declares `outputs`, `outputs.process_items.outputs` is an empty list, so `loopOutputs()` returns `[]`. `outputs.process_items.outputs` is a list of iteration results: each entry contains an `item` object (`value`, the zero-based `iteration`, and `key` when `values` is a map) and an `outputs` map of the declared output values. The list follows the order in which iterations finished, so `outputs.process_items.outputs[0]` isn't necessarily the first iteration. To read a specific iteration, filter on `item.iteration`: `{{ outputs.process_items.outputs | jq('.[] | select(.item.iteration == 0) | .outputs.squared') | first }}`. To extract one output across all iterations as a list, use the `loopOutputs()` function: `{{ loopOutputs(outputs.process_items.outputs, 'squared') }}`. That list is also in completion order and holds the output values only, so to pair each result with its input, read `item.iteration` from the same entry of `outputs.process_items.outputs`. Use the iteration index rather than `item.value`, because `values` can contain duplicates.
 
 For more details, see the [Loop task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loop).
 
@@ -714,11 +749,46 @@ For more details, refer to the [Subflow Task documentation](/plugins/core/flow/i
 
 ### WorkingDirectory
 
-`WorkingDirectory` runs all nested tasks sequentially in the same directory on the same worker, so downstream tasks can read files written by earlier ones.
+`WorkingDirectory` runs its tasks in order, like `Sequential`, in one directory on one worker, so downstream tasks can read files written by earlier ones. It can hold flowable tasks such as `Parallel`, `If`, and `Switch`, and the tasks inside them run in the same directory on the same worker.
 
-:::alert{type="warning"}
-Only runnable tasks are accepted as children of a `WorkingDirectory`. Nesting a flowable task such as `Parallel` or `Loop` inside a `WorkingDirectory` is rejected at save time.
-:::
+`Loop` iterations and `Subflow` executions are separate executions, so they don't run in the directory. Pass files to and from them with inputs and outputs instead.
+
+The following flow writes two files in parallel, then reads both of them:
+
+```yaml
+id: working_dir_parallel
+namespace: company.team
+
+tasks:
+  - id: working_dir
+    type: io.kestra.plugin.core.flow.WorkingDirectory
+    tasks:
+      - id: fetch
+        type: io.kestra.plugin.core.flow.Parallel
+        tasks:
+          - id: fetch_orders
+            type: io.kestra.plugin.scripts.shell.Commands
+            taskRunner:
+              type: io.kestra.plugin.core.runner.Process
+            commands:
+              - echo "orders" > orders.txt
+
+          - id: fetch_customers
+            type: io.kestra.plugin.scripts.shell.Commands
+            taskRunner:
+              type: io.kestra.plugin.core.runner.Process
+            commands:
+              - echo "customers" > customers.txt
+
+      - id: combine
+        type: io.kestra.plugin.scripts.shell.Commands
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
+        commands:
+          - cat orders.txt customers.txt
+```
+
+The following flow passes a file between two tasks:
 
 ```yaml
 id: working_dir_flow
@@ -744,7 +814,7 @@ tasks:
             echo '::{"outputs": {"stay":"'$(cat {{ workingDir }}/stay.txt)'"}}::'
 ```
 
-This task can also cache files inside the working directory, for example, to cache script dependencies like the `node_modules` of a node `Script` task.
+Use `cache` to keep files from the directory between executions, such as the `node_modules` of a Node.js `Script` task:
 
 ```yaml
 id: node_with_cache
@@ -767,10 +837,10 @@ tasks:
           console.log(colors.red("Hello"));
 ```
 
-This task can also fetch files from [namespace files](../../../06.concepts/02.namespace-files/index.md) and make them available to all child tasks.
+Use `namespaceFiles` to copy [namespace files](../../../06.concepts/02.namespace-files/index.md) into the directory for every task:
 
 ```yaml
-id: node_with_cache
+id: working_dir_namespace_files
 namespace: company.team
 
 tasks:
@@ -789,7 +859,26 @@ tasks:
           - cat dir1/file1.txt
 ```
 
-For more details, refer to the [WorkingDirectory Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.workingdirectory).
+#### Open and close task runs
+
+Each `WorkingDirectory` adds two task runs to the execution:
+
+- `<id>_open` runs first. It creates the directory on a worker and adds the namespace files, input files, and cached files. Every other task in the `WorkingDirectory` runs on that worker.
+- `<id>_close` runs last, after the `finally` tasks, even when a task failed. It saves the output files and the cache, then deletes the directory. If it fails, the `WorkingDirectory` fails.
+
+A task inside the `WorkingDirectory` can't use the ID `<id>_open` or `<id>_close`. Saving such a flow fails with a duplicate task ID error.
+
+#### Retries and reruns
+
+A task's own `retry` reruns it in the same directory, so it still sees the files written by earlier tasks.
+
+The whole `WorkingDirectory` reruns from `<id>_open`, because its directory is deleted when it ends, in these cases:
+
+- A `retry` set on the `WorkingDirectory`, on a task that contains it, or on the flow.
+- A restart or replay of the execution.
+- The loss of the worker during the run.
+
+See the [WorkingDirectory task reference](/plugins/core/flow/io.kestra.plugin.core.flow.workingdirectory) for all properties.
 
 ### Pause
 
@@ -888,5 +977,7 @@ tasks:
 ```
 
 In this example, `task2` and `task3` run in parallel after `task1` completes, and `task4` starts once both finish.
+
+`DAG` handles a failed task the same way as [`Parallel`](#parallel). By default, it interrupts the other tasks that are still running and sets them to `FAILED`. Set `onChildFailure` to `CANCEL` to set them to `CANCELLED` instead, or to `CONTINUE` to let them finish.
 
 For more details, refer to the [DAG Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.dag).

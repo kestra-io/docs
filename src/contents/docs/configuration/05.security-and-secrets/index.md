@@ -211,8 +211,6 @@ kestra:
 
 Keep `expire-after-write` short if secret rotation happens often. Set `negative-cache-enabled: true` to also cache lookups that find no secret, which avoids repeated queries for parent namespaces that don't hold the secret. See [Secret caching](../../07.enterprise/02.governance/secrets-manager/index.md#secret-caching) for how each setting behaves.
 
-![Secrets UI Configuration](../is-secrets-configuration.png)
-
 ## Security settings
 
 This section is about hardening the running platform rather than managing secret values. Reach for it when you are locking down access, controlling invitations and roles, or tuning how the server reacts to component health issues.
@@ -222,6 +220,7 @@ This group includes:
 - instance owner behavior
 - default roles
 - invitation expiration
+- user session cleanup
 - password rules
 - server basic auth
 - gRPC basic auth between workers and controllers
@@ -350,6 +349,41 @@ kestra:
 
 These rules apply anywhere Kestra asks a user to set or reset a password, including the initial setup flow, invitation acceptance, and user management screens.
 
+In the Enterprise Edition, passwords can also expire after a set age and be checked against the user's previous passwords:
+
+```yaml
+kestra:
+  security:
+    basic-auth:
+      password-max-age: P90D
+      password-expiry-warning: P7D
+      prevent-reuse-of-last-passwords: 5
+```
+
+See [Password expiration and reuse](../../07.enterprise/03.auth/rbac/index.md#password-expiration-and-reuse) for how they behave and what they do not cover.
+
+### User sessions
+
+In the Enterprise Edition, each sign-in opens a [session](../../07.enterprise/03.auth/04.authentication/index.md#sessions). A background job on the executor deletes the sessions that expired longer ago than `retention`:
+
+```yaml
+kestra:
+  security:
+    user-sessions:
+      purge:
+        enabled: true
+        initial-delay: 1h
+        fixed-delay: 1d
+        retention: 30d
+```
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `kestra.security.user-sessions.purge.enabled` | `true` | Run the purge job. |
+| `kestra.security.user-sessions.purge.initial-delay` | `1h` | Delay after startup before the first run. |
+| `kestra.security.user-sessions.purge.fixed-delay` | `1d` | Delay between the end of a run and the start of the next. |
+| `kestra.security.user-sessions.purge.retention` | `30d` | How long an expired session is kept before it is deleted. |
+
 ### Delete configuration files after startup
 
 If the runtime reads secrets from configuration files, delete them after startup so tasks cannot read them later from disk:
@@ -444,6 +478,28 @@ kestra:
 ```
 
 See [Passwordless (OTP)](../../07.enterprise/03.auth/04.authentication/index.md#passwordless-one-time-password) for setup prerequisites and full property details.
+
+## OIDC issuer
+
+Enable the OIDC issuer so executions can exchange a short-lived token, minted with `oidcToken()`, for AWS or Google Cloud credentials instead of static keys. Enterprise Edition only.
+
+```yaml
+kestra:
+  security:
+    oidc:
+      issuer:
+        enabled: true
+        allowed-audiences:
+          - sts.amazonaws.com
+        keys:
+          - kid: 2026-11
+            active: true
+            private-key: |
+              -----BEGIN PRIVATE KEY-----
+              ...
+```
+
+See [OIDC issuer](../../07.enterprise/03.auth/oidc-issuer/index.md) for every property, dedicated issuers per tenant or namespace, and the AWS and Google Cloud setup.
 
 ## Related docs
 

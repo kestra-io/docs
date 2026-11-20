@@ -89,13 +89,21 @@ The `where` clause narrows which plugin instances a rule applies to. It is only 
 | `EQUAL_TO` | Exact match |
 | `NOT_EQUAL_TO` | Not an exact match |
 | `STARTS_WITH` | Prefix match |
+| `PREFIX` | Prefix match, same as `STARTS_WITH` |
 | `ENDS_WITH` | Suffix match |
 | `CONTAINS` | Substring match |
+| `NOT_CONTAINS` | No substring match |
 | `IN` | Value is in a list |
 | `NOT_IN` | Value is not in a list |
 | `REGEX` | Full regular expression match |
+| `GREATER_THAN` | Greater than the value |
+| `GREATER_THAN_OR_EQUAL_TO` | Greater than or equal to the value |
+| `LESS_THAN` | Less than the value |
+| `LESS_THAN_OR_EQUAL_TO` | Less than or equal to the value |
 | `IS_NULL` | Property is null or absent |
 | `IS_NOT_NULL` | Property is set and non-null |
+
+`IN` and `NOT_IN` take a non-empty list as `value`. `IS_NULL` and `IS_NOT_NULL` take no `value`. Every other operator needs a single value, and Kestra rejects the policy otherwise. Text comparisons are case-sensitive. The `GREATER_THAN` and `LESS_THAN` operators and their `_OR_EQUAL_TO` variants compare numbers and ISO 8601 dates by value.
 
 ```yaml
 # Prefix match — all Python script plugins

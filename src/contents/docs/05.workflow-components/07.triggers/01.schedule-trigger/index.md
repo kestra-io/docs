@@ -21,7 +21,7 @@ Kestra can automatically handle [backfills](#using-backfill) to recover missed e
 Check the [Schedule trigger](/plugins/core/trigger/io.kestra.plugin.core.trigger.schedule) documentation for the list of properties and outputs.
 
 :::alert{type="warning"}
-To avoid unexpected differences, keep your Kestra server and database timezones aligned. If this isn’t possible, account for timezone implications such as Daylight Saving Time or regional variations.
+To avoid unexpected differences, keep your Kestra server and database timezones aligned. If this isn’t possible, account for timezone implications such as [daylight saving time](#daylight-saving-time) or regional variations.
 :::
 
 ## Cron shortcuts
@@ -85,12 +85,19 @@ By default, schedule executions depend on `trigger.date`. For example, this may 
 You can use this expression to make your **manual execution work**: `{{ trigger.date ?? execution.startDate | date("yyyy-MM-dd") }}`. It will use the current date if there is no schedule date making it possible to start the flow manually.
 :::
 
+## Daylight saving time
+
+When clocks spring forward, the local times in the skipped hour don't exist. If the cron matches a time in that gap, the schedule still runs once that day, at the matching time moved forward by the length of the gap. For example, `0 2 * * *` with `timezone: America/New_York` runs at `03:00` on the day of the change, and `30 2 * * *` with `timezone: Europe/Paris` runs at `03:30`. `trigger.date` is the moved time.
+
+A cron that matches several times in the gap, such as `*/15 2 * * *`, still runs only once. If the moved time is already a regular run, as with an hourly schedule, no run is added.
+
+When clocks fall back, a daily schedule runs once and an hourly schedule runs for each occurrence of the repeated hour.
 
 ## Refining schedules with `when`
 
 When a `cron` expression alone is not sufficient (e.g., only first Monday of the month, only weekends), you can refine schedules using a `when` Pebble expression.
 
-You can use the `{{ trigger.date }}` expression to access the current schedule date within the `when` expression. The [date and calendar helper functions](../../../expressions/04.functions/06.dates/index.mdx) in the expressions reference cover all available date functions such as `isDayWeekInMonth()`, `dayOfWeek()`, `isWeekend()`, `isPublicHoliday()`, and `isLastWorkingDay()`.
+You can use the `{{ trigger.date }}` expression to access the current schedule date within the `when` expression. The [date and calendar helper functions](../../../expressions/04.functions/06.dates/index.mdx) in the expressions reference cover all available date functions such as `isDayWeekInMonth()`, `dayOfWeek()`, `isWeekend()`, `isPublicHoliday()`, `isLastWorkingDay()`, and `isLastDayOfMonth()`.
 
 The `when` expression is evaluated and `{{ trigger.previous }}` and `{{ trigger.next }}` reflect the date **with** the condition applied.
 
@@ -262,6 +269,31 @@ triggers:
     inputs:
       user: John Smith
 ```
+
+Input values can use the schedule dates `{{ trigger.date }}`, `{{ trigger.next }}`, and `{{ trigger.previous }}`. In this example, each execution receives the day it was scheduled for:
+
+```yaml
+id: daily_report
+namespace: company.team
+
+inputs:
+  - id: run_date
+    type: STRING
+
+tasks:
+  - id: report
+    type: io.kestra.plugin.core.log.Log
+    message: "Building the report for {{ inputs.run_date }}"
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 6 * * *"
+    inputs:
+      run_date: "{{ trigger.date | date('yyyy-MM-dd') }}"
+```
+
+In a [backfill](#using-backfill), `trigger.date` is the date being replayed, so each backfilled execution receives its own day. Inputs you pass to the backfill can use the same variables and override the trigger's values.
 
 ## Disable a schedule trigger after a specified execution state
 

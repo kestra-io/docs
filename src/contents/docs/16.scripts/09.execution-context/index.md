@@ -86,6 +86,7 @@ The file holds the same variables your flow can render with Pebble, as a single 
 | `vars` | Flow variables |
 | `trigger` | Trigger metadata, on a triggered execution |
 | `flow`, `execution`, `task`, `taskrun` | Identifiers, state and dates |
+| `checkpoints` | Saved [checkpoints](../10.checkpoints/index.md), only when the task sets `durable: true` |
 
 Two variables are left out on purpose: `envs` and `globals`. Both already reach your script as environment variables, so read them with `os.environ` instead.
 

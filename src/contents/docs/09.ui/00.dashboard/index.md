@@ -8,7 +8,7 @@ editions: ["EE"]
 docId: dashboards
 ---
 
-The **Dashboards** page displays the default dashboard and any custom dashboards you've created. Switch between them using the hamburger menu — if you have more than 10, use the search bar. The same menu lets you edit or delete dashboards. From any dashboard you can apply and save filters, refresh data, and set an automatic periodic refresh.
+The **Dashboards** page displays the default dashboard and any custom dashboards you've created. Switch between them using the hamburger menu — if you have more than 10, use the search bar. The same menu lets you edit or delete dashboards. From any dashboard you can apply and save filters, refresh data, and set an automatic refresh.
 
 ![Dashboard Main Page](./main_page.png)
 
@@ -57,6 +57,7 @@ Additional `chartOptions` properties:
 | Property | Required | Default | Description |
 | --- | --- | --- | --- |
 | `column` | Yes | — | The data column to use as the x-axis categories |
+| `colorByValues` | No | None | Label, color and order of each value, see [Colors and labels per value](#colors-and-labels-per-value) |
 | `legend.enabled` | No | `true` | Show or hide the legend |
 | `tooltip` | No | `ALL` | Tooltip display behavior: `NONE`, `ALL`, or `SINGLE` |
 
@@ -94,6 +95,7 @@ Additional `chartOptions` properties:
 | --- | --- | --- | --- |
 | `graphStyle` | No | `DONUT` | Chart style: `PIE` or `DONUT` |
 | `colorByColumn` | No | — | The column whose values determine segment colors |
+| `colorByValues` | No | None | Label, color and order of each value, see [Colors and labels per value](#colors-and-labels-per-value) |
 | `legend.enabled` | No | `true` | Show or hide the legend |
 | `tooltip` | No | `ALL` | Tooltip display behavior: `NONE`, `ALL`, or `SINGLE` |
 
@@ -129,6 +131,7 @@ Additional `chartOptions` properties:
 | --- | --- | --- | --- |
 | `column` | Yes | — | The data column to use as the time (x) axis |
 | `colorByColumn` | No | — | The column whose values determine series colors |
+| `colorByValues` | No | None | Label, color and order of each value, see [Colors and labels per value](#colors-and-labels-per-value) |
 | `legend.enabled` | No | `true` | Show or hide the legend |
 | `tooltip` | No | `ALL` | Tooltip display behavior: `NONE`, `ALL`, or `SINGLE` |
 
@@ -162,6 +165,51 @@ charts:
           field: DURATION
           agg: SUM
           graphStyle: LINES
+```
+
+#### Colors and labels per value
+
+Bar, Pie and TimeSeries charts can set a label, a color and the order of each value with `colorByValues`. Each entry matches one value of the column the chart is split by.
+
+| Property | Required | Description |
+| --- | --- | --- |
+| `value` | Yes | The value this entry applies to, such as `by_priority.critical` |
+| `label` | No | Text shown instead of the value in the legend and tooltips |
+| `color` | No | A hex color such as `#d32f2f`, or an execution state or log level name such as `failed`, `warning`, `success` or `error` |
+
+- Listed values come first in the chart, its legend and its tooltips, in the order they are listed. The other values follow.
+- A state or log level name follows the light and dark themes. A hex color stays the same in both.
+- A value with no color keeps its state or log level color when it names one. Any other value gets a color from the theme's chart palette, so list a value with a color to keep that color in every chart.
+- Saving fails when a color is not a hex color or an accepted name, or when a value is listed twice. In the editor, press Ctrl+Space after `color:` to see the accepted names.
+
+```yaml
+charts:
+  - id: open_by_priority
+    type: io.kestra.plugin.core.dashboard.chart.Pie
+    chartOptions:
+      displayName: Open issues by priority
+      colorByColumn: name
+      colorByValues:
+        - value: by_priority.critical
+          label: Critical
+          color: failed
+        - value: by_priority.high
+          label: High
+          color: warning
+        - value: by_priority.medium
+          label: Medium
+          color: "#f9a825"
+        - value: by_priority.low
+          label: Low
+          color: success
+    data:
+      type: io.kestra.plugin.core.dashboard.data.Metrics
+      columns:
+        name:
+          field: NAME
+        value:
+          field: VALUE
+          agg: MAX
 ```
 
 #### KPI chart
@@ -448,6 +496,7 @@ Dashboards can query data from these source `types`:
 | `io.kestra.plugin.core.dashboard.data.MetricsKPI` | Metrics data for KPI charts (supports `numerator`) |
 | `io.kestra.plugin.core.dashboard.data.Triggers` | Trigger state and scheduling data |
 | `io.kestra.plugin.ee.dashboard.data.Assets` | Asset inventory data (EE and Cloud only). Not filtered by the dashboard time range — charts always reflect the current inventory. |
+| `io.kestra.plugin.ee.dashboard.data.Outputs` | Rows of an ION file that a flow returns as an output (EE and Cloud only). See [Outputs](#outputs-ee-and-cloud-only). |
 
 ### Available fields by data source
 
@@ -531,6 +580,92 @@ After defining the data source, specify the columns to display in the chart. Eac
 | `UPDATED` | Asset last updated timestamp |
 
 Asset charts are not filtered by the dashboard time range — they always reflect the current inventory. `Assets` is compatible with `Bar`, `Pie`, and `Table` chart types. Use `NAMESPACE` in a `where` clause to scope results to a specific namespace.
+
+#### Outputs (EE and Cloud only)
+
+:::badge{version=">=2.1" editions="EE,Cloud"}
+:::
+
+The `Outputs` data source charts an [ION](https://amazon-ion.github.io/ion-docs/) file that a flow returns as a [flow output](../../05.workflow-components/06.outputs/index.md#flow-outputs), with one object per line. It reads the file from the flow's latest successful execution, so each execution should write a full snapshot of the data. Let the flow do the heavy aggregation and write a small file already shaped for the chart, because Kestra reads the file from top to bottom each time the chart loads.
+
+The following flow writes the rejected orders of a run to an ION file and returns it as the `rejected` output:
+
+```yaml
+id: orders
+namespace: company.ingest
+
+tasks:
+  - id: write
+    type: io.kestra.plugin.core.storage.Write
+    extension: .ion
+    content: |
+      {order_id:"o1",reason:"MISSING_SKU",amount:10.5,received_at:"2026-11-15T10:00:00Z"}
+      {order_id:"o2",reason:"DUPLICATE",amount:7,received_at:"2026-11-15T12:00:00Z"}
+
+outputs:
+  - id: rejected
+    type: FILE
+    value: "{{ outputs.write.uri }}"
+```
+
+This chart sums the amount of rejected orders per reason, leaving out duplicates:
+
+```yaml
+charts:
+  - id: rejected_orders
+    type: io.kestra.plugin.core.dashboard.chart.Table
+    chartOptions:
+      displayName: Rejected orders
+    data:
+      type: io.kestra.plugin.ee.dashboard.data.Outputs
+      namespace: company.ingest
+      flowId: orders
+      output: rejected
+      dateColumn: received_at
+      columns:
+        reason:
+          key: reason
+          displayName: Reason
+        amount:
+          key: amount
+          displayName: Amount
+          agg: SUM
+      where:
+        - field: COLUMN
+          key: reason
+          type: NOT_EQUAL_TO
+          value: DUPLICATE
+```
+
+| Property | Description |
+| --- | --- |
+| `namespace` | Required. Namespace of the flow. |
+| `flowId` | Required. ID of the flow. |
+| `output` | Required. ID of the flow output that holds the ION file. |
+| `dateColumn` | Column holding each row's date. When set, the dashboard time range filters the rows, and rows without a date are left out. Without it, no time filter applies. |
+
+The file has a single field, `COLUMN`:
+
+- In `columns`, `key` names the column of the file to read, and `field: COLUMN` can be omitted. Without `key`, the column name is used.
+- In `where`, set `field: COLUMN` and `key` on each condition. `OR`, `IS_TRUE`, `IS_FALSE`, `PREFIX`, and `REGEX` aren't supported.
+- With `agg`, the columns without one are grouped, and a `dateColumn` used as a group is bucketed like the dates of other data sources.
+- Dashboard filters other than the time range don't apply, and `Outputs` can't feed a KPI chart.
+
+Next to its title, the chart shows when the execution it reads ended, for example **Updated a minute ago**. If the file was deleted, for example by a [retention policy](../../10.administrator-guide/purge/index.md), the chart shows **Data unavailable** with the reason instead. If the flow has no successful execution, or the execution has no such output, the chart is empty. Reading the chart requires the `ACCESS_FILES` permission on `EXECUTION` in the flow's namespace.
+
+Two settings keep charts fast and server load low. Tune them to your storage backend, since a remote backend such as S3 reads more slowly than a local disk:
+
+```yaml
+kestra:
+  ee:
+    dashboard:
+      outputs:
+        max-rows: 10000
+        max-file-size: 100MB
+```
+
+- `max-rows` (default `10000`): the number of rows Kestra reads from the file, before filters. When the file holds more rows, the chart uses the first ones and shows a warning icon next to its title.
+- `max-file-size` (default `100MB`): the largest file a chart reads. A larger file fails the chart, and the server log names the setting to change.
 
 ### Column properties
 

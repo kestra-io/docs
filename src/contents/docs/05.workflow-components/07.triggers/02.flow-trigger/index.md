@@ -16,6 +16,8 @@ A Flow trigger runs a flow after another flow completes, enabling event-driven d
 
 Check the [Flow trigger](/plugins/core/trigger/io.kestra.plugin.core.trigger.flow) documentation for the list of all properties.
 
+In the Enterprise Edition, a Flow trigger does not receive the executions of a namespace that does not list the namespace of its flow in its [Allowed Namespaces](../../../07.enterprise/02.governance/07.namespace-management/index.md#allowed-namespaces). A warning is logged on the flow that owns the trigger.
+
 ## Upstream flow dependencies
 
 The `dependsOn` property is a list of upstream flow entries that must all complete in matching states before the trigger fires.
@@ -345,6 +347,33 @@ triggers:
       - states: [FAILED, WARNING]
         when: "{{ flow.namespace | startsWith('company') }}"
 ```
+
+## Suppressing intermediate failure alerts during retries
+
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
+When an upstream flow uses a flow-level `retry`, the execution passes through a `FAILED` state before each retry attempt. A Flow trigger listening for `FAILED` fires on that intermediate state — even if the execution ultimately succeeds — producing a false alarm.
+
+Set `waitForAllRetries: true` on the trigger to skip evaluation on intermediate `FAILED` states. The trigger fires only when the upstream execution exhausts all retries and ends in `FAILED`.
+
+```yaml
+triggers:
+  - id: on_failure
+    type: io.kestra.plugin.core.trigger.Flow
+    waitForAllRetries: true
+    dependsOn:
+      - namespace: company.team
+        flowId: flaky
+        states:
+          - FAILED
+```
+
+`waitForAllRetries` defaults to `false` to preserve existing behavior. It works for both simple `states` triggers and `dependsOn` triggers.
+
+:::alert{type="info"}
+`waitForAllRetries` covers **flow-level retries** only. Task-level retries are not affected. The `RETRIED` terminal state produced by `behavior: CREATE_NEW_EXECUTION` is also not suppressed — only the intermediate `FAILED` states that precede a scheduled retry are skipped.
+:::
 
 ## Multiple triggers on the same flow
 

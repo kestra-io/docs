@@ -145,11 +145,13 @@ kestra flow dot /path/to/my-flow.yml
 
 ### `kestra flow export`
 
-To export flows through the API, you can also use [`kestractl flows export`](../kestractl/index.md#flow-management).
+:::alert{type="warning"}
+This command is deprecated and will be removed in a future release. Use [`kestractl flows export`](../kestractl/index.md#flow-management) instead. `kestractl flows export --namespace` exports only the exact namespace. To include child namespaces, use `kestractl flows export-by-query --filter NAMESPACE:PREFIX:<namespace>`.
+:::
 
 Export flows to a ZIP file.
 
-**Inputs**: `--namespace` (required), `directory` (path to export into)
+**Inputs**: `--namespace` (required; includes child namespaces), `directory` (path to export into)
 
 ```bash
 kestra flow export --namespace my-namespace /path/to/export-directory
@@ -157,7 +159,11 @@ kestra flow export --namespace my-namespace /path/to/export-directory
 
 ### `kestra flow delete`
 
-Delete a flow. [`kestractl flows delete`](../kestractl/index.md#flow-management) does the same through the API.
+:::alert{type="warning"}
+This command is deprecated and will be removed in a future release. Use [`kestractl flows delete`](../kestractl/index.md#flow-management) instead.
+:::
+
+Delete a flow.
 
 **Inputs**: `namespace`, `id`
 
@@ -228,7 +234,9 @@ To upload namespace files, use [`kestractl nsfiles upload`](../kestractl/index.m
 
 ### `kestra namespace kv update`
 
-To set a key from CI/CD or your workstation, use [`kestractl kv set`](../kestractl/index.md) instead.
+:::alert{type="warning"}
+This command is deprecated and will be removed in a future release. Use [`kestractl kv set`](../kestractl/index.md#key-value-pairs) instead. `kestractl kv set` creates or overwrites a key, which matches this command. `kestractl kv update` fails if the key does not exist.
+:::
 
 Set/update a key in the namespace KV store. Set an expiration time, specify the data type, and even read the value from a file.
 
@@ -558,6 +566,10 @@ kestra sys submit-queued-execution
 
 ### `kestra auths users create`
 
+:::alert{type="warning"}
+This command is deprecated and will be removed in a future release. Use [`kestractl users create`](../kestractl/index.md#users) instead.
+:::
+
 Create a user.
 
 **Inputs**: `username` (required), `password` (optional)
@@ -572,6 +584,10 @@ kestra auths users create --instance-owner --tenant=default admin Admin_password
 ```
 
 ### `kestra auths users create-basic-auth`
+
+:::alert{type="warning"}
+This command is deprecated and will be removed in a future release. Use [`kestractl users set-password`](../kestractl/index.md#users) instead.
+:::
 
 Create or replace a basic auth password for a user.
 
@@ -647,6 +663,10 @@ kestra backups restore kestra:///backups/full/backup-20240917163312.kestra
 
 ### `kestra tenants create`
 
+:::alert{type="warning"}
+This command is deprecated and will be removed in a future release. Use [`kestractl tenants create`](../kestractl/index.md#tenant-management-enterprise-edition) instead. `kestractl tenants create` grants the Admin role to the user running it. To make another user the tenant admin, use [`kestractl bindings create`](../kestractl/index.md#bindings).
+:::
+
 Create a tenant and assign admin roles to an existing admin user.
 
 **Inputs**: `tenantId`, `tenantName`
@@ -654,4 +674,18 @@ Create a tenant and assign admin roles to an existing admin user.
 
 ```bash
 kestra tenants create tenantA "Tenant A" --admin-username alice
+```
+
+## Workers (EE)
+
+### `kestra workers registration-tokens generate`
+
+:::alert{type="warning"}
+This command is deprecated and will be removed in a future release. Use [`kestractl workers registration-tokens generate`](../kestractl/index.md#worker-management) instead.
+:::
+
+Generate a random worker registration token.
+
+```bash
+kestra workers registration-tokens generate
 ```

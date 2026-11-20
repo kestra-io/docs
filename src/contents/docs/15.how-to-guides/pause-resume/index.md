@@ -10,6 +10,10 @@ topics:
 
 How to Pause and Resume your flows.
 
+:::alert{type="info"}
+When a person has to approve or deny what happens next, use the [`Approval` task](../../05.workflow-components/23.approvals/index.md) instead. It runs different tasks for each decision and records the reviewer's comment.
+:::
+
 Here are common scenarios where the Pause and Resume feature is particularly useful:
 1. **Output Validation**: you can pause a workflow to check the logs and view the generated outputs before processing downstream tasks.
 2. **Manual Approval**: the execution can wait for manual approval, e.g. after validating that a file has been correctly uploaded to an external system.
@@ -40,15 +44,19 @@ You can either use the [Pause](/plugins/core/flow/io.kestra.plugin.core.flow.pau
 
 ## Bulk-resuming paused workflows
 
-You can bulk-resume paused workflows from the `Executions` page by selecting the workflows you want to resume and clicking on the `Resume` button:
+You can bulk-resume paused workflows from the `Executions` page: select the executions you want to resume, open the **Bulk actions** menu (**⋮**), and select **Resume**:
 
 ![pause_resume2](./pause_resume2.png)
 
 This feature is useful when you have multiple paused workflows and want to resume them all at once.
 
+**Resume** also resumes executions stopped at a debug breakpoint (`BREAKPOINT` state), so you can select paused and breakpoint executions together. A breakpoint execution resumed this way has all of its remaining breakpoints removed and runs to the end. To keep stopping at later breakpoints, open the execution and resume it on its own, choosing which breakpoints to keep.
+
 :::alert{type="warning"}
-Select only workflows in the `PAUSED` state, as the `Resume` button will not work if you select workflows in other states.
+Select only executions in the `PAUSED` or `BREAKPOINT` state. If any selected execution is in another state, or is in `BREAKPOINT` without a breakpoint set, nothing is resumed and Kestra lists the executions to remove from the selection.
 :::
+
+To bulk-resume through the API, use `POST /api/v1/{tenant}/executions/resume/by-ids` with a list of execution IDs, or `POST /api/v1/{tenant}/executions/resume/by-query` with [query filters](../../api-reference/04.query-filters.md). Both handle `PAUSED` and `BREAKPOINT` executions the same way as the **Resume** bulk action.
 
 
 ### Manual Approval Process

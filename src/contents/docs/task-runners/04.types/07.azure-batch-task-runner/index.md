@@ -387,9 +387,11 @@ The Azure Batch node agent stages the kotlp binary as root without an execute pe
 
 ## Execution details
 
-When you open an execution in the topology view, the details panel for an Azure Batch task shows job configuration and post-execution resource metrics.
+In an execution, open the **Artifacts** tab, or the **Artifacts** tab of the task run's popup, and select the task's **Runner details** artifact. It shows the job's configuration and, after the run, its resource metrics.
 
-Azure Batch is the only task runner that emits detailed CPU and I/O metrics — the post-execution panel is especially useful for right-sizing pool nodes and diagnosing performance bottlenecks.
+Azure Batch is the only task runner that emits detailed CPU and I/O metrics — the post-execution metrics are especially useful for right-sizing pool nodes and diagnosing performance bottlenecks.
+
+Until the task run finishes, the artifact shows values from the task definition and marks any value that contains a Pebble expression as a template. Once it finishes, the artifact shows the values the run used, read from the task outputs, and `—` for any value the run didn't report.
 
 **Pre-execution:**
 - Batch account endpoint
@@ -403,6 +405,9 @@ Azure Batch is the only task runner that emits detailed CPU and I/O metrics — 
 |---|---|
 | Job ID | Reference for looking up the job in the Azure Portal |
 | Pool ID | The pool where the job ran |
+| Container image | The container image the task ran in |
+| Blob storage container used for file staging | The container used to stage working directory files |
+| Job status | The terminal job status |
 | Wall clock | Total elapsed time from job start to finish |
 | CPU kernel | Kernel CPU time consumed by the container |
 | CPU user | User CPU time consumed by the container |
