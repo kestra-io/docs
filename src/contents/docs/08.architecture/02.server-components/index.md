@@ -71,11 +71,13 @@ By default, Kestra handles all date and time values using your system's timezone
 
 ## Indexer
 
-The **Indexer** is responsible for reading content from Kafka topics — such as flows and executions — and indexing it into Elasticsearch. This component enables [low-latency querying](../../11.migration-guide/v0.20.0/elasticsearch-indexer/index.md) when using Kafka and Elasticsearch together.
+The **Indexer** writes data from the queue to the repository so it can be queried. With Kafka and Elasticsearch, it reads content from Kafka topics, such as flows and executions, and indexes it into Elasticsearch, which enables [low-latency querying](../../11.migration-guide/v0.20.0/elasticsearch-indexer/index.md). With a JDBC backend (H2, MySQL, or PostgreSQL), it writes execution logs and metrics from the `queues` table to their own tables.
 
-By default, the Indexer runs as part of the [Web Server](#webserver). However, you can choose to run the Web Server independently without the Indexer by using the `server webserver --no-indexer` CLI option.
+By default, an Indexer runs inside the [Web Server](#webserver) and inside the standalone server. To run it as its own component instead, start the Web Server or the standalone server with `--no-indexer`, and start `kestra server indexer` separately.
 
-The Indexer is required for deployments that rely on Kafka and Elasticsearch, particularly in **Kestra Enterprise Edition** and **Kestra Cloud**.
+:::alert{type="warning"}
+Every deployment needs at least one Indexer running. On a JDBC backend without one, execution logs and metrics never appear in the UI, and their rows pile up in the `queues` table, where the [JDBC cleaner](../../configuration/02.runtime-and-storage/index.md#connection-pooling-and-jdbc-queue-tuning) never removes them. Once a large backlog has built up, an Indexer started later can struggle to catch up, especially on MySQL.
+:::
 
 ## Webserver
 

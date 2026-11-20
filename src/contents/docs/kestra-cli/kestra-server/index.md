@@ -336,6 +336,8 @@ kestra server scheduler
 
 Start a standalone server (all core services).
 
+**Option**: `--no-indexer` to disable the embedded [Indexer](../../08.architecture/02.server-components/index.md#indexer). Run `kestra server indexer` separately, since every deployment needs an Indexer.
+
 ```bash
 kestra server standalone
 ```
@@ -344,7 +346,10 @@ kestra server standalone
 
 Start the webserver.
 
-**Option**: `--no-tutorials` to disable auto-loading tutorials
+**Options**:
+
+- `--no-tutorials` to disable auto-loading tutorials
+- `--no-indexer` to disable the embedded [Indexer](../../08.architecture/02.server-components/index.md#indexer). Run `kestra server indexer` separately, since every deployment needs an Indexer.
 
 ```bash
 kestra server webserver --no-tutorials
@@ -526,6 +531,21 @@ Submit all queued executions to the executor.
 ```bash
 kestra sys submit-queued-execution
 ```
+
+### `kestra sys purge-queue`
+
+:::badge{version=">=1.3.27" editions="OSS,EE"}
+:::
+
+Purge expired rows from the JDBC `queues` table, using the [JDBC cleaner](../../configuration/02.runtime-and-storage/index.md#connection-pooling-and-jdbc-queue-tuning) retention, without starting any server component. Use it to recover an instance whose executor can no longer purge the queue on its own. On MySQL, rows are deleted in batches to avoid long locks.
+
+**Option**: `--retention` overrides the global retention for this run, as an ISO 8601 duration. Retentions configured for specific queue types still apply.
+
+```bash
+kestra sys purge-queue --retention PT1H
+```
+
+Rows that no consumer has read are kept. The command only works with a JDBC queue (H2, MySQL, or PostgreSQL).
 
 ### `kestra sys database migrate`
 

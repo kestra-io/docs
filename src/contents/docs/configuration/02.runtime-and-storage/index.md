@@ -85,7 +85,10 @@ datasources:
     username: kestra
     password: k3str4
     dialect: MYSQL
+    transaction-isolation: TRANSACTION_READ_COMMITTED
 ```
+
+Set `transaction-isolation` to `TRANSACTION_READ_COMMITTED` on MySQL. Under MySQL's default `REPEATABLE READ`, a queue poll locks every row it scans, including rows of other queues. When the queue has a large backlog, other components then wait on those locks and the server can shut down with a lock wait timeout.
 :::
 
 :::collapse{title="H2"}
@@ -133,7 +136,7 @@ Kestra uses HikariCP for datasource pooling. Common options include:
 | `password` | String | Database password | — |
 | `catalog` | String | Default catalog | driver default |
 | `schema` | String | Default schema | driver default |
-| `transaction-isolation` | String | Default transaction isolation level | driver default |
+| `transaction-isolation` | String | Default transaction isolation level. On MySQL, set to `TRANSACTION_READ_COMMITTED`. | driver default |
 | `pool-name` | String | Pool name | `HikariPool-<generated>` |
 | `maximum-pool-size` | Int | Maximum number of open connections | `10` |
 | `minimum-idle` | Long | Minimum number of idle connections | `10` |
@@ -178,7 +181,7 @@ kestra:
       poll-switch-interval: 5s
 ```
 
-The JDBC cleaner removes old queue rows:
+The JDBC cleaner runs on the executor, or the standalone server, and removes queue rows that their consumer read more than `retention` ago:
 
 ```yaml
 kestra:
@@ -188,6 +191,13 @@ kestra:
       fixed-delay: 1h
       retention: 7d
 ```
+
+Rows that no consumer has read are never removed, whatever the retention. This happens when a queue has no consumer, for example execution logs and metrics when no [Indexer](../../08.architecture/02.server-components/index.md#indexer) runs.
+
+:::badge{version=">=1.3.27" editions="OSS,EE"}
+:::
+
+To purge the queue without starting a server component, for example when the executor can no longer purge it on its own, run [`kestra sys purge-queue`](../../kestra-cli/kestra-server/index.md#kestra-sys-purge-queue). It applies the same rule, so it doesn't remove rows that no consumer has read either.
 
 To reject oversized JDBC messages before they create memory pressure:
 
