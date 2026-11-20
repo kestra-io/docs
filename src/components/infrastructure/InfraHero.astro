@@ -90,16 +90,20 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
                             </a>
                         </div>
                     </div>
-                    <div
+                    <button
+                        type="button"
                         class="video"
-                        role="img"
-                        aria-label="Placeholder: Kestra for Infrastructure explainer video"
+                        data-video="bFR0ZxFCsSQ"
+                        aria-label="Play the Kestra for Infrastructure video"
                     >
+                        <span class="poster">
+                            <span class="kicker">Watch the video</span>
+                            <b>Meet Kestra for Infrastructure</b>
+                        </span>
                         <span class="play">
                             <Icon name="mdi:play" />
                         </span>
-                        <span class="caption">Video placeholder · 16:9</span>
-                    </div>
+                    </button>
                 </div>
 
                 <div class="life" data-life style="--step: 2.4">
@@ -168,6 +172,30 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
             #111114;
         color: #ffffff;
 
+        &::before {
+            content: "";
+            position: absolute;
+            top: -35%;
+            right: 6%;
+            width: 30rem;
+            height: 130%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(132, 104, 255, 0.5) 36%,
+                rgba(224, 216, 255, 0.42) 50%,
+                rgba(132, 104, 255, 0.45) 64%,
+                transparent
+            );
+            filter: blur(2.5rem);
+            transform: rotate(38deg);
+            pointer-events: none;
+
+            @include media-breakpoint-down(lg) {
+                display: none;
+            }
+        }
+
         &::after {
             content: "";
             position: absolute;
@@ -185,6 +213,9 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
     }
 
     .container-xl {
+        position: relative;
+        z-index: 1;
+
         @include media-breakpoint-down(md) {
             padding-inline: 2rem;
         }
@@ -240,37 +271,104 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
             margin-top: 2.5rem;
         }
 
+        position: relative;
         display: grid;
-        place-content: center;
-        justify-items: center;
-        gap: 0.875rem;
+        place-items: center;
         width: 100%;
         max-width: 44rem;
         aspect-ratio: 16 / 9;
-        border: 1px dashed rgba(255, 255, 255, 0.2);
+        padding: 0;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 0.875rem;
-        background: rgba(255, 255, 255, 0.03);
+        background:
+            radial-gradient(
+                70% 90% at 80% 0%,
+                rgba(112, 88, 255, 0.35),
+                transparent 60%
+            ),
+            radial-gradient(
+                60% 70% at 0% 100%,
+                rgba(246, 46, 118, 0.12),
+                transparent 60%
+            ),
+            radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1.5px) 0
+                0 / 1.25rem 1.25rem,
+            #0c0c10;
+        box-shadow:
+            0 0 4rem -1rem rgba(146, 120, 255, 0.35),
+            0 1.5rem 3rem -1.5rem rgba(0, 0, 0, 0.6);
+        color: #ffffff;
+        cursor: pointer;
 
-        .play {
-            display: grid;
-            place-items: center;
-            width: 3.5rem;
-            height: 3.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.24);
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.08);
-
-            [data-icon] {
-                width: 1.5rem;
-                height: 1.5rem;
-            }
+        :global(iframe) {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
         }
 
-        .caption {
-            font-size: 0.75rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.6);
+        &:focus-visible {
+            outline: 2px solid #b9a6ff;
+            outline-offset: 3px;
+        }
+    }
+
+    .poster {
+        position: absolute;
+        right: 1.5rem;
+        bottom: 1.25rem;
+        left: 1.5rem;
+        display: grid;
+        gap: 0.35rem;
+        text-align: left;
+
+        b {
+            font-size: clamp(1rem, 1.6vw, 1.25rem);
+            font-weight: 600;
+            line-height: 1.25;
+        }
+    }
+
+    .kicker {
+        font-size: 0.75rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .play {
+        display: grid;
+        place-items: center;
+        width: 4.5rem;
+        height: 4.5rem;
+        border-radius: 50%;
+        background:
+            radial-gradient(
+                120% 90% at 30% 0%,
+                rgba(255, 255, 255, 0.28),
+                transparent 55%
+            ),
+            rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(0.875rem) saturate(1.6);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.4),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.22),
+            0 4px 14px -6px rgba(0, 0, 0, 0.35);
+        transition:
+            transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+            background-color 0.3s ease;
+
+        [data-icon] {
+            width: 1.75rem;
+            height: 1.75rem;
+            margin-left: 0.2rem;
+        }
+
+        .video:hover & {
+            transform: scale(1.06);
         }
     }
 
@@ -724,6 +822,30 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
 </style>
 
 <script>
+    for (const button of document.querySelectorAll<HTMLButtonElement>(
+        "[data-video]",
+    )) {
+        button.addEventListener(
+            "click",
+            () => {
+                const frame = document.createElement("iframe")
+                frame.src = `https://www.youtube.com/embed/${button.dataset.video}?autoplay=1`
+                frame.title = "Kestra for Infrastructure"
+                frame.allow =
+                    "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                frame.referrerPolicy = "strict-origin-when-cross-origin"
+                frame.allowFullscreen = true
+                const player = document.createElement("div")
+                for (const { name, value } of button.attributes)
+                    if (name === "class" || name.startsWith("data-astro"))
+                        player.setAttribute(name, value)
+                player.append(frame)
+                button.replaceWith(player)
+            },
+            { once: true },
+        )
+    }
+
     const life = document.querySelector<HTMLElement>("[data-life]")
     const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
