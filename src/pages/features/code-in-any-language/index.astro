@@ -10,6 +10,7 @@ import PluginsBlock from "~/components/common/PluginsBlock.astro"
 import Capabilities from "~/components/use-cases/Capabilities.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Link from "~/components/common/Link.astro"
+import DockerIcon from "~/components/icons/DockerIcon.vue"
 
 import visualHero from "~/assets/landing/features/code-in-any-lang/any-lang-hero.svg"
 import visualsImg from "~/assets/landing/features/code-in-any-lang/Visuals.webp"
@@ -51,7 +52,7 @@ const MAIN_ITEMS = [
             "Synchronize your code changes between Git and Kestra in both directions — sync code from Git or push your code built in Kestra’s IDE to Git.",
     },
     {
-        icon: "docker",
+        icon: DockerIcon,
         title: "Docker enabled by default",
         description:
             "No need to worry about building Docker images and managing the container lifecycle, we’ll do that automatically for you.",
