@@ -1,198 +1,175 @@
 ---
 import { Icon } from "astro-icon/components"
-import { API_URL } from "astro:env/client"
 
-const NODES = [
+const ROWS = [
     {
-        id: "flow",
-        plugin: "terraform.cli.TerraformCLI",
-        name: "provision-stack",
-        kind: "flow",
-        owner: "Platform team",
-        x: 1.5,
-        y: 12,
+        name: "helpdesk-staging-1",
+        status: "Active",
+        deployment: "helpdesk-staging",
+        type: "VM",
+        meta: "instance_type:n2-standard-4",
     },
     {
-        id: "vpc",
-        plugin: "aws",
-        name: "vpc-staging",
-        kind: "aws vpc",
-        owner: "Platform team",
-        x: 18.5,
-        y: 5,
+        name: "helpdesk_tickets",
+        status: "Active",
+        deployment: "helpdesk-staging",
+        type: "Table",
+        meta: "database:helpdesk",
     },
     {
-        id: "db",
-        plugin: "jdbc.postgresql.Query",
-        name: "stg-orders-db",
-        kind: "postgresql",
-        owner: "Data team",
-        x: 18.5,
-        y: 19,
+        name: "loadtest-agent-1",
+        status: "Stopped",
+        deployment: "loadtest-rig",
+        type: "VM",
+        meta: "provider:aws",
     },
     {
-        id: "api",
-        plugin: "kubernetes.core.PodCreate",
-        name: "dev-payments-api",
-        kind: "deployment",
-        owner: "Payments team",
-        x: 35.5,
-        y: 12,
+        name: "loadtest_report",
+        status: "Stopped",
+        deployment: "loadtest-rig",
+        type: "File",
+        meta: "path:s3://ops-artifacts",
     },
     {
-        id: "dns",
-        plugin: "cloudflare",
-        name: "api.staging.acme",
-        kind: "dns record",
-        owner: "Web team",
-        x: 35.5,
-        y: 19,
+        name: "payments-preprod-app-1",
+        status: "Active",
+        deployment: "payments-preprod",
+        type: "VM",
+        meta: "provider:azure",
     },
-] as const
+    {
+        name: "web_sessions",
+        status: "Active",
+        deployment: "web-platform-staging",
+        type: "Table",
+        meta: "database:web",
+    },
+    {
+        name: "web-staging-api-1",
+        status: "Active",
+        deployment: "web-platform-staging",
+        type: "VM",
+        meta: "provider:aws",
+    },
+]
 
-const EDGES = [
+const IMPORTED = [
     {
-        kind: "edge",
-        path: "M14.5 13.9 H15.9 Q16.5 13.9 16.5 13.3 V7.5 Q16.5 6.9 17.1 6.9 H18.35",
+        name: "legacy-vpc",
+        status: "Active",
+        deployment: "legacy-network",
+        type: "Network",
+        meta: "provider:vsphere",
     },
     {
-        kind: "edge",
-        path: "M14.5 13.9 H15.9 Q16.5 13.9 16.5 14.5 V20.3 Q16.5 20.9 17.1 20.9 H18.35",
+        name: "legacy-fw-rules",
+        status: "Active",
+        deployment: "legacy-network",
+        type: "Firewall",
+        meta: "provider:vsphere",
     },
     {
-        kind: "edge",
-        path: "M31.5 6.9 H32.9 Q33.5 6.9 33.5 7.5 V13.3 Q33.5 13.9 34.1 13.9 H35.35",
+        name: "legacy-dns-01",
+        status: "Active",
+        deployment: "legacy-network",
+        type: "VM",
+        meta: "provider:vsphere",
     },
-    {
-        kind: "edge",
-        path: "M31.5 20.9 H32.9 Q33.5 20.9 33.5 20.3 V14.5 Q33.5 13.9 34.1 13.9 H35.35",
-    },
-    { kind: "edge", path: "M37.4 15.8 V18.85" },
-    {
-        kind: "edge hot e-db",
-        path: "M31.5 20.9 H32.9 Q33.5 20.9 33.5 20.3 V14.5 Q33.5 13.9 34.1 13.9 H35.35",
-    },
-    { kind: "edge hot e-api", path: "M37.4 15.8 V18.85" },
-] as const
-
-const icons = Object.fromEntries(
-    await Promise.all(
-        NODES.map(async (node) => {
-            try {
-                const response = await fetch(
-                    `${API_URL}/plugins/icons/io.kestra.plugin.${node.plugin}`,
-                )
-                if (!response.ok) return [node.id, null]
-                const svg = Buffer.from(await response.arrayBuffer())
-                return [
-                    node.id,
-                    `data:image/svg+xml;base64,${svg.toString("base64")}`,
-                ]
-            } catch {
-                return [node.id, null]
-            }
-        }),
-    ),
-)
-
-const IMPACTED = NODES.filter((node) => node.id === "api" || node.id === "dns")
+]
 ---
 
 <div class="ui-mock inventory-mock" aria-hidden="true" data-ui-mock>
     <div class="stage">
-        <svg class="edges" viewBox="0 0 50 38.8">
-            <defs>
-                <marker
-                    id="inventory-arrow"
-                    viewBox="0 0 10 10"
-                    refX="9"
-                    refY="5"
-                    markerWidth="0.5"
-                    markerHeight="0.5"
-                    markerUnits="userSpaceOnUse"
-                    orient="auto"
-                >
-                    <path d="M1 1.5 L9 5 L1 8.5 Q2.5 5 1 1.5 z" class="tip" />
-                </marker>
-                <marker
-                    id="inventory-arrow-hot"
-                    viewBox="0 0 10 10"
-                    refX="9"
-                    refY="5"
-                    markerWidth="0.5"
-                    markerHeight="0.5"
-                    markerUnits="userSpaceOnUse"
-                    orient="auto"
-                >
-                    <path
-                        d="M1 1.5 L9 5 L1 8.5 Q2.5 5 1 1.5 z"
-                        class="tip hot"
-                    />
-                </marker>
-                <marker
-                    id="inventory-dot"
-                    viewBox="0 0 6 6"
-                    refX="3"
-                    refY="3"
-                    markerWidth="0.4"
-                    markerHeight="0.4"
-                    markerUnits="userSpaceOnUse"
-                >
-                    <circle cx="3" cy="3" r="3" class="tip" />
-                </marker>
-            </defs>
-            {EDGES.map((edge) => (
-                <path class={edge.kind} d={edge.path} />
-            ))}
-        </svg>
-        {NODES.map((node) => (
-            <div
-                class={`node n-${node.id}`}
-                style={`--x: ${node.x}; --y: ${node.y}`}
-            >
-                <span class="ico">
-                    {icons[node.id] && <img src={icons[node.id]} alt="" />}
-                </span>
-                <span class="txt">
-                    <b>{node.name}</b>
-                    <small>
-                        {node.kind} · {node.owner}
-                    </small>
-                </span>
-                {node.id === "db" && (
-                    <span class="act">
-                        <Icon name="mdi:timer-sand-complete" /> Retire
-                    </span>
-                )}
-                {(node.id === "api" || node.id === "dns") && (
-                    <i class="hit">Impacted</i>
-                )}
-            </div>
-        ))}
-        <div class="impact">
+        <p class="top">
+            <b>Inventory</b>
+            <span class="swap count">
+                <em class="c-before">7 resources</em>
+                <em class="c-after">10 resources</em>
+            </span>
+            <span class="import">
+                <Icon name="mdi:upload-outline" /> Import
+            </span>
+        </p>
+        <div class="list">
             <p class="head">
-                <Icon name="mdi:alert-outline" />
-                Retiring stg-orders-db affects 2 resources
+                <span>Resource</span>
+                <span>Status</span>
+                <span>Deployment</span>
+                <span>Type</span>
+                <span>Metadata</span>
             </p>
-            {IMPACTED.map((node) => (
-                <p class="dep">
-                    <span class="mini">
-                        {icons[node.id] && <img src={icons[node.id]} alt="" />}
+            <div class="body">
+                {IMPORTED.map((row, idx) => (
+                    <p class={`line fresh f${idx + 1}`}>
+                        <span class="name">{row.name}</span>
+                        <span class={`status ${row.status.toLowerCase()}`}>
+                            <i class="dot"></i>
+                            {row.status}
+                        </span>
+                        <span class="dep">
+                            <Icon name="mdi:cube-outline" />
+                            {row.deployment}
+                        </span>
+                        <i class="type">{row.type}</i>
+                        <i class="meta">{row.meta}</i>
+                        <i class="new">New</i>
+                    </p>
+                ))}
+                {ROWS.map((row) => (
+                    <p class="line">
+                        <span class="name">{row.name}</span>
+                        <span class={`status ${row.status.toLowerCase()}`}>
+                            <i class="dot"></i>
+                            {row.status}
+                        </span>
+                        <span class="dep">
+                            <Icon name="mdi:cube-outline" />
+                            {row.deployment}
+                        </span>
+                        <i class="type">{row.type}</i>
+                        <i class="meta">{row.meta}</i>
+                    </p>
+                ))}
+            </div>
+        </div>
+        <span class="veil"></span>
+        <div class="sheet">
+            <p class="mh">
+                <b>Import an inventory</b>
+                <Icon name="mdi:close" />
+            </p>
+            <p class="sub">
+                Assets are created from a Terraform state, a CSV, or a JSON or
+                YAML file, and grouped under a single deployment.
+            </p>
+            <div class="drop">
+                <span class="swap">
+                    <span class="d-empty">
+                        <Icon name="mdi:tray-arrow-down" />
+                        <b>Drop a file here, or click to select</b>
+                        <small>.tfstate, .csv, .json, .yaml</small>
                     </span>
-                    <b>{node.name}</b>
-                    <span class="owner">{node.owner}</span>
-                </p>
-            ))}
-            <p class="foot">
-                <span>Retire stays blocked until they move</span>
-                <span class="notify">
-                    <Icon name="mdi:bell-outline" /> Notify owners
+                    <span class="d-full">
+                        <Icon name="mdi:file-check-outline" />
+                        <b>legacy.tfstate</b>
+                        <small>3 resources found · legacy-network</small>
+                    </span>
+                </span>
+            </div>
+            <p class="mf">
+                <span class="cancel">Cancel</span>
+                <span class="go">
+                    <Icon name="mdi:upload-outline" /> Import
                 </span>
             </p>
         </div>
+        <span class="file">
+            <Icon name="mdi:file-code-outline" />
+            legacy.tfstate
+        </span>
         <p class="toast">
-            <Icon name="mdi:check-circle" />
-            Payments and Web teams notified
+            <Icon name="mdi:check-circle" />3 resources imported into
+            legacy-network
         </p>
         <span class="cursor">
             <svg viewBox="0 0 10 10">
@@ -210,19 +187,17 @@ const IMPACTED = NODES.filter((node) => node.id === "api" || node.id === "dns")
     @use "../enterprise/mocks/tokens" as *;
 
     .inventory-mock {
-        --loop: 16s;
-        --select: color-mix(in srgb, var(--text) 18%, transparent);
-        --edge: #d0d0da;
-        --rest: 3em 33em;
-        --at-retire: 29.6em 23.5em;
-        --at-notify: 34.6em 32.2em;
+        --loop: 18s;
+        --rest: 3em 35em;
+        --at-open: 46.2em 2.8em;
+        --at-file: 23.1em 32em;
+        --at-drop: 23.5em 15.4em;
+        --at-go: 34.2em 20.9em;
+        --file-at: 35.8em 52em;
+        --file-drop: 35.8em 24.3em;
 
         @include tokens;
         @include soft;
-
-        :global(html.dark) & {
-            --edge: #4a4a5a;
-        }
     }
 
     .stage {
@@ -237,154 +212,189 @@ const IMPACTED = NODES.filter((node) => node.id === "api" || node.id === "dns")
         margin: 0;
     }
 
+    i,
+    em {
+        font-style: normal;
+    }
+
     [data-icon] {
         flex: none;
         width: 1.1em;
         height: 1.1em;
     }
 
-    .edges {
+    .top {
         position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        overflow: visible;
-
-        .edge {
-            fill: none;
-            stroke: var(--edge);
-            stroke-width: 0.1;
-            stroke-dasharray: 0.3 0.3;
-            marker-start: url(#inventory-dot);
-            marker-end: url(#inventory-arrow);
-        }
-
-        .hot {
-            stroke: var(--wait);
-            marker-end: url(#inventory-arrow-hot);
-            opacity: 0;
-        }
-
-        .tip {
-            fill: var(--edge);
-
-            &.hot {
-                fill: var(--wait);
-            }
-        }
-    }
-
-    .node {
-        position: absolute;
-        top: calc(var(--y) * 1em);
-        left: calc(var(--x) * 1em);
+        top: 2.2em;
+        right: 1.5em;
+        left: 1.5em;
         display: flex;
         align-items: center;
         gap: 0.7em;
-        width: 13em;
-        height: 3.8em;
-        padding: 0 0.7em;
+
+        b {
+            font-size: 0.86em;
+            font-weight: 600;
+        }
+    }
+
+    .count {
+        font-size: 0.6em;
+        color: var(--muted);
+    }
+
+    .swap {
+        display: grid;
+
+        > * {
+            grid-area: 1 / 1;
+        }
+    }
+
+    .c-after,
+    .d-full {
+        opacity: 0;
+    }
+
+    .import {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35em;
+        margin-left: auto;
+        padding: 0.5em 0.85em;
+        border: 1px solid var(--line);
+        border-radius: 0.32em;
+        background: var(--panel);
+        font-size: 0.6em;
+        font-weight: 600;
+    }
+
+    .list {
+        position: absolute;
+        top: 5em;
+        right: 1.5em;
+        left: 1.5em;
+        overflow: hidden;
         border: 1px solid var(--line);
         border-radius: 0.5em;
         background: var(--panel);
-        box-shadow: 0 1px 4px 0 var(--ks-shadows-light);
-
-        &::after {
-            content: "";
-            position: absolute;
-            inset: -1px;
-            border-radius: inherit;
-            box-shadow: 0 0 0 0.22em var(--select);
-            opacity: 0;
-            pointer-events: none;
-        }
+        box-shadow: var(--shadow);
     }
 
-    .ico,
-    .mini {
+    .head,
+    .line {
         display: grid;
-        flex: none;
-        place-items: center;
-        background: #ffffff;
-
-        img {
-            width: 80%;
-            height: 80%;
-        }
+        grid-template-columns: 1.55fr 0.75fr 1.45fr 0.6fr 1.5fr;
+        align-items: center;
+        gap: 0.8em;
+        padding: 0 1em;
     }
 
-    .ico {
-        width: 2.4em;
-        height: 2.4em;
-        border-radius: 0.5em;
-    }
+    .head {
+        height: 2.3em;
+        border-bottom: 1px solid var(--line);
 
-    .mini {
-        width: 1.7em;
-        height: 1.7em;
-        border-radius: 0.3em;
-    }
-
-    .txt {
-        display: grid;
-        gap: 0.2em;
-        min-width: 0;
-        line-height: 1.2;
-
-        b {
-            overflow: hidden;
-            font-size: 0.7em;
-            font-weight: 500;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        small {
-            overflow: hidden;
-            font-size: 0.6em;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+        span {
+            font-size: 0.5em;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
             color: var(--muted);
         }
     }
 
-    .act {
-        position: absolute;
-        top: calc(100% + 0.5em);
-        right: 0;
+    .body {
+        height: 18.2em;
+        overflow: hidden;
+    }
+
+    .line {
+        position: relative;
+        height: 2.6em;
+        max-height: 2.6em;
+        overflow: hidden;
+        border-bottom: 1px solid var(--line);
+
+        > * {
+            overflow: hidden;
+            font-size: 0.56em;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    .name {
+        font-family: var(--ks-font-monospace);
+    }
+
+    .status {
         display: inline-flex;
         align-items: center;
-        gap: 0.3em;
-        padding: 0.45em 0.7em;
-        border: 1px solid var(--line);
-        border-radius: 0.32em;
-        background: var(--panel);
-        box-shadow: var(--shadow);
-        font-size: 0.58em;
+        gap: 0.4em;
         font-weight: 600;
-        opacity: 0;
+
+        &.active {
+            color: var(--ok);
+        }
+
+        &.stopped {
+            color: var(--wait);
+        }
     }
 
-    .hit {
-        position: absolute;
-        top: -0.75em;
-        right: 0.7em;
-        padding: 0.25em 0.55em;
+    .dot {
+        width: 0.5em;
+        height: 0.5em;
+        border-radius: 99em;
+        background: currentColor;
+    }
+
+    .dep {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35em;
+        color: var(--soft);
+    }
+
+    .type,
+    .meta {
+        justify-self: start;
+        padding: 0.2em 0.5em;
         border-radius: 0.21em;
-        background: var(--wait-bg);
-        font-size: 0.52em;
-        font-style: normal;
+        background: var(--chip);
+        color: var(--muted);
+    }
+
+    .fresh {
+        max-height: 0;
+        opacity: 0;
+        background: color-mix(in srgb, var(--tile) 45%, var(--panel));
+    }
+
+    .new {
+        position: absolute;
+        right: 1em;
+        padding: 0.2em 0.5em;
+        border-radius: 0.21em;
+        background: var(--tile);
         font-weight: 600;
-        color: var(--wait);
+        color: var(--tile-ink);
+    }
+
+    .veil {
+        position: absolute;
+        inset: 0;
+        background: var(--veil);
         opacity: 0;
     }
 
-    .impact {
+    .sheet {
         position: absolute;
+        top: 7.2em;
         right: 0;
-        bottom: 5.2em;
         left: 0;
-        width: 27em;
+        z-index: 2;
+        width: 25em;
         margin-inline: auto;
         overflow: hidden;
         border: 1px solid var(--line);
@@ -394,59 +404,94 @@ const IMPACTED = NODES.filter((node) => node.id === "api" || node.id === "dns")
         opacity: 0;
     }
 
-    .head {
+    .mh {
         display: flex;
         align-items: center;
-        gap: 0.5em;
-        padding: 0.8em 1em;
-        border-bottom: 1px solid var(--line);
-        font-size: 0.68em;
-        font-weight: 600;
-
-        [data-icon] {
-            color: var(--wait);
-        }
-    }
-
-    .dep {
-        display: flex;
-        align-items: center;
-        gap: 0.6em;
-        padding: 0.55em 1.6em;
-        font-size: 0.62em;
+        justify-content: space-between;
+        padding: 1em 1.1em 0.3em;
 
         b {
+            font-size: 0.72em;
             font-weight: 600;
         }
 
-        .owner {
-            margin-left: auto;
+        [data-icon] {
             color: var(--muted);
         }
     }
 
-    .foot {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1em;
-        margin-top: 0.4em;
-        padding: 0.7em 1em;
-        border-top: 1px solid var(--line);
-        font-size: 0.6em;
+    .sub {
+        padding: 0 1.1em;
+        font-size: 0.54em;
+        line-height: 1.5;
         color: var(--muted);
     }
 
-    .notify {
+    .drop {
+        display: grid;
+        place-items: center;
+        height: 6.4em;
+        margin: 0.9em 1.1em;
+        border: 1.5px dashed var(--line);
+        border-radius: 0.42em;
+        text-align: center;
+
+        .swap > span {
+            display: grid;
+            justify-items: center;
+            gap: 0.35em;
+        }
+
+        [data-icon] {
+            width: 1.3em;
+            height: 1.3em;
+            color: var(--muted);
+        }
+
+        b {
+            font-size: 0.62em;
+            font-weight: 600;
+        }
+
+        small {
+            font-size: 0.5em;
+            color: var(--muted);
+        }
+
+        .d-full [data-icon] {
+            color: var(--ok);
+        }
+    }
+
+    .mf {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.6em;
+        padding: 0.75em 1.1em;
+        border-top: 1px solid var(--line);
+        background: var(--deep);
+    }
+
+    .cancel,
+    .go {
         display: inline-flex;
         align-items: center;
-        gap: 0.4em;
+        gap: 0.35em;
         padding: 0.55em 0.9em;
         border-radius: 0.32em;
-        background: #18181e;
+        font-size: 0.6em;
         font-weight: 600;
-        white-space: nowrap;
+    }
+
+    .cancel {
+        border: 1px solid var(--line);
+        background: var(--panel);
+    }
+
+    .go {
+        background: #18181e;
         color: #ffffff;
+        opacity: 0.4;
 
         :global(html.dark) & {
             background: #cfcfd8;
@@ -454,10 +499,33 @@ const IMPACTED = NODES.filter((node) => node.id === "api" || node.id === "dns")
         }
     }
 
+    .file {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 3;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4em;
+        padding: 0.5em 0.8em;
+        border: 1px solid var(--line);
+        border-radius: 0.36em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        font-family: var(--ks-font-monospace);
+        font-size: 0.6em;
+        translate: var(--file-at);
+        opacity: 0;
+
+        [data-icon] {
+            color: var(--soft);
+        }
+    }
+
     .toast {
         position: absolute;
         right: 0;
-        bottom: 1.2em;
+        bottom: 1.6em;
         left: 0;
         display: flex;
         align-items: center;
@@ -497,6 +565,7 @@ const IMPACTED = NODES.filter((node) => node.id === "api" || node.id === "dns")
         align-items: flex-start;
         gap: 0.1em;
         translate: var(--rest);
+        opacity: 0;
         pointer-events: none;
 
         :global(html.dark) & {
@@ -546,54 +615,58 @@ const IMPACTED = NODES.filter((node) => node.id === "api" || node.id === "dns")
                 inventory-cursor-show var(--loop) linear infinite both;
         }
 
-        .act {
+        .import {
+            animation: inventory-press-open var(--loop) linear infinite both;
+        }
+
+        .veil {
+            animation: inventory-veil var(--loop) ease-out infinite both;
+        }
+
+        .sheet {
+            animation: inventory-modal var(--loop) ease-out infinite both;
+        }
+
+        .file {
+            animation: inventory-file var(--loop) infinite both;
+        }
+
+        .drop {
+            animation: inventory-drop var(--loop) linear infinite both;
+        }
+
+        .d-empty {
+            animation: inventory-out-drop var(--loop) linear infinite both;
+        }
+
+        .d-full {
+            animation: inventory-in-drop var(--loop) linear infinite both;
+        }
+
+        .go {
             animation:
-                inventory-act var(--loop) ease-out infinite both,
-                inventory-press-retire var(--loop) linear infinite both;
+                inventory-go var(--loop) linear infinite both,
+                inventory-press-go var(--loop) linear infinite both;
         }
 
-        .n-db::after {
-            animation: inventory-ring var(--loop) linear infinite both;
+        .f1 {
+            animation: inventory-grow-1 var(--loop) ease-out infinite both;
         }
 
-        .e-db {
-            animation:
-                inventory-hot-db var(--loop) linear infinite both,
-                inventory-flow 0.5s linear infinite;
+        .f2 {
+            animation: inventory-grow-2 var(--loop) ease-out infinite both;
         }
 
-        .e-api {
-            animation:
-                inventory-hot-api var(--loop) linear infinite both,
-                inventory-flow 0.5s linear infinite;
+        .f3 {
+            animation: inventory-grow-3 var(--loop) ease-out infinite both;
         }
 
-        .n-api {
-            animation:
-                inventory-hit-api-border var(--loop) linear infinite both,
-                inventory-glow-api var(--loop) linear infinite both;
+        .c-before {
+            animation: inventory-out-count var(--loop) linear infinite both;
         }
 
-        .n-dns {
-            animation:
-                inventory-hit-dns-border var(--loop) linear infinite both,
-                inventory-glow-dns var(--loop) linear infinite both;
-        }
-
-        .n-api .hit {
-            animation: inventory-hit-api var(--loop) ease-out infinite both;
-        }
-
-        .n-dns .hit {
-            animation: inventory-hit-dns var(--loop) ease-out infinite both;
-        }
-
-        .impact {
-            animation: inventory-impact var(--loop) ease-out infinite both;
-        }
-
-        .notify {
-            animation: inventory-press-notify var(--loop) linear infinite both;
+        .c-after {
+            animation: inventory-in-count var(--loop) linear infinite both;
         }
 
         .toast {
@@ -617,268 +690,274 @@ const IMPACTED = NODES.filter((node) => node.id === "api" || node.id === "dns")
 
     @keyframes inventory-cursor {
         0%,
-        14% {
+        10% {
             translate: var(--rest);
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
-        20%,
-        24% {
-            translate: var(--at-retire);
-            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        40% {
-            translate: var(--at-retire);
-            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        46%,
-        49% {
-            translate: var(--at-notify);
-            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        57%,
-        100% {
-            translate: var(--rest);
-        }
-    }
-
-    @keyframes inventory-act {
-        0%,
+        13.5%,
         16% {
-            opacity: 0;
-            translate: 0 -0.3em;
+            translate: var(--at-open);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
-        18%,
-        24% {
-            opacity: 1;
-            translate: 0 0;
+        23%,
+        26% {
+            translate: var(--at-file);
+            animation-timing-function: ease-in-out;
         }
-        26%,
+        32%,
+        34% {
+            translate: var(--at-drop);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        38.5%,
+        41% {
+            translate: var(--at-go);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        50%,
         100% {
-            opacity: 0;
-            translate: 0 0;
+            translate: var(--rest);
         }
     }
 
     @keyframes inventory-cursor-show {
         0%,
-        11% {
+        8% {
             opacity: 0;
         }
-        13%,
-        57% {
+        10%,
+        47% {
             opacity: 1;
         }
-        60%,
+        50%,
         100% {
             opacity: 0;
         }
     }
 
-    @keyframes inventory-press-retire {
+    @keyframes inventory-press-open {
         0%,
-        22.5% {
+        14.5% {
             scale: 1;
         }
-        23% {
+        15% {
             scale: 0.92;
         }
-        23.5%,
+        15.5%,
         100% {
             scale: 1;
         }
     }
 
-    @keyframes inventory-ring {
+    @keyframes inventory-veil {
         0%,
-        23% {
+        16% {
             opacity: 0;
         }
-        24.5%,
-        86% {
+        18%,
+        41% {
             opacity: 1;
         }
-        87.5%,
+        43%,
         100% {
             opacity: 0;
         }
     }
 
-    @keyframes inventory-hot-db {
+    @keyframes inventory-modal {
         0%,
-        24% {
+        16% {
             opacity: 0;
+            translate: 0 0.8em;
         }
-        25.5%,
-        86% {
+        18.5%,
+        41% {
             opacity: 1;
+            translate: 0 0;
         }
-        87.5%,
+        43%,
         100% {
             opacity: 0;
+            translate: 0 0.4em;
         }
     }
 
-    @keyframes inventory-hot-api {
+    @keyframes inventory-file {
         0%,
-        28.5% {
+        20% {
             opacity: 0;
+            translate: var(--file-at);
+        }
+        22%,
+        26% {
+            opacity: 1;
+            translate: var(--file-at);
+            animation-timing-function: ease-in-out;
+        }
+        32% {
+            opacity: 1;
+            translate: var(--file-drop);
+        }
+        33.5%,
+        100% {
+            opacity: 0;
+            translate: var(--file-drop);
+        }
+    }
+
+    @keyframes inventory-drop {
+        0%,
+        28% {
+            border-color: var(--line);
+            background: transparent;
         }
         30%,
-        86% {
+        33.5% {
+            border-color: var(--ring);
+            background: var(--tile);
+        }
+        34.5%,
+        100% {
+            border-color: var(--line);
+            background: transparent;
+        }
+    }
+
+    @keyframes inventory-out-drop {
+        0%,
+        33% {
             opacity: 1;
         }
-        87.5%,
+        33.5%,
         100% {
             opacity: 0;
         }
     }
 
-    @keyframes inventory-flow {
-        to {
-            stroke-dashoffset: -0.6;
-        }
-    }
-
-    @keyframes inventory-hit-api-border {
+    @keyframes inventory-in-drop {
         0%,
-        27% {
-            border-color: var(--line);
-        }
-        28.5%,
-        86% {
-            border-color: var(--wait);
-        }
-        87.5%,
-        100% {
-            border-color: var(--line);
-        }
-    }
-
-    @keyframes inventory-hit-dns-border {
-        0%,
-        31.5% {
-            border-color: var(--line);
-        }
-        33%,
-        86% {
-            border-color: var(--wait);
-        }
-        87.5%,
-        100% {
-            border-color: var(--line);
-        }
-    }
-
-    @keyframes inventory-glow-api {
-        0%,
-        27% {
-            box-shadow: 0 1px 4px 0 var(--ks-shadows-light);
-        }
-        28.5%,
-        86% {
-            box-shadow: 0 0 0 0.22em var(--wait-bg);
-        }
-        87.5%,
-        100% {
-            box-shadow: 0 1px 4px 0 var(--ks-shadows-light);
-        }
-    }
-
-    @keyframes inventory-glow-dns {
-        0%,
-        31.5% {
-            box-shadow: 0 1px 4px 0 var(--ks-shadows-light);
-        }
-        33%,
-        86% {
-            box-shadow: 0 0 0 0.22em var(--wait-bg);
-        }
-        87.5%,
-        100% {
-            box-shadow: 0 1px 4px 0 var(--ks-shadows-light);
-        }
-    }
-
-    @keyframes inventory-hit-api {
-        0%,
-        26.5% {
+        33% {
             opacity: 0;
-            translate: 0 0.8em;
         }
-        29.5%,
-        86% {
+        33.5%,
+        100% {
             opacity: 1;
-            translate: 0 0;
-        }
-        89%,
-        100% {
-            opacity: 0;
-            translate: 0 0;
         }
     }
 
-    @keyframes inventory-hit-dns {
+    @keyframes inventory-go {
         0%,
-        31% {
-            opacity: 0;
-            translate: 0 0.8em;
+        33% {
+            opacity: 0.4;
         }
         34%,
-        86% {
-            opacity: 1;
-            translate: 0 0;
-        }
-        89%,
         100% {
-            opacity: 0;
-            translate: 0 0;
+            opacity: 1;
         }
     }
 
-    @keyframes inventory-impact {
+    @keyframes inventory-press-go {
         0%,
-        33.5% {
-            opacity: 0;
-            translate: 0 0.8em;
-        }
-        36.5%,
-        84% {
-            opacity: 1;
-            translate: 0 0;
-        }
-        87%,
-        100% {
-            opacity: 0;
-            translate: 0 0;
-        }
-    }
-
-    @keyframes inventory-press-notify {
-        0%,
-        47% {
+        39.5% {
             scale: 1;
         }
-        47.5% {
+        40% {
             scale: 0.92;
         }
-        48%,
+        40.5%,
         100% {
             scale: 1;
+        }
+    }
+
+    @keyframes inventory-grow-1 {
+        0%,
+        44% {
+            max-height: 0;
+            opacity: 0;
+        }
+        47%,
+        92% {
+            max-height: 2.6em;
+            opacity: 1;
+        }
+        95%,
+        100% {
+            max-height: 0;
+            opacity: 0;
+        }
+    }
+
+    @keyframes inventory-grow-2 {
+        0%,
+        45.5% {
+            max-height: 0;
+            opacity: 0;
+        }
+        48.5%,
+        92% {
+            max-height: 2.6em;
+            opacity: 1;
+        }
+        95%,
+        100% {
+            max-height: 0;
+            opacity: 0;
+        }
+    }
+
+    @keyframes inventory-grow-3 {
+        0%,
+        47% {
+            max-height: 0;
+            opacity: 0;
+        }
+        50%,
+        92% {
+            max-height: 2.6em;
+            opacity: 1;
+        }
+        95%,
+        100% {
+            max-height: 0;
+            opacity: 0;
+        }
+    }
+
+    @keyframes inventory-out-count {
+        0%,
+        43.5% {
+            opacity: 1;
+        }
+        44%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes inventory-in-count {
+        0%,
+        43.5% {
+            opacity: 0;
+        }
+        44%,
+        100% {
+            opacity: 1;
         }
     }
 
     @keyframes inventory-toast {
         0%,
-        48.5% {
+        47% {
             opacity: 0;
             translate: 0 0.8em;
         }
-        51.5%,
-        82% {
+        50%,
+        86% {
             opacity: 1;
             translate: 0 0;
         }
-        85%,
+        89%,
         100% {
             opacity: 0;
             translate: 0 0;
@@ -886,19 +965,17 @@ const IMPACTED = NODES.filter((node) => node.id === "api" || node.id === "dns")
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .impact,
-        .hit,
-        .n-db::after {
+        .fresh {
+            max-height: 2.6em;
             opacity: 1;
         }
 
-        .hot {
-            opacity: 1;
+        .c-before {
+            opacity: 0;
         }
 
-        .n-api,
-        .n-dns {
-            border-color: var(--wait);
+        .c-after {
+            opacity: 1;
         }
     }
 </style>
