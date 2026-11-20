@@ -326,6 +326,12 @@ for (const panel of PANELS) {
         gap: 1px;
         border-block: var(--rule);
         background: var(--ks-border-primary);
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: repeat(var(--tabs), minmax(7rem, 1fr));
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
     }
 
     .tab {
@@ -391,6 +397,7 @@ for (const panel of PANELS) {
         @include media-breakpoint-down(md) {
             flex-direction: column;
             gap: 0.25rem;
+            padding: 0 0.75rem;
             font-size: 0.875rem;
         }
     }

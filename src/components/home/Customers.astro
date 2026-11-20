@@ -487,6 +487,10 @@ const {
 
         @include media-breakpoint-down(md) {
             grid-template-columns: repeat(2, minmax(0, 1fr));
+
+            > .tab:last-child:nth-child(odd) {
+                grid-column: span 2;
+            }
         }
     }
 

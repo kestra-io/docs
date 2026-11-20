@@ -184,6 +184,12 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
         }
     }
 
+    .container-xl {
+        @include media-breakpoint-down(md) {
+            padding-inline: 2rem;
+        }
+    }
+
     .stage {
         display: flex;
         flex-direction: column;
@@ -202,6 +208,10 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
         justify-items: center;
         width: 100%;
 
+        @include media-breakpoint-down(lg) {
+            gap: 0;
+        }
+
         @include media-breakpoint-up(lg) {
             grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
             align-items: center;
@@ -215,12 +225,21 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
         flex-direction: column;
         align-items: center;
 
+        @include media-breakpoint-down(lg) {
+            display: contents;
+        }
+
         @include media-breakpoint-up(lg) {
             align-items: flex-start;
         }
     }
 
     .video {
+        @include media-breakpoint-down(lg) {
+            order: 1;
+            margin-top: 2.5rem;
+        }
+
         display: grid;
         place-content: center;
         justify-items: center;
@@ -340,6 +359,20 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
         @include media-breakpoint-up(lg) {
             justify-content: flex-start;
         }
+
+        @include media-breakpoint-down(lg) {
+            order: 2;
+            margin-top: 2rem;
+        }
+
+        @include media-breakpoint-down(sm) {
+            flex-direction: column;
+            justify-self: stretch;
+
+            > a {
+                justify-content: center;
+            }
+        }
     }
 
     .life {
@@ -364,7 +397,7 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
         left: 50%;
         width: 262.2cqw;
         aspect-ratio: 1;
-        border: 1px solid rgba(185, 166, 255, 0.12);
+        border: 1px solid rgba(185, 166, 255, 0.24);
         border-radius: 50%;
         background:
             radial-gradient(
@@ -375,7 +408,6 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
             #0c0c10;
         box-shadow:
             0 0 6rem rgba(112, 88, 255, 0.16),
-            0 0 1rem rgba(165, 148, 255, 0.15),
             inset 0 0.5rem 2.5rem rgba(143, 123, 255, 0.12);
         transform: translateX(-50%);
 
@@ -417,8 +449,8 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
                 #e9c1ff calc(var(--tail) * var(--ahead) * 100%),
                 #a950ff
             );
-            box-shadow: 0 0 calc(var(--lit) * 0.625rem)
-                rgba(169, 80, 255, calc(var(--lit) * 0.9));
+            box-shadow: 0 0 calc(var(--lit) * 0.25rem)
+                rgba(169, 80, 255, calc(var(--lit) * 0.6));
             opacity: calc(var(--edge) * (0.22 + 0.78 * var(--lit)));
         }
 

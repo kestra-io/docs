@@ -112,12 +112,17 @@ const CASES = [
 
         @include media-breakpoint-down(md) {
             padding-block: 4.5rem 2.5rem;
+            text-align: left;
         }
 
         h2 {
             @include title;
             max-width: 18em;
             margin-inline: auto;
+
+            @include media-breakpoint-down(md) {
+                margin-inline: 0;
+            }
             font-size: clamp(2rem, 3.6vw, 3rem);
             text-wrap: balance;
             color: var(--ks-content-primary);
@@ -188,6 +193,8 @@ const CASES = [
         }
 
         @include media-breakpoint-down(md) {
+            padding-block: 1.5rem 1.75rem;
+
             & + li {
                 border-top: var(--rule);
             }
@@ -197,6 +204,10 @@ const CASES = [
             width: 1.5rem;
             height: 1.5rem;
             margin-bottom: 1.25rem;
+
+            @include media-breakpoint-down(md) {
+                margin-bottom: 0.75rem;
+            }
             color: var(--ks-content-primary);
         }
     }
