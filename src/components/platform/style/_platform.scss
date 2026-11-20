@@ -1,0 +1,48 @@
+@use "/src/assets/styles/variable" as *;
+
+@mixin card {
+    padding: 1.5rem;
+    border: 1px solid var(--ks-border-primary);
+    border-radius: 0.875rem;
+    background: var(--ks-background-body);
+
+    :global(h3) {
+        margin: 0 0 0.5rem;
+        font-size: 1.125rem;
+        font-weight: 600;
+        line-height: 1.35;
+        color: var(--ks-content-primary);
+    }
+
+    :global(p) {
+        margin: 0;
+        font-size: $font-size-md;
+        line-height: 1.55;
+        color: var(--ks-content-secondary);
+    }
+}
+
+@mixin card-grid($columns) {
+    display: grid;
+    grid-template-columns: repeat($columns, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @include media-breakpoint-down(lg) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @include media-breakpoint-down(md) {
+        grid-template-columns: 1fr;
+    }
+}
+
+@mixin tinted {
+    background: color-mix(
+        in srgb,
+        var(--ks-content-link) 3%,
+        var(--ks-background-body)
+    );
+}

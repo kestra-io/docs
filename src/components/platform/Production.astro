@@ -1,0 +1,231 @@
+---
+import Rails from "./Rails.astro"
+import SectionHead from "~/components/home/SectionHead.astro"
+import CodeCard from "./CodeCard.astro"
+
+const FEATURES = [
+    {
+        mark: "retry",
+        title: "Retries",
+        text: "Backoff per task, capped by attempts or time.",
+    },
+    {
+        mark: "err",
+        title: "Error handlers",
+        text: "Run alerting, cleanup, or compensation tasks when a flow fails.",
+    },
+    {
+        mark: "timeout",
+        title: "Timeouts",
+        text: "Set a maximum duration on any task.",
+    },
+    {
+        title: "Restart and replay",
+        tag: "UI · API",
+        text: "Restart a failed execution from the task that failed, not from the beginning.",
+    },
+    {
+        mark: "trigger",
+        title: "Backfills",
+        text: "Rerun a schedule over a past date range.",
+    },
+    {
+        mark: "conc",
+        title: "Concurrency limits",
+        text: "Cap concurrent executions per flow, and choose whether extra runs queue, cancel, or fail.",
+    },
+    {
+        mark: "sla",
+        title: "SLAs",
+        text: "Declare a maximum duration or an assertion on each execution. A breach fails the run, cancels it, or adds a label your alerts can act on.",
+    },
+    {
+        title: "Every attempt recorded",
+        text: "Each attempt keeps its own logs, outputs, and duration, so the post-incident question “what happened?” has an answer.",
+    },
+]
+
+const FLOW = `id: nightly_ledger
+namespace: finance
+concurrency:
+  limit: 1
+  behavior: QUEUE
+sla:
+  - id: max_runtime
+    type: MAX_DURATION
+    duration: PT2H
+    behavior: FAIL
+triggers:
+  - id: nightly          # backfill from the UI or API
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 2 * * *"
+tasks:
+  - id: extract
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    timeout: PT30M
+    retry:
+      type: exponential
+      interval: PT30S
+      maxAttempts: 5
+errors:
+  - id: page_oncall
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook`
+
+const MARKS: Record<string, [number, number]> = {
+    conc: [3, 5],
+    sla: [6, 10],
+    trigger: [11, 14],
+    timeout: [18, 18],
+    retry: [19, 22],
+    err: [23, 25],
+}
+---
+
+<section class="production" id="production" aria-labelledby="prod-h">
+    <Rails>
+        <SectionHead id="prod-h" align="start">
+            Failure handling, declared in the flow.
+            <Fragment slot="lead">
+                Every workflow fails eventually. In Kestra, what happens next is
+                written in the same YAML as the work itself, so it’s reviewed in
+                Git, versioned with the flow, and behaves the same on every run.
+            </Fragment>
+        </SectionHead>
+
+        <div class="grid" data-prod>
+            <ul class="features">
+                {FEATURES.map((feature) => (
+                    <li tabindex="0" data-k={feature.mark}>
+                        <b>
+                            {feature.title}
+                            {feature.tag && (
+                                <span class="tag">{feature.tag}</span>
+                            )}
+                        </b>
+                        <span>{feature.text}</span>
+                    </li>
+                ))}
+            </ul>
+            <CodeCard
+                class="sticky"
+                file="finance / nightly_ledger.yml · hover a card"
+                code={FLOW}
+                marks={MARKS}
+            />
+        </div>
+    </Rails>
+</section>
+
+<script>
+    function wireProduction() {
+        const grid = document.querySelector<HTMLElement>(
+            "[data-prod]:not([data-wired])",
+        )
+        if (!grid) return
+        grid.dataset.wired = "true"
+        const lines = grid.querySelectorAll<HTMLElement>(".line[data-k]")
+        const light = (mark?: string) => {
+            for (const line of lines)
+                line.classList.toggle("on", !!mark && line.dataset.k === mark)
+        }
+        for (const item of grid.querySelectorAll<HTMLElement>(".features li")) {
+            const on = () => light(item.dataset.k)
+            const off = () => light()
+            item.addEventListener("mouseenter", on)
+            item.addEventListener("focus", on)
+            item.addEventListener("mouseleave", off)
+            item.addEventListener("blur", off)
+        }
+    }
+
+    document.addEventListener("astro:page-load", wireProduction)
+    wireProduction()
+</script>
+
+<style lang="scss">
+    @use "/src/components/about/style/section" as *;
+    @use "./style/platform" as *;
+
+    .production {
+        @include tinted;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2.5rem;
+        align-items: start;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: 1fr;
+        }
+
+        :global(.sticky) {
+            position: sticky;
+            top: calc(var(--top-bar-height, 67px) + 5rem);
+
+            @include media-breakpoint-down(lg) {
+                position: static;
+            }
+        }
+    }
+
+    .features {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: 1fr;
+        }
+
+        li {
+            display: flex;
+            flex-direction: column;
+            gap: 0.375rem;
+            padding: 1.125rem 1.25rem;
+            border: 1px solid var(--ks-border-primary);
+            border-radius: 0.75rem;
+            background: var(--ks-background-body);
+            cursor: default;
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+
+            &[data-k]:hover,
+            &[data-k]:focus-visible {
+                outline: none;
+                border-color: var(--ks-content-link);
+                box-shadow: 0 10px 30px rgba(132, 5, 255, 0.12);
+            }
+        }
+
+        b {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        span {
+            font-size: $font-size-sm;
+            line-height: 1.5;
+            color: var(--ks-content-secondary);
+        }
+
+        .tag {
+            padding: 0.0625rem 0.375rem;
+            border: 1px solid var(--ks-border-primary);
+            border-radius: 0.25rem;
+            font-family: $font-family-monospace;
+            font-size: 0.625rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: var(--ks-content-tertiary);
+        }
+    }
+</style>

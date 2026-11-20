@@ -1,0 +1,74 @@
+---
+import Rails from "./Rails.astro"
+import { Icon } from "astro-icon/components"
+import SectionHead from "~/components/home/SectionHead.astro"
+
+const CARDS = [
+    {
+        icon: "mdi:source-pull",
+        title: "Git and CI/CD",
+        text: "Review flows in pull requests and deploy them from the pipeline you already run.",
+    },
+    {
+        icon: "mdi:console",
+        title: "API and CLI",
+        text: "A full REST API, a CLI for deployments and namespaces, and webhooks in and out.",
+    },
+    {
+        icon: "mdi:terraform",
+        title: "Terraform",
+        text: "Manage flows, namespaces, and secrets as Terraform resources, next to the rest of your infrastructure.",
+    },
+    {
+        icon: "mdi:code-braces",
+        title: "Any language",
+        text: "Run Python, Node, Go, Shell, or any container as a task. Your scripts stay as they are.",
+    },
+]
+---
+
+<section class="fit" id="fit" aria-labelledby="fit-h">
+    <Rails>
+        <SectionHead id="fit-h" align="start">
+            A platform that fits your existing workflows.
+            <Fragment slot="lead">
+                Everything you can do in the UI, you can do from code. Flows are
+                YAML, so they live in Git, ship through CI/CD, and get reviewed
+                like any other change.
+            </Fragment>
+        </SectionHead>
+
+        <ul class="cards">
+            {CARDS.map((card) => (
+                <li>
+                    <Icon name={card.icon} class="icon" />
+                    <h3>{card.title}</h3>
+                    <p>{card.text}</p>
+                </li>
+            ))}
+        </ul>
+    </Rails>
+</section>
+
+<style lang="scss">
+    @use "/src/components/about/style/section" as *;
+    @use "./style/platform" as *;
+
+    .fit {
+    }
+
+    .cards {
+        @include card-grid(4);
+
+        li {
+            @include card;
+        }
+    }
+
+    .cards :global(.icon) {
+        width: 1.75rem;
+        height: 1.75rem;
+        margin-bottom: 1rem;
+        color: var(--ks-content-link);
+    }
+</style>

@@ -1,0 +1,156 @@
+---
+import SectionHead from "~/components/home/SectionHead.astro"
+import PixelEdges from "~/components/about/PixelEdges.astro"
+import HairlineFigure from "~/components/partners/HairlineFigure.astro"
+import Rails from "./Rails.astro"
+
+const OPTIONS = [
+    {
+        figure: "laptop" as const,
+        title: "Your laptop",
+        text: "One Docker command",
+    },
+    {
+        figure: "cluster" as const,
+        title: "Kubernetes cluster",
+        text: "Helm chart, scale workers out",
+    },
+    {
+        figure: "padlock" as const,
+        title: "Air-gapped data center",
+        text: "No outbound connections",
+    },
+    {
+        figure: "cloud" as const,
+        title: "Kestra Cloud",
+        text: "Fully managed by Kestra",
+    },
+]
+---
+
+<section
+    class="deploy surface-dark"
+    id="deploy"
+    aria-labelledby="deploy-h"
+    data-header-dark
+>
+    <PixelEdges left="cluster" right="tall" />
+    <Rails dark bottom="none">
+        <SectionHead id="deploy-h" align="start">
+            Deploy and govern anywhere.
+            <Fragment slot="lead">
+                Kestra has flexible deployment options, supporting everything
+                from your laptop to an air-gapped environment.
+            </Fragment>
+        </SectionHead>
+
+        <ul class="options">
+            {OPTIONS.map((option) => (
+                <li>
+                    <HairlineFigure name={option.figure} dark="var(--card)" />
+                    <h3>{option.title}</h3>
+                    <p>{option.text}</p>
+                </li>
+            ))}
+        </ul>
+    </Rails>
+</section>
+
+<style lang="scss">
+    .deploy {
+        --rule: 1px solid rgba(255, 255, 255, 0.11);
+        --muted: #9a9aa8;
+        --bg: #0d0d10;
+        --lift: #141419;
+
+        position: relative;
+        border-block: var(--rule);
+        background: linear-gradient(180deg, #000000 0, var(--bg) 18rem);
+        color: #ffffff;
+
+        :global(.section-head h2) {
+            color: #ffffff;
+        }
+
+        :global(.section-head .lead) {
+            color: var(--muted);
+        }
+    }
+
+    .options {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        margin: 0 calc(-1 * var(--inset));
+        padding: 0;
+        border-top: var(--rule);
+        list-style: none;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        > li {
+            --card: var(--bg);
+
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem 1.75rem 5rem;
+            background: var(--card);
+            transition: background-color 0.3s ease;
+
+            &:hover {
+                --card: var(--lift);
+            }
+
+            & + li {
+                border-left: var(--rule);
+            }
+
+            @include media-breakpoint-down(lg) {
+                &:nth-child(3) {
+                    border-left: 0;
+                }
+
+                &:nth-child(n + 3) {
+                    border-top: var(--rule);
+                }
+            }
+
+            @include media-breakpoint-down(sm) {
+                & + li {
+                    border-left: 0;
+                    border-top: var(--rule);
+                }
+            }
+
+            :global(.hairline-figure) {
+                max-width: 15rem;
+            }
+
+            :global(.hairline-figure[data-hairline-theme="dark"]) {
+                --hairline-edge: #a5a3b6;
+                --hairline-mid: #6a6879;
+                --hairline-lo: #45434f;
+            }
+        }
+
+        h3 {
+            margin: 0.5rem 0 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            line-height: 1.3;
+            color: #ffffff;
+        }
+
+        p {
+            margin: 0;
+            font-size: 0.9375rem;
+            line-height: 1.55;
+            color: var(--muted);
+        }
+    }
+</style>

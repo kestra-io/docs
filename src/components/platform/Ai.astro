@@ -1,0 +1,214 @@
+---
+import Rails from "./Rails.astro"
+import SectionHead from "~/components/home/SectionHead.astro"
+import TabGroup from "~/components/common/TabGroup.astro"
+import TabPanel from "~/components/common/TabPanel.astro"
+import PixelEdges from "~/components/about/PixelEdges.astro"
+import CodeCard from "./CodeCard.astro"
+import ChatMock from "./ChatMock.astro"
+
+const CARDS = [
+    {
+        title: "Leverage AI inside workflows",
+        text: "An AI agent is one step in a flow. It reasons over the input; the flow decides what happens next. A Pause task holds consequential actions until a person approves them.",
+    },
+    {
+        title: "Flows as AI tools",
+        text: "The MCP server exposes your flows as tools. An assistant calls a flow with typed inputs instead of getting shell access, and every call is an execution you can inspect.",
+    },
+    {
+        title: "Bring your own model",
+        text: "OpenAI, Anthropic, Gemini, or a self-hosted model through Ollama for air-gapped sites. Changing providers is one line; the flow stays the same.",
+    },
+]
+
+const TRIAGE = `tasks:
+  - id: classify
+    type: io.kestra.plugin.ai.agent.AIAgent
+    provider:
+      type: io.kestra.plugin.ai.provider.Anthropic   # or OpenAI, Gemini, Ollama
+    prompt: "Classify and summarize: {{ trigger.body }}"
+  - id: approve
+    type: io.kestra.plugin.core.flow.Pause                # a person decides
+  - id: create_issue
+    type: io.kestra.plugin.jira.issues.Create`
+
+const SPEND = `id: do_spend_summary
+namespace: company.kcdc
+tasks:
+  - id: fetch_insights
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://api.digitalocean.com/v2/customers/my/billing_history"
+    headers:
+      Authorization: "Bearer {{ secret('DIGITALOCEAN_TOKEN') }}"
+    contentType: application/json
+  - id: explain
+    type: io.kestra.plugin.ai.agent.AIAgent
+    provider:
+      type: io.kestra.plugin.ai.provider.GoogleGemini
+      modelName: gemini-3.5-flash
+      apiKey: "{{ secret(key='GEMINI_API_KEY') }}"
+    systemMessage: |
+      You analyze cloud spend. Identify what changed day over day,
+      which SKU or region drove it, and whether it looks like normal
+      variation or something worth investigating. Three sentences max.
+      If nothing changed meaningfully, say so plainly.
+    prompt: "{{ outputs.fetch_insights.body }}"
+outputs:
+  - id: droplet_id
+    type: STRING
+    value: "{{ outputs.explain.textOutput }}"
+triggers:
+  - id: mcp
+    type: io.kestra.plugin.core.trigger.McpToolTrigger
+    title: Evaluate DigitalOcean Bill
+    toolDescription: An analytical billing tool that parses DigitalOcean invoice data. It automatically detects spend variations, and provides actionable recommendations.
+    toolName: do_spend_summary
+    mcpServer: default`
+---
+
+<section
+    class="ai surface-dark"
+    id="ai"
+    aria-labelledby="ai-h"
+    data-header-dark
+>
+    <PixelEdges left="wide" right="cluster" />
+    <Rails dark>
+        <SectionHead id="ai-h" align="start">
+            AI runs inside your workflows, not around them.
+            <Fragment slot="lead">
+                Run models as steps in deterministic flows, let AI assistants
+                call your flows as tools, and pick the model yourself. Retries,
+                approvals, and execution history apply to AI steps like
+                everything else.
+            </Fragment>
+        </SectionHead>
+
+        <ul class="cards">
+            {CARDS.map((card) => (
+                <li>
+                    <h3>{card.title}</h3>
+                    <p>{card.text}</p>
+                </li>
+            ))}
+        </ul>
+
+        <TabGroup
+            id="ai-examples"
+            label="AI examples"
+            surface="dark"
+            flush
+            tabs={[
+                { label: "AI inside a workflow" },
+                { label: "Flows as AI tools" },
+            ]}
+        >
+            <TabPanel group="ai-examples" index={1}>
+                <CodeCard
+                    file="support / ticket_triage.yml"
+                    code={TRIAGE}
+                    dark
+                />
+            </TabPanel>
+            <TabPanel group="ai-examples" index={2}>
+                <div class="mcp">
+                    <ChatMock />
+                    <CodeCard
+                        class="spend"
+                        file="company.kcdc / do_spend_summary.yml"
+                        code={SPEND}
+                        dark
+                    />
+                </div>
+            </TabPanel>
+        </TabGroup>
+
+        <a class="more" href="/docs/develop-with-ai">
+            Explore AI in Kestra <span class="arrow">→</span>
+        </a>
+    </Rails>
+</section>
+
+<style lang="scss">
+    @use "/src/components/about/style/section" as *;
+
+    .ai {
+        @include dark-band;
+
+        position: relative;
+        color: #ffffff;
+
+        :global(.section-head h2) {
+            color: #ffffff;
+        }
+
+        :global(.section-head .lead) {
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        :global(.ks-tabs.on-dark > .tablist) {
+            margin-bottom: 1.5rem;
+        }
+    }
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+        margin: 0 0 3.5rem;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: 1fr;
+        }
+
+        li {
+            padding: 1.5rem;
+            border: 1px solid $dark-band-line;
+            border-radius: 0.875rem;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        p {
+            margin: 0;
+            line-height: 1.55;
+            color: rgba(255, 255, 255, 0.68);
+        }
+    }
+
+    .mcp {
+        display: grid;
+        grid-template-columns: 0.85fr 1.15fr;
+        gap: 1.5rem;
+        align-items: start;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .mcp :global(.spend pre) {
+        max-height: 30rem;
+    }
+
+    .more {
+        display: inline-block;
+        margin-top: 2rem;
+        font-weight: 600;
+        color: #ffffff;
+        text-decoration: underline;
+        text-decoration-color: rgba(255, 255, 255, 0.3);
+        text-underline-offset: 0.25em;
+
+        @include arrow-nudge;
+    }
+</style>

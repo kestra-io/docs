@@ -1,0 +1,934 @@
+---
+import { Icon } from "astro-icon/components"
+import { fetchPluginIcon } from "~/utils/pluginIcon"
+import CodeCard from "./CodeCard.astro"
+
+const STEPS = [
+    {
+        title: "Flows define your work",
+        text: "A YAML file with an id, a namespace, and tasks. Reviewed and versioned like code.",
+        link: {
+            href: "/docs/workflow-components/flow",
+            label: "Learn more about flows",
+        },
+    },
+    {
+        title: "Plugins connect your systems",
+        text: "Native connectivity to thousands of services like Terraform, Postgres, ServiceNow, and others.",
+        link: {
+            href: "/docs/workflow-components/plugins",
+            label: "Learn more about plugins",
+        },
+    },
+    {
+        title: "Triggers start flows",
+        text: "Start a flow on a schedule, a webhook, another flow’s result, or a poll.",
+        link: {
+            href: "/docs/workflow-components/triggers",
+            label: "Learn more about triggers",
+        },
+    },
+    {
+        title: "Write flows with no code",
+        text: "Don’t like to code? Author flows in the no-code editor. Edits are interchangeable with YAML, so both views stay in sync.",
+    },
+    {
+        title: "Execution with insight",
+        text: "Each execution retains its logs, outputs, and timing, so “what happened?” always has an answer. Metrics and alerts feed the tools you already monitor.",
+        link: {
+            href: "/docs/administrator-guide/monitoring",
+            label: "Learn more about monitoring",
+        },
+    },
+]
+
+const FLOW = `id: etl_orders
+namespace: company.team
+tasks:
+  - id: extract
+    type: io.kestra.plugin.core.http.Download
+    uri: https://api.example.com/orders.csv
+  - id: transform
+    type: io.kestra.plugin.scripts.python.Script
+    script: clean_orders("{{ outputs.extract.uri }}")
+  - id: load
+    type: io.kestra.plugin.jdbc.postgresql.Query`
+
+const NO_CODE = `triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 9 * * *"
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: Hello from Kestra`
+
+const PLUGINS = [
+    { name: "Terraform", group: "io.kestra.plugin.terraform", accent: true },
+    { name: "Ansible", group: "io.kestra.plugin.ansible" },
+    { name: "Kubernetes", group: "io.kestra.plugin.kubernetes" },
+    {
+        name: "PostgreSQL",
+        group: "io.kestra.plugin.jdbc.postgresql",
+        accent: true,
+    },
+    { name: "Snowflake", group: "io.kestra.plugin.jdbc.snowflake" },
+    { name: "dbt", group: "io.kestra.plugin.dbt" },
+    { name: "ServiceNow", group: "io.kestra.plugin.servicenow", accent: true },
+    { name: "Jira", group: "io.kestra.plugin.jira" },
+    { name: "Kafka", group: "io.kestra.plugin.kafka" },
+    { name: "AWS", group: "io.kestra.plugin.aws" },
+    { name: "Azure", group: "io.kestra.plugin.azure" },
+    { name: "Google Cloud", group: "io.kestra.plugin.gcp" },
+    { name: "Python", group: "io.kestra.plugin.scripts.python" },
+    { name: "Docker", group: "io.kestra.plugin.docker" },
+    { name: "Slack", group: "io.kestra.plugin.notifications.slack" },
+    { name: "OpenAI", group: "io.kestra.plugin.openai" },
+]
+
+const icons = await Promise.all(
+    PLUGINS.map((plugin) => fetchPluginIcon(plugin.group).catch(() => null)),
+)
+
+const TRIGGERS = [
+    {
+        icon: "mdi:clock-outline",
+        name: "Schedule",
+        text: "Cron-like timing, with backfills for missed intervals.",
+    },
+    {
+        icon: "mdi:webhook",
+        name: "Webhook",
+        text: "An HTTP call starts a run.",
+    },
+    {
+        icon: "mdi:source-branch",
+        name: "Flow",
+        text: "Run when another flow finishes or fails.",
+    },
+    {
+        icon: "mdi:refresh",
+        name: "Polling",
+        text: "Check a file, queue, or table at intervals.",
+    },
+]
+
+const SIGNALS = [
+    { name: "Execution logs" },
+    { name: "Timeline and topology" },
+    { name: "Metrics and traces" },
+    { name: "Alerts" },
+    { name: "Audit logs", enterprise: true },
+    { name: "Log export", enterprise: true },
+]
+
+const GANTT = [
+    { task: "extract", start: 0, width: 28, time: "2.1s" },
+    { task: "transform", start: 28, width: 52, time: "6.4s" },
+    { task: "load #1", start: 80, width: 12, time: "fail", status: "bad" },
+    { task: "load #2", start: 84, width: 14, time: "retry", status: "run" },
+]
+---
+
+<section class="how" id="how" aria-labelledby="how-h" data-platform-how>
+    <div class="container-xl">
+        <div class="grid">
+            <header class="head">
+                <h2 id="how-h">How it works</h2>
+            </header>
+
+            <ol class="steps">
+                {STEPS.map((step, idx) => (
+                    <li
+                        class:list={["step", { active: idx === 0 }]}
+                        data-step={idx}
+                    >
+                        <button type="button" aria-pressed={idx === 0}>
+                            <span class="bar" aria-hidden="true" />
+                            <h3>{step.title}</h3>
+                            <p>{step.text}</p>
+                        </button>
+                    </li>
+                ))}
+            </ol>
+
+            <div class="body" data-at="0">
+                <div class="view" data-view="0">
+                    <CodeCard
+                        file="company.team / etl_orders.yml"
+                        code={FLOW}
+                    />
+                </div>
+
+                <div class="view" data-view="1">
+                    <ul class="chips">
+                        {PLUGINS.map((plugin, idx) => (
+                            <li
+                                class:list={{ accent: plugin.accent }}
+                                style={`--k: ${idx}`}
+                            >
+                                {icons[idx] && (
+                                    <span class="logo" set:html={icons[idx]} />
+                                )}
+                                {plugin.name}
+                            </li>
+                        ))}
+                        <li class="more-chip" style={`--k: ${PLUGINS.length}`}>
+                            + 2,400 more
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="view" data-view="2">
+                    <ul class="triggers">
+                        {TRIGGERS.map((trigger, idx) => (
+                            <li style={`--k: ${idx}`}>
+                                <Icon name={trigger.icon} />
+                                <b>{trigger.name}</b>
+                                <span>{trigger.text}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                <div class="view nocode" data-view="3">
+                    <div class="nodes">
+                        <p class="pane-label">No-code</p>
+                        <div class="node">
+                            <Icon name="mdi:clock-outline" />
+                            <div>
+                                <b>Trigger · Schedule</b>
+                                <span>every day at 09:00</span>
+                            </div>
+                        </div>
+                        <span class="down" aria-hidden="true">
+                            ↓
+                        </span>
+                        <div class="node">
+                            <Icon name="mdi:play" />
+                            <div>
+                                <b>Task · Log</b>
+                                <span>message: Hello from Kestra</span>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="sync" aria-hidden="true">
+                        <Icon name="mdi:swap-horizontal" />
+                    </span>
+                    <CodeCard file="YAML" code={NO_CODE} />
+                </div>
+
+                <div class="view" data-view="4">
+                    <div class="exec-card">
+                        <p class="exec">
+                            EXECUTION 4f2a… · etl_orders ·{" "}
+                            <span class="bad">FAILED</span> → restarted
+                        </p>
+                        <ul class="gantt">
+                            {GANTT.map((row, idx) => (
+                                <li style={`--k: ${idx}`}>
+                                    <span>{row.task}</span>
+                                    <span class="track">
+                                        <em
+                                            class={row.status}
+                                            style={`left: ${row.start}%; width: ${row.width}%`}
+                                        />
+                                    </span>
+                                    <span>{row.time}</span>
+                                </li>
+                            ))}
+                        </ul>
+                        <ul class="chips signals">
+                            {SIGNALS.map((signal) => (
+                                <li>
+                                    {signal.name}
+                                    {signal.enterprise && (
+                                        <span class="tag">ENT</span>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="links">
+                    {STEPS.map(
+                        (step, idx) =>
+                            step.link && (
+                                <a href={step.link.href} data-link={idx}>
+                                    {step.link.label}{" "}
+                                    <span class="arrow">→</span>
+                                </a>
+                            ),
+                    )}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const STEP_MS = 7000
+
+    function wirePlatformHow() {
+        for (const root of document.querySelectorAll<HTMLElement>(
+            "[data-platform-how]:not([data-wired])",
+        )) {
+            root.dataset.wired = "true"
+            const steps = [...root.querySelectorAll<HTMLElement>(".step")]
+            const body = root.querySelector<HTMLElement>(".body")!
+            const still = matchMedia("(prefers-reduced-motion: reduce)").matches
+            let auto = !still
+            let inView = false
+            let started = false
+            let waiting: number | null = null
+            let timer: number | null = null
+
+            const stop = () => {
+                if (timer !== null) clearTimeout(timer)
+                timer = null
+            }
+            document.addEventListener("astro:before-swap", stop, {
+                once: true,
+            })
+
+            const open = (idx: number) => {
+                stop()
+                steps.forEach((step, i) => {
+                    step.classList.toggle("active", i === idx)
+                    step.classList.toggle("timed", auto && i === idx)
+                    step.style.setProperty("--dur", `${STEP_MS}ms`)
+                    step.querySelector("button")!.ariaPressed = String(
+                        i === idx,
+                    )
+                })
+                body.dataset.at = String(idx)
+                body.classList.remove("enter")
+                void body.offsetWidth
+                body.classList.add("enter")
+                if (auto)
+                    timer = window.setTimeout(() => {
+                        const next = (idx + 1) % steps.length
+                        if (inView) open(next)
+                        else waiting = next
+                    }, STEP_MS)
+            }
+
+            steps.forEach((step, idx) =>
+                step.querySelector("button")!.addEventListener("click", () => {
+                    auto = false
+                    open(idx)
+                }),
+            )
+
+            new IntersectionObserver(
+                ([entry]) => {
+                    inView = entry.isIntersecting
+                    if (!inView) return
+                    if (!started) {
+                        started = true
+                        open(0)
+                    } else if (waiting !== null) {
+                        const next = waiting
+                        waiting = null
+                        open(next)
+                    }
+                },
+                { threshold: 0.35 },
+            ).observe(body)
+        }
+    }
+
+    document.addEventListener("astro:page-load", wirePlatformHow)
+    wirePlatformHow()
+</script>
+
+<style lang="scss">
+    @use "/src/components/enterprise/mocks/tokens" as *;
+
+    .grid {
+        --rule: 1px solid var(--ks-border-primary);
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+        --tint: #8405ff;
+
+        position: relative;
+        border-left: var(--rule);
+        border-right: var(--rule);
+
+        @include media-breakpoint-down(xl) {
+            border-inline: 0;
+        }
+
+        :global(html.dark) & {
+            --tint: #9869f7;
+        }
+
+        > .steps,
+        > .body {
+            position: relative;
+            border-top: var(--rule);
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: -1px;
+                left: -100vw;
+                right: -100vw;
+                height: 1px;
+                background: var(--ks-border-primary);
+                pointer-events: none;
+            }
+        }
+
+        > .body {
+            border-bottom: var(--rule);
+
+            &::after {
+                content: "";
+                position: absolute;
+                bottom: -1px;
+                left: -100vw;
+                right: -100vw;
+                height: 1px;
+                background: var(--ks-border-primary);
+                pointer-events: none;
+            }
+        }
+    }
+
+    .head {
+        padding: 7.5rem var(--inset) 4rem;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem 3rem;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            color: var(--ks-content-primary);
+        }
+    }
+
+    .steps {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    .step {
+        & + & {
+            border-left: var(--rule);
+
+            @include media-breakpoint-down(lg) {
+                border-left: 0;
+                border-top: var(--rule);
+            }
+        }
+
+        button {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+            height: 100%;
+            padding: 1.75rem 1.5rem 2rem;
+            border: 0;
+            background: none;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.25s ease;
+
+            &:hover {
+                background: var(--ks-background-secondary);
+            }
+
+            &:focus-visible {
+                outline: 2px solid var(--ks-border-active);
+                outline-offset: -2px;
+            }
+
+            @include media-breakpoint-down(lg) {
+                padding: 1.5rem var(--inset);
+            }
+        }
+
+        .bar {
+            position: absolute;
+            top: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--tint);
+            transform: scaleX(0);
+            transform-origin: left;
+        }
+
+        &.active .bar {
+            transform: none;
+        }
+
+        &.timed .bar {
+            animation: step-time var(--dur) linear forwards;
+        }
+
+        h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.0625rem;
+            font-weight: 600;
+            line-height: 1.35;
+            color: var(--ks-content-tertiary);
+            transition: color 0.25s ease;
+        }
+
+        p {
+            margin: 0;
+            font-size: 0.875rem;
+            line-height: 1.55;
+            color: var(--ks-content-tertiary);
+            transition: color 0.25s ease;
+
+            @include media-breakpoint-down(lg) {
+                display: none;
+            }
+        }
+
+        &.active {
+            h3 {
+                color: var(--ks-content-primary);
+            }
+
+            p {
+                color: var(--ks-content-secondary);
+
+                @include media-breakpoint-down(lg) {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    @keyframes step-time {
+        from {
+            transform: scaleX(0);
+        }
+
+        to {
+            transform: scaleX(1);
+        }
+    }
+
+    .body {
+        @include tokens;
+
+        position: relative;
+        display: grid;
+        place-items: center;
+        min-height: 32rem;
+        padding: 3.5rem var(--inset) 4.5rem;
+        overflow: hidden;
+        background:
+            radial-gradient(
+                80% 90% at 100% 0%,
+                color-mix(in srgb, var(--tint) 20%, transparent),
+                transparent 70%
+            ),
+            radial-gradient(
+                60% 70% at 0% 100%,
+                color-mix(in srgb, var(--tint) 10%, transparent),
+                transparent 70%
+            ),
+            color-mix(in srgb, var(--tint) 3%, var(--ks-background-body));
+
+        :global(html.dark) & {
+            background:
+                radial-gradient(
+                    80% 90% at 100% 0%,
+                    color-mix(in srgb, var(--tint) 12%, transparent),
+                    transparent 70%
+                ),
+                radial-gradient(
+                    60% 70% at 0% 100%,
+                    color-mix(in srgb, var(--tint) 6%, transparent),
+                    transparent 70%
+                ),
+                color-mix(in srgb, var(--tint) 3%, var(--ks-background-body));
+        }
+
+        @include media-breakpoint-down(lg) {
+            min-height: 0;
+            padding: 2rem 1.25rem 3.5rem;
+        }
+    }
+
+    .view {
+        grid-area: 1 / 1;
+        width: min(100%, 40rem);
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(0.75rem);
+        transition:
+            opacity 0.4s ease,
+            transform 0.4s ease,
+            visibility 0s linear 0.4s;
+
+        &.nocode {
+            width: min(100%, 52rem);
+        }
+    }
+
+    @for $i from 0 through 4 {
+        .body[data-at="#{$i}"] .view[data-view="#{$i}"] {
+            visibility: visible;
+            opacity: 1;
+            transform: none;
+            transition:
+                opacity 0.4s ease 0.1s,
+                transform 0.4s ease 0.1s,
+                visibility 0s;
+        }
+
+        .body[data-at="#{$i}"] .links a[data-link="#{$i}"] {
+            display: inline-block;
+        }
+    }
+
+    .body.enter :global(.line) {
+        animation: line-in 0.35s ease both;
+    }
+
+    @for $n from 1 through 12 {
+        .body.enter :global(.line:nth-child(#{$n})) {
+            animation-delay: #{0.1 + $n * 0.04}s;
+        }
+    }
+
+    .body.enter [style*="--k"] {
+        animation: pop-in 0.4s ease both;
+        animation-delay: calc(0.15s + var(--k) * 0.05s);
+    }
+
+    @keyframes line-in {
+        from {
+            opacity: 0;
+            transform: translateX(-0.5rem);
+        }
+    }
+
+    @keyframes pop-in {
+        from {
+            opacity: 0;
+            transform: translateY(0.5rem) scale(0.96);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .body.enter :global(.line),
+        .body.enter [style*="--k"] {
+            animation: none;
+        }
+    }
+
+    .links {
+        position: absolute;
+        left: var(--inset);
+        bottom: 1.5rem;
+
+        a {
+            display: none;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+            text-decoration: underline;
+            text-decoration-color: var(--ks-border-secondary);
+            text-underline-offset: 0.25em;
+
+            &:hover {
+                text-decoration-color: var(--ks-content-link);
+            }
+
+            .arrow {
+                display: inline-block;
+                transition: transform 0.2s ease;
+            }
+
+            &:hover .arrow {
+                transform: translateX(0.25em);
+            }
+        }
+
+        @include media-breakpoint-down(lg) {
+            left: 1.25rem;
+        }
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .chips {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.625rem;
+
+        li {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.875rem;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: var(--panel);
+            box-shadow: var(--shadow);
+            font-size: $font-size-sm;
+            font-weight: 600;
+            color: var(--soft);
+
+            &.accent {
+                border-color: var(--ring);
+                color: var(--text);
+            }
+        }
+
+        .more-chip {
+            border-style: dashed;
+            box-shadow: none;
+            color: var(--run);
+        }
+    }
+
+    .logo {
+        display: inline-flex;
+        width: 1.25rem;
+        height: 1.25rem;
+
+        :global(svg) {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .triggers {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: 1fr;
+        }
+
+        li {
+            display: flex;
+            flex-direction: column;
+            gap: 0.375rem;
+            padding: 1.25rem;
+            border: 1px solid var(--line);
+            border-radius: 0.875rem;
+            background: var(--panel);
+            box-shadow: var(--shadow);
+
+            > svg {
+                width: 1.5rem;
+                height: 1.5rem;
+                margin-bottom: 0.25rem;
+                color: var(--run);
+            }
+        }
+
+        b {
+            font-family: $font-family-monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text);
+        }
+
+        span {
+            font-size: $font-size-sm;
+            color: var(--soft);
+        }
+    }
+
+    .nocode {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.2fr);
+        gap: 1.25rem;
+        align-items: center;
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    .nodes {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .pane-label {
+        margin: 0 0 0.5rem;
+        font-family: $font-family-monospace;
+        font-size: 0.75rem;
+        color: var(--muted);
+    }
+
+    .node {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        width: 100%;
+        padding: 0.875rem 1rem;
+        border: 1px solid var(--line);
+        border-radius: 0.625rem;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+
+        > svg {
+            flex: none;
+            width: 2rem;
+            height: 2rem;
+            padding: 0.375rem;
+            border-radius: 0.5rem;
+            background: var(--tile);
+            color: var(--tile-ink);
+        }
+
+        div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        b {
+            font-size: $font-size-sm;
+            color: var(--text);
+        }
+
+        span {
+            font-family: $font-family-monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+    }
+
+    .down {
+        color: var(--muted);
+    }
+
+    .sync {
+        display: grid;
+        place-items: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background: var(--tile);
+        color: var(--tile-ink);
+        font-size: 1.25rem;
+
+        @include media-breakpoint-down(md) {
+            margin-inline: auto;
+            transform: rotate(90deg);
+        }
+    }
+
+    .exec-card {
+        padding: 1.5rem;
+        border: 1px solid var(--line);
+        border-radius: 0.875rem;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+    }
+
+    .exec {
+        margin: 0 0 1.25rem;
+        font-family: $font-family-monospace;
+        font-size: 0.75rem;
+        color: var(--muted);
+
+        .bad {
+            color: #e5484d;
+        }
+    }
+
+    .gantt {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+
+        li {
+            display: grid;
+            grid-template-columns: 5.5rem 1fr 3rem;
+            gap: 0.75rem;
+            align-items: center;
+            font-family: $font-family-monospace;
+            font-size: 0.75rem;
+            color: var(--soft);
+
+            > span:last-child {
+                text-align: right;
+                color: var(--muted);
+            }
+        }
+
+        .track {
+            position: relative;
+            height: 0.75rem;
+            border-radius: 999px;
+            background: var(--chip);
+        }
+
+        em {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            border-radius: 999px;
+            background: var(--ok);
+
+            &.bad {
+                background: #e5484d;
+            }
+
+            &.run {
+                background: var(--run);
+            }
+        }
+    }
+
+    .signals {
+        justify-content: flex-start;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid var(--line);
+
+        li {
+            padding: 0.25rem 0.625rem;
+            box-shadow: none;
+            font-size: 0.75rem;
+        }
+    }
+
+    .tag {
+        padding: 0.0625rem 0.375rem;
+        border-radius: 0.25rem;
+        background: var(--run);
+        font-family: $font-family-monospace;
+        font-size: 0.625rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        color: var(--chrome);
+    }
+</style>

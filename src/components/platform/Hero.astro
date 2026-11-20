@@ -1,0 +1,101 @@
+---
+import Rails from "./Rails.astro"
+import PixelEdges from "~/components/about/PixelEdges.astro"
+import CodeCard from "./CodeCard.astro"
+
+const FLOW = `id: hello_kestra
+namespace: company.team
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 9 * * *"
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: Hello from Kestra`
+---
+
+<section
+    class="platform-hero surface-dark"
+    aria-labelledby="platform-hero"
+    data-header-dark
+>
+    <PixelEdges left="tall" right="wide" />
+    <Rails dark top="none" bottom="none" lines={false}>
+        <div class="grid">
+            <div class="copy">
+                <h1 id="platform-hero">
+                    The orchestration platform teams run in production.
+                </h1>
+                <p class="lead">
+                    Schedule, trigger, observe, and govern every workflow. Use
+                    any language, orchestrate any system, deploy anywhere.
+                </p>
+                <div class="buttons">
+                    <a href="#start" class="btn-solid">
+                        Get started
+                    </a>
+                    <a href="/demo" class="btn-ghost">
+                        Book a demo
+                    </a>
+                </div>
+            </div>
+            <CodeCard file="hello_kestra.yml" code={FLOW} dots dark />
+        </div>
+    </Rails>
+</section>
+
+<style lang="scss">
+    @use "/src/components/about/style/section" as *;
+
+    .platform-hero {
+        @include dark-band;
+
+        position: relative;
+        margin-top: -67px;
+        padding: calc(67px + 6rem) 0 6rem;
+        color: #ffffff;
+
+        @include media-breakpoint-down(md) {
+            padding: calc(67px + 3rem) 0 4rem;
+        }
+    }
+
+    .grid {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1.05fr 1fr;
+        gap: 4rem;
+        align-items: center;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+    }
+
+    h1 {
+        margin: 0;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 600;
+        letter-spacing: -0.025em;
+        line-height: 1.05;
+        text-wrap: balance;
+        color: #ffffff;
+    }
+
+    .lead {
+        margin: 1.5rem 0 0;
+        max-width: 34rem;
+        font-size: $font-size-lg;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.78);
+    }
+
+    .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 2rem;
+    }
+</style>
