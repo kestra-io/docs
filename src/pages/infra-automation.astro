@@ -24,7 +24,7 @@ import amdocs from "~/components/home/assets/companies/amdocs.svg?raw"
 
 const title = "Kestra for Infrastructure"
 const description =
-    "Kestra for Infrastructure turns your infrastructure as code into a governed service catalog for platform engineering teams."
+    "Kestra for Infrastructure turns the Terraform, Ansible and scripts you already run into a governed self-service catalog for platform and IT teams."
 
 const PANELS = [
     {
@@ -120,7 +120,7 @@ const REQUEST = {
     name: "Provision a virtual machine",
     lede: "Fill in the form. The machine is created with a lease and an owner once the platform team signs off.",
     fields: [
-        { label: "Requested by", value: "j.kim" },
+        { label: "Requested by", value: "Requester" },
         {
             label: "Environment",
             value: "staging",
@@ -128,8 +128,8 @@ const REQUEST = {
         },
         { label: "Lease", value: "14 days" },
     ],
-    approver: "m.chen",
-    notice: "j.kim requests a Linux VM in staging",
+    approver: "Platform team",
+    notice: "Requester asks for a Linux VM in staging",
     result: {
         icon: "mdi:server-outline",
         label: "linux-vm-staging",
@@ -145,7 +145,7 @@ const FAQ = [
     },
     {
         question: "How is it priced?",
-        answer: "It is part of Kestra Enterprise at no extra cost, with no price per managed node. Contact sales for a quote sized to your instances and support level.",
+        answer: "It is included in Kestra Enterprise, with no price per managed node. Contact sales for a quote sized to your instances and support level.",
     },
     {
         question:
@@ -237,7 +237,12 @@ const STORIES: Story[] = [
                 Infrastructure orchestrates every resource from request to retirement.
             </Fragment>
             <InfraAppBuilderMock slot="catalog" />
-            <AppsMock slot="requests" apps={APPS} request={REQUEST} />
+            <AppsMock
+                slot="requests"
+                apps={APPS}
+                request={REQUEST}
+                people={["Requester", "Approver"]}
+            />
             <InfraLeaseMock slot="deployments" />
             <InfraCaseMock slot="cases" />
             <InfraMock slot="inventory" view="inventory" />

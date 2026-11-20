@@ -3,7 +3,7 @@ import { Icon } from "astro-icon/components"
 
 const STEPS = ["checkout", "terraform init", "terraform apply", "configure"]
 
-const PEOPLE = ["a.diaz", "j.kim", "r.patel"]
+const PEOPLE = ["Platform team", "Requester", "Approver"]
 
 const LOGS = [
     {
@@ -74,13 +74,13 @@ const LOGS = [
                         <span class="swap">
                             <em class="a-none">Unassigned</em>
                             <em class="a-set">
-                                <i class="avatar">JK</i>j.kim
+                                <i class="avatar">PT</i>Platform team
                             </em>
                         </span>
                         <Icon name="mdi:chevron-down" />
                         <span class="menu">
                             {PEOPLE.map((person) => (
-                                <i class:list={{ on: person === "j.kim" }}>
+                                <i class:list={{ on: person === "Platform team" }}>
                                     {person}
                                 </i>
                             ))}
@@ -118,7 +118,7 @@ const LOGS = [
             <p class="foot">
                 <span class="swap hint">
                     <em class="h-fail">Failed at terraform apply</em>
-                    <em class="h-retry">Retried by j.kim</em>
+                    <em class="h-retry">Retried by Platform team</em>
                 </span>
                 <span class="retry">
                     <Icon name="mdi:replay" /> Retry from this step
@@ -139,7 +139,7 @@ const LOGS = [
             </svg>
             <span class="who">
                 <Icon name="mdi:account-outline" />
-                j.kim
+                Platform team
             </span>
         </span>
     </div>
