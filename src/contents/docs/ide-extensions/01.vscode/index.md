@@ -143,6 +143,7 @@ Validation errors appear in the run panel or log channel. Fix the reported const
 
 ## Next steps
 
+- [JetBrains plugin](../02.jetbrains/index.md) — the same features for IntelliJ IDEA, PyCharm, and other JetBrains IDEs.
 - [Flows](../../05.workflow-components/01.flow/index.md) — flow structure, tasks, triggers, and inputs reference.
 - [Blueprints](/blueprints) — ready-to-use flow examples you can copy into the editor.
-- [Version control with Git](../04.git/index.md) — push flows to a Git repository from Kestra and integrate with CI/CD pipelines.
+- [Version control with Git](../../version-control-cicd/04.git/index.md) — push flows to a Git repository from Kestra and integrate with CI/CD pipelines.

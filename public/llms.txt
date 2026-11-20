@@ -209,7 +209,8 @@ Use this section when building custom plugins, managing flows in Git, deploying 
 - [Plugin developer guide](https://kestra.io/docs/plugin-developer-guide.md): Build, test, document, and publish custom Kestra plugins in Java
 - [Version control and CI/CD](https://kestra.io/docs/version-control-cicd.md): GitOps patterns — Git push/pull for flows, and automated deployment pipelines using GitHub Actions, GitLab CI, and others
 - [Promote (EE)](https://kestra.io/docs/enterprise/governance/promote): Move flows between environments directly from the Kestra UI with a diff review and confirmation gate — no Git or pipeline required
-- [VS Code extension](https://kestra.io/docs/version-control-cicd/vscode.md): Edit flows in VS Code with instance-aware validation, Pebble autocompletion, topology preview, and run-from-editor with live log streaming
+- [VS Code extension](https://kestra.io/docs/ide-extensions/vscode.md): Edit flows in VS Code with instance-aware validation, Pebble autocompletion, topology preview, and run-from-editor with live log streaming
+- [JetBrains plugin](https://kestra.io/docs/ide-extensions/jetbrains.md): Edit flows in IntelliJ IDEA, PyCharm, and other JetBrains IDEs with instance-aware completion, live validation, topology preview, and run-from-editor with live logs
 - [No Code editor](https://kestra.io/docs/ui/flows.md): Build flows visually using the No Code canvas — drag-and-drop editing that stays in three-way sync with the YAML editor and AI Copilot in real time
 
 ## Reference
@@ -463,6 +464,9 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Kestra with Pulumi's Terraform Provider](https://kestra.io/docs/how-to-guides/using-pulumis-terraform-provider.md)
 - [Access Values Between Flows](https://kestra.io/docs/how-to-guides/values-between-flows.md)
 - [Use HashiCorp Vault as a Read-Only Secrets Backend in Kestra](https://kestra.io/docs/how-to-guides/vault-read-only-secrets.md)
+- [Kestra IDE Extensions: VS Code and JetBrains](https://kestra.io/docs/ide-extensions.md)
+- [Kestra VS Code Extension: Edit, Validate, and Run Flows](https://kestra.io/docs/ide-extensions/vscode.md)
+- [Kestra JetBrains Plugin: Edit, Validate, and Run Flows](https://kestra.io/docs/ide-extensions/jetbrains.md)
 - [Install Kestra: Docker, Kubernetes, VM, and JAR](https://kestra.io/docs/installation.md)
 - [Deploy Kestra on AWS EC2 – RDS and S3 Backend](https://kestra.io/docs/installation/aws-ec2.md)
 - [Deploy Kestra on Azure VM – Azure Database Backend](https://kestra.io/docs/installation/azure-vm.md)
@@ -715,7 +719,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Version Control with Git: Sync, Push, and Clone Flows](https://kestra.io/docs/version-control-cicd/git.md)
 - [Push Flows and Namespace Files to Git](https://kestra.io/docs/version-control-cicd/git/push-to-git.md)
 - [Sync Flows and Namespace Files from Git](https://kestra.io/docs/version-control-cicd/git/sync-from-git.md)
-- [Kestra VS Code Extension: Edit, Validate, and Run Flows](https://kestra.io/docs/version-control-cicd/vscode.md)
 - [Why Kestra: Simpler, More Powerful Orchestration](https://kestra.io/docs/why-kestra.md)
 - [Workflow Components in Kestra: Complete Reference](https://kestra.io/docs/workflow-components.md)
 - [afterExecution Tasks in Kestra – Post-Run Actions](https://kestra.io/docs/workflow-components/afterexecution.md)
