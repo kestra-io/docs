@@ -46,7 +46,7 @@ const LOGS = [
             <p class="steps">
                 {STEPS.map((step, idx) => (
                     <span class={`step p${idx + 1}`}>
-                        <span class="mark">
+                        <span class="sign">
                             <Icon name="mdi:check-circle" class="done" />
                             <Icon name="mdi:loading" class="spin" />
                             <Icon name="mdi:close-circle" class="fail" />
@@ -80,7 +80,11 @@ const LOGS = [
                         <Icon name="mdi:chevron-down" />
                         <span class="menu">
                             {PEOPLE.map((person) => (
-                                <i class:list={{ on: person === "Platform team" }}>
+                                <i
+                                    class:list={{
+                                        on: person === "Platform team",
+                                    }}
+                                >
                                     {person}
                                 </i>
                             ))}
@@ -308,7 +312,7 @@ const LOGS = [
         }
     }
 
-    .mark {
+    .sign {
         display: grid;
         width: 1.35em;
         height: 1.35em;

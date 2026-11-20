@@ -60,6 +60,9 @@ const CODE = [
     },
     { indent: 2, key: "key", pebble: "inputs.deployment", group: 2 },
 ]
+const rows = (task?: number) =>
+    CODE.filter((line) => task && (line.task === task || line.group === task))
+        .length
 ---
 
 <div class="ui-mock lease-mock" aria-hidden="true" data-ui-mock>
@@ -150,7 +153,7 @@ const CODE = [
                             line.task && `g${line.task}`,
                             line.group && `g${line.group}`,
                         ]}
-                        style={`--indent: ${line.indent}`}
+                        style={`--indent: ${line.indent}; --rows: ${rows(line.task)}`}
                     >
                         <i class="no">{idx + 1}</i>
                         {line.dash && <i class="dash">-</i>}
@@ -552,8 +555,12 @@ const CODE = [
         }
 
         .tick {
-            margin-left: auto;
+            position: absolute;
+            z-index: 1;
+            top: calc(var(--rows) * 1.7em / 2.8);
+            right: 1.1em;
             font-size: 1.4em;
+            translate: 0 -50%;
         }
     }
 
