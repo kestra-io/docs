@@ -1,0 +1,135 @@
+---
+import Rails from "./Rails.astro"
+import { Icon } from "astro-icon/components"
+import SectionHead from "~/components/home/SectionHead.astro"
+
+const CARDS = [
+    {
+        icon: "mdi:scale-balance",
+        title: "Apache 2.0",
+        text: "A permissive license for the engine. Use it, extend it, and run it in production without a license key.",
+    },
+    {
+        icon: "mdi:github",
+        title: "Developed in public",
+        text: "Source, issues, and pull requests live on GitHub.",
+        href: "https://github.com/kestra-io/kestra",
+    },
+    {
+        icon: "mdi:calendar-check-outline",
+        title: "Predictable releases",
+        text: "Release notes for every version on a published cadence, so you can plan upgrades like any other platform.",
+        href: "/docs/releases",
+    },
+]
+
+const STATS = [
+    { value: "28k+", label: "GitHub stars" },
+    { value: "2,400+", label: "Plugins" },
+]
+---
+
+<section class="open-source" id="open" aria-labelledby="open-h">
+    <Rails>
+        <SectionHead id="open-h" align="start">
+            Built in the open.
+            <Fragment slot="lead">
+                The engine is licensed under Apache 2.0 and developed in public
+                on GitHub.
+            </Fragment>
+        </SectionHead>
+
+        <ul class="cards">
+            {CARDS.map((card) => (
+                <li>
+                    <Icon name={card.icon} class="icon" />
+                    <h3>
+                        {card.href ? (
+                            <a href={card.href}>{card.title}</a>
+                        ) : (
+                            card.title
+                        )}
+                    </h3>
+                    <p>{card.text}</p>
+                </li>
+            ))}
+        </ul>
+
+        <dl class="stats">
+            {STATS.map((stat) => (
+                <div>
+                    <dt>{stat.label}</dt>
+                    <dd>{stat.value}</dd>
+                </div>
+            ))}
+        </dl>
+    </Rails>
+</section>
+
+<style lang="scss">
+    @use "/src/components/about/style/section" as *;
+    @use "./style/platform" as *;
+
+    .cards {
+        @include card-grid(3);
+
+        li {
+            @include card;
+
+            position: relative;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+
+            &::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+            }
+        }
+
+        li:has(a):hover {
+            border-color: var(--ks-content-link);
+        }
+    }
+
+    .cards :global(.icon) {
+        width: 1.75rem;
+        height: 1.75rem;
+        margin-bottom: 1rem;
+        color: var(--ks-content-link);
+    }
+
+    .stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem 3.5rem;
+        margin: 3rem 0 0;
+
+        div {
+            display: flex;
+            flex-direction: column-reverse;
+        }
+
+        dd {
+            margin: 0;
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1;
+            color: var(--ks-content-primary);
+        }
+
+        dt {
+            margin-top: 0.5rem;
+            font-family: $font-family-monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--ks-content-tertiary);
+        }
+    }
+</style>

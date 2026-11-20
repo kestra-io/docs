@@ -1,0 +1,201 @@
+---
+import Rails from "./Rails.astro"
+import { Icon } from "astro-icon/components"
+import SectionHead from "~/components/home/SectionHead.astro"
+import PixelEdges from "~/components/about/PixelEdges.astro"
+
+const OPTIONS = [
+    { icon: "mdi:laptop", title: "Your laptop", text: "One Docker command" },
+    {
+        icon: "mdi:kubernetes",
+        title: "Kubernetes cluster",
+        text: "Helm chart, scale workers out",
+    },
+    {
+        icon: "mdi:lan-disconnect",
+        title: "Air-gapped data center",
+        text: "No outbound connections",
+    },
+    {
+        icon: "mdi:cloud-check-outline",
+        title: "Kestra Cloud",
+        text: "Fully managed by Kestra",
+    },
+]
+---
+
+<section
+    class="deploy surface-dark"
+    id="deploy"
+    aria-labelledby="deploy-h"
+    data-header-dark
+>
+    <PixelEdges left="cluster" right="tall" />
+    <Rails dark>
+        <SectionHead id="deploy-h" align="start">
+            Deploy and govern anywhere.
+            <Fragment slot="lead">
+                Kestra has flexible deployment options, supporting everything
+                from your laptop to an air-gapped environment.
+            </Fragment>
+        </SectionHead>
+
+        <ol
+            class="track"
+            aria-label="Deployment options, from a laptop to Kestra Cloud"
+        >
+            {OPTIONS.map((option, idx) => (
+                <li>
+                    <span class="ico">
+                        <Icon name={option.icon} />
+                        <span class="no">{idx + 1}</span>
+                    </span>
+                    <h3>{option.title}</h3>
+                    <p>{option.text}</p>
+                </li>
+            ))}
+        </ol>
+    </Rails>
+</section>
+
+<style lang="scss">
+    @use "/src/components/about/style/section" as *;
+
+    .deploy {
+        @include dark-band;
+
+        --rule: #{$dark-band-line};
+        --accent: #b9a6ff;
+
+        position: relative;
+        color: #ffffff;
+
+        :global(.section-head h2) {
+            color: #ffffff;
+        }
+
+        :global(.section-head .lead) {
+            color: rgba(255, 255, 255, 0.72);
+        }
+    }
+
+    .track {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 2.25rem;
+            left: 12.5%;
+            right: 12.5%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--rule), var(--accent));
+        }
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+
+            &::before {
+                top: 2.25rem;
+                bottom: 2.25rem;
+                left: 2.25rem;
+                right: auto;
+                width: 2px;
+                height: auto;
+                background: linear-gradient(180deg, var(--rule), var(--accent));
+            }
+        }
+
+        li {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.375rem;
+            text-align: center;
+
+            @include media-breakpoint-down(md) {
+                display: grid;
+                grid-template-columns: 4.5rem 1fr;
+                grid-template-rows: auto auto;
+                column-gap: 1rem;
+                align-items: center;
+                text-align: left;
+
+                .ico {
+                    grid-row: span 2;
+                }
+            }
+
+            &:hover .ico {
+                border-color: var(--accent);
+                transform: translateY(-2px);
+            }
+        }
+    }
+
+    .ico {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 4.5rem;
+        height: 4.5rem;
+        margin-bottom: 0.75rem;
+        border: 1px solid #2e2e3c;
+        border-radius: 1rem;
+        background: #18181e;
+        font-size: 2rem;
+        color: var(--accent);
+        transition:
+            border-color 0.2s ease,
+            transform 0.2s ease;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 0;
+        }
+    }
+
+    .no {
+        position: absolute;
+        top: -0.5rem;
+        right: -0.5rem;
+        display: grid;
+        place-items: center;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        background: var(--ks-background-button-primary);
+        font-family: $font-family-monospace;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #ffffff;
+    }
+
+    h3 {
+        margin: 0;
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #ffffff;
+
+        @include media-breakpoint-down(md) {
+            align-self: end;
+        }
+    }
+
+    p {
+        margin: 0;
+        font-size: $font-size-sm;
+        color: rgba(255, 255, 255, 0.68);
+
+        @include media-breakpoint-down(md) {
+            align-self: start;
+        }
+    }
+</style>

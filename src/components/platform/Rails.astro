@@ -1,0 +1,65 @@
+---
+type Space = "full" | "none"
+
+interface Props {
+    dark?: boolean
+    top?: Space
+    bottom?: Space
+    lines?: boolean
+}
+
+const {
+    dark = false,
+    top = "full",
+    bottom = "full",
+    lines = true,
+} = Astro.props
+---
+
+<div class="container-xl">
+    <div
+        class:list={[
+            "rails",
+            `top-${top}`,
+            `bottom-${bottom}`,
+            { dark, bare: !lines },
+        ]}
+    >
+        <slot />
+    </div>
+</div>
+
+<style lang="scss">
+    .rails {
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+        --full: 7.5rem;
+
+        position: relative;
+        padding-inline: var(--inset);
+        border-inline: 1px solid var(--ks-border-primary);
+
+        @include media-breakpoint-down(md) {
+            --full: 4.5rem;
+        }
+
+        @include media-breakpoint-down(xl) {
+            border-inline: 0;
+        }
+
+        &.dark {
+            border-color: rgba(255, 255, 255, 0.11);
+        }
+
+        &.bare {
+            border-inline: 0;
+        }
+
+        &.top-full {
+            padding-top: var(--full);
+        }
+
+        &.bottom-full {
+            padding-bottom: var(--full);
+        }
+    }
+</style>

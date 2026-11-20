@@ -1,0 +1,185 @@
+---
+import Rails from "./Rails.astro"
+import SectionHead from "~/components/home/SectionHead.astro"
+import TabGroup from "~/components/common/TabGroup.astro"
+import TabPanel from "~/components/common/TabPanel.astro"
+import ArchitectureDiagram from "./ArchitectureDiagram.astro"
+
+const PARTS = [
+    {
+        zone: "control",
+        title: "Control plane",
+        text: "Decides what runs and when. Serves the UI, API, and MCP endpoint, fires triggers, and tracks every execution. It never runs your code.",
+    },
+    {
+        zone: "data",
+        title: "Data plane",
+        text: "Runs your code where your data lives: in the cloud, on-premises, or both. Workers connect back over gRPC, with mTLS configurable.",
+    },
+    {
+        zone: "queue",
+        title: "Queue and database",
+        text: "Holds state and passes work between the two planes. JDBC (Postgres, MySQL) in open source; Redis, AMQP, Kafka, or Elasticsearch in Enterprise.",
+    },
+]
+---
+
+<section class="architecture" id="architecture" aria-labelledby="arch-h">
+    <Rails>
+        <SectionHead id="arch-h" align="start">
+            Coordinate in one place. Run anywhere.
+            <Fragment slot="lead">
+                Kestra separates orchestration from execution. The control plane
+                decides what runs, workers run it next to your data, and the
+                queue keeps both in sync.
+            </Fragment>
+        </SectionHead>
+
+        <TabGroup
+            id="edition"
+            label="Edition"
+            variant="segmented"
+            flush
+            tabs={[{ label: "Open source" }, { label: "Enterprise" }]}
+        >
+            <TabPanel group="edition" index={1}>
+                <p class="edition-msg">
+                    <b>Trusted by thousands of customers worldwide</b>
+                    <span>
+                        Full-featured orchestration, free to self-host, and
+                        built in the open.
+                    </span>
+                </p>
+            </TabPanel>
+            <TabPanel group="edition" index={2}>
+                <p class="edition-msg">
+                    <b>Scalability and performance enterprises demand</b>
+                    <span>
+                        Worker groups isolate and scale workloads. Kafka and
+                        Elasticsearch backends handle enterprise throughput.{" "}
+                        <a href="/enterprise">
+                            Learn more about Enterprise Edition
+                        </a>
+                        .
+                    </span>
+                </p>
+            </TabPanel>
+        </TabGroup>
+
+        <div class="diagram" data-arch-diagram>
+            <ArchitectureDiagram />
+        </div>
+
+        <ul class="parts">
+            {PARTS.map((part) => (
+                <li tabindex="0" data-zone={part.zone}>
+                    <h3>{part.title}</h3>
+                    <p>{part.text}</p>
+                </li>
+            ))}
+        </ul>
+
+        <p class="closing">
+            Add workers to absorb load. Your flows don’t change.
+        </p>
+        <a class="more" href="/docs/architecture">
+            Learn more about architecture <span class="arrow">→</span>
+        </a>
+    </Rails>
+</section>
+
+<script>
+    function wireArchitecture() {
+        const diagram = document.querySelector<HTMLElement>(
+            "[data-arch-diagram]:not([data-wired])",
+        )
+        if (!diagram) return
+        diagram.dataset.wired = "true"
+        for (const part of document.querySelectorAll<HTMLElement>(
+            ".architecture [data-zone]",
+        )) {
+            if (diagram.contains(part)) continue
+            const on = () => (diagram.dataset.focus = part.dataset.zone)
+            const off = () => delete diagram.dataset.focus
+            part.addEventListener("mouseenter", on)
+            part.addEventListener("focus", on)
+            part.addEventListener("mouseleave", off)
+            part.addEventListener("blur", off)
+        }
+    }
+
+    document.addEventListener("astro:page-load", wireArchitecture)
+    wireArchitecture()
+</script>
+
+<style lang="scss">
+    @use "/src/components/about/style/section" as *;
+    @use "./style/platform" as *;
+
+    .architecture {
+        @include tinted;
+
+        &:has(#edition-tab-2[aria-selected="true"]) {
+            .diagram :global([data-edition="oss"]) {
+                display: none;
+            }
+
+            .diagram :global([data-edition="ent"]) {
+                display: flex;
+            }
+        }
+    }
+
+    .edition-msg {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        margin: 0 0 1.5rem;
+        min-height: 3.25rem;
+
+        b {
+            color: var(--ks-content-primary);
+        }
+
+        span {
+            color: var(--ks-content-secondary);
+        }
+
+        a {
+            @include text-link;
+        }
+    }
+
+    .parts {
+        @include card-grid(3);
+
+        margin-top: 1.5rem;
+
+        li {
+            @include card;
+
+            cursor: default;
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+
+            &:hover,
+            &:focus-visible {
+                outline: none;
+                border-color: var(--ks-content-link);
+                box-shadow: 0 10px 30px rgba(132, 5, 255, 0.12);
+            }
+        }
+    }
+
+    .closing {
+        margin: 2.5rem 0 0.75rem;
+        font-size: $font-size-lg;
+        font-weight: 600;
+        color: var(--ks-content-primary);
+    }
+
+    .more {
+        @include text-link;
+    }
+</style>
