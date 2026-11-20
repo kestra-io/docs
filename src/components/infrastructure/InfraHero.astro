@@ -1,7 +1,6 @@
 ---
 import { Icon } from "astro-icon/components"
 import PixelEdges from "~/components/about/PixelEdges.astro"
-import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
 
 const STAGES = [
     {
@@ -62,17 +61,14 @@ const ARC = "M0 102.4 A131.1 1342.5 0 0 1 100 102.4"
             <div class="stage">
                 <div class="top">
                     <div class="intro">
-                        <p class="eyebrow">
-                            <img
-                                src={kestraMark.src}
-                                alt=""
-                                width="16"
-                                height="16"
-                            />
-                            Kestra for Infrastructure
-                        </p>
                         <h1 id="infra-hero-title">
-                            Self-Service Infrastructure Orchestration
+                            <span class="product">
+                                Kestra for Infrastructure
+                                <span class="visually-hidden">:</span>
+                            </span>
+                            <span class="claim">
+                                Self-Service Orchestration
+                            </span>
                         </h1>
                         <p class="lead">
                             Kestra for Infrastructure turns the Terraform,
@@ -273,23 +269,62 @@ const ARC = "M0 102.4 A131.1 1342.5 0 0 1 100 102.4"
         }
     }
 
-    .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4375rem;
-        margin: 0 0 1.5rem;
-        padding: 0.3125rem 0.75rem 0.3125rem 0.5625rem;
-        border: 1px solid rgba(190, 170, 255, 0.28);
-        border-radius: 999px;
-        background: linear-gradient(
-            160deg,
-            rgba(130, 115, 190, 0.16),
-            rgba(22, 21, 30, 0.5)
-        );
-        font-size: 0.8125rem;
+    .product {
+        --sheen: linear-gradient(
+                90deg,
+                #ffffff 0%,
+                #e4dcff 25%,
+                #a996ff 50%,
+                #e4dcff 75%,
+                #ffffff 100%
+            )
+            0 0 / 200% 100% repeat-x;
+
+        position: relative;
+        display: block;
+        width: fit-content;
+        margin: 0 auto 1.25rem;
+        padding-bottom: 0.45em;
+        background: var(--sheen);
+        background-clip: text;
+        font-size: clamp(0.9375rem, 1.3vw, 1.125rem);
         font-weight: 500;
-        letter-spacing: 0.01em;
-        color: #ffffff;
+        letter-spacing: 0.08em;
+        line-height: 1.2;
+        text-transform: uppercase;
+        color: transparent;
+
+        &::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            height: 1px;
+            background: var(--sheen);
+            opacity: 0.35;
+        }
+
+        @include media-breakpoint-up(lg) {
+            margin-left: 0;
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .product,
+        .product::after {
+            animation: infra-hero-sheen 8s linear infinite;
+        }
+    }
+
+    @keyframes infra-hero-sheen {
+        to {
+            background-position-x: 200%;
+        }
+    }
+
+    .claim {
+        display: block;
     }
 
     h1 {
