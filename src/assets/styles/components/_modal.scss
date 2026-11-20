@@ -41,6 +41,12 @@ body:has(dialog.modal[open]) {
     overflow: hidden;
 }
 
+// Keep the scrollbar's space while a dialog locks the page, so the page doesn't jump.
+html[data-has-scrollbar]:has(dialog.modal[open]) {
+    scrollbar-gutter: stable;
+    background-color: color-mix(in srgb, #000 50%, var(--ks-background-body));
+}
+
 // Same scoping trap as the dropdown and the card: these properties are
 // declared on `.modal` and read with no fallback. VideoDialog.astro,
 // TutorialsGrid.vue and common/Modal.vue all use `.modal-header` /
