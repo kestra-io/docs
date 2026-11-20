@@ -66,7 +66,7 @@ Adopting workflow orchestration for security provides tangible benefits that go 
 
 Manual security tasks are not only slow but also prone to human error. Under pressure, an analyst might miss a critical step or make a mistake that could worsen a security incident. Automated workflows execute predefined processes consistently every time, eliminating variability and ensuring that security policies are always followed.
 
-This consistency frees up highly skilled security analysts from repetitive, low-level tasks, allowing them to focus on more complex threat hunting, strategic analysis, and improving security architecture. By codifying response procedures, organizations can [solve orchestration problems](https://kestra.io/resources/infrastructure/orchestration-problems-complexity) and scale their security operations without a linear increase in headcount.
+This consistency frees up highly skilled security analysts from repetitive, low-level tasks, allowing them to focus on more complex threat hunting, strategic analysis, and improving security architecture. By codifying response procedures, organizations can [solve orchestration problems](https://kestra.io/resources/orchestration) and scale their security operations without a linear increase in headcount.
 
 ### Improving Incident Response and Threat Intelligence
 

@@ -59,7 +59,12 @@ const {
     <PixelEdges left="tall" right="wide" />
     <div class="container-xl">
         <div class="grid">
-            <header class="head">
+            <header
+                class:list={[
+                    "head",
+                    { "has-visual": Astro.slots.has("visual") },
+                ]}
+            >
                 <h2 {id}>
                     <slot name="title">Replace what no longer serves you</slot>
                 </h2>
@@ -90,6 +95,13 @@ const {
                                     {cta.label}
                                 </a>
                             ))}
+                        </div>
+                    )
+                }
+                {
+                    Astro.slots.has("visual") && (
+                        <div class="visual">
+                            <slot name="visual" />
                         </div>
                     )
                 }
@@ -216,6 +228,32 @@ const {
             margin-top: 0.75rem;
             margin-inline: var(--inset);
             padding-inline: 0;
+        }
+
+        .visual {
+            width: 100%;
+            max-width: calc(26rem + 2 * var(--inset));
+            margin-top: 1.5rem;
+        }
+
+        @include media-breakpoint-up(xxl) {
+            &.has-visual {
+                grid-template-columns: fit-content(46rem) minmax(0, 1fr);
+                align-items: start;
+
+                > :not(.visual) {
+                    grid-column: 1;
+                }
+
+                .visual {
+                    grid-column: 2;
+                    grid-row: 1 / span 3;
+                    display: flex;
+                    justify-content: center;
+                    align-self: center;
+                    margin-top: 0;
+                }
+            }
         }
     }
 

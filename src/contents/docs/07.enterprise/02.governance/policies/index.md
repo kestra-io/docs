@@ -20,7 +20,7 @@ Policies address this with a model that supports:
 
 - **Mutate rules** — inject or remove property values before execution, on flows and plugins alike
 - **Validate rules** — block or warn when flows violate configuration requirements
-- **Enforcement modes** — control whether a Policy actively blocks, only reports, or is opt-in
+- **Enforcement modes** — control whether a Policy actively blocks, only reports, or is opt-in through `policyRefs` on a flow, task, or trigger
 - **Inheritance** — rules from parent namespaces apply to children, and children can only tighten them
 
 ## Policy structure
@@ -55,7 +55,7 @@ A Policy has no `type` field of its own — each rule has a `type` that selects 
 | `ACTIVE` | Rules are enforced on save and before execution. A `block` violation on a caller-initiated route (API, UI, webhook) returns `403` with the policy reason and creates no execution. System-initiated routes (schedule, flow trigger) skip the execution silently and log the block. Default. |
 | `EVALUATE` | Validate rule violations are reported in the Governance UI without blocking. Mutate rules (`Add`, `Delete`) are suppressed — no values are injected or removed, and the Governance UI shows no violations for them. Use this mode to audit validate rule compliance before enabling enforcement; it is not useful for auditing mutate rule coverage. |
 | `DISABLED` | The Policy is inactive. Rules are not checked. |
-| `REFERENCE` | The Policy is opt-in. It only applies to flows or tasks that explicitly list it via `policyRefs:`. Use reference policies for opt-in configuration injection (`Add` rules); validate rules are not enforced. |
+| `REFERENCE` | The Policy is opt-in. It only applies where a flow, task, or trigger lists it in `policyRefs`. Use reference policies for opt-in configuration injection (`Add` rules); validate rules are not enforced. See [Reference policies](#reference-policies). |
 
 New validate policies are typically started in `EVALUATE` mode to assess existing compliance before activating enforcement. Once violation counts are acceptable, switching to `ACTIVE` begins blocking.
 
@@ -322,7 +322,19 @@ Both can live in the same policy.
 
 ## Reference policies
 
-A Policy with `enforcement: REFERENCE` is not applied automatically. It applies only to flows or tasks that explicitly list it using `policyRefs:`. This lets teams share opt-in configuration bundles — named runner profiles, database connections, or compliance defaults that flows can adopt voluntarily.
+A Policy with `enforcement: REFERENCE` is not applied automatically. It applies only where a flow, task, or trigger lists it in `policyRefs`. This lets teams share opt-in configuration bundles, such as named runner profiles, database connections, or compliance defaults, that flows adopt voluntarily. A flow can only reference policies whose scope covers its namespace.
+
+`policyRefs` is valid in three places, and where you set it decides which rules in the bundle apply:
+
+| Where `policyRefs` is set | Rules that apply | Applies to |
+|---|---|---|
+| Flow | `on: FLOW` and `on: PLUGIN` | The flow, and every task and trigger in it |
+| Task | `on: PLUGIN` only | That task and the tasks nested in it |
+| Trigger | `on: PLUGIN` only | That trigger |
+
+### Reference a policy from a task
+
+Use one reference policy per connection, then reference it from each task that uses it. Each task names the account it connects with, so the choice stays visible in the flow. This also replaces flow-level plugin defaults from 1.x, as described in the [plugin defaults migration guide](../../../11.migration-guide/v2.0.0/plugin-defaults-removed/index.md#step-3--flow-level-plugindefaults).
 
 ```yaml
 # Policy: db-analytics
@@ -375,19 +387,29 @@ tasks:
       - db-analytics
 ```
 
-`policyRefs` is valid at the flow level, on individual tasks, and on triggers. The attachment level determines which rules in the bundle activate:
+### Reference a policy from a flow
 
-- **Flow-level `policyRefs`** — activates all rules in the bundle: both `on: FLOW` and `on: PLUGIN` rules apply across the entire flow.
-- **Task- or trigger-level `policyRefs`** — activates only `on: PLUGIN` rules, scoped to that plugin and its nested configuration. `on: FLOW` rules in the same bundle are filtered out at rule-scoping time and are never enforced.
-
-Flow-level `policyRefs` applies the bundle to all tasks in the flow:
+A flow-level reference applies the bundle's `on: FLOW` rules, so it can set flow properties such as `concurrency`, `retry`, or `labels`. This policy gives every flow that references it a concurrency limit of 2:
 
 ```yaml
-# Flow-level policyRefs — applies the bundle to all tasks
+# Policy: standard-concurrency
+id: standard-concurrency
+description: "Run at most two executions of a flow at a time."
+enforcement: REFERENCE
+rules:
+  - type: io.kestra.plugin.ee.rules.Add
+    on: FLOW
+    values:
+      concurrency:
+        limit: 2
+```
+
+```yaml
+# Flow-level policyRefs: the flow gets the concurrency limit
 id: daily-report
 namespace: company.team
 policyRefs:
-  - pydata-defaults
+  - standard-concurrency
 tasks:
   - id: transform
     type: io.kestra.plugin.scripts.python.Script
@@ -395,7 +417,13 @@ tasks:
       print("done")
 ```
 
-Triggers also support `policyRefs`:
+The policy only fills `concurrency` when the flow doesn't set it. To replace a value the flow sets, add `override: true` to the rule. See [Override behavior](#override-behavior).
+
+A flow-level reference also applies the bundle's `on: PLUGIN` rules to every task and trigger in the flow.
+
+### Reference a policy from a trigger
+
+A trigger-level reference applies the bundle's `on: PLUGIN` rules to that trigger only:
 
 ```yaml
 id: event-pipeline
@@ -417,7 +445,7 @@ triggers:
 If a referenced bundle contains `on: FLOW` rules and `policyRefs` is on a task or trigger, those rules are silently dropped. Place `policyRefs` at the flow level to activate them.
 :::
 
-Reference policies do not propagate through namespace inheritance — flows and tasks must opt in explicitly using `policyRefs:`. Reference policies are designed for opt-in configuration injection: use `Add` rules to supply credentials, defaults, or runner configuration that teams can adopt voluntarily. Validate rules (`Deny`, `Restrict`, `Require`) are not enforced in `REFERENCE` mode.
+Reference policies don't apply through namespace inheritance: a flow, task, or trigger must list them in `policyRefs`. Reference policies are designed for opt-in configuration injection: use `Add` rules to supply credentials, defaults, or runner configuration that teams can adopt voluntarily. Validate rules (`Deny`, `Restrict`, `Require`) are not enforced in `REFERENCE` mode.
 
 ## Visibility
 

@@ -118,6 +118,29 @@ tasks:
 For a full list of available properties, see the [Google Batch plugin documentation](/plugins/plugin-ee-gcp/google-cloud-task-runner/io.kestra.plugin.ee.gcp.runner.batch) or explore the configuration in the built-in Code Editor.
 :::
 
+## Choose the service account the VMs run as
+
+The task runner works with two service accounts:
+
+- `serviceAccount` is the JSON key Kestra uses to create the Batch job and read and write the staging bucket.
+- `runtimeServiceAccount` is the email of the service account the Batch VMs run as. When it's unset, the VMs run as the project's default Compute Engine service account.
+
+Set `runtimeServiceAccount` when the identity running the task isn't allowed to act as the default Compute Engine service account, or when the VMs should run with fewer permissions than that account has. The property accepts an email only. A JSON key fails the task with an error that points to `serviceAccount`.
+
+Set it next to the other task runner properties:
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.gcp.runner.Batch
+  projectId: "{{ secret('GCP_PROJECT_ID') }}"
+  region: europe-west9
+  bucket: "{{ secret('GCS_BUCKET') }}"
+  serviceAccount: "{{ secret('GOOGLE_SA') }}"
+  runtimeServiceAccount: batch-vms@my-project.iam.gserviceaccount.com
+```
+
+The roles each account needs are listed in [Required IAM roles](#required-iam-roles).
+
 ---
 
 ## Full setup guide: running Google Batch from scratch
@@ -135,14 +158,22 @@ You'll need the following prerequisites:
 
 ### Required IAM roles
 
-The service account used by Kestra needs the following roles:
+The service account used by Kestra (`serviceAccount`) needs the following roles:
 
 | Role | Purpose |
 |---|---|
 | `roles/batch.jobsEditor` | Create and manage Batch jobs |
 | `roles/logging.viewer` | Stream task logs from Cloud Logging |
 | `roles/storage.objectAdmin` | Read and write staging files in the GCS bucket |
-| `roles/iam.serviceAccountUser` | Allow Batch to run jobs as the Compute Engine service account |
+| `roles/iam.serviceAccountUser` | Allow Batch to run jobs as the service account the VMs run as, granted on that account |
+
+The service account the VMs run as, either `runtimeServiceAccount` or the default Compute Engine service account, needs these roles:
+
+| Role | Purpose |
+|---|---|
+| `roles/storage.objectUser` | Read and write the task's files in the GCS bucket |
+| `roles/batch.agentReporter` | Report the VM's state to Batch |
+| `roles/logging.logWriter` | Write the task's logs to Cloud Logging |
 
 ### Google Cloud Console setup
 
@@ -189,7 +220,7 @@ Next, create a key for this service account by going to **Keys → Add Key**, an
 
 See [Google credentials guide](../../../15.how-to-guides/google-credentials/index.md) for more details.
 
-Grant this service account access to the **Compute Engine default service account** by navigating to **IAM & Admin → Service Accounts → Permissions → Grant Access**, then assigning the **Service Account User** role.
+Grant this service account access to the **Compute Engine default service account** by navigating to **IAM & Admin → Service Accounts → Permissions → Grant Access**, then assigning the **Service Account User** role. If the VMs run as another account set in `runtimeServiceAccount`, grant the role on that account instead.
 
 ![compute](./compute.png)
 
