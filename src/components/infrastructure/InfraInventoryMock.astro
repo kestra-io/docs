@@ -132,7 +132,6 @@ const IMPORTED = [
                 ))}
             </div>
         </div>
-        <span class="veil"></span>
         <div class="sheet">
             <p class="mh">
                 <b>Import an inventory</b>
@@ -381,13 +380,6 @@ const IMPORTED = [
         color: var(--tile-ink);
     }
 
-    .veil {
-        position: absolute;
-        inset: 0;
-        background: var(--veil);
-        opacity: 0;
-    }
-
     .sheet {
         position: absolute;
         top: 7.2em;
@@ -619,8 +611,9 @@ const IMPORTED = [
             animation: inventory-press-open var(--loop) linear infinite both;
         }
 
-        .veil {
-            animation: inventory-veil var(--loop) ease-out infinite both;
+        .list,
+        .top {
+            animation: inventory-dim var(--loop) ease-out infinite both;
         }
 
         .sheet {
@@ -749,18 +742,18 @@ const IMPORTED = [
         }
     }
 
-    @keyframes inventory-veil {
+    @keyframes inventory-dim {
         0%,
         16% {
-            opacity: 0;
+            opacity: 1;
         }
         18%,
         41% {
-            opacity: 1;
+            opacity: 0.45;
         }
         43%,
         100% {
-            opacity: 0;
+            opacity: 1;
         }
     }
 
