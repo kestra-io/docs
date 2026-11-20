@@ -700,6 +700,7 @@ Published by the controller process — the server-side view of fleet capacity a
 | `controller.capacity.shared.used` | gauge | `worker_group` | Shared slots currently in use |
 | `controller.job.dispatched.total` | counter | `worker_group`, `worker_queue` | Total jobs dispatched to workers |
 | `controller.job.requeued.total` | counter | `worker_queue` | Jobs re-queued because no worker had capacity |
+| `controller.job.resubmitted.total` | counter | `worker_group`, `worker_queue` | Jobs resubmitted because the worker they were sent to never received them |
 | `controller.job.killed.total` | counter | `worker_queue` | Jobs short-circuited by the pre-dispatch kill check |
 | `controller.job.dispatch.failed.total` | counter | `worker_group`, `worker_queue` | Dispatch attempts that failed: a send error, a failure to save the running state, or a payload above the worker's message size limit |
 | `controller.worker.registered.total` | counter | `worker_group`, `worker_queue` | Worker-queue subscription registrations |
@@ -729,6 +730,7 @@ Published by each worker process — the worker-side view of capacity and throug
 | `worker.killed.count` | counter | Kill events received from the controller |
 | `worker.queue.enqueued` | counter | Total items put into a buffer |
 | `worker.queue.dequeued` | counter | Total items drained from a buffer |
+| `worker.stream.reconnect.count` | counter | New job streams opened to the controller after the previous one was lost, tagged by `reason` (`stream_error`, `stream_completed`, or `sync_unacknowledged`) |
 | `worker.trigger.running.count` | gauge | Trigger evaluations currently in progress |
 | `worker.trigger.started.count` | counter | Total trigger evaluations started |
 | `worker.trigger.ended.count` | counter | Total trigger evaluations completed |
