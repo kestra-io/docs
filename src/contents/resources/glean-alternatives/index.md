@@ -23,7 +23,7 @@ faq:
 
 Enterprise search tools promise a single pane of glass for all company knowledge, yet many organizations find themselves constrained by closed ecosystems, opaque pricing, and rigid black-box architectures. While Glean has established itself as a prominent AI search assistant, engineering and platform teams frequently hit friction when they need to customize retrieval pipelines, connect on-premise data stores, or trigger downstream actions based on search insights.
 
-The leading alternatives to Glean in 2026 include Kestra, Onyx, Dust, Microsoft Copilot, GoSearch, and Workato—each suited to different workloads such as open-source search, developer-first orchestration, and M365 productivity. This guide compares their core strengths, trade-offs, and ideal use cases.
+The leading alternatives to Glean in 2026 include Kestra, Onyx, Dust, Microsoft Copilot, GoSearch, Workato, and Mithrandir—each suited to different workloads such as open-source search, developer-first orchestration, and M365 productivity. This guide compares their core strengths, trade-offs, and ideal use cases.
 
 ## Why teams are exploring Glean alternatives in 2026
 
@@ -47,7 +47,7 @@ Standard semantic search often returns irrelevant results when dealing with high
 ### Extensibility into automated workflows
 The most valuable enterprise platforms bridge the gap between static knowledge discovery and active execution. Look for tools that not only answer user queries using LLMs but can also execute subsequent tasks, such as generating reports, updating CRM records, or orchestrating data pipelines upon request.
 
-## The 6 best Glean alternatives and competitors
+## The 7 best Glean alternatives and competitors
 
 ### 1. Kestra (Best for workflow orchestration and automated AI pipelines)
 Kestra is an open-source workflow orchestration platform that unifies data, AI, infrastructure, and business processes under a single declarative control plane. Rather than functioning as a standalone search bar, Kestra provides the foundational execution engine to build custom enterprise search and RAG pipelines using YAML. With {totalPlugins}+ plugins connecting vector databases, LLM providers (OpenAI, Anthropic, Mistral, Vertex AI), and SaaS tools, Kestra enables engineering teams to ingest documents, generate embeddings, and orchestrate complex AI workflows without vendor lock-in.
@@ -92,6 +92,13 @@ Workato is an enterprise-grade integration platform (iPaaS) that combines robust
 - **Distinctive feature:** Massive enterprise connector library and advanced error-handling governance.
 - **Honest limitation:** High cost structure and steeper learning curve compared to lightweight search tools.
 
+### 7. Mithrandir (Best for self-hosted company memory shared by every AI agent)
+Mithrandir installs in a company's own cloud account (AWS, Azure or Google Cloud) or on-premises and builds one sourced record of company knowledge from the work tools a team already uses, including Slack, Gmail, Google Drive, Jira and GitHub. It serves that record over the Model Context Protocol (MCP), so Claude, Cursor, GitHub Copilot and other MCP clients answer from the same knowledge. Answers are limited to what each person can already access in the source tools, and every answer cites its sources.
+
+- **Best for:** Companies that want the AI agents they already use to work from company knowledge, with the deployment running in their own cloud or on their own servers.
+- **Distinctive feature:** One MCP server for every agent, with per-person access mirrored from each source tool.
+- **Honest limitation:** Not open source and no hosted version; the customer runs the deployment in their own environment.
+
 ## Comparing leading Glean competitors
 
 | Tool | License | Primary Focus | Open Source | Custom RAG / Workflows | Deployment Model |
@@ -102,6 +109,7 @@ Workato is an enterprise-grade integration platform (iPaaS) that combines robust
 | **Microsoft Copilot** | Proprietary (SaaS) | M365 Productivity & Search | No | Limited (Microsoft Ecosystem) | Cloud SaaS |
 | **GoSearch** | Proprietary (SaaS) | Lightweight Team Discovery | No | Limited (Out-of-the-box) | Cloud SaaS |
 | **Workato** | Proprietary (SaaS) | Enterprise iPaaS & Automation | No | Advanced (Process Automation) | Cloud SaaS |
+| **Mithrandir** | Proprietary (self-hosted) | Company memory for AI agents over MCP | No | Moderate (MCP tools for any agent) | Self-Hosted (AWS, Azure, GCP, on-prem) |
 
 ## How to choose the right enterprise AI and search tool
 
