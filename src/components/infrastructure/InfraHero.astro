@@ -268,11 +268,8 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
 
     .product {
         display: block;
-        text-transform: uppercase;
-    }
-
-    .claim {
-        --sheen: linear-gradient(
+        width: fit-content;
+        background: linear-gradient(
                 90deg,
                 #ffffff 0%,
                 #e4dcff 25%,
@@ -281,24 +278,30 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
                 #ffffff 100%
             )
             0 0 / 200% 100% repeat-x;
+        background-clip: text;
+        filter: drop-shadow(0 0 0.3em rgba(169, 150, 255, 0.45));
+        text-transform: uppercase;
+        color: transparent;
 
+        @include media-breakpoint-down(lg) {
+            margin-inline: auto;
+        }
+    }
+
+    .claim {
         display: block;
         margin-top: 0.4em;
-        background: var(--sheen);
-        background-clip: text;
         font-size: 0.5em;
         font-weight: 500;
+        letter-spacing: -0.01em;
 
         @include media-breakpoint-down(md) {
             font-size: 0.62em;
         }
-
-        letter-spacing: -0.01em;
-        color: transparent;
     }
 
     @media (prefers-reduced-motion: no-preference) {
-        .claim {
+        .product {
             animation: infra-hero-sheen 8s linear infinite;
         }
     }

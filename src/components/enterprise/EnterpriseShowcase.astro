@@ -160,6 +160,12 @@ for (const panel of PANELS) {
                     </div>
                 ))}
             </div>
+
+            {Astro.slots.has("foot") && (
+                <div class="foot">
+                    <slot name="foot" />
+                </div>
+            )}
         </div>
     </div>
 </section>
@@ -301,6 +307,16 @@ for (const panel of PANELS) {
                 max-width: 38rem;
                 margin: 1.5rem 0 0;
             }
+        }
+    }
+
+    .foot {
+        display: flex;
+        justify-content: center;
+        padding: clamp(2.5rem, 4vw, 3.5rem) var(--inset) 0;
+
+        @include media-breakpoint-down(xl) {
+            padding-bottom: clamp(2.5rem, 4vw, 3.5rem);
         }
     }
 
