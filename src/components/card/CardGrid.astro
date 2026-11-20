@@ -1,9 +1,8 @@
 ---
-import type { Component } from "vue"
 import { Icon } from "astro-icon/components"
 
 interface Item {
-    icon?: string | Component;
+    icon?: string | ((props: { class?: string; size?: number }) => unknown);
     number?: string;
     title: string;
     subtitle?: string;
