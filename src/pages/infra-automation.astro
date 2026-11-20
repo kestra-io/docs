@@ -234,7 +234,8 @@ const STORIES: Story[] = [
                 Keep the flexibility of your own infrastructure as code, whether
                 Terraform, Ansible, PowerShell or any other tool, on any cloud
                 or hypervisor. Teams request what they need, and Kestra for
-                Infrastructure orchestrates every resource from request to retirement.
+                Infrastructure orchestrates every resource from request to
+                retirement.
             </Fragment>
             <InfraAppBuilderMock slot="catalog" />
             <AppsMock
@@ -263,3 +264,10 @@ const STORIES: Story[] = [
         <InfraClosing />
     </PageShell>
 </Layout>
+
+<script>
+    import { watchDarkSections } from "~/utils/headerDarkSections"
+
+    document.addEventListener("astro:page-load", watchDarkSections)
+    watchDarkSections()
+</script>

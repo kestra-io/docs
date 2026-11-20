@@ -22,7 +22,7 @@ const STAGES = [
         },
     },
     {
-        icon: "mdi:layers-outline",
+        icon: "mdi:server-plus-outline",
         title: "Provision",
         notes: {
             pending: "Terraform · Ansible",
@@ -40,7 +40,7 @@ const STAGES = [
         },
     },
     {
-        icon: "mdi:power",
+        icon: "mdi:timer-sand-complete",
         title: "Retire",
         notes: {
             pending: "when the lease ends",
@@ -51,7 +51,12 @@ const STAGES = [
 ]
 
 const ACTIVE = 2
-const ARC = "M0 102.4 A131.1 1342.5 0 0 1 100 102.4"
+const RADIUS = 131.1
+const PIXELS = Array.from({ length: 129 }, (_, index) => {
+    const x = -30 + index * 1.25
+    const y = RADIUS - Math.sqrt(RADIUS ** 2 - (x - 50) ** 2)
+    return { x, y: y.toFixed(3) }
+})
 ---
 
 <section class="infra-hero" aria-labelledby="infra-hero-title">
@@ -99,14 +104,12 @@ const ARC = "M0 102.4 A131.1 1342.5 0 0 1 100 102.4"
 
                 <div class="life" data-life style="--step: 2.4">
                     <div class="planet" aria-hidden="true"></div>
-                    <svg
-                        class="trail"
-                        viewBox="0 0 100 100"
-                        preserveAspectRatio="none"
-                        aria-hidden="true"
-                    >
-                        <path d={ARC} />
-                    </svg>
+                    <div class="horizon" aria-hidden="true">
+                        {PIXELS.map((pixel) => (
+                            <i style={`--x: ${pixel.x}; --y: ${pixel.y}`} />
+                        ))}
+                        <b class="head" />
+                    </div>
                     <ol aria-label="The life of an infrastructure request, from request to retirement">
                         {STAGES.map((stage, index) => (
                             <li
@@ -117,12 +120,6 @@ const ARC = "M0 102.4 A131.1 1342.5 0 0 1 100 102.4"
                             >
                                 <span class="glyph">
                                     <Icon name={stage.icon} />
-                                    <span class="sparks" aria-hidden="true">
-                                        <i />
-                                        <i />
-                                        <i />
-                                        <i />
-                                    </span>
                                 </span>
                                 <strong>{stage.title}</strong>
                                 <span class="note">
@@ -386,7 +383,7 @@ const ARC = "M0 102.4 A131.1 1342.5 0 0 1 100 102.4"
         left: 50%;
         width: 262.2cqw;
         aspect-ratio: 1;
-        border: 1px solid rgba(185, 166, 255, 0.4);
+        border: 1px solid rgba(185, 166, 255, 0.12);
         border-radius: 50%;
         background:
             radial-gradient(
@@ -406,41 +403,58 @@ const ARC = "M0 102.4 A131.1 1342.5 0 0 1 100 102.4"
         }
     }
 
-    .trail {
-        --at: calc(10% + 20% * var(--step));
+    .horizon {
+        --at: calc(10 + 20 * var(--step));
 
         position: absolute;
-        top: calc(var(--glyph) / 2);
-        left: 0;
-        width: 100%;
-        height: calc(var(--sag) * 1.5625);
-        overflow: visible;
-        filter: drop-shadow(0 0 0.375rem rgba(143, 123, 255, 0.9));
-        mask-image:
-            linear-gradient(
-                90deg,
-                transparent calc(var(--at) - 28%),
-                #000 var(--at),
-                transparent var(--at)
-            ),
-            linear-gradient(
-                90deg,
-                transparent 10%,
-                #000 22%,
-                #000 90%,
-                transparent 94%
-            );
-        mask-composite: intersect;
-
-        path {
-            fill: none;
-            stroke: #b9a6ff;
-            stroke-width: 2;
-            vector-effect: non-scaling-stroke;
-        }
+        inset: 0;
+        pointer-events: none;
 
         @include media-breakpoint-down(md) {
             display: none;
+        }
+
+        i,
+        .head {
+            position: absolute;
+            translate: -50% -50%;
+        }
+
+        i {
+            --ahead: clamp(0, var(--at) - var(--x) + 1, 1);
+            --tail: clamp(0, 1 - (var(--at) - var(--x)) / 30, 1);
+            --edge: clamp(0, (75 - abs(var(--x) - 50)) / 30, 1);
+            --lit: calc(var(--ahead) * (0.3 + 0.7 * var(--tail)));
+
+            top: calc(var(--glyph) / 2 + var(--y) * 1cqw);
+            left: calc(var(--x) * 1cqw);
+            width: 0.3125rem;
+            aspect-ratio: 1;
+            border-radius: 0.03125rem;
+            background: color-mix(
+                in srgb,
+                #e9c1ff calc(var(--tail) * var(--ahead) * 100%),
+                #a950ff
+            );
+            box-shadow: 0 0 calc(var(--lit) * 0.625rem)
+                rgba(169, 80, 255, calc(var(--lit) * 0.9));
+            opacity: calc(var(--edge) * (0.22 + 0.78 * var(--lit)));
+        }
+
+        .head {
+            top: calc(
+                var(--glyph) / 2 +
+                    (131.1 - sqrt(17187.21 - pow(var(--at) - 50, 2))) * 1cqw
+            );
+            left: calc(var(--at) * 1cqw);
+            width: 0.5rem;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: #f62e76;
+            box-shadow:
+                0 0 0.5rem #f62e76,
+                0 0 1.25rem rgba(246, 46, 118, 0.6);
+            opacity: clamp(0, min(var(--at) - 2, 96 - var(--at)) / 6, 1);
         }
     }
 
@@ -595,115 +609,48 @@ const ARC = "M0 102.4 A131.1 1342.5 0 0 1 100 102.4"
     }
 
     .glyph {
+        --mark: rgba(255, 255, 255, 0.35);
+        --arm: 0.75rem;
+
         position: relative;
         display: grid;
         transform: scale(var(--scale, 1));
         place-items: center;
         width: var(--glyph);
         height: var(--glyph);
-        border: 1px solid rgba(255, 255, 255, 0.14);
         border-radius: 0.625rem;
-        background: linear-gradient(
-            180deg,
-            rgba(48, 48, 58, 0.55),
-            rgba(24, 24, 30, 0.55)
-        );
+        background-color: rgba(52, 44, 118, 0.45);
         backdrop-filter: blur(0.75rem);
         box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.12),
+            inset 0 0 0 1px rgba(214, 204, 255, 0.22),
             0 10px 30px rgba(0, 0, 0, 0.5);
         color: rgba(255, 255, 255, 0.45);
         transition:
             transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
-            border-color 0.6s ease,
-            color 0.6s ease,
-            box-shadow 0.6s ease;
+            background-color 0.6s ease,
+            box-shadow 0.6s ease,
+            color 0.6s ease;
 
         [data-icon] {
             width: 1.5rem;
             height: 1.5rem;
         }
 
-        &::after {
+        &::before {
             content: "";
             position: absolute;
-            inset: -1px;
-            padding: 1.5px;
+            inset: 0;
+            border: 2px solid var(--mark);
             border-radius: inherit;
-            background: conic-gradient(
-                from var(--infra-hero-spin),
-                transparent 0 55%,
-                #b9a6ff 78%,
-                #ffffff 92%,
-                transparent
-            );
             mask:
-                linear-gradient(#000 0 0) content-box exclude,
-                linear-gradient(#000 0 0);
-            opacity: 0;
-            transition: opacity 0.6s ease;
+                linear-gradient(#000 0 0) top left / var(--arm) var(--arm),
+                linear-gradient(#000 0 0) top right / var(--arm) var(--arm),
+                linear-gradient(#000 0 0) bottom left / var(--arm) var(--arm),
+                linear-gradient(#000 0 0) bottom right / var(--arm) var(--arm);
+            mask-repeat: no-repeat;
+            transition: border-color 0.6s ease;
+            pointer-events: none;
         }
-    }
-
-    .sparks {
-        position: absolute;
-        inset: 0;
-    }
-
-    .sparks i {
-        position: absolute;
-        width: var(--size, 0.5rem);
-        aspect-ratio: 1;
-        background: #ffffff;
-        clip-path: polygon(
-            50% 0,
-            60% 40%,
-            100% 50%,
-            60% 60%,
-            50% 100%,
-            40% 60%,
-            0 50%,
-            40% 40%
-        );
-        opacity: 0;
-        transition: opacity 0.6s ease;
-
-        &:nth-child(1) {
-            top: -0.875rem;
-            left: -0.625rem;
-        }
-
-        &:nth-child(2) {
-            --size: 0.3125rem;
-            --delay: -0.5s;
-
-            top: -0.5rem;
-            right: -0.875rem;
-        }
-
-        &:nth-child(3) {
-            --size: 0.375rem;
-            --delay: -1s;
-
-            bottom: -0.625rem;
-            left: -1rem;
-        }
-
-        &:nth-child(4) {
-            --size: 0.5625rem;
-            --delay: -1.4s;
-
-            right: -0.75rem;
-            bottom: -0.875rem;
-        }
-    }
-
-    .live .glyph::after {
-        opacity: 1;
-    }
-
-    .live .sparks i {
-        opacity: 0.8;
     }
 
     @media (prefers-reduced-motion: no-preference) {
@@ -711,25 +658,8 @@ const ARC = "M0 102.4 A131.1 1342.5 0 0 1 100 102.4"
             animation: infra-hero-breathe 2.4s ease-in-out infinite;
         }
 
-        .live .glyph::after {
-            animation: infra-hero-spin 2.4s linear infinite;
-        }
-
-        .live .sparks i {
-            animation: infra-hero-twinkle 1.8s ease-in-out infinite;
-            animation-delay: var(--delay, 0s);
-        }
-    }
-
-    @property --infra-hero-spin {
-        syntax: "<angle>";
-        inherits: false;
-        initial-value: 0deg;
-    }
-
-    @keyframes infra-hero-spin {
-        to {
-            --infra-hero-spin: 360deg;
+        .live .glyph::before {
+            animation: infra-hero-lock 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
         }
     }
 
@@ -739,28 +669,26 @@ const ARC = "M0 102.4 A131.1 1342.5 0 0 1 100 102.4"
         }
     }
 
-    @keyframes infra-hero-twinkle {
-        0%,
-        100% {
-            opacity: 0;
-            scale: 0.4;
-        }
-
-        50% {
-            opacity: 1;
-            scale: 1;
+    @keyframes infra-hero-lock {
+        from {
+            inset: -0.375rem;
+            opacity: 0.4;
         }
     }
 
     .done .glyph {
-        color: #b9a6ff;
+        --mark: rgba(255, 255, 255, 0.6);
+
+        color: #d9ceff;
     }
 
     .live .glyph {
-        border-color: rgba(255, 255, 255, 0.45);
+        --mark: #ffffff;
+
+        background-color: rgb(52, 44, 118);
         box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.3),
-            0 0 22px rgba(255, 255, 255, 0.12),
+            inset 0 0 0 1px rgba(214, 204, 255, 0.45),
+            0 0 22px rgba(143, 123, 255, 0.25),
             0 10px 30px rgba(0, 0, 0, 0.5);
         color: #ffffff;
         transform: scale(calc(var(--scale, 1) * 1.14));
