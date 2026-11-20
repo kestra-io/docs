@@ -931,7 +931,9 @@ const APPS = [
         }
 
         .cursor {
-            animation: app-builder-cursor var(--loop) infinite both;
+            animation:
+                app-builder-cursor var(--loop) infinite both,
+                app-builder-cursor-show var(--loop) linear infinite both;
         }
 
         .arrow {
@@ -1021,6 +1023,21 @@ const APPS = [
         97.43%,
         100% {
             translate: 36em 27em;
+        }
+    }
+
+    @keyframes app-builder-cursor-show {
+        0%,
+        0% {
+            opacity: 0;
+        }
+        1.5%,
+        88% {
+            opacity: 1;
+        }
+        91%,
+        100% {
+            opacity: 0;
         }
     }
 

@@ -26,7 +26,7 @@ interface Request {
 interface Props {
     apps?: App[]
     request?: Request
-    people?: string[]
+    people?: { name: string; icon: string }[]
 }
 
 const DEFAULT_APPS: App[] = [
@@ -98,12 +98,12 @@ const DEFAULT_REQUEST: Request = {
 const {
     apps: APPS = DEFAULT_APPS,
     request = DEFAULT_REQUEST,
-    people: names,
+    people,
 } = Astro.props
 
 const CURSORS = PEOPLE.map((person, idx) => ({
     ...person,
-    name: names?.[idx] ?? person.name,
+    ...people?.[idx],
 }))
 ---
 
@@ -820,6 +820,14 @@ const CURSORS = PEOPLE.map((person, idx) => ({
 
             :global(html.dark) & {
                 --tone: 140, 196, 255;
+            }
+        }
+
+        .tall &.admin {
+            --tone: 16, 133, 110;
+
+            :global(html.dark) & {
+                --tone: 102, 214, 180;
             }
         }
 

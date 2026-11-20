@@ -615,7 +615,7 @@ const rows = (task?: number) =>
     }
 
     .cursor {
-        --tone: 24, 24, 30;
+        --tone: 204, 62, 138;
 
         position: absolute;
         top: 0;
@@ -629,7 +629,7 @@ const rows = (task?: number) =>
         pointer-events: none;
 
         :global(html.dark) & {
-            --tone: 247, 247, 248;
+            --tone: 240, 140, 190;
         }
 
         svg {
@@ -670,7 +670,9 @@ const rows = (task?: number) =>
         }
 
         .cursor {
-            animation: lease-cursor var(--loop) infinite both;
+            animation:
+                lease-cursor var(--loop) infinite both,
+                lease-cursor-show var(--loop) linear infinite both;
         }
 
         .entry.r-extend .extend {
@@ -815,6 +817,21 @@ const rows = (task?: number) =>
         24%,
         100% {
             translate: 3em 31em;
+        }
+    }
+
+    @keyframes lease-cursor-show {
+        0%,
+        0.5% {
+            opacity: 0;
+        }
+        2.5%,
+        24% {
+            opacity: 1;
+        }
+        27%,
+        100% {
+            opacity: 0;
         }
     }
 
