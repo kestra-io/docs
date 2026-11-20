@@ -561,6 +561,8 @@ POST /api/v1/{tenant}/namespaces/{namespace}/policies     # namespace-scoped
 
 Policies can also be exported as YAML and imported into other namespaces or environments.
 
+To manage tenant-scoped policies from the command line or a CI pipeline, use the [`kestractl policies` commands](../../../kestra-cli/kestractl/index.md#policies-enterprise-edition).
+
 ## Verifying policy behavior
 
 ### Preview the effective policy chain
