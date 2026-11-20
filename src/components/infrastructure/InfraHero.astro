@@ -170,21 +170,6 @@ const PIXELS = Array.from({ length: 65 }, (_, index) => 10 + index * 1.25)
             ),
             #111114;
         color: #ffffff;
-
-        &::after {
-            content: "";
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            height: 1px;
-            background: linear-gradient(
-                90deg,
-                transparent 10%,
-                rgba(118, 100, 255, 0.35) 50%,
-                transparent 90%
-            );
-        }
     }
 
     .upper {
