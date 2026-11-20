@@ -1,0 +1,826 @@
+---
+import { Icon } from "astro-icon/components"
+import PixelEdges from "~/components/about/PixelEdges.astro"
+
+const STAGES = [
+    {
+        icon: "mdi:file-document-outline",
+        title: "Request",
+        notes: {
+            pending: "Linux VM · staging",
+            live: "Linux VM · staging",
+            done: "submitted by Requester",
+        },
+    },
+    {
+        icon: "mdi:account-check-outline",
+        title: "Approve",
+        notes: {
+            pending: "sign-off required",
+            live: "waiting for Approver",
+            done: "Approver signed off",
+        },
+    },
+    {
+        icon: "mdi:server-plus-outline",
+        title: "Provision",
+        notes: {
+            pending: "Terraform · Ansible",
+            live: "Terraform · Ansible running",
+            done: "provisioned in 4 min",
+        },
+    },
+    {
+        icon: "mdi:shield-sync-outline",
+        title: "Patch",
+        notes: {
+            pending: "patch window",
+            live: "Ansible · patching 42 hosts",
+            done: "patched · back in service",
+        },
+    },
+    {
+        icon: "mdi:timer-sand-complete",
+        title: "Retire",
+        notes: {
+            pending: "when the lease ends",
+            live: "cleaning up",
+            done: "cleaned up",
+        },
+    },
+]
+
+const ACTIVE = 2
+const PIXELS = Array.from({ length: 65 }, (_, index) => 10 + index * 1.25)
+---
+
+<section class="infra-hero" aria-labelledby="infra-hero-title">
+    <PixelEdges left="tall" right="wide" />
+    <div class="frame surface-dark" data-header-dark>
+        <div class="upper">
+            <div class="container-xl">
+                <div class="stage">
+                    <div class="top">
+                        <div class="intro">
+                            <h1 id="infra-hero-title">
+                                <span class="product">
+                                    Kestra for Infrastructure
+                                    <span class="visually-hidden">:</span>
+                                </span>
+                                <span class="claim">
+                                    Self-Service Orchestration
+                                </span>
+                            </h1>
+                            <p class="lead">
+                                Turn the Terraform, Ansible and scripts you
+                                already run into a self-service catalog, with an
+                                approval, an owner and a lease on every
+                                resource.
+                            </p>
+                            <div class="buttons">
+                                <a href="/demo" class="btn-solid">
+                                    Talk to our team{" "}
+                                    <Icon name="mdi:chevron-right" />
+                                </a>
+                                <a href="#infra-showcase" class="btn-ghost">
+                                    See how it works
+                                </a>
+                            </div>
+                        </div>
+                        <button
+                            type="button"
+                            class="video"
+                            data-video="bFR0ZxFCsSQ"
+                            aria-label="Play the Kestra for Infrastructure video"
+                        >
+                            <span class="poster">
+                                <span class="kicker">Watch the video</span>
+                                <b>Meet Kestra for Infrastructure</b>
+                            </span>
+                            <span class="play">
+                                <Icon name="mdi:play" />
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="band">
+            <div class="container-xl">
+                <div class="timeline">
+                    <p class="cycle">From request to retirement</p>
+                    <div class="life" data-life style="--step: 2.4">
+                        <div class="horizon" aria-hidden="true">
+                            {PIXELS.map((pixel) => (
+                                <i style={`--x: ${pixel}`} />
+                            ))}
+                            <b class="head" />
+                        </div>
+                        <ol aria-label="The life of an infrastructure request, from request to retirement">
+                            {STAGES.map((stage, index) => (
+                                <li
+                                    class:list={{
+                                        done: index < ACTIVE,
+                                        live: index === ACTIVE,
+                                    }}
+                                >
+                                    <span class="glyph">
+                                        <Icon name={stage.icon} />
+                                    </span>
+                                    <strong>{stage.title}</strong>
+                                    <span class="note">
+                                        {Object.entries(stage.notes).map(
+                                            ([when, note]) => (
+                                                <span
+                                                    data-when={when}
+                                                    aria-hidden={
+                                                        when !== "done"
+                                                    }
+                                                >
+                                                    {note}
+                                                </span>
+                                            ),
+                                        )}
+                                    </span>
+                                </li>
+                            ))}
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .infra-hero {
+        position: relative;
+        margin-top: -67px;
+        background: var(--ks-background-body);
+    }
+
+    .frame {
+        position: relative;
+        overflow: hidden;
+        background:
+            radial-gradient(
+                90% 80% at 85% 10%,
+                rgba(150, 130, 255, 0.06),
+                transparent 60%
+            ),
+            #111114;
+        color: #ffffff;
+    }
+
+    .upper {
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: -45%;
+            right: 6%;
+            width: 30rem;
+            height: 190%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(132, 104, 255, 0.5) 36%,
+                rgba(224, 216, 255, 0.42) 50%,
+                rgba(132, 104, 255, 0.45) 64%,
+                transparent
+            );
+            filter: blur(2.5rem);
+            transform: rotate(38deg);
+            pointer-events: none;
+
+            @include media-breakpoint-down(lg) {
+                display: none;
+            }
+        }
+    }
+
+    .container-xl {
+        position: relative;
+        z-index: 1;
+
+        @include media-breakpoint-down(md) {
+            padding-inline: 2rem;
+        }
+    }
+
+    .stage {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 8rem clamp(1.5rem, 4vw, 3.5rem) 5rem;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            padding: 8rem 0 3.5rem;
+        }
+    }
+
+    .band {
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .timeline {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 3.5rem clamp(1.5rem, 4vw, 3.5rem) 4rem;
+
+        @include media-breakpoint-down(md) {
+            padding: 3rem 0 3.5rem;
+        }
+    }
+
+    .top {
+        display: grid;
+        gap: 3rem;
+        justify-items: center;
+        width: 100%;
+
+        @include media-breakpoint-down(lg) {
+            gap: 0;
+        }
+
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+            align-items: center;
+            gap: clamp(2rem, 4vw, 3.5rem);
+            text-align: left;
+        }
+    }
+
+    .intro {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        @include media-breakpoint-down(lg) {
+            display: contents;
+        }
+
+        @include media-breakpoint-up(lg) {
+            align-items: flex-start;
+        }
+    }
+
+    .video {
+        @include media-breakpoint-down(lg) {
+            order: 1;
+            margin-top: 2.5rem;
+        }
+
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 100%;
+        max-width: 44rem;
+        aspect-ratio: 16 / 9;
+        padding: 0;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 0.875rem;
+        background:
+            radial-gradient(
+                70% 90% at 80% 0%,
+                rgba(112, 88, 255, 0.35),
+                transparent 60%
+            ),
+            radial-gradient(
+                60% 70% at 0% 100%,
+                rgba(246, 46, 118, 0.12),
+                transparent 60%
+            ),
+            radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1.5px) 0
+                0 / 1.25rem 1.25rem,
+            #0c0c10;
+        box-shadow: 0 1.5rem 3rem -1.5rem rgba(0, 0, 0, 0.6);
+        color: #ffffff;
+        cursor: pointer;
+
+        :global(iframe) {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        &:focus-visible {
+            outline: 2px solid #b9a6ff;
+            outline-offset: 3px;
+        }
+    }
+
+    .poster {
+        position: absolute;
+        right: 1.5rem;
+        bottom: 1.25rem;
+        left: 1.5rem;
+        display: grid;
+        gap: 0.35rem;
+        text-align: left;
+
+        b {
+            font-size: clamp(1rem, 1.6vw, 1.25rem);
+            font-weight: 600;
+            line-height: 1.25;
+        }
+    }
+
+    .kicker {
+        font-size: 0.75rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .play {
+        display: grid;
+        place-items: center;
+        width: 4.5rem;
+        height: 4.5rem;
+        border-radius: 50%;
+        background:
+            radial-gradient(
+                120% 90% at 30% 0%,
+                rgba(255, 255, 255, 0.28),
+                transparent 55%
+            ),
+            rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(0.875rem) saturate(1.6);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.4),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.22),
+            0 4px 14px -6px rgba(0, 0, 0, 0.35);
+        transition:
+            transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+            background-color 0.3s ease;
+
+        [data-icon] {
+            width: 1.75rem;
+            height: 1.75rem;
+            margin-left: 0.2rem;
+        }
+
+        .video:hover & {
+            transform: scale(1.06);
+        }
+    }
+
+    .product {
+        display: block;
+        width: fit-content;
+        background: linear-gradient(
+                90deg,
+                #ffffff 0%,
+                #e4dcff 25%,
+                #a996ff 50%,
+                #e4dcff 75%,
+                #ffffff 100%
+            )
+            0 0 / 200% 100% repeat-x;
+        background-clip: text;
+        text-transform: uppercase;
+        color: transparent;
+
+        @include media-breakpoint-down(lg) {
+            margin-inline: auto;
+        }
+    }
+
+    .claim {
+        display: block;
+        margin-top: 0.4em;
+        font-size: 0.5em;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+
+        @include media-breakpoint-down(md) {
+            font-size: 0.62em;
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .product {
+            animation: infra-hero-sheen 8s linear infinite;
+        }
+    }
+
+    @keyframes infra-hero-sheen {
+        to {
+            background-position-x: 200%;
+        }
+    }
+
+    h1 {
+        max-width: 13em;
+        margin: 0;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+
+        @include media-breakpoint-up(lg) {
+            font-size: clamp(2.5rem, 4.2vw, 3.75rem);
+        }
+
+        @include media-breakpoint-down(md) {
+            font-size: clamp(1.75rem, 8.2vw, 2.5rem);
+        }
+
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.05;
+        text-wrap: balance;
+        color: #ffffff;
+    }
+
+    .lead {
+        max-width: 38rem;
+        margin: 1.5rem 0 0;
+        font-size: 1.1875rem;
+        line-height: 1.55;
+        text-wrap: balance;
+        color: rgba(255, 255, 255, 0.72);
+    }
+
+    .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-top: 2.25rem;
+
+        @include media-breakpoint-up(lg) {
+            justify-content: flex-start;
+        }
+
+        @include media-breakpoint-down(lg) {
+            order: 2;
+            margin-top: 2rem;
+        }
+
+        @include media-breakpoint-down(sm) {
+            flex-direction: column;
+            justify-self: stretch;
+
+            > a {
+                justify-content: center;
+            }
+        }
+    }
+
+    .life {
+        --glyph: 3.5rem;
+        container-type: inline-size;
+
+        position: relative;
+        width: 100%;
+        max-width: 64rem;
+        margin: 2.5rem 0 0;
+
+        @include media-breakpoint-down(md) {
+            max-width: 20rem;
+            margin-top: 2rem;
+        }
+    }
+
+    .cycle {
+        margin: 0;
+        font-size: 0.75rem;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .horizon {
+        --at: calc(10 + 20 * var(--step));
+
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+
+        i,
+        .head {
+            position: absolute;
+            translate: -50% -50%;
+        }
+
+        i {
+            --ahead: clamp(0, var(--at) - var(--x) + 1, 1);
+            --tail: clamp(0, 1 - (var(--at) - var(--x)) / 30, 1);
+            --lit: calc(var(--ahead) * (0.3 + 0.7 * var(--tail)));
+
+            top: calc(var(--glyph) / 2);
+            left: calc(var(--x) * 1cqw);
+            width: 0.25rem;
+            aspect-ratio: 1;
+            background: color-mix(
+                in srgb,
+                #e9c1ff calc(var(--tail) * var(--ahead) * 100%),
+                #a950ff
+            );
+            opacity: calc(0.22 + 0.78 * var(--lit));
+        }
+
+        .head {
+            top: calc(var(--glyph) / 2);
+            left: calc(var(--at) * 1cqw);
+            width: 0.4375rem;
+            aspect-ratio: 1;
+            border-radius: 0.0625rem;
+            background: #f62e76;
+            box-shadow:
+                0 0 0.375rem #f62e76,
+                0 0 1rem rgba(246, 46, 118, 0.55);
+            opacity: clamp(0, min(var(--at) - 9, 91 - var(--at)) / 2, 1);
+        }
+    }
+
+    ol {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        align-items: start;
+        gap: 1rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1.25rem;
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: 0.5rem;
+                bottom: 0.5rem;
+                left: calc(var(--glyph) / 2);
+                width: 1px;
+                background: rgba(185, 166, 255, 0.28);
+            }
+        }
+    }
+
+    li {
+        position: relative;
+        display: grid;
+        justify-items: center;
+        gap: 0.25rem;
+        font-size: 0.8125rem;
+        line-height: 1.4;
+        color: rgba(255, 255, 255, 0.6);
+        transition: color 0.6s ease;
+
+        strong {
+            margin-top: 0.75rem;
+            font-size: 1.0625rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.78);
+            transition: color 0.6s ease;
+        }
+
+        &.done,
+        &.live {
+            color: rgba(255, 255, 255, 0.72);
+
+            strong {
+                color: #ffffff;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: var(--glyph) minmax(0, 1fr);
+            justify-items: start;
+            column-gap: 1rem;
+            text-align: left;
+
+            &:nth-child(n) {
+                margin-top: 0;
+            }
+
+            strong {
+                align-self: end;
+                margin-top: 0;
+            }
+
+            .glyph {
+                grid-row: span 2;
+            }
+        }
+    }
+
+    li::before {
+        content: "";
+        position: absolute;
+        top: calc(var(--glyph) / 2);
+        left: 50%;
+        width: calc(var(--glyph) * 4);
+        height: calc(var(--glyph) * 0.9);
+        background: radial-gradient(
+            closest-side,
+            rgba(143, 123, 255, 0.22),
+            rgba(112, 88, 255, 0.06) 60%,
+            transparent
+        );
+        filter: blur(0.5rem);
+        opacity: 0;
+        scale: 0.6;
+        translate: -50% -50%;
+        transition:
+            opacity 0.6s ease,
+            scale 0.6s ease;
+
+        @include media-breakpoint-down(md) {
+            left: calc(var(--glyph) / 2);
+        }
+    }
+
+    .live::before {
+        opacity: 1;
+        scale: 1;
+    }
+
+    .note {
+        display: grid;
+        justify-items: center;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            justify-items: start;
+            text-align: left;
+        }
+
+        span {
+            grid-area: 1 / 1;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+    }
+
+    li:not(.live, .done) [data-when="pending"],
+    .live [data-when="live"],
+    .done [data-when="done"] {
+        opacity: 1;
+        transition: opacity 0.35s ease 0.2s;
+    }
+
+    .glyph {
+        --mark: rgba(255, 255, 255, 0.2);
+        --arm: 0.75rem;
+        --size: calc(var(--glyph) * var(--pop, 1));
+
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: var(--size);
+        height: var(--size);
+        margin-block: calc((var(--glyph) - var(--size)) / 2);
+        border-radius: 0.625rem;
+        background:
+            radial-gradient(
+                120% 90% at 30% 0%,
+                rgba(255, 255, 255, 0.16),
+                transparent 55%
+            ),
+            rgba(255, 255, 255, 0.04);
+        backdrop-filter: blur(0.875rem) saturate(1.6);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.28),
+            inset 0 -0.5rem 1rem -0.75rem rgba(255, 255, 255, 0.12),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+            0 4px 14px -6px rgba(0, 0, 0, 0.35);
+        color: rgba(255, 255, 255, 0.45);
+        transition:
+            transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+            box-shadow 0.6s ease,
+            color 0.6s ease;
+
+        [data-icon] {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border: 2px solid var(--mark);
+            border-radius: inherit;
+            mask:
+                linear-gradient(#000 0 0) top left / var(--arm) var(--arm),
+                linear-gradient(#000 0 0) top right / var(--arm) var(--arm),
+                linear-gradient(#000 0 0) bottom left / var(--arm) var(--arm),
+                linear-gradient(#000 0 0) bottom right / var(--arm) var(--arm);
+            mask-repeat: no-repeat;
+            transition: border-color 0.6s ease;
+            pointer-events: none;
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .live::before {
+            animation: infra-hero-breathe 2.4s ease-in-out infinite;
+        }
+
+        .live .glyph::before {
+            animation: infra-hero-lock 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        }
+    }
+
+    @keyframes infra-hero-breathe {
+        50% {
+            scale: 1.15;
+        }
+    }
+
+    @keyframes infra-hero-lock {
+        from {
+            inset: -0.375rem;
+            opacity: 0.4;
+        }
+    }
+
+    .done .glyph {
+        --mark: rgba(255, 255, 255, 0.34);
+
+        color: #d9ceff;
+    }
+
+    .live .glyph {
+        --mark: rgba(255, 255, 255, 0.8);
+        --pop: 1.14;
+
+        background:
+            radial-gradient(
+                120% 90% at 30% 0%,
+                rgba(255, 255, 255, 0.24),
+                transparent 55%
+            ),
+            rgba(255, 255, 255, 0.08);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.4),
+            inset 0 -0.5rem 1rem -0.75rem rgba(255, 255, 255, 0.18),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.3),
+            0 0 1rem rgba(143, 123, 255, 0.18),
+            0 4px 14px -6px rgba(0, 0, 0, 0.35);
+        color: #ffffff;
+    }
+</style>
+
+<script>
+    for (const button of document.querySelectorAll<HTMLButtonElement>(
+        "[data-video]",
+    )) {
+        button.addEventListener(
+            "click",
+            () => {
+                const iframe = document.createElement("iframe")
+                iframe.src = `https://www.youtube.com/embed/${button.dataset.video}?autoplay=1`
+                iframe.title = "Kestra for Infrastructure"
+                iframe.allow =
+                    "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                iframe.referrerPolicy = "strict-origin-when-cross-origin"
+                iframe.allowFullscreen = true
+                const player = document.createElement("div")
+                for (const { name, value } of button.attributes)
+                    if (name === "class" || name.startsWith("data-astro"))
+                        player.setAttribute(name, value)
+                player.appendChild(iframe)
+                button.replaceWith(player)
+            },
+            { once: true },
+        )
+    }
+
+    const life = document.querySelector<HTMLElement>("[data-life]")
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+
+    if (life && !still) {
+        const stages = [...life.querySelectorAll("li")]
+        const LAP = 12000
+
+        const frame = (now: number) => {
+            const step = ((now % LAP) / LAP) * 5 - 0.5
+            life.style.setProperty("--step", step.toFixed(3))
+            const reached = Math.floor(step + 0.13)
+            stages.forEach((stage, index) => {
+                stage.classList.toggle("done", index < reached)
+                stage.classList.toggle("live", index === reached)
+            })
+            requestAnimationFrame(frame)
+        }
+
+        requestAnimationFrame(frame)
+    }
+</script>

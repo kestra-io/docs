@@ -50,6 +50,15 @@ body {
     }
 }
 
+::selection {
+    background: rgba(132, 5, 255, 0.2);
+}
+
+html.dark ::selection,
+.surface-dark ::selection {
+    background: rgba(152, 105, 247, 0.45);
+}
+
 .astro-loading-indicator {
     z-index: 9999 !important;
 }

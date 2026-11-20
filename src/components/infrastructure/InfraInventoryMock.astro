@@ -1,0 +1,974 @@
+---
+import { Icon } from "astro-icon/components"
+
+const ROWS = [
+    {
+        name: "helpdesk-staging-1",
+        status: "Active",
+        deployment: "helpdesk-staging",
+        type: "VM",
+        meta: "instance_type:n2-standard-4",
+    },
+    {
+        name: "helpdesk_tickets",
+        status: "Active",
+        deployment: "helpdesk-staging",
+        type: "Table",
+        meta: "database:helpdesk",
+    },
+    {
+        name: "loadtest-agent-1",
+        status: "Stopped",
+        deployment: "loadtest-rig",
+        type: "VM",
+        meta: "provider:aws",
+    },
+    {
+        name: "loadtest_report",
+        status: "Stopped",
+        deployment: "loadtest-rig",
+        type: "File",
+        meta: "path:s3://ops-artifacts",
+    },
+    {
+        name: "payments-preprod-app-1",
+        status: "Active",
+        deployment: "payments-preprod",
+        type: "VM",
+        meta: "provider:azure",
+    },
+    {
+        name: "web_sessions",
+        status: "Active",
+        deployment: "web-platform-staging",
+        type: "Table",
+        meta: "database:web",
+    },
+    {
+        name: "web-staging-api-1",
+        status: "Active",
+        deployment: "web-platform-staging",
+        type: "VM",
+        meta: "provider:aws",
+    },
+]
+
+const IMPORTED = [
+    {
+        name: "legacy-vpc",
+        status: "Active",
+        deployment: "legacy-network",
+        type: "Network",
+        meta: "provider:vsphere",
+    },
+    {
+        name: "legacy-fw-rules",
+        status: "Active",
+        deployment: "legacy-network",
+        type: "Firewall",
+        meta: "provider:vsphere",
+    },
+    {
+        name: "legacy-dns-01",
+        status: "Active",
+        deployment: "legacy-network",
+        type: "VM",
+        meta: "provider:vsphere",
+    },
+]
+---
+
+<div class="ui-mock inventory-mock" aria-hidden="true" data-ui-mock>
+    <div class="stage">
+        <p class="top">
+            <b>Inventory</b>
+            <span class="swap count">
+                <em class="c-before">7 resources</em>
+                <em class="c-after">10 resources</em>
+            </span>
+            <span class="import">
+                <Icon name="mdi:upload-outline" /> Import
+            </span>
+        </p>
+        <div class="list">
+            <p class="head">
+                <span>Resource</span>
+                <span>Status</span>
+                <span>Deployment</span>
+                <span>Type</span>
+                <span>Metadata</span>
+            </p>
+            <div class="body">
+                {IMPORTED.map((row, idx) => (
+                    <p class={`line fresh f${idx + 1}`}>
+                        <span class="name">{row.name}</span>
+                        <span class={`status ${row.status.toLowerCase()}`}>
+                            <i class="dot"></i>
+                            {row.status}
+                        </span>
+                        <span class="dep">
+                            <Icon name="mdi:cube-outline" />
+                            {row.deployment}
+                        </span>
+                        <i class="type">{row.type}</i>
+                        <i class="meta">{row.meta}</i>
+                        <i class="new">New</i>
+                    </p>
+                ))}
+                {ROWS.map((row) => (
+                    <p class="line">
+                        <span class="name">{row.name}</span>
+                        <span class={`status ${row.status.toLowerCase()}`}>
+                            <i class="dot"></i>
+                            {row.status}
+                        </span>
+                        <span class="dep">
+                            <Icon name="mdi:cube-outline" />
+                            {row.deployment}
+                        </span>
+                        <i class="type">{row.type}</i>
+                        <i class="meta">{row.meta}</i>
+                    </p>
+                ))}
+            </div>
+        </div>
+        <div class="sheet">
+            <p class="mh">
+                <b>Import an inventory</b>
+                <Icon name="mdi:close" />
+            </p>
+            <p class="sub">
+                Assets are created from a Terraform state, a CSV, or a JSON or
+                YAML file, and grouped under a single deployment.
+            </p>
+            <div class="drop">
+                <span class="swap">
+                    <span class="d-empty">
+                        <Icon name="mdi:tray-arrow-down" />
+                        <b>Drop a file here, or click to select</b>
+                        <small>.tfstate, .csv, .json, .yaml</small>
+                    </span>
+                    <span class="d-full">
+                        <Icon name="mdi:file-check-outline" />
+                        <b>legacy.tfstate</b>
+                        <small>3 resources found · legacy-network</small>
+                    </span>
+                </span>
+            </div>
+            <p class="mf">
+                <span class="cancel">Cancel</span>
+                <span class="go">
+                    <Icon name="mdi:upload-outline" /> Import
+                </span>
+            </p>
+        </div>
+        <span class="file">
+            <Icon name="mdi:file-code-outline" />
+            legacy.tfstate
+        </span>
+        <p class="toast">
+            <Icon name="mdi:check-circle" />3 resources imported into
+            legacy-network
+        </p>
+        <span class="cursor">
+            <svg viewBox="0 0 10 10">
+                <path d="M0 0 L10 4 L5.5 5.5 L4 10 Z"></path>
+            </svg>
+            <span class="who">
+                <Icon name="mdi:account-cog-outline" />
+                Platform team
+            </span>
+        </span>
+    </div>
+</div>
+
+<style lang="scss">
+    @use "../enterprise/mocks/tokens" as *;
+
+    .inventory-mock {
+        --loop: 18s;
+        --rest: 3em 35em;
+        --at-open: 46.2em 2.8em;
+        --at-file: 23.1em 32em;
+        --at-drop: 23.5em 15.4em;
+        --at-go: 34.2em 20.9em;
+        --file-at: 35.8em 52em;
+        --file-drop: 35.8em 24.3em;
+
+        @include tokens;
+        @include soft;
+    }
+
+    .stage {
+        position: relative;
+        min-height: 38.8em;
+        font-size: calc(100cqw / 50);
+        line-height: 1.3;
+        color: var(--text);
+    }
+
+    p {
+        margin: 0;
+    }
+
+    i,
+    em {
+        font-style: normal;
+    }
+
+    [data-icon] {
+        flex: none;
+        width: 1.1em;
+        height: 1.1em;
+    }
+
+    .top {
+        position: absolute;
+        top: 2.2em;
+        right: 1.5em;
+        left: 1.5em;
+        display: flex;
+        align-items: center;
+        gap: 0.7em;
+
+        b {
+            font-size: 0.86em;
+            font-weight: 600;
+        }
+    }
+
+    .count {
+        font-size: 0.6em;
+        color: var(--muted);
+    }
+
+    .swap {
+        display: grid;
+
+        > * {
+            grid-area: 1 / 1;
+        }
+    }
+
+    .c-after,
+    .d-full {
+        opacity: 0;
+    }
+
+    .import {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35em;
+        margin-left: auto;
+        padding: 0.5em 0.85em;
+        border: 1px solid var(--line);
+        border-radius: 0.32em;
+        background: var(--panel);
+        font-size: 0.6em;
+        font-weight: 600;
+    }
+
+    .list {
+        position: absolute;
+        top: 5em;
+        right: 1.5em;
+        left: 1.5em;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 0.5em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+    }
+
+    .head,
+    .line {
+        display: grid;
+        grid-template-columns: 1.55fr 0.75fr 1.45fr 0.6fr 1.5fr;
+        align-items: center;
+        gap: 0.8em;
+        padding: 0 1em;
+    }
+
+    .head {
+        height: 2.3em;
+        border-bottom: 1px solid var(--line);
+
+        span {
+            font-size: 0.5em;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+    }
+
+    .body {
+        height: 18.2em;
+        overflow: hidden;
+    }
+
+    .line {
+        position: relative;
+        height: 2.6em;
+        max-height: 2.6em;
+        overflow: hidden;
+        border-bottom: 1px solid var(--line);
+
+        > * {
+            overflow: hidden;
+            font-size: 0.56em;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    .name {
+        font-family: var(--ks-font-monospace);
+    }
+
+    .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4em;
+        font-weight: 600;
+
+        &.active {
+            color: var(--ok);
+        }
+
+        &.stopped {
+            color: var(--wait);
+        }
+    }
+
+    .dot {
+        width: 0.5em;
+        height: 0.5em;
+        border-radius: 99em;
+        background: currentColor;
+    }
+
+    .dep {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35em;
+        color: var(--soft);
+    }
+
+    .type,
+    .meta {
+        justify-self: start;
+        padding: 0.2em 0.5em;
+        border-radius: 0.21em;
+        background: var(--chip);
+        color: var(--muted);
+    }
+
+    .fresh {
+        max-height: 0;
+        opacity: 0;
+        background: color-mix(in srgb, var(--tile) 45%, var(--panel));
+    }
+
+    .new {
+        position: absolute;
+        right: 1em;
+        padding: 0.2em 0.5em;
+        border-radius: 0.21em;
+        background: var(--tile);
+        font-weight: 600;
+        color: var(--tile-ink);
+    }
+
+    .sheet {
+        position: absolute;
+        top: 7.2em;
+        right: 0;
+        left: 0;
+        z-index: 2;
+        width: 25em;
+        margin-inline: auto;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 0.5em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        opacity: 0;
+    }
+
+    .mh {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1em 1.1em 0.3em;
+
+        b {
+            font-size: 0.72em;
+            font-weight: 600;
+        }
+
+        [data-icon] {
+            color: var(--muted);
+        }
+    }
+
+    .sub {
+        padding: 0 1.1em;
+        font-size: 0.54em;
+        line-height: 1.5;
+        color: var(--muted);
+    }
+
+    .drop {
+        display: grid;
+        place-items: center;
+        height: 6.4em;
+        margin: 0.9em 1.1em;
+        border: 1.5px dashed var(--line);
+        border-radius: 0.42em;
+        text-align: center;
+
+        .swap > span {
+            display: grid;
+            justify-items: center;
+            gap: 0.35em;
+        }
+
+        [data-icon] {
+            width: 1.3em;
+            height: 1.3em;
+            color: var(--muted);
+        }
+
+        b {
+            font-size: 0.62em;
+            font-weight: 600;
+        }
+
+        small {
+            font-size: 0.5em;
+            color: var(--muted);
+        }
+
+        .d-full [data-icon] {
+            color: var(--ok);
+        }
+    }
+
+    .mf {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.6em;
+        padding: 0.75em 1.1em;
+        border-top: 1px solid var(--line);
+        background: var(--deep);
+    }
+
+    .cancel,
+    .go {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35em;
+        padding: 0.55em 0.9em;
+        border-radius: 0.32em;
+        font-size: 0.6em;
+        font-weight: 600;
+    }
+
+    .cancel {
+        border: 1px solid var(--line);
+        background: var(--panel);
+    }
+
+    .go {
+        background: #18181e;
+        color: #ffffff;
+        opacity: 0.4;
+
+        :global(html.dark) & {
+            background: #cfcfd8;
+            color: #18181e;
+        }
+    }
+
+    .file {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 3;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4em;
+        padding: 0.5em 0.8em;
+        border: 1px solid var(--line);
+        border-radius: 0.36em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        font-family: var(--ks-font-monospace);
+        font-size: 0.6em;
+        translate: var(--file-at);
+        opacity: 0;
+
+        [data-icon] {
+            color: var(--soft);
+        }
+    }
+
+    .toast {
+        position: absolute;
+        right: 0;
+        bottom: 1.6em;
+        left: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.6em;
+        width: max-content;
+        margin-inline: auto;
+        padding: 0.8em 1.3em;
+        border-radius: 0.5em;
+        background: #18181e;
+        box-shadow: 0 10px 28px -10px rgba(0, 0, 0, 0.45);
+        font-size: 0.86em;
+        font-weight: 600;
+        color: #ffffff;
+        opacity: 0;
+
+        :global(html.dark) & {
+            background: #ffffff;
+            color: #18181e;
+        }
+
+        [data-icon] {
+            width: 1.3em;
+            height: 1.3em;
+            color: #2fd197;
+        }
+    }
+
+    .cursor {
+        --tone: 38, 112, 214;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 4;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.1em;
+        translate: var(--rest);
+        opacity: 0;
+        pointer-events: none;
+
+        :global(html.dark) & {
+            --tone: 140, 196, 255;
+        }
+
+        svg {
+            width: 1.1em;
+            height: 1.1em;
+            fill: rgb(var(--tone));
+            filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
+        }
+    }
+
+    .who {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3em;
+        margin-left: 0.7em;
+        padding: 0.15em 0.55em;
+        border-radius: 0.32em;
+        background: rgb(var(--tone));
+        font-size: 0.7em;
+        font-weight: 600;
+        white-space: nowrap;
+        color: #ffffff;
+
+        :global(html.dark) & {
+            border: 1px solid rgba(var(--tone), 0.45);
+            background: rgb(20, 20, 24);
+            color: rgb(var(--tone));
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .inventory-mock:not([data-play]) * {
+            animation-play-state: paused !important;
+        }
+
+        .stage {
+            animation: inventory-stage var(--loop) linear infinite both;
+        }
+
+        .cursor {
+            animation:
+                inventory-cursor var(--loop) infinite both,
+                inventory-cursor-show var(--loop) linear infinite both;
+        }
+
+        .import {
+            animation: inventory-press-open var(--loop) linear infinite both;
+        }
+
+        .list,
+        .top {
+            animation: inventory-dim var(--loop) ease-out infinite both;
+        }
+
+        .sheet {
+            animation: inventory-modal var(--loop) ease-out infinite both;
+        }
+
+        .file {
+            animation: inventory-file var(--loop) infinite both;
+        }
+
+        .drop {
+            animation: inventory-drop var(--loop) linear infinite both;
+        }
+
+        .d-empty {
+            animation: inventory-out-drop var(--loop) linear infinite both;
+        }
+
+        .d-full {
+            animation: inventory-in-drop var(--loop) linear infinite both;
+        }
+
+        .go {
+            animation:
+                inventory-go var(--loop) linear infinite both,
+                inventory-press-go var(--loop) linear infinite both;
+        }
+
+        .f1 {
+            animation: inventory-grow-1 var(--loop) ease-out infinite both;
+        }
+
+        .f2 {
+            animation: inventory-grow-2 var(--loop) ease-out infinite both;
+        }
+
+        .f3 {
+            animation: inventory-grow-3 var(--loop) ease-out infinite both;
+        }
+
+        .c-before {
+            animation: inventory-out-count var(--loop) linear infinite both;
+        }
+
+        .c-after {
+            animation: inventory-in-count var(--loop) linear infinite both;
+        }
+
+        .toast {
+            animation: inventory-toast var(--loop) ease-out infinite both;
+        }
+    }
+
+    @keyframes inventory-stage {
+        0%,
+        94% {
+            opacity: 1;
+        }
+        96%,
+        97% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes inventory-cursor {
+        0%,
+        10% {
+            translate: var(--rest);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        13.5%,
+        16% {
+            translate: var(--at-open);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        23%,
+        26% {
+            translate: var(--at-file);
+            animation-timing-function: ease-in-out;
+        }
+        32%,
+        34% {
+            translate: var(--at-drop);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        38.5%,
+        41% {
+            translate: var(--at-go);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        50%,
+        100% {
+            translate: var(--rest);
+        }
+    }
+
+    @keyframes inventory-cursor-show {
+        0%,
+        8% {
+            opacity: 0;
+        }
+        10%,
+        47% {
+            opacity: 1;
+        }
+        50%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes inventory-press-open {
+        0%,
+        14.5% {
+            scale: 1;
+        }
+        15% {
+            scale: 0.92;
+        }
+        15.5%,
+        100% {
+            scale: 1;
+        }
+    }
+
+    @keyframes inventory-dim {
+        0%,
+        16% {
+            opacity: 1;
+        }
+        18%,
+        41% {
+            opacity: 0.45;
+        }
+        43%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes inventory-modal {
+        0%,
+        16% {
+            opacity: 0;
+            translate: 0 0.8em;
+        }
+        18.5%,
+        41% {
+            opacity: 1;
+            translate: 0 0;
+        }
+        43%,
+        100% {
+            opacity: 0;
+            translate: 0 0.4em;
+        }
+    }
+
+    @keyframes inventory-file {
+        0%,
+        20% {
+            opacity: 0;
+            translate: var(--file-at);
+        }
+        22%,
+        26% {
+            opacity: 1;
+            translate: var(--file-at);
+            animation-timing-function: ease-in-out;
+        }
+        32% {
+            opacity: 1;
+            translate: var(--file-drop);
+        }
+        33.5%,
+        100% {
+            opacity: 0;
+            translate: var(--file-drop);
+        }
+    }
+
+    @keyframes inventory-drop {
+        0%,
+        28% {
+            border-color: var(--line);
+            background: transparent;
+        }
+        30%,
+        33.5% {
+            border-color: var(--ring);
+            background: var(--tile);
+        }
+        34.5%,
+        100% {
+            border-color: var(--line);
+            background: transparent;
+        }
+    }
+
+    @keyframes inventory-out-drop {
+        0%,
+        33% {
+            opacity: 1;
+        }
+        33.5%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes inventory-in-drop {
+        0%,
+        33% {
+            opacity: 0;
+        }
+        33.5%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes inventory-go {
+        0%,
+        33% {
+            opacity: 0.4;
+        }
+        34%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes inventory-press-go {
+        0%,
+        39.5% {
+            scale: 1;
+        }
+        40% {
+            scale: 0.92;
+        }
+        40.5%,
+        100% {
+            scale: 1;
+        }
+    }
+
+    @keyframes inventory-grow-1 {
+        0%,
+        44% {
+            max-height: 0;
+            opacity: 0;
+        }
+        47%,
+        92% {
+            max-height: 2.6em;
+            opacity: 1;
+        }
+        95%,
+        100% {
+            max-height: 0;
+            opacity: 0;
+        }
+    }
+
+    @keyframes inventory-grow-2 {
+        0%,
+        45.5% {
+            max-height: 0;
+            opacity: 0;
+        }
+        48.5%,
+        92% {
+            max-height: 2.6em;
+            opacity: 1;
+        }
+        95%,
+        100% {
+            max-height: 0;
+            opacity: 0;
+        }
+    }
+
+    @keyframes inventory-grow-3 {
+        0%,
+        47% {
+            max-height: 0;
+            opacity: 0;
+        }
+        50%,
+        92% {
+            max-height: 2.6em;
+            opacity: 1;
+        }
+        95%,
+        100% {
+            max-height: 0;
+            opacity: 0;
+        }
+    }
+
+    @keyframes inventory-out-count {
+        0%,
+        43.5% {
+            opacity: 1;
+        }
+        44%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes inventory-in-count {
+        0%,
+        43.5% {
+            opacity: 0;
+        }
+        44%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes inventory-toast {
+        0%,
+        47% {
+            opacity: 0;
+            translate: 0 0.8em;
+        }
+        50%,
+        86% {
+            opacity: 1;
+            translate: 0 0;
+        }
+        89%,
+        100% {
+            opacity: 0;
+            translate: 0 0;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .fresh {
+            max-height: 2.6em;
+            opacity: 1;
+        }
+
+        .c-before {
+            opacity: 0;
+        }
+
+        .c-after {
+            opacity: 1;
+        }
+    }
+</style>

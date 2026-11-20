@@ -1,0 +1,1028 @@
+---
+import { Icon } from "astro-icon/components"
+
+const STEPS = ["checkout", "terraform init", "terraform apply", "configure"]
+
+const LOGS = [
+    {
+        time: "10:42:07",
+        level: "INFO",
+        text: "vsphere_virtual_machine.vm: Creating...",
+    },
+    {
+        time: "10:42:31",
+        level: "INFO",
+        text: "vsphere_virtual_machine.vm: Still creating... [20s]",
+    },
+    {
+        time: "10:42:38",
+        level: "ERROR",
+        text: 'datastore "ds-prod-02" has insufficient free space',
+    },
+    {
+        time: "11:20:14",
+        level: "INFO",
+        text: "Apply complete! Resources: 1 added, 0 changed",
+    },
+]
+---
+
+<div class="ui-mock case-mock" aria-hidden="true" data-ui-mock>
+    <div class="stage">
+        <div class="run">
+            <p class="top">
+                <Icon name="mdi:play-circle-outline" />
+                <b>provision-vm</b>
+                <span class="target">dev-payments-api</span>
+                <span class="state">
+                    <i class="chip go x-run">Running</i>
+                    <i class="chip fail x-fail">Failed</i>
+                    <i class="chip go x-again">Running</i>
+                    <i class="chip ok x-ok">Success</i>
+                </span>
+            </p>
+            <p class="steps">
+                {STEPS.map((step, idx) => (
+                    <span class={`step p${idx + 1}`}>
+                        <span class="sign">
+                            <Icon name="mdi:check-circle" class="done" />
+                            <Icon name="mdi:loading" class="spin" />
+                            <Icon name="mdi:close-circle" class="fail" />
+                            <Icon name="mdi:circle-outline" class="wait" />
+                        </span>
+                        {step}
+                    </span>
+                ))}
+            </p>
+        </div>
+        <div class="case">
+            <p class="top">
+                <Icon name="mdi:alert-outline" class="flag" />
+                <b>Case #142</b>
+                <span class="target">terraform apply failed</span>
+                <span class="state">
+                    <i class="chip fail k-open">Open</i>
+                    <i class="chip ok k-done">Resolved</i>
+                </span>
+            </p>
+            <div class="fields">
+                <span class="field">
+                    <span class="label">Assignee</span>
+                    <em>
+                        <i class="avatar">PT</i>Platform team
+                        <i class="auto">Auto</i>
+                    </em>
+                </span>
+                <span class="field">
+                    <span class="label">SLA</span>
+                    <span class="swap">
+                        <em class="sla s-left">4h left</em>
+                        <em class="sla s-met">
+                            <Icon name="mdi:check" /> Met in 38 min
+                        </em>
+                    </span>
+                </span>
+                <span class="field">
+                    <span class="label">Ticket</span>
+                    <span class="swap">
+                        <em class="t-none">Not linked</em>
+                        <em class="t-set">
+                            <i class="ticket">INC0012345</i> ServiceNow
+                        </em>
+                    </span>
+                </span>
+            </div>
+            <pre class="logs">{
+                LOGS.map((line, idx) => (
+                    <span class={`ln l${idx + 1} ${line.level.toLowerCase()}`}>
+                        <i class="no">{line.time}</i>
+                        <i class="level">{line.level}</i>
+                        <i class="text">{line.text}</i>
+                    </span>
+                ))
+            }</pre>
+            <p class="foot">
+                <span class="swap hint">
+                    <em class="h-fail">Failed at terraform apply</em>
+                    <em class="h-retry">Retried by Platform team</em>
+                </span>
+                <span class="retry">
+                    <Icon name="mdi:replay" /> Retry from this step
+                </span>
+            </p>
+        </div>
+        <p class="notice n1">
+            <Icon name="mdi:check-circle" />
+            Case #142 linked to ServiceNow INC0012345
+        </p>
+        <p class="notice n2">
+            <Icon name="mdi:check-circle" />
+            Case #142 resolved, SLA met
+        </p>
+        <span class="cursor">
+            <svg viewBox="0 0 10 10">
+                <path d="M0 0 L10 4 L5.5 5.5 L4 10 Z"></path>
+            </svg>
+            <span class="who">
+                <Icon name="mdi:account-cog-outline" />
+                Platform team
+            </span>
+        </span>
+    </div>
+</div>
+
+<style lang="scss">
+    @use "../enterprise/mocks/tokens" as *;
+
+    .case-mock {
+        --loop: 18s;
+        --fail: #c8322d;
+        --fail-bg: #fdecec;
+        --drop: 9em;
+        --rest: 3em 33em;
+        --at-retry: 39.7em 27.6em;
+
+        @include tokens;
+        @include soft;
+
+        :global(html.dark) & {
+            --fail: #ff8a84;
+            --fail-bg: rgba(255, 107, 107, 0.14);
+        }
+    }
+
+    .stage {
+        position: relative;
+        display: grid;
+        align-content: center;
+        justify-items: center;
+        gap: 1.2em;
+        min-height: 38.8em;
+        padding-bottom: 3.6em;
+        font-size: calc(100cqw / 50);
+        line-height: 1.3;
+        color: var(--text);
+    }
+
+    p {
+        margin: 0;
+    }
+
+    [data-icon] {
+        flex: none;
+        width: 1.1em;
+        height: 1.1em;
+    }
+
+    .run,
+    .case {
+        width: 40em;
+        border: 1px solid var(--line);
+        border-radius: 0.5em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+    }
+
+    .run {
+        position: relative;
+        z-index: 1;
+    }
+
+    .case {
+        position: relative;
+        z-index: 2;
+    }
+
+    .top {
+        display: flex;
+        align-items: center;
+        gap: 0.6em;
+        height: 3em;
+        padding: 0 1.1em;
+        border-bottom: 1px solid var(--line);
+
+        > [data-icon] {
+            color: var(--soft);
+        }
+
+        .flag {
+            color: var(--fail);
+        }
+
+        b {
+            font-size: 0.72em;
+            font-weight: 600;
+        }
+    }
+
+    .target {
+        font-size: 0.66em;
+        color: var(--muted);
+    }
+
+    .state,
+    .swap {
+        display: grid;
+
+        > * {
+            grid-area: 1 / 1;
+        }
+    }
+
+    .state {
+        margin-left: auto;
+
+        > * {
+            justify-self: end;
+        }
+    }
+
+    .swap > * {
+        justify-self: start;
+    }
+
+    .chip {
+        padding: 0.3em 0.6em;
+        border-radius: 0.21em;
+        font-size: 0.58em;
+        font-style: normal;
+        font-weight: 600;
+        white-space: nowrap;
+
+        &.go {
+            background: var(--chip);
+            color: var(--soft);
+        }
+
+        &.ok {
+            background: var(--ok-bg);
+            color: var(--ok);
+        }
+
+        &.fail {
+            background: var(--fail-bg);
+            color: var(--fail);
+        }
+    }
+
+    .steps {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.1em 1.4em;
+    }
+
+    .step {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45em;
+        font-size: 0.66em;
+        font-weight: 500;
+        white-space: nowrap;
+
+        & + .step::before {
+            content: "";
+            position: absolute;
+            right: calc(100% + 0.9em);
+            width: 2.2em;
+            height: 1px;
+            background: var(--line);
+        }
+    }
+
+    .sign {
+        display: grid;
+        width: 1.35em;
+        height: 1.35em;
+
+        > * {
+            grid-area: 1 / 1;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
+
+        .done {
+            color: var(--ok);
+        }
+
+        .spin {
+            color: var(--muted);
+        }
+
+        .fail {
+            color: var(--fail);
+        }
+
+        .wait {
+            color: var(--line);
+        }
+    }
+
+    .p1 .done,
+    .p2 .done,
+    .p3 .spin,
+    .p4 .wait {
+        opacity: 1;
+    }
+
+    .fields {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1em;
+        padding: 1em 1.1em;
+    }
+
+    .field {
+        display: grid;
+        align-content: start;
+        gap: 0.45em;
+    }
+
+    .label {
+        font-size: 0.56em;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+    }
+
+    .field em {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4em;
+        font-size: 0.68em;
+        font-style: normal;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    .t-none {
+        color: var(--muted);
+    }
+
+    .s-met,
+    .t-set,
+    .k-done,
+    .h-retry,
+    .x-fail,
+    .x-again,
+    .x-ok,
+    .l4 {
+        opacity: 0;
+    }
+
+    .avatar {
+        display: grid;
+        place-items: center;
+        width: 1.7em;
+        height: 1.7em;
+        border-radius: 99em;
+        background: var(--text);
+        font-size: 0.7em;
+        font-style: normal;
+        font-weight: 700;
+        color: var(--panel);
+    }
+
+    .s-left {
+        color: var(--wait);
+    }
+
+    .s-met {
+        color: var(--ok);
+
+        [data-icon] {
+            width: 1.2em;
+            height: 1.2em;
+        }
+    }
+
+    .auto {
+        padding: 0.15em 0.45em;
+        border-radius: 0.21em;
+        background: var(--chip);
+        font-size: 0.82em;
+        font-style: normal;
+        font-weight: 600;
+        color: var(--muted);
+    }
+
+    .ticket {
+        padding: 0.2em 0.45em;
+        border-radius: 0.21em;
+        background: var(--chip);
+        font-style: normal;
+        font-weight: 600;
+    }
+
+    .logs {
+        --c-key: #6d52f5;
+        --c-text: #4a4a57;
+        --c-no: #6d6d86;
+
+        display: grid;
+        margin: 0;
+        padding: 0.7em 0;
+        border-top: 1px solid var(--line);
+        background: var(--deep);
+        font-family: var(--ks-font-monospace);
+        font-size: 0.58em;
+        line-height: 1.8;
+        white-space: nowrap;
+
+        :global(html.dark) & {
+            --c-key: #b9a6ff;
+            --c-text: #d6d6e0;
+            --c-no: #9696a5;
+        }
+    }
+
+    .ln {
+        display: flex;
+        gap: 1.4ch;
+        padding: 0 1.9em;
+
+        i {
+            font-style: normal;
+        }
+
+        .no {
+            color: var(--c-no);
+        }
+
+        .level {
+            width: 5ch;
+            color: var(--c-key);
+        }
+
+        .text {
+            color: var(--c-text);
+        }
+
+        &.error .level,
+        &.error .text {
+            color: var(--fail);
+        }
+
+        &.l4 .level,
+        &.l4 .text {
+            color: var(--ok);
+        }
+    }
+
+    .foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 3.2em;
+        padding: 0 1.1em;
+        border-top: 1px solid var(--line);
+    }
+
+    .hint em {
+        font-size: 0.64em;
+        font-style: normal;
+        color: var(--muted);
+    }
+
+    .retry {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4em;
+        padding: 0.55em 0.9em;
+        border-radius: 0.32em;
+        background: #18181e;
+        font-size: 0.64em;
+        font-weight: 600;
+        color: #ffffff;
+
+        :global(html.dark) & {
+            background: #cfcfd8;
+            color: #18181e;
+        }
+    }
+
+    .notice {
+        position: absolute;
+        right: 0;
+        bottom: 1.2em;
+        left: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.6em;
+        width: max-content;
+        margin-inline: auto;
+        padding: 0.8em 1.3em;
+        border-radius: 0.5em;
+        background: #18181e;
+        box-shadow: 0 10px 28px -10px rgba(0, 0, 0, 0.45);
+        font-size: 0.86em;
+        font-weight: 600;
+        color: #ffffff;
+        opacity: 0;
+
+        :global(html.dark) & {
+            background: #ffffff;
+            color: #18181e;
+        }
+
+        [data-icon] {
+            width: 1.3em;
+            height: 1.3em;
+            color: #2fd197;
+        }
+    }
+
+    .cursor {
+        --tone: 38, 112, 214;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 4;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.1em;
+        translate: var(--rest);
+        pointer-events: none;
+
+        :global(html.dark) & {
+            --tone: 140, 196, 255;
+        }
+
+        svg {
+            width: 1.1em;
+            height: 1.1em;
+            fill: rgb(var(--tone));
+            filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
+        }
+    }
+
+    .who {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3em;
+        margin-left: 0.7em;
+        padding: 0.15em 0.55em;
+        border-radius: 0.32em;
+        background: rgb(var(--tone));
+        font-size: 0.7em;
+        font-weight: 600;
+        white-space: nowrap;
+        color: #ffffff;
+
+        :global(html.dark) & {
+            border: 1px solid rgba(var(--tone), 0.45);
+            background: rgb(20, 20, 24);
+            color: rgb(var(--tone));
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .case-mock:not([data-play]) * {
+            animation-play-state: paused !important;
+        }
+
+        .stage {
+            animation: case-stage var(--loop) linear infinite both;
+        }
+
+        .run {
+            animation: case-run var(--loop) ease-in-out infinite both;
+        }
+
+        .case {
+            animation: case-card var(--loop) ease-out infinite both;
+        }
+
+        .cursor {
+            animation:
+                case-cursor var(--loop) infinite both,
+                case-cursor-show var(--loop) linear infinite both;
+        }
+
+        .x-run {
+            animation: case-x-run var(--loop) linear infinite both;
+        }
+
+        .x-fail,
+        .p3 .fail {
+            animation: case-x-fail var(--loop) linear infinite both;
+        }
+
+        .x-again {
+            animation: case-x-again var(--loop) linear infinite both;
+        }
+
+        .x-ok,
+        .p4 .done {
+            animation: case-x-ok var(--loop) linear infinite both;
+        }
+
+        .p3 .spin {
+            animation:
+                case-spin 1s linear infinite,
+                case-p3-spin var(--loop) linear infinite both;
+        }
+
+        .p3 .done,
+        .ln.l4 {
+            animation: case-p3-done var(--loop) linear infinite both;
+        }
+
+        .p4 .wait {
+            animation: case-p4-wait var(--loop) linear infinite both;
+        }
+
+        .p4 .spin {
+            animation:
+                case-spin 1s linear infinite,
+                case-p4-spin var(--loop) linear infinite both;
+        }
+
+        .ln.l3 {
+            animation: case-error var(--loop) linear infinite both;
+        }
+
+        .t-none {
+            animation: case-out-ticket var(--loop) linear infinite both;
+        }
+
+        .t-set {
+            animation: case-in-ticket var(--loop) ease-out infinite both;
+        }
+
+        .retry {
+            animation: case-press-retry var(--loop) linear infinite both;
+        }
+
+        .h-fail {
+            animation: case-out-retry var(--loop) linear infinite both;
+        }
+
+        .h-retry {
+            animation: case-in-retry var(--loop) linear infinite both;
+        }
+
+        .k-open,
+        .s-left {
+            animation: case-out-resolve var(--loop) linear infinite both;
+        }
+
+        .k-done,
+        .s-met {
+            animation: case-in-resolve var(--loop) linear infinite both;
+        }
+
+        .notice.n1 {
+            animation: case-notice-1 var(--loop) ease-out infinite both;
+        }
+
+        .notice.n2 {
+            animation: case-notice-2 var(--loop) ease-out infinite both;
+        }
+    }
+
+    @keyframes case-stage {
+        0%,
+        94% {
+            opacity: 1;
+        }
+        96%,
+        97% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes case-run {
+        0%,
+        12% {
+            translate: 0 var(--drop);
+        }
+        15%,
+        100% {
+            translate: 0 0;
+        }
+    }
+
+    @keyframes case-card {
+        0%,
+        12.5% {
+            opacity: 0;
+            translate: 0 1.2em;
+        }
+        15.5%,
+        100% {
+            opacity: 1;
+            translate: 0 0;
+        }
+    }
+
+    @keyframes case-cursor {
+        0%,
+        40% {
+            translate: var(--rest);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        45%,
+        48% {
+            translate: var(--at-retry);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        55%,
+        100% {
+            translate: var(--rest);
+        }
+    }
+
+    @keyframes case-cursor-show {
+        0%,
+        37% {
+            opacity: 0;
+        }
+        39%,
+        55% {
+            opacity: 1;
+        }
+        58%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes case-x-run {
+        0%,
+        9.5% {
+            opacity: 1;
+        }
+        10%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes case-x-fail {
+        0%,
+        9.5% {
+            opacity: 0;
+        }
+        10%,
+        47.5% {
+            opacity: 1;
+        }
+        48%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes case-x-again {
+        0%,
+        47.5% {
+            opacity: 0;
+        }
+        48%,
+        62.5% {
+            opacity: 1;
+        }
+        63%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes case-x-ok {
+        0%,
+        62.5% {
+            opacity: 0;
+        }
+        63%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes case-spin {
+        to {
+            rotate: 360deg;
+        }
+    }
+
+    @keyframes case-p3-spin {
+        0%,
+        9.5% {
+            opacity: 1;
+        }
+        10%,
+        47.5% {
+            opacity: 0;
+        }
+        48%,
+        55.5% {
+            opacity: 1;
+        }
+        56%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes case-p3-done {
+        0%,
+        55.5% {
+            opacity: 0;
+        }
+        56%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes case-p4-wait {
+        0%,
+        55.5% {
+            opacity: 1;
+        }
+        56%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes case-p4-spin {
+        0%,
+        55.5% {
+            opacity: 0;
+        }
+        56%,
+        62.5% {
+            opacity: 1;
+        }
+        63%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes case-error {
+        0%,
+        18% {
+            background: transparent;
+        }
+        20%,
+        55.5% {
+            background: var(--fail-bg);
+        }
+        56%,
+        100% {
+            background: transparent;
+        }
+    }
+
+    @keyframes case-out-ticket {
+        0%,
+        25.5% {
+            opacity: 1;
+        }
+        26%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes case-in-ticket {
+        0%,
+        25.5% {
+            opacity: 0;
+            translate: 0 0.3em;
+        }
+        27%,
+        100% {
+            opacity: 1;
+            translate: 0 0;
+        }
+    }
+
+    @keyframes case-notice-1 {
+        0%,
+        26.5% {
+            opacity: 0;
+            translate: 0 0.8em;
+        }
+        29.5%,
+        37% {
+            opacity: 1;
+            translate: 0 0;
+        }
+        40%,
+        100% {
+            opacity: 0;
+            translate: 0 0;
+        }
+    }
+
+    @keyframes case-press-retry {
+        0%,
+        47% {
+            scale: 1;
+        }
+        47.5% {
+            scale: 0.94;
+        }
+        48%,
+        100% {
+            scale: 1;
+        }
+    }
+
+    @keyframes case-out-retry {
+        0%,
+        47.5% {
+            opacity: 1;
+        }
+        48%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes case-in-retry {
+        0%,
+        47.5% {
+            opacity: 0;
+        }
+        48%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes case-out-resolve {
+        0%,
+        64.5% {
+            opacity: 1;
+        }
+        65%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes case-in-resolve {
+        0%,
+        64.5% {
+            opacity: 0;
+        }
+        65%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes case-notice-2 {
+        0%,
+        65.5% {
+            opacity: 0;
+            translate: 0 0.8em;
+        }
+        68.5%,
+        89% {
+            opacity: 1;
+            translate: 0 0;
+        }
+        92%,
+        100% {
+            opacity: 0;
+            translate: 0 0;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .x-run,
+        .p3 .spin,
+        .p4 .wait,
+        .t-none,
+        .k-open,
+        .s-left,
+        .h-fail {
+            opacity: 0;
+        }
+
+        .x-ok,
+        .p3 .done,
+        .p4 .done,
+        .t-set,
+        .k-done,
+        .s-met,
+        .h-retry,
+        .l4 {
+            opacity: 1;
+        }
+    }
+</style>

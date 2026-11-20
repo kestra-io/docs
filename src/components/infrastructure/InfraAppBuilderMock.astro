@@ -1,0 +1,1575 @@
+---
+import { Icon } from "astro-icon/components"
+
+const FIELDS = [
+    { label: "Environment", value: "staging" },
+    { label: "VM size", value: "medium · 4 vCPU" },
+    { label: "Region", value: "eu-west-1" },
+    { label: "Lease", value: "14 days" },
+]
+
+const ROWS = [
+    { id: "is-md", icon: "mdi:format-text", name: "Markdown" },
+    { id: "is-form", icon: "mdi:form-textbox", name: "Input form" },
+    { id: "is-btn", icon: "mdi:gesture-tap-button", name: "Submit button" },
+    { id: "is-alert", icon: "mdi:information-outline", name: "Alert" },
+]
+
+const PICKER = [
+    { icon: "mdi:format-text", name: "Markdown" },
+    { icon: "mdi:form-textbox", name: "Input form" },
+    { icon: "mdi:gesture-tap-button", name: "Submit button" },
+    { icon: "mdi:information-outline", name: "Alert" },
+    { icon: "mdi:text-box-outline", name: "Logs" },
+    { icon: "mdi:image-outline", name: "Image" },
+    { icon: "mdi:loading", name: "Loading" },
+]
+
+const APPS = [
+    {
+        icon: "mdi:server-outline",
+        name: "VM request",
+        text: "Linux or Windows, with a lease",
+        tags: ["Compute", "Approval"],
+        fresh: true,
+    },
+    {
+        icon: "mdi:database-outline",
+        name: "Database",
+        text: "Postgres or MySQL, with backups",
+        tags: ["Data", "Backup"],
+    },
+    {
+        icon: "mdi:bucket-outline",
+        name: "Object storage",
+        text: "A bucket with lifecycle rules",
+        tags: ["Storage"],
+    },
+    {
+        icon: "mdi:layers-outline",
+        name: "Environment",
+        text: "App, database and VM together",
+        tags: ["Environment", "Approval"],
+    },
+    {
+        icon: "mdi:kubernetes",
+        name: "Kubernetes namespace",
+        text: "Quotas and access for a team",
+        tags: ["Compute"],
+    },
+    {
+        icon: "mdi:wall-fire",
+        name: "Firewall rule",
+        text: "Applied by your own code",
+        tags: ["Network", "Approval"],
+    },
+]
+---
+
+<div class="ui-mock app-builder" aria-hidden="true" data-ui-mock>
+    <div class="window">
+        <div class="editor">
+            <div class="body">
+                <div class="canvas">
+                    <div class="app">
+                        <div class="block is-md">
+                            <b>Request a virtual machine</b>
+                            <small>
+                                Validated, then provisioned by your own code.
+                            </small>
+                        </div>
+                        <div class="block is-form">
+                            {FIELDS.map((field) => (
+                                <p class="field">
+                                    <small>
+                                        <i>*</i> {field.label}
+                                    </small>
+                                    <span>
+                                        {field.value}
+                                        <Icon name="mdi:chevron-down" />
+                                    </span>
+                                </p>
+                            ))}
+                        </div>
+                        <div class="block is-btn">
+                            <span class="submit">
+                                <span class="before">Submit</span>
+                                <span class="after">Submit request</span>
+                            </span>
+                        </div>
+                        <div class="block is-alert">
+                            <Icon name="mdi:information-outline" />
+                            <span>Production requests need a sign-off.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="side">
+                    <div class="list">
+                        <small class="heading">Open blocks</small>
+                        {ROWS.map((row) => (
+                            <p class={`layer ${row.id}`}>
+                                <Icon name="mdi:drag-vertical" class="grip" />
+                                <Icon name={row.icon} />
+                                <span>{row.name}</span>
+                            </p>
+                        ))}
+                        <p class="add">
+                            <Icon name="mdi:plus" /> <span>Add block</span>
+                        </p>
+                        <span class="publish">Publish to the catalog</span>
+                        <div class="picker">
+                            <i class="pick"></i>
+                            {PICKER.map((item) => (
+                                <p>
+                                    <Icon name={item.icon} />
+                                    <span>{item.name}</span>
+                                </p>
+                            ))}
+                        </div>
+                    </div>
+                    <div class="props">
+                        <p class="back">
+                            <Icon name="mdi:chevron-left" /> Submit button
+                        </p>
+                        <p class="prop">
+                            <small>
+                                text <em>String</em>
+                            </small>
+                            <span class="input">
+                                <span class="typed">Submit request</span>
+                                <i></i>
+                            </span>
+                        </p>
+                        <p class="prop">
+                            <small>
+                                style <em>Enum</em>
+                            </small>
+                            <span class="input">
+                                PRIMARY <Icon name="mdi:chevron-down" />
+                            </span>
+                        </p>
+                        <p class="prop">
+                            <small>
+                                size <em>Enum</em>
+                            </small>
+                            <span class="input">
+                                LARGE <Icon name="mdi:chevron-down" />
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="catalog">
+            <div class="body">
+                <div class="shelf">
+                    <div class="apps">
+                        {APPS.map((app) => (
+                            <div class:list={["entry", { fresh: app.fresh }]}>
+                                <Icon name={app.icon} />
+                                <b>{app.name}</b>
+                                <small>{app.text}</small>
+                                <p>
+                                    <span class="tags">
+                                        {app.tags.map((tag) => (
+                                            <span class="tag">{tag}</span>
+                                        ))}
+                                    </span>
+                                    <span class="request">
+                                        <Icon name="mdi:monitor" /> View App
+                                    </span>
+                                </p>
+                                {app.fresh && <span class="new">New</span>}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+            <p class="toast">
+                <Icon name="mdi:check-circle" />
+                VM request is now in the catalog
+            </p>
+        </div>
+        <span class="cursor">
+            <span class="pointer">
+                <svg class="arrow" viewBox="0 0 10 10">
+                    <path d="M0 0 L10 4 L5.5 5.5 L4 10 Z"></path>
+                </svg>
+                <Icon name="mdi:hand-back-right" class="hand" />
+            </span>
+            <span class="who">
+                <Icon name="mdi:account-cog-outline" />
+                Platform team
+            </span>
+        </span>
+    </div>
+</div>
+
+<style lang="scss">
+    @use "../enterprise/mocks/tokens" as *;
+
+    .app-builder {
+        --loop: 28s;
+        --gap: 0.7em;
+        --lift: 11.9em;
+        --drop: 3.1em;
+        --step: 2.45em;
+        --select: color-mix(in srgb, var(--text) 28%, transparent);
+
+        @include tokens;
+
+        padding-inline: 3%;
+        @include soft;
+    }
+
+    .window {
+        position: relative;
+        display: grid;
+        align-items: center;
+        min-height: 38.8em;
+        font-size: calc(100cqw / 50);
+        line-height: 1.3;
+        color: var(--text);
+
+        > * {
+            grid-area: 1 / 1;
+        }
+    }
+
+    p {
+        margin: 0;
+    }
+
+    small {
+        display: block;
+        font-size: 0.62em;
+        color: var(--muted);
+    }
+
+    [data-icon] {
+        flex: none;
+        width: 1.1em;
+        height: 1.1em;
+    }
+
+    .publish {
+        margin-top: auto;
+        padding: 0.7em 1em;
+        border-radius: 0.32em;
+        background: #18181e;
+        font-size: 0.66em;
+        font-weight: 600;
+        text-align: center;
+        color: #ffffff;
+
+        :global(html.dark) & {
+            background: #cfcfd8;
+            color: #18181e;
+        }
+    }
+
+    .body {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 13.5em;
+        align-items: start;
+        gap: 1.2em;
+    }
+
+    .canvas {
+        min-width: 0;
+    }
+
+    .app {
+        display: grid;
+        gap: var(--gap);
+        padding: 1.1em;
+        border: 1px solid var(--line);
+        border-radius: 0.5em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+    }
+
+    .block {
+        position: relative;
+        padding: 0 0.7em;
+        border-radius: 0.32em;
+        background: var(--panel);
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border: 1.5px solid var(--select);
+            border-radius: inherit;
+            opacity: 0;
+            pointer-events: none;
+        }
+    }
+
+    .block.is-md {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 3.2em;
+
+        b {
+            font-size: 1.05em;
+        }
+
+        small {
+            margin-top: 0.3em;
+            font-size: 0.66em;
+        }
+    }
+
+    .block.is-form {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-content: center;
+        gap: 0.7em 0.8em;
+        height: 7.2em;
+    }
+
+    .field {
+        small {
+            margin-bottom: 0.35em;
+            font-weight: 600;
+            color: var(--soft);
+        }
+
+        i {
+            font-style: normal;
+            color: #d6336c;
+        }
+
+        span {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5em;
+            padding: 0.55em 0.7em;
+            border: 1px solid var(--line);
+            border-radius: 0.28em;
+            background: var(--field);
+            font-size: 0.66em;
+            white-space: nowrap;
+
+            [data-icon] {
+                color: var(--muted);
+            }
+        }
+    }
+
+    .block.is-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 3.3em;
+    }
+
+    .submit {
+        display: grid;
+        padding: 0.6em 2.4em;
+        border-radius: 0.32em;
+        background: var(--primary);
+        font-size: 0.7em;
+        font-weight: 600;
+        color: #ffffff;
+
+        span {
+            grid-area: 1 / 1;
+            text-align: center;
+        }
+
+        .before {
+            opacity: 0;
+        }
+    }
+
+    .block.is-alert {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        height: 2.4em;
+        border: 1px solid color-mix(in srgb, #2f6df2 30%, transparent);
+        background: color-mix(in srgb, #2f6df2 8%, var(--panel));
+
+        > :first-child {
+            color: #2f6df2;
+        }
+
+        :global(html.dark) & > :first-child {
+            color: #6f93fb;
+        }
+
+        span {
+            font-size: 0.66em;
+            font-weight: 500;
+        }
+    }
+
+    .side {
+        display: grid;
+        min-height: 26em;
+        border: 1px solid var(--line);
+        border-radius: 0.5em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+
+        > * {
+            grid-area: 1 / 1;
+        }
+    }
+
+    .list {
+        position: relative;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.45em;
+        padding: 1.2em 1em;
+    }
+
+    .heading {
+        margin-bottom: 0.3em;
+        font-size: 0.56em;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+    }
+
+    .layer,
+    .add {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 0.45em;
+        height: 2em;
+        padding: 0 0.6em;
+        border: 1px solid var(--line);
+        border-radius: 0.32em;
+        background: var(--panel);
+        font-weight: 600;
+        white-space: nowrap;
+
+        span {
+            overflow: hidden;
+            font-size: 0.68em;
+            text-overflow: ellipsis;
+        }
+    }
+
+    .layer {
+        position: relative;
+
+        .grip {
+            width: 0.9em;
+            color: var(--muted);
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            border: 1.5px solid var(--select);
+            border-radius: inherit;
+            opacity: 0;
+        }
+    }
+
+    .add {
+        border-style: dashed;
+        color: var(--muted);
+    }
+
+    .picker {
+        position: absolute;
+        top: 12.3em;
+        right: calc(100% - 0.6em);
+        width: 11em;
+        padding: 0.4em;
+        border: 1px solid var(--line);
+        border-radius: 0.42em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        opacity: 0;
+
+        p {
+            position: relative;
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            gap: 0.5em;
+            height: 1.9em;
+            padding: 0 0.6em;
+            font-weight: 600;
+
+            [data-icon] {
+                color: var(--muted);
+            }
+        }
+
+        span {
+            font-size: 0.68em;
+        }
+
+        .pick {
+            position: absolute;
+            top: 0.4em;
+            right: 0.4em;
+            left: 0.4em;
+            height: 1.9em;
+            border-radius: 0.28em;
+            background: var(--chip);
+            opacity: 0;
+        }
+    }
+
+    .props {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.9em;
+        padding: 1.2em 1em;
+        background: var(--panel);
+        opacity: 0;
+    }
+
+    .back {
+        display: flex;
+        align-items: center;
+        gap: 0.3em;
+        font-size: 0.8em;
+        font-weight: 700;
+    }
+
+    .prop {
+        small {
+            margin-bottom: 0.4em;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        em {
+            margin-left: 0.4em;
+            padding: 0.1em 0.5em;
+            border-radius: 99em;
+            background: var(--chip);
+            font-style: normal;
+            font-weight: 500;
+            color: var(--muted);
+        }
+    }
+
+    .input {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 2.2em;
+        padding: 0 0.7em;
+        border: 1px solid var(--line);
+        border-radius: 0.28em;
+        background: var(--field);
+        font-size: 0.66em;
+
+        [data-icon] {
+            color: var(--muted);
+        }
+    }
+
+    .prop:nth-child(2) .input {
+        justify-content: flex-start;
+        border-color: var(--ring);
+    }
+
+    .typed {
+        display: inline-block;
+        overflow: hidden;
+        width: 14ch;
+        white-space: nowrap;
+    }
+
+    .typed + i {
+        width: 1px;
+        height: 1.1em;
+        margin-left: 1px;
+        background: var(--text);
+    }
+
+    .catalog .body {
+        display: block;
+    }
+
+    .catalog {
+        position: relative;
+        align-self: stretch;
+        display: grid;
+        align-content: center;
+        opacity: 0;
+    }
+
+    .apps {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.9em;
+    }
+
+    .entry {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35em;
+        min-height: 12.5em;
+        padding: 1em;
+        border: 1px solid var(--line);
+        border-radius: 0.42em;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+
+        > [data-icon] {
+            width: 1.4em;
+            height: 1.4em;
+            margin-bottom: 0.6em;
+            color: var(--soft);
+        }
+
+        b {
+            font-size: 0.82em;
+        }
+
+        p {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+
+        &.fresh {
+            border-color: var(--select);
+        }
+    }
+
+    .tags {
+        display: flex;
+        gap: 0.35em;
+    }
+
+    .tag {
+        padding: 0.3em 0.6em;
+        border-radius: 0.21em;
+        background: var(--chip);
+        font-size: 0.6em;
+        font-weight: 600;
+        color: var(--muted);
+    }
+
+    .new {
+        position: absolute;
+        top: 1em;
+        right: 1em;
+        padding: 0.3em 0.7em;
+        border-radius: 0.28em;
+        background: var(--tile);
+        font-size: 0.6em;
+        font-weight: 600;
+        color: var(--tile-ink);
+
+        :global(html.dark) & {
+            background: rgba(185, 166, 255, 0.16);
+            color: var(--run);
+        }
+    }
+
+    .request {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35em;
+        padding: 0.35em 0.8em;
+        border: 1px solid var(--line);
+        border-radius: 0.24em;
+        background: var(--panel);
+        font-size: 0.6em;
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    .toast {
+        position: absolute;
+        right: 0;
+        bottom: 2.4em;
+        left: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.6em;
+        width: max-content;
+        margin-inline: auto;
+        padding: 0.8em 1.3em;
+        border-radius: 0.5em;
+        background: #18181e;
+        box-shadow: 0 10px 28px -10px rgba(0, 0, 0, 0.45);
+        font-size: 0.86em;
+        font-weight: 600;
+        color: #ffffff;
+
+        :global(html.dark) & {
+            background: #ffffff;
+            color: #18181e;
+        }
+
+        [data-icon] {
+            width: 1.3em;
+            height: 1.3em;
+            color: #2fd197;
+        }
+    }
+
+    .cursor {
+        --tone: 38, 112, 214;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.1em;
+        translate: 36em 27em;
+        pointer-events: none;
+
+        :global(html.dark) & {
+            --tone: 140, 196, 255;
+        }
+    }
+
+    .pointer {
+        position: relative;
+        display: block;
+        width: 1.1em;
+        height: 1.1em;
+
+        > * {
+            position: absolute;
+            inset: 0;
+        }
+
+        .arrow {
+            width: 1.1em;
+            height: 1.1em;
+            fill: rgb(var(--tone));
+            filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
+        }
+
+        .hand {
+            top: -0.3em;
+            left: -0.4em;
+            width: 1.4em;
+            height: 1.4em;
+            color: rgb(var(--tone));
+            opacity: 0;
+            filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
+        }
+    }
+
+    .who {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3em;
+        margin-left: 0.7em;
+        padding: 0.15em 0.55em;
+        border-radius: 0.32em;
+        background: rgb(var(--tone));
+        font-size: 0.7em;
+        font-weight: 600;
+        white-space: nowrap;
+        color: #ffffff;
+
+        :global(html.dark) & {
+            border: 1px solid rgba(var(--tone), 0.45);
+            background: rgb(20, 20, 24);
+            color: rgb(var(--tone));
+        }
+
+        [data-icon] {
+            width: 1.1em;
+            height: 1.1em;
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .app-builder:not([data-play]) * {
+            animation-play-state: paused !important;
+        }
+
+        .editor {
+            animation: app-builder-editor var(--loop) ease infinite both;
+        }
+
+        .catalog {
+            animation: app-builder-catalog var(--loop) ease infinite both;
+        }
+
+        .toast {
+            animation: app-builder-toast var(--loop) ease-out infinite both;
+        }
+
+        .entry.fresh {
+            animation: app-builder-fresh var(--loop) ease-out infinite both;
+        }
+
+        .picker {
+            animation:
+                app-builder-picker var(--loop) ease-out infinite both,
+                app-builder-picker-slide var(--loop) ease-out infinite both;
+        }
+
+        .pick {
+            animation: app-builder-pick var(--loop) linear infinite both;
+        }
+
+        .add {
+            animation:
+                app-builder-add var(--loop) linear infinite both,
+                app-builder-add-slide var(--loop) ease-out infinite both;
+        }
+
+        .is-md,
+        .layer.is-md {
+            animation: app-builder-in-md var(--loop) ease-out infinite both;
+        }
+
+        .is-form,
+        .layer.is-form {
+            animation: app-builder-in-form var(--loop) ease-out infinite both;
+        }
+
+        .is-btn,
+        .layer.is-btn {
+            animation: app-builder-in-btn var(--loop) ease-out infinite both;
+        }
+
+        .block.is-alert {
+            animation: app-builder-alert var(--loop) ease-in-out infinite both;
+        }
+
+        .layer.is-alert {
+            animation: app-builder-row-alert var(--loop) ease-in-out infinite
+                both;
+        }
+
+        .block.is-form,
+        .block.is-btn {
+            animation-name: app-builder-in-form, app-builder-make-room;
+            animation-duration: var(--loop);
+            animation-iteration-count: infinite;
+            animation-fill-mode: both;
+            animation-timing-function: ease-out, ease-in-out;
+        }
+
+        .block.is-btn {
+            animation-name: app-builder-in-btn, app-builder-make-room;
+        }
+
+        .layer.is-form,
+        .layer.is-btn {
+            animation-name: app-builder-in-form, app-builder-row-room;
+            animation-duration: var(--loop);
+            animation-iteration-count: infinite;
+            animation-fill-mode: both;
+            animation-timing-function: ease-out, ease-in-out;
+        }
+
+        .layer.is-btn {
+            animation-name: app-builder-in-btn, app-builder-row-room;
+        }
+
+        .is-md::after,
+        .layer.is-md::after {
+            animation: app-builder-ring-md var(--loop) linear infinite both;
+        }
+
+        .is-form::after,
+        .layer.is-form::after {
+            animation: app-builder-ring-form var(--loop) linear infinite both;
+        }
+
+        .is-btn::after,
+        .layer.is-btn::after {
+            animation: app-builder-ring-btn var(--loop) linear infinite both;
+        }
+
+        .is-alert::after,
+        .layer.is-alert::after {
+            animation: app-builder-ring-alert var(--loop) linear infinite both;
+        }
+
+        .list {
+            animation: app-builder-list var(--loop) ease infinite both;
+        }
+
+        .props {
+            animation: app-builder-props var(--loop) ease infinite both;
+        }
+
+        .typed {
+            animation: app-builder-type var(--loop) steps(14, end) infinite both;
+        }
+
+        .typed + i {
+            animation: app-builder-caret var(--loop) step-end infinite both;
+        }
+
+        .submit .before {
+            animation: app-builder-before var(--loop) linear infinite both;
+        }
+
+        .submit .after {
+            animation: app-builder-after var(--loop) linear infinite both;
+        }
+
+        .publish {
+            animation: app-builder-press var(--loop) linear infinite both;
+        }
+
+        .cursor {
+            animation:
+                app-builder-cursor var(--loop) infinite both,
+                app-builder-cursor-show var(--loop) linear infinite both;
+        }
+
+        .arrow {
+            animation: app-builder-arrow var(--loop) linear infinite both;
+        }
+
+        .hand {
+            animation: app-builder-hand var(--loop) linear infinite both;
+        }
+    }
+
+    @keyframes app-builder-cursor {
+        0% {
+            translate: 36em 27em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        2.14%,
+        3.57% {
+            translate: 43.2em 10em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        5.14%,
+        7.14% {
+            translate: 30.2em 10.4em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        9.43%,
+        12.14% {
+            translate: 43.25em 12.5em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        13.71%,
+        15.71% {
+            translate: 30.2em 14.8em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        18%,
+        20.71% {
+            translate: 43.25em 14.9em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        22.29%,
+        24.29% {
+            translate: 30.2em 19.1em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        26.57%,
+        29.29% {
+            translate: 43.25em 17.4em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        30.86%,
+        33.14% {
+            translate: 30.2em 23.5em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        36.14%,
+        37.86% {
+            translate: 17.65em 21em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        40%,
+        51.14% {
+            translate: 46.6em 11.4em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        54.57%,
+        57.14% {
+            translate: 32.9em 24.6em;
+            animation-timing-function: ease-in-out;
+        }
+        62.29%,
+        64% {
+            translate: 32.9em 12.7em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        67%,
+        69.14% {
+            translate: 43.25em 30.2em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        76%,
+        91.43% {
+            translate: 12.65em 17.2em;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        97.43%,
+        100% {
+            translate: 36em 27em;
+        }
+    }
+
+    @keyframes app-builder-cursor-show {
+        0%,
+        0% {
+            opacity: 0;
+        }
+        1.5%,
+        88% {
+            opacity: 1;
+        }
+        91%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-builder-arrow {
+        0%,
+        56.29% {
+            opacity: 1;
+        }
+        56.71%,
+        63.57% {
+            opacity: 0;
+        }
+        64%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes app-builder-hand {
+        0%,
+        56.29% {
+            opacity: 0;
+        }
+        56.71%,
+        63.57% {
+            opacity: 1;
+        }
+        64%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-builder-editor {
+        0% {
+            opacity: 0;
+        }
+        2.86%,
+        70.86% {
+            opacity: 1;
+        }
+        73.43%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-builder-catalog {
+        0%,
+        71.71% {
+            opacity: 0;
+        }
+        74.29%,
+        95.71% {
+            opacity: 1;
+        }
+        98.29%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-builder-toast {
+        0%,
+        76% {
+            opacity: 0;
+            translate: 0 0.8em;
+        }
+        78.57%,
+        92.29% {
+            opacity: 1;
+            translate: 0 0;
+        }
+        94.86%,
+        100% {
+            opacity: 0;
+            translate: 0 0;
+        }
+    }
+
+    @keyframes app-builder-fresh {
+        0%,
+        74.29% {
+            scale: 0.94;
+            opacity: 0;
+        }
+        77.71%,
+        100% {
+            scale: 1;
+            opacity: 1;
+        }
+    }
+
+    @keyframes app-builder-picker {
+        0%,
+        2.86%,
+        8.57%,
+        11.43%,
+        17.14%,
+        20%,
+        25.71%,
+        28.57%,
+        34.29%,
+        100% {
+            opacity: 0;
+            translate: 0 0.4em;
+        }
+        4.29%,
+        7.14%,
+        12.86%,
+        15.71%,
+        21.43%,
+        24.29%,
+        30%,
+        32.86% {
+            opacity: 1;
+            translate: 0 0;
+        }
+    }
+
+    @keyframes app-builder-pick {
+        0%,
+        5.57% {
+            opacity: 0;
+            translate: 0 0;
+        }
+        5.71%,
+        7.14% {
+            opacity: 1;
+            translate: 0 0;
+        }
+        7.29%,
+        14.14% {
+            opacity: 0;
+            translate: 0 1.9em;
+        }
+        14.29%,
+        15.71% {
+            opacity: 1;
+            translate: 0 1.9em;
+        }
+        15.86%,
+        22.71% {
+            opacity: 0;
+            translate: 0 3.8em;
+        }
+        22.86%,
+        24.29% {
+            opacity: 1;
+            translate: 0 3.8em;
+        }
+        24.43%,
+        31.29% {
+            opacity: 0;
+            translate: 0 5.7em;
+        }
+        31.43%,
+        32.86% {
+            opacity: 1;
+            translate: 0 5.7em;
+        }
+        33%,
+        100% {
+            opacity: 0;
+            translate: 0 5.7em;
+        }
+    }
+
+    @keyframes app-builder-add {
+        0%,
+        2.14%,
+        4.29%,
+        10.71%,
+        12.86%,
+        19.29%,
+        21.43%,
+        27.86%,
+        30%,
+        100% {
+            background: var(--panel);
+        }
+        2.86%,
+        11.43%,
+        20%,
+        28.57% {
+            background: var(--chip);
+        }
+    }
+
+    @keyframes app-builder-add-slide {
+        0%,
+        7.14% {
+            translate: 0 calc(-4 * var(--step));
+        }
+        10%,
+        15.71% {
+            translate: 0 calc(-3 * var(--step));
+        }
+        18.57%,
+        24.29% {
+            translate: 0 calc(-2 * var(--step));
+        }
+        27.14%,
+        32.86% {
+            translate: 0 calc(-1 * var(--step));
+        }
+        35.71%,
+        100% {
+            translate: 0 0;
+        }
+    }
+
+    @keyframes app-builder-picker-slide {
+        0%,
+        7.14% {
+            margin-top: calc(-4 * var(--step));
+        }
+        10%,
+        15.71% {
+            margin-top: calc(-3 * var(--step));
+        }
+        18.57%,
+        24.29% {
+            margin-top: calc(-2 * var(--step));
+        }
+        27.14%,
+        32.86% {
+            margin-top: calc(-1 * var(--step));
+        }
+        35.71%,
+        100% {
+            margin-top: 0;
+        }
+    }
+
+    @keyframes app-builder-in-md {
+        0%,
+        7.14% {
+            opacity: 0;
+            translate: 0 0.6em;
+        }
+        10%,
+        100% {
+            opacity: 1;
+            translate: 0 0;
+        }
+    }
+
+    @keyframes app-builder-in-form {
+        0%,
+        15.71% {
+            opacity: 0;
+        }
+        18.57%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes app-builder-in-btn {
+        0%,
+        24.29% {
+            opacity: 0;
+        }
+        27.14%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes app-builder-make-room {
+        0%,
+        57.14% {
+            translate: 0 0;
+        }
+        62.29%,
+        100% {
+            translate: 0 var(--drop);
+        }
+    }
+
+    @keyframes app-builder-row-room {
+        0%,
+        57.14% {
+            translate: 0 0;
+        }
+        62.29%,
+        100% {
+            translate: 0 var(--step);
+        }
+    }
+
+    @keyframes app-builder-alert {
+        0%,
+        32.86% {
+            opacity: 0;
+            translate: 0 0;
+            scale: 1;
+            box-shadow: none;
+        }
+        35.71%,
+        55.43% {
+            opacity: 1;
+            translate: 0 0;
+            scale: 1;
+            box-shadow: none;
+        }
+        57.14% {
+            opacity: 1;
+            translate: 0 0;
+            scale: 1.02;
+            box-shadow: var(--shadow);
+        }
+        62.29% {
+            opacity: 1;
+            translate: 0 calc(-1 * var(--lift));
+            scale: 1.02;
+            box-shadow: var(--shadow);
+        }
+        64%,
+        100% {
+            opacity: 1;
+            translate: 0 calc(-1 * var(--lift));
+            scale: 1;
+            box-shadow: none;
+        }
+    }
+
+    @keyframes app-builder-row-alert {
+        0%,
+        32.86% {
+            opacity: 0;
+            translate: 0 0;
+        }
+        35.71%,
+        57.14% {
+            opacity: 1;
+            translate: 0 0;
+        }
+        62.29%,
+        100% {
+            opacity: 1;
+            translate: 0 calc(-2 * var(--step));
+        }
+    }
+
+    @keyframes app-builder-ring-md {
+        0%,
+        8.57% {
+            opacity: 0;
+        }
+        10%,
+        11.6% {
+            opacity: 1;
+        }
+        12.4%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-builder-ring-form {
+        0%,
+        17.14% {
+            opacity: 0;
+        }
+        18.57%,
+        20.2% {
+            opacity: 1;
+        }
+        21%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-builder-ring-btn {
+        0%,
+        25.71% {
+            opacity: 0;
+        }
+        27.14%,
+        28.8% {
+            opacity: 1;
+        }
+        29.6%,
+        36.6% {
+            opacity: 0;
+        }
+        37.43%,
+        52.86% {
+            opacity: 1;
+        }
+        54.57%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-builder-ring-alert {
+        0%,
+        34.29% {
+            opacity: 0;
+        }
+        35.71%,
+        37.43% {
+            opacity: 1;
+        }
+        38.29%,
+        55.43% {
+            opacity: 0;
+        }
+        56.29%,
+        64.86% {
+            opacity: 1;
+        }
+        66.57%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-builder-list {
+        0%,
+        38.29% {
+            opacity: 1;
+        }
+        40%,
+        52% {
+            opacity: 0;
+        }
+        53.71%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes app-builder-props {
+        0%,
+        39.14% {
+            opacity: 0;
+        }
+        40.86%,
+        51.14% {
+            opacity: 1;
+        }
+        52.86%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-builder-type {
+        0%,
+        41.71% {
+            width: 6ch;
+        }
+        47.71%,
+        100% {
+            width: 14ch;
+        }
+    }
+
+    @keyframes app-builder-caret {
+        0%,
+        40.86% {
+            opacity: 0;
+        }
+        41.71%,
+        43.43%,
+        45.14%,
+        46.86%,
+        48.57%,
+        50.29% {
+            opacity: 1;
+        }
+        42.57%,
+        44.29%,
+        46%,
+        47.71%,
+        49.43%,
+        51.14%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-builder-before {
+        0%,
+        47.71% {
+            opacity: 1;
+        }
+        47.8%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-builder-after {
+        0%,
+        47.71% {
+            opacity: 0;
+        }
+        47.8%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes app-builder-press {
+        0%,
+        67.43% {
+            scale: 1;
+        }
+        68.71% {
+            scale: 0.88;
+        }
+        70%,
+        100% {
+            scale: 1;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .editor {
+            opacity: 0;
+        }
+
+        .catalog {
+            opacity: 1;
+        }
+    }
+</style>
