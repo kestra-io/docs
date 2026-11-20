@@ -33,7 +33,7 @@ The `kestra/kestra:latest-slim` image ships without any plugins to keep the down
 :::
 
 :::alert{type="info"}
-The above command starts Kestra with an embedded H2 database. Storage files are stored on the `kestra_data` Docker volume, and the H2 database is persisted on the `kestra_db` Docker volume. For production-ready persistence with a PostgreSQL database and more configurability, follow the [Docker Compose installation](../03.docker-compose/index.md).
+The above command starts Kestra with an embedded H2 database. Storage files are stored on the `kestra_data` Docker volume, and the H2 database is persisted on the `kestra_db` Docker volume. This setup is for evaluation and local flow development. For a persistent PostgreSQL database, use [Docker Compose](../03.docker-compose/index.md). For production, use [Kubernetes](../03.kubernetes/index.md) or a [virtual machine](../08.aws-ec2/index.md).
 :::
 
 :::alert{type="info"}
