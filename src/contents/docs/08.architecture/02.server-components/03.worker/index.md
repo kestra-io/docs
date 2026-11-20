@@ -137,6 +137,8 @@ These properties tune the Worker's gRPC connection to the Worker Controller. For
 | `kestra.worker.controllers.health-check.enabled` | `true` | Use the gRPC health service to stop sending calls to a Worker Controller that isn't serving. |
 | `kestra.worker.controllers.wait-for-ready.enabled` | `true` | Wait for a Worker Controller to be ready instead of failing the call immediately. |
 | `kestra.worker.controllers.wait-for-ready.deadline` | `PT30S` | Maximum wait for a ready Worker Controller when `wait-for-ready` is enabled. |
+| `kestra.worker.job-stream.sync-interval` | `30s` | How often the Worker reports the jobs it holds to the Worker Controller. See [Jobs that never reach a Worker](../02.worker-controller/index.md#jobs-that-never-reach-a-worker). |
+| `kestra.worker.job-stream.sync-timeout` | `65s` | How long the Worker waits for the Worker Controller to acknowledge a report before it drops the stream and reconnects. Keep it above `sync-interval`. |
 
 ### Monitoring and troubleshooting
 
@@ -145,6 +147,7 @@ Workers publish metrics under `kestra.worker.*`, tagged with `worker_group`:
 - **Capacity:** `worker.job.thread`, `worker.max.concurrency` (threads plus job buffer), `worker.running.count`, and `worker.pending.count`. When `worker.running.count` stays equal to `worker.job.thread`, the Worker is saturated.
 - **Stuck work:** `worker.abandoned.count` and `worker.timeout.count`.
 - **Triggers:** `worker.trigger.*` counters and timers.
+- **Connection:** `worker.stream.reconnect.count`, tagged with a `reason`: `stream_error`, `stream_completed`, or `sync_unacknowledged`. Expect about one reconnection an hour per Worker from [stream recycling](../02.worker-controller/index.md#how-workers-connect). A rising count with `sync_unacknowledged` means a proxy or load balancer keeps the connection open while the stream no longer delivers.
 
 See the [Worker metrics](../../../10.administrator-guide/03.monitoring/index.md#worker) for the full list.
 

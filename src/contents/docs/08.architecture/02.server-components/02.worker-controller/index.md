@@ -72,7 +72,20 @@ A Worker accepts messages up to `kestra.grpc.max-inbound-message-size` (10 MiB b
 
 ## When a Worker goes away
 
-When a Worker disconnects, the Worker Controller doesn't resend its unfinished jobs itself. The Executor's liveness coordinator detects the lost Worker and resubmits its jobs to other Workers according to the Worker's restart strategy. See [worker job resubmission](../../../10.administrator-guide/server-lifecycle/index.md#worker-job-resubmission) and [liveness and worker task restarts](../../../configuration/05.security-and-secrets/index.md#liveness-and-worker-task-restarts).
+When a Worker leaves the cluster, the Worker Controller doesn't resend its unfinished jobs itself. The Executor's liveness coordinator detects the lost Worker and resubmits its jobs to other Workers according to the Worker's restart strategy. See [worker job resubmission](../../../10.administrator-guide/server-lifecycle/index.md#worker-job-resubmission) and [liveness and worker task restarts](../../../configuration/05.security-and-secrets/index.md#liveness-and-worker-task-restarts).
+
+### Jobs that never reach a Worker
+
+A Worker's stream can stop delivering jobs while the Worker stays connected. This happens behind a load balancer or proxy that terminates HTTP/2 and answers the connection's keep-alive pings itself, or when the Worker Controller recycles the stream right after sending a job. Heartbeats use separate calls, so the Worker still looks alive and the liveness coordinator never resubmits the job.
+
+To recover these jobs, the Worker reports the jobs it holds when it opens a stream, and then every `kestra.worker.job-stream.sync-interval` (30 seconds by default). A Worker holds a job from the moment it receives it until the Worker Controller accepts the job's final result. The Worker Controller acknowledges each report and compares it with the jobs it recorded as running on that Worker. A job sent on an earlier stream that the Worker doesn't hold never arrived, so the Worker Controller:
+
+- Puts a task back on its queue. It discards the task instead when the task run already ended, the execution was killed, cancelled, or deleted, or a [kill switch](../../../07.enterprise/05.instance/kill-switch/index.md) applies to it.
+- Hands a trigger back to the Scheduler, which evaluates it again from the current flow revision.
+
+The Worker Controller doesn't resubmit jobs sent on the current stream, since they may still be on their way. If the Worker Controller stops acknowledging reports for `kestra.worker.job-stream.sync-timeout` (65 seconds by default), the Worker drops the stream and reconnects, and the next report covers the jobs sent on the old stream. A Worker only drops a stream for this reason after the Worker Controller has acknowledged at least one report on it, so a Worker connected to an older Worker Controller that doesn't acknowledge reports keeps its stream.
+
+Each resubmitted job increments `controller.job.resubmitted.total`. A resubmitted task logs `Resubmit WorkerTask: it never reached its worker.` on its task run.
 
 ## Storage access through the Worker Controller
 
@@ -142,5 +155,7 @@ The Worker Controller publishes metrics under `kestra.controller.*`:
 See the [Worker Controller metrics](../../../10.administrator-guide/prometheus-metrics/index.md#kestra-worker-controller-metrics) for the full list, and [controller metrics](../../../07.enterprise/04.scalability/worker-group/index.md#controller-metrics) for their tags.
 
 A steadily growing count of re-queued jobs, with paused subscriptions, means the Workers serving that queue are at capacity. Add Workers, or raise their thread count.
+
+A rising `controller.job.resubmitted.total` means jobs were sent on Worker streams that stopped delivering. Check the load balancers and proxies between your Workers and Worker Controllers. See [Jobs that never reach a Worker](#jobs-that-never-reach-a-worker).
 
 If a queue record blocks the Worker Controller, start it with `--ignore-queue-records` to skip that record while you investigate. See the [kill switch CLI flags](../../../07.enterprise/05.instance/kill-switch/index.md#cli-compatibility).

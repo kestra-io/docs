@@ -116,6 +116,7 @@ Emitted by worker servers. Every metric except `kestra_worker_killed_count_total
 * `kestra_worker_queued_duration_seconds_max` (gauge): Maximum observed task queued duration inside the Worker.
 * `kestra_worker_running_count` (gauge): The number of tasks currently running inside the Worker.
 * `kestra_worker_started_count_total` (counter): The total number of tasks started by the Worker.
+* `kestra_worker_stream_reconnect_count_total` (counter): The total number of times the Worker opened a new job stream to the Worker Controller after losing the previous one, also tagged by `reason` (`stream_error`, `stream_completed`, or `sync_unacknowledged`).
 * `kestra_worker_tasks_running_count` (gauge): The number of tasks currently running inside the Worker, also tagged by `task_type`, `namespace_id`, `flow_id`, and `tenant_id`.
 * `kestra_worker_timeout_count_total` (counter): The total number of tasks and polling trigger evaluations that timed out inside the Worker.
 * `kestra_worker_trigger_duration_seconds` (summary): Trigger evaluation duration inside the Worker.
@@ -161,6 +162,7 @@ Worker Controller server exclusive:
 **Per-(worker-group, worker-queue) counters (tagged `worker_group`, `worker_queue`):**
 * `kestra_controller_job_dispatched_total` (counter): The total number of jobs dispatched to workers.
 * `kestra_controller_job_dispatch_failed_total` (counter): The total number of job dispatch failures.
+* `kestra_controller_job_resubmitted_total` (counter): The total number of jobs resubmitted because the Worker they were sent to never received them.
 
 ### Kestra JDBC Metrics
 
