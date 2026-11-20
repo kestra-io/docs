@@ -3,8 +3,6 @@ import { Icon } from "astro-icon/components"
 
 const STEPS = ["checkout", "terraform init", "terraform apply", "configure"]
 
-const PEOPLE = ["Platform team", "Requester", "Approver"]
-
 const LOGS = [
     {
         time: "10:42:07",
@@ -70,26 +68,10 @@ const LOGS = [
             <div class="fields">
                 <span class="field">
                     <span class="label">Assignee</span>
-                    <span class="pick">
-                        <span class="swap">
-                            <em class="a-none">Unassigned</em>
-                            <em class="a-set">
-                                <i class="avatar">PT</i>Platform team
-                            </em>
-                        </span>
-                        <Icon name="mdi:chevron-down" />
-                        <span class="menu">
-                            {PEOPLE.map((person) => (
-                                <i
-                                    class:list={{
-                                        on: person === "Platform team",
-                                    }}
-                                >
-                                    {person}
-                                </i>
-                            ))}
-                        </span>
-                    </span>
+                    <em>
+                        <i class="avatar">PT</i>Platform team
+                        <i class="auto">Auto</i>
+                    </em>
                 </span>
                 <span class="field">
                     <span class="label">SLA</span>
@@ -153,15 +135,12 @@ const LOGS = [
     @use "../enterprise/mocks/tokens" as *;
 
     .case-mock {
-        --loop: 22s;
+        --loop: 18s;
         --fail: #c8322d;
         --fail-bg: #fdecec;
-        --select: color-mix(in srgb, var(--text) 28%, transparent);
         --drop: 9em;
         --rest: 3em 33em;
-        --at-pick: 11.2em 19.3em;
-        --at-option: 9.6em 23.25em;
-        --at-retry: 39.7em 28.1em;
+        --at-retry: 39.7em 27.6em;
 
         @include tokens;
         @include soft;
@@ -379,12 +358,10 @@ const LOGS = [
         white-space: nowrap;
     }
 
-    .a-none,
     .t-none {
         color: var(--muted);
     }
 
-    .a-set,
     .s-met,
     .t-set,
     .k-done,
@@ -422,62 +399,22 @@ const LOGS = [
         }
     }
 
+    .auto {
+        padding: 0.15em 0.45em;
+        border-radius: 0.21em;
+        background: var(--chip);
+        font-size: 0.82em;
+        font-style: normal;
+        font-weight: 600;
+        color: var(--muted);
+    }
+
     .ticket {
         padding: 0.2em 0.45em;
         border-radius: 0.21em;
         background: var(--chip);
         font-style: normal;
         font-weight: 600;
-    }
-
-    .pick {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 9.5em;
-        height: 2.2em;
-        padding: 0 0.5em 0 0.7em;
-        border: 1px solid var(--line);
-        border-radius: 0.32em;
-        background: var(--field);
-
-        > [data-icon] {
-            color: var(--muted);
-        }
-
-        &::after {
-            content: "";
-            position: absolute;
-            inset: -3px;
-            border: 1.5px solid var(--ring);
-            border-radius: 0.42em;
-            opacity: 0;
-            pointer-events: none;
-        }
-    }
-
-    .menu {
-        position: absolute;
-        top: calc(100% + 0.4em);
-        left: 0;
-        z-index: 3;
-        display: grid;
-        width: 100%;
-        padding: 0.35em;
-        border: 1px solid var(--line);
-        border-radius: 0.32em;
-        background: var(--panel);
-        box-shadow: var(--shadow);
-        font-size: 0.68em;
-        font-weight: 500;
-        opacity: 0;
-
-        i {
-            padding: 0.5em 0.6em;
-            border-radius: 0.21em;
-            font-style: normal;
-        }
     }
 
     .logs {
@@ -689,7 +626,8 @@ const LOGS = [
                 case-p3-spin var(--loop) linear infinite both;
         }
 
-        .p3 .done {
+        .p3 .done,
+        .ln.l4 {
             animation: case-p3-done var(--loop) linear infinite both;
         }
 
@@ -705,34 +643,6 @@ const LOGS = [
 
         .ln.l3 {
             animation: case-error var(--loop) linear infinite both;
-        }
-
-        .ln.l4 {
-            animation: case-p3-done var(--loop) linear infinite both;
-        }
-
-        .pick {
-            animation: case-press-pick var(--loop) linear infinite both;
-        }
-
-        .pick::after {
-            animation: case-ring var(--loop) linear infinite both;
-        }
-
-        .menu {
-            animation: case-menu var(--loop) ease-out infinite both;
-        }
-
-        .menu .on {
-            animation: case-option var(--loop) linear infinite both;
-        }
-
-        .a-none {
-            animation: case-out-assign var(--loop) linear infinite both;
-        }
-
-        .a-set {
-            animation: case-in-assign var(--loop) linear infinite both;
         }
 
         .t-none {
@@ -790,10 +700,10 @@ const LOGS = [
 
     @keyframes case-run {
         0%,
-        11% {
+        12% {
             translate: 0 var(--drop);
         }
-        14%,
+        15%,
         100% {
             translate: 0 0;
         }
@@ -801,11 +711,11 @@ const LOGS = [
 
     @keyframes case-card {
         0%,
-        11.5% {
+        12.5% {
             opacity: 0;
             translate: 0 1.2em;
         }
-        14.5%,
+        15.5%,
         100% {
             opacity: 1;
             translate: 0 0;
@@ -814,31 +724,16 @@ const LOGS = [
 
     @keyframes case-cursor {
         0%,
-        20% {
+        40% {
             translate: var(--rest);
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
-        25%,
-        26% {
-            translate: var(--at-pick);
-            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        29%,
-        31% {
-            translate: var(--at-option);
-            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        36%,
-        49% {
-            translate: var(--rest);
-            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        54%,
-        57% {
+        45%,
+        48% {
             translate: var(--at-retry);
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
-        64%,
+        55%,
         100% {
             translate: var(--rest);
         }
@@ -846,10 +741,10 @@ const LOGS = [
 
     @keyframes case-x-run {
         0%,
-        8.5% {
+        9.5% {
             opacity: 1;
         }
-        9%,
+        10%,
         100% {
             opacity: 0;
         }
@@ -857,14 +752,14 @@ const LOGS = [
 
     @keyframes case-x-fail {
         0%,
-        8.5% {
+        9.5% {
             opacity: 0;
         }
-        9%,
-        57.5% {
+        10%,
+        47.5% {
             opacity: 1;
         }
-        58%,
+        48%,
         100% {
             opacity: 0;
         }
@@ -872,14 +767,14 @@ const LOGS = [
 
     @keyframes case-x-again {
         0%,
-        57.5% {
+        47.5% {
             opacity: 0;
         }
-        58%,
-        71.5% {
+        48%,
+        62.5% {
             opacity: 1;
         }
-        72%,
+        63%,
         100% {
             opacity: 0;
         }
@@ -887,10 +782,10 @@ const LOGS = [
 
     @keyframes case-x-ok {
         0%,
-        71.5% {
+        62.5% {
             opacity: 0;
         }
-        72%,
+        63%,
         100% {
             opacity: 1;
         }
@@ -904,18 +799,18 @@ const LOGS = [
 
     @keyframes case-p3-spin {
         0%,
-        8.5% {
+        9.5% {
             opacity: 1;
         }
-        9%,
-        57.5% {
+        10%,
+        47.5% {
             opacity: 0;
         }
-        58%,
-        65.5% {
+        48%,
+        55.5% {
             opacity: 1;
         }
-        66%,
+        56%,
         100% {
             opacity: 0;
         }
@@ -923,10 +818,10 @@ const LOGS = [
 
     @keyframes case-p3-done {
         0%,
-        65.5% {
+        55.5% {
             opacity: 0;
         }
-        66%,
+        56%,
         100% {
             opacity: 1;
         }
@@ -934,10 +829,10 @@ const LOGS = [
 
     @keyframes case-p4-wait {
         0%,
-        65.5% {
+        55.5% {
             opacity: 1;
         }
-        66%,
+        56%,
         100% {
             opacity: 0;
         }
@@ -945,14 +840,14 @@ const LOGS = [
 
     @keyframes case-p4-spin {
         0%,
-        65.5% {
+        55.5% {
             opacity: 0;
         }
-        66%,
-        71.5% {
+        56%,
+        62.5% {
             opacity: 1;
         }
-        72%,
+        63%,
         100% {
             opacity: 0;
         }
@@ -960,105 +855,25 @@ const LOGS = [
 
     @keyframes case-error {
         0%,
-        16% {
+        18% {
             background: transparent;
         }
-        18%,
-        65.5% {
+        20%,
+        55.5% {
             background: var(--fail-bg);
         }
-        66%,
+        56%,
         100% {
             background: transparent;
-        }
-    }
-
-    @keyframes case-press-pick {
-        0%,
-        25.6% {
-            scale: 1;
-        }
-        26.1% {
-            scale: 0.96;
-        }
-        26.6%,
-        100% {
-            scale: 1;
-        }
-    }
-
-    @keyframes case-ring {
-        0%,
-        25.6% {
-            opacity: 0;
-        }
-        26.1%,
-        33% {
-            opacity: 1;
-        }
-        34%,
-        100% {
-            opacity: 0;
-        }
-    }
-
-    @keyframes case-menu {
-        0%,
-        26.4% {
-            opacity: 0;
-            translate: 0 -0.3em;
-        }
-        27.4%,
-        32% {
-            opacity: 1;
-            translate: 0 0;
-        }
-        33%,
-        100% {
-            opacity: 0;
-            translate: 0 0;
-        }
-    }
-
-    @keyframes case-option {
-        0%,
-        29% {
-            background: transparent;
-        }
-        29.5%,
-        100% {
-            background: var(--chip);
-        }
-    }
-
-    @keyframes case-out-assign {
-        0%,
-        31.5% {
-            opacity: 1;
-        }
-        32%,
-        100% {
-            opacity: 0;
-        }
-    }
-
-    @keyframes case-in-assign {
-        0%,
-        31.5% {
-            opacity: 0;
-        }
-        32%,
-        100% {
-            opacity: 1;
         }
     }
 
     @keyframes case-out-ticket {
         0%,
-        37.5% {
+        25.5% {
             opacity: 1;
         }
-        38%,
+        26%,
         100% {
             opacity: 0;
         }
@@ -1066,11 +881,11 @@ const LOGS = [
 
     @keyframes case-in-ticket {
         0%,
-        37.5% {
+        25.5% {
             opacity: 0;
             translate: 0 0.3em;
         }
-        39%,
+        27%,
         100% {
             opacity: 1;
             translate: 0 0;
@@ -1079,16 +894,16 @@ const LOGS = [
 
     @keyframes case-notice-1 {
         0%,
-        38% {
+        26.5% {
             opacity: 0;
             translate: 0 0.8em;
         }
-        41%,
-        49% {
+        29.5%,
+        37% {
             opacity: 1;
             translate: 0 0;
         }
-        52%,
+        40%,
         100% {
             opacity: 0;
             translate: 0 0;
@@ -1097,13 +912,13 @@ const LOGS = [
 
     @keyframes case-press-retry {
         0%,
-        56.5% {
+        47% {
             scale: 1;
         }
-        57% {
+        47.5% {
             scale: 0.94;
         }
-        57.5%,
+        48%,
         100% {
             scale: 1;
         }
@@ -1111,10 +926,10 @@ const LOGS = [
 
     @keyframes case-out-retry {
         0%,
-        57.5% {
+        47.5% {
             opacity: 1;
         }
-        58%,
+        48%,
         100% {
             opacity: 0;
         }
@@ -1122,10 +937,10 @@ const LOGS = [
 
     @keyframes case-in-retry {
         0%,
-        57.5% {
+        47.5% {
             opacity: 0;
         }
-        58%,
+        48%,
         100% {
             opacity: 1;
         }
@@ -1133,10 +948,10 @@ const LOGS = [
 
     @keyframes case-out-resolve {
         0%,
-        73.5% {
+        64.5% {
             opacity: 1;
         }
-        74%,
+        65%,
         100% {
             opacity: 0;
         }
@@ -1144,10 +959,10 @@ const LOGS = [
 
     @keyframes case-in-resolve {
         0%,
-        73.5% {
+        64.5% {
             opacity: 0;
         }
-        74%,
+        65%,
         100% {
             opacity: 1;
         }
@@ -1155,12 +970,12 @@ const LOGS = [
 
     @keyframes case-notice-2 {
         0%,
-        74% {
+        65.5% {
             opacity: 0;
             translate: 0 0.8em;
         }
-        77%,
-        90% {
+        68.5%,
+        89% {
             opacity: 1;
             translate: 0 0;
         }
@@ -1175,7 +990,6 @@ const LOGS = [
         .x-run,
         .p3 .spin,
         .p4 .wait,
-        .a-none,
         .t-none,
         .k-open,
         .s-left,
@@ -1186,7 +1000,6 @@ const LOGS = [
         .x-ok,
         .p3 .done,
         .p4 .done,
-        .a-set,
         .t-set,
         .k-done,
         .s-met,
