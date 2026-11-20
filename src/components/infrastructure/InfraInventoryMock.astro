@@ -10,7 +10,7 @@ const NODES = [
         kind: "flow",
         owner: "Platform team",
         x: 1.5,
-        y: 11,
+        y: 12,
     },
     {
         id: "vpc",
@@ -19,7 +19,7 @@ const NODES = [
         kind: "aws vpc",
         owner: "Platform team",
         x: 18.5,
-        y: 4,
+        y: 5,
     },
     {
         id: "db",
@@ -28,7 +28,7 @@ const NODES = [
         kind: "postgresql",
         owner: "Data team",
         x: 18.5,
-        y: 18,
+        y: 19,
     },
     {
         id: "api",
@@ -37,7 +37,7 @@ const NODES = [
         kind: "deployment",
         owner: "Payments team",
         x: 35.5,
-        y: 11,
+        y: 12,
     },
     {
         id: "dns",
@@ -46,33 +46,33 @@ const NODES = [
         kind: "dns record",
         owner: "Web team",
         x: 35.5,
-        y: 20.5,
+        y: 19,
     },
 ] as const
 
 const EDGES = [
     {
         kind: "edge",
-        path: "M14.5 12.9 H15.9 Q16.5 12.9 16.5 12.3 V6.5 Q16.5 5.9 17.1 5.9 H18.35",
+        path: "M14.5 13.9 H15.9 Q16.5 13.9 16.5 13.3 V7.5 Q16.5 6.9 17.1 6.9 H18.35",
     },
     {
         kind: "edge",
-        path: "M14.5 12.9 H15.9 Q16.5 12.9 16.5 13.5 V19.3 Q16.5 19.9 17.1 19.9 H18.35",
+        path: "M14.5 13.9 H15.9 Q16.5 13.9 16.5 14.5 V20.3 Q16.5 20.9 17.1 20.9 H18.35",
     },
     {
         kind: "edge",
-        path: "M31.5 5.9 H32.9 Q33.5 5.9 33.5 6.5 V12.3 Q33.5 12.9 34.1 12.9 H35.35",
+        path: "M31.5 6.9 H32.9 Q33.5 6.9 33.5 7.5 V13.3 Q33.5 13.9 34.1 13.9 H35.35",
     },
     {
         kind: "edge",
-        path: "M31.5 19.9 H32.9 Q33.5 19.9 33.5 19.3 V13.5 Q33.5 12.9 34.1 12.9 H35.35",
+        path: "M31.5 20.9 H32.9 Q33.5 20.9 33.5 20.3 V14.5 Q33.5 13.9 34.1 13.9 H35.35",
     },
-    { kind: "edge", path: "M37.4 14.8 V20.35" },
+    { kind: "edge", path: "M37.4 15.8 V18.85" },
     {
         kind: "edge hot e-db",
-        path: "M31.5 19.9 H32.9 Q33.5 19.9 33.5 19.3 V13.5 Q33.5 12.9 34.1 12.9 H35.35",
+        path: "M31.5 20.9 H32.9 Q33.5 20.9 33.5 20.3 V14.5 Q33.5 13.9 34.1 13.9 H35.35",
     },
-    { kind: "edge hot e-api", path: "M37.4 14.8 V20.35" },
+    { kind: "edge hot e-api", path: "M37.4 15.8 V18.85" },
 ] as const
 
 const icons = Object.fromEntries(
@@ -180,7 +180,7 @@ const IMPACTED = NODES.filter((node) => node.id === "api" || node.id === "dns")
                         {icons[node.id] && <img src={icons[node.id]} alt="" />}
                     </span>
                     <b>{node.name}</b>
-                    <span>{node.owner}</span>
+                    <span class="owner">{node.owner}</span>
                 </p>
             ))}
             <p class="foot">
@@ -214,7 +214,7 @@ const IMPACTED = NODES.filter((node) => node.id === "api" || node.id === "dns")
         --select: color-mix(in srgb, var(--text) 18%, transparent);
         --edge: #d0d0da;
         --rest: 3em 33em;
-        --at-retire: 29.6em 22.5em;
+        --at-retire: 29.6em 23.5em;
         --at-notify: 34.6em 32.2em;
 
         @include tokens;
@@ -419,7 +419,7 @@ const IMPACTED = NODES.filter((node) => node.id === "api" || node.id === "dns")
             font-weight: 600;
         }
 
-        span {
+        .owner {
             margin-left: auto;
             color: var(--muted);
         }
