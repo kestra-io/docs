@@ -5,7 +5,7 @@ tool:
   name: "Docker"
   pluginClass: "io.kestra.plugin.docker.Build"
   category: "Infrastructure"
-  color: "#2496ED"
+  color: "#6172FF"
 
 hero:
   title: "Sign Docker digests once. Promote them everywhere."
