@@ -96,10 +96,10 @@ A green run every morning is a dated, auditable statement that no flow in the te
 
 ### Going further
 
-- **Open incidents in GitGuardian.** On the Business and Enterprise plans, add `--source-uuid <your custom source>` to the ggshield command and each finding becomes a dashboard incident with an owner, a severity, and the usual remediation workflow.
+- **Open incidents in GitGuardian.** On the Business and Enterprise plans, add `--source-uuid <your custom source>` to the ggshield command and each finding becomes a dashboard incident with an owner, a severity, and the usual remediation workflow. In the blueprint, this is the `create_incidents` input.
 - **Richer alerts.** Send a Block Kit payload through the same webhook to get a header with the counts, one line per flow with the detectors found, and buttons to the report, the execution, and your GitGuardian incidents.
 - **Gate deploys instead of auditing nightly.** Swap the Schedule trigger for a Webhook trigger and call it from the CI job that deploys your flows.
 
-Full versions of the flow for both GitGuardian plans are published as Kestra blueprints: [free plan](/blueprints/scan-flows-for-secrets-with-gitguardian) and [Business and Enterprise plans](/blueprints/scan-flows-for-secrets-with-gitguardian-incidents).
+The full version of the flow is published as the [Scan Kestra flows for hardcoded secrets with GitGuardian](/blueprints/scan-flows-for-secrets-with-gitguardian) blueprint. It works on the free plan, and a `create_incidents` input switches on incident creation for the Business and Enterprise plans.
 
 Scan your flows and find out what your orchestrator has been holding. The [Kestra secrets docs](/docs/concepts/secret) cover how to move a pasted credential behind `secret()`, and ggshield is free to try with a [GitGuardian account](https://www.gitguardian.com).
