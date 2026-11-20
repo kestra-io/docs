@@ -51,96 +51,101 @@ const STAGES = [
 ]
 
 const ACTIVE = 2
-const RADIUS = 131.1
-const PIXELS = Array.from({ length: 129 }, (_, index) => {
-    const x = -30 + index * 1.25
-    const y = RADIUS - Math.sqrt(RADIUS ** 2 - (x - 50) ** 2)
-    return { x, y: y.toFixed(3) }
-})
+const PIXELS = Array.from({ length: 65 }, (_, index) => 10 + index * 1.25)
 ---
 
 <section class="infra-hero" aria-labelledby="infra-hero-title">
     <PixelEdges left="tall" right="wide" />
     <div class="frame surface-dark" data-header-dark>
-        <div class="container-xl">
-            <div class="stage">
-                <div class="top">
-                    <div class="intro">
-                        <h1 id="infra-hero-title">
-                            <span class="product">
-                                Kestra for Infrastructure
-                                <span class="visually-hidden">:</span>
-                            </span>
-                            <span class="claim">
-                                Self-Service Orchestration
-                            </span>
-                        </h1>
-                        <p class="lead">
-                            Turn the Terraform, Ansible and scripts you already
-                            run into a self-service catalog, with an approval,
-                            an owner and a lease on every resource.
-                        </p>
-                        <div class="buttons">
-                            <a href="/demo" class="btn-solid">
-                                Talk to our team{" "}
-                                <Icon name="mdi:chevron-right" />
-                            </a>
-                            <a href="#infra-showcase" class="btn-ghost">
-                                See how it works
-                            </a>
+        <div class="upper">
+            <div class="container-xl">
+                <div class="stage">
+                    <div class="top">
+                        <div class="intro">
+                            <h1 id="infra-hero-title">
+                                <span class="product">
+                                    Kestra for Infrastructure
+                                    <span class="visually-hidden">:</span>
+                                </span>
+                                <span class="claim">
+                                    Self-Service Orchestration
+                                </span>
+                            </h1>
+                            <p class="lead">
+                                Turn the Terraform, Ansible and scripts you
+                                already run into a self-service catalog, with an
+                                approval, an owner and a lease on every
+                                resource.
+                            </p>
+                            <div class="buttons">
+                                <a href="/demo" class="btn-solid">
+                                    Talk to our team{" "}
+                                    <Icon name="mdi:chevron-right" />
+                                </a>
+                                <a href="#infra-showcase" class="btn-ghost">
+                                    See how it works
+                                </a>
+                            </div>
                         </div>
+                        <button
+                            type="button"
+                            class="video"
+                            data-video="bFR0ZxFCsSQ"
+                            aria-label="Play the Kestra for Infrastructure video"
+                        >
+                            <span class="poster">
+                                <span class="kicker">Watch the video</span>
+                                <b>Meet Kestra for Infrastructure</b>
+                            </span>
+                            <span class="play">
+                                <Icon name="mdi:play" />
+                            </span>
+                        </button>
                     </div>
-                    <button
-                        type="button"
-                        class="video"
-                        data-video="bFR0ZxFCsSQ"
-                        aria-label="Play the Kestra for Infrastructure video"
-                    >
-                        <span class="poster">
-                            <span class="kicker">Watch the video</span>
-                            <b>Meet Kestra for Infrastructure</b>
-                        </span>
-                        <span class="play">
-                            <Icon name="mdi:play" />
-                        </span>
-                    </button>
                 </div>
-
-                <div class="life" data-life style="--step: 2.4">
-                    <div class="planet" aria-hidden="true"></div>
-                    <div class="horizon" aria-hidden="true">
-                        {PIXELS.map((pixel) => (
-                            <i style={`--x: ${pixel.x}; --y: ${pixel.y}`} />
-                        ))}
-                        <b class="head" />
+            </div>
+        </div>
+        <div class="band">
+            <div class="container-xl">
+                <div class="timeline">
+                    <p class="cycle">From request to retirement</p>
+                    <div class="life" data-life style="--step: 2.4">
+                        <div class="horizon" aria-hidden="true">
+                            {PIXELS.map((pixel) => (
+                                <i style={`--x: ${pixel}`} />
+                            ))}
+                            <b class="head" />
+                        </div>
+                        <ol aria-label="The life of an infrastructure request, from request to retirement">
+                            {STAGES.map((stage, index) => (
+                                <li
+                                    class:list={{
+                                        done: index < ACTIVE,
+                                        live: index === ACTIVE,
+                                    }}
+                                >
+                                    <span class="glyph">
+                                        <Icon name={stage.icon} />
+                                    </span>
+                                    <strong>{stage.title}</strong>
+                                    <span class="note">
+                                        {Object.entries(stage.notes).map(
+                                            ([when, note]) => (
+                                                <span
+                                                    data-when={when}
+                                                    aria-hidden={
+                                                        when !== "done"
+                                                    }
+                                                >
+                                                    {note}
+                                                </span>
+                                            ),
+                                        )}
+                                    </span>
+                                </li>
+                            ))}
+                        </ol>
                     </div>
-                    <ol aria-label="The life of an infrastructure request, from request to retirement">
-                        {STAGES.map((stage, index) => (
-                            <li
-                                class:list={{
-                                    done: index < ACTIVE,
-                                    live: index === ACTIVE,
-                                }}
-                            >
-                                <span class="glyph">
-                                    <Icon name={stage.icon} />
-                                </span>
-                                <strong>{stage.title}</strong>
-                                <span class="note">
-                                    {Object.entries(stage.notes).map(
-                                        ([when, note]) => (
-                                            <span
-                                                data-when={when}
-                                                aria-hidden={when !== "done"}
-                                            >
-                                                {note}
-                                            </span>
-                                        ),
-                                    )}
-                                </span>
-                            </li>
-                        ))}
-                    </ol>
                 </div>
             </div>
         </div>
@@ -159,42 +164,12 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
         overflow: hidden;
         background:
             radial-gradient(
-                46% 52% at 50% 104%,
-                rgba(80, 56, 255, 0.24),
-                rgba(80, 56, 255, 0.08) 50%,
-                transparent 76%
-            ),
-            radial-gradient(
                 90% 80% at 85% 10%,
                 rgba(150, 130, 255, 0.06),
                 transparent 60%
             ),
             #111114;
         color: #ffffff;
-
-        &::before {
-            content: "";
-            position: absolute;
-            top: -35%;
-            right: 6%;
-            width: 30rem;
-            height: 130%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(132, 104, 255, 0.5) 36%,
-                rgba(224, 216, 255, 0.42) 50%,
-                rgba(132, 104, 255, 0.45) 64%,
-                transparent
-            );
-            filter: blur(2.5rem);
-            transform: rotate(38deg);
-            pointer-events: none;
-
-            @include media-breakpoint-down(lg) {
-                display: none;
-            }
-        }
 
         &::after {
             content: "";
@@ -212,6 +187,35 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
         }
     }
 
+    .upper {
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: -45%;
+            right: 6%;
+            width: 30rem;
+            height: 190%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(132, 104, 255, 0.5) 36%,
+                rgba(224, 216, 255, 0.42) 50%,
+                rgba(132, 104, 255, 0.45) 64%,
+                transparent
+            );
+            filter: blur(2.5rem);
+            transform: rotate(38deg);
+            pointer-events: none;
+
+            @include media-breakpoint-down(lg) {
+                display: none;
+            }
+        }
+    }
+
     .container-xl {
         position: relative;
         z-index: 1;
@@ -225,11 +229,26 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 11rem clamp(1.5rem, 4vw, 3.5rem) 5.5rem;
+        padding: 8rem clamp(1.5rem, 4vw, 3.5rem) 5rem;
         text-align: center;
 
         @include media-breakpoint-down(md) {
             padding: 8rem 0 3.5rem;
+        }
+    }
+
+    .band {
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .timeline {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 3.5rem clamp(1.5rem, 4vw, 3.5rem) 4rem;
+
+        @include media-breakpoint-down(md) {
+            padding: 3rem 0 3.5rem;
         }
     }
 
@@ -295,9 +314,7 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
             radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1.5px) 0
                 0 / 1.25rem 1.25rem,
             #0c0c10;
-        box-shadow:
-            0 0 4rem -1rem rgba(146, 120, 255, 0.35),
-            0 1.5rem 3rem -1.5rem rgba(0, 0, 0, 0.6);
+        box-shadow: 0 1.5rem 3rem -1.5rem rgba(0, 0, 0, 0.6);
         color: #ffffff;
         cursor: pointer;
 
@@ -385,7 +402,6 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
             )
             0 0 / 200% 100% repeat-x;
         background-clip: text;
-        filter: drop-shadow(0 0 0.3em rgba(169, 150, 255, 0.45));
         text-transform: uppercase;
         color: transparent;
 
@@ -475,43 +491,26 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
 
     .life {
         --glyph: 3.5rem;
-        --sag: 6.25cqw;
         container-type: inline-size;
 
         position: relative;
         width: 100%;
         max-width: 64rem;
-        margin: 5rem 0 0;
+        margin: 2.5rem 0 0;
 
         @include media-breakpoint-down(md) {
             max-width: 20rem;
-            margin-top: 3.5rem;
+            margin-top: 2rem;
         }
     }
 
-    .planet {
-        position: absolute;
-        top: calc(var(--glyph) / 2);
-        left: 50%;
-        width: 262.2cqw;
-        aspect-ratio: 1;
-        border: 1px solid rgba(185, 166, 255, 0.24);
-        border-radius: 50%;
-        background:
-            radial-gradient(
-                52cqw 20cqw at 50% 0,
-                rgba(88, 66, 220, 0.22),
-                transparent
-            ),
-            #0c0c10;
-        box-shadow:
-            0 0 6rem rgba(112, 88, 255, 0.16),
-            inset 0 0.5rem 2.5rem rgba(143, 123, 255, 0.12);
-        transform: translateX(-50%);
-
-        @include media-breakpoint-down(md) {
-            display: none;
-        }
+    .cycle {
+        margin: 0;
+        font-size: 0.75rem;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.5);
     }
 
     .horizon {
@@ -534,29 +533,22 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
         i {
             --ahead: clamp(0, var(--at) - var(--x) + 1, 1);
             --tail: clamp(0, 1 - (var(--at) - var(--x)) / 30, 1);
-            --edge: clamp(0, (75 - abs(var(--x) - 50)) / 30, 1);
             --lit: calc(var(--ahead) * (0.3 + 0.7 * var(--tail)));
 
-            top: calc(var(--glyph) / 2 + var(--y) * 1cqw);
+            top: calc(var(--glyph) / 2);
             left: calc(var(--x) * 1cqw);
-            width: 0.3125rem;
+            width: 0.25rem;
             aspect-ratio: 1;
-            border-radius: 0.03125rem;
             background: color-mix(
                 in srgb,
                 #e9c1ff calc(var(--tail) * var(--ahead) * 100%),
                 #a950ff
             );
-            box-shadow: 0 0 calc(var(--lit) * 0.25rem)
-                rgba(169, 80, 255, calc(var(--lit) * 0.6));
-            opacity: calc(var(--edge) * (0.22 + 0.78 * var(--lit)));
+            opacity: calc(0.22 + 0.78 * var(--lit));
         }
 
         .head {
-            top: calc(
-                var(--glyph) / 2 +
-                    (131.1 - sqrt(17187.21 - pow(var(--at) - 50, 2))) * 1cqw
-            );
+            top: calc(var(--glyph) / 2);
             left: calc(var(--at) * 1cqw);
             width: 0.4375rem;
             aspect-ratio: 1;
@@ -565,7 +557,7 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
             box-shadow:
                 0 0 0.375rem #f62e76,
                 0 0 1rem rgba(246, 46, 118, 0.55);
-            opacity: clamp(0, min(var(--at) - 2, 96 - var(--at)) / 6, 1);
+            opacity: clamp(0, min(var(--at) - 9, 91 - var(--at)) / 2, 1);
         }
     }
 
@@ -602,26 +594,14 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
         gap: 0.25rem;
         font-size: 0.8125rem;
         line-height: 1.4;
-        color: rgba(255, 255, 255, 0.4);
+        color: rgba(255, 255, 255, 0.6);
         transition: color 0.6s ease;
 
-        &:nth-child(1),
-        &:nth-child(5) {
-            margin-top: var(--sag);
-        }
-
-        &:nth-child(2),
-        &:nth-child(4) {
-            margin-top: calc(var(--sag) * 0.25);
-        }
-
         strong {
-            margin-top: calc(
-                0.75rem + (var(--scale, 1) - 1) * var(--glyph) / 2
-            );
-            font-size: calc(1.0625rem * (0.6 + 0.4 * var(--scale, 1)));
+            margin-top: 0.75rem;
+            font-size: 1.0625rem;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.78);
             transition: color 0.6s ease;
         }
 
@@ -655,36 +635,20 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
         }
     }
 
-    @include media-breakpoint-up(md) {
-        li:nth-child(1),
-        li:nth-child(5) {
-            --scale: 0.9;
-        }
-
-        li:nth-child(2),
-        li:nth-child(4) {
-            --scale: 1.15;
-        }
-
-        li:nth-child(3) {
-            --scale: 1.4;
-        }
-    }
-
     li::before {
         content: "";
         position: absolute;
         top: calc(var(--glyph) / 2);
         left: 50%;
-        width: calc(var(--glyph) * 2.8 * var(--scale, 1));
-        aspect-ratio: 1;
-        border-radius: 50%;
+        width: calc(var(--glyph) * 4);
+        height: calc(var(--glyph) * 0.9);
         background: radial-gradient(
             closest-side,
-            rgba(143, 123, 255, 0.55),
-            rgba(112, 88, 255, 0.16) 55%,
+            rgba(143, 123, 255, 0.22),
+            rgba(112, 88, 255, 0.06) 60%,
             transparent
         );
+        filter: blur(0.5rem);
         opacity: 0;
         scale: 0.6;
         translate: -50% -50%;
@@ -704,6 +668,13 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
 
     .note {
         display: grid;
+        justify-items: center;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            justify-items: start;
+            text-align: left;
+        }
 
         span {
             grid-area: 1 / 1;
@@ -720,15 +691,16 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
     }
 
     .glyph {
-        --mark: rgba(255, 255, 255, 0.35);
+        --mark: rgba(255, 255, 255, 0.2);
         --arm: 0.75rem;
+        --size: calc(var(--glyph) * var(--pop, 1));
 
         position: relative;
         display: grid;
-        transform: scale(var(--scale, 1));
         place-items: center;
-        width: var(--glyph);
-        height: var(--glyph);
+        width: var(--size);
+        height: var(--size);
+        margin-block: calc((var(--glyph) - var(--size)) / 2);
         border-radius: 0.625rem;
         background:
             radial-gradient(
@@ -795,13 +767,14 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
     }
 
     .done .glyph {
-        --mark: rgba(255, 255, 255, 0.6);
+        --mark: rgba(255, 255, 255, 0.34);
 
         color: #d9ceff;
     }
 
     .live .glyph {
-        --mark: #ffffff;
+        --mark: rgba(255, 255, 255, 0.8);
+        --pop: 1.14;
 
         background:
             radial-gradient(
@@ -814,10 +787,9 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
             inset 0 1px 0 rgba(255, 255, 255, 0.4),
             inset 0 -0.5rem 1rem -0.75rem rgba(255, 255, 255, 0.18),
             inset 0 0 0 1px rgba(255, 255, 255, 0.3),
-            0 0 22px rgba(143, 123, 255, 0.25),
+            0 0 1rem rgba(143, 123, 255, 0.18),
             0 4px 14px -6px rgba(0, 0, 0, 0.35);
         color: #ffffff;
-        transform: scale(calc(var(--scale, 1) * 1.14));
     }
 </style>
 
@@ -828,18 +800,18 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
         button.addEventListener(
             "click",
             () => {
-                const frame = document.createElement("iframe")
-                frame.src = `https://www.youtube.com/embed/${button.dataset.video}?autoplay=1`
-                frame.title = "Kestra for Infrastructure"
-                frame.allow =
+                const iframe = document.createElement("iframe")
+                iframe.src = `https://www.youtube.com/embed/${button.dataset.video}?autoplay=1`
+                iframe.title = "Kestra for Infrastructure"
+                iframe.allow =
                     "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                frame.referrerPolicy = "strict-origin-when-cross-origin"
-                frame.allowFullscreen = true
+                iframe.referrerPolicy = "strict-origin-when-cross-origin"
+                iframe.allowFullscreen = true
                 const player = document.createElement("div")
                 for (const { name, value } of button.attributes)
                     if (name === "class" || name.startsWith("data-astro"))
                         player.setAttribute(name, value)
-                player.append(frame)
+                player.appendChild(iframe)
                 button.replaceWith(player)
             },
             { once: true },
