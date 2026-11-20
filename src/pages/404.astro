@@ -2,14 +2,21 @@
 export const prerender = false
 
 import Layout from "~/components/layout.astro"
-import Error from "~/components/error/error.vue"
+import PageShell from "~/components/home/PageShell.astro"
+import LostHero from "~/components/not-found/LostHero.astro"
+import Destinations from "~/components/not-found/Destinations.astro"
 ---
 
-<Layout title="Page not found">
-    <Error
-        error={{ statusCode: 404, message: "" }}
-        title="We lost that page..."
-        description="Sorry, the page you are looking for doesn’t exist or has been moved."
-        client:idle
-    />
+<Layout
+    title="Page not found"
+    description="The page you are looking for moved or no longer exists. Find pricing, demos, docs and blueprints for Kestra, the open-source orchestration platform."
+    headerClean
+    headerClear
+    headerOverDark
+    noindex
+>
+    <PageShell>
+        <LostHero />
+        <Destinations />
+    </PageShell>
 </Layout>
