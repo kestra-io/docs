@@ -267,6 +267,11 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
     }
 
     .product {
+        display: block;
+        text-transform: uppercase;
+    }
+
+    .claim {
         --sheen: linear-gradient(
                 90deg,
                 #ffffff 0%,
@@ -277,39 +282,23 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
             )
             0 0 / 200% 100% repeat-x;
 
-        position: relative;
         display: block;
-        width: fit-content;
-        margin: 0 auto 1.25rem;
-        padding-bottom: 0.45em;
+        margin-top: 0.4em;
         background: var(--sheen);
         background-clip: text;
-        font-size: clamp(0.9375rem, 1.3vw, 1.125rem);
+        font-size: 0.5em;
         font-weight: 500;
-        letter-spacing: 0.08em;
-        line-height: 1.2;
-        text-transform: uppercase;
+
+        @include media-breakpoint-down(md) {
+            font-size: 0.62em;
+        }
+
+        letter-spacing: -0.01em;
         color: transparent;
-
-        &::after {
-            content: "";
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            height: 1px;
-            background: var(--sheen);
-            opacity: 0.35;
-        }
-
-        @include media-breakpoint-up(lg) {
-            margin-left: 0;
-        }
     }
 
     @media (prefers-reduced-motion: no-preference) {
-        .product,
-        .product::after {
+        .claim {
             animation: infra-hero-sheen 8s linear infinite;
         }
     }
@@ -320,17 +309,17 @@ const PIXELS = Array.from({ length: 129 }, (_, index) => {
         }
     }
 
-    .claim {
-        display: block;
-    }
-
     h1 {
-        max-width: 15em;
+        max-width: 13em;
         margin: 0;
         font-size: clamp(2.5rem, 5vw, 4rem);
 
         @include media-breakpoint-up(lg) {
             font-size: clamp(2.5rem, 4.2vw, 3.75rem);
+        }
+
+        @include media-breakpoint-down(md) {
+            font-size: clamp(1.75rem, 8.2vw, 2.5rem);
         }
 
         font-weight: 600;

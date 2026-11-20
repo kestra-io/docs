@@ -2,13 +2,14 @@
 import { Icon } from "astro-icon/components"
 import AsciiMark from "./AsciiMark.astro"
 import HeroFlows from "./HeroFlows.astro"
+import ProductOverline from "~/components/common/ProductOverline.astro"
 ---
 
 <section class="hero surface-dark" data-header-dark>
     <HeroFlows />
     <div class="container">
         <div class="content">
-            <span class="eyebrow">About Kestra</span>
+            <ProductOverline>About Kestra</ProductOverline>
             <h1>
                 Kestra is the unified<br />orchestration platform<span
                     class="brand-dot"
@@ -68,11 +69,6 @@ import HeroFlows from "./HeroFlows.astro"
                 grid-template-columns: 1fr;
             }
         }
-    }
-
-    .eyebrow {
-        @include eyebrow;
-        color: $base-primary-300;
     }
 
     h1 {
