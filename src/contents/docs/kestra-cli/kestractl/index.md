@@ -75,7 +75,7 @@ kestractl executions run prod nightly-refresh --wait --output json
 
 ```bash
 # Sync namespace files for a release
-kestractl nsfiles upload prod ./assets --path resources --override --fail-fast
+kestractl nsfiles upload prod ./assets resources --override --fail-fast
 ```
 
 ```bash
@@ -191,7 +191,7 @@ kestractl flows export-by-ids     my.namespace/flow-a my.namespace/flow-b --outp
 kestractl flows export-by-query   --namespace my.namespace --output-file export.zip
 
 # Sync an entire namespace from a YAML file (deletes flows absent from the file)
-kestractl flows namespace-sync my.namespace flows.yaml --delete --override
+kestractl flows namespace-sync my.namespace flows.yaml --delete
 
 # Manage flow revisions
 kestractl flows revisions        my.namespace my-flow
@@ -253,12 +253,12 @@ kestractl executions restart   2TLGqHrXC9k8BczKJe5djX
 kestractl executions force-run 2TLGqHrXC9k8BczKJe5djX
 kestractl executions unqueue   2TLGqHrXC9k8BczKJe5djX
 
-# Replay an execution
-kestractl executions replay             2TLGqHrXC9k8BczKJe5djX
+# Replay an execution with its original inputs
+kestractl executions replay 2TLGqHrXC9k8BczKJe5djX
 
-# Replay from a specific task run (optionally targeting a revision or setting breakpoints)
-kestractl executions replay-with-inputs 2TLGqHrXC9k8BczKJe5djX --task-run-id <taskRunId>
-kestractl executions replay-with-inputs 2TLGqHrXC9k8BczKJe5djX --revision 3
+# Replay from a specific task run, optionally on another flow revision
+kestractl executions replay 2TLGqHrXC9k8BczKJe5djX --task-run-id <taskRunId>
+kestractl executions replay 2TLGqHrXC9k8BczKJe5djX --task-run-id <taskRunId> --revision 3
 
 # Bulk operations by IDs (positional execution IDs)
 kestractl executions kill-bulk        id1 id2 id3
@@ -448,7 +448,7 @@ kestractl nsfiles list my.namespace --output json
 kestractl nsfiles get my.namespace workflows/my-flow.yml
 
 # Upload files or directories
-kestractl nsfiles upload my.namespace ./assets --path resources --override --fail-fast
+kestractl nsfiles upload my.namespace ./assets resources --override --fail-fast
 
 # Search files in a namespace
 kestractl nsfiles search my.namespace

@@ -123,7 +123,7 @@ Additionally, Kestra has a native `Log` task. This can be useful for adding stru
 
 ### Managing Dependencies and Environments for Consistent Logging
 
-Consistent logging behavior requires a consistent environment. Kestra helps you manage this by allowing you to specify Python dependencies directly in your workflow definition. You can provide a `requirements.txt` file or use a tool like `uv` to ensure that the correct versions of your logging libraries and other packages are always installed. See our guides on [managing Python dependencies](/docs/how-to-guides/python-dependencies) and [using `uv`](/docs/how-to-guides/python-uv) for more details.
+Consistent logging behavior requires a consistent environment. Kestra helps you manage this by allowing you to specify Python dependencies directly in your workflow definition. You can provide a `requirements.txt` file or use a tool like `uv` to ensure that the correct versions of your logging libraries and other packages are always installed. See our guides on [managing Python dependencies](/docs/scripts/installing-dependencies) and [using `uv`](/docs/scripts/installing-dependencies) for more details.
 
 For complete isolation and reproducibility, you can run your Python tasks in Docker containers. By specifying a Docker image, you lock down the entire environment, including the operating system and system-level libraries, ensuring your logging configuration behaves identically everywhere.
 

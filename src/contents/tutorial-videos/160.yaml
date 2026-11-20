@@ -1,0 +1,10 @@
+title: "Best Practices for Upgrading to Kestra 2.0"
+description: "Kestra 2.0 rebuilds the engine with enhanced worker, queue, and governance
+  capabilities, though some constructs require a guided migration. This session covers
+  key breaking changes, migration tools, and what to plan for before upgrading your
+  deployment."
+category: "Webinar"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=afVQsI9uNyI"
+publicationDate: "2026-11-19T00:00:00.000"
+contentType: "Webinar"

@@ -158,7 +158,7 @@ Writing tests is easy, but writing an effective and maintainable test suite requ
 
 ### Integrating dbt tests into your data pipeline
 
-Automating your dbt tests is crucial for maintaining data quality at scale. The best practice is to integrate `dbt test` into your CI/CD pipeline. This ensures that every pull request is automatically validated before being merged, catching issues early. This approach aligns with [GitOps principles](https://kestra.io/resources/infrastructure/gitops), where your Git repository is the single source of truth for both your transformation code and your quality checks. You can use Kestra's ability to [sync flows from a Git repository](https://kestra.io/docs/how-to-guides/syncflows) to manage this entire process as code.
+Automating your dbt tests is crucial for maintaining data quality at scale. The best practice is to integrate `dbt test` into your CI/CD pipeline. This ensures that every pull request is automatically validated before being merged, catching issues early. This approach aligns with [GitOps principles](https://kestra.io/resources/infrastructure/gitops), where your Git repository is the single source of truth for both your transformation code and your quality checks. You can use Kestra's ability to [sync flows from a Git repository](/docs/version-control-cicd/git/sync-from-git#sync-flows) to manage this entire process as code.
 
 ### Strategies for fewer and better data tests
 
