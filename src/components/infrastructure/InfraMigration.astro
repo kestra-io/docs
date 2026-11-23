@@ -49,26 +49,24 @@ const PATHS = [
                 </p>
             </header>
             <ul>
-                {
-                    PATHS.map((path) => (
-                        <li>
-                            <h3>{path.title}</h3>
-                            <p class="text">{path.text}</p>
-                            <div class="figure">
-                                <Fragment set:html={path.figure.light} />
-                                <Fragment set:html={path.figure.dark} />
-                            </div>
-                            <div class="links">
-                                {path.links.map((link) => (
-                                    <a href={link.href}>
-                                        <span>{link.label}</span>
-                                        <Icon name="mdi:arrow-right" />
-                                    </a>
-                                ))}
-                            </div>
-                        </li>
-                    ))
-                }
+                {PATHS.map((path) => (
+                    <li>
+                        <h3>{path.title}</h3>
+                        <p class="text">{path.text}</p>
+                        <div class="figure">
+                            <Fragment set:html={path.figure.light} />
+                            <Fragment set:html={path.figure.dark} />
+                        </div>
+                        <div class="links">
+                            {path.links.map((link) => (
+                                <a href={link.href}>
+                                    <span>{link.label}</span>
+                                    <Icon name="mdi:arrow-right" />
+                                </a>
+                            ))}
+                        </div>
+                    </li>
+                ))}
             </ul>
         </div>
     </div>
