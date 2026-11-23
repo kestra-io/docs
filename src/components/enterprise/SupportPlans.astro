@@ -5,7 +5,14 @@ import { fetchPluginIcon } from "~/utils/pluginIcon"
 
 const PLANS = ["Standard", "Premium", "Platinum"]
 
-const ROWS: { label: string; values: (string | boolean)[] }[] = [
+type Row = { label: string; values: (string | boolean)[] }
+
+interface Props {
+    title?: string
+    rows?: Row[]
+}
+
+const DEFAULT_ROWS: Row[] = [
     {
         label: "Channels",
         values: [
@@ -22,6 +29,9 @@ const ROWS: { label: string; values: (string | boolean)[] }[] = [
         values: ["Add-on", "Add-on", "6 hours / month"],
     },
 ]
+
+const { title = "Support and Customer Success", rows: ROWS = DEFAULT_ROWS } =
+    Astro.props
 
 const TOOLS = [
     { name: "Teams", plugin: "notifications.teams.TeamsIncomingWebhook" },
@@ -50,11 +60,13 @@ const hasLogos = logos.every(Boolean)
     <div class="container-xl">
         <div class="rails">
             <header>
-                <h2 id="ee-support">Support and Customer Success</h2>
+                <h2 id="ee-support">{title}</h2>
                 <p>
-                    Enterprise includes Standard support. Premium and Platinum
-                    add channels, response times and the Customer Success
-                    program.
+                    <slot name="lead">
+                        Enterprise includes Standard support. Premium and
+                        Platinum add channels, response times and the Customer
+                        Success program.
+                    </slot>
                 </p>
             </header>
             <ul>
@@ -67,18 +79,27 @@ const hasLogos = logos.every(Boolean)
                                     <dt>{row.label}</dt>
                                     <dd>
                                         {row.values[idx] === true ? (
-                                            <Icon
-                                                name="mdi:check"
-                                                class="yes"
-                                                aria-label="Included"
-                                            />
+                                            <>
+                                                <Icon
+                                                    name="mdi:check"
+                                                    class="yes"
+                                                    aria-hidden="true"
+                                                />
+                                                <span class="visually-hidden">
+                                                    Included
+                                                </span>
+                                            </>
                                         ) : row.values[idx] === false ? (
-                                            <span
-                                                class="no"
-                                                aria-label="Not included"
-                                            >
-                                                —
-                                            </span>
+                                            <>
+                                                <Icon
+                                                    name="mdi:close"
+                                                    class="no"
+                                                    aria-hidden="true"
+                                                />
+                                                <span class="visually-hidden">
+                                                    Not included
+                                                </span>
+                                            </>
                                         ) : hasLogos &&
                                           String(row.values[idx]).endsWith(
                                               TOOLS_TEXT,
@@ -245,10 +266,14 @@ const hasLogos = logos.every(Boolean)
         }
     }
 
-    .yes {
+    .yes,
+    .no {
         width: 1.125rem;
         height: 1.125rem;
         vertical-align: -0.2em;
+    }
+
+    .yes {
         color: var(--ks-content-link);
     }
 

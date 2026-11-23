@@ -14,7 +14,17 @@ To deploy Kestra without Docker, there's a standalone JAR available that allows 
 
 Make sure that you have [Java](https://adoptium.net/en-GB/temurin/releases) installed on your machine.
 
-The latest OSS JAR can be downloaded [via Kestra API](https://api.kestra.io/v1/versions/download).
+Download the OSS executable from [Kestra's GitHub releases](https://github.com/kestra-io/kestra/releases/latest). Each release includes a `kestra-VERSION` file, such as `kestra-2.0.11`, and a `checksums_sha256.txt` file. To download a release and check the file's integrity:
+
+```bash
+VERSION=2.0.11
+curl -LO https://github.com/kestra-io/kestra/releases/download/v${VERSION}/kestra-${VERSION}
+curl -LO https://github.com/kestra-io/kestra/releases/download/v${VERSION}/checksums_sha256.txt
+grep " kestra-${VERSION}$" checksums_sha256.txt | sha256sum -c -
+chmod +x kestra-${VERSION}
+```
+
+The `sha256sum` check prints `kestra-2.0.11: OK` when the file is intact. On macOS, use `shasum -a 256 -c -` instead of `sha256sum -c -`.
 
 For Enterprise Edition, see the [EE standalone server installation guide](../../07.enterprise/01.overview/standalone-server-installation/index.md). The EE JAR requires license credentials and is served from a different endpoint.
 
