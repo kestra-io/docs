@@ -234,7 +234,7 @@ Infrastructure remediation is one place the same shape could fit. An alert comes
 
 Where else would a decision model with a human in the loop make sense in your workflows? If you have a use case in mind, or try this on a real queue, come tell us about it in [Slack](/slack). And if you haven't used Kestra yet, the [quickstart](/docs/quickstart) gets you running in a few minutes, ready for when the `Approval` task lands.
 
-We thought the use case made for a good video as well. Watch the agent triage real tickets, gate on confidence, and hand the unsure ones to a person:
+We thought the use case made for a good video as well. Watch the agent triage test tickets, gate on confidence, and hand the unsure ones to a person:
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/93TgShX_aXA?si=Xj4QWFn412K3cwmf" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
