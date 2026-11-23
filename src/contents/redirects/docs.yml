@@ -1,3 +1,7 @@
+- regexp: "^/docs/version-control-cicd/vscode/?$"
+  to: "/docs/ide-extensions/vscode"
+- regexp: "^/docs/version-control-cicd/jetbrains/?$"
+  to: "/docs/ide-extensions/jetbrains"
 - regexp: "^/docs/plugin-developer-guide/condition/?$"
   to: "/docs/migration-guide/v2.0.0/trigger-conditions-redesign"
 - regexp: "^/docs/workflow-components/task-cache(/.*)?$"

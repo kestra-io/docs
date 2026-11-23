@@ -154,7 +154,7 @@ Both use the IDE's embedded browser (JCEF). Check that your IDE runtime includes
 
 ## Next steps
 
-- [VS Code extension](../05.vscode/index.md): the same features for VS Code.
+- [VS Code extension](../01.vscode/index.md): the same features for VS Code.
 - [Flows](../../05.workflow-components/01.flow/index.md): flow structure, tasks, triggers, and inputs.
 - [Blueprints](/blueprints): ready-to-use flow examples to copy into the editor.
-- [Version control with Git](../04.git/index.md): push flows to a Git repository from Kestra and integrate with CI/CD pipelines.
+- [Version control with Git](../../version-control-cicd/04.git/index.md): push flows to a Git repository from Kestra and integrate with CI/CD pipelines.
