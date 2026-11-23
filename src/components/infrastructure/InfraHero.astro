@@ -1,6 +1,7 @@
 ---
 import { Icon } from "astro-icon/components"
 import PixelEdges from "~/components/about/PixelEdges.astro"
+import VideoDialog from "~/components/common/VideoDialog.astro"
 
 const STAGES = [
     {
@@ -87,10 +88,11 @@ const PIXELS = Array.from({ length: 65 }, (_, index) => 10 + index * 1.25)
                                 </a>
                             </div>
                         </div>
-                        <button
-                            type="button"
+                        <VideoDialog
+                            id="infra-hero-video"
+                            videoId="bFR0ZxFCsSQ"
+                            title="Kestra for Infrastructure"
                             class="video"
-                            data-video="bFR0ZxFCsSQ"
                             aria-label="Play the Kestra for Infrastructure video"
                         >
                             <span class="poster">
@@ -100,7 +102,7 @@ const PIXELS = Array.from({ length: 65 }, (_, index) => 10 + index * 1.25)
                             <span class="play">
                                 <Icon name="mdi:play" />
                             </span>
-                        </button>
+                        </VideoDialog>
                     </div>
                 </div>
             </div>
@@ -269,7 +271,7 @@ const PIXELS = Array.from({ length: 65 }, (_, index) => 10 + index * 1.25)
         }
     }
 
-    .video {
+    .top :global(.video) {
         @include media-breakpoint-down(lg) {
             order: 1;
             margin-top: 2.5rem;
@@ -303,14 +305,6 @@ const PIXELS = Array.from({ length: 65 }, (_, index) => 10 + index * 1.25)
         color: #ffffff;
         cursor: pointer;
 
-        :global(iframe) {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-
         &:focus-visible {
             outline: 2px solid #b9a6ff;
             outline-offset: 3px;
@@ -339,6 +333,10 @@ const PIXELS = Array.from({ length: 65 }, (_, index) => 10 + index * 1.25)
         letter-spacing: 0.08em;
         text-transform: uppercase;
         color: rgba(255, 255, 255, 0.6);
+
+        @include media-breakpoint-down(sm) {
+            display: none;
+        }
     }
 
     .play {
@@ -363,13 +361,24 @@ const PIXELS = Array.from({ length: 65 }, (_, index) => 10 + index * 1.25)
             transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
             background-color 0.3s ease;
 
+        @include media-breakpoint-down(sm) {
+            width: 3.5rem;
+            height: 3.5rem;
+            margin-bottom: 2.5rem;
+        }
+
         [data-icon] {
             width: 1.75rem;
             height: 1.75rem;
             margin-left: 0.2rem;
+
+            @include media-breakpoint-down(sm) {
+                width: 1.375rem;
+                height: 1.375rem;
+            }
         }
 
-        .video:hover & {
+        :global(.video:hover) & {
             transform: scale(1.06);
         }
     }
@@ -779,38 +788,21 @@ const PIXELS = Array.from({ length: 65 }, (_, index) => 10 + index * 1.25)
 </style>
 
 <script>
-    for (const button of document.querySelectorAll<HTMLButtonElement>(
-        "[data-video]",
-    )) {
-        button.addEventListener(
-            "click",
-            () => {
-                const iframe = document.createElement("iframe")
-                iframe.src = `https://www.youtube.com/embed/${button.dataset.video}?autoplay=1`
-                iframe.title = "Kestra for Infrastructure"
-                iframe.allow =
-                    "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                iframe.referrerPolicy = "strict-origin-when-cross-origin"
-                iframe.allowFullscreen = true
-                const player = document.createElement("div")
-                for (const { name, value } of button.attributes)
-                    if (name === "class" || name.startsWith("data-astro"))
-                        player.setAttribute(name, value)
-                player.appendChild(iframe)
-                button.replaceWith(player)
-            },
-            { once: true },
+    function initLifecycle() {
+        const life = document.querySelector<HTMLElement>(
+            "[data-life]:not([data-wired])",
         )
-    }
+        if (!life) return
+        life.dataset.wired = ""
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+            return
 
-    const life = document.querySelector<HTMLElement>("[data-life]")
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-
-    if (life && !still) {
         const stages = [...life.querySelectorAll("li")]
         const LAP = 12000
+        let running = false
 
         const frame = (now: number) => {
+            if (!running || !life.isConnected) return
             const step = ((now % LAP) / LAP) * 5 - 0.5
             life.style.setProperty("--step", step.toFixed(3))
             const reached = Math.floor(step + 0.13)
@@ -821,6 +813,13 @@ const PIXELS = Array.from({ length: 65 }, (_, index) => 10 + index * 1.25)
             requestAnimationFrame(frame)
         }
 
-        requestAnimationFrame(frame)
+        new IntersectionObserver(([entry]) => {
+            const was = running
+            running = entry.isIntersecting
+            if (running && !was) requestAnimationFrame(frame)
+        }).observe(life)
     }
+
+    document.addEventListener("astro:page-load", initLifecycle)
+    initLifecycle()
 </script>
