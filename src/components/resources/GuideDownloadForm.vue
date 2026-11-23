@@ -99,7 +99,6 @@
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
     import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
-    import { $fetch } from "~/utils/fetch"
     import { getStoredClickId } from "~/scripts/gclid"
 
     /** Defaults are the guide download; without `guideUrl` it is a plain
@@ -187,14 +186,6 @@
                 { email, firstname, lastname, company, jobtitle, kuid },
             ])
 
-            // The IP only enriches the HubSpot context; a blocked lookup must
-            // not stop the submission.
-            const ip = await $fetch<{ ip: string }>(
-                "https://api.ipify.org?format=json",
-            )
-                .then((res) => res.ip)
-                .catch(() => undefined)
-
             // Same Google Ads click id as the demo form, so HubSpot can tie a
             // guide lead back to its ad click for offline conversions.
             const clickId = getStoredClickId()
@@ -216,7 +207,6 @@
                 })),
                 context: {
                     hutk: getHubspotTracking() || undefined,
-                    ipAddress: ip,
                     pageUri: props.pageUri,
                     pageName: document.title,
                 },

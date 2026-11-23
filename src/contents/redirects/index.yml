@@ -22,3 +22,5 @@
   to: "/stories"
 - regexp: "^/write-for-us/?$"
   to: "/community"
+- regexp: "^/academy$"
+  to: https://academy.kestra.io/

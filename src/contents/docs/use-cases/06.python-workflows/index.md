@@ -187,7 +187,7 @@ errors:
 
 ## Next Steps
 - [Explore Python plugins](/plugins/plugin-script-python)
-- [Manage package dependencies](../../15.how-to-guides/python-dependencies/index.md) with Docker or `pip`.
+- [Manage package dependencies](../../16.scripts/05.installing-dependencies/index.md) with the `dependencies` property, Docker images, or `pip`.
 - [Explore video tutorials](https://www.youtube.com/@kestra-io) on our YouTube channel.
 - [Join Slack](https://kestra.io/slack) to ask questions, contribute code or share feature requests.
 - [Book a demo](https://kestra.io/demo) to discuss how Kestra can help orchestrate your Python workflows.

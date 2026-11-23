@@ -1,0 +1,53 @@
+@use "/src/assets/styles/variable" as *;
+
+@mixin lp-section($bg: #ffffff) {
+    padding: 5rem 1rem;
+    background-color: $bg;
+}
+
+@mixin lp-container($max-width: 1140px) {
+    max-width: $max-width;
+    margin-inline: auto;
+}
+
+@mixin lp-section-head($max-width: 900px) {
+    max-width: $max-width;
+    margin: 0 auto 2.5rem;
+    text-align: center;
+}
+
+@mixin lp-heading($color: var(--lp-content-primary), $size: 1.875rem) {
+    color: $color;
+    font-size: $size;
+    font-weight: 600;
+    line-height: 1.0417;
+    letter-spacing: -0.045rem;
+    @include media-breakpoint-up(lg) {
+        font-size: 3rem;
+    }
+}
+
+@mixin lp-lead {
+    color: var(--lp-content-secondary);
+    font-size: 1.25rem;
+    line-height: 1.4;
+}
+
+// Not the global .btn-primary, which looks different.
+@mixin lp-cta {
+    min-width: 160px;
+    height: 50px;
+    padding: 0.5rem 1.25rem;
+    border: 1px solid #ffffff;
+    border-radius: 8px;
+    background-color: var(--lp-purple);
+    color: #ffffff;
+    font-size: $font-size-lg;
+    font-weight: 700;
+    box-shadow:
+        inset 0 0 14px 0 #be62ff,
+        2px 2px 5.5px rgba(0, 0, 0, 0.1);
+    &:hover {
+        background-color: #7737fe;
+    }
+}

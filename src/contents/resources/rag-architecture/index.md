@@ -151,7 +151,7 @@ Evaluating a RAG system is a multi-faceted task that benefits from a systematic 
 
 ## Orchestrating RAG Workflows with Kestra
 
-A production-grade RAG system is not a single application but a complex pipeline of interconnected components that must be automated, monitored, and scaled. This is where an orchestration platform like Kestra becomes essential. Leading enterprises like Apple, JPMorgan Chase, and Toyota use Kestra to manage their complex data and AI pipelines at scale.
+A production-grade RAG system is not a single application but a complex pipeline of interconnected components that must be automated, monitored, and scaled. This is where an orchestration platform like Kestra becomes essential. Leading enterprises like Apple and JPMorgan Chase use Kestra to manage their complex data and AI pipelines at scale.
 
 Retrieval is one workload on a shared control plane. The same scheduling, retry and audit guarantees apply to training and agent execution, which is the scope of [AI orchestration for retrieval workloads](/resources/ai/ai-orchestration).
 

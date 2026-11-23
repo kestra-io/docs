@@ -1,0 +1,190 @@
+---
+import { Icon } from "astro-icon/components"
+import BlockTitle from "./BlockTitle.astro"
+
+interface Props {
+    items: { icon: string; text: string }[]
+}
+
+const { items } = Astro.props
+---
+
+<section
+    class="ee-included surface-dark"
+    aria-labelledby="what-is-included"
+    data-header-dark
+>
+    <div class="container-xl">
+        <div class="rails">
+            <h2 id="what-is-included" aria-label="What is included">
+                <BlockTitle text="INCLUDED" prefix="ee-included" />
+            </h2>
+            <div class="column">
+                <ul>
+                    {items.map((item) => (
+                        <li>
+                            <Icon name={item.icon} />
+                            <p>{item.text}</p>
+                        </li>
+                    ))}
+                </ul>
+                <div class="ctas">
+                    <a href="/demo" class="btn-solid">
+                        Book a demo <Icon name="mdi:chevron-right" />
+                    </a>
+                    <a href="/pricing#comparison-table" class="btn-ghost">
+                        Compare editions
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "../about/style/section" as *;
+
+    .ee-included {
+        position: relative;
+        overflow: hidden;
+        @include dark-band;
+        color: #ffffff;
+    }
+
+    .rails {
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+        --line: #{$dark-band-line};
+
+        position: relative;
+        overflow: hidden;
+        padding: 7.5rem var(--inset) 0;
+        border-inline: 1px solid var(--line);
+
+        @include media-breakpoint-down(md) {
+            padding-top: 4.5rem;
+        }
+    }
+
+    h2,
+    .column {
+        width: 100%;
+        max-width: 72rem;
+        margin-inline: auto;
+    }
+
+    h2 {
+        margin-block: 0 clamp(1.5rem, 3vw, 3rem);
+        user-select: none;
+    }
+
+    .column {
+        position: relative;
+        padding-bottom: 5rem;
+        border-inline: 1px solid var(--line);
+
+        @include media-breakpoint-down(md) {
+            padding-bottom: 3rem;
+        }
+    }
+
+    ul {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        position: relative;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        text-align: left;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0 -100vw auto;
+            height: 1px;
+            background: var(--line);
+        }
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    li {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 1.5rem 1.5rem 2.25rem;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: auto -100vw 0;
+            height: 1px;
+            background: var(--line);
+            pointer-events: none;
+        }
+
+        & + li {
+            border-left: 1px solid var(--line);
+        }
+
+        @include media-breakpoint-up(lg) {
+            &:nth-child(4n + 1) {
+                border-left: 0;
+            }
+        }
+
+        @include media-breakpoint-between(sm, lg) {
+            &:nth-child(2n + 1) {
+                border-left: 0;
+            }
+        }
+
+        @include media-breakpoint-down(sm) {
+            flex-direction: row;
+            align-items: start;
+            gap: 0.875rem;
+            padding-block: 1.125rem;
+            border-left: 0;
+        }
+
+        :global(svg) {
+            flex: none;
+            width: 1.375rem;
+            height: 1.375rem;
+            color: #b48cff;
+        }
+
+        p {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.45;
+            color: rgba(255, 255, 255, 0.9);
+        }
+    }
+
+    .ctas {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+        width: fit-content;
+        margin: 5rem auto 0;
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: minmax(0, 1fr);
+            width: auto;
+            margin: 3rem 1.5rem 0;
+        }
+    }
+</style>

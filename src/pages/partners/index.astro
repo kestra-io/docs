@@ -73,9 +73,9 @@ const QUOTES = [
 ]
 ---
 
-<Layout {title} {description}>
+<Layout {title} {description} headerClear headerOverDark>
     <div class="partners-page">
-        <section class="hero">
+        <section class="hero" data-header-dark>
             <div class="container">
                 <h1>
                     Become a<br />Kestra partner<span class="dot">.</span>
@@ -136,6 +136,13 @@ const QUOTES = [
     </div>
 </Layout>
 
+<script>
+    import { watchDarkSections } from "~/utils/headerDarkSections"
+
+    document.addEventListener("astro:page-load", watchDarkSections)
+    watchDarkSections()
+</script>
+
 <style lang="scss">
     @use "/src/assets/styles/color-palette" as *;
 
@@ -148,7 +155,8 @@ const QUOTES = [
     .hero {
         position: relative;
         overflow: hidden;
-        padding: 6rem 1rem 7rem;
+        margin-top: -67px;
+        padding: calc(6rem + 67px) 1rem 7rem;
         background:
             radial-gradient(
                 ellipse 45% 50% at 50% 0%,
@@ -178,7 +186,7 @@ const QUOTES = [
         }
 
         @include media-breakpoint-down(md) {
-            padding: 4rem 1rem 5rem;
+            padding: calc(4rem + 67px) 1rem 5rem;
         }
 
         h1 {

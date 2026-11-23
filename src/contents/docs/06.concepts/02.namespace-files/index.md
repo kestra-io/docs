@@ -141,8 +141,8 @@ tasks:
 ```
 
 Dedicated guides:
-- [PushNamespaceFiles](../../15.how-to-guides/pushnamespacefiles/index.md)
-- [SyncNamespaceFiles](../../15.how-to-guides/syncnamespacefiles/index.md)
+- [PushNamespaceFiles](../../version-control-cicd/04.git/01.push-to-git/index.md#push-namespace-files)
+- [SyncNamespaceFiles](../../version-control-cicd/04.git/02.sync-from-git/index.md#sync-namespace-files)
 
 ### GitHub Actions CI/CD
 

@@ -59,16 +59,12 @@
                         <CodeTabs
                             :tabs="[
                                 { label: 'kestractl', code: kestractlInstallCommand },
-                                { label: 'Kestra CLI', code: kestraCliInstallCommand },
                             ]"
                             storage-key="plugin-install-command"
                             lang="bash"
                         />
                         <p class="mb-0">
                             For <a href="/docs/kestra-cli/kestractl#installation"><strong>kestractl</strong></a>, use your Kestra version with <code>--compatible-for</code>, or specify an exact plugin version.
-                        </p>
-                        <p class="mb-0">
-                            For <strong>Kestra CLI</strong>, replace <code>LATEST</code> with a specific version or version range to pin the plugin version.
                         </p>
                     </div>
                 </template>
@@ -185,7 +181,7 @@
         observer?.disconnect();
     });
 
-    const codeTheme = computed(() => isDark.value ? "github-dark-default" : "github-light-default");
+    const codeTheme = computed(() => isDark.value ? "kestra-dark" : "kestra-light");
 
     provide("highlighter", highlighter);
     provide("codeTheme", codeTheme);
@@ -194,11 +190,6 @@
 
     const kestractlInstallCommand = computed(() =>
         getKestractlPluginGetCommand(props.pluginArtifactCoordinate)
-    );
-    const kestraCliInstallCommand = computed(() =>
-        props.pluginArtifactCoordinate
-            ? `./kestra plugins install ${props.pluginArtifactCoordinate}:LATEST`
-            : ""
     );
     const isEnterprisePlugin = computed(() =>
         props.pluginArtifactCoordinate?.startsWith("io.kestra.plugin.ee:") ?? false
@@ -229,7 +220,8 @@
         return found;
     };
 
-    const {getHighlighterCore} = await import("./shikiToolset");
+    const {getHighlighterCore, pebbleTransformer} = await import("./shikiToolset");
+    provide("pebbleTransformer", pebbleTransformer);
 
     const initialLanguages = new Set<string>(["yaml"])
     if (props.pluginArtifactCoordinate) initialLanguages.add("bash")

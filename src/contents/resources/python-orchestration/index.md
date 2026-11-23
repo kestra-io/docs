@@ -115,7 +115,7 @@ triggers:
 
 A few things are worth noticing in this example:
 *   **Declarative Definition:** The entire workflow, including its schedule and tasks, is defined in a single YAML file, perfect for version control and GitOps practices.
-*   **Dependency Management:** The `requirements` block tells Kestra to install `pandas` and `requests` in the execution environment, ensuring the script runs consistently every time. You can learn more about how to [manage Python dependencies in Kestra](/docs/how-to-guides/python-dependencies).
+*   **Dependency Management:** The `requirements` block tells Kestra to install `pandas` and `requests` in the execution environment, ensuring the script runs consistently every time. You can learn more about how to [manage Python dependencies in Kestra](/docs/scripts/installing-dependencies).
 *   **Environment Isolation:** The `docker` property specifies a container image, guaranteeing that the script runs in a clean, isolated environment, preventing conflicts with other workflows.
 *   **Data Passing:** The `Kestra.outputs` function makes the generated CSV file available to subsequent tasks in the workflow, enabling complex, multi-step pipelines.
 
