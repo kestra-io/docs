@@ -1,4 +1,6 @@
 ---
+import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
+
 interface Props {
     file: string
     code: string
@@ -12,6 +14,62 @@ const { file, code, marks = {}, dots = false, dark = false } = Astro.props
 
 const escape = (text: string) =>
     text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+
+const KEYWORDS = new Set([
+    "if",
+    "elseif",
+    "else",
+    "endif",
+    "for",
+    "endfor",
+    "in",
+    "set",
+    "and",
+    "or",
+    "not",
+    "is",
+])
+
+const TOKEN =
+    /('[^']*'|"[^"]*")|(\d+(?:\.\d+)?)|([A-Za-z_][\w.]*)(\s*\()?|(\|)|([\s\S])/g
+
+const span = (cls: string, text: string) =>
+    `<span class="${cls}">${escape(text)}</span>`
+
+function pebble(source: string) {
+    let html = ""
+    let afterPipe = false
+    for (const [, str, num, name, call, pipe, other] of source.matchAll(
+        TOKEN,
+    )) {
+        if (str) html += span("pb-str", str)
+        else if (num) html += span("pb-num", num)
+        else if (name) {
+            const cls = KEYWORDS.has(name)
+                ? "pb-kw"
+                : call || afterPipe
+                  ? "pb-fn"
+                  : "pb-var"
+            html += span(cls, name) + (call ? escape(call) : "")
+        } else if (pipe) html += escape(pipe)
+        else html += escape(other)
+        if (name || pipe) afterPipe = !!pipe
+        else if (other && other.trim()) afterPipe = false
+    }
+    return html
+}
+
+const highlight = (text: string) =>
+    text
+        .split(/(\{\{[\s\S]*?\}\}|\{%[\s\S]*?%\})/)
+        .map((part, idx) =>
+            idx % 2
+                ? span("pb-delim", part.slice(0, 2)) +
+                  pebble(part.slice(2, -2)) +
+                  span("pb-delim", part.slice(-2))
+                : escape(part),
+        )
+        .join("")
 
 const markAt = (row: number) =>
     Object.entries(marks).find(
@@ -38,10 +96,11 @@ const HTML = code
         const mark = markAt(row)
         return [
             `<span class="line"${mark ? ` data-k="${mark}"` : ""}>`,
+            `<span class="no">${row + 1}</span>`,
             match ? match[1] : " ".repeat(indent),
             match?.[2] ? `<span class="dash">- </span>` : "",
             match ? `<span class="key">${match[3]}:</span>` : "",
-            `<span class="value${string}">${escape(value)}</span>`,
+            `<span class="value${string}">${highlight(value)}</span>`,
             comment ? `<span class="comment">${escape(comment)}</span>` : "",
             "\n</span>",
         ].join("")
@@ -61,7 +120,12 @@ const HTML = code
                 <i />
             </span>
         )}
-        <span class="file">{file}</span>
+        <span class="tab">
+            <span class="logo">
+                <img src={kestraMark.src} alt="" width="16" height="16" />
+            </span>
+            {file}
+        </span>
     </figcaption>
     <pre><code set:html={HTML} /></pre>
 </figure>
@@ -72,9 +136,15 @@ const HTML = code
     .code-card {
         @include tokens;
 
-        --code-key: #6d52f5;
-        --code-string: #1c7e57;
+        --code-key: #631bf3;
+        --code-string: inherit;
         --code-comment: #6d6d86;
+        --pb-delim: #215d42;
+        --pb-var: #194530;
+        --pb-fn: #0542b6;
+        --pb-str: #ab0009;
+        --pb-num: #0542b6;
+        --pb-kw: #631bf3;
         --hl: rgba(132, 5, 255, 0.08);
 
         margin: 0;
@@ -86,9 +156,15 @@ const HTML = code
         text-align: left;
 
         :global(html.dark) & {
-            --code-key: #b9a6ff;
-            --code-string: #7fd8b0;
+            --code-key: #cdb6fb;
+            --code-string: inherit;
             --code-comment: #9696a5;
+            --pb-delim: #80fac5;
+            --pb-var: #bffddd;
+            --pb-fn: #718bfe;
+            --pb-str: #ffc5b7;
+            --pb-num: #fce070;
+            --pb-kw: #cdb6fb;
             --hl: rgba(152, 105, 247, 0.16);
         }
 
@@ -99,9 +175,15 @@ const HTML = code
             --text: #ffffff;
             --soft: #d6d6e0;
             --muted: #adadbf;
-            --code-key: #b9a6ff;
-            --code-string: #7fd8b0;
+            --code-key: #cdb6fb;
+            --code-string: inherit;
             --code-comment: #9696a5;
+            --pb-delim: #80fac5;
+            --pb-var: #bffddd;
+            --pb-fn: #718bfe;
+            --pb-str: #ffc5b7;
+            --pb-num: #fce070;
+            --pb-kw: #cdb6fb;
             --hl: rgba(152, 105, 247, 0.16);
             --shadow: 0 30px 80px -24px rgba(0, 0, 0, 0.6);
         }
@@ -109,18 +191,19 @@ const HTML = code
 
     figcaption {
         display: flex;
-        align-items: center;
+        align-items: flex-end;
         gap: 0.75rem;
-        padding: 0.75rem 1rem;
+        height: 3rem;
+        padding: 0 1rem;
         border-bottom: 1px solid var(--line);
         background: var(--chrome);
-        font-family: $font-family-monospace;
-        font-size: 0.8125rem;
+        font-size: 0.875rem;
         color: var(--muted);
     }
 
     .dots {
         display: inline-flex;
+        align-self: center;
         gap: 0.375rem;
 
         i {
@@ -128,6 +211,37 @@ const HTML = code
             height: 0.625rem;
             border-radius: 50%;
             background: var(--line);
+        }
+    }
+
+    .tab {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        height: 2.375rem;
+        margin-bottom: -1px;
+        padding: 0 0.875rem 0 0.5rem;
+        border: 1px solid var(--line);
+        border-bottom: 0;
+        border-radius: 8px 8px 0 0;
+        background: var(--panel);
+        font-weight: 500;
+        white-space: nowrap;
+        color: var(--text);
+    }
+
+    .logo {
+        display: grid;
+        flex: none;
+        place-items: center;
+        width: 1.375rem;
+        height: 1.375rem;
+        border-radius: 6px;
+        background: #0d0d10;
+
+        img {
+            width: 1rem;
+            height: 1rem;
         }
     }
 
@@ -153,12 +267,35 @@ const HTML = code
 
     pre :global(.line) {
         display: block;
-        padding: 0 1.25rem;
-        transition: background-color 0.2s ease;
+        padding: 0 1.25rem 0 0;
+        transition:
+            background-color 0.25s ease,
+            box-shadow 0.25s ease,
+            opacity 0.25s ease;
+    }
+
+    pre:has(:global(.line.on)) :global(.line:not(.on)) {
+        opacity: 0.35;
     }
 
     pre :global(.line.on) {
-        background: var(--hl);
+        background: linear-gradient(90deg, var(--hl), transparent 85%);
+        box-shadow: inset 2px 0 0 var(--code-key);
+    }
+
+    pre :global(.line.on .no) {
+        color: var(--code-key);
+        opacity: 1;
+    }
+
+    pre :global(.no) {
+        display: inline-block;
+        width: 3rem;
+        padding-right: 1.25rem;
+        text-align: right;
+        color: var(--muted);
+        opacity: 0.7;
+        user-select: none;
     }
 
     pre :global(.key) {
@@ -171,6 +308,30 @@ const HTML = code
 
     pre :global(.string) {
         color: var(--code-string);
+    }
+
+    pre :global(.pb-delim) {
+        color: var(--pb-delim);
+    }
+
+    pre :global(.pb-var) {
+        color: var(--pb-var);
+    }
+
+    pre :global(.pb-fn) {
+        color: var(--pb-fn);
+    }
+
+    pre :global(.pb-str) {
+        color: var(--pb-str);
+    }
+
+    pre :global(.pb-num) {
+        color: var(--pb-num);
+    }
+
+    pre :global(.pb-kw) {
+        color: var(--pb-kw);
     }
 
     pre :global(.comment) {

@@ -1,45 +1,56 @@
 ---
+import { Icon } from "astro-icon/components"
 import Rails from "./Rails.astro"
 import SectionHead from "~/components/home/SectionHead.astro"
 import CodeCard from "./CodeCard.astro"
 
 const FEATURES = [
     {
-        mark: "retry",
-        title: "Retries",
-        text: "Backoff per task, capped by attempts or time.",
-    },
-    {
-        mark: "err",
-        title: "Error handlers",
-        text: "Run alerting, cleanup, or compensation tasks when a flow fails.",
-    },
-    {
-        mark: "timeout",
-        title: "Timeouts",
-        text: "Set a maximum duration on any task.",
-    },
-    {
-        title: "Restart and replay",
-        tag: "UI · API",
-        text: "Restart a failed execution from the task that failed, not from the beginning.",
-    },
-    {
-        mark: "trigger",
-        title: "Backfills",
-        text: "Rerun a schedule over a past date range.",
-    },
-    {
         mark: "conc",
+        key: "concurrency",
         title: "Concurrency limits",
         text: "Cap concurrent executions per flow, and choose whether extra runs queue, cancel, or fail.",
     },
     {
         mark: "sla",
+        key: "sla",
         title: "SLAs",
         text: "Declare a maximum duration or an assertion on each execution. A breach fails the run, cancels it, or adds a label your alerts can act on.",
     },
     {
+        mark: "trigger",
+        key: "triggers",
+        title: "Backfills",
+        text: "Rerun a schedule over a past date range.",
+    },
+    {
+        mark: "timeout",
+        key: "timeout",
+        title: "Timeouts",
+        text: "Set a maximum duration on any task.",
+    },
+    {
+        mark: "retry",
+        key: "retry",
+        title: "Retries",
+        text: "Backoff per task, capped by attempts or time.",
+    },
+    {
+        mark: "err",
+        key: "errors",
+        title: "Error handlers",
+        text: "Run alerting, cleanup, or compensation tasks when a flow fails.",
+    },
+]
+
+const RUNTIME = [
+    {
+        icon: "mdi:restart",
+        title: "Restart and replay",
+        text: "Restart a failed execution from the task that failed, not from the beginning.",
+    },
+    {
+        icon: "mdi:history",
         title: "Every attempt recorded",
         text: "Each attempt keeps its own logs, outputs, and duration, so the post-incident question “what happened?” has an answer.",
     },
@@ -93,22 +104,43 @@ const MARKS: Record<string, [number, number]> = {
         </SectionHead>
 
         <div class="grid" data-prod>
-            <ul class="features">
-                {FEATURES.map((feature) => (
-                    <li tabindex="0" data-k={feature.mark}>
-                        <b>
-                            {feature.title}
-                            {feature.tag && (
-                                <span class="tag">{feature.tag}</span>
-                            )}
-                        </b>
-                        <span>{feature.text}</span>
-                    </li>
-                ))}
-            </ul>
+            <div class="side">
+                <p class="hint">
+                    <Icon name="mdi:cursor-default-click-outline" />
+                    Hover a feature to see it in the flow
+                    <span class="arrow" aria-hidden="true">
+                        →
+                    </span>
+                </p>
+                <ul class="features">
+                    {FEATURES.map((feature) => (
+                        <li tabindex="0" data-k={feature.mark}>
+                            <b>
+                                {feature.title}
+                                <code class="key">{feature.key}</code>
+                            </b>
+                            <span>{feature.text}</span>
+                        </li>
+                    ))}
+                </ul>
+                <div class="runtime">
+                    <p class="runtime-head">After a run, in the UI or API</p>
+                    <ul>
+                        {RUNTIME.map((item) => (
+                            <li>
+                                <Icon name={item.icon} />
+                                <span>
+                                    <b>{item.title}</b>
+                                    {item.text}
+                                </span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
             <CodeCard
                 class="sticky"
-                file="finance / nightly_ledger.yml · hover a card"
+                file="finance / nightly_ledger.yml"
                 code={FLOW}
                 marks={MARKS}
             />
@@ -117,6 +149,8 @@ const MARKS: Record<string, [number, number]> = {
 </section>
 
 <script>
+    const STEP_MS = 2400
+
     function wireProduction() {
         const grid = document.querySelector<HTMLElement>(
             "[data-prod]:not([data-wired])",
@@ -124,18 +158,57 @@ const MARKS: Record<string, [number, number]> = {
         if (!grid) return
         grid.dataset.wired = "true"
         const lines = grid.querySelectorAll<HTMLElement>(".line[data-k]")
-        const light = (mark?: string) => {
+        const items = [...grid.querySelectorAll<HTMLElement>(".features li")]
+        const light = (item?: HTMLElement) => {
+            const mark = item?.dataset.k
             for (const line of lines)
                 line.classList.toggle("on", !!mark && line.dataset.k === mark)
+            for (const other of items)
+                other.classList.toggle("active", other === item)
         }
-        for (const item of grid.querySelectorAll<HTMLElement>(".features li")) {
-            const on = () => light(item.dataset.k)
-            const off = () => light()
+
+        let timer = 0
+        let step = 0
+        const stopDemo = () => {
+            window.clearInterval(timer)
+            timer = 0
+        }
+        const startDemo = () => {
+            if (timer) return
+            light(items[step])
+            timer = window.setInterval(() => {
+                step = (step + 1) % items.length
+                light(items[step])
+            }, STEP_MS)
+        }
+
+        for (const item of items) {
+            const on = () => {
+                stopDemo()
+                light(item)
+            }
             item.addEventListener("mouseenter", on)
             item.addEventListener("focus", on)
-            item.addEventListener("mouseleave", off)
-            item.addEventListener("blur", off)
+            item.addEventListener("mouseleave", () => light())
+            item.addEventListener("blur", () => light())
         }
+
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+        const io = new IntersectionObserver(
+            ([entry]) => {
+                if (!entry.isIntersecting) return stopDemo()
+                if (!grid.dataset.touched) startDemo()
+            },
+            { threshold: 0.4 },
+        )
+        io.observe(grid)
+        grid.querySelector(".features")!.addEventListener(
+            "pointerenter",
+            () => {
+                grid.dataset.touched = "true"
+                stopDemo()
+            },
+        )
     }
 
     document.addEventListener("astro:page-load", wireProduction)
@@ -170,6 +243,46 @@ const MARKS: Record<string, [number, number]> = {
         }
     }
 
+    .side {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .hint {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0;
+        font-size: $font-size-sm;
+        font-weight: 500;
+        color: var(--ks-content-link);
+
+        :global(svg) {
+            width: 1.125rem;
+            height: 1.125rem;
+        }
+
+        .arrow {
+            animation: nudge 1.6s ease-in-out infinite;
+
+            @media (prefers-reduced-motion: reduce) {
+                animation: none;
+            }
+
+            @include media-breakpoint-down(lg) {
+                transform: rotate(90deg);
+                animation: none;
+            }
+        }
+    }
+
+    @keyframes nudge {
+        50% {
+            transform: translateX(4px);
+        }
+    }
+
     .features {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -190,22 +303,29 @@ const MARKS: Record<string, [number, number]> = {
             border: 1px solid var(--ks-border-primary);
             border-radius: 0.75rem;
             background: var(--ks-background-body);
-            cursor: default;
+            cursor: pointer;
             transition:
                 border-color 0.2s ease,
                 box-shadow 0.2s ease;
 
-            &[data-k]:hover,
-            &[data-k]:focus-visible {
+            &:hover,
+            &:focus-visible,
+            &.active {
                 outline: none;
                 border-color: var(--ks-content-link);
                 box-shadow: 0 10px 30px rgba(132, 5, 255, 0.12);
+
+                .key {
+                    background: var(--ks-content-primary);
+                    color: var(--ks-background-body);
+                }
             }
         }
 
         b {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 0.5rem;
             font-weight: 600;
             color: var(--ks-content-primary);
@@ -216,16 +336,68 @@ const MARKS: Record<string, [number, number]> = {
             line-height: 1.5;
             color: var(--ks-content-secondary);
         }
+    }
 
-        .tag {
-            padding: 0.0625rem 0.375rem;
-            border: 1px solid var(--ks-border-primary);
-            border-radius: 0.25rem;
-            font-family: $font-family-monospace;
-            font-size: 0.625rem;
-            font-weight: 700;
-            letter-spacing: 0.06em;
-            color: var(--ks-content-tertiary);
+    .key {
+        flex: none;
+        padding: 0 0.25rem;
+        border-radius: var(--ks-border-radius);
+        background-color: var(--ks-background-function);
+        font-family: $font-family-monospace;
+        font-size: 0.8125rem;
+        font-weight: 400;
+        color: var(--ks-content-secondary);
+        transition:
+            background-color 0.2s ease,
+            color 0.2s ease;
+    }
+
+    .runtime {
+        margin-top: 0.75rem;
+        padding-top: 1.25rem;
+        border-top: 1px dashed var(--ks-border-primary);
+
+        ul {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.25rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+
+            @include media-breakpoint-down(sm) {
+                grid-template-columns: 1fr;
+            }
         }
+
+        li {
+            display: flex;
+            gap: 0.75rem;
+            font-size: $font-size-sm;
+            line-height: 1.5;
+            color: var(--ks-content-secondary);
+
+            > :global(svg) {
+                flex: none;
+                width: 1.25rem;
+                height: 1.25rem;
+                margin-top: 0.125rem;
+                color: var(--ks-content-tertiary);
+            }
+        }
+
+        b {
+            display: block;
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+    }
+
+    .runtime-head {
+        margin: 0 0 1rem;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: var(--ks-content-secondary);
     }
 </style>
