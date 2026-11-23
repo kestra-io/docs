@@ -153,7 +153,7 @@ I wouldn't draw conclusions about either model from 40 tickets. It does show wha
 
 When an outage hits, the same report comes in from many customers within minutes. Treating each ticket on its own means twenty pages to the on-call engineer and twenty "we're looking into it" replies written by hand.
 
-When Jev picks `escalate_incident`, the flow opens a Kestra [case](/docs/enterprise/governance/cases) with `linkMatchingExecutions: true`. The first report opens the case and every later one attaches to it while it's open. The first Pylon ticket is linked to the case as its external ticket, and each affected ticket is stored under a KV key named after the case.
+When Jev picks `escalate_incident`, the flow opens a Kestra [case](/docs/enterprise/governance/cases) with `linkMatchingExecutions: true`. The first report opens the case and every later one attaches to it while it's open. In 2.1, a case can also hold an external ticket, so the first Pylon ticket is linked to the case. Each affected ticket is stored under a KV key named after the case.
 
 ```yaml
 - id: open_incident
@@ -173,7 +173,7 @@ When Jev picks `escalate_incident`, the flow opens a Kestra [case](/docs/enterpr
 
 A third flow listens for case events. When someone resolves the incident case, it replies to every stored ticket, closes them, and deletes the keys. The customers who reported the outage hear back when it is fixed, without anyone going through the queue to find them.
 
-That flow starts from a `CaseEvent` trigger:
+That flow starts from a `CaseEvent` trigger, also new in 2.1:
 
 ```yaml
 triggers:
