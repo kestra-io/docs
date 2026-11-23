@@ -66,7 +66,7 @@ In most large companies, more and more people need infrastructure: developers te
 
 Infrastructure automation has become one of the two largest ways teams use Kestra, alongside data. Kestra for Infrastructure turns what those teams built into a product, with their words, their workflows, and examples ready to use. It starts with **self-service provisioning**: everyone requests what they need from a catalog, and the platform team stays in control of what gets created and how long it lives, with the Terraform, OpenTofu, and Ansible code it already uses.
 
-<!-- TODO(screenshot): The Catalog home page with the Self-Service menu (Catalog, Requests, Deployments, Inventory, Approvals, Cases, Dashboards) and request cards for a VM, object storage, a database, and an environment. The Verticals enablement deck has one we can reuse. -->
+![The Kestra for Infrastructure Catalog, with the Self-Service menu and request cards for a virtual machine, object storage, a database, and an environment](./infrastructure-catalog.png)
 
 Here's what a platform team gets:
 
@@ -78,19 +78,25 @@ Here's what a platform team gets:
 - A template describes a whole setup, such as an application with its database and its machine. Fill in its arguments, and the flow and its Catalog entry are created for you. Templates can start from scratch or from a flow you already have.
 - An overview dashboard shows deployments by environment, inventory by type, and resources by owner, and any metadata written on a resource can be charted.
 
-<!-- TODO(screenshot): A deployment page with its owner, metadata, TTL & Lease card, Inventory card, and Actions card. Reuse from the Verticals deck if possible. -->
+![A deployment page with its owner and metadata, the TTL & Lease card showing when the lease expires, the Inventory card listing a table and a VM, and the Actions card](./infrastructure-deployment.png)
 
 Nobody starts from an empty page. Example catalog entries, flows, deployments, and a dashboard are there on the first visit, and a short product tour walks through requesting a sandbox, seeing the flow behind it, extending its lease, and decommissioning it. The examples only declare assets, so no cloud resource is created while you explore.
+
+Here's a request from the Catalog, from the form to the deployment it creates:
+
+<div style="position: relative; padding-bottom: calc(56.4617% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/3DXLsMaDFuodZH72jPAC?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Provision a Virtual Machine Using the Self-Service Catalog" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+
+And a Day 2 action on an existing deployment, resizing one of its VMs:
+
+<div style="position: relative; padding-bottom: calc(56.4617% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/CXQzSthSroYruAfZJmgK?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Change VM Size in an Existing Deployment" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 AI agents follow the same rules as people. A catalog flow can be exposed to an agent with the [MCP Tool trigger](/docs/workflow-components/triggers/mcp-tool-trigger), and a request from an agent goes through the same flow, the same approval step, and the same audit trail as a request from the Catalog.
 
 Because it's built on the Kestra platform, Kestra for Infrastructure comes with everything else Kestra does. [Cases](/docs/enterprise/governance/cases) track failed requests as incidents with linked Jira or ServiceNow tickets, [Assets](/docs/enterprise/governance/assets) make every resource known to other teams and flows, and [Apps](/docs/enterprise/scalability/apps) put a form in front of any flow. Flows are YAML, versioned in Git, and run your Terraform, OpenTofu, Ansible, Shell, Python, and PowerShell code as is, including VMware PowerCLI scripts. Enterprise governance comes along too: RBAC, SSO, secrets, audit logs, and isolated workers for on-premises and air-gapped environments. The resources your platform team provisions can then be used by data teams on the same platform.
 
-Kestra for Infrastructure is part of Kestra Enterprise Edition, self-hosted. This is the first step: it starts with provisioning and Day 2 operations, and it will grow with every release of the Kestra platform. To set it up, see [Kestra for Infrastructure in the docs](/docs/enterprise/governance/tenants/infrastructure), and to see it with your own use cases, [talk to our team](/demo).
+Kestra for Infrastructure is part of Kestra Enterprise Edition, self-hosted. This is the first step: it starts with provisioning and Day 2 operations, and it will grow with every release of the Kestra platform. To set it up, see [Kestra for Infrastructure in the docs](/docs/kestra-for-infra), and to see it with your own use cases, [talk to our team](/demo).
 
 <!-- VERIFY: confirm the sales/demo link marketing wants here (product page on kestra.io, or /demo). -->
-
-<!-- TODO(arcade, priority 1): Kestra for Infrastructure end to end, told as the requester and then the platform team: pick an entry in the Catalog, fill the form, follow the request under Requests, open the resulting deployment, extend its lease, and run a Day 2 action. Record on the starter content so no cloud resource is needed. Keep the product name on screen; avoid showing the tenant switcher or tenant settings. -->
 
 <!-- TODO(arcade, priority 2): Templates: create a template From a flow, define its arguments, click Use, and land on the new Catalog entry. Shows the handoff between the platform team and the teams it serves. -->
 
@@ -167,7 +173,7 @@ A searchable list stores each item separately, so one execution can be found by 
 
 The `TABLE` input collects a list of records in a grid, for things like a set of disks, firewall rules, or users to onboard. Each column has a type and its own rules, every cell is checked, and all the errors show up at once, so nobody has to format a JSON list by hand. Rows can be pasted from a spreadsheet, too. See [TABLE inputs](/docs/workflow-components/inputs#table-inputs).
 
-<!-- TODO(screenshot): Reuse table-input-execute-modal.png from the inputs docs page (the Execute modal with a TABLE input grid and per-cell errors). -->
+![The Execute modal with the Additional disks TABLE input as a grid with size_gb, mountpoint, and label columns, two filled rows, and a third row flagged with missing required value under its required cells](./table-input-execute-modal.png)
 
 <!-- VERIFY: TABLE input Cloud availability (TODO in source). -->
 
@@ -187,7 +193,7 @@ Sets can also be kept up to date from a flow. The new `Set` task can, for exampl
 
 See [Reusable Inputs](/docs/workflow-components/reusable-inputs#edit-a-set-in-the-ui).
 
-<!-- TODO(screenshot): Reuse reusable-inputs-editor.png from the Reusable Inputs docs page (the editor with the Code panel, the No Code panel, and a TABLE defaults grid). -->
+![The vm_components editor with the Code panel showing the set's YAML, the No Code panel listing the environment and components inputs, and the components input open in a third panel with its defaults grid of four rows](./reusable-inputs-editor.png)
 
 <!-- VERIFY: the Set, List, and Delete tasks ship in the plugin-kestra release for 2.1 (merged to next/v2.1 in plugin-kestra#215, not released as of 2026-11-17). Drop the second paragraph and the example if they don't make GA. -->
 
@@ -271,7 +277,7 @@ sla:
     behavior: NONE
 ```
 
-Concurrency gets a `queueLimit`, which caps how many executions can wait in line. The Concurrency Limits page moves to the tenant, with a count of queued executions, and tenant users can reset counters themselves. See [Concurrency](/docs/workflow-components/concurrency).
+Concurrency gets a `queueLimit`, which caps how many executions can wait in line. The Concurrency Limits page moves to the tenant, with a count of queued executions, and tenant users can reset counters themselves. In the Enterprise Edition, every reset is recorded in the audit log. See [Concurrency](/docs/workflow-components/concurrency).
 
 ## Cases: Tickets and Events
 
@@ -366,6 +372,7 @@ A few plugin additions from this cycle:
 - [Change password in OSS](/docs/administrator-guide/basic-auth-troubleshooting#change-password): users with database-stored credentials can change their password from the user menu.
 - [Task runner details](/docs/task-runners/types/kubernetes-task-runner) (EE): cloud task runners add a **Runner details** artifact with the configuration each run actually used.
 - [PEM certificates for gRPC](/docs/configuration/enterprise-and-advanced#pem-certificates) (EE): use cert-manager and Kubernetes `tls` Secrets for worker mTLS without converting them.
+- [HTTPS behind a reverse proxy](/docs/configuration/observability-and-networking#secure-cookies): HSTS and `Secure` cookies now apply when a proxy forwards HTTPS, and `kestra.webserver.cookies.secure` turns the cookie attribute on or off explicitly.
 - [Plugin downloads through a proxy](/docs/administrator-guide/mitm-proxy-configuration#authenticate-plugin-downloads-with-the-proxy): install plugins behind a proxy that requires a username and password.
 - [`PurgeMetrics`](/docs/administrator-guide/purge#purge-metrics): clean up execution metrics on their own, much faster than through `PurgeExecutions`.
 - [Executor loop intervals](/docs/configuration/plugins-and-execution#executor-loop-intervals): tune how often the executor checks SLA deadlines and delayed executions.
