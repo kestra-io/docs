@@ -11,7 +11,6 @@ interface Props {
     items?: Array<{
         id: string
         title?: string
-        path?: string
     }>
 }
 
@@ -88,7 +87,7 @@ const children = await Promise.all(
         return {
             title: item?.title ?? doc.data.sidebarTitle ?? doc.data.title,
             description,
-            path: item?.path ?? "/docs/" + doc.id,
+            path: "/docs/" + doc.id,
             release: doc.data.release,
         }
     }),
@@ -96,7 +95,12 @@ const children = await Promise.all(
 ---
 
 {title ? <h2 class="ks-title">{title}</h2> : null}
-<div class="ks-card-grid">
+<div
+    class:list={[
+        "ks-card-grid",
+        { "ks-card-grid--single": items !== undefined && children.length === 1 },
+    ]}
+>
     {
         children.map((item) => (
             <a href={item.path} class="ks-card">
@@ -127,6 +131,12 @@ const children = await Promise.all(
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 1rem;
 
+        &.ks-card-grid--single {
+            @include media-breakpoint-up(md) {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
         .ks-card {
             border-radius: 0.75rem;
             text-decoration: none;
@@ -137,7 +147,7 @@ const children = await Promise.all(
             transition: all 0.3s;
             padding: 1rem;
             padding-inline-end: 3rem;
-            // show title adn description on the first column and the icon on the second column
+            // show title and description on the first column and the icon on the second column
             display: grid;
             grid-template-columns: 1fr 2rem;
             align-items: start;
