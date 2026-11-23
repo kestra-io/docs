@@ -42,6 +42,8 @@ See the [Micronaut HttpClient Configuration](https://docs.micronaut.io/latest/gu
 
 Another way to authenticate is by providing `micronaut.http.client.proxy-authorization: Basic <base64-encoded username:password>` and `micronaut.http.services.*.proxy-authorization: Basic <base64-encoded username:password>`, which prevents the password from being displayed in plain text in the config file.
 
+This configuration only covers requests made by Kestra itself, such as fetching Blueprints. To send HTTP tasks through the same proxy, see [HTTP tasks behind a forward proxy](../../configuration/04.plugins-and-execution/index.md#http-tasks-behind-a-forward-proxy).
+
 ### Reverse proxy configuration
 
 Reverse proxies hide the server’s identity from clients and may perform tasks such as load balancing, authentication, decryption, and caching. A reverse proxy acts on behalf of the server, taking requests from the external network, and directing them to the internal server(s) that can fulfill those requests.

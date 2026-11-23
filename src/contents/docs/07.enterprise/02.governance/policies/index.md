@@ -542,6 +542,7 @@ kestra:
 
 - `kestra.policies` is a map. The key (`instance-defaults` above) is the policy identity — do not add an `id` field inside the body.
 - A malformed static policy prevents server startup (fail-closed). Validate in a staging environment before deploying.
+- Static policies that apply to a tenant are listed, read-only, in the tenant **Policies** view and in each namespace **Policies** tab with the `STATIC` scope. Only an instance owner can open their details.
 
 Static policies are the replacement for the removed `kestra.plugins.defaults` server configuration key. See the [pluginDefaults Removed migration guide](../../../11.migration-guide/v2.0.0/plugin-defaults-removed/index.md) for the full conversion.
 
@@ -560,6 +561,8 @@ POST /api/v1/{tenant}/namespaces/{namespace}/policies     # namespace-scoped
 ```
 
 Policies can also be exported as YAML and imported into other namespaces or environments.
+
+To manage tenant-scoped policies from the command line or a CI pipeline, use the [`kestractl policies` commands](../../../kestra-cli/kestractl/index.md#policies-enterprise-edition).
 
 ## Verifying policy behavior
 
