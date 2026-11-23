@@ -19,12 +19,17 @@ const { id, name, description, url, isVariantOf, featureList, edition = "open-so
 
 const totalPlugins = await fetchTotalPluginsCount()
 
+// The default entity (https://kestra.io/#software) is the product itself, so it keeps
+// the same url on every page that embeds it instead of taking the page url.
 const canonicalUrl =
-    url ?? new URL(Astro.url.pathname, Astro.site ?? "https://kestra.io").toString().replace(/\/$/, "")
+    url ??
+    (id
+        ? new URL(Astro.url.pathname, Astro.site ?? "https://kestra.io").toString().replace(/\/$/, "")
+        : "https://kestra.io")
 
 const openSourceOffer = {
     "@type": "Offer",
-    "name": "Kestra Open Source",
+    "name": "Kestra Core",
     "price": "0",
     "priceCurrency": "USD",
     "availability": "https://schema.org/InStock",
