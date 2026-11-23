@@ -27,6 +27,8 @@ Performance depends on balancing **throughput** (task runs per minute) and **lat
 
 ## Baseline infrastructure recommendations
 
+<!-- Worker Controller sizing (1 CPU / 2 GB, replicas with task runs/min and log volume, at least two for HA) is an initial engineering estimate pending further load testing. Update the rows below when results are available. -->
+
 Start with the CPU and memory allocation below for your expected number of task runs per minute. As your workload grows, scale vertically by adding CPU and RAM per node, or horizontally by adding nodes.
 
 ### Up to 1,000 task runs/minute
@@ -36,6 +38,7 @@ The table below is a baseline for a deployment handling up to 1,000 task runs pe
 | Component  | CPU | RAM | Notes |
 |------------|-----|-----|-------|
 | Webserver  | 1   | 2 GB | Includes the embedded Indexer and Worker Controller. Add CPU for heavy API usage or large file uploads. |
+| Worker Controller | 1 | 2 GB | Embedded in the Webserver by default. When you run it separately with `--no-controller`, add replicas as task runs/min and log volume grow, and run at least two for high availability. |
 | Executor   | 2   | 2 GB | Add +2 CPU / +2 GB per additional 1,000 task runs/min. |
 | Scheduler  | 1   | 2 GB | Add +1 CPU / +1 GB per additional 1,000 triggers. |
 | Worker     | 2   | 4 GB | Heavily workload-dependent. Use the [Worker sizing methodology](#worker-sizing-methodology). |
@@ -47,6 +50,7 @@ For workloads above 1,000 task runs per minute, increase Executor and Worker res
 | Component  | CPU | RAM | Notes |
 |------------|-----|-----|-------|
 | Webserver  | 1   | 2 GB | Scale for traffic. |
+| Worker Controller | 1 | 2 GB | Embedded in the Webserver by default. When you run it separately with `--no-controller`, add replicas as task runs/min and log volume grow, and run at least two for high availability. |
 | Executor   | 4   | 4 GB | Add +2 CPU / +2 GB per additional 1,000 task runs/min. |
 | Scheduler  | 1   | 2 GB | Scale with triggers. |
 | Worker     | 4   | 8 GB | Scale with the [Worker sizing methodology](#worker-sizing-methodology). |
@@ -149,7 +153,7 @@ If you use a managed Postgres instance, such as Cloud SQL on GCP, size its tier 
 
 - **Executors**: scale when orchestration latency grows with load.
 - **Workers**: scale when task runs wait in the queue for too long.
-- **Worker Controllers**: run them as separate processes, with `--no-controller` on the Webserver, when you need to scale dispatch independently of API traffic.
+- **Worker Controllers**: run them as separate processes, with `--no-controller` on the Webserver, when you need to scale dispatch independently of API traffic. Add replicas as task runs per minute and log volume grow, since each Worker Controller relays the logs and metrics of the Workers connected to it.
 - **Webservers**: scale with API and UI traffic, especially for large file inputs and trigger payloads.
 - **Schedulers**: scale with the number of triggers and their frequency.
 
