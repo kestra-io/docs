@@ -9,9 +9,10 @@ author:
   linkedin: https://www.linkedin.com/in/alex-emerich/
   image: aemerich
   role: Technical Writer
+image: ./main.png
 ---
 
-<!-- TODO: add a header image (main.webp). After 2.1 GA, link the Approval task (/docs/workflow-components/approvals), approval cases (/docs/enterprise/governance/approvals), and the how-to guide (/docs/how-to-guides/support-triage-jev), and drop the "coming soon" wording. -->
+<!-- TODO: After 2.1 GA, link the Approval task (/docs/workflow-components/approvals), approval cases (/docs/enterprise/governance/approvals), and the how-to guide (/docs/how-to-guides/support-triage-jev), and drop the "coming soon" wording. -->
 
 A big part of handling a support queue is sorting: is this a question, a missing detail, an outage, or someone asking for money back? Each of those has a different owner and a different cost of getting it wrong. Answering a how-to question with a docs link is cheap if you guess wrong. Promising a refund is not.
 
