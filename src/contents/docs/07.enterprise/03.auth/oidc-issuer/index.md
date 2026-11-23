@@ -209,11 +209,11 @@ Set `projectId` explicitly: without a service account key, the task has nothing 
 
 ## Connect JFrog
 
-<!-- Live-tested 2026-11-23 against a JFrog trial (instance and tenant issuers, sub wildcard mapping, FORBIDDEN on mismatch). VERIFY: the UI menu path in step 1, set up through the REST API during the test. -->
+<!-- Live-tested 2026-11-23 against a JFrog trial (instance and tenant issuers, sub wildcard mapping, FORBIDDEN on mismatch). -->
 
 The JFrog Platform exchanges the token for a short-lived JFrog access token through its OIDC integration. Any service that accepts tokens from a generic OIDC provider works the same way: register the issuer URL, then exchange the token in your flow.
 
-1. In the JFrog Platform, go to **Administration > General Management > Manage Integrations**, and add a new OpenID Connect integration:
+1. In the JFrog Platform, go to **Administration > General Management > Manage Integrations**, open the **OpenID Connect** tab, and click **New Integration** to add an integration:
     - **Provider Name**: `kestra`. The flow sends this name with each exchange.
     - **Provider Type**: **Generic OpenID Connect**.
     - **Provider URL**: the issuer URL, for example `https://kestra.acme.com`.
