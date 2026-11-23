@@ -300,6 +300,27 @@ const migrationSteps = [
             </p>
         </div>
     </Hero>
+    <section class="example">
+        <div class="inner">
+            <div class="copy">
+                <h2>Request, approve, provision, configure</h2>
+                <p>
+                    A request comes in with a hostname. When the change needs
+                    sign-off, the owner approves it, then Terraform creates the
+                    VM and your playbook configures it. If a step fails, the run
+                    stops there with its logs, and you restart it from that
+                    step.
+                </p>
+                <p class="note">
+                    Each node is a task in one YAML file, versioned in Git.
+                </p>
+            </div>
+            <div class="visual" style={`--pixels: url("${pixelCluster}")`}>
+                <span class="pixels" aria-hidden="true"></span>
+                <TopologyMock {...topology} />
+            </div>
+        </div>
+    </section>
     <section
         class="run-playbook"
         id="run-a-playbook"
@@ -389,27 +410,6 @@ const migrationSteps = [
         </p>
         {/* Dec 15: Will's "Ansible Playbooks for your whole team" video goes
          * here, under the three steps, as a VideoDialog like the vRA one. */}
-    </section>
-    <section class="example">
-        <div class="inner">
-            <div class="copy">
-                <h2>Request, approve, provision, configure</h2>
-                <p>
-                    A request comes in with a hostname. When the change needs
-                    sign-off, the owner approves it, then Terraform creates the
-                    VM and your playbook configures it. If a step fails, the run
-                    stops there with its logs, and you restart it from that
-                    step.
-                </p>
-                <p class="note">
-                    Each node is a task in one YAML file, versioned in Git.
-                </p>
-            </div>
-            <div class="visual" style={`--pixels: url("${pixelCluster}")`}>
-                <span class="pixels" aria-hidden="true"></span>
-                <TopologyMock {...topology} />
-            </div>
-        </div>
     </section>
     <Platform {...content.platform} />
     <section class="plugins">
@@ -685,7 +685,7 @@ const migrationSteps = [
         html[data-lp-variant="awx"] .lp-hero .logos .logo-carousel {
             margin-top: 0;
         }
-        html[data-lp-variant="awx"] .run-playbook {
+        html[data-lp-variant="awx"] .example {
             padding-top: 1.75rem;
         }
     }
@@ -729,10 +729,9 @@ const migrationSteps = [
         }
     }
 
-    /* G_AWX variant: the runnable section right under the hero. */
+    /* G_AWX variant: the runnable section, right after the example flow. */
     .run-playbook {
         @include lp-section;
-        padding-top: 3rem;
         scroll-margin-top: var(--top-bar-height);
 
         .head {
