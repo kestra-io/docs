@@ -233,3 +233,9 @@ The how-to guide with the three flows in full, the permissions reviewers need, a
 Infrastructure remediation is one place the same shape could fit. An alert comes in for a host, rules decide which [Ansible](/plugins/plugin-ansible) playbooks are allowed for that host's environment, and Jev picks one, such as rotating logs or restarting a service. Anything that costs money or touches a production database, like expanding a volume, waits for an `Approval`, and a problem across many hosts at once becomes one case instead of dozens of separate runs.
 
 Where else would a decision model with a human in the loop make sense in your workflows? If you have a use case in mind, or try this on a real queue, come tell us about it in [Slack](/slack). And if you haven't used Kestra yet, the [quickstart](/docs/quickstart) gets you running in a few minutes, ready for when the `Approval` task lands.
+
+We thought the use case made for a good video as well. Watch the agent triage real tickets, gate on confidence, and hand the unsure ones to a person:
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/93TgShX_aXA?si=Xj4QWFn412K3cwmf" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
