@@ -117,7 +117,7 @@
     }>();
 
     const highlighter = inject<Ref<HighlighterCore | undefined>>("highlighter", ref(undefined));
-    const codeTheme = inject<Ref<string>>("codeTheme", ref("github-dark-default"));
+    const codeTheme = inject<Ref<string>>("codeTheme", ref("kestra-dark"));
 
     const codeSanitizer = sanitizeForMarkdown;
 

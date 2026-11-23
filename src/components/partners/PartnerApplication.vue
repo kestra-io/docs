@@ -48,15 +48,35 @@
                                     </label>
                                 </div>
 
-                                <div v-if="form.track" class="form-group">
+                                <div v-if="form.track === 'services'" class="types">
                                     <span class="label">
-                                        {{ form.track === "consulting" ? "Your areas of expertise. Pick all that apply." : "What do you build? Pick all that apply." }}
-                                        <span class="required-field">*</span>
+                                        Which partner types describe you? Select all that apply.
                                     </span>
-                                    <div class="checks">
-                                        <label v-for="k in kinds" :key="k" class="check">
-                                            <input type="checkbox" :value="k" v-model="form.kind" />
-                                            {{ k }}
+                                    <div class="choice-grid">
+                                        <label
+                                            v-for="p in PARTNER_TYPES"
+                                            :key="p.id"
+                                            class="choice multi"
+                                            :class="{ selected: form.kind.includes(p.id) }"
+                                        >
+                                            <input type="checkbox" :value="p.id" v-model="form.kind" @change="onKindChange(p.id)" />
+                                            <strong>{{ p.title }}</strong>
+                                            <ul class="capabilities">
+                                                <li
+                                                    v-for="c in CAPABILITIES"
+                                                    :key="c"
+                                                    :class="{ included: p.includes.includes(c) }"
+                                                >
+                                                    <span class="tick" aria-hidden="true">
+                                                        <CheckBold v-if="p.includes.includes(c)" :size="16" />
+                                                        <Close v-else :size="16" />
+                                                    </span>
+                                                    <span class="text">{{ c }}</span>
+                                                    <span class="visually-hidden">
+                                                        {{ p.includes.includes(c) ? "(included)" : "(not included)" }}
+                                                    </span>
+                                                </li>
+                                            </ul>
                                         </label>
                                     </div>
                                 </div>
@@ -74,7 +94,7 @@
                                 </div>
                                 <div class="form-group">
                                     <span class="label">
-                                        {{ form.track === "consulting" ? "Regions you serve" : "Regions where your customers are" }}
+                                        {{ form.track === "services" ? "Regions you serve" : "Regions where your customers are" }}
                                         <span class="required-field">*</span>
                                     </span>
                                     <div class="checks">
@@ -86,7 +106,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="apply-experience">
-                                        {{ form.track === "consulting" ? "Your experience with Kestra" : "Where is the integration today?" }}
+                                        {{ form.track === "services" ? "Your experience with Kestra" : "Where is the integration today?" }}
                                         <span class="required-field">*</span>
                                     </label>
                                     <select id="apply-experience" v-model="form.experience" class="form-control" required>
@@ -96,10 +116,10 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="apply-plan">
-                                        {{ form.track === "consulting" ? "What do you want to do with Kestra?" : "What would the integration do?" }}
+                                        {{ form.track === "services" ? "What do you want to do with Kestra?" : "What would the integration do?" }}
                                         <span class="required-field">*</span>
                                     </label>
-                                    <textarea id="apply-plan" v-model.trim="form.plan" class="form-control" rows="4" :placeholder="form.track === 'consulting' ? 'Customers you have in mind, services you want to offer, migrations you run (VMware, Airflow, Control-M...)' : 'Which of your products, which Kestra tasks or triggers, who asked for it'" />
+                                    <textarea id="apply-plan" v-model.trim="form.plan" class="form-control" rows="4" :placeholder="form.track === 'services' ? 'Customers you have in mind, services you want to offer, migrations you run (VMware, Airflow, Control-M...)' : 'Which of your products, which Kestra tasks or triggers, who asked for it'" />
                                 </div>
                             </fieldset>
 
@@ -152,13 +172,14 @@
 <script setup lang="ts">
     import { computed, onMounted, reactive, ref, watch } from "vue"
     import CheckCircleOutline from "vue-material-design-icons/CheckCircleOutline.vue"
+    import CheckBold from "vue-material-design-icons/CheckBold.vue"
+    import Close from "vue-material-design-icons/Close.vue"
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
     import { useGtm } from "@gtm-support/vue-gtm"
     import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
-    import { $fetch } from "~/utils/fetch"
 
-    type Track = "consulting" | "technology"
+    type Track = "services" | "technology"
 
     const props = defineProps<{ routePath: string; initialTrack?: Track }>()
 
@@ -166,38 +187,46 @@
     const STEPS = ["Partner type", "Your company", "You"]
     const TRACKS = [
         {
-            id: "consulting" as Track,
+            id: "services" as Track,
             title: "Services partner",
-            text: "Consulting firm, systems integrator, managed service provider or reseller. You deliver or sell Kestra for your clients.",
+            text: "You demo, deploy, or manage Kestra for your clients. (Resellers select this option)",
         },
         {
             id: "technology" as Track,
             title: "Technology partner",
-            text: "Cloud, data or infrastructure platform. You ship an integration with Kestra and we list and launch it together.",
+            text: "You ship an integration with Kestra such as a Kestra Plugin or have an integration with Kestra in your own solution.",
         },
     ]
-    const KINDS: Record<Track, string[]> = {
-        consulting: ["Data engineering and analytics", "Infrastructure and DevOps", "Cloud and Kubernetes", "AI and machine learning", "Business process automation", "Legacy scheduler migration"],
-        technology: ["Cloud provider", "Data platform", "Data integration", "Infrastructure or DevOps tool", "AI or model provider", "Other ISV"],
-    }
+    const CAPABILITIES = [
+        "Build Kestra Flows",
+        "Demo Kestra",
+        "Co-Sell Kestra",
+        "Install, Maintain, and Upgrade Kestra Infrastructure",
+        "Resell Kestra Licenses",
+    ]
+    const PARTNER_TYPES = [
+        {
+            id: "solution",
+            title: "Solution partner",
+            includes: ["Build Kestra Flows", "Demo Kestra", "Co-Sell Kestra"],
+        },
+        {
+            id: "managed_services",
+            title: "Managed services partner",
+            includes: ["Build Kestra Flows", "Demo Kestra", "Co-Sell Kestra", "Install, Maintain, and Upgrade Kestra Infrastructure"],
+        },
+        {
+            id: "reseller_partner",
+            title: "Reseller partner",
+            includes: ["Co-Sell Kestra", "Resell Kestra Licenses"],
+        },
+    ]
     const EXPERIENCES: Record<Track, string[]> = {
-        consulting: ["No Kestra project yet", "Evaluating Kestra for a customer", "Delivered at least one Kestra project", "Several customers running Kestra"],
+        services: ["No Kestra project yet", "Evaluating Kestra for a customer", "Delivered at least one Kestra project", "Several customers running Kestra"],
         technology: ["Not started", "Prototype in progress", "Working plugin, not published", "Published and in use by customers"],
     }
     const REGIONS = ["Europe", "North America", "Latin America", "Asia-Pacific", "Middle East and Africa"]
     const HUBSPOT_VALUES: Record<string, string> = {
-        "Data engineering and analytics": "data",
-        "Infrastructure and DevOps": "infrastructure_devops",
-        "Cloud and Kubernetes": "cloud_kubernetes",
-        "AI and machine learning": "ai_ml",
-        "Business process automation": "business_automation",
-        "Legacy scheduler migration": "legacy_migration",
-        "Cloud provider": "cloud",
-        "Data platform": "data_platform",
-        "Data integration": "data_integration",
-        "Infrastructure or DevOps tool": "infrastructure",
-        "AI or model provider": "ai",
-        "Other ISV": "isv",
         "No Kestra project yet": "none",
         "Evaluating Kestra for a customer": "evaluating",
         "Delivered at least one Kestra project": "one_project",
@@ -234,22 +263,29 @@
         consent: false,
     })
 
-    const kinds = computed(() => (form.track ? KINDS[form.track] : []))
     watch(() => form.track, () => { form.kind = [] })
+
+    // Solution and managed services are mutually exclusive; reseller combines with either.
+    const EXCLUSIVE_KINDS = ["solution", "managed_services"]
+    const onKindChange = (id: string) => {
+        if (EXCLUSIVE_KINDS.includes(id) && form.kind.includes(id)) {
+            form.kind = form.kind.filter((k) => k === id || !EXCLUSIVE_KINDS.includes(k))
+        }
+    }
     const experiences = computed(() => (form.track ? EXPERIENCES[form.track] : []))
     const trackLabel = computed(() => (form.track === "technology" ? "technology partners" : "services partners"))
     const trackHref = computed(() => (form.track === "technology" ? "/partners/technology" : "/partners/services"))
 
     onMounted(() => {
         const fromUrl = new URLSearchParams(window.location.search).get("track")
-        const initial = props.initialTrack ?? (fromUrl === "services" || fromUrl === "consulting" ? "consulting" : fromUrl === "technology" ? fromUrl : "")
+        const initial = props.initialTrack ?? (fromUrl === "services" || fromUrl === "consulting" ? "services" : fromUrl === "technology" ? fromUrl : "")
         if (initial) form.track = initial
     })
 
     const validateStep = (): string => {
         if (step.value === 0) {
             if (!form.track) return "Choose the partner track that matches you."
-            if (form.kind.length === 0) return form.track === "consulting" ? "Pick at least one area of expertise." : "Pick at least one partner type."
+            if (form.track === "services" && form.kind.length === 0) return "Pick at least one partner type."
         }
         if (step.value === 1) {
             if (!form.company || !form.website) return "Company name and website are required."
@@ -288,7 +324,6 @@
             hsq.push(["identify", { email: form.email, firstname: form.firstname, lastname: form.lastname, company: form.company, jobtitle: form.jobtitle, kuid }])
             hsq.push(["trackCustomBehavioralEvent", { name: "partner_form_submission" }])
 
-            const { ip } = await $fetch<{ ip: string }>("https://api.ipify.org?format=json")
             const contact = (name: string, value: string) => ({ objectTypeId: "0-1", name, value })
             const company = (name: string, value: string) => ({ objectTypeId: "0-2", name, value })
             await submitHubspotForm(HUBSPOT_FORM_ID, {
@@ -301,7 +336,7 @@
                     company("name", form.company),
                     company("website", form.website),
                     company("partner_track", form.track),
-                    company(form.track === "consulting" ? "partner_expertise" : "partner_type", form.kind.map((k) => HUBSPOT_VALUES[k]).join(";")),
+                    ...(form.track === "services" ? [company("partner_type", form.kind.join(";"))] : []),
                     company("partner_regions", form.regions.map((r) => HUBSPOT_VALUES[r]).join(";")),
                     company("partner_experience", HUBSPOT_VALUES[form.experience]),
                     company("partner_plan", form.plan),
@@ -309,7 +344,6 @@
                 ],
                 context: {
                     hutk: getHubspotTracking() || undefined,
-                    ipAddress: ip,
                     pageUri: props.routePath,
                     pageName: document.title,
                 },
@@ -441,7 +475,7 @@
             color: var(--ks-content-primary);
         }
 
-        span {
+        > span {
             font-size: $font-size-sm;
             color: var(--ks-content-secondary);
         }
@@ -454,6 +488,60 @@
         &:focus-within {
             outline: 2px solid var(--ks-border-active);
             outline-offset: 2px;
+        }
+
+        &.multi {
+            strong {
+                padding-right: 2rem;
+            }
+
+            input {
+                opacity: 1;
+                top: 1.25rem;
+                right: 1.25rem;
+                width: 1.125rem;
+                height: 1.125rem;
+                accent-color: var(--ks-border-active);
+            }
+        }
+    }
+
+    .capabilities {
+        list-style: none;
+        margin: 0.25rem 0 0;
+        padding: 0.75rem 0 0;
+        border-top: 1px solid var(--ks-border-secondary);
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: $font-size-sm;
+            line-height: 1.35;
+            color: var(--ks-content-tertiary);
+
+            &.included {
+                color: var(--ks-content-primary);
+
+                .tick {
+                    color: var(--ks-icon-active);
+                }
+            }
+        }
+
+        .tick {
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            height: 1.35em;
+            color: var(--ks-content-tertiary);
+
+            :deep(.material-design-icon) {
+                display: inline-flex;
+            }
         }
     }
 

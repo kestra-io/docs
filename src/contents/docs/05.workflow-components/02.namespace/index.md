@@ -48,7 +48,7 @@ Each namespace has an embedded code editor for managing scripts, configuration, 
 
 ## Namespace overview
 
-Open any namespace to see its execution dashboards, flows, dependencies, and [KV Store](../../06.concepts/05.kv-store/index.md). Namespaces are also accessible via [`kestractl namespaces list`](../../kestra-cli/kestractl/index.md).
+Open any namespace to see its execution dashboards, flows, dependencies, and [KV Store](../../06.concepts/05.kv-store/index.md). You can also list namespaces from the command line with `kestractl namespaces list` after you [install `kestractl`](../../kestra-cli/kestractl/index.md#installation).
 
 Tabs marked with a lock icon (Edit, Secrets, Credentials, Assets, Variables, Policies, Reusable Inputs, Revisions, and Audit Logs) are available in Kestra EE. See the [Enterprise Edition documentation](../../07.enterprise/index.mdx) for details.
 

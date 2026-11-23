@@ -73,7 +73,7 @@ Tools like the [Kestra Kubernetes Operator](https://kestra.io/docs/version-contr
 
 ### Using Kestra to deploy and manage Kubernetes
 
-Kestra excels at orchestrating the entire application lifecycle on Kubernetes, from infrastructure provisioning to application deployment and day-2 operations. It acts as a central control plane that can coordinate all the necessary tools.
+Kestra excels at orchestrating the entire application lifecycle on Kubernetes, from infrastructure provisioning to application deployment and [day-2 operations](/resources/infrastructure/day-2-operations). It acts as a central control plane that can coordinate all the necessary tools.
 
 For example, a Kestra workflow can:
 1.  **Provision Infrastructure:** Use the [Terraform plugin](https://kestra.io/orchestration/terraform) to create a GKE, EKS, or AKS cluster.

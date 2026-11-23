@@ -49,10 +49,11 @@ import CalculatorPayback from "~/components/vra-migration-guide/calculator/Calcu
 </section>
 
 <style lang="scss">
+    @use "/src/components/lp/shared/lp" as *;
+
     /* Same lavender wash as the template's ROI block, which this replaces. */
     .payback {
-        padding: 5rem 1rem;
-        background-color: #ffffff;
+        @include lp-section;
         background-image:
             radial-gradient(
                 90% 70% at 50% -10%,
@@ -83,28 +84,19 @@ import CalculatorPayback from "~/components/vra-migration-guide/calculator/Calcu
 
         h2 {
             margin: 0;
-            color: var(--lp-content-primary);
-            font-size: 1.875rem;
-            font-weight: 600;
-            line-height: 1.0417;
-            letter-spacing: -0.045rem;
-            @include media-breakpoint-up(lg) {
-                font-size: 3rem;
-            }
+            @include lp-heading;
         }
 
         p {
             max-width: 720px;
             margin: 0;
-            color: var(--lp-content-secondary);
-            font-size: 1.25rem;
-            line-height: 1.4;
+            @include lp-lead;
         }
     }
 
     .calculator {
-        max-width: 1140px;
-        margin: 2rem auto 0;
+        @include lp-container;
+        margin-block: 2rem 0;
         /* The calculator's result panel sticks under the campaign header, not
          * the site header it was built for. */
         --calc-sticky-top: calc(var(--top-bar-height, 80px) + 1rem);
@@ -138,23 +130,9 @@ import CalculatorPayback from "~/components/vra-migration-guide/calculator/Calcu
         margin-inline: auto;
         align-items: center;
         justify-content: center;
-        min-width: 160px;
-        height: 50px;
-        padding: 0.5rem 1.25rem;
-        border: 1px solid #ffffff;
-        border-radius: 8px;
-        background-color: var(--lp-purple);
-        color: #ffffff;
-        font-size: $font-size-lg;
-        font-weight: 700;
         text-decoration: none;
         user-select: none;
-        box-shadow:
-            inset 0 0 14px 0 #be62ff,
-            2px 2px 5.5px rgba(0, 0, 0, 0.1);
-        &:hover {
-            background-color: #7737fe;
-        }
+        @include lp-cta;
     }
 
     /* The template carousel's quote, held still: there is one vRA quote. */

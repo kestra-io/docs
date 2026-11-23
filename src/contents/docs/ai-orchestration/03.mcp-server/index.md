@@ -34,7 +34,7 @@ A `default` MCP server is automatically provisioned for every tenant on startup.
 
 Navigate to **Tenant → MCP Servers** in the left sidebar to view, create, edit, and manage MCP servers.
 
-To script the same tasks, use the [`kestractl mcp-servers` commands](../../kestra-cli/kestractl/index.md#mcp-servers) or call the REST API at `/api/v1/{tenant}/mcp-servers`.
+To script the same tasks, [install `kestractl`](../../kestra-cli/kestractl/index.md#installation) and use its [`mcp-servers` commands](../../kestra-cli/kestractl/index.md#mcp-servers), or call the REST API at `/api/v1/{tenant}/mcp-servers`.
 
 Each server has the following fields:
 

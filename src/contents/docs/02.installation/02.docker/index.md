@@ -225,19 +225,23 @@ RUN mkdir -p /app/plugins && \
 
 By default, the base Docker image `kestra/kestra:latest` contains all plugins (unless you use the `kestra/kestra:latest-slim` version). You can add specific plugins to the base image and build a custom image.
 
-The following `Dockerfile` creates an image from the base image and adds the `plugin-aws`, `storage-gcs` and `plugin-gcp` binaries using the command `kestra plugins install`:
+To add selected plugins to the slim image, [install `kestractl`](../../kestra-cli/kestractl/index.md#installation), download them with [`kestractl plugins download`](../../kestra-cli/kestractl/index.md#plugin-management), and copy them into a custom image:
 
-```dockerfile
-ARG IMAGE_TAG=latest-slim
-FROM kestra/kestra:$IMAGE_TAG
-
-RUN /app/kestra plugins install \
-  io.kestra.plugin:plugin-aws:LATEST \
-  io.kestra.storage:storage-gcs:LATEST \
-  io.kestra.plugin:plugin-gcp:LATEST
+```bash
+kestractl plugins download --compatible-for <version> \
+  --plugins io.kestra.plugin:plugin-aws \
+  --plugins io.kestra.storage:storage-gcs \
+  --plugins io.kestra.plugin:plugin-gcp \
+  --plugins-dir ./plugins
 ```
 
-To pre-download plugins with `kestractl` before building — including Enterprise plugins from a private registry — see [Add Plugins to a Slim Kestra Docker Image](../../15.how-to-guides/slim-image-plugins/index.md).
+```dockerfile
+FROM kestra/kestra:v<version>-slim
+
+COPY --chown=kestra:kestra plugins/ /app/plugins/
+```
+
+Use the same Kestra version in the image tag and in `--compatible-for`. For Enterprise plugins from the Kestra registry, Docker Compose mounts, verification steps, and an alternative that runs `kestra plugins install` inside the image, see [Install Selected Plugins on a Slim Kestra Image](../../15.how-to-guides/slim-image-plugins/index.md).
 
 ### Add custom plugins to a Docker image
 

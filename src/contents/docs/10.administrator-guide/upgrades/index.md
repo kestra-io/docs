@@ -143,52 +143,22 @@ New releases are announced through:
 
 ## Database migrations
 
-There are two types of database migrations: automatic and manual.
+Kestra applies database schema changes with versioned migration scripts. How they run depends on your edition:
 
-### Automatic database migration
+- **Open-source**: pending migrations run automatically when Kestra starts.
+- **Enterprise Edition**: migrations don't run automatically by default, and Kestra refuses to start while any are pending. Run them with `kestra migrate run` before you restart on the new version.
 
-Kestra uses [Flyway](https://flywaydb.org/) to automatically perform database migrations when the server starts. Flyway version-controls schema changes and stores the current version in the `flyway_schema_history` table. On startup, it compares the current version with the target and runs any required migrations — no manual intervention needed.
-
-### Manual database migration
-
-Sometimes a manual database migration is useful, especially when you have a large database and you want to perform the migration before upgrading Kestra to avoid a long downtime.
-
-For example, when migrating from v0.12.0 to v0.13.0, all indexes are rebuilt due to multi-tenancy (`tenant_id` is added to most tables). With a large JDBC-backed database, this can take hours. In such cases, run `kestra sys database migrate` manually before starting Kestra.
-
-This command should use the same configuration as configured on your Kestra instance. Depending on whether you deploy Kestra using Docker or Kubernetes, this command can be launched via a `docker exec` or a `kubectl exec` command.
-
-There are two ways to initiate the manual database migration:
-1. Keep Kestra running in an old version. Then, stop Kestra and launch the command on the new version.
-2. Start Kestra on the new version with automatic schema migration disabled: `flyway.datasources.postgres.enabled=false` (if your database is not Postgres, replace `postgres` with your DB type). Then run: `kestra sys database migrate`.
-
-Example: run the command via `docker exec`:
+On either edition, you can apply migrations before you start the new version, which is useful on large databases where a migration can take a long time. Run the commands with the same configuration as your Kestra instance, for example through `docker exec` or `kubectl exec`:
 
 ```bash
-docker exec your_container_id bash ./kestra sys database migrate --help
+# Preview pending migrations without applying them
+kestra migrate plan
+
+# Apply all pending migrations
+kestra migrate run
 ```
 
-Here is the output of that `--help` command:
-
-```bash
-Usage: kestra sys database migrate [-hVv] [--internal-log] [-c=<config>]
-                                   [-l=<logLevel>] [-p=<pluginsPath>]
-Force database schema migration.
-Kestra uses Flyway to manage database schema evolution, this command will run
-Flyway then exit.
-  -c, --config=<config>   Path to a configuration file, default: /root/.
-                            kestra/config.yml)
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log, default:
-                            false)
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR; default: INFO)
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory , default: ./plugins)
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
-```
+For the upgrade sequence, Docker Compose and Kubernetes examples, and the `kestra.migration.*` settings, see [Database migrations](../../11.migration-guide/v2.0.0/database-migrations/index.md). For every `kestra migrate` command, see the [Kestra server CLI reference](../../kestra-cli/kestra-server/index.md#migration-commands).
 
 
 ## Getting help

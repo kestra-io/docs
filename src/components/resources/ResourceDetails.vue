@@ -25,6 +25,7 @@
             data: {
                 tag: ResourceTag
                 date?: string | Date
+                lastUpdated?: string | Date
             }
         }
     }>()
@@ -33,8 +34,10 @@
     const tagStyleVars = computed(() => tagStyle(props.resource.data.tag))
 
     const date = computed(() => {
-        if (!props.resource.data.date) return ""
-        return dayjs(props.resource.data.date).format("MMMM D YYYY")
+        const { lastUpdated, date } = props.resource.data
+        const value = lastUpdated ?? date
+        if (!value) return ""
+        return dayjs(value).format("MMMM D YYYY")
     })
 </script>
 

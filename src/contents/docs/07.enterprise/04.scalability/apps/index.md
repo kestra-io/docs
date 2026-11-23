@@ -665,24 +665,27 @@ Each app layout is a list of stage-specific blocks. Each block renders when the 
 
 If a layout uses a block on a stage that isn't listed for it, saving the app fails with `Invalid layout. Block '<type>' is not supported for layout on '<stage>'.`
 
+:::alert{type="warning"}
+An `ERROR` stage only handles errors raised while the app processes a request. It does not catch a stage that fails to render, for example a Pebble expression in a block that cannot be evaluated. In that case the `ERROR` stage is not shown: the app preview reports which block failed (its type and its position in the stage), while the people using the app see a generic "This app is currently unavailable" message. Fix the block in the app definition to restore the stage.
+:::
+
 | Block type               | Available on                                                             | Properties                                                                                  | Example                                                                                                                                                                                                                               |
 |--------------------------|--------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `Markdown`               | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `content` (Pebble template)                                                               | `- type: io.kestra.plugin.ee.apps.core.blocks.Markdown`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "## Please validate the request. Inspect the logs and outputs below. Then, approve or reject the request."`                             |
-| `Image`                  | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `source`: URL or `data:` URI<br> - `altText`<br> - `title`<br> - `style`: custom CSS      | `- type: io.kestra.plugin.ee.apps.core.blocks.Image`<br> &nbsp;&nbsp;&nbsp;&nbsp;`source: "https://example.com/logo.png"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`altText: "Company logo"`                                                       |
+| `Image`                  | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `source`: URL or `data:` URI<br> - `altText`<br> - `title`<br> - `style`: custom CSS      | `- type: io.kestra.plugin.ee.apps.core.blocks.Image`<br> &nbsp;&nbsp;&nbsp;&nbsp;`source: "{{ dataURL('nsfile:///logo.svg') }}"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`altText: "Company logo"`                                                |
 | `RedirectTo`             | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `url`: redirect URL <br> - `delay`: delay in seconds                                      | `- type: io.kestra.plugin.ee.apps.core.blocks.RedirectTo`<br> &nbsp;&nbsp;&nbsp;&nbsp;`url: "https://kestra.io/docs"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`delay: "PT60S"`                                                                         |
 | `CreateExecutionForm`    | OPEN                                                                     | None                                                                                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm`                                                                                                                                                               |
 | `ResumeExecutionForm`    | PAUSE                                                                    | None                                                                                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.ResumeExecutionForm`                                                                                                                                                               |
-| `CreateExecutionButton`  | OPEN                                                                     | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Submit"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "SUCCESS"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "MEDIUM"`                    |
-| `CancelExecutionButton`  | RUNNING, PAUSE                                                           | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.execution.blocks.CancelExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Reject"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "DANGER"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "SMALL"`                      |
-| `ResumeExecutionButton`  | PAUSE                                                                    | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.execution.blocks.ResumeExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Approve"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "SUCCESS"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "LARGE"`                    |
+| `CreateExecutionButton`  | OPEN                                                                     | - `text` <br> - `style`: DEFAULT, PRIMARY, SUCCESS, INFO, WARNING, DANGER <br> - `size`: DEFAULT, SMALL, LARGE <br> - `fullWidth` | `- type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Submit"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "SUCCESS"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "LARGE"`                    |
+| `CancelExecutionButton`  | RUNNING, PAUSE                                                           | - `text` <br> - `style`: DEFAULT, PRIMARY, SUCCESS, INFO, WARNING, DANGER <br> - `size`: DEFAULT, SMALL, LARGE <br> - `fullWidth` | `- type: io.kestra.plugin.ee.apps.execution.blocks.CancelExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Reject"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "DANGER"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "SMALL"`                      |
+| `ResumeExecutionButton`  | PAUSE                                                                    | - `text` <br> - `style`: DEFAULT, PRIMARY, SUCCESS, INFO, WARNING, DANGER <br> - `size`: DEFAULT, SMALL, LARGE <br> - `fullWidth` | `- type: io.kestra.plugin.ee.apps.execution.blocks.ResumeExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Approve"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "SUCCESS"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "LARGE"`                    |
 | `ExecutionInputs`        | PAUSE, RESUME, SUCCESS, FAILURE                                          | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.execution.blocks.Inputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []`    |
 | `ExecutionOutputs`       | SUCCESS, FAILURE                                                         | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.execution.blocks.Outputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []`   |
-| `ExecutionAssets`        | SUCCESS, FAILURE                                                         | - `filter`: include, exclude (asset types)                                                   | `- type: io.kestra.plugin.ee.apps.execution.blocks.Assets`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`- io.kestra.plugin.ee.assets.VM` |
 | `ExecutionLogs`          | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `filter`: logLevel, taskIds                                                               | `- type: io.kestra.plugin.ee.apps.execution.blocks.Logs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`logLevel: "INFO"`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`taskIds: []` |
 | `ExecutionGantt`         | RUNNING, PAUSE, RESUME, SUCCESS, FAILURE                                 | - `filter`: include, exclude (task IDs)                                                     | `- type: io.kestra.plugin.ee.apps.execution.blocks.Gantt`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []` |
 | `Loading`                | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | None                                                                                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Loading`                                                                                                                                                                                |
 | `Alert`                  | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `style`: SUCCESS, WARNING, ERROR, INFO <br> - `showIcon`: true, false                     | `- type: io.kestra.plugin.ee.apps.core.blocks.Alert`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "WARNING"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`showIcon: true`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "An error occurred!"`                          |
-| `Button`                 | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `text` <br> - `url` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Button`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "More examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`url: "https://github.com/kestra-io/examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "INFO"`      |
+| `Button`                 | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `text` <br> - `url` <br> - `style`: DEFAULT, PRIMARY, SUCCESS, INFO, WARNING, DANGER <br> - `size`: DEFAULT, SMALL, LARGE <br> - `fullWidth` | `- type: io.kestra.plugin.ee.apps.core.blocks.Button`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "More examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`url: "https://github.com/kestra-io/examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "INFO"`      |
 | `TaskOutputs`            | PAUSE, RESUME, SUCCESS, FAILURE                                          | - `outputs`: list of outputs with `displayName`, `value`, and `type`                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.TaskOutputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`outputs:`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`- displayName: My Task Output`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`value: "{{ outputs.test.value }}"`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`type: FILE` |
 
 ### Pebble expressions in Markdown blocks
@@ -726,52 +729,72 @@ layout:
 When the flow uses [`FORM` inputs](../../../05.workflow-components/05.inputs/index.md#form-inputs), `CreateExecutionForm` renders a multi-step Next/Back wizard — one step per FORM group, a step for ungrouped inputs, then a recap. No additional App configuration is required; the wizard is driven entirely by the flow's input definition.
 :::
 
-### Embedding namespace file images
+### Embedding images
 
-`nsfile://` URIs resolve in the top-level `thumbnail` field but **not** in block properties such as `Image.source` or image references inside `Markdown` content. Passing `nsfile:///logo.svg` directly to `source` results in a broken image with no error in the server log.
+`Image` and `Markdown` blocks render images from a URL or a `data:` URI. To show an image stored in Kestra, such as a namespace file or a file produced by the flow, use the [`dataURL()`](../../../expressions/04.functions/02.data-access/index.mdx#dataurl) expression function to convert it into a `data:` URI. `dataURL()` is available starting in 2.0.8.
 
-To embed a namespace file image in a block, convert it to a `data:` URI using the [`read()`](../../../expressions/04.functions/02.data-access/index.mdx#read) function and the `base64encode` filter:
+#### Namespace files
+
+`nsfile://` URIs resolve in the top-level `thumbnail` field but **not** in block properties such as `Image.source` or image references inside `Markdown` content. Passing `nsfile:///logo.svg` directly to `source` results in a broken image with no error in the server log. Wrap the URI in `dataURL()` instead:
 
 ```yaml
 # Image block
 - type: io.kestra.plugin.ee.apps.core.blocks.Image
-  source: "data:image/svg+xml;base64,{{ read('nsfile:///report.svg') | base64encode }}"
+  source: "{{ dataURL('nsfile:///report.svg') }}"
   altText: "Report chart"
 
 # Markdown block
 - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
   content: |
-    ![Report chart](data:image/svg+xml;base64,{{ read('nsfile:///report.svg') | base64encode }})
+    ![Report chart]({{ dataURL('nsfile:///report.png') }})
 ```
 
-:::alert{type="warning"}
-`read()` decodes the file as UTF-8 text, so this approach only works for **SVG** images. Binary formats such as PNG, JPEG, and GIF are corrupted by the UTF-8 decode and will not render.
-:::
+`dataURL()` infers the MIME type from the file extension. For files with unrecognized extensions, pass `mimeType` explicitly:
 
-To read from a different namespace, pass the `namespace` argument: `read('nsfile:///logo.svg', namespace='other.namespace')`.
+```twig
+{{ dataURL('nsfile:///report.unknown', mimeType='image/png') }}
+```
 
-### Assets emitted by an execution
+To read from a different namespace, pass `namespace`:
 
-The `Assets` block lists the assets an execution emitted or updated, one row per asset, with its ID, display name, type and metadata. Use it in self-service provisioning flows where the resource the requester asked for is tracked as an asset rather than a flow output.
+```twig
+{{ dataURL('nsfile:///logo.svg', namespace='other.namespace') }}
+```
+
+On versions before 2.0.8, use `"data:image/svg+xml;base64,{{ read('nsfile:///report.svg') | base64encode }}"` instead. `read()` decodes the file as UTF-8 text, so this only works for SVG images; binary formats such as PNG, JPEG, and GIF are corrupted and will not render.
+
+#### Files produced by the flow
+
+To show an image that the flow generates, such as a chart or a report preview, expose the file as a [flow output](../../../05.workflow-components/06.outputs/index.md#flow-outputs). The following flow writes an SVG file and exposes it as the `chart` output:
+
+```yaml
+id: render_chart
+namespace: company.team
+
+tasks:
+  - id: chart
+    type: io.kestra.plugin.core.storage.Write
+    content: '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="40"><rect width="120" height="40" fill="#8405FF"/></svg>'
+    extension: .svg
+
+outputs:
+  - id: chart
+    type: FILE
+    value: "{{ outputs.chart.uri }}"
+```
+
+On the `SUCCESS` stage, pass `execution.outputs.<id>` to `dataURL()`. The function infers the MIME type from the file extension, so the output file needs an image extension such as `.svg` or `.png`:
 
 ```yaml
 - on: SUCCESS
   blocks:
+    - type: io.kestra.plugin.ee.apps.core.blocks.Image
+      source: "{{ dataURL(execution.outputs.chart) }}"
+      altText: "Generated chart"
     - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
-      content: "## Your virtual machine is ready"
-
-    - type: io.kestra.plugin.ee.apps.execution.blocks.Assets
-      filter:
-        include:
-          - io.kestra.plugin.ee.assets.VM
+      content: |
+        ![Generated chart]({{ dataURL(execution.outputs.chart) }})
 ```
-
-- Only assets the execution **emitted or updated** are listed. Assets it merely read as inputs are left out.
-- `filter` matches the asset **type**, so a single Terraform apply or dbt build emitting dozens of assets can be narrowed to the ones the app user cares about. `include` keeps only the listed types, `exclude` drops them.
-- The reserved metadata keys get a column of their own: `system.status` renders as a status pill, `system.ttl` as a lease countdown and `system.owner` as the owning user or team. Every other metadata key gets a plain column.
-- The asset ID links to the asset detail page for viewers holding `ASSET:VIEW` on the asset's namespace, and is plain text for everyone else. The table itself requires no asset permission beyond app access, so a public app can show it to anonymous visitors.
-- The block is available on `SUCCESS` and `FAILURE`. On failure, a partially provisioned resource is often what explains what went wrong.
-- When the execution emitted no asset, the block says so instead of rendering an empty table.
 
 ### Execution outputs
 

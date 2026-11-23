@@ -114,7 +114,7 @@ To ensure success, organizations should follow key best practices. Start with sm
 
 ### Overcoming common challenges
 
-Teams often face challenges like tool sprawl, where multiple automation tools create silos and inconsistencies. Other hurdles include skill gaps within the team, security concerns related to connecting different environments, and the "data gravity" that makes moving large datasets difficult. A unified orchestration platform helps [solve these orchestration problems](https://kestra.io/resources/infrastructure/orchestration-problems-complexity) by providing a central point of control and visibility, reducing the need for specialized knowledge for every tool.
+Teams often face challenges like tool sprawl, where multiple automation tools create silos and inconsistencies. Other hurdles include skill gaps within the team, security concerns related to connecting different environments, and the "data gravity" that makes moving large datasets difficult. A unified orchestration platform helps [solve these orchestration problems](https://kestra.io/resources/orchestration) by providing a central point of control and visibility, reducing the need for specialized knowledge for every tool.
 
 ### Future trends in hybrid automation
 

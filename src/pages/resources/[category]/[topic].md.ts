@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro"
 import { getCollection } from "astro:content"
+import { mdxToMarkdown } from "~/components/vra-migration-guide/mdxToMarkdown"
 import { entryCacheKey } from "~/utils/incrementalCacheKey"
 import {
     fetchTotalPluginsCount,
@@ -12,14 +13,18 @@ export async function getStaticPaths() {
     const totalPlugins = await fetchTotalPluginsCount()
     return all
         .filter((post) => !post.data.href)
-        .map((post) => ({
-            params: { category: post.data.tag, topic: post.id },
-            props: {
-                title: post.data.title,
-                source: replaceTotalPluginsPlaceholder(post.body, totalPlugins),
-            },
-            cacheKey: entryCacheKey(post, ...pluginCountScope(totalPlugins, post.body)),
-        }))
+        .map((post) => {
+            const source = replaceTotalPluginsPlaceholder(post.body ?? "", totalPlugins)
+            return {
+                params: { category: post.data.tag, topic: post.id },
+                props: {
+                    title: post.data.title,
+                    // MDX bodies carry imports, exports and component tags.
+                    source: post.filePath?.endsWith(".mdx") ? mdxToMarkdown(source) : source,
+                },
+                cacheKey: entryCacheKey(post, ...pluginCountScope(totalPlugins, post.body)),
+            }
+        })
 }
 
 export const GET: APIRoute = ({ props }) => {

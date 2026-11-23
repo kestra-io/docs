@@ -165,7 +165,7 @@ A new `FORM` input type groups related inputs into a labeled multi-step wizard i
 
 ### `kestractl` IAM commands
 
-The `kestractl` CLI now supports IAM management: roles, role bindings, service accounts, and invitations. See the [kestractl reference](./kestra-cli/kestractl/index.md).
+The [`kestractl`](./kestra-cli/kestractl/index.md#installation) CLI now supports IAM management: roles, role bindings, service accounts, and invitations. See the [kestractl reference](./kestra-cli/kestractl/index.md).
 
 ### Plugin Artifacts
 

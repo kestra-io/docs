@@ -53,7 +53,7 @@ In your instance: go to **Flows → Create → Blueprints**, pick one, **Save**,
 
 Hundreds more are available in the [blueprints library](https://kestra.io/blueprints). The [AI Copilot](../../../develop-with-ai/01.ai-copilot/index.md) can also write a flow from a plain-English description.
 
-Building with AI tools? The [Kestra Docs MCP server](../../../develop-with-ai/02.kestra-mcp-resources/index.md) gives Claude, Cursor, and other tools live access to Kestra docs, plugins, and blueprints. Add [kestractl](https://github.com/kestra-io/kestractl) to generate and deploy flows from the CLI.
+Building with AI tools? The [Kestra Docs MCP server](../../../develop-with-ai/02.kestra-mcp-resources/index.md) gives Claude, Cursor, and other tools live access to Kestra docs, plugins, and blueprints. Add [kestractl](../../../kestra-cli/kestractl/index.md#installation) to generate and deploy flows from the CLI.
 
 Prefer your editor? The [VS Code extension](../../../version-control-cicd/05.vscode/index.md) edits, validates, and runs flows locally with instance-aware autocomplete and a topology preview.
 

@@ -271,7 +271,7 @@ tasks:
 
 ## Setting inputs at execution time
 
-Input values are provided at execution time via the UI Execute modal, the API, the CLI (`kestractl`), or the Python SDK (`kestra` pip package). See [Execute a flow](../03.execution/index.md#execute-via-api) for full examples with `curl`, Python, and kestractl.
+Input values are provided at execution time via the UI Execute modal, the API, the CLI ([`kestractl`](../../kestra-cli/kestractl/index.md#installation)), or the Python SDK (`kestra` pip package). See [Execute a flow](../03.execution/index.md#execute-via-api) for full examples with `curl`, Python, and kestractl.
 
 ## Inputs vs. variables
 

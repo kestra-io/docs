@@ -553,8 +553,8 @@ function liftComponentTitle(child: MdcNode): MdcNode[] {
 // refuses to compile the default Oniguruma engine) and theme pair as
 // marked-shiki.ts, the in-app MDC renderers' highlighter, so versioned code
 // fences get identical per-token colors and dark-mode behavior for free.
-const SHIKI_LIGHT_THEME = "github-light-default"
-const SHIKI_DARK_THEME = "github-dark-default"
+const SHIKI_LIGHT_THEME = "kestra-light"
+const SHIKI_DARK_THEME = "kestra-dark"
 
 /** Strip Shiki's own <pre><code> wrapper; we emit our own so `.astro-code` styling applies uniformly. */
 function unwrapShikiHtml(html: string): string {
@@ -572,13 +572,14 @@ async function highlightCodeBlocks(node: MdcNode | undefined): Promise<void> {
             try {
                 // Dynamic import so the toolset stays out of every static
                 // closure; only the block's own grammar is fetched.
-                const { getHighlighterCore } = await import("~/components/plugins/schema/shikiToolset")
+                const { getHighlighterCore, pebbleTransformer } = await import("~/components/plugins/schema/shikiToolset")
                 const lang = typeof node.props.language === "string" ? node.props.language.toLowerCase() : ""
                 const highlighter = await getHighlighterCore(lang ? [lang] : [])
                 const usable = lang && highlighter.getLoadedLanguages().includes(lang) ? lang : "text"
                 const html = highlighter.codeToHtml(code.replace(/\n$/, ""), {
                     lang: usable,
                     themes: { light: SHIKI_LIGHT_THEME, dark: SHIKI_DARK_THEME },
+                    transformers: [pebbleTransformer()],
                 })
                 node.highlightedHtml = unwrapShikiHtml(html)
             } catch (error) {

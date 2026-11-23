@@ -165,7 +165,7 @@ Compliance should not be an afterthought. Integrate automated security and compl
 
 ## Beyond PCI DSS: Unified Compliance Automation
 
-The patterns and workflows you build for PCI DSS are reusable. The same principles of continuous monitoring, automated evidence collection, and declarative policy-as-code can be applied to other regulatory frameworks. This allows you to build a unified compliance automation program that addresses multiple standards from a single control plane.
+The patterns and workflows you build for PCI DSS are reusable. The same principles of continuous monitoring, automated evidence collection, and declarative [policy as code](/resources/infrastructure/policy-as-code) can be applied to other regulatory frameworks. This allows you to build a unified compliance automation program that addresses multiple standards from a single control plane.
 
 ### Extending Workflows to SOC 2, DORA, and ISO Standards
 

@@ -67,9 +67,9 @@ id: expressions
 namespace: company.team
 
 tasks:
-  - id: debug_expressions
-    type: io.kestra.plugin.core.debug.Return
-    format: |
+  - id: log_expressions
+    type: io.kestra.plugin.core.log.Log
+    message: |
       taskId: {{ task.id }}
       date: {{ execution.startDate | date("yyyy-MM-dd HH:mm:ss.SSSSSS") }}
 ```

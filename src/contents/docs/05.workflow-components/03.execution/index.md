@@ -54,7 +54,7 @@ Executions and task runs move through the following states:
 | `SUBMITTED` | Submitted to the Executor queue but not yet running. |
 | `RUNNING` | Currently being processed. |
 | `PAUSED` | Paused for manual validation or a configured delay. |
-| `BREAKPOINT` | Paused at a debug breakpoint (Enterprise Edition). Resume via the **Resume from Breakpoint** command. |
+| `BREAKPOINT` | Paused at a debug breakpoint. Resume with the **Resume** button on the execution. |
 | `RESTARTED` | Transitional state equivalent to `CREATED` for a restarted failed execution. |
 | `RETRYING` | Currently being [retried](../12.retries/index.md). |
 | `KILLING` | Kill command issued; system is terminating associated tasks. |
@@ -65,7 +65,7 @@ Executions and task runs move through the following states:
 | `RETRIED` | Stopped and created a new execution as defined by a [flow-level retry policy](../12.retries/index.md#flow-level-retries) with `CREATE_NEW_EXECUTION` behavior. |
 | `RESUBMITTED` | Resubmitted directly; a new execution continues in its place. |
 | `SKIPPED` | Skipped. Did not run due to a condition, SLA policy, or concurrency behavior. |
-| `CANCELLED` | Aborted due to a [concurrency limit](../14.concurrency/index.md) or [SLA](../18.sla/index.md) with `CANCEL` behavior. |
+| `CANCELLED` | Aborted due to a [concurrency limit](../14.concurrency/index.md) or [SLA](../18.sla/index.md) with `CANCEL` behavior, or ended after a [subflow execution it waited on was cancelled](../10.subflows/index.md#cancelled-subflow-executions). |
 | `KILLED` | Killed on request; no further tasks will run. |
 
 For a detailed overview of state transitions, see the [States](../17.states/index.md) page.
@@ -86,7 +86,7 @@ Click **Execute** on the flow page to trigger a run manually.
 
 Add a [Schedule trigger](../07.triggers/01.schedule-trigger/index.md) to launch executions on a time interval, or a [Flow trigger](../07.triggers/index.mdx) to launch an execution when another flow completes, useful for namespace-level error handling or event-driven patterns where flows are decoupled rather than explicitly calling each other as subflows.
 
-Use a [Webhook trigger](../07.triggers/03.webhook-trigger/index.md) to launch an execution from an external HTTP request. Access the request body with `{{ trigger.body }}` and headers with `{{ trigger.headers }}`. See the [Webhooks how-to guide](../../15.how-to-guides/webhooks/index.md) for setup and real-world examples.
+Use a [Webhook trigger](../07.triggers/03.webhook-trigger/index.md) to launch an execution from an external HTTP request. Access the request body with `{{ trigger.body }}` and headers with `{{ trigger.headers }}`.
 
 ```bash
 http://<kestra-host>:<kestra-port>/api/v1/main/executions/webhook/<namespace>/<flow-id>/<webhook-key>
@@ -230,6 +230,8 @@ with open("/tmp/128M.txt", 'rb') as fh:
 :::
 
 ## Execute via kestractl
+
+With [`kestractl`](../../kestra-cli/kestractl/index.md#installation) installed and configured, run a flow from the command line:
 
 ```bash
 # Run a flow and wait for completion

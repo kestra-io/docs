@@ -131,5 +131,5 @@ For prose questions, such as _"What does the `whenMissingInSource` property do i
 ## Next steps
 
 - [Agent Skills](../03.agent-skills/index.md): teach your coding agent how to write, harden, and deploy flows. Skills and this server work together.
-- [`kestractl`](../../kestra-cli/kestractl/index.md): let the agent validate and deploy flows to your instance.
+- [`kestractl`](../../kestra-cli/kestractl/index.md#installation): let the agent validate and deploy flows to your instance.
 - [Docs for Agents](../04.docs-for-agents/index.md): every other machine-readable Kestra resource, such as `llms.txt`, Markdown docs, and OpenAPI specs.

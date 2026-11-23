@@ -1,0 +1,79 @@
+---
+import Layout from "~/components/layout.astro"
+import PartnerProfile from "~/components/partners/PartnerProfile.astro"
+
+const title = "Splunk & Kestra: From Splunk Alert to Automated Response"
+const description =
+    "Kestra is a certified Splunk partner. The Kestra Add-on for Splunk starts a flow from any Splunk alert, with the alert context and the search results attached."
+
+const facts = [
+    { label: "Partnership", value: "Certified Splunk partner" },
+    {
+        label: "Add-on",
+        value: "Kestra Add-on for Splunk 1.0.0 on Splunkbase, for Splunk Enterprise and Splunk Cloud Platform",
+    },
+    {
+        label: "Requires",
+        value: "Kestra Enterprise or Kestra Cloud, with an API token allowed to create executions",
+    },
+    {
+        label: "Plugin",
+        value: "Send events, run SPL searches and ship execution logs (Kestra Enterprise)",
+    },
+    { label: "Support", value: "support@kestra.io" },
+]
+
+const expertise = [
+    {
+        icon: "mdi:bell-ring-outline",
+        title: "A Splunk alert starts a flow",
+        text: "Add the Trigger Kestra Flow action to any alert and pick the tenant, namespace and flow. When the search fires, Splunk calls the Kestra Executions API, with no polling script or open webhook.",
+    },
+    {
+        icon: "mdi:file-table-outline",
+        title: "The alert context travels with it",
+        text: "Search name, owner, trigger time and a link to the results arrive as flow inputs. Map any result field with a line such as host=$result.host$, and get the full results as a CSV file.",
+    },
+    {
+        icon: "mdi:key-chain-variant",
+        title: "One connection, tokens encrypted",
+        text: "Set up each Kestra instance once and reuse it across alerts. The API token sits encrypted in Splunk's credential store, never in a config file or a log.",
+    },
+    {
+        icon: "mdi:account-key-outline",
+        title: "Alert owners don't need admin rights",
+        text: "The add-on ships a kestra_alert_user role, so the people who own alerts can run the action without a Splunk admin account.",
+    },
+    {
+        icon: "mdi:account-check-outline",
+        title: "A response with an owner and an approval",
+        text: "The flow fixes the problem, opens the ticket and waits for a human to approve, and every step is recorded.",
+    },
+    {
+        icon: "mdi:swap-horizontal",
+        title: "Results go back to Splunk",
+        text: "Flows send events through the HTTP Event Collector, run SPL searches and ship execution logs, so Splunk keeps the full record.",
+    },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="Splunk">
+    <PartnerProfile
+        name="Splunk"
+        tagline="Splunk is where teams watch their infrastructure and security. Kestra runs what happens next: a Splunk alert starts a flow that fixes the problem, opens the ticket, asks for approval and records every step."
+        about="The <a href='https://splunkbase.splunk.com/app/10120'>Kestra Add-on for Splunk</a> adds a Trigger Kestra Flow alert action to Splunk. It went through the Splunkbase review and runs on Splunk Enterprise and Splunk Cloud Platform. Customers running Kestra next to Splunk asked for it, to replace the scripts and webhooks they had wired between the two. The <a href='/docs/how-to-guides/splunk-alert-trigger'>setup guide</a> covers the connection, the token and the receiving flow, and the <a href='/blogs/kestra-splunk-partnership'>announcement</a> tells the story."
+        expertiseTitle="Splunk + Kestra: detection in Splunk, response in Kestra"
+        expertise={expertise}
+        facts={facts}
+        plugins={["plugin-ee-splunk"]}
+        contact={{ text: "Book a Demo", href: "/demo" }}
+        secondary={{
+            text: "Get the add-on",
+            href: "https://splunkbase.splunk.com/app/10120",
+        }}
+        closing={{
+            title: "Connect your Splunk alerts to Kestra",
+            text: "Install the add-on from Splunkbase, point an alert at a flow, and start from the setup guide.",
+        }}
+    />
+</Layout>

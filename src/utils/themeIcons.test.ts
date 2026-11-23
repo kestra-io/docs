@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest"
-import { themeIconSrc, updateThemeIcons } from "./themeIcons"
+import { parseIconParam, themeIconSrc, updateThemeIcons } from "./themeIcons"
 
 // Just enough DOM for updateThemeIcons: the html class list and a root that
 // yields `<img data-theme-responsive>` stand-ins.
@@ -79,5 +79,43 @@ describe("updateThemeIcons", () => {
         })
         updateThemeIcons()
         expect(icons[0].src).toBe("/icons/a-black.svg")
+    })
+})
+
+describe("parseIconParam", () => {
+    it("returns the class unchanged when there is no variant", () => {
+        expect(parseIconParam("io.kestra.plugin.git.Clone")).toEqual({
+            cls: "io.kestra.plugin.git.Clone",
+        })
+    })
+
+    it("strips a -white / -black variant", () => {
+        expect(parseIconParam("io.kestra.plugin.git.Clone-white")).toEqual({
+            cls: "io.kestra.plugin.git.Clone",
+            modifier: "white",
+        })
+        expect(parseIconParam("io.kestra.plugin.git.Clone-black")).toEqual({
+            cls: "io.kestra.plugin.git.Clone",
+            modifier: "black",
+        })
+    })
+
+    it("keeps hyphens that belong to the plugin group", () => {
+        expect(parseIconParam("io.kestra.plugin.ee.new-relic")).toEqual({
+            cls: "io.kestra.plugin.ee.new-relic",
+        })
+        expect(parseIconParam("io.kestra.plugin.ee.new-relic-white")).toEqual({
+            cls: "io.kestra.plugin.ee.new-relic",
+            modifier: "white",
+        })
+    })
+
+    it("does not treat the round trip of themeIconSrc as part of the class", () => {
+        const src = themeIconSrc(
+            "/icons/io.kestra.plugin.ee.new-relic.svg",
+            true,
+        )
+        const param = src.replace(/^\/icons\//, "").replace(/\.svg$/, "")
+        expect(parseIconParam(param).cls).toBe("io.kestra.plugin.ee.new-relic")
     })
 })

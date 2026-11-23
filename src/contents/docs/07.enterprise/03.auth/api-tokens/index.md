@@ -22,7 +22,7 @@ Pass a token as a `Bearer` header to authenticate any Kestra API call — from a
 - [GitHub Actions](https://github.com/kestra-io/kestra-actions)
 - [Terraform Provider](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs)
 - [Kestra Server CLI](../../../kestra-cli/kestra-server/index.md)
-- [kestractl](../../../kestra-cli/kestractl/index.md)
+- [kestractl](../../../kestra-cli/kestractl/index.md#installation)
 - [Kestra API](../api/index.md)
 
 ## User API tokens

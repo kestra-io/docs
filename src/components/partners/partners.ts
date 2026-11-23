@@ -17,6 +17,7 @@ import landeranalytics from "./assets/landeranalytics.avif"
 import digitalocean from "./assets/digitalocean.svg"
 import modeo from "./assets/modeo.svg"
 import smile from "./assets/smile.svg"
+import splunk from "./assets/splunk.svg"
 
 export type PartnerType = "Technology" | "Services"
 
@@ -53,6 +54,17 @@ export const listPartners = (type?: PartnerType): ListPartner[] =>
     )
 
 export const PARTNERS: Partner[] = [
+    {
+        name: "Splunk",
+        country: "United States",
+        region: "North America",
+        expertise: ["Infrastructure & DevOps"],
+        logo: splunk,
+        type: "Technology",
+        description:
+            "Splunk is where teams search and monitor their infrastructure and security data. With the Kestra Add-on for Splunk, a Splunk alert starts a Kestra flow that runs the response.",
+        href: "/partners/splunk",
+    },
     {
         name: "DigitalOcean",
         country: "United States",
