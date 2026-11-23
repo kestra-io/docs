@@ -212,7 +212,7 @@ Filters match the stored string exactly. Kestra normalizes each value before sto
 
 Searchable inputs and searchable outputs share one filter. On the **Executions** page, add the **Inputs & Outputs** filter, enter the input or output ID as the key, enter the value, and select **Add**. The comparator menu offers **Equals**, **Not Equals**, **In**, and **Not In**. Matching is exact and case-sensitive, and the filter combines with the namespace, flow, state, and date filters. The search box does not match searchable values.
 
-![Executions page with the Inputs and Outputs filter set to customer equals acme, listing the two matching executions](./searchable-values-filter.png)
+<div style="position: relative; padding-bottom: calc(56.4617% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/lAnYKwgJxwELwigpb9fX?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Filter Executions by a Searchable Output Value" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 The execution's **Overview** tab shows up to 10 searchable values as `id: value`, followed by a count of the remaining values, such as `+2`:
 

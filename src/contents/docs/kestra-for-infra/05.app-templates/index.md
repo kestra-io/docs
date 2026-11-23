@@ -136,6 +136,8 @@ You need the `BLUEPRINT` `CREATE` permission.
 
 The template appears in the **Templates** list. To change it later, click **Edit** on its card. Save your changes before you use the template; **Use** is disabled while the template has unsaved changes.
 
+<div style="position: relative; padding-bottom: calc(56.4617% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/mEsGrkndn9mwmeAzg4IB?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Create a Template from an Existing Flow and Use It" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+
 ## Use a template
 
 Using a template creates the flow first, then the app. You need the `BLUEPRINT` `VIEW` permission, and the `FLOW` `CREATE` and `APP` `CREATE` permissions on the target namespace.

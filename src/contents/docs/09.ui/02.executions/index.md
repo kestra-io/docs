@@ -70,6 +70,8 @@ The chart at the top of the Executions page has two modes: **Counts**, which sho
 
 The filters applied to the Executions page also apply to the timeline. The density bar applies the namespace, flow, state, and label filters, but not the search box, the **Inputs & Outputs** filter, or the parent and trigger execution filters. The timeline loads at most 1,000 executions, newest first; narrow the time range or filters to see the rest.
 
+<div style="position: relative; padding-bottom: calc(56.4617% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/bQNIYqinlfOKXElhLDBw?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Explore Workflow Runs on the Timeline View" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+
 <!-- kestra#19334 live-verified 2026-11-19 on EE develop 3d69e8a. TODO: kestra#19334 merged to develop 2026-10-30, not in the v2.1.x RC cut; confirm it ships in 2.1 GA. The density bar's "does not apply these filters" note never shows: the chart preview returns an empty ignoredFilters list for the filters it drops. -->
 
 ## Gantt
