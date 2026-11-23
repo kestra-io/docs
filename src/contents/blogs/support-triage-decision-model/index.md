@@ -20,7 +20,7 @@ That sorting step is a decision, and an LLM is an odd tool for it. You ask for o
 
 Recently, talk about decision models was crossing my screen from all sorts of different channels, and I wanted to see how one would fit into Kestra. I built a triage agent for [Pylon](https://www.usepylon.com/) tickets that treats the decision as a decision. A decision model picks the next action, code decides which actions are on the table, and a person gets involved only when the model hesitates or money is involved.
 
-The human part relies on the new `Approval` task coming in Kestra 2.1, so this post is also a sneak peek. I built the agent on a pre-release build, and the YAML and screenshots below may change a little before the release. A how-to guide with all three flows in full will follow once 2.1 is out.
+The human part relies on the new `Approval` task coming soon in Kestra 2.1, so this post is also a sneak peek. I built the agent on a pre-release build, and the YAML and screenshots below may change a little before the release. A how-to guide with all three flows in full will follow once 2.1 is out.
 
 A quick word on where this comes from: I'm a technical writer, not a support engineer, and this agent doesn't run in production anywhere. I built it to see what becomes possible when you put a decision model inside Kestra, and tested it against a mock Pylon workspace, test tickets I wrote myself (Dear Sir or Madam, give me a refund NOW!), and Jev running locally on my laptop. The actions, rules, and thresholds below are illustrations. The more I played around with the idea, the more it looked like the shape of this flow could fit plenty of other use cases, so let your imagination run wild.
 
