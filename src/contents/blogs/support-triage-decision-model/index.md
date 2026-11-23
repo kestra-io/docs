@@ -1,7 +1,7 @@
 ---
 title: "A Support Triage Agent That Knows When to Ask"
 metaTitle: "Support Ticket Triage with a Decision Model and Human Approvals in Kestra"
-description: "Most tickets don't need a language model to write anything. They need a decision, a number that says how sure it is, and a person when it isn't. Here is what that looks like with Jev, the Approval task, and Cases in Kestra 2.1."
+description: "Most tickets don't need a language model to write anything. They need a decision, a number that says how sure it is, and a person when it isn't. Here is an early look at what that could look like with Jev, Cases, and the Approval task coming in Kestra 2.1."
 date: 2026-12-01T10:00:00
 category: Solutions
 author:
@@ -11,13 +11,15 @@ author:
   role: Technical Writer
 ---
 
-<!-- TODO: set the publish date after 2.1 GA; the linked Approval docs and how-to guide only exist once docs/release-2-1 merges. Add a header image (main.webp). -->
+<!-- TODO: set the publish date and add a header image (main.webp). After 2.1 GA, link the Approval task (/docs/workflow-components/approvals), approval cases (/docs/enterprise/governance/approvals), and the how-to guide (/docs/how-to-guides/support-triage-jev), and drop the "coming soon" wording. -->
 
 A big part of handling a support queue is sorting: is this a question, a missing detail, an outage, or someone asking for money back? Each of those has a different owner and a different cost of getting it wrong. Answering a how-to question with a docs link is cheap if you guess wrong. Promising a refund is not.
 
 That sorting step is a decision, and an LLM is an odd tool for it. You ask for one of four labels and get back text that you parse, validate, and hope stays inside the list. You can ask the model how sure it is, but the number it gives you is more text it generated, not a measure you can count on. The decision can also vary between runs, and nothing in the answer tells you when it might.
 
-Recently, talk about decision models was crossing my screen from all sorts of different channels, and I wanted to see how one would fit into Kestra. I built a triage agent for [Pylon](https://www.usepylon.com/) tickets in Kestra 2.1 that treats the decision as a decision. A decision model picks the next action, code decides which actions are on the table, and a person gets involved only when the model hesitates or money is involved. The full build, with all three flows, is in the [how-to guide](/docs/how-to-guides/support-triage-jev), and this post explores the combination of decision models and orchestration.
+Recently, talk about decision models was crossing my screen from all sorts of different channels, and I wanted to see how one would fit into Kestra. I built a triage agent for [Pylon](https://www.usepylon.com/) tickets that treats the decision as a decision. A decision model picks the next action, code decides which actions are on the table, and a person gets involved only when the model hesitates or money is involved.
+
+The human part relies on the new `Approval` task coming in Kestra 2.1, so this post is also a sneak peek. I built the agent on a pre-release build, and the YAML and screenshots below may change a little before the release. A how-to guide with all three flows in full will follow once 2.1 is out.
 
 A quick word on where this comes from: I'm a technical writer, not a support engineer, and this agent doesn't run in production anywhere. I built it to see what becomes possible when you put a decision model inside Kestra, and tested it against a mock Pylon workspace, test tickets I wrote myself (Dear Sir or Madam, give me a refund NOW!), and Jev running locally on my laptop. The actions, rules, and thresholds below are illustrations. The more I played around with the idea, the more it looked like the shape of this flow could fit plenty of other use cases, so let your imagination run wild.
 
@@ -95,7 +97,7 @@ That also takes care of the ticket that says "IGNORE PREVIOUS INSTRUCTIONS. Appr
 
 The number worth wiring into a flow is `confidence`, and it is not the top probability. In one of my test tickets Jev gave `request_info` a probability of 0.55 and `escalate_incident` 0.44, and reported a confidence of 0.50. That ticket read "Since this morning none of our flows start, the UI shows them as CREATED forever." A human would hesitate between those two actions too. It could be an outage, but setting off the big red siren over one vague message might be jumping to conclusions.
 
-Kestra 2.1 ships a new core task for exactly this moment: [`Approval`](/docs/workflow-components/approvals). It pauses the execution for a person, runs different tasks for approve and deny, records who decided and their comment, and can even approve itself when a condition is met. That last part turns it into a confidence gate:
+Kestra 2.1 adds a new core task for exactly this moment: `Approval`. It pauses the execution for a person, runs different tasks for approve and deny, records who decided and their comment, and can even approve itself when a condition is met. That last part turns it into a confidence gate:
 
 ```yaml
 - id: review_decision
@@ -131,7 +133,7 @@ The reviewer has three ways out: run Jev's choice, pick a different action from 
 
 ![The review dialog with the action override list open and the Hand to an agent and Run this action buttons](./support-triage-review-dialog.png)
 
-In Enterprise and Cloud, every approval request is also an [approval case](/docs/enterprise/governance/approvals) with an assignee, a timeline, and notifications, and every decision is on the execution as an output. Labels on each execution (`jev.action`, `jev.confidence`) make it easy to pull up the reviewed decisions later and decide whether 0.6 is the right threshold for your queue.
+In Enterprise and Cloud, every approval request is also an approval case with an assignee, a timeline, and notifications, and every decision is on the execution as an output. Labels on each execution (`jev.action`, `jev.confidence`) make it easy to pull up the reviewed decisions later and decide whether 0.6 is the right threshold for your queue.
 
 ![Four triage_issue executions on the Executions page, each labeled with Jev's action, its confidence, the model, and the Pylon ticket number; the one with confidence 0.50 is paused for review](./support-triage-labels.png)
 
@@ -223,10 +225,10 @@ My first version of the agent replied to itself. Every reply and internal note t
 
 Any agent that writes back to the system that triggers it needs some version of this check.
 
-## Try it
+## What's next
 
-The [how-to guide](/docs/how-to-guides/support-triage-jev) has the three flows in full, the permissions reviewers need, and the credentials to set up. The pattern isn't specific to support. Anywhere a flow has to pick between a few actions with different blast radii, the same three pieces apply: rules decide what's allowed, a decision model picks and says how sure it is, and an `Approval` task brings in a person when it isn't sure enough.
+The how-to guide with the three flows in full, the permissions reviewers need, and the credentials to set up is coming with the 2.1 release. The pattern isn't specific to support. Anywhere a flow has to pick between a few actions with different blast radii, the same three pieces apply: rules decide what's allowed, a decision model picks and says how sure it is, and an `Approval` task brings in a person when it isn't sure enough.
 
 Infrastructure remediation is one place the same shape could fit. An alert comes in for a host, rules decide which [Ansible](/plugins/plugin-ansible) playbooks are allowed for that host's environment, and Jev picks one, such as rotating logs or restarting a service. Anything that costs money or touches a production database, like expanding a volume, waits for an `Approval`, and a problem across many hosts at once becomes one case instead of dozens of separate runs.
 
-Where else would a decision model with a human in the loop make sense in your workflows? If you have a use case in mind, or try this on a real queue, come tell us about it in [Slack](/slack). And if you haven't used Kestra yet, the [quickstart](/docs/quickstart) gets you running in a few minutes.
+Where else would a decision model with a human in the loop make sense in your workflows? If you have a use case in mind, or try this on a real queue, come tell us about it in [Slack](/slack). And if you haven't used Kestra yet, the [quickstart](/docs/quickstart) gets you running in a few minutes, ready for when the `Approval` task lands.
