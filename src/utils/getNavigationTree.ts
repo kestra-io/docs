@@ -19,6 +19,7 @@ export const navigationTree = {
         "Multi-Language Script Tasks",
         "AI Orchestration",
         "Version Control & CI/CD",
+        "IDE Extensions",
         "Develop with AI",
         // Split into AI Orchestration and Develop with AI; kept so older
         // versioned docs, which fall back to this map, still group their page.

@@ -77,7 +77,7 @@ Construct the client once (singleton or DI) and reuse it. Use either `.basicAuth
 
 ## Configure timeouts
 
-By default, both connect and read timeouts are infinite. Configure them on the builder before calling long-running endpoints such as `runTestSuite`:
+By default, both connect and read timeouts are infinite, so a call waits as long as the server takes, and a connection that stops responding without closing blocks forever. Set both on the builder in production, with a read timeout longer than your slowest call, such as `runTestSuite`:
 
 ```java
 import io.kestra.sdk.KestraClient;
@@ -92,6 +92,10 @@ KestraClient client = KestraClient.builder()
 ```
 
 Pass `Duration.ZERO` or omit the call to keep the default (infinite). Both methods accept any `java.time.Duration`.
+
+:::alert{type="warning"}
+In `kestra-api-client` 2.0.4, 1.3.3, and earlier versions, an unset read timeout isn't infinite: calls that take longer than 3 minutes fail with `SocketTimeoutException: Read timed out`. On these versions, set `readTimeout` explicitly for long-running calls.
+:::
 
 ---
 
