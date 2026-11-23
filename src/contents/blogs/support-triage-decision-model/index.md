@@ -2,7 +2,7 @@
 title: "A Support Triage Agent That Knows When to Ask"
 metaTitle: "Support Ticket Triage with a Decision Model and Human Approvals in Kestra"
 description: "Most tickets don't need a language model to write anything. They need a decision, a number that says how sure it is, and a person when it isn't. Here is an early look at what that could look like with Jev, Cases, and the Approval task coming in Kestra 2.1."
-date: 2026-12-01T10:00:00
+date: 2026-11-23T10:00:00
 category: Solutions
 author:
   name: AJ Emerich
