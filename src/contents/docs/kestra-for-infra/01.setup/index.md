@@ -50,7 +50,7 @@ The example environment includes:
 
 - Four catalog apps: **Provision a virtual machine**, **Request object storage**, **Request a database**, and **Request an environment**.
 - The flows behind them, plus flows that price a request against a budget, list the regions allowed for a provider, register resources, and run the **Resize** and **Decommission** day-2 actions. A lease watchdog flow is included with its daily schedule disabled.
-- An **Infrastructure Overview** dashboard.
+- An **Infrastructure overview** dashboard that charts deployments by environment, inventory by resource type, and resources by owner.
 - An app template, **New application environment**. See [App templates](../05.app-templates/index.md).
 - A `setup_demo_environment` flow that runs once to fill Deployments and Inventory with example deployments, some of them close to expiry or already expired.
 
@@ -60,7 +60,7 @@ The example request forms run small flows while you fill them in. The region lis
 
 ### Product tour
 
-When the examples are present, the Catalog offers a guided tour of them. It walks through requesting a resource, following the request, the flow behind the app, the resulting deployment and its decommission action, and the dashboard. If you skip or leave the tour, select the tour entry at the bottom of the sidebar, such as **Resume tour**, to continue it.
+When the examples are present, the Catalog offers a guided tour of them. It walks through requesting a resource, following the request in its Gantt chart and on the Requests page, the flow behind the app, the Deployments list, the deployment's lease and inventory, its decommission action, and the dashboard. If you skip or leave the tour, select the tour entry at the bottom of the sidebar, such as **Resume tour**, to continue it.
 
 ### When examples are seeded
 
