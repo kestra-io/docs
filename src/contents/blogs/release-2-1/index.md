@@ -21,9 +21,9 @@ DRAFT NOTES (remove before publishing)
 - TODO markers: TODO(arcade, priority N) for interactive demos, TODO(screenshot) for static images, VERIFY for facts to confirm before publishing.
 -->
 
-Kestra 2.1 is available today, and it's a special one for us. With this release, we're launching **Kestra for Infrastructure**, the first product built on the Kestra platform. It's made for platform and IT teams who want to make infrastructure available to the whole company without losing control of what gets created.
+Kestra 2.1 is available today. With this release, we're launching **Kestra for Infrastructure**, the first product built on the Kestra platform. It's made for platform and IT teams who want to make infrastructure available to the whole company without losing control of what gets created.
 
-Kestra stays the general-purpose orchestration platform you know, and everything in 2.1 is available to every team. Flows can now pause for a real approve-or-deny decision, request forms can offer existing assets to pick from, executions can be found by the business values they processed, and long scripts can pick up where they left off after a failure.
+Kestra stays the general-purpose orchestration platform you know, and most of 2.1 reaches every team, whatever they orchestrate. Flows can now pause for a real approve-or-deny decision, request forms can offer existing assets to pick from, executions can be found by the business values they processed, and long scripts can pick up where they left off after a failure.
 
 The table below lists the main features in this release and the edition they belong to.
 
@@ -64,7 +64,7 @@ The table below lists the main features in this release and the edition they bel
 
 In most large companies, more and more people need infrastructure: developers testing a branch, data teams who need a database for a week, and now AI agents too. Direct access to the cloud is usually restricted, so each of those needs turns into a ticket that a platform team handles by hand, and environments nobody uses anymore are rarely cleaned up. Many teams are also rebuilding the self-service portal they had on VMware vRA and vRO, or looking for an alternative to Ansible Automation Platform and AWX.
 
-Infrastructure automation has become one of the two largest ways teams use Kestra, alongside data. Kestra for Infrastructure turns what those teams built into a product, with their words, their workflows, and examples ready to use. It starts with **self-service provisioning**: everyone requests what they need from a catalog, and the platform team stays in control of what gets created and how long it lives, with the Terraform, OpenTofu, and Ansible code it already uses.
+Infrastructure automation has become one of the two largest ways teams use Kestra, alongside data. Kestra for Infrastructure turns what those teams built into a product, with examples ready to use. It starts with **self-service provisioning**: everyone requests what they need from a catalog, and the platform team stays in control of what gets created and how long it lives, with the Terraform, OpenTofu, and Ansible code it already uses.
 
 ![The Kestra for Infrastructure Catalog, with the Self-Service menu and request cards for a virtual machine, object storage, a database, and an environment](./infrastructure-catalog.png)
 
@@ -82,25 +82,23 @@ Here's what a platform team gets:
 
 Nobody starts from an empty page. Example catalog entries, flows, deployments, and a dashboard are there on the first visit, and a short product tour walks through requesting a sandbox, seeing the flow behind it, extending its lease, and decommissioning it. The examples only declare assets, so no cloud resource is created while you explore.
 
-Here's a request from the Catalog, from the form to the deployment it creates:
+The first demo requests a VM from the Catalog and follows it to the deployment it creates:
 
 <div style="position: relative; padding-bottom: calc(56.4617% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/3DXLsMaDFuodZH72jPAC?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Provision a Virtual Machine Using the Self-Service Catalog" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-And a Day 2 action on an existing deployment, resizing one of its VMs:
+The second runs a Day 2 action on an existing deployment, resizing one of its VMs:
 
 <div style="position: relative; padding-bottom: calc(56.4617% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/CXQzSthSroYruAfZJmgK?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Change VM Size in an Existing Deployment" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 AI agents follow the same rules as people. A catalog flow can be exposed to an agent with the [MCP Tool trigger](/docs/workflow-components/triggers/mcp-tool-trigger), and a request from an agent goes through the same flow, the same approval step, and the same audit trail as a request from the Catalog.
 
-Because it's built on the Kestra platform, Kestra for Infrastructure comes with everything else Kestra does. [Cases](/docs/enterprise/governance/cases) track failed requests as incidents with linked Jira or ServiceNow tickets, [Assets](/docs/enterprise/governance/assets) make every resource known to other teams and flows, and [Apps](/docs/enterprise/scalability/apps) put a form in front of any flow. Flows are YAML, versioned in Git, and run your Terraform, OpenTofu, Ansible, Shell, Python, and PowerShell code as is, including VMware PowerCLI scripts. Enterprise governance comes along too: RBAC, SSO, secrets, audit logs, and isolated workers for on-premises and air-gapped environments. The resources your platform team provisions can then be used by data teams on the same platform.
+Because it's built on the Kestra platform, Kestra for Infrastructure comes with everything else Kestra does. [Cases](/docs/enterprise/governance/cases) track failed requests as incidents with linked Jira or ServiceNow tickets, [Assets](/docs/enterprise/governance/assets) make every resource known to other teams and flows, and [Apps](/docs/enterprise/scalability/apps) put a form in front of any flow.
 
-Kestra for Infrastructure is part of Kestra Enterprise Edition, self-hosted. This is the first step: it starts with provisioning and Day 2 operations, and it will grow with every release of the Kestra platform. To set it up, see [Kestra for Infrastructure in the docs](/docs/kestra-for-infra), and to see it with your own use cases, [talk to our team](/demo).
+Flows are YAML, versioned in Git, and run your Terraform, OpenTofu, Ansible, Shell, Python, and PowerShell code as is, including VMware PowerCLI scripts. Enterprise governance comes along too: RBAC, SSO, secrets, audit logs, and isolated workers for on-premises and air-gapped environments. The resources your platform team provisions can then be used by data teams on the same platform.
+
+Kestra for Infrastructure is part of Kestra Enterprise Edition, self-hosted, and covers provisioning and Day 2 operations. To set it up, see [Kestra for Infrastructure in the docs](/docs/kestra-for-infra), and to see it with your own use cases, [talk to our team](/demo).
 
 <!-- VERIFY: confirm the sales/demo link marketing wants here (product page on kestra.io, or /demo). -->
-
-<!-- TODO(arcade, priority 2): Templates: create a template From a flow, define its arguments, click Use, and land on the new Catalog entry. Shows the handoff between the platform team and the teams it serves. -->
-
-<!-- TODO(arcade, priority 3): Inventory import: upload a .tfstate file, walk through the preview (new, updated, outside this deployment), import, and open the grouped deployment in Inventory. -->
 
 ## Approvals
 
@@ -123,7 +121,7 @@ Asking a person for a decision used to mean a `Pause` task, where the only way t
 
 In the Enterprise Edition, a request can be assigned to specific users or groups, and every request is tracked on the new **Approvals** page, with notifications for reviewers and requesters. Several approvals can be chained into one multi-step sign-off, and reviewers can decide from an App without opening Kestra. `Pause` and `HumanTask` keep working as before. See the [Approval task](/docs/workflow-components/approvals) and [Approvals in Kestra Enterprise](/docs/enterprise/governance/approvals).
 
-<!-- TODO(screenshot): The Approvals page with a few pending and resolved requests, the Resolution column, and the Review button. -->
+![The Approvals page listing four deployment approval requests, two pending with Review buttons and two resolved, one approved and one denied, with their deadlines and assignees](./approvals-page.png)
 
 ## Assets
 
@@ -151,7 +149,7 @@ tasks:
 
 Inputs can depend on each other, so a form can ask for a deployment first and then only offer the VMs that belong to it. Flows can return assets as outputs too. See [ASSET inputs](/docs/workflow-components/inputs#asset-inputs).
 
-<!-- TODO(screenshot): The Execute modal with an ASSET input open, showing the search box and a few VMs with their type, namespace, and status. -->
+![The Execute modal with an ASSET input open, showing the Search assets box and six active VMs, each with its ID, type, namespace, and status](./asset-input-picker.png)
 
 ## Searchable Inputs and Outputs
 
@@ -166,8 +164,6 @@ outputs:
 ```
 
 A searchable list stores each item separately, so one execution can be found by any of the order IDs it handled, something labels can't do. See [Searchable outputs](/docs/workflow-components/outputs#searchable-outputs) and [Searchable inputs](/docs/workflow-components/inputs#searchable-inputs).
-
-<!-- TODO(arcade, priority 5): Searchable values: run a flow with a searchable output, then find the execution from the Executions page with the Inputs & Outputs filter by typing an order ID. Short, and shows the payoff of one YAML line. -->
 
 ## TABLE Input
 
@@ -193,8 +189,6 @@ Sets can also be kept up to date from a flow. The new `Set` task can, for exampl
 
 See [Reusable Inputs](/docs/workflow-components/reusable-inputs#edit-a-set-in-the-ui).
 
-![The vm_components editor with the Code panel showing the set's YAML, the No Code panel listing the environment and components inputs, and the components input open in a third panel with its defaults grid of four rows](./reusable-inputs-editor.png)
-
 <!-- VERIFY: the Set, List, and Delete tasks ship in the plugin-kestra release for 2.1 (merged to next/v2.1 in plugin-kestra#215, not released as of 2026-11-17). Drop the second paragraph and the example if they don't make GA. -->
 
 ## Webhook Responses
@@ -212,8 +206,6 @@ triggers:
 ```
 
 The trigger can also verify HMAC signatures, such as the ones GitHub sends, and reject unsigned requests before any execution is created. Signature checks also shipped in 2.0.10. See [Customize the webhook response](/docs/workflow-components/triggers/webhook-trigger#customize-the-webhook-response) and [Verify the request signature](/docs/workflow-components/triggers/webhook-trigger#verify-the-request-signature).
-
-<!-- VERIFY: Asana handshake not confirmed; check body serialization without Content-Type. -->
 
 ## Script Checkpoints (Beta)
 
@@ -237,17 +229,15 @@ A script that fails at batch 300 of 400 shouldn't have to start again from batch
 
 Checkpoints work with any script language and task runner. They're in beta, so the syntax may still change, and we'd love your feedback. See [Checkpoints](/docs/scripts/checkpoints).
 
-<!-- VERIFY: Confirm checkpoint storage on the Elasticsearch/Kafka EE backend. -->
-
 ## Following Executions
 
 The Executions page has a new **Timeline** view next to the table. Each execution is a bar on a time axis, grouped by namespace and flow, so overlapping runs, gaps in a schedule, and the run that held a concurrency slot for too long stand out right away. Click a bar to open the execution, or drill down from a namespace into its flows. See [Timeline](/docs/ui/executions#timeline).
 
-<!-- TODO(arcade, priority 4): Execution timeline: switch Counts to Timeline, zoom and pan, drill from a namespace into its flows, click a bar and use Show only this flow. OSS, so it can be recorded on any instance. -->
+<div style="position: relative; padding-bottom: calc(56.4617% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/bQNIYqinlfOKXElhLDBw?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Explore Workflow Runs on the Timeline View" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 Each `Loop` iteration runs as its own execution, which meant opening iterations one by one to find the one that failed. The **Gantt** tab now shows each Loop with its iteration count and how many failed. Expand it to see the iterations in place, and step from one failure to the next without leaving the page. See [Loop iterations](/docs/ui/executions#loop-iterations).
 
-<!-- TODO(screenshot): The Gantt tab with a Loop expanded to its iterations, one failed iteration expanded to its task runs, and the side panel open on the failed task. -->
+![The Gantt tab with a Loop of eight iterations, two of them failed, one failed iteration expanded to its task runs, and the side panel open on the failed task with its error and buttons to move to the previous or next iteration](./gantt-loop-iterations.png)
 
 ## Notifications
 
@@ -255,13 +245,11 @@ The notifications bell is now in every edition. Bulk actions on executions, trig
 
 Flows can send notifications too. The new `Notify` task sends a message to the bell of the users you choose, for example to tell a requester their environment is ready, with a link to open it. See [Notifications](/docs/ui#notifications).
 
-<!-- TODO(screenshot): The notifications bell open, with a bulk action in progress and a notification sent by the Notify task. -->
-
 ## Dashboards: Chart a Flow's Output
 
 Some numbers come from outside Kestra: a weekly cost report, a list of open vulnerabilities, a count from a warehouse query. The new `Outputs` data source charts a file that a flow returns as an output, read from the flow's latest successful execution. Let the flow do the heavy lifting on a schedule, and the dashboard always shows its latest result. See [Outputs](/docs/ui/dashboard#outputs-ee-and-cloud-only).
 
-<!-- TODO(screenshot): A dashboard with a chart built on the Outputs data source and its "Updated" caption. -->
+![A dashboard chart built on the Outputs data source, showing weekly cloud cost per team stacked by service, with an Updated a few seconds ago caption next to its title](./dashboard-outputs-chart.png)
 
 ## SLA and Concurrency
 
@@ -297,8 +285,6 @@ See [Apps](/docs/enterprise/scalability/apps).
 ## AI
 
 **Generate a unit test** in a flow's menu asks the AI Copilot to draft a test for that flow, with fixtures, mocks, and assertions. Apply it directly or review it in the editor first. See [Generate a unit test](/docs/develop-with-ai/ai-copilot#generate-a-unit-test).
-
-<!-- TODO(arcade, priority 6): Copilot unit test: flow menu > Generate a unit test, review the drafted fixtures and assertions, Apply, then run the test. -->
 
 In 2.0, MCP servers let AI agents call your flows as tools. That feature is now called [MCP Flows](/docs/ai-orchestration/mcp-server), to tell it apart from the new Kestra MCP Server. The Kestra MCP Server gives agents Kestra's own tools instead, the same ones the AI Copilot uses, so Claude, Cursor, or another MCP client can look at flows and executions or restart a failed run. It's off by default, and in the Enterprise Edition every call runs with the caller's permissions. See [Kestra MCP Server](/docs/develop-with-ai/kestra-mcp-server).
 
@@ -341,17 +327,13 @@ For JDBC deployments, the queue can now run in its own database, even on a diffe
 
 The Plugins page now lists each plugin once, as a card or a table row. In the Enterprise Edition, it also shows the versions installed on your instance and the ones available, and Instance Owners install, update, and uninstall versions from the same page. See [Plugins page](/docs/enterprise/instance/versioned-plugins#from-the-ui).
 
-<!-- TODO(screenshot): The Plugins page in the Enterprise Edition, with a plugin card showing its installed versions and an available update. -->
-
 A few plugin additions from this cycle:
 
 - [Microsoft Defender XDR](/plugins/plugin-microsoft365): list and update alerts and incidents, run advanced hunting queries, and start flows on new alerts and incidents.
-- [Microsoft Sentinel](/plugins/plugin-azure): new tasks in the Azure plugin.
+- [Microsoft Sentinel](/plugins/plugin-azure): list, read, and update incidents, comment on them, run KQL queries, and start flows on new incidents.
 - [Snyk](/plugins/plugin-snyk): list security issues, and start a flow when new ones appear.
 - JDBC `Queries`: run several SQL statements in one task, with parameters, transactions, and an output for each statement.
-- [Task runner monitoring](/docs/task-runners/types/kubernetes-task-runner) (EE): the Kubernetes, AWS, Azure, Google Cloud, and Huawei Cloud task runners can report CPU, memory, and network usage as task metrics, and forward traces from the task.
-
-<!-- VERIFY: Sentinel task scope (plugin-azure#347, released in v3.7.1), the JDBC plugin docs link for Queries (plugin-jdbc v3.1.0), and the monitoring anchor on each task runner page. -->
+- [Task runner monitoring](/docs/task-runners/types/kubernetes-task-runner#monitoring) (EE): the Kubernetes, AWS, Azure, Google Cloud, and Huawei Cloud task runners can report CPU, memory, and network usage as task metrics, and forward traces from the task.
 
 ## Additional Improvements
 
