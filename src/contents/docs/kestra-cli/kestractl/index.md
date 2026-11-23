@@ -95,6 +95,7 @@ kestractl flows list my.namespace --output json
 - `dashboards`: list, get, create, update, and delete dashboards. Requires Kestra EE.
 - `apps`: list, get, deploy, update, and delete apps. Requires Kestra EE.
 - `assets`: list, get, create, and delete assets. Requires Kestra EE.
+- `policies`: list, get, create, update, delete, validate, and export policies. Requires Kestra EE; tenant-scoped.
 - `blueprints`: search and retrieve community blueprints; manage internal flow blueprints (EE).
 - `test-suites`: create, run, validate, and manage test suites and their results. Requires Kestra EE.
 - `users`: list, get, create, update, delete, set group membership, set passwords, and manage API tokens for users. Requires Kestra EE; operates at the instance level (not tenant-scoped).
@@ -743,6 +744,37 @@ kestractl reusable-inputs delete my.namespace my-inputs-block
 # List the namespaces that define at least one reusable inputs block
 kestractl reusable-inputs namespaces
 ```
+
+## Policies (Enterprise Edition)
+
+[Policies](../../07.enterprise/02.governance/policies/index.md) are created from YAML files, like flows. The `policies` commands manage tenant-scoped policies in the active tenant.
+
+```bash
+# List policies (alias: ls)
+kestractl policies list
+kestractl policies list --output json
+
+# Get a policy and its YAML source (aliases: show, describe)
+kestractl policies get prod-cost-controls
+
+# Validate a policy file without saving it
+kestractl policies validate --file prod-cost-controls.yml
+
+# Create a policy, or update an existing one, from a YAML file
+kestractl policies create --file prod-cost-controls.yml
+kestractl policies update prod-cost-controls --file prod-cost-controls.yml
+
+# Delete a policy (alias: rm); prompts for confirmation unless --yes is set
+kestractl policies delete prod-cost-controls --yes
+
+# Export every policy in the tenant, or only the given IDs, to a YAML file
+kestractl policies export --output-file policies.yml
+kestractl policies export prod-cost-controls cost-alerts --output-file policies.yml
+```
+
+`validate` exits with code `1` when the policy is invalid, such as a rule with an unknown `type`, so a CI job that runs it fails. `create` accepts a file written by `export` that holds a single policy, so you can copy a policy to another tenant or instance.
+
+The `policies` commands only work with tenant-scoped policies. Manage namespace-scoped policies in the UI or through the API. `kestractl` has no command for importing several policies at once, evaluating a policy against saved flows, or previewing a flow's policies.
 
 ## MCP servers
 

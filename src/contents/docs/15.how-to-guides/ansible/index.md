@@ -408,6 +408,8 @@ After the run, the `outputFiles` property allows you to preview or download `sys
 
 ![Ansible File Output](./ansible-outputs.png)
 
+To change how the playbook runs without editing `commands`, set the task's typed options: `checkMode` (`--check`), `diff` (`--diff`), `limit`, `tags`, `skipTags`, `verbosity` (`0` to `4`), and `forks`. Kestra adds the matching flags to every `ansible-playbook` command in the task, so `checkMode: true` with `diff: true` reports what the playbook would change without applying it.
+
 ### Install Galaxy collections and Python packages
 
 When your playbooks use Galaxy collections or Python libraries that the image doesn't include, declare them on the task with `galaxyDependencies` and `pythonDependencies`. For example, if you extend the playbook with the `community.general.json_query` filter, it needs the `community.general` collection and the `jmespath` package:
@@ -472,6 +474,15 @@ tasks:
 
 Ansible extra variables take precedence over the `vars` block in the playbook, so this run checks Python against `3.12.0` instead of `3.11.0`. Files listed in `extraVarsFiles` accept JSON or YAML from the working directory, Namespace Files (`nsfile://company.team/vars/audit.yml`), or internal storage (`kestra:///...`). Kestra merges them in order, and inline `env.extraVars` values override keys from the files. Values under sensitive key names such as `token`, `secret`, or `vault` are masked in logs.
 
+`inventory.file` also accepts a Namespace File URI, so the task can read the inventory without `namespaceFiles`, including an inventory shared from another namespace:
+
+```yaml
+    inventory:
+      file: nsfile://company.shared/inventories/production.ini
+```
+
+Use `nsfile:///inventory.ini` for a file in the flow's own namespace. A file in another namespace must be allowed for the flow's namespace. See [file access](../../06.concepts/file-access/index.md) for the URI forms.
+
 `logsMode: SUMMARY` streams plays, tasks, failures, and the recap instead of every output line. After the run, the task outputs include:
 
 - `status` and `rc`: the final run status (`successful`, `failed`, or `timeout`) and return code.
@@ -483,6 +494,8 @@ Ansible extra variables take precedence over the `vars` block in the playbook, s
 `ansible-runner` runs the playbook from its `runner/project` directory, so the report is keyed by that path. Reference it downstream with `{{ outputs.system_info.outputFiles['runner/project/system_info.json'] }}`, for example as the `from` value in the S3 upload below.
 
 By default, the task fails when the run status is not `successful`. Set `failOnErrors: false` to let downstream tasks inspect `failedHosts` instead.
+
+As with the Ansible CLI task, each playbook task appears as its own task run in the execution's **Gantt** and **Logs** tabs, with its duration, its status, and the results of each host.
 
 ### Upload the report to S3
 

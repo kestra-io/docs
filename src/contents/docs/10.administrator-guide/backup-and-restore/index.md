@@ -30,10 +30,11 @@ apps, banners, bindings, blueprints, cases (with their templates, linked executi
 
 Execution data (executions, logs, metrics, audit logs, test runs) is excluded by default due to size. Use `--include-data` to include it.
 
-A metadata backup is not a copy of internal storage. It keeps only the latest value of each KV entry and the latest revision of each namespace file, along with namespace folders, including empty ones. `--include-data` adds execution records but not the input and output files stored for those executions. To move internal storage to a different backend, follow [Migrate internal storage to another backend](#migrate-internal-storage-to-another-backend) instead.
+A metadata backup is not a copy of internal storage. It keeps only the latest value of each KV entry and the latest revision of each namespace file, so a restore doesn't bring back a file's revision history. Empty namespace folders are kept. `--include-data` adds execution records but not the input and output files stored for those executions. To move internal storage to a different backend, follow [Migrate internal storage to another backend](#migrate-internal-storage-to-another-backend) instead.
 
+<!-- TODO(verify on backport merge): the namespace file fix (kestra-ee#11801, PR kestra-ee#12528) is merged to develop for 2.1. Backports to 2.0.x and 1.3.x are labelled but not merged as of 2026-11-17. Add the fixed patch versions to the alert below once they ship. -->
 :::alert{type="warning"}
-Archives created before Kestra 2.1 store every revision of a namespace file as a separate file, and restore them that way: `run.py.v2` and `run.py.v3` appear next to `run.py`, which keeps the first revision, and empty folders are lost. Take a new backup after upgrading to 2.1 and restore from that one.
+Archives created before the fix for namespace file revisions restore each stored revision as a separate file (for example, `run.py.v2` and `run.py.v3`), and the original path serves the first revision. They can't be repaired, so take a new backup after upgrading.
 :::
 
 Each backup run writes a new timestamped archive and never overwrites existing files. Archives are not pruned automatically — removing old archives is your responsibility.
@@ -145,8 +146,6 @@ docker exec your_container bash -c "./kestra backups restore kestra:///backups/f
 ### Backup and restore with the JDBC backend
 
 Use the database's native backup tools to back up and restore Kestra when running the JDBC backend.
-
-If the queue runs on a [dedicated queue database](../../configuration/02.runtime-and-storage/index.md#dedicated-queue-database), back up and restore both databases. Kestra doesn't recreate the `queues` table in an empty queue database, so restoring only the main database leaves Kestra unable to start.
 
 #### PostgreSQL
 

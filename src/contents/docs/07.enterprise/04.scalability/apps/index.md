@@ -795,6 +795,10 @@ Each app layout is a list of stage-specific blocks. Each block renders when the 
 
 If a layout uses a block on a stage that isn't listed for it, saving the app fails with `Invalid layout. Block '<type>' is not supported for layout on '<stage>'.`
 
+:::alert{type="warning"}
+An `ERROR` stage only handles errors raised while the app processes a request. It does not catch a stage that fails to render, for example a Pebble expression in a block that cannot be evaluated. In that case the `ERROR` stage is not shown: the app preview reports which block failed (its type and its position in the stage), while the people using the app see a generic "This app is currently unavailable" message. Fix the block in the app definition to restore the stage.
+:::
+
 | Block type               | Available on                                                             | Properties                                                                                  | Example                                                                                                                                                                                                                               |
 |--------------------------|--------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `Markdown`               | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `content` (Pebble template)                                                               | `- type: io.kestra.plugin.ee.apps.core.blocks.Markdown`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "## Please validate the request. Inspect the logs and outputs below. Then, approve or reject the request."`                             |
