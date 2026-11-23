@@ -40,7 +40,7 @@ The table below lists the highlights and the edition each one belongs to. Everyt
 | Execution timeline | See your executions on a time axis | OSS, EE, Cloud |
 | Dashboard charts from flow outputs | Chart a file that a flow returns | EE, Cloud |
 | Kestra MCP Server | Give AI agents Kestra's own tools | OSS, EE |
-| Keyless cloud access | Reach AWS and Google Cloud without storing keys | EE, Cloud |
+| Keyless cloud access | Reach AWS, Google Cloud, and JFrog without storing keys | EE |
 | New queue backends | Google Cloud Pub/Sub, NATS JetStream, Amazon SQS/SNS, and Azure Event Hubs | EE |
 
 :::alert{type="info"}
@@ -215,9 +215,11 @@ The new Kestra MCP Server gives AI agents like Claude or Cursor the same tools t
 
 ## Keyless Cloud Access
 
-Storing cloud keys in Kestra secrets always meant one more thing to rotate. In 2.1, your flows can sign in to AWS and Google Cloud the way GitHub Actions does, with short-lived credentials and no keys to store. You decide in your cloud account which flows or namespaces get access. This is part of the Enterprise Edition. See [OIDC issuer](/docs/enterprise/auth/oidc-issuer).
+Storing cloud keys in Kestra secrets always meant one more thing to rotate. In 2.1, Kestra can vouch for your flows the way GitHub Actions does: each task gets a short-lived token that AWS, Google Cloud, or JFrog swaps for temporary credentials, so there are no keys to store. You decide on their side which flows or namespaces get in.
 
-<!-- VERIFY: Cloud setup for the OIDC issuer (who enables it, issuer URL) is still open on the docs page. -->
+This helps most when Kestra runs on-premises or on a different cloud from the one it needs to reach. Each tenant, or even a single namespace, can also get its own issuer, so one team's cloud account never trusts another team's flows. One thing to plan for: your Kestra URL has to be reachable over HTTPS from the internet, because that's where the provider checks each token.
+
+Keyless access is part of the Enterprise Edition. It isn't available on Kestra Cloud yet, so if you'd like it there, let your account team know. See [OIDC issuer](/docs/enterprise/auth/oidc-issuer).
 
 ## Default Retention Policy
 
