@@ -288,15 +288,8 @@ const migrationSteps = [
                     submitLabel={awxContent.heroCard.submitLabel}
                     client:idle
                 />
-                <a
-                    class="self-serve"
-                    href="#run-a-playbook"
-                    data-event="lp_infra_hero_try_click"
-                >
-                    {awxContent.heroCard.selfServe} →
-                </a>
             </div>
-            <p class="proof">
+            <p class="proof" data-variant-hide="awx">
                 <a
                     href="https://github.com/kestra-io/kestra"
                     data-event="lp_infra_github_click"
@@ -714,23 +707,12 @@ const migrationSteps = [
         gap: 0.75rem;
     }
 
-    /* G_AWX hero card: the offer form, then the self-serve way out. */
+    /* G_AWX hero card: the offer form only. */
     .start-offer {
         display: flex;
         flex-direction: column;
         gap: 0.75rem;
         margin-top: -1.25rem;
-    }
-
-    .self-serve {
-        color: var(--lp-purple);
-        font-size: $font-size-sm;
-        font-weight: 600;
-        text-align: center;
-        text-decoration: none;
-        &:hover {
-            text-decoration: underline;
-        }
     }
 
     .story {

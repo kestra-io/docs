@@ -323,13 +323,11 @@ export const awxContent = {
     playbookFlow,
 
     /* The offer: one of their job templates, running in Kestra, on a
-     * 30-minute call. The call form books it; the self-serve run stays
-     * one link below for visitors who would rather try alone. */
+     * 30-minute call. The call form books it. */
     heroCard: {
         title: "See your AWX job template run in Kestra",
         sub: "Book 30 minutes and bring one job template or playbook. We run it in Kestra with you, then map the rest of your setup.",
-        submitLabel: "Book my 30-minute session",
-        selfServe: "Rather try it alone? Run a playbook in 5 minutes",
+        submitLabel: "Let's talk",
     },
 
     useCases: {
@@ -366,7 +364,7 @@ export const awxContent = {
         heading: "Bring one AWX job template",
         sub: "30 minutes, your playbook, running in Kestra.",
         cta: {
-            text: "Book my 30-minute session",
+            text: "Let's talk",
             href: "#job-template-session",
         },
         event: "lp_infra_offer_click",
