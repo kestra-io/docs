@@ -6,6 +6,7 @@ import Customers, { type Story } from "~/components/home/Customers.astro"
 import { flat } from "~/components/home/flatLogo"
 import EnterpriseShowcase from "~/components/enterprise/EnterpriseShowcase.astro"
 import BuyerQuestions from "~/components/enterprise/BuyerQuestions.astro"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 import InfraHero from "~/components/infrastructure/InfraHero.astro"
 import InfraGlue from "~/components/infrastructure/InfraGlue.astro"
 import AppsMock from "~/components/enterprise/mocks/AppsMock.astro"
@@ -220,6 +221,9 @@ const STORIES: Story[] = [
 ---
 
 <Layout {title} {description} headerClean headerClear headerOverDark>
+    <Fragment slot="head">
+        <SchemaFAQ items={FAQ} />
+    </Fragment>
     <PageShell>
         <InfraHero />
         <InfraGlue />
