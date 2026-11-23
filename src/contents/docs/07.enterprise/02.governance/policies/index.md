@@ -590,7 +590,7 @@ GET /api/v1/{tenant}/policies/{id}/evaluate
 GET /api/v1/{tenant}/namespaces/{namespace}/policies/{id}/evaluate
 ```
 
-The response lists every flow that would violate the policy's validate rules, grouped by rule. Use this to audit your compliance baseline before switching a policy from `EVALUATE` to `ACTIVE`.
+The response lists every flow the policy applies to, each with a status: `COMPLIANT`, `VIOLATING`, `MUTATED` or `CONFLICTING`. Flows that violate a validate rule, conflict, or would be changed by a mutate rule come first, and the list is paged with `page` and `size`. The policy page in the Governance UI shows the same list. Use it to audit your compliance baseline before switching a policy from `EVALUATE` to `ACTIVE`, or to see which flows a mutate rule changes.
 
 ## RBAC
 
