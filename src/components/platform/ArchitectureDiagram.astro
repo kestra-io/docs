@@ -2,6 +2,7 @@
 import { Icon } from "astro-icon/components"
 import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
 import { fetchPluginIcon } from "~/utils/pluginIcon"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
 const ENTRIES = [
     { icon: "mdi:account-outline", who: "Humans", via: "UI" },
@@ -54,6 +55,8 @@ const TARGETS = [
     { icon: "mdi:api", name: "API" },
     { icon: "mdi:plus", name: "Other" },
 ]
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const WORKER_ICON = "mdi:account-cog-outline"
 ---
@@ -138,7 +141,8 @@ const WORKER_ICON = "mdi:account-cog-outline"
             ))}
         </ul>
         <p class="plugins">
-            <Icon name="mdi:puzzle-outline" /> Plugins
+            <Icon name="mdi:puzzle-outline" />
+            {totalPlugins}+ plugins
         </p>
     </div>
 
