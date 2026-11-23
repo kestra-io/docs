@@ -1,9 +1,13 @@
 ---
 import Rails from "./Rails.astro"
 import SectionHead from "~/components/home/SectionHead.astro"
-import TabGroup from "~/components/common/TabGroup.astro"
-import TabPanel from "~/components/common/TabPanel.astro"
+import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
 import ArchitectureDiagram from "./ArchitectureDiagram.astro"
+
+const EDITIONS = [
+    { label: "Open source", tint: "#8405ff" },
+    { label: "Enterprise", tint: "#5ee3ae" },
+]
 
 const PARTS = [
     {
@@ -35,39 +39,56 @@ const PARTS = [
             </Fragment>
         </SectionHead>
 
-        <TabGroup
-            id="edition"
-            label="Edition"
-            variant="segmented"
-            flush
-            tabs={[{ label: "Open source" }, { label: "Enterprise" }]}
-        >
-            <TabPanel group="edition" index={1}>
-                <p class="edition-msg">
-                    <b>Trusted by thousands of customers worldwide</b>
-                    <span>
-                        Full-featured orchestration, free to self-host, and
-                        built in the open.
-                    </span>
-                </p>
-            </TabPanel>
-            <TabPanel group="edition" index={2}>
-                <p class="edition-msg">
-                    <b>Scalability and performance enterprises demand</b>
-                    <span>
-                        Worker groups isolate and scale workloads. Kafka and
-                        Elasticsearch backends handle enterprise throughput.{" "}
-                        <a href="/enterprise">
-                            Learn more about Enterprise Edition
-                        </a>
-                        .
-                    </span>
-                </p>
-            </TabPanel>
-        </TabGroup>
+        <div class="edition" data-edition-tabs>
+            <div class="tabs" role="tablist" aria-label="Edition">
+                {EDITIONS.map((edition, idx) => (
+                    <button
+                        type="button"
+                        role="tab"
+                        class="tab"
+                        id={`edition-tab-${idx + 1}`}
+                        aria-selected={idx === 0 ? "true" : "false"}
+                        aria-controls="edition-panel"
+                        tabindex={idx === 0 ? 0 : -1}
+                        style={`--tint: ${edition.tint}`}
+                    >
+                        <span class="swatch" aria-hidden="true" />
+                        {edition.label}
+                    </button>
+                ))}
+            </div>
 
-        <div class="diagram" data-arch-diagram>
-            <ArchitectureDiagram />
+            <div
+                class="panel"
+                id="edition-panel"
+                role="tabpanel"
+                aria-labelledby="edition-tab-1"
+                style={`--pixels: url("${pixelCluster}")`}
+            >
+                <span class="pixels" aria-hidden="true"></span>
+                <div class="swap">
+                    <div class="copy" data-edition="oss">
+                        <h3>Trusted by thousands of customers worldwide</h3>
+                        <p>
+                            Full-featured orchestration, free to self-host, and
+                            built in the open.
+                        </p>
+                    </div>
+                    <div class="copy" data-edition="ent">
+                        <h3>Scalability and performance enterprises demand</h3>
+                        <p>
+                            Worker groups isolate and scale workloads. Kafka and
+                            Elasticsearch backends handle enterprise throughput.{" "}
+                            <a href="/enterprise">
+                                Learn more about Enterprise Edition.
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                <div class="diagram" data-arch-diagram>
+                    <ArchitectureDiagram />
+                </div>
+            </div>
         </div>
 
         <ul class="parts">
@@ -108,8 +129,40 @@ const PARTS = [
         }
     }
 
-    document.addEventListener("astro:page-load", wireArchitecture)
-    wireArchitecture()
+    function wireEditions() {
+        const root = document.querySelector<HTMLElement>(
+            "[data-edition-tabs]:not([data-wired])",
+        )
+        if (!root) return
+        root.dataset.wired = "true"
+        const tabs = [...root.querySelectorAll<HTMLElement>("[role=tab]")]
+        const panel = root.querySelector<HTMLElement>("[role=tabpanel]")!
+        const open = (idx: number) => {
+            tabs.forEach((tab, i) => {
+                tab.setAttribute("aria-selected", String(i === idx))
+                tab.tabIndex = i === idx ? 0 : -1
+            })
+            panel.setAttribute("aria-labelledby", tabs[idx].id)
+        }
+        tabs.forEach((tab, idx) => {
+            tab.addEventListener("click", () => open(idx))
+            tab.addEventListener("keydown", (e) => {
+                if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return
+                e.preventDefault()
+                const next = (idx + 1) % tabs.length
+                tabs[next].focus()
+                open(next)
+            })
+        })
+    }
+
+    function init() {
+        wireEditions()
+        wireArchitecture()
+    }
+
+    document.addEventListener("astro:page-load", init)
+    init()
 </script>
 
 <style lang="scss">
@@ -119,29 +172,222 @@ const PARTS = [
     .architecture {
         @include tinted;
 
+        :global([data-edition="ent"]) {
+            display: none;
+        }
+
         &:has(#edition-tab-2[aria-selected="true"]) {
-            .diagram :global([data-edition="oss"]) {
+            :global([data-edition="oss"]) {
                 display: none;
             }
 
-            .diagram :global([data-edition="ent"]) {
+            :global([data-edition="ent"]) {
                 display: flex;
+            }
+        }
+
+        :global(.swap) {
+            display: grid;
+        }
+
+        :global(.swap > [data-edition]) {
+            grid-area: 1 / 1;
+            display: flex;
+        }
+
+        :global(.swap > [data-edition="ent"]) {
+            visibility: hidden;
+        }
+
+        &:has(#edition-tab-2[aria-selected="true"]) {
+            :global(.swap > [data-edition]) {
+                display: flex;
+            }
+
+            :global(.swap > [data-edition="oss"]) {
+                visibility: hidden;
+            }
+
+            :global(.swap > [data-edition="ent"]) {
+                visibility: visible;
+            }
+        }
+
+        @include media-breakpoint-down(lg) {
+            .panel > .swap > [data-edition="ent"] {
+                display: none;
+            }
+
+            &:has(#edition-tab-2[aria-selected="true"]) {
+                .panel > .swap > [data-edition="oss"] {
+                    display: none;
+                }
+
+                .panel > .swap > [data-edition="ent"] {
+                    display: flex;
+                }
             }
         }
     }
 
-    .edition-msg {
+    .edition {
+        --rule: 1px solid var(--ks-border-primary);
+
+        margin: 0 calc(-1 * var(--inset));
+        border-block: var(--rule);
+
+        @include media-breakpoint-down(xl) {
+            margin: 0;
+            border: var(--rule);
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+    }
+
+    .tabs {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        border-bottom: var(--rule);
+    }
+
+    .tab {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.625rem;
+        padding: 1.375rem 1rem;
+        border: 0;
+        background: var(--ks-background-body);
+        font-size: 1.0625rem;
+        font-weight: 500;
+        color: var(--ks-content-primary);
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        & + & {
+            border-left: var(--rule);
+        }
+
+        &:hover {
+            background: color-mix(
+                in srgb,
+                var(--tint) 4%,
+                var(--ks-background-body)
+            );
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: -2px;
+        }
+
+        &[aria-selected="true"] {
+            cursor: default;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -1px;
+            height: 2px;
+            background: var(--tint);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        &[aria-selected="true"]::after {
+            opacity: 1;
+        }
+    }
+
+    .swatch {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 2px;
+        background: var(--ks-content-tertiary);
+        opacity: 0.5;
+        transition:
+            background-color 0.3s ease,
+            opacity 0.3s ease;
+
+        [aria-selected="true"] > & {
+            background: var(--tint);
+            opacity: 1;
+        }
+    }
+
+    .panel {
+        position: relative;
         display: flex;
         flex-direction: column;
-        gap: 0.25rem;
-        margin: 0 0 1.5rem;
-        min-height: 3.25rem;
+        gap: 2rem;
+        padding: var(--inset);
+        background: var(--ks-background-body);
+        transition: background-color 0.4s ease;
 
-        b {
+        .architecture:has(#edition-tab-2[aria-selected="true"]) & {
+            background:
+                radial-gradient(
+                    ellipse 60% 50% at 100% 0%,
+                    rgba(94, 227, 174, 0.1),
+                    transparent 70%
+                ),
+                radial-gradient(
+                    ellipse 60% 60% at 0% 100%,
+                    rgba(126, 104, 255, 0.08),
+                    transparent 70%
+                ),
+                var(--ks-background-body);
+        }
+
+        @include media-breakpoint-down(lg) {
+            padding: 1.25rem;
+        }
+    }
+
+    .pixels {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        width: 96px;
+        aspect-ratio: 194 / 168;
+        background: #8405ff;
+        mask: var(--pixels) no-repeat center / contain;
+        opacity: 0.18;
+        pointer-events: none;
+
+        .architecture:has(#edition-tab-2[aria-selected="true"]) & {
+            background: #5ee3ae;
+            opacity: 0.3;
+        }
+    }
+
+    .copy {
+        position: relative;
+        flex-direction: column;
+        gap: 0.5rem;
+        max-width: 36rem;
+
+        &[data-edition="oss"] {
+            display: flex;
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
             color: var(--ks-content-primary);
         }
 
-        span {
+        p {
+            margin: 0;
+            font-size: 1.0625rem;
+            line-height: 1.6;
             color: var(--ks-content-secondary);
         }
 

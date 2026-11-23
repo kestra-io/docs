@@ -1,150 +1,422 @@
 ---
 import { Icon } from "astro-icon/components"
+import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
+import { fetchPluginIcon } from "~/utils/pluginIcon"
 
 const ENTRIES = [
     { icon: "mdi:account-outline", who: "Humans", via: "UI" },
-    { icon: "mdi:api", who: "Systems", via: "API" },
+    { icon: "mdi:code-tags", who: "Systems", via: "API" },
     { icon: "mdi:robot-outline", who: "Agents", via: "MCP" },
 ]
 
 const SERVICES = [
-    { icon: "mdi:web", name: "Web server" },
-    { icon: "mdi:tune-variant", name: "Controller" },
-    { icon: "mdi:play-circle-outline", name: "Executor" },
-    { icon: "mdi:database-search-outline", name: "Indexer" },
-    { icon: "mdi:clock-outline", name: "Scheduler" },
+    { id: "web", icon: "mdi:web", name: "Web server" },
+    { id: "controller", icon: "mdi:sync", name: "Controller" },
+    { id: "executor", icon: "mdi:lightning-bolt-outline", name: "Executor" },
+    { id: "indexer", icon: "mdi:database-search-outline", name: "Indexer" },
+    { id: "scheduler", icon: "mdi:clock-outline", name: "Scheduler" },
 ]
 
 const BACKENDS = {
-    oss: ["PostgreSQL", "MySQL", "JDBC"],
-    ent: ["Redis", "AMQP", "Kafka", "Elasticsearch", "JDBC"],
+    oss: [
+        { name: "PostgreSQL", group: "io.kestra.plugin.jdbc.postgresql" },
+        { name: "MySQL", group: "io.kestra.plugin.jdbc.mysql" },
+        { name: "JDBC", group: null },
+    ],
+    ent: [
+        { name: "Redis", group: "io.kestra.plugin.redis" },
+        { name: "AMQP", group: "io.kestra.plugin.amqp" },
+        { name: "Kafka", group: "io.kestra.plugin.kafka" },
+        { name: "Elasticsearch", group: "io.kestra.plugin.elasticsearch" },
+        { name: "JDBC", group: null },
+    ],
 }
+
+const logos = Object.fromEntries(
+    await Promise.all(
+        [...BACKENDS.oss, ...BACKENDS.ent]
+            .filter((backend) => backend.group)
+            .map(async (backend) => [
+                backend.name,
+                await fetchPluginIcon(backend.group!).catch(() => null),
+            ]),
+    ),
+)
 
 const SITES = [
     { icon: "mdi:cloud-outline", name: "Cloud" },
-    { icon: "mdi:server-outline", name: "On-prem" },
-    { icon: "mdi:cloud-sync-outline", name: "Hybrid" },
+    { icon: "mdi:office-building-outline", name: "On-prem" },
+    { icon: "mdi:hub-outline", name: "Hybrid" },
 ]
 
 const TARGETS = [
     { icon: "mdi:database-outline", name: "Database" },
     { icon: "mdi:api", name: "API" },
-    { icon: "mdi:dots-horizontal", name: "Other" },
+    { icon: "mdi:plus", name: "Other" },
 ]
+
+const WORKER_ICON = "mdi:account-cog-outline"
 ---
 
 <div class="arch-diagram" role="img" aria-label="Kestra architecture">
+    <svg class="links" aria-hidden="true">
+        <defs>
+            <marker
+                id="arch-arrow"
+                viewBox="0 0 10 10"
+                refX="9"
+                refY="5"
+                markerWidth="7"
+                markerHeight="7"
+                markerUnits="userSpaceOnUse"
+                orient="auto-start-reverse"
+            >
+                <path d="M1 1.5 L9 5 L1 8.5 Q2.5 5 1 1.5 z" class="head"></path>
+            </marker>
+            <marker
+                id="arch-arrow-k"
+                viewBox="0 0 10 10"
+                refX="9"
+                refY="5"
+                markerWidth="7"
+                markerHeight="7"
+                markerUnits="userSpaceOnUse"
+                orient="auto-start-reverse"
+            >
+                <path
+                    d="M1 1.5 L9 5 L1 8.5 Q2.5 5 1 1.5 z"
+                    class="head k"
+                ></path>
+            </marker>
+            <marker
+                id="arch-dot"
+                viewBox="0 0 10 10"
+                refX="5"
+                refY="5"
+                markerWidth="5"
+                markerHeight="5"
+                markerUnits="userSpaceOnUse"
+            >
+                <circle cx="5" cy="5" r="4" class="head"></circle>
+            </marker>
+        </defs>
+        <g data-links></g>
+    </svg>
+
     <ul class="entries">
         {ENTRIES.map((entry) => (
-            <li>
-                <span class="ico">
+            <li class="node" data-anchor="entry">
+                <span class="icon">
                     <Icon name={entry.icon} />
                 </span>
-                <span class="lbl">
-                    {entry.who} → <b>{entry.via}</b>
-                </span>
+                <strong>
+                    {entry.who} <span class="via">→ {entry.via}</span>
+                </strong>
             </li>
         ))}
     </ul>
 
-    <div class="zone" data-zone="control">
-        <p class="title">Control plane</p>
-        <ul class="services">
-            {SERVICES.map((service) => (
-                <li>
-                    <Icon name={service.icon} />
-                    {service.name}
-                </li>
-            ))}
-        </ul>
-        <p class="plugins">Plugins</p>
-    </div>
-
-    <div class="middle">
-        <div class="wire">
-            <span class="pulse" aria-hidden="true"></span>
-            <p>
-                <b>Worker communication</b>
-                gRPC, mTLS configurable
-            </p>
-        </div>
-        <div class="zone" data-zone="queue">
-            <p class="title">Queue / database</p>
-            <p class="sub">Backends</p>
-            <ul class="chips" data-edition="oss">
-                {BACKENDS.oss.map((name) => (
-                    <li>{name}</li>
-                ))}
-            </ul>
-            <ul class="chips" data-edition="ent">
-                {BACKENDS.ent.map((name) => (
-                    <li>{name}</li>
-                ))}
-            </ul>
-        </div>
-    </div>
-
-    <div class="zone" data-zone="data">
-        <p class="title">Data plane</p>
-        <p class="sub">Run workers wherever your data lives</p>
-        <ul class="sites">
-            {SITES.map((site) => (
-                <li>
-                    <Icon name={site.icon} />
-                    {site.name}
-                </li>
-            ))}
-        </ul>
-        <div class="workers" data-edition="oss">
-            <span class="worker">
-                <Icon name="mdi:cog-outline" /> Worker
+    <div class="zone control" data-zone="control">
+        <div class="zone-head">
+            <span class="label">Control plane</span>
+            <span class="kestra">
+                <img src={kestraMark.src} alt="" width="20" height="20" />
+                Kestra
             </span>
         </div>
-        <div class="workers group" data-edition="ent">
-            <p class="group-name">Worker group</p>
-            <p class="sub">Subscribes to queues · reserves capacity</p>
-            <div class="row">
-                <span class="worker">
-                    <Icon name="mdi:cog-outline" /> Worker
+        <ul class="stack">
+            {SERVICES.map((service) => (
+                <li
+                    class:list={["node", { link: service.id === "controller" }]}
+                    data-anchor={service.id}
+                >
+                    <span class="icon">
+                        <Icon name={service.icon} />
+                    </span>
+                    <strong>{service.name}</strong>
+                </li>
+            ))}
+        </ul>
+        <p class="plugins">
+            <Icon name="mdi:puzzle-outline" /> Plugins
+        </p>
+    </div>
+
+    <div class="zone queue" data-zone="queue" data-anchor="queue">
+        <div class="zone-head">
+            <span class="label">Queue / database</span>
+        </div>
+        <div class="swap">
+            {(["oss", "ent"] as const).map((edition) => (
+                <ul class="backends" data-edition={edition}>
+                    {BACKENDS[edition].map((backend) => (
+                        <li>
+                            {logos[backend.name] ? (
+                                <span
+                                    class="logo"
+                                    set:html={logos[backend.name]}
+                                />
+                            ) : (
+                                <Icon name="mdi:database-outline" />
+                            )}
+                            {backend.name}
+                        </li>
+                    ))}
+                </ul>
+            ))}
+        </div>
+    </div>
+
+    <p class="wire" data-wire>
+        <strong>Worker communication</strong>
+        <span>gRPC · mTLS configurable</span>
+    </p>
+
+    <div class="zone data" data-zone="data" data-anchor="data">
+        <div class="zone-head">
+            <span class="label">Data plane</span>
+        </div>
+        <p class="sub">Run workers wherever your data lives</p>
+        <ul class="tiles">
+            {SITES.map((site) => (
+                <li class="node tile">
+                    <span class="icon">
+                        <Icon name={site.icon} />
+                    </span>
+                    <strong>{site.name}</strong>
+                </li>
+            ))}
+        </ul>
+        <div class="swap workers">
+            <div
+                class="node worker link"
+                data-edition="oss"
+                data-anchor="worker"
+            >
+                <span class="icon">
+                    <Icon name={WORKER_ICON} />
                 </span>
-                <span class="worker">
-                    <Icon name="mdi:cog-outline" /> Worker
+                <strong>Worker</strong>
+            </div>
+            <div class="group link" data-edition="ent" data-anchor="worker">
+                <strong>Worker group</strong>
+                <span class="sub">
+                    Subscribes to queues · reserves capacity
                 </span>
-                <span class="worker">
-                    <Icon name="mdi:cog-outline" /> Worker
-                </span>
+                <ul class="tiles">
+                    {Array.from({ length: 3 }, () => (
+                        <li class="node tile">
+                            <span class="icon">
+                                <Icon name={WORKER_ICON} />
+                            </span>
+                            <strong>Worker</strong>
+                        </li>
+                    ))}
+                </ul>
             </div>
         </div>
-        <p class="sub calls">Flow tasks call out</p>
-        <ul class="sites targets">
+        <p class="sub calls" data-anchor="calls">
+            Flow tasks call out
+        </p>
+        <ul class="tiles targets">
             {TARGETS.map((target) => (
-                <li>
-                    <Icon name={target.icon} />
-                    {target.name}
+                <li class="node tile" data-anchor="target">
+                    <span class="icon">
+                        <Icon name={target.icon} />
+                    </span>
+                    <strong>{target.name}</strong>
                 </li>
             ))}
         </ul>
     </div>
 </div>
 
+<script>
+    const LG = 992
+
+    function rect(el: Element, origin: DOMRect) {
+        const r = el.getBoundingClientRect()
+        return {
+            l: r.left - origin.left,
+            r: r.right - origin.left,
+            t: r.top - origin.top,
+            b: r.bottom - origin.top,
+            cx: r.left - origin.left + r.width / 2,
+            cy: r.top - origin.top + r.height / 2,
+        }
+    }
+
+    const R = 8
+
+    function join(x1: number, y1: number, bus: number, y2: number) {
+        const dy = Math.sign(y2 - y1)
+        if (Math.abs(y2 - y1) < 12) return `M${x1} ${y2} H${bus + R}`
+        return `M${x1} ${y1} H${bus - R} Q${bus} ${y1} ${bus} ${y1 + dy * R} V${y2 - dy * R} Q${bus} ${y2} ${bus + R} ${y2}`
+    }
+
+    function draw(diagram: HTMLElement) {
+        const svg = diagram.querySelector<SVGSVGElement>(".links")!
+        const layer = svg.querySelector("[data-links]")!
+        const wire = diagram.querySelector<HTMLElement>("[data-wire]")!
+        layer.replaceChildren()
+        if (window.innerWidth < LG) return
+
+        const origin = diagram.getBoundingClientRect()
+        svg.setAttribute("viewBox", `0 0 ${origin.width} ${origin.height}`)
+        const at = (name: string) =>
+            diagram.querySelector(`[data-anchor="${name}"]`)!
+        const add = (d: string, cls: string) => {
+            const path = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "path",
+            )
+            path.setAttribute("d", d)
+            path.setAttribute("class", cls)
+            layer.append(path)
+        }
+
+        const web = rect(at("web"), origin)
+        const control = rect(diagram.querySelector(".control")!, origin)
+        const entries = [
+            ...diagram.querySelectorAll('[data-anchor="entry"]'),
+        ].map((entry) => rect(entry, origin))
+        const bus = (Math.max(...entries.map((e) => e.r)) + control.l) / 2
+        for (const e of entries)
+            add(join(e.r + 4, e.cy, bus, web.cy), "edge join")
+        add(`M${bus + R} ${web.cy} H${web.l - 4}`, "edge main")
+
+        const queue = rect(at("queue"), origin)
+        add(
+            queue.cy - R > control.b + 4
+                ? `M${queue.l - 4} ${queue.cy} H${control.cx + R} Q${control.cx} ${queue.cy} ${control.cx} ${queue.cy - R} V${control.b + 4}`
+                : `M${queue.l - 4} ${queue.cy} H${control.r + 4}`,
+            "edge both",
+        )
+
+        const ctrl = rect(at("controller"), origin)
+        const data = rect(at("data"), origin)
+        const worker = [
+            ...diagram.querySelectorAll<HTMLElement>('[data-anchor="worker"]'),
+        ].find((el) => getComputedStyle(el).visibility !== "hidden")
+        if (!worker) return
+        const w = rect(worker, origin)
+        const turn = data.l - 20
+        add(
+            join(ctrl.r + 4, ctrl.cy, turn - R, w.cy) + ` H${w.l - 4}`,
+            "edge k",
+        )
+        wire.style.top = `${ctrl.cy}px`
+        wire.style.left = `${(ctrl.r + turn) / 2}px`
+
+        const calls = rect(at("calls"), origin)
+        add(`M${w.cx} ${w.b + 2} V${calls.t - 2}`, "edge stub")
+        for (const target of diagram.querySelectorAll(
+            '[data-anchor="target"]',
+        )) {
+            const t = rect(target, origin)
+            add(`M${calls.cx} ${calls.b + 2} L${t.cx} ${t.t - 4}`, "edge fan")
+        }
+    }
+
+    function reveal(diagram: HTMLElement) {
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+        diagram.dataset.pending = ""
+        diagram
+            .querySelectorAll<HTMLElement>(".node")
+            .forEach((node, i) =>
+                node.style.setProperty("--delay", `${i * 35}ms`),
+            )
+        const io = new IntersectionObserver(
+            (entries) => {
+                if (!entries.some((entry) => entry.isIntersecting)) return
+                io.disconnect()
+                delete diagram.dataset.pending
+            },
+            { threshold: 0.25 },
+        )
+        io.observe(diagram)
+    }
+
+    function wireDiagram() {
+        for (const diagram of document.querySelectorAll<HTMLElement>(
+            ".arch-diagram:not([data-drawn])",
+        )) {
+            diagram.dataset.drawn = "true"
+            reveal(diagram)
+            const redraw = () => requestAnimationFrame(() => draw(diagram))
+            const observer = new ResizeObserver(redraw)
+            observer.observe(diagram)
+            diagram
+                .querySelectorAll(".zone")
+                .forEach((zone) => observer.observe(zone))
+            redraw()
+        }
+    }
+
+    document.addEventListener("astro:page-load", wireDiagram)
+    wireDiagram()
+</script>
+
 <style lang="scss">
-    @use "/src/components/enterprise/mocks/tokens" as *;
-
     .arch-diagram {
-        @include tokens;
+        --node-bg: #ffffff;
+        --node-border: #ebebf0;
+        --node-text: #2b2b33;
+        --node-muted: #6c6c7a;
+        --edge: #c4c4d0;
+        --shadow: 0 1px 4px 0 var(--ks-shadows-light);
+        --k: #8405ff;
+        --k-tint: #f1e9ff;
+        --k-zone: rgba(132, 5, 255, 0.04);
+        --k-border: rgba(132, 5, 255, 0.28);
+        --d: #3b5bdb;
+        --d-on: #ffffff;
+        --d-tint: #e8edff;
+        --d-zone: rgba(59, 91, 219, 0.04);
+        --d-border: rgba(59, 91, 219, 0.28);
+        --q: #6c6c7a;
+        --q-zone: #f7f7fa;
 
+        position: relative;
         display: grid;
-        grid-template-columns: 9rem 1.1fr 1fr 1.3fr;
-        gap: 1.5rem;
-        align-items: stretch;
-        padding: 2rem;
-        border: 1px solid var(--line);
-        border-radius: 1rem;
-        background: var(--deep);
+        grid-template-columns:
+            12.5rem minmax(0, 1fr) minmax(12rem, 0.7fr)
+            minmax(0, 1fr);
+        grid-template-rows: auto auto;
+        column-gap: 2.5rem;
+        row-gap: 1.25rem;
+        font-family: $font-family-sans-serif;
+        color: var(--node-text);
+
+        :global(html.dark) & {
+            --node-bg: #1a1c22;
+            --node-border: #2e2e3c;
+            --node-text: #ffffff;
+            --node-muted: #adadbf;
+            --edge: #4a4a5a;
+            --k: #9869f7;
+            --k-tint: rgba(152, 105, 247, 0.16);
+            --k-zone: rgba(152, 105, 247, 0.06);
+            --k-border: rgba(152, 105, 247, 0.35);
+            --d: #718bfe;
+            --d-on: #0f1020;
+            --d-tint: rgba(113, 139, 254, 0.16);
+            --d-zone: rgba(113, 139, 254, 0.05);
+            --d-border: rgba(113, 139, 254, 0.3);
+            --q: #adadbf;
+            --q-zone: rgba(255, 255, 255, 0.03);
+        }
+
+        @include media-breakpoint-down(xl) {
+            grid-template-columns:
+                9.5rem minmax(0, 1fr) 11rem
+                minmax(0, 1fr);
+            column-gap: 1.5rem;
+        }
 
         @include media-breakpoint-down(lg) {
-            grid-template-columns: 1fr;
-            padding: 1.25rem;
+            grid-template-columns: minmax(0, 1fr);
+            row-gap: 1.5rem;
         }
     }
 
@@ -154,70 +426,221 @@ const TARGETS = [
         list-style: none;
     }
 
-    .entries {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        gap: 1rem;
+    p {
+        margin: 0;
+    }
+
+    .links {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        pointer-events: none;
 
         @include media-breakpoint-down(lg) {
-            flex-direction: row;
-            justify-content: space-between;
+            display: none;
         }
 
-        li {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
+        transition: opacity 0.5s ease 0.6s;
+
+        [data-pending] > & {
+            opacity: 0;
+        }
+
+        :global(.edge) {
+            fill: none;
+            stroke: var(--edge);
+            stroke-width: 1.5;
+            stroke-dasharray: 4 4;
+            marker-start: url(#arch-dot);
+            marker-end: url(#arch-arrow);
+            animation: flow-out 1.2s linear infinite;
+
+            @media (prefers-reduced-motion: reduce) {
+                animation: none;
+            }
+        }
+
+        :global(.edge.stub) {
+            marker-start: none;
+            marker-end: none;
+        }
+
+        :global(.edge.fan) {
+            marker-start: none;
+        }
+
+        :global(.edge.join) {
+            marker-end: none;
+        }
+
+        :global(.edge.main) {
+            marker-start: none;
+        }
+
+        :global(.edge.both) {
+            marker-start: url(#arch-arrow);
+        }
+
+        :global(.edge.k) {
+            stroke: var(--k);
+            marker-start: url(#arch-arrow-k);
+            marker-end: url(#arch-arrow-k);
+            animation: flow 0.9s linear infinite;
+
+            @media (prefers-reduced-motion: reduce) {
+                animation: none;
+            }
+        }
+
+        .head {
+            fill: var(--edge);
+
+            &.k {
+                fill: var(--k);
+            }
         }
     }
 
-    .ico {
+    @keyframes flow-out {
+        to {
+            stroke-dashoffset: -16;
+        }
+    }
+
+    @keyframes flow {
+        to {
+            stroke-dashoffset: 16;
+        }
+    }
+
+    .node {
+        position: relative;
+        z-index: 1;
+        transition:
+            opacity 0.4s ease var(--delay, 0s),
+            transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s);
+
+        [data-pending] & {
+            opacity: 0;
+            transform: translateY(8px) scale(0.98);
+        }
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 0.75rem 0.5rem 0.5rem;
+        border: 1px solid var(--node-border);
+        border-radius: 8px;
+        background: var(--node-bg);
+        box-shadow: var(--shadow);
+    }
+
+    .control .link {
+        border-color: var(--k);
+        box-shadow:
+            0 0 0 3px var(--k-tint),
+            var(--shadow);
+    }
+
+    .data .link {
+        border-color: var(--d);
+        box-shadow: 0 0 0 3px var(--d-tint);
+    }
+
+    .group.link {
+        border-style: solid;
+    }
+
+    .icon {
         display: grid;
+        flex: none;
         place-items: center;
-        width: 2.75rem;
-        height: 2.75rem;
-        border: 1px solid var(--line);
-        border-radius: 0.625rem;
-        background: var(--panel);
-        color: var(--run);
-        font-size: 1.375rem;
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 8px;
+        background: var(--k-tint);
+        color: var(--k);
+        font-size: 1.25rem;
     }
 
-    .lbl,
-    .sub,
-    .title,
-    .group-name,
-    .plugins,
-    .wire p {
-        font-family: $font-family-monospace;
-        font-size: 0.6875rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--muted);
+    strong {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--node-text);
     }
 
-    .lbl b {
-        color: var(--text);
+    .via {
+        color: var(--k);
+        white-space: nowrap;
     }
 
-    .zone {
+    .sub {
+        font-size: 0.8125rem;
+        color: var(--node-muted);
+    }
+
+    .entries {
+        grid-column: 1;
+        grid-row: 1 / span 2;
         display: flex;
         flex-direction: column;
         gap: 0.75rem;
-        padding: 1.25rem;
-        border: 1px solid var(--line);
-        border-radius: 0.875rem;
-        background: var(--panel);
+        padding-top: calc(0.75rem + 1px + 1.5rem + 0.625rem);
+        margin-right: 1.5rem;
+
+        @include media-breakpoint-down(lg) {
+            grid-row: auto;
+            flex-direction: row;
+            margin-right: 0;
+            padding-top: 0;
+
+            .node {
+                flex: 1;
+                min-width: 0;
+            }
+        }
+
+        @include media-breakpoint-down(xl) {
+            .icon {
+                display: none;
+            }
+        }
+
+        .icon {
+            background: var(--q-zone);
+            color: var(--node-muted);
+            box-shadow: inset 0 0 0 1px var(--node-border);
+        }
+
+        @include media-breakpoint-up(lg) {
+            .node {
+                gap: 0.5rem;
+                padding-right: 0.875rem;
+            }
+
+            strong {
+                white-space: nowrap;
+            }
+        }
+    }
+
+    .zone {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+        padding: 0.75rem;
+        border: 1px solid var(--node-border);
+        border-radius: 10px;
         transition:
             opacity 0.25s ease,
-            box-shadow 0.25s ease,
             transform 0.25s ease,
-            border-color 0.25s ease;
+            box-shadow 0.25s ease;
 
         :global([data-focus]) & {
-            opacity: 0.45;
+            opacity: 0.4;
         }
 
         :global([data-focus="control"]) &[data-zone="control"],
@@ -225,210 +648,264 @@ const TARGETS = [
         :global([data-focus="queue"]) &[data-zone="queue"] {
             opacity: 1;
             transform: translateY(-3px);
-            border-color: var(--ring);
-            box-shadow: var(--shadow);
-        }
-
-        &[data-zone="control"] {
-            border-color: color-mix(in srgb, var(--ring) 45%, var(--line));
+            box-shadow: 0 12px 28px -14px rgba(43, 43, 51, 0.35);
         }
     }
 
-    .title {
-        margin: 0;
-        font-weight: 700;
-        text-align: center;
-        color: var(--text);
+    .zone-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        min-height: 1.5rem;
     }
 
-    .sub {
-        margin: 0;
-        text-align: center;
-        text-transform: none;
-        letter-spacing: 0;
+    .label {
+        padding: 1px 9px 2px;
+        border-radius: 9px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #ffffff;
     }
 
-    .services {
+    .stack {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.375rem;
+    }
 
-        li {
-            display: flex;
-            align-items: center;
-            gap: 0.625rem;
-            padding: 0.5rem 0.75rem;
-            border-radius: 0.5rem;
-            background: var(--field);
-            font-family: $font-family-monospace;
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            color: var(--soft);
+    .control {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        align-self: start;
+        border-color: var(--k-border);
+        background: var(--k-zone);
 
-            svg {
-                font-size: 1.125rem;
-                color: var(--run);
-            }
+        @include media-breakpoint-down(lg) {
+            grid-column: 1;
+            grid-row: auto;
+        }
+
+        .label {
+            background: var(--k);
+        }
+    }
+
+    .kestra {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--node-text);
+
+        img {
+            width: 1.25rem;
+            height: 1.25rem;
+            padding: 0.1875rem;
+            border-radius: 0.3125rem;
+            background: #1b0d33;
         }
     }
 
     .plugins {
-        margin: 0;
-        padding: 0.5rem;
-        border: 1px dashed var(--line);
-        border-radius: 0.5rem;
-        text-align: center;
-        text-transform: none;
-        letter-spacing: 0;
-    }
-
-    .middle {
         display: flex;
-        flex-direction: column;
+        align-items: center;
         justify-content: center;
-        gap: 1.5rem;
+        gap: 0.375rem;
+        padding: 0.375rem;
+        border: 1px dashed var(--k-border);
+        border-radius: 8px;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: var(--k);
     }
 
-    .wire {
-        position: relative;
-        padding-top: 1rem;
-        text-align: center;
-
-        &::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: repeating-linear-gradient(
-                90deg,
-                var(--ring) 0 6px,
-                transparent 6px 12px
-            );
-            opacity: 0.6;
-        }
-
-        p {
-            margin: 0;
-        }
-
-        b {
-            display: block;
-            color: var(--text);
-        }
+    .queue {
+        grid-column: 3;
+        grid-row: 1 / span 2;
+        align-self: start;
+        margin-top: 11rem;
+        background: var(--q-zone);
 
         @include media-breakpoint-down(lg) {
-            display: none;
+            grid-column: 1;
+            grid-row: auto;
+            margin-top: 0;
+        }
+
+        .label {
+            background: var(--q);
+            color: var(--node-bg);
         }
     }
 
-    .pulse {
-        position: absolute;
-        top: -3px;
-        left: 0;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--ring);
-        animation: travel 2.4s linear infinite;
-
-        @media (prefers-reduced-motion: reduce) {
-            display: none;
-        }
-    }
-
-    @keyframes travel {
-        from {
-            left: 0;
-        }
-
-        to {
-            left: calc(100% - 8px);
-        }
-    }
-
-    .chips {
+    .backends {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
         gap: 0.375rem;
 
         li {
-            padding: 0.25rem 0.625rem;
-            border-radius: 999px;
-            background: var(--chip);
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--soft);
-        }
-    }
-
-    .sites {
-        display: flex;
-        justify-content: space-around;
-
-        li {
-            display: flex;
-            flex-direction: column;
+            display: inline-flex;
             align-items: center;
-            gap: 0.25rem;
-            font-family: $font-family-monospace;
-            font-size: 0.6875rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--muted);
+            gap: 0.375rem;
+            padding: 0.3125rem 0.5rem;
+            border: 1px solid var(--node-border);
+            border-radius: 6px;
+            background: var(--node-bg);
+            font-size: 0.8125rem;
+            font-weight: 500;
 
-            svg {
-                font-size: 1.5rem;
-                color: var(--soft);
+            > svg {
+                font-size: 1rem;
+                color: var(--node-muted);
+            }
+        }
+
+        .logo {
+            display: inline-grid;
+            width: 1rem;
+            height: 1rem;
+
+            :global(html.dark) & {
+                width: 1.25rem;
+                height: 1.25rem;
+                padding: 0.125rem;
+                border-radius: 0.25rem;
+                background: #ffffff;
+            }
+
+            :global(svg) {
+                width: 100%;
+                height: 100%;
             }
         }
     }
 
-    .workers {
+    .wire {
+        position: absolute;
+        z-index: 2;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.125rem;
+        line-height: 1.3;
+        white-space: nowrap;
+        transform: translate(-50%, calc(-100% - 0.5rem));
 
-        &.group {
-            padding: 0.75rem;
-            border: 1px dashed var(--ring);
-            border-radius: 0.625rem;
+        strong {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--k);
         }
 
-        .row {
-            display: flex;
-            gap: 0.5rem;
+        span {
+            font-size: 0.75rem;
+            color: var(--node-muted);
+        }
+
+        @include media-breakpoint-down(lg) {
+            position: static;
+            justify-self: center;
+            transform: none;
         }
     }
 
-    .group-name {
-        margin: 0;
-        font-weight: 700;
-        color: var(--run);
+    .data {
+        grid-column: 4;
+        grid-row: 1 / span 2;
+        border-color: var(--d-border);
+        background: var(--d-zone);
+
+        @include media-breakpoint-down(lg) {
+            grid-column: 1;
+            grid-row: auto;
+        }
+
+        .label {
+            background: var(--d);
+            color: var(--d-on);
+        }
+
+        .icon {
+            background: var(--d-tint);
+            color: var(--d);
+        }
+    }
+
+    .tiles {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.5rem;
+    }
+
+    .tile {
+        flex-direction: column;
+        gap: 0.375rem;
+        padding: 0.625rem 0.375rem;
+        text-align: center;
+
+        .icon {
+            width: 2rem;
+            height: 2rem;
+            font-size: 1.125rem;
+        }
     }
 
     .worker {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.375rem;
-        padding: 0.375rem 0.625rem;
-        border-radius: 0.5rem;
-        background: var(--tile);
-        font-family: $font-family-monospace;
-        font-size: 0.6875rem;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: var(--tile-ink);
+        justify-content: center;
+        padding-block: 0.625rem;
+    }
+
+    .group {
+        position: relative;
+        z-index: 1;
+        flex-direction: column;
+        gap: 0.25rem;
+        padding: 0.625rem;
+        border: 1px dashed var(--d-border);
+        border-radius: 8px;
+        background: color-mix(in srgb, var(--d) 9%, transparent);
+        text-align: center;
+
+        > strong {
+            color: var(--d);
+        }
+
+        .sub {
+            margin-bottom: 0.25rem;
+            font-size: 0.75rem;
+        }
+
+        .tile {
+            flex-direction: row;
+            justify-content: center;
+            padding: 0.375rem;
+
+            .icon {
+                width: 1.5rem;
+                height: 1.5rem;
+                font-size: 0.9375rem;
+            }
+        }
     }
 
     .calls {
-        margin-top: auto;
+        position: relative;
+        z-index: 1;
+        align-self: center;
+        margin: 0.25rem 0 1.25rem;
+        color: var(--node-text);
+
+        @include media-breakpoint-down(lg) {
+            margin: 0.25rem 0;
+        }
+    }
+
+    .targets .icon {
+        background: var(--q-zone);
+        color: var(--node-muted);
+        box-shadow: inset 0 0 0 1px var(--node-border);
     }
 
     [data-edition="ent"] {

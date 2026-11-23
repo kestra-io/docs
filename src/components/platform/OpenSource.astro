@@ -2,6 +2,9 @@
 import Rails from "./Rails.astro"
 import { Icon } from "astro-icon/components"
 import SectionHead from "~/components/home/SectionHead.astro"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const CARDS = [
     {
@@ -24,8 +27,8 @@ const CARDS = [
 ]
 
 const STATS = [
-    { value: "28k+", label: "GitHub stars" },
-    { value: "2,400+", label: "Plugins" },
+    { value: "30,000", label: "GitHub stars", live: "github-stars" },
+    { value: totalPlugins, label: "Plugins" },
 ]
 ---
 
@@ -59,12 +62,88 @@ const STATS = [
             {STATS.map((stat) => (
                 <div>
                     <dt>{stat.label}</dt>
-                    <dd>{stat.value}</dd>
+                    <dd>
+                        <span class="arrow" aria-hidden="true">
+                            ↑
+                        </span>
+                        <span
+                            class="value"
+                            data-count={stat.value}
+                            data-live={stat.live}
+                        >
+                            {stat.value}
+                        </span>
+                        <span class="suffix">+</span>
+                    </dd>
                 </div>
             ))}
         </dl>
     </Rails>
 </section>
+
+<script>
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches
+    const format = new Intl.NumberFormat("en-US")
+    const io = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return
+                io.unobserve(entry.target)
+                const el = entry.target as HTMLElement
+                const start = performance.now()
+                const step = (now: number) => {
+                    const final = el.dataset.count!
+                    const end = Number(final.replace(/\D/g, ""))
+                    const t = Math.min(1, (now - start) / 1400)
+                    const eased = 1 - Math.pow(1 - t, 3)
+                    el.textContent = format.format(Math.round(end * eased))
+                    if (t < 1) requestAnimationFrame(step)
+                    else {
+                        el.textContent = final
+                        el.dataset.counted = "true"
+                    }
+                }
+                requestAnimationFrame(step)
+            })
+        },
+        { threshold: 0.6 },
+    )
+
+    async function loadGithubStars() {
+        const stars = document.querySelectorAll<HTMLElement>(
+            '.open-source [data-live="github-stars"]',
+        )
+        if (!stars.length) return
+        try {
+            const response = await fetch("/api/github")
+            if (!response.ok) return
+            const { stargazers } = (await response.json()) as {
+                stargazers?: number
+            }
+            if (!stargazers) return
+            const value = format.format(Math.floor(stargazers / 100) * 100)
+            stars.forEach((el) => {
+                el.dataset.count = value
+                if (reduced || el.dataset.counted) el.textContent = value
+            })
+        } catch {}
+    }
+
+    function init() {
+        document
+            .querySelectorAll<HTMLElement>(
+                ".open-source [data-count]:not([data-ready])",
+            )
+            .forEach((el) => {
+                el.dataset.ready = "true"
+                if (!reduced) io.observe(el)
+            })
+        loadGithubStars()
+    }
+
+    document.addEventListener("astro:page-load", init)
+    init()
+</script>
 
 <style lang="scss">
     @use "/src/components/about/style/section" as *;
@@ -103,27 +182,67 @@ const STATS = [
     }
 
     .stats {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem 3.5rem;
-        margin: 3rem 0 0;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin: 4rem 0 0;
+        border-top: 1px solid var(--ks-border-secondary);
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: minmax(0, 1fr);
+        }
 
         div {
             display: flex;
             flex-direction: column-reverse;
+            gap: 1rem;
+            padding: 3rem 0 0;
+
+            & + div {
+                padding-left: 3rem;
+                border-left: 1px solid var(--ks-border-secondary);
+
+                @include media-breakpoint-down(md) {
+                    margin-top: 2.5rem;
+                    padding-left: 0;
+                    border-left: 0;
+                    border-top: 1px solid var(--ks-border-secondary);
+                }
+            }
         }
 
         dd {
+            display: flex;
+            align-items: flex-start;
             margin: 0;
-            font-size: clamp(2.5rem, 4vw, 3.5rem);
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            line-height: 1;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
             color: var(--ks-content-primary);
         }
 
+        .arrow {
+            margin: 0.35em 0.15em 0 0;
+            font-size: clamp(1.25rem, 2.4vw, 2.25rem);
+            line-height: 1;
+            color: var(--ks-content-color-highlight);
+        }
+
+        .value {
+            font-size: clamp(3.5rem, 8vw, 7.5rem);
+            font-weight: 500;
+            letter-spacing: -0.05em;
+            line-height: 0.9;
+        }
+
+        .suffix {
+            align-self: flex-end;
+            margin-left: 0.15em;
+            font-size: clamp(1.75rem, 3.2vw, 3rem);
+            font-weight: 500;
+            line-height: 1;
+            color: var(--ks-content-secondary);
+        }
+
         dt {
-            margin-top: 0.5rem;
             font-family: $font-family-monospace;
             font-size: 0.75rem;
             font-weight: 600;
