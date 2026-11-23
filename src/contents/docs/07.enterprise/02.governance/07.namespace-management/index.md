@@ -62,7 +62,7 @@ When building new flows in a Namespace, Namespace secrets are accessible from th
 
 ### Policies
 
-[Policies](../policies/index.md) can be defined at the Namespace level to inject, restrict, or validate configuration for all flows in the Namespace. Policies are managed from the **Policies** tab on the namespace page.
+[Policies](../policies/index.md) can be defined at the Namespace level to inject, restrict, or validate configuration for all flows in the Namespace. Policies are managed from the **Policies** tab on the namespace page. The tab lists the Policies that apply to the Namespace: its own, those of its parent Namespaces, and the tenant and instance Policies. Policies of other Namespaces are not listed, and the ones the Namespace inherits are tagged **Inherited from** the instance, the tenant, or the parent Namespace they belong to.
 
 Policies can reference secrets and variables defined in the same Namespace.
 
