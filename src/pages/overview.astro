@@ -10,7 +10,7 @@ import Production from "~/components/platform/Production.astro"
 import DeveloperFit from "~/components/platform/DeveloperFit.astro"
 import Ai from "~/components/platform/Ai.astro"
 import OpenSource from "~/components/platform/OpenSource.astro"
-import FinalCta from "~/components/platform/FinalCta.astro"
+import RunKestra from "~/components/home/RunKestra.astro"
 
 const title = "Kestra Platform"
 const description =
@@ -30,7 +30,9 @@ const description =
         <DeveloperFit />
         <Ai />
         <OpenSource />
-        <FinalCta />
+        <div data-header-dark>
+            <RunKestra />
+        </div>
     </PageShell>
 </Layout>
 
