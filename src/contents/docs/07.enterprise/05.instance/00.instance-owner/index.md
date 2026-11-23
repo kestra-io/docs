@@ -50,7 +50,13 @@ When you launch Kestra for the first time, the [setup wizard](../../01.overview/
 
 ### Through the CLI
 
-To create a new user with the Instance Owner privilege:
+When an Instance Owner already exists, create another one through the API with [`kestractl`](../../../kestra-cli/kestractl/index.md), authenticated as that Instance Owner:
+
+```bash
+kestractl users create --email admin@kestra.io --user-password 'TopSecret42' --superadmin
+```
+
+To create the first Instance Owner without the setup wizard, for example in an automated installation, use the `kestra` server CLI. It writes directly to the database in the Kestra configuration, so run it where that configuration is available:
 
 ```bash
 kestra auths users create admin@kestra.io TopSecret42 --instance-owner
@@ -95,6 +101,15 @@ The user's detail page includes an Instance Owner toggle:
 ![Instance Owner toggle in the user edit page](./superadmin_switch.png)
 
 ### Through the CLI
+
+With [`kestractl`](../../../kestra-cli/kestractl/index.md), pass the user's ID:
+
+```bash
+kestractl users set-super-admin <user_id> --super-admin        # grant
+kestractl users set-super-admin <user_id> --super-admin=false  # revoke
+```
+
+The `kestra` server CLI takes the username instead and writes directly to the database:
 
 ```bash
 kestra auths users set-instance-owner admin@kestra.io true   # grant

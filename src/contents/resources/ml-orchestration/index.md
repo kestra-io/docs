@@ -62,7 +62,7 @@ As ML systems scale, the complexity of managing them grows exponentially. Robust
 *   **Maintaining model reproducibility and versioning**: An orchestrator logs the exact code, data, and parameters used for each run, making it possible to reproduce any model and trace its lineage for compliance and debugging.
 *   **Enabling continuous integration and delivery for ML models**: Just like in software engineering, CI/CD for machine learning requires automation to test, validate, and deploy new models safely. Orchestration is the engine that powers these automated [model deployment](/resources/ai/model-deployment) workflows.
 
-Without a dedicated orchestration layer, teams are left to manage these [complex orchestration problems](/resources/infrastructure/orchestration-problems-complexity) with a tangled web of cron jobs and brittle scripts.
+Without a dedicated orchestration layer, teams are left to manage these [complex orchestration problems](/resources/orchestration) with a tangled web of cron jobs and brittle scripts.
 
 ## Orchestrating ML Pipelines with Kestra: A Practical Example
 

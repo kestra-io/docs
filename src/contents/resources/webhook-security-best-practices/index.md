@@ -87,7 +87,7 @@ The process works as follows:
 4.  **Verify the Signature:** Upon receiving the request, the consumer independently computes the HMAC signature of the received payload using its copy of the secret.
 5.  **Compare:** The consumer compares its computed signature with the signature from the header. If they match, the request is considered authentic and its integrity is verified.
 
-This process ensures that only a party with the secret key could have generated the valid signature, and that any change to the payload would result in a signature mismatch. Kestra's core [Webhook trigger](/docs/workflow-components/triggers/webhook-trigger) authenticates callers with a secret key in the URL and does not verify signatures. Verify them within a task before acting on the payload (such as using dedicated provider plugins or script tasks for HMAC verification), or in a reverse proxy or API gateway in front of Kestra. Proper [secrets management](/docs/best-practices/secrets-management) is crucial for this process.
+This process ensures that only a party with the secret key could have generated the valid signature, and that any change to the payload would result in a signature mismatch. Kestra's core [Webhook trigger](/docs/workflow-components/triggers/webhook-trigger) authenticates callers with a secret key in the URL and does not verify signatures. Verify them within a task before acting on the payload (such as using dedicated provider plugins or script tasks for HMAC verification), or in a reverse proxy or API gateway in front of Kestra. Proper [secrets management](/docs/concepts/secret#keep-secrets-out-of-logs) is crucial for this process.
 
 ### Controlling network access with IP whitelisting and firewalls
 

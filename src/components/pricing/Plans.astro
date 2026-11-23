@@ -1,0 +1,516 @@
+---
+import { Icon } from "astro-icon/components"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+import PixelEdges from "~/components/about/PixelEdges.astro"
+import CustomerGrid from "~/components/about/CustomerGrid.astro"
+
+const totalPlugins = await fetchTotalPluginsCount()
+
+type Action = { label: string; href: string; solid?: boolean }
+
+const PLANS: {
+    name: string
+    tag?: string
+    price: string
+    text: string
+    features: string[]
+    ideal: string
+    actions: Action[]
+    featured?: boolean
+}[] = [
+    {
+        name: "Kestra Core",
+        tag: "Open Source",
+        price: "Free",
+        text: "You run Kestra, with no limits on flows or executions.",
+        features: [
+            `Declarative workflows, ${totalPlugins}+ plugins`,
+            "Scheduling and events",
+            "Code and no-code editors",
+            "AI agents and MCP server",
+            "Queue on PostgreSQL or MySQL",
+            "Community Slack, docs and blueprints",
+        ],
+        ideal: "Enough for a single team in production.",
+        actions: [{ label: "Get started", href: "/get-started" }],
+    },
+    {
+        name: "Kestra Cloud",
+        price: "Usage-based",
+        text: "We run Kestra for you, with SSO, RBAC and audit logs from day one.",
+        features: [
+            "Everything in Kestra Core",
+            "Fully managed: hosting, upgrades, monitoring",
+            "Automatic scaling",
+            "Secrets manager, policies and Apps",
+            "Enterprise plugins included",
+            "SOC 2 Type 2",
+        ],
+        ideal: "Governed production, nothing to run.",
+        actions: [{ label: "Request access", href: "/cloud" }],
+    },
+    {
+        name: "Kestra Enterprise",
+        price: "Annual",
+        text: "You run Kestra on your own infrastructure, with full governance and SLA-backed support.",
+        features: [
+            "Unlimited executions, flows, tasks, apps and assets",
+            "Sized to the project: instances, environments, worker groups",
+            "SSO, RBAC, audit logs, secrets, policies, approvals",
+            "Customer Success program, SLA-backed support",
+            "Self-hosted, hybrid or air-gapped",
+            "SOC 2 Type 2",
+        ],
+        ideal: "Full governance, scale and observability.",
+        actions: [
+            { label: "Contact sales", href: "/demo", solid: true },
+            { label: "About Enterprise", href: "/enterprise" },
+        ],
+        featured: true,
+    },
+]
+---
+
+<section class="pricing-plans" aria-labelledby="pricing-title">
+    <PixelEdges left="tall" right="wide" />
+    <div class="container-xl">
+        <div class="rails">
+            <div class="frame">
+                <header>
+                    <h1 id="pricing-title">Three ways to run Kestra</h1>
+                    <p class="lead">
+                        The right edition depends on who runs Kestra and how
+                        much governance your teams need.
+                    </p>
+                </header>
+                <ul class="plans">
+                    {PLANS.map((plan) => {
+                        const [primary, secondary] = plan.actions
+                        return (
+                            <li class:list={{ featured: plan.featured }}>
+                                <div class="panel">
+                                    <h2>{plan.name}</h2>
+                                    <p class="stage">
+                                        {plan.tag && (
+                                            <span class="tag">{plan.tag}</span>
+                                        )}
+                                    </p>
+                                    <p class="price">{plan.price}</p>
+                                    <p class="text">{plan.text}</p>
+                                    <a
+                                        href={primary.href}
+                                        class={
+                                            primary.solid
+                                                ? "btn-solid"
+                                                : "btn-ghost"
+                                        }
+                                    >
+                                        {primary.label}
+                                    </a>
+                                    <p class="more">
+                                        {secondary && (
+                                            <a href={secondary.href}>
+                                                {secondary.label}
+                                                <span
+                                                    class="arrow"
+                                                    aria-hidden="true"
+                                                >
+                                                    →
+                                                </span>
+                                            </a>
+                                        )}
+                                    </p>
+                                </div>
+                                <ul class="features">
+                                    {plan.features.map((feature) => (
+                                        <li>
+                                            <Icon name="mdi:check" />
+                                            {feature}
+                                        </li>
+                                    ))}
+                                </ul>
+                                <p class="ideal">{plan.ideal}</p>
+                            </li>
+                        )
+                    })}
+                </ul>
+                <p class="compare">
+                    <a href="#comparison-table">
+                        Compare plans and features
+                        <span class="arrow" aria-hidden="true">
+                            ↓
+                        </span>
+                    </a>
+                </p>
+                <div class="customers">
+                    <CustomerGrid columns={6} flush />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "../about/style/section" as *;
+
+    .pricing-plans {
+        --rule: 1px solid var(--ks-border-primary);
+        --column: 21.25rem;
+
+        position: relative;
+        background: var(--ks-background-body);
+    }
+
+    .rails {
+        position: relative;
+    }
+
+    .frame {
+        position: relative;
+        margin-inline: auto;
+        border-inline: var(--rule);
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: -100vh -1px 100%;
+            border-inline: var(--rule);
+        }
+
+        @include media-breakpoint-down(lg) {
+            max-width: 32rem;
+        }
+
+        @include media-breakpoint-down(md) {
+            border-inline: 0;
+
+            &::before {
+                content: none;
+            }
+        }
+    }
+
+    header {
+        padding: 4.5rem 1.5rem 4.75rem;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 3rem 3.25rem;
+        }
+    }
+
+    h1 {
+        @include title;
+        font-size: clamp(2.5rem, 4.4vw, 3.5rem);
+        letter-spacing: -0.03em;
+        line-height: 1.04;
+        color: var(--ks-content-primary);
+
+        &::after {
+            content: "";
+            display: inline-block;
+            width: 0.15em;
+            height: 0.15em;
+            margin-left: 0.05em;
+            background: #fe0071;
+        }
+    }
+
+    .lead {
+        @include lead;
+        max-width: 52rem;
+        margin-inline: auto;
+    }
+
+    .plans,
+    .customers {
+        position: relative;
+
+        &::before,
+        &::after {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 100vw;
+            border-top: var(--rule);
+            translate: -50% 0;
+        }
+
+        &::before {
+            content: "";
+        }
+    }
+
+    .plans::after,
+    .customers::after {
+        content: "";
+        top: 100%;
+    }
+
+    .customers {
+        --ks-border-primary: #24232b;
+        --ks-border-secondary: #3a3944;
+        --ks-background-body: #060609;
+        --ks-background-secondary: rgba(255, 255, 255, 0.05);
+        --ks-content-primary: #ffffff;
+        --ks-content-tertiary: #a9a8b3;
+        --rule: 1px solid var(--ks-border-primary);
+
+        margin-inline: -1px;
+        padding-bottom: 1px;
+        border-inline: var(--rule);
+        background: var(--ks-background-body);
+        box-shadow: 0 0 0 100vmax var(--ks-background-body);
+        clip-path: inset(0 -100vmax);
+
+        &::after {
+            top: auto;
+            bottom: 0;
+        }
+
+        @include media-breakpoint-down(md) {
+            margin-inline: 0;
+            border-inline: 0;
+        }
+    }
+
+    .compare {
+        margin: 0;
+        padding: 3rem 1.5rem 4rem;
+        font-size: $font-size-md;
+        text-align: center;
+
+        a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            color: var(--ks-content-primary);
+            text-decoration: none;
+
+            &:hover {
+                color: var(--ks-content-link);
+            }
+        }
+
+        .arrow {
+            transition: translate 0.2s ease;
+        }
+
+        a:hover .arrow,
+        a:focus-visible .arrow {
+            translate: 0 0.2em;
+        }
+    }
+
+    .plans {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        > li {
+            display: flex;
+            flex-direction: column;
+            padding: 0.75rem 0.75rem 1.5rem;
+
+            @include media-breakpoint-up(lg) {
+                & + li {
+                    border-left: var(--rule);
+                }
+            }
+
+            @include media-breakpoint-down(lg) {
+                & + li {
+                    border-top: var(--rule);
+                }
+            }
+
+            &.featured {
+                position: relative;
+                z-index: 1;
+                border-left-color: transparent;
+                border-top-color: transparent;
+                border-radius: 1rem;
+                background:
+                    linear-gradient(180deg, #f5f4fb, transparent 34rem),
+                    var(--ks-background-body);
+                @include featured-ring;
+
+                @include media-breakpoint-down(lg) {
+                    margin: 1rem 0.75rem;
+                    padding-inline: 0;
+                }
+
+                :global(html.dark) & {
+                    background:
+                        linear-gradient(
+                            180deg,
+                            rgba(143, 123, 255, 0.1),
+                            transparent 34rem
+                        ),
+                        var(--ks-background-body);
+                }
+            }
+        }
+    }
+
+    .panel {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1.25rem 1.5rem 0.75rem;
+        text-align: center;
+
+        @include media-breakpoint-down(lg) {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+            justify-items: start;
+            text-align: left;
+
+            > * {
+                grid-column: 1 / -1;
+            }
+
+            > h2 {
+                grid-column: 1;
+            }
+
+            > .stage {
+                grid-column: 2;
+                margin: 0;
+            }
+
+            > .text {
+                max-width: none;
+            }
+
+            > .more:not(:has(a)) {
+                display: none;
+            }
+        }
+    }
+
+    h2 {
+        margin: 0;
+        font-size: $font-size-xl;
+        font-weight: 600;
+        color: var(--ks-content-primary);
+    }
+
+    .stage {
+        display: flex;
+        align-items: center;
+        min-height: 1.375rem;
+        margin: 0.25rem 0 0;
+    }
+
+    .tag {
+        padding: 0.125rem 0.625rem;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--ks-content-link) 12%, transparent);
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--ks-content-link);
+    }
+
+    .price {
+        margin: 0.5rem 0 0;
+        font-size: clamp(1.75rem, 2.4vw, 2.125rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+        color: var(--ks-content-primary);
+    }
+
+    .text {
+        max-width: 19rem;
+        margin: 0.75rem 0 0;
+        font-size: $font-size-sm;
+        line-height: 1.55;
+        color: var(--ks-content-tertiary);
+
+        @include media-breakpoint-up(lg) {
+            min-height: 3.1em;
+        }
+    }
+
+    .panel > a {
+        width: min(100%, var(--column));
+        margin-top: 1rem;
+        padding-block: 0.625rem;
+
+        @include media-breakpoint-down(lg) {
+            width: 100%;
+        }
+    }
+
+    .more {
+        min-height: 1.5rem;
+        margin: 0.625rem 0 0;
+        font-size: 0.9375rem;
+
+        a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+            text-decoration: none;
+
+            @include arrow-nudge;
+
+            &:hover {
+                color: var(--ks-content-link);
+            }
+        }
+    }
+
+    .features {
+        display: grid;
+        gap: 0.5rem;
+        margin: 1rem 0 0;
+        padding: 0 1.5rem;
+        list-style: none;
+
+        @include media-breakpoint-up(lg) {
+            width: min(100%, calc(var(--column) + 3rem));
+            margin: 0.5rem auto 0;
+        }
+
+        li {
+            display: grid;
+            grid-template-columns: 1.125rem minmax(0, 1fr);
+            gap: 0.625rem;
+            font-size: $font-size-sm;
+            line-height: 1.5;
+            color: var(--ks-content-primary);
+        }
+
+        :global(svg) {
+            width: 1.125rem;
+            height: 1.125rem;
+            margin-top: 0.15em;
+            color: var(--ks-content-link);
+        }
+    }
+
+    .ideal {
+        margin: auto 0 0;
+        padding: 1rem 1.5rem 0;
+        font-size: $font-size-sm;
+        line-height: 1.55;
+        color: var(--ks-content-tertiary);
+
+        @include media-breakpoint-up(lg) {
+            width: min(100%, calc(var(--column) + 3rem));
+            margin-inline: auto;
+        }
+    }
+</style>

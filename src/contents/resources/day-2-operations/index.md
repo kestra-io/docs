@@ -111,7 +111,7 @@ What Terraform does not do on its own:
 *   **Coordinate across tools.** Updating the CMDB, opening and closing a change record, notifying the owner, and verifying the result happen outside Terraform.
 *   **Wait for people.** Approvals, maintenance windows, and owner confirmations need a step that can pause and resume with a recorded decision.
 
-This is why day 2 automation usually sits one level above IaC: a workflow that calls Terraform where state changes, Ansible where configuration changes, and APIs everywhere else.
+This is why day 2 automation usually sits one level above IaC: a workflow that calls [Terraform where state changes, Ansible where configuration changes](/resources/infrastructure/terraform-and-ansible), and APIs everywhere else.
 
 ## Day 2 operations in Kubernetes
 

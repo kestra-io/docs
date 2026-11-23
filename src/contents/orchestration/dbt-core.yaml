@@ -277,3 +277,19 @@ seeHow:
   cta:
     label: "Book a Demo"
     href: "/demo"
+
+resources:
+  title: "More on dbt and Kestra"
+  items:
+    - kind: "resource"
+      title: "dbt orchestration: how it works and which tool to use"
+      description: "When dbt runs and what surrounds it: triggers after ingestion, selective runs, retries and alerts, with tool comparisons."
+      href: "/resources/data/dbt-orchestration"
+    - kind: "docs"
+      title: "Edit and run dbt projects from Kestra"
+      description: "Clone a dbt project from Git, edit models in the Code Editor and run them in a flow."
+      href: "/docs/how-to-guides/dbt"
+    - kind: "plugin"
+      title: "dbt plugin reference"
+      description: "Every dbt task and its properties."
+      href: "/plugins/plugin-dbt"

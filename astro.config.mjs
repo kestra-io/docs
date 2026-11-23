@@ -87,6 +87,7 @@ export default defineConfig({
               imageService: imageService(),
           }),
     trailingSlash: "never",
+    compressHTML: true,
     integrations: [
         cloudflareAutoFormat,
         vue({
