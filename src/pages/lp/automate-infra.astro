@@ -10,6 +10,7 @@ import Faq from "~/components/lp/shared/Faq.astro"
 import ClosingBanner from "~/components/lp/shared/ClosingBanner.astro"
 import Translation from "~/components/lp/shared/Translation.astro"
 import VideoDialog from "~/components/common/VideoDialog.astro"
+import Meeting from "~/components/demo/Meeting.vue"
 
 import { Icon } from "astro-icon/components"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
@@ -280,20 +281,19 @@ const migrationSteps = [
                     Rolling it out? Book a call
                 </a>
             </div>
-            <div class="start-actions" data-variant-only="awx">
+            <div class="start-offer" data-variant-only="awx">
+                <Meeting
+                    {routePath}
+                    variant="plain"
+                    submitLabel={awxContent.heroCard.submitLabel}
+                    client:idle
+                />
                 <a
-                    class="btn-start"
+                    class="self-serve"
                     href="#run-a-playbook"
                     data-event="lp_infra_hero_try_click"
                 >
-                    Run your playbooks in Kestra
-                </a>
-                <a
-                    class="btn-call"
-                    href="#contact-sales"
-                    data-event="lp_infra_hero_call_click"
-                >
-                    Book a call
+                    {awxContent.heroCard.selfServe} →
                 </a>
             </div>
             <p class="proof">
@@ -304,17 +304,6 @@ const migrationSteps = [
                     30,000+ GitHub stars
                 </a>{" "}
                 · Apache 2.0
-            </p>
-            <p class="story" data-variant-only="awx">
-                CAGIP, the IT production arm of Crédit Agricole, transformed its
-                infrastructure operations and scaled data workflows across more
-                than 100 clusters with Kestra.
-                <a
-                    href="/stories/credit-agricole"
-                    data-event="lp_infra_story_click"
-                >
-                    Read the story
-                </a>
             </p>
         </div>
     </Hero>
@@ -394,6 +383,17 @@ const migrationSteps = [
                 </div>
             </li>
         </ol>
+        <p class="story">
+            CAGIP, the IT production arm of Crédit Agricole, transformed its
+            infrastructure operations and scaled data workflows across more than
+            100 clusters with Kestra.
+            <a
+                href="/stories/credit-agricole"
+                data-event="lp_infra_story_click"
+            >
+                Read the story
+            </a>
+        </p>
         {/* Dec 15: Will's "Ansible Playbooks for your whole team" video goes
          * here, under the three steps, as a VideoDialog like the vRA one. */}
     </section>
@@ -604,7 +604,17 @@ const migrationSteps = [
             </a>
         </div>
     </section>
-    <UseCases {routePath} {...content.useCases} {formProps} />
+    <div data-variant-hide="awx">
+        <UseCases {routePath} {...content.useCases} {formProps} />
+    </div>
+    <div data-variant-only="awx">
+        <UseCases
+            {routePath}
+            {...awxContent.useCases}
+            formProps={{ submitLabel: awxContent.heroCard.submitLabel }}
+            formId="job-template-session"
+        />
+    </div>
     <div data-variant-hide="awx">
         <Faq {...content.faq} />
         <ClosingBanner {...content.closingBanner} />
@@ -704,13 +714,33 @@ const migrationSteps = [
         gap: 0.75rem;
     }
 
+    /* G_AWX hero card: the offer form, then the self-serve way out. */
+    .start-offer {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-top: -1.25rem;
+    }
+
+    .self-serve {
+        color: var(--lp-purple);
+        font-size: $font-size-sm;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
     .story {
-        margin: 0;
-        padding-top: 0.75rem;
-        border-top: 1px solid var(--lp-border-subtle);
+        @include lp-container(820px);
+        margin-top: 2.5rem;
+        margin-bottom: 0;
         color: var(--lp-content-secondary);
-        font-size: $font-size-xs;
-        line-height: 1.45;
+        font-size: $font-size-base;
+        line-height: 1.5;
+        text-align: center;
         a {
             color: var(--lp-purple);
             font-weight: 600;

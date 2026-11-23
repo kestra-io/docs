@@ -9,47 +9,48 @@ export interface Props {
     headingLines: string[]
     bullets: { text: string; strong: boolean }[]
     formProps?: Record<string, unknown>
+    /** Anchor of the form card, for pages that show this section twice. */
+    formId?: string
 }
 
-const { routePath, headingLines, bullets, formProps = {} } = Astro.props
+const {
+    routePath,
+    headingLines,
+    bullets,
+    formProps = {},
+    formId = "contact-sales",
+} = Astro.props
 ---
 
 <section class="use-cases">
     <div class="inner">
         <div class="copy">
             <h2 data-usal="fade-r delay-0 duration-500 ease-out">
-                {
-                    headingLines.map((line, index) => (
-                        <>
-                            {index > 0 && <br />}
-                            {line}
-                        </>
-                    ))
-                }
+                {headingLines.map((line, index) => (
+                    <>
+                        {index > 0 && <br />}
+                        {line}
+                    </>
+                ))}
             </h2>
             <ul
                 class="bullets"
                 data-usal="fade-r delay-100 duration-500 ease-out"
             >
-                {
-                    bullets.map((bullet) => (
-                        <li>
-                            <Icon
-                                name="mdi:check-circle-outline"
-                                class="check"
-                            />
-                            {bullet.strong ? (
-                                <strong>{bullet.text}</strong>
-                            ) : (
-                                <span>{bullet.text}</span>
-                            )}
-                        </li>
-                    ))
-                }
+                {bullets.map((bullet) => (
+                    <li>
+                        <Icon name="mdi:check-circle-outline" class="check" />
+                        {bullet.strong ? (
+                            <strong>{bullet.text}</strong>
+                        ) : (
+                            <span>{bullet.text}</span>
+                        )}
+                    </li>
+                ))}
             </ul>
         </div>
 
-        <div class="form-card" id="contact-sales">
+        <div class="form-card" id={formId}>
             <slot name="form">
                 <Meeting
                     {routePath}

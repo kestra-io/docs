@@ -322,10 +322,33 @@ export const awxContent = {
 
     playbookFlow,
 
+    /* The offer: one of their job templates, running in Kestra, on a
+     * 30-minute call. The call form books it; the self-serve run stays
+     * one link below for visitors who would rather try alone. */
     heroCard: {
-        title: "Try it with your own playbooks",
-        sub: "One command starts Kestra. One flow runs a playbook. About five minutes on a laptop or a VM.",
+        title: "See your AWX job template run in Kestra",
+        sub: "Book 30 minutes and bring one job template or playbook. We run it in Kestra with you, then map the rest of your setup.",
+        submitLabel: "Book my 30-minute session",
+        selfServe: "Rather try it alone? Run a playbook in 5 minutes",
     },
+
+    useCases: {
+        headingLines: ["Bring one job template.", "We run it with you."],
+        bullets: [
+            {
+                text: "Pick one AWX job template or playbook, ideally one your team runs every week.",
+                strong: true,
+            },
+            {
+                text: "On the call, it runs in Kestra and you read its log per host.",
+                strong: false,
+            },
+            {
+                text: "Then we map the rest of your setup: inventories, credentials, schedules and approvals.",
+                strong: false,
+            },
+        ],
+    } satisfies Omit<UseCasesProps, "routePath">,
 
     translation: {
         heading: "What your AWX setup becomes",
@@ -340,10 +363,13 @@ export const awxContent = {
     faq: { items: awxFaqItems } satisfies FaqProps,
 
     closingBanner: {
-        heading: "Run your first playbook in Kestra",
-        sub: "Free, open source and self-hosted. One command, then one flow.",
-        cta: { text: "Start the 5-minute run", href: "#run-a-playbook" },
-        event: "lp_infra_hero_try_click",
-        reassurance: "Apache 2.0, self-hosted on your own machines.",
+        heading: "Bring one AWX job template",
+        sub: "30 minutes, your playbook, running in Kestra.",
+        cta: {
+            text: "Book my 30-minute session",
+            href: "#job-template-session",
+        },
+        event: "lp_infra_offer_click",
+        reassurance: "Kestra is open source under Apache 2.0, and self-hosted.",
     } satisfies ClosingBannerProps,
 }
