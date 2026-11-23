@@ -111,7 +111,7 @@ Once a case is assessed, Kestra's dynamic task capabilities can automate the pla
 
 ### Ensuring Secure and Auditable Implementation
 
-Security and auditability are built into Kestra's design. By centralizing workflow definitions in version-controlled YAML files, every change to a process is tracked and reviewed. Kestra’s robust [workflow orchestration security](/resources/infrastructure/workflow-orchestration-security) features, including granular access controls and a centralized system for [workflow secret management](/docs/best-practices/secrets-management), ensure that sensitive case data is handled appropriately. Every execution, every decision, and every system interaction is logged automatically, creating an immutable audit trail for compliance and reporting.
+Security and auditability are built into Kestra's design. By centralizing workflow definitions in version-controlled YAML files, every change to a process is tracked and reviewed. Kestra’s robust [workflow orchestration security](/resources/infrastructure/workflow-orchestration-security) features, including granular access controls and a centralized system for [workflow secret management](/docs/concepts/secret#keep-secrets-out-of-logs), ensure that sensitive case data is handled appropriately. Every execution, every decision, and every system interaction is logged automatically, creating an immutable audit trail for compliance and reporting.
 
 ## Case Management Across Industries: Real-World Applications
 

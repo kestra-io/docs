@@ -10,7 +10,7 @@ How to use Azure DevOps to create a CI/CD pipeline for your Kestra flows.
 
 ## Automate Kestra deployments with Azure DevOps
 
-Azure DevOps allows you to automate the validation and deployment of your Kestra flows using YAML-based pipelines. Follow the steps below to configure a simple Terraform-based CI/CD setup.
+Azure Pipelines can validate and deploy your Kestra flows on every change to your repository. This page shows two approaches: [`kestractl`](../../../kestra-cli/kestractl/index.md), the command-line client for the Kestra API, and the [Kestra Terraform provider](../../../13.terraform/index.mdx).
 
 :::alert{type="info"}
 For flows managed through CI/CD, add the [`system.readOnly`](../../../06.concepts/system-labels/index.md#systemreadonly) label set to `"true"` so the UI editor is disabled and production configurations stay immutable. This is especially recommended for critical production flows:
@@ -21,25 +21,9 @@ labels:
 ```
 :::
 
-### Connect to your repository
+## Deploy flows with kestractl
 
-First, connect your pipeline to a code repository such as **GitHub**, **Azure Repos Git**, or **Bitbucket**.
-
-![az-devops-image-repo](./az-devops-image-repo.png)
-
-### Select your repository
-
-Choose the repository where your Kestra flows are stored.
-
-### Configure your pipeline
-
-Start with a minimal pipeline template or an existing configuration.
-
-![az-devops-image-config](./az-devops-image-config.png)
-
-### Example pipeline
-
-Below is a complete example of a Terraform pipeline that validates and deploys Kestra resources.
+This `azure-pipelines.yml` runs on every push to `main`. It installs `kestractl`, validates the flows in the `flows/` directory, and deploys them to the `prod` namespace:
 
 ```yaml
 trigger:
@@ -48,13 +32,53 @@ trigger:
       - main
 
 pool:
-  name: test-pool
+  vmImage: ubuntu-latest
+
+variables:
+  KESTRACTL_HOST: https://kestra.example.com
+
+steps:
+  - script: curl -fsSL https://raw.githubusercontent.com/kestra-io/kestractl/main/install-scripts/install.sh | INSTALL_DIR=$(Agent.TempDirectory) bash
+    displayName: Install kestractl
+
+  - script: $(Agent.TempDirectory)/kestractl flows validate flows/
+    displayName: Validate flows
+    env:
+      KESTRACTL_TOKEN: $(KESTRACTL_TOKEN)
+
+  - script: $(Agent.TempDirectory)/kestractl flows deploy flows/ --namespace prod --override --fail-fast
+    displayName: Deploy flows
+    env:
+      KESTRACTL_TOKEN: $(KESTRACTL_TOKEN)
+```
+
+- `flows validate` checks each flow against your Kestra instance and fails the step if any flow is invalid.
+- `flows deploy` creates the flows, and `--override` updates flows that already exist. `--namespace prod` deploys every flow to `prod`; omit it to keep the namespace written in each flow file.
+- The agent must be able to reach your Kestra instance. For a Kestra instance on a private network, use a [self-hosted agent](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/agents).
+
+### Configure credentials
+
+`kestractl` reads its settings from `KESTRACTL_*` environment variables. Pipeline variables such as `KESTRACTL_HOST` are passed to scripts automatically, but secret variables aren't, so map them in each step's `env`, as the example does for `KESTRACTL_TOKEN`.
+
+In the pipeline's **Variables** settings, add `KESTRACTL_TOKEN` with an [API token](../../../07.enterprise/03.auth/api-tokens/index.md) (Enterprise Edition and Cloud) and select **Keep this value secret**. In Open-Source, add `KESTRACTL_USERNAME` and `KESTRACTL_PASSWORD` instead, and map both in `env`. To target a tenant other than `main`, set `KESTRACTL_TENANT`.
+
+## Deploy flows with Terraform
+
+If you manage Kestra resources with the [Kestra Terraform provider](../03.terraform/index.md), run Terraform from the pipeline. This example uses the [Terraform extension](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks), which you install from **Organization Settings** > **Extensions**, and stores the Terraform state in an S3 bucket:
+
+```yaml
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: ubuntu-latest
 
 stages:
-  - stage: tfvalidate
+  - stage: deploy
     jobs:
-      - job: deploy
-        continueOnError: false
+      - job: terraform
         steps:
           - task: TerraformInstaller@1
             inputs:
@@ -65,7 +89,7 @@ stages:
               provider: 'aws'
               command: 'init'
               backendServiceAWS: 'aws_s3'
-              backendAWSBucketName: 'eu-north-1'
+              backendAWSBucketName: '<your-state-bucket>'
               backendAWSKey: 'kestra-tf'
 
           - task: TerraformTaskV4@4
@@ -80,27 +104,9 @@ stages:
               environmentServiceNameAWS: 'aws_s3'
 ```
 
-### How it works
+1. `TerraformInstaller@1` installs Terraform on the agent.
+2. The first `TerraformTaskV4@4` task runs `init`. This example keeps the state in AWS S3 through the `aws_s3` service connection; the extension also supports Azure and Google Cloud backends.
+3. The second task runs `validate` to check the configuration.
+4. The last task runs `apply` to create or update the Kestra resources.
 
-- The pipeline runs automatically whenever the **`main`** branch is updated (for example, after merging a pull request).
-- The **pool** defines the agent that runs your pipeline. For setup details, refer to the [Azure DevOps documentation](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=azure-devops&tabs=yaml,browser).
-- The **Terraform extension** manages installation, validation, and deployment of Terraform resources.
-
-To install the Terraform extension, navigate to **Organization Settings → Extensions**, then browse the Marketplace to install it.
-
-![image-terraform](./az-devops-image-terraform.png)
-
-### Task breakdown
-
-This pipeline includes one installation step and three Terraform tasks:
-
-1. **Install Terraform** — The `TerraformInstaller@1` task installs Terraform at runtime.
-2. **Initialize Terraform** — The first `TerraformTaskV4@4` runs the `init` command. In this example, the backend uses an AWS S3 bucket, but you can use Azure RM, AWS, or GCP.
-3. **Validate configuration** — The second task runs the `validate` command to ensure the configuration is correct.
-4. **Apply changes** — The final task executes the `apply` command to deploy your Terraform-managed resources.
-
-![image-green-pipeline](./az-devops-image-green-pipleine.png)
-
----
-
-For more details, refer to the [Kestra Terraform provider documentation](../../../13.terraform/index.mdx).
+For the provider configuration and flow resources, see [Terraform](../03.terraform/index.md).

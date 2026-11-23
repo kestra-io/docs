@@ -72,7 +72,7 @@ username: "{{ secret('POSTGRES_USERNAME') }}"
 password: "{{ secret('POSTGRES_PASSWORD') }}"
 ```
 
-See [Secrets in Open Source](../../15.how-to-guides/secrets/index.md) or [Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md) (Enterprise Edition).
+See [Secrets in Open Source](../../06.concepts/04.secret/index.md#secrets-in-open-source) or [Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md) (Enterprise Edition).
 
 ## Installing plugins
 

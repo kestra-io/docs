@@ -4,7 +4,7 @@ info:
   license:
     name: Apache 2.0
     url: https://raw.githubusercontent.com/kestra-io/kestra/master/LICENSE
-  version: 2.0.10
+  version: 2.0.12
 tags:
 - name: Flows
   description: Flows API
@@ -1709,6 +1709,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ServiceInstance'
+        '401':
+          description: Authentication required
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '403':
+          description: Access denied
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+  /api/v1/{tenant}/concurrency-limit:
+    put:
+      tags:
+      - Flows
+      summary: Update a flow, namespace or tenant concurrency limit
+      description: Leave the namespace and the flow empty to target the tenant limit, and the flow empty to target a namespace limit.
+      operationId: updateScopedConcurrencyLimit
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConcurrencyLimitController.ConcurrencyLimitUpdateRequest'
+        required: true
+      responses:
+        '200':
+          description: updateScopedConcurrencyLimit 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConcurrencyLimit'
         '401':
           description: Authentication required
           content:
@@ -11534,7 +11578,7 @@ components:
         namespace:
           maxLength: 150
           minLength: 1
-          pattern: ^[a-z0-9][a-z0-9._-]*
+          pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
           type: string
         revision:
           minimum: 1
@@ -11570,7 +11614,7 @@ components:
         workerSelector:
           description: Routing requirements (tags + fallback) for this flow.
           allOf:
-          - $ref: '#/components/schemas/WorkerSelector'
+          - $ref: '#/components/schemas/FlowWorkerSelector'
         deleted:
           type: boolean
     AbstractGraph:
@@ -11630,7 +11674,7 @@ components:
         workerSelector:
           description: Routing requirements (tags + fallback) for this trigger.
           allOf:
-          - $ref: '#/components/schemas/WorkerSelector'
+          - $ref: '#/components/schemas/FlowWorkerSelector'
         policyRefs:
           type: array
           description: 'Identifiers of `enforcement: REFERENCE` governance policies to attach to this trigger and everything nested under it (Enterprise Edition; ignored in the open-source edition).'
@@ -12198,6 +12242,8 @@ components:
           type: string
         kind:
           $ref: '#/components/schemas/TriggerType'
+        blockedBy:
+          $ref: '#/components/schemas/Blocker'
       description: |-
         API DTO for exposing trigger state to the UI.
 
@@ -12238,7 +12284,7 @@ components:
         namespace:
           maxLength: 150
           minLength: 1
-          pattern: ^[a-z0-9][a-z0-9._-]*
+          pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
           type: string
         id:
           maxLength: 150
@@ -12349,6 +12395,26 @@ components:
           type: string
         currentPassword:
           type: string
+    Blocker:
+      title: What blocks the trigger's flow from running.
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/Blocker.Reason'
+        ids:
+          title: The ids of what blocks the flow, such as the rejecting policies when the reason is POLICY.
+          type: array
+          items:
+            type: string
+        message:
+          title: The message reported to the user.
+          type: string
+    Blocker.Reason:
+      type: string
+      enum:
+      - UNKNOWN
+      - POLICY
+      - POLICY_CHECK_FAILED
     BlueprintController.ApiBlueprintItem:
       type: object
       properties:
@@ -12525,6 +12591,21 @@ components:
           type: string
         flowId:
           type: string
+        running:
+          minimum: 0
+          type: integer
+          format: int32
+    ConcurrencyLimitController.ConcurrencyLimitUpdateRequest:
+      required:
+      - running
+      type: object
+      properties:
+        namespace:
+          type: string
+          nullable: true
+        flowId:
+          type: string
+          nullable: true
         running:
           minimum: 0
           type: integer
@@ -13193,7 +13274,7 @@ components:
           namespace:
             maxLength: 150
             minLength: 1
-            pattern: ^[a-z0-9][a-z0-9._-]*
+            pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
             type: string
           revision:
             minimum: 1
@@ -13219,7 +13300,7 @@ components:
           workerSelector:
             description: Routing requirements (tags + fallback) for this flow.
             allOf:
-            - $ref: '#/components/schemas/WorkerSelector'
+            - $ref: '#/components/schemas/FlowWorkerSelector'
           deleted:
             type: boolean
           finally:
@@ -13320,7 +13401,7 @@ components:
           namespace:
             maxLength: 150
             minLength: 1
-            pattern: ^[a-z0-9][a-z0-9._-]*
+            pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
             type: string
           revision:
             minimum: 1
@@ -13352,7 +13433,7 @@ components:
           workerSelector:
             description: Routing requirements (tags + fallback) for this flow.
             allOf:
-            - $ref: '#/components/schemas/WorkerSelector'
+            - $ref: '#/components/schemas/FlowWorkerSelector'
           deleted:
             type: boolean
           tasks:
@@ -13480,7 +13561,7 @@ components:
             additionalProperties:
               type: object
           workerSelector:
-            $ref: '#/components/schemas/WorkerSelector'
+            $ref: '#/components/schemas/FlowWorkerSelector'
           concurrency:
             $ref: '#/components/schemas/Concurrency'
           quotas:
@@ -13699,7 +13780,7 @@ components:
           namespace:
             maxLength: 150
             minLength: 1
-            pattern: ^[a-z0-9][a-z0-9._-]*
+            pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
             type: string
           revision:
             minimum: 1
@@ -13725,7 +13806,7 @@ components:
           workerSelector:
             description: Routing requirements (tags + fallback) for this flow.
             allOf:
-            - $ref: '#/components/schemas/WorkerSelector'
+            - $ref: '#/components/schemas/FlowWorkerSelector'
           deleted:
             type: boolean
           variables:
@@ -13755,6 +13836,21 @@ components:
               $ref: '#/components/schemas/Quota'
           source:
             type: string
+    FlowWorkerSelector:
+      type: object
+      properties:
+        tags:
+          description: 'Required tags used to route to a matching Worker Queue. Each tag is an RFC 1123 label: lowercase alphanumerics and hyphens, must start and end with alphanumeric, max 63 chars per tag, max 20 tags. The list, or any of its tags, can be a Pebble expression, rendered when the job is routed; a tag rendering to an empty value is ignored, and when no tag is left the selector is treated as unset.'
+          allOf:
+          - $ref: '#/components/schemas/Property_List_String__'
+        match:
+          description: 'How selector tags are matched against a Worker Queue''s tag set. ALL: queue tags must be a superset of the selector tags. ANY: queue tags must intersect the selector tags. Defaults to ALL when null.'
+          allOf:
+          - $ref: '#/components/schemas/WorkerSelectorMatch'
+        fallback:
+          description: Strategy when no worker is available. Defaults to FAIL when null.
+          allOf:
+          - $ref: '#/components/schemas/WorkerQueueFallback'
     FollowLogEvent:
       type: object
       properties:
@@ -14252,7 +14348,7 @@ components:
       type: object
       properties:
         id:
-          pattern: ^[a-z0-9][a-z0-9._-]*
+          pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
           type: string
     Output:
       required:
@@ -14944,6 +15040,19 @@ components:
       oneOf:
       - type: object
       - type: string
+    Property_List_String__:
+      type: object
+      properties:
+        expression:
+          type: string
+        value:
+          type: array
+          items:
+            type: string
+      description: 'Required tags used to route to a matching Worker Queue. Each tag is an RFC 1123 label: lowercase alphanumerics and hyphens, must start and end with alphanumeric, max 63 chars per tag, max 20 tags. The list, or any of its tags, can be a Pebble expression, rendered when the job is routed; a tag rendering to an empty value is ignored, and when no tag is left the selector is treated as unset.'
+      oneOf:
+      - type: object
+      - type: string
     Property_Object_:
       type: object
       properties:
@@ -15612,7 +15721,7 @@ components:
         workerSelector:
           description: Routing requirements (tags + fallback) for this task.
           allOf:
-          - $ref: '#/components/schemas/WorkerSelector'
+          - $ref: '#/components/schemas/FlowWorkerSelector'
         policyRefs:
           type: array
           description: 'Identifiers of `enforcement: REFERENCE` governance policies to attach to this task and everything nested under it (Enterprise Edition; ignored in the open-source edition).'
@@ -15964,23 +16073,6 @@ components:
       - WAIT
       - CANCEL
       - IGNORE
-    WorkerSelector:
-      type: object
-      properties:
-        tags:
-          maxItems: 20
-          type: array
-          description: 'Required tags used to route to a matching Worker Queue. Each tag is an RFC 1123 label: lowercase alphanumerics and hyphens, must start and end with alphanumeric, max 64 chars per tag, max 20 tags.'
-          items:
-            type: string
-        match:
-          description: 'How selector tags are matched against a Worker Queue''s tag set. ALL: queue tags must be a superset of the selector tags. ANY: queue tags must intersect the selector tags. Defaults to ALL when null.'
-          allOf:
-          - $ref: '#/components/schemas/WorkerSelectorMatch'
-        fallback:
-          description: Strategy when no worker is available. Defaults to FAIL when null.
-          allOf:
-          - $ref: '#/components/schemas/WorkerQueueFallback'
     WorkerSelectorMatch:
       type: string
       description: 'How selector tags are matched against a Worker Queue''s tag set. ALL: queue tags must be a superset of the selector tags. ANY: queue tags must intersect the selector tags. Defaults to ALL when null.'

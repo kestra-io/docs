@@ -93,7 +93,7 @@ Manually rotating secrets is error-prone and often neglected. A mature secret ma
 
 ### Integrating secrets securely into CI/CD and GitOps pipelines
 
-In CI/CD and GitOps workflows, secrets must be injected into build and deployment environments dynamically. Platforms like GitHub Actions provide built-in secret stores, but for enterprise-wide consistency, integrating with a central vault is preferable. The pipeline should fetch secrets at runtime and expose them as environment variables or temporary files, ensuring they are never written to disk permanently or logged in build outputs. Following [secrets management best practices in Kestra](/docs/best-practices/secrets-management) ensures this integration is seamless and secure.
+In CI/CD and GitOps workflows, secrets must be injected into build and deployment environments dynamically. Platforms like GitHub Actions provide built-in secret stores, but for enterprise-wide consistency, integrating with a central vault is preferable. The pipeline should fetch secrets at runtime and expose them as environment variables or temporary files, ensuring they are never written to disk permanently or logged in build outputs. Following [secrets management best practices in Kestra](/docs/concepts/secret#keep-secrets-out-of-logs) ensures this integration is seamless and secure.
 
 ## Kestra's Approach to Declarative Workflow Secret Management
 
@@ -101,7 +101,7 @@ Kestra provides a powerful, declarative framework for managing secrets directly 
 
 ### Secure secret storage within Kestra
 
-Kestra includes a built-in secret store that allows you to manage sensitive credentials at the namespace level. This ensures that secrets are isolated between different teams or projects. You can define secrets through the UI or API, and they are stored securely, ready to be accessed by your workflows. For detailed guidance, you can learn how to [configure secrets in Kestra](/docs/how-to-guides/secrets).
+Kestra includes a built-in secret store that allows you to manage sensitive credentials at the namespace level. This ensures that secrets are isolated between different teams or projects. You can define secrets through the UI or API, and they are stored securely, ready to be accessed by your workflows. For detailed guidance, you can learn how to [configure secrets in Kestra](/docs/concepts/secret#secrets-in-open-source).
 
 ### Seamless integration with external secret managers
 
