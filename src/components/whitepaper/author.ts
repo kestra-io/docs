@@ -14,3 +14,12 @@ export const AUTHOR = {
 export const authorMarkdown = () =>
     `## About the author\n\n${AUTHOR.bio}\n\n` +
     AUTHOR.links.map((l) => `[${l.label}](${l.href})`).join(" · ")
+
+/** The author as a schema.org Person, for `<SchemaArticle author>`. */
+export const authorSchema = () => ({
+    "@type": "Person" as const,
+    name: AUTHOR.name,
+    jobTitle: AUTHOR.role.replace(/, Kestra$/, ""),
+    worksFor: { "@id": "https://kestra.io/#organization" },
+    sameAs: AUTHOR.links.map((l) => l.href),
+})

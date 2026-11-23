@@ -5,6 +5,8 @@ import CardGrid from "~/components/card/CardGrid.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Quotes from "~/components/common/Quotes.vue"
 import Faq from "~/components/common/Faq.vue"
+import SchemaArticle from "~/components/common/SchemaArticle.astro"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 import BlogToc from "~/components/blogs/BlogToc.vue"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
 import Hero from "~/components/airflow-2-eol-whitepaper/Hero.astro"
@@ -30,40 +32,7 @@ const tocLinks = headings.map((h) => ({
     depth: h.depth,
 }))
 
-const jsonLinkedData = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    mainEntityOfPage: {
-        "@type": "WebPage",
-        "@id": Astro.url.href,
-    },
-    headline: page.title,
-    image: [`${Astro.url.origin}/og-image.png`],
-    author: { "@id": "https://kestra.io/#organization" },
-    ...(page.date ? { datePublished: page.date } : {}),
-    ...(page.lastUpdated ? { dateModified: page.lastUpdated } : {}),
-    publisher: {
-        "@type": "Organization",
-        "@id": "https://kestra.io/#organization",
-        name: "Kestra",
-        logo: { "@type": "ImageObject", url: "https://kestra.io/logo.svg" },
-    },
-    description,
-}
-
 const faqItems = page.faq ?? []
-const faqSchema =
-    faqItems.length > 0
-        ? {
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              mainEntity: faqItems.map((item) => ({
-                  "@type": "Question",
-                  name: item.question,
-                  acceptedAnswer: { "@type": "Answer", text: item.answer },
-              })),
-          }
-        : null
 
 const COME_AWAY_ITEMS = [
     {
@@ -119,20 +88,13 @@ const quotes = [
                 />
             )
         }
-        <script
-            is:inline
-            type="application/ld+json"
-            set:html={JSON.stringify(jsonLinkedData)}
+        <SchemaArticle
+            headline={page.title}
+            {description}
+            datePublished={page.date}
+            dateModified={page.lastUpdated}
         />
-        {
-            faqSchema && (
-                <script
-                    is:inline
-                    type="application/ld+json"
-                    set:html={JSON.stringify(faqSchema)}
-                />
-            )
-        }
+        <SchemaFAQ items={faqItems} />
     </Fragment>
     <Hero />
     <CardGrid title="What you'll come away with" items={COME_AWAY_ITEMS} />
