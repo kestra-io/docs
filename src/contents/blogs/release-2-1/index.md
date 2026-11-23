@@ -337,29 +337,16 @@ A few plugin additions from this cycle:
 
 ## Additional Improvements
 
-- [Flow trigger `waitForAllRetries`](/docs/workflow-components/triggers/flow-trigger#suppressing-intermediate-failure-alerts-during-retries): skip the intermediate failures between flow-level retries, so alerting flows don't fire for runs that recover.
-- [Reschedule an execution](/docs/workflow-components/execution#schedule-and-reschedule-an-execution): move a scheduled execution that hasn't started yet, instead of deleting and recreating it.
-- [`isLastDayOfMonth()`](/docs/expressions/functions/dates#islastdayofmonth): a function for month-end logic in conditions.
-- [Input descriptions as tooltips](/docs/workflow-components/inputs#description-display-mode): keep long forms compact by showing descriptions behind a help icon.
-- [Bulk resume of breakpoints](/docs/how-to-guides/pause-resume#bulk-resuming-paused-workflows): the **Resume** bulk action now also resumes executions stopped at a debug breakpoint.
-- [Docker `tmpfs` mounts](/docs/task-runners/types/docker-task-runner#in-memory-mounts-tmpfs): give a task container a fast, in-memory scratch directory.
-- [Labels in test fixtures](/docs/enterprise/governance/unit-tests#set-execution-labels-in-fixtures) (EE): test flows that branch on execution labels.
 - [Context panel](/docs/ui/flows#context-panel-enterprise) (EE): the flow editor's Context panel is redesigned as one searchable tree of inputs, variables, KV pairs, and secrets, with click-to-copy expressions.
-- [Sessions](/docs/enterprise/auth/authentication#sessions) (EE): signing in on another browser or device no longer signs you out elsewhere.
 - [Expired sessions](/docs/ui#expired-sessions): when a session ends, sign in again and pick up where you were, without losing unsaved changes.
+- [Sessions](/docs/enterprise/auth/authentication#sessions) (EE): signing in on another browser or device no longer signs you out elsewhere.
+- [Reschedule an execution](/docs/workflow-components/execution#schedule-and-reschedule-an-execution): move a scheduled execution that hasn't started yet, instead of deleting and recreating it.
+- [Flow trigger `waitForAllRetries`](/docs/workflow-components/triggers/flow-trigger#suppressing-intermediate-failure-alerts-during-retries): skip the intermediate failures between flow-level retries, so alerting flows don't fire for runs that recover.
 - [Invitations](/docs/enterprise/auth/invitations) (EE): invite up to 25 users at once with the same groups and roles.
-- [Impersonate service accounts](/docs/enterprise/auth/rbac#impersonate) (EE): Instance Owners can check what a service account can access, as they already could for users.
-- [LDAP user attributes](/docs/enterprise/auth/sso/ldap) (EE): new LDAP users get their email and name from your directory.
-- [Dedicated storage and secrets settings](/docs/enterprise/governance/tenants#dedicated-storage-and-secrets-backend-per-tenant) (EE): set a namespace's own storage or secrets manager in a form, and saved values are kept when you edit them.
-- [Change password in OSS](/docs/administrator-guide/basic-auth-troubleshooting#change-password): users with database-stored credentials can change their password from the user menu.
-- [Task runner details](/docs/task-runners/types/kubernetes-task-runner) (EE): cloud task runners add a **Runner details** artifact with the configuration each run actually used.
-- [PEM certificates for gRPC](/docs/configuration/enterprise-and-advanced#pem-certificates) (EE): use cert-manager and Kubernetes `tls` Secrets for worker mTLS without converting them.
 - [HTTPS behind a reverse proxy](/docs/configuration/observability-and-networking#secure-cookies): HSTS and `Secure` cookies now apply when a proxy forwards HTTPS, and `kestra.webserver.cookies.secure` turns the cookie attribute on or off explicitly.
-- [Plugin downloads through a proxy](/docs/administrator-guide/mitm-proxy-configuration#authenticate-plugin-downloads-with-the-proxy): install plugins behind a proxy that requires a username and password.
 - [`PurgeMetrics`](/docs/administrator-guide/purge#purge-metrics): clean up execution metrics on their own, much faster than through `PurgeExecutions`.
-- [Executor loop intervals](/docs/configuration/plugins-and-execution#executor-loop-intervals): tune how often the executor checks SLA deadlines and delayed executions.
-- [`thinking-effort: none`](/docs/configuration/enterprise-and-advanced) (EE): use AI Copilot with OpenAI and Azure OpenAI reasoning deployments.
-- [Plugin endpoints](/docs/plugin-developer-guide/plugin-ui#running-backend-logic-with-plugin-endpoints) (preview): plugin UI components can call server-side logic defined in the plugin.
+
+The [2.1 changelog](/docs/releases/changelog/v2.1.0) lists every other improvement in this release.
 
 ## Upgrade and Migration
 
