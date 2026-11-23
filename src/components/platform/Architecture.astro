@@ -6,7 +6,7 @@ import ArchitectureDiagram from "./ArchitectureDiagram.astro"
 
 const EDITIONS = [
     { label: "Open source", tint: "#8405ff" },
-    { label: "Enterprise", tint: "#5ee3ae" },
+    { label: "Enterprise", tint: "#7e68ff" },
 ]
 
 const PARTS = [
@@ -167,10 +167,9 @@ const PARTS = [
 
 <style lang="scss">
     @use "/src/components/about/style/section" as *;
-    @use "./style/platform" as *;
 
     .architecture {
-        @include tinted;
+        background: var(--ks-background-body);
 
         :global([data-edition="ent"]) {
             display: none;
@@ -332,7 +331,7 @@ const PARTS = [
             background:
                 radial-gradient(
                     ellipse 60% 50% at 100% 0%,
-                    rgba(94, 227, 174, 0.1),
+                    rgba(126, 104, 255, 0.1),
                     transparent 70%
                 ),
                 radial-gradient(
@@ -358,11 +357,6 @@ const PARTS = [
         mask: var(--pixels) no-repeat center / contain;
         opacity: 0.18;
         pointer-events: none;
-
-        .architecture:has(#edition-tab-2[aria-selected="true"]) & {
-            background: #5ee3ae;
-            opacity: 0.3;
-        }
     }
 
     .copy {
@@ -397,29 +391,90 @@ const PARTS = [
     }
 
     .parts {
-        @include card-grid(3);
+        --rule: 1px solid var(--ks-border-primary);
 
-        margin-top: 1.5rem;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin: 0 calc(-1 * var(--inset));
+        padding: 0;
+        border-bottom: var(--rule);
+        list-style: none;
+
+        @include media-breakpoint-down(xl) {
+            margin: 1rem 0 0;
+            border: var(--rule);
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
 
         li {
-            @include card;
-
+            position: relative;
+            padding: clamp(2.5rem, 4vw, 3.5rem) var(--inset)
+                clamp(3rem, 5vw, 4.5rem);
+            background: var(--ks-background-body);
             cursor: default;
-            transition:
-                border-color 0.2s ease,
-                box-shadow 0.2s ease;
+            transition: background-color 0.3s ease;
+
+            @include media-breakpoint-down(lg) {
+                padding-block: 2rem 2.25rem;
+            }
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: -1px;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: var(--ks-content-primary);
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+            }
 
             &:hover,
             &:focus-visible {
                 outline: none;
-                border-color: var(--ks-content-link);
-                box-shadow: 0 10px 30px rgba(132, 5, 255, 0.12);
+                background: var(--ks-background-secondary);
+
+                &::before {
+                    transform: none;
+                }
             }
+
+            & + li {
+                border-left: var(--rule);
+
+                @include media-breakpoint-down(lg) {
+                    border-left: 0;
+                    border-top: var(--rule);
+                }
+            }
+        }
+
+        h3 {
+            margin: 0 0 1rem;
+            font-size: 1.375rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            max-width: 26rem;
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--ks-content-secondary);
         }
     }
 
     .closing {
-        margin: 2.5rem 0 0.75rem;
+        margin: 3rem 0 0.75rem;
         font-size: $font-size-lg;
         font-weight: 600;
         color: var(--ks-content-primary);
