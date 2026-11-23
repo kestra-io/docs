@@ -23,7 +23,7 @@
                 <OpenInNew class="stats-link-icon" />
             </a>
             <small v-if="!kestraCore && activeVersionInfo?.minCoreCompatibilityVersion" class="stats-core">
-                Min.compatible Kestra ver.:
+                Min. compatible Kestra ver.:
                 <span class="core-ver">{{ activeVersionInfo?.minCoreCompatibilityVersion }}</span>
             </small>
         </div>

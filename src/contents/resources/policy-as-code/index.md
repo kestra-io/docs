@@ -1,95 +1,175 @@
 ---
-title: "Policy as Code: Automating Governance Across Your SDLC"
-description: "Policy as Code (PaC) defines and enforces organizational rules through machine-readable definitions. Learn how to integrate PaC into your CI/CD and IaC workflows with orchestration to ensure compliance, security, and operational consistency."
-metaTitle: "Policy as Code: Automated Governance & Compliance"
-metaDescription: "Define and enforce security, compliance, and operational rules using Policy as Code. Learn how orchestration automates checks in CI/CD and IaC pipelines."
+title: "Policy as Code: What It Is, Tools, and Examples"
+description: "Policy as code writes security, compliance, and operational rules as versioned code that a policy engine evaluates automatically. This guide covers how it works, examples, where to enforce policies, a comparison of policy as code tools, and how to implement it."
+metaTitle: "Policy as Code: Definition, Tools & Examples"
+metaDescription: "What policy as code is, how it works, and where to enforce it. Rego examples, a comparison of OPA, Sentinel, Kyverno, Checkov and more, and an implementation plan."
 tag: infrastructure
 date: 2026-10-23
+lastUpdated: 2026-11-04
 slug: "policy-as-code"
 faq:
-  - question: "What is the difference between Policy as Code and Infrastructure as Code?"
-    answer: "Infrastructure as Code (IaC) manages and provisions infrastructure through code, like Terraform or CloudFormation. Policy as Code (PaC) defines rules and constraints for that infrastructure (and other aspects of the SDLC) also through code. IaC describes what to build; PaC describes the rules that what you build must respect."
-  - question: "Why do modern engineering teams need Policy as Code?"
-    answer: "Modern engineering teams adopt Policy as Code to automate compliance, enforce security guardrails, and reduce manual review bottlenecks. It applies the same rules in every environment and allows policies to be version-controlled and tested just like application code, integrating governance directly into the development lifecycle."
-  - question: "What are the key elements of an automated security policy?"
-    answer: "An automated security policy, defined as code, typically includes declarative rule definitions (e.g., Rego for OPA), a policy engine to evaluate these rules, integration points within CI/CD or deployment pipelines, and mechanisms for reporting or enforcing violations. It covers aspects like resource configurations, access controls, and data handling."
-  - question: "Can Policy as Code replace manual architecture reviews?"
-    answer: "No. Policy as Code takes the repetitive checks out of architecture reviews, such as tagging, encryption, or network exposure, so reviewers can focus on design. New patterns, trade-offs, and exceptions still need human judgment; PaC enforces the rules that come out of those reviews."
-  - question: "What are some popular Policy as Code frameworks?"
-    answer: "Popular Policy as Code frameworks include Open Policy Agent (OPA) for general-purpose policy enforcement, HashiCorp Sentinel for HashiCorp products such as HCP Terraform and Terraform Enterprise, Conftest for testing configuration files against OPA policies, and Kyverno for Kubernetes-native policy management. These tools allow organizations to write, test, and deploy policies in a declarative, version-controlled manner."
-  - question: "How does Kestra help with Policy as Code?"
-    answer: "Kestra orchestrates Policy as Code by integrating policy engines like OPA into automated workflows. It can trigger policy evaluations at various stages (e.g., during CI/CD, before IaC apply, or as a continuous audit), fail or pause a run when a rule is broken, and record every decision in the execution history. Kestra Enterprise also has its own Policies feature to enforce rules on flows themselves."
+  - question: "What is policy as code?"
+    answer: "Policy as code is the practice of writing security, compliance, and operational rules as code, storing them in version control, and having a policy engine evaluate them automatically wherever a change happens: in pull requests, CI pipelines, infrastructure plans, Kubernetes admission, or running environments. A rule such as 'every resource needs an owner tag' becomes a tested, reviewable file instead of a line in a wiki."
+  - question: "What is an example of policy as code?"
+    answer: "A Rego policy that rejects any Terraform plan creating a resource without owner and cost_center tags is a typical example. Others include blocking public storage buckets, requiring encryption at rest, limiting instance sizes per environment, rejecting container images from untrusted registries, and requiring resource limits on Kubernetes workloads."
+  - question: "What are the most common policy as code tools?"
+    answer: "Open Policy Agent (OPA) with the Rego language is the most widely used general-purpose engine. Conftest runs OPA policies against configuration files, and OPA Gatekeeper enforces them in Kubernetes. Kyverno is a Kubernetes-native alternative with YAML policies. HashiCorp Sentinel is built into HCP Terraform and Terraform Enterprise. Checkov and Trivy scan IaC with built-in rules, and Cloud Custodian, AWS Config, and Azure Policy enforce rules on running cloud resources."
+  - question: "What is the difference between policy as code and infrastructure as code?"
+    answer: "Infrastructure as code describes what to build, such as servers, networks, and databases. Policy as code describes the rules that what you build must respect, such as encryption, tagging, network exposure, or allowed sizes. IaC produces changes; policy as code decides whether those changes are allowed."
+  - question: "What is the difference between OPA and Sentinel?"
+    answer: "OPA is an open-source, general-purpose engine that works with Terraform, Kubernetes, CI pipelines, APIs, and any JSON input. Sentinel is HashiCorp's proprietary policy framework, available in HashiCorp's commercial products such as HCP Terraform and Terraform Enterprise. HCP Terraform supports both, so teams that want one policy language across tools usually choose OPA."
+  - question: "Should I use OPA Gatekeeper or Kyverno for Kubernetes?"
+    answer: "Both are Kubernetes admission controllers. Gatekeeper uses OPA and Rego, which makes sense if you already write Rego for Terraform or CI. Kyverno writes policies as Kubernetes YAML and can also mutate and generate resources, which many teams find easier to adopt when Kubernetes is their only target."
+  - question: "Is compliance as code the same as policy as code?"
+    answer: "They overlap. Policy as code is the mechanism: rules written as code and evaluated by an engine. Compliance as code applies that mechanism to regulatory frameworks such as SOC 2, PCI DSS, or HIPAA, mapping each control to automated checks and keeping the results as audit evidence."
 ---
 
-> **TL;DR** — Policy as Code (PaC) writes security, compliance, and operational rules as versioned, testable code that a policy engine such as Open Policy Agent evaluates automatically. Checks run inside CI/CD and infrastructure pipelines, so a non-compliant change is blocked before it ships instead of being found in a later audit.
+Policy as code is the practice of writing security, compliance, and operational rules as code, storing them in Git, and letting a policy engine evaluate them automatically every time something changes. Instead of a reviewer remembering that production databases must be encrypted, a rule checks every change and blocks the ones that break it, with the reason attached.
 
-In the world of cloud-native development, where infrastructure is code and deployments are automated, governance can often feel like a bottleneck. Manual reviews struggle to keep pace with rapid changes, leading to security vulnerabilities, compliance gaps, and inconsistent configurations. The challenge isn't just to move fast, but to move fast *safely* and *consistently*.
+> **TL;DR** — Policy as code has three parts: rules written in a policy language, an engine that evaluates them against structured input, and an enforcement point that acts on the decision. Rules are versioned, reviewed, and tested like application code. Enforce them where changes happen: in pull requests, at infrastructure plan time, at Kubernetes admission, when someone requests a resource, and continuously against what is already running. Open Policy Agent is the most common general-purpose engine; Kyverno, Sentinel, Checkov, and the cloud-native policy services cover narrower scopes.
 
-Policy as Code (PaC) offers a solution by translating organizational rules, security standards, and compliance requirements into machine-readable definitions. This approach embeds governance directly into your automated pipelines, ensuring that policies are enforced proactively, every time, without human intervention.
+## What is policy as code?
 
-## What is Policy as Code?
+Policy as code (PaC) turns organizational rules into machine-readable definitions that are evaluated automatically. Every implementation has three parts:
 
-Policy as Code (PaC) is the practice of managing and automating policies by defining them in a high-level, declarative language. Instead of relying on manual reviews, checklists, or human-readable documents stored in a wiki, PaC translates these rules into a format that machines can understand and enforce automatically. These policies are stored in a version control system like Git, where they can be reviewed, tested, and deployed just like any other piece of code.
+1.  **The policy.** A rule written in a policy language, such as Rego for Open Policy Agent, YAML for Kyverno, or Sentinel's own language. For example: "every resource needs `owner` and `cost_center` tags".
+2.  **The engine.** The component that evaluates the policy against structured input, usually JSON: a Terraform plan, a Kubernetes manifest, a request payload, or an inventory of running resources. The engine returns a decision, such as allow, deny, or a list of violations.
+3.  **The enforcement point.** The place that asks for the decision and acts on it: a CI job that fails, an admission controller that rejects a pod, a workflow that stops before provisioning, or a scheduled audit that opens a ticket.
 
-This approach is a core component of [Everything as Code (EaC)](/resources/infrastructure/everything-as-code), where all aspects of system configuration and operation are managed declaratively. By codifying policies, teams create a single source of truth for governance that is transparent, repeatable, and auditable.
+Because policies are code, they live in Git, go through pull requests, have tests, and keep a history. The same rule is applied identically in every environment, and every decision can be logged as audit evidence.
 
-### Policy as Code vs. Infrastructure as Code
+## How policy as code works
 
-While closely related, Policy as Code and Infrastructure as Code (IaC) serve distinct but complementary purposes.
+A mature policy as code practice follows the same lifecycle as application code:
 
-**[Infrastructure as Code (IaC)](/resources/infrastructure/everything-as-code)** uses declarative files (like Terraform HCL or AWS CloudFormation YAML) to define the desired state of your infrastructure: which servers, networks, and databases to create. It describes *what* to build.
+1.  **Write the rule.** Translate a requirement, such as "no public buckets", into a policy file. Keep each rule small, named, and owned by a team.
+2.  **Test it.** Write unit tests with sample inputs that should pass and fail. `opa test` and `conftest verify` run these tests in CI.
+3.  **Distribute it.** Publish the policies to every enforcement point from one source of truth, as a bundle, a container image, or a Git reference, so CI, Kubernetes, and workflows all use the same version.
+4.  **Evaluate it.** The enforcement point sends the input to the engine and gets a decision with the reasons.
+5.  **Enforce and record.** Block, warn, or let the change through depending on the rule's severity, and keep the decision, the input, and the policy version as evidence.
 
-**Policy as Code (PaC)** defines the constraints, rules, and guardrails for that infrastructure. It describes *how* resources should be configured and operated to meet security, compliance, and operational standards. PaC answers questions like:
-- Can this S3 bucket be public?
-- Does this virtual machine have the required tags?
-- Is this database encrypted at rest?
+Start new rules in an audit-only mode that reports violations without blocking, measure how many existing resources would fail, fix or grant exceptions, then switch to blocking. Rules that block on day one tend to be disabled on day two.
 
-In practice, IaC provisions the infrastructure, and PaC validates that the provisioned state complies with organizational rules. You can't have effective, automated governance at scale without both.
+## Policy as code examples
 
-## Why Policy as Code is Essential for Modern Engineering
+The rules teams write first are usually the same:
 
-PaC moves governance from manual review after the fact to automatic checks at the moment a change is proposed.
+| Rule | Input evaluated | Typical enforcement point |
+|---|---|---|
+| Every resource has `owner` and `cost_center` tags | Terraform or OpenTofu plan | CI or the provisioning workflow |
+| Storage buckets are never public | Terraform plan, cloud inventory | Plan time, then continuous audit |
+| Databases are encrypted at rest | Terraform plan, cloud inventory | Plan time, then continuous audit |
+| Instance sizes are limited per environment | Request or plan | Request form, plan time |
+| Container images come from approved registries | Kubernetes manifest | Admission controller |
+| Workloads declare CPU and memory limits | Kubernetes manifest | Admission controller |
+| Production changes happen inside maintenance windows | Change request | Workflow before execution |
+| Only approved regions are used | Plan, request | Plan time, request form |
 
-- **Automate Compliance:** For organizations subject to regulations like GDPR, HIPAA, or SOC 2, PaC provides an automated way to enforce and prove compliance. For example, you can write policies to ensure all data processing adheres to strict [data residency](/resources/infrastructure/data-residency) requirements.
-- **Enforce Security Guardrails:** PaC allows security teams to define and enforce best practices automatically. Instead of discovering a publicly exposed S3 bucket during an audit, a policy can prevent it from ever being created. This embeds security directly into the development workflow, a key principle of DevSecOps.
-- **Reduce Human Error and Manual Overhead:** Manual reviews are slow, inconsistent, and prone to error. By automating policy checks, you free up senior engineers from tedious review tasks and ensure that rules are applied consistently every time. This accelerates the entire development lifecycle.
-- **Ensure Consistency Across Environments:** PaC prevents configuration drift between development, staging, and production environments. Because policies are code, the same set of rules can be applied everywhere, guaranteeing that what you test is what you deploy. It is a natural extension of [infrastructure automation](/resources/infrastructure/automation).
+Here is the first rule written in Rego for Conftest. It reads the JSON output of `terraform show -json` and reports every created or updated resource that supports tags but is missing a required one:
 
-## Popular Policy as Code Tools and Frameworks
+```rego
+package main
 
-Several tools have emerged to help teams implement Policy as Code. While they share a common goal, they differ in their language, scope, and integration points.
+import rego.v1
 
-- **[Open Policy Agent (OPA)](https://www.openpolicyagent.org/docs):** an open-source, general-purpose policy engine and a graduated CNCF project. OPA separates policy decisions from enforcement. Policies are written in Rego, and OPA can be called from Kubernetes admission control, CI/CD pipelines, APIs, and microservices.
-- **[Conftest](https://www.conftest.dev/):** a command-line tool that tests structured files (Terraform plans, Kubernetes manifests, Dockerfiles) against Rego policies. It is the simplest way to put OPA into a pipeline.
-- **[HashiCorp Sentinel](https://developer.hashicorp.com/sentinel):** the policy framework built into HashiCorp's commercial products, such as HCP Terraform and Terraform Enterprise. HCP Terraform also [accepts OPA policies](https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement).
-- **[Kyverno](https://kyverno.io/docs/):** a Kubernetes-native policy engine. Policies are Kubernetes resources that can validate, mutate, or generate configurations, which suits teams focused on Kubernetes governance.
+required_tags := {"owner", "cost_center"}
 
-For rules that span clouds, Kubernetes, and pipelines, OPA is the common choice, and Kestra can [orchestrate OPA](/orchestration/opa) directly.
+deny contains msg if {
+	some rc in input.resource_changes
+	some action in rc.change.actions
+	action in {"create", "update"}
+	"tags" in object.keys(rc.change.after)
+	tags := object.get(rc.change.after, "tags", {})
+	missing := required_tags - {key | some key, _ in tags}
+	count(missing) > 0
+	msg := sprintf("%s is missing required tags: %v", [rc.address, missing])
+}
+```
 
-## Orchestrating Policy as Code with Kestra
+Running `conftest test plan.json` returns a non-zero exit code and one message per violation, which is all an enforcement point needs to block the change and explain why.
 
-A policy engine like OPA makes decisions, but it doesn't take action on its own. You need an orchestration layer to integrate these policy checks into your workflows and enforce the outcomes. This is where Kestra comes in.
+## Where to enforce policies
 
-Kestra runs policy checks as steps in your workflows, so you can:
-- **Integrate policy evaluation** at any stage of your CI/CD and IaC pipelines.
-- **Automate enforcement** by stopping a non-compliant deployment, rolling back a change, or creating an alert.
-- **Trigger remediation workflows** to automatically fix policy violations.
-- **Manage the policy lifecycle** by testing and promoting policies through different environments.
+The same rule is worth checking at several points, because each catches a different failure:
 
-Every check becomes part of a recorded execution. You can start with a simple [CI/CD policy gate](/blueprints/opa-policy-gate-ci) and add approvals or remediation steps as the rules mature.
+| Enforcement point | What it catches | Typical tools |
+|---|---|---|
+| Pull request and CI | Non-compliant code before it is merged | Conftest, Checkov, Trivy |
+| Infrastructure plan | What will actually change, with computed values | OPA or Sentinel on the plan JSON |
+| Request time | Invalid self-service requests, before anything runs | Validation in the request form or workflow |
+| Kubernetes admission | Manifests applied by any path, including `kubectl` | OPA Gatekeeper, Kyverno |
+| Runtime and continuous audit | Drift, console changes, resources created outside IaC | Cloud Custodian, AWS Config, Azure Policy, scheduled scans |
+| Workflow and automation level | How automation itself runs: credentials, concurrency, ownership | Orchestrator governance, such as Kestra Policies |
 
-### A Practical Example: OPA Policy Gate for IaC
+Checks in pull requests give the fastest feedback. Checks at plan time are the most accurate for infrastructure. Continuous audit is the only way to catch what was changed outside the pipeline, which is why it pairs naturally with [drift detection](/resources/infrastructure/terraform-drift-detection). Request-time checks matter for [self-service infrastructure](/resources/infrastructure/self-service-infrastructure), where a rejected request should fail before any resource exists.
 
-A common scenario: block Terraform changes that would create an unencrypted or public S3 bucket. The workflow below:
+## Policy as code tools
 
-1.  Clones the repository that holds the Terraform code and the Rego policies into a shared working directory.
-2.  Runs `terraform plan` in the official Terraform image and exports the plan as JSON.
-3.  Tests the JSON plan against the policies with Conftest. Any `deny` rule that matches makes the command exit with an error, which fails the execution and blocks the change.
-4.  Alerts Slack when the gate fails.
+| Tool | Policy language | Scope | Open source | Best for |
+|---|---|---|---|---|
+| [Open Policy Agent (OPA)](https://www.openpolicyagent.org/docs) | Rego | Any JSON input: IaC, Kubernetes, APIs, CI | Yes, CNCF graduated | One policy language across many enforcement points |
+| [Conftest](https://www.conftest.dev/) | Rego | Configuration files: Terraform plans, manifests, Dockerfiles | Yes | Putting OPA policies into CI and workflows |
+| [OPA Gatekeeper](https://open-policy-agent.github.io/gatekeeper/website/docs/) | Rego | Kubernetes admission and audit | Yes | Teams already writing Rego elsewhere |
+| [Kyverno](https://kyverno.io/docs/) | Kubernetes YAML | Kubernetes admission, mutation, generation | Yes, CNCF | Kubernetes-only governance without learning Rego |
+| [HashiCorp Sentinel](https://developer.hashicorp.com/sentinel) | Sentinel | HCP Terraform, Terraform Enterprise, other HashiCorp products | No | Organizations standardized on HashiCorp's commercial stack |
+| [Checkov](https://www.checkov.io/) | Built-in rules, custom in Python or YAML | Static analysis of IaC and container files | Yes | Broad out-of-the-box security checks in CI |
+| [Trivy](https://trivy.dev/) | Built-in rules, custom in Rego | IaC misconfiguration, images, dependencies | Yes | One scanner for misconfigurations and vulnerabilities |
+| [Cloud Custodian](https://cloudcustodian.io/) | YAML | Running cloud resources, with remediation actions | Yes, CNCF | Continuous enforcement and clean-up in cloud accounts |
+| AWS Config, Azure Policy, Google Cloud Organization Policy | Provider-specific | Resources in one cloud | No | Native guardrails inside a single provider |
+
+IaC platforms such as HCP Terraform and Spacelift embed OPA or Sentinel to gate their own runs. That works well for changes that go through the platform, but the rules stop at its boundary: they do not see Kubernetes, scripts, or resources changed elsewhere. For a broader comparison of those platforms, see [Spacelift alternatives](/resources/infrastructure/spacelift-alternatives).
+
+### OPA vs. Sentinel
+
+OPA is open source, general-purpose, and evaluates any JSON, so the same Rego can govern Terraform plans, Kubernetes manifests, and API requests. Sentinel is proprietary and runs inside HashiCorp's commercial products. HCP Terraform supports both. Teams that want a single policy language across tools usually pick OPA; teams fully standardized on Terraform Enterprise often keep Sentinel.
+
+### OPA Gatekeeper vs. Kyverno
+
+Both enforce policies at Kubernetes admission and audit existing resources. Gatekeeper uses Rego through constraint templates, which is consistent if Rego is already used for infrastructure. Kyverno policies are plain Kubernetes YAML and can also mutate resources and generate defaults, which lowers the barrier for teams whose only target is Kubernetes.
+
+### Scanners vs. policy engines
+
+Checkov and Trivy ship hundreds of ready-made checks and give quick coverage of common misconfigurations. OPA and Kyverno start empty and enforce exactly the rules you write. Most teams combine them: a scanner for baseline security in CI, and a policy engine for organization-specific rules such as tags, sizes, regions, and ownership.
+
+## Policy as code vs. infrastructure as code vs. compliance as code
+
+| | Infrastructure as code | Policy as code | Compliance as code |
+|---|---|---|---|
+| **Describes** | What to build | Rules that what you build must respect | Regulatory controls mapped to automated checks |
+| **Example** | A Terraform module for a database | "Databases must be encrypted at rest" | SOC 2 control mapped to the encryption rule, with evidence kept |
+| **Output** | Changes to infrastructure | Allow, deny, or violations | Audit evidence and control status |
+| **Typical tools** | Terraform, OpenTofu, Pulumi, Ansible | OPA, Kyverno, Sentinel | Policy engines plus evidence collection and reporting |
+
+IaC produces changes, policy as code decides whether they are allowed, and compliance as code proves to an auditor that the decisions were made. All three are part of [everything as code](/resources/infrastructure/everything-as-code). For framework-specific guidance, see [SOC 2 compliance](/resources/infrastructure/soc2-compliance) and [PCI DSS compliance automation](/resources/infrastructure/pci-dss-compliance-automation).
+
+## How to implement policy as code
+
+1.  **Start with five rules that matter.** Pick the rules behind your last incidents and audit findings: public exposure, encryption, tags, regions, and sizes. A short list that blocks is worth more than a long list nobody reads.
+2.  **Choose one engine and one language.** If you have more than one enforcement point, OPA and Rego avoid writing the same rule three times. Add Kyverno or a scanner only where they clearly fit better.
+3.  **Store policies in their own repository.** Give them owners, pull request reviews, tests, and versioned releases, the same way you treat [pipelines as code](/resources/infrastructure/pipeline-as-code).
+4.  **Run in audit mode first.** Report violations without blocking, measure how many existing resources fail, then fix or document exceptions before switching to enforcement.
+5.  **Make exceptions explicit.** A rule without an exception process gets bypassed. Record exceptions in code, with an owner, a reason, and an expiry date.
+6.  **Enforce at more than one point.** Pull request for fast feedback, plan or request time for accuracy, and a scheduled audit for what changed outside the pipeline.
+7.  **Measure.** Track violations per week, time to fix, the number of active exceptions, and the share of changes evaluated. A rule that never fires may be useless; a rule that always fires may be wrong.
+
+Common pitfalls: rules that are too broad and block legitimate changes, policies copied into several places that drift apart, no tests on the policies themselves, and enforcement only at deploy time, which misses everything changed by hand afterwards.
+
+## Policy as code with Kestra
+
+Kestra is an open-source orchestration platform with declarative YAML workflows. It applies policy as code at two levels: it runs your policy engines as steps of infrastructure workflows, and it enforces policies on the workflows themselves.
+
+*   **Policy checks as workflow steps.** Run Conftest, Checkov, or Trivy in a container, or [orchestrate OPA](/orchestration/opa) directly, at any point of a workflow: after a Terraform plan, before a Kubernetes deployment, or on a self-service request. A failed check fails the run, and the result stays in the execution history.
+*   **Continuous audit on a schedule.** A [scheduled workflow](/docs/workflow-components/triggers/schedule-trigger) can evaluate policies against what is running and open a ticket or start a remediation workflow when something drifts, one of the recurring [day 2 operations](/resources/infrastructure/day-2-operations).
+*   **A lifecycle for the policies.** Workflows can test policies and [promote them between environments](/blueprints/opa-policy-lifecycle), so policy changes go through the same review and release path as code.
+*   **Policies for automation itself.** In Kestra Enterprise Edition, [Policies](/docs/enterprise/governance/policies) are written in YAML and inject, restrict, require, or deny configuration on flows and plugins across namespaces. They support an `EVALUATE` mode that reports violations before an `ACTIVE` mode blocks them, and child namespaces inherit their parents' rules and can only tighten them.
+
+### Example: a policy gate on a Terraform plan
+
+The workflow below clones the repository that holds the Terraform code (in a `terraform/` folder) and the Rego policies (in `policy/`), runs `terraform plan`, exports it as JSON, and tests it with Conftest. Any `deny` rule that matches, such as the tagging rule above, makes Conftest exit with an error, which fails the execution and notifies Slack.
 
 ```yaml
-id: terraform-opa-policy-gate
-namespace: company.team.guardrails
+id: terraform_policy_gate
+namespace: platform.guardrails
 
 inputs:
   - id: repo_url
@@ -106,23 +186,22 @@ tasks:
         branch: main
 
       - id: terraform_plan
-        type: io.kestra.plugin.scripts.shell.Commands
-        taskRunner:
-          type: io.kestra.plugin.scripts.runner.docker.Docker
+        type: io.kestra.plugin.terraform.cli.TerraformCLI
         containerImage: hashicorp/terraform:1.9
         env:
           AWS_ACCESS_KEY_ID: "{{ secret('AWS_ACCESS_KEY_ID') }}"
           AWS_SECRET_ACCESS_KEY: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-        commands:
+        beforeCommands:
           - terraform -chdir=terraform init -input=false
+        commands:
           - terraform -chdir=terraform plan -input=false -out=tfplan
           - terraform -chdir=terraform show -json tfplan > plan.json
 
-      - id: opa_policy_check
+      - id: policy_check
         type: io.kestra.plugin.scripts.shell.Commands
         taskRunner:
           type: io.kestra.plugin.scripts.runner.docker.Docker
-        containerImage: openpolicyagent/conftest:v0.56.0
+        containerImage: openpolicyagent/conftest:v0.71.1
         commands:
           - conftest test plan.json --policy policy/
 
@@ -131,41 +210,31 @@ errors:
     type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK_URL') }}"
     payload: |
-      {"text": "Policy gate failed for {{ inputs.repo_url }} (execution {{ execution.id }}). See the opa_policy_check logs for the violated rules."}
+      {"text": "Policy check failed for {{ inputs.repo_url }} (execution {{ execution.id }}). See the policy_check logs for the violated rules."}
 ```
 
-If you run OPA as a server, the Enterprise `io.kestra.plugin.ee.opa.policy.Evaluate` task can query it instead of running Conftest.
+The same pattern works for Kubernetes manifests: replace the plan step with the manifests to [test them with Conftest](/blueprints/conftest-opa-manifest-tests). If you run OPA as a server, the Enterprise `io.kestra.plugin.ee.opa.policy.Evaluate` task can query it instead of running Conftest. A simpler [CI policy gate](/blueprints/opa-policy-gate-ci) is available as a blueprint.
 
-A few things are worth noticing:
--   **Declarative:** the whole gate is one YAML file you can review and version next to the policies.
--   **Tool Agnostic:** While this example uses Terraform, the pattern is adaptable. You could replace the `terraform` commands with `kubectl` to [test Kubernetes manifests](/blueprints/conftest-opa-manifest-tests), or any other tool that can output JSON.
--   **Extensible:** this is a pass/fail gate. You can add a Jira ticket, or a [human approval step for sensitive changes](/blueprints/iac-opa-policy-gate-human-approval).
--   **Auditable:** Every execution of this workflow is logged, providing a clear audit trail of what was checked, when it was checked, and what the outcome was.
+### Example: a policy on the workflows themselves
 
-## Beyond Enforcement: Managing the Policy Lifecycle
+In Kestra Enterprise Edition, this Policy reports every flow in its namespace tree that does not declare a team label. Switching `enforcement` to `ACTIVE` turns the report into a block on save and execution.
 
-Policies change as the organization does, so they need the same lifecycle as application code.
+```yaml
+id: label-audit
+enforcement: EVALUATE
+rules:
+  - type: io.kestra.plugin.ee.rules.Require
+    on: FLOW
+    properties:
+      - labels.team
+    errorMessage: "Every flow must declare labels.team."
+```
 
-- **Version Control:** All policies should live in a [Git repository](/orchestration/git), making it the single source of truth. This enables code reviews, version history, and collaboration between security, compliance, and engineering teams.
-- **Policy Testing:** Just like application code, policies can have bugs. You should write unit tests for your policies to ensure they behave as expected. Frameworks like `opa test` allow you to validate your Rego logic against mock data.
-- **Automated Promotion:** Use orchestration to create a promotion path for your policies. A change might first be deployed to a development environment, run against a suite of tests, and then require approval before being [promoted to production](/blueprints/opa-policy-lifecycle).
-- **Continuous Auditing:** Don't just check policies at deploy time. Configuration drift can happen post-deployment due to manual changes or other unforeseen events. You can use scheduled Kestra workflows to continuously scan your environments and report on any policy violations, ensuring ongoing compliance. For rules on the workflows themselves, Kestra Enterprise has built-in [Policies](/docs/enterprise/governance/policies) that validate or block non-compliant flows.
+## Related reading
 
-Treating policies like application code, including [pipeline as code](/resources/infrastructure/pipeline-as-code) for their deployment, is what separates a mature PaC practice from a folder of scripts.
-
-## Where Policy as Code Pays Off
-
-Implementing PaC delivers value across multiple domains:
-
-- **Compliance Automation:** Automatically enforce standards required by GDPR, HIPAA, PCI-DSS, and SOC 2, so audit evidence comes from execution history rather than manual collection.
-- **Cloud Security Posture Management (CSPM):** Define and enforce security best practices for your cloud resources, such as restricting network access, enforcing encryption, and managing IAM roles. The same approach applies to [firewall automation](/resources/infrastructure/firewall-automation).
-- **DevOps Guardrails:** Prevent common mistakes and enforce organizational standards within CI/CD pipelines, such as ensuring container images are from trusted registries or that deployments have appropriate resource limits.
-- **AI Governance:** As organizations adopt AI, PaC can enforce rules on which models are allowed and which data they may see, as part of [AI governance workflows](/resources/ai/ai-governance-workflows).
-
-Pairing a policy engine like OPA with an orchestrator like Kestra turns governance into an automatic step of delivery rather than a review queue.
-
-## Related Concepts
-- [Orchestrate Terraform with Kestra](/orchestration/terraform)
-- [Workflow governance](/resources/ai/ai-governance-workflows)
-- [Human-in-the-loop orchestration](/resources/ai/human-in-the-loop-orchestration)
-- [Incident response automation](/resources/infrastructure/incident-response-automation)
+*   [Terraform drift detection](/resources/infrastructure/terraform-drift-detection): finding what changed outside the pipeline.
+*   [Self-service infrastructure](/resources/infrastructure/self-service-infrastructure): where request-time policies keep self-service safe.
+*   [Day 2 operations](/resources/infrastructure/day-2-operations): continuous audit and remediation after go-live.
+*   [GitOps](/resources/infrastructure/gitops): Git as the source of truth for infrastructure and policies.
+*   [Orchestrate Terraform with Kestra](/orchestration/terraform): running Terraform alongside the rest of the stack.
+*   [AI governance workflows](/resources/ai/ai-governance-workflows): the same principles applied to models and data.

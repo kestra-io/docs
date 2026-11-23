@@ -26,7 +26,7 @@
                 placeholder="Enter your email"
                 required
             />
-            <button type="submit" class="btn btn-sm btn-primary">
+            <button type="submit" class="btn btn-sm btn-secondary">
                 Subscribe
             </button>
         </form>

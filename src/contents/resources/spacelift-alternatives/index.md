@@ -82,7 +82,7 @@ Its main limitation is its focus on Terraform. It does not support other IaC fra
 
 [env0](https://www.env0.com) is an IaC automation platform that supports Terraform, OpenTofu, Terragrunt, Pulumi, CloudFormation, Kubernetes, and Helm. It is designed for developer self-service with centralized governance and cost control.
 
-A key feature of env0 is its focus on "Environments as a Service." It allows platform teams to create templates and self-service portals, enabling developers to provision and manage their own environments within predefined guardrails. Its cost management capabilities provide detailed visibility into the cost of IaC deployments, helping teams optimize cloud spend.
+A key feature of env0 is its focus on "Environments as a Service." It allows platform teams to create templates and [self-service portals](/resources/infrastructure/self-service-infrastructure), enabling developers to provision and manage their own environments within predefined guardrails. Its cost management capabilities provide detailed visibility into the cost of IaC deployments, helping teams optimize cloud spend.
 
 While env0 offers powerful IaC management features, its primary focus is on the IaC lifecycle. Orchestrating workflows that extend significantly beyond infrastructure provisioning may require integration with other tools, a consideration when weighing the [build vs. buy orchestration](/resources/infrastructure/build-vs-buy-orchestration) decision.
 

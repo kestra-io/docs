@@ -37,13 +37,13 @@ const { status, stats = [], quote, quoteBy, storyHref } = Astro.props
                     <p>{quote}</p>
                     {quoteBy && (
                         <footer>
-                            {quoteBy}
-                            {storyHref && (
-                                <>
-                                    ,{" "}
-                                    <a href={storyHref}>read the full story</a>
-                                </>
-                            )}
+                            {storyHref
+                                ? [
+                                      quoteBy,
+                                      ", ",
+                                      <a href={storyHref}>read the full story</a>,
+                                  ]
+                                : quoteBy}
                         </footer>
                     )}
                 </div>

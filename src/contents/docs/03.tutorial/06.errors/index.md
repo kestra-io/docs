@@ -47,7 +47,7 @@ errors:
 ```
 
 :::alert{type="info"}
-Note that we hide the Slack Webhook URL with a secret expression to not expose private endpoints or credentials. Follow our [Open-source Secrets guide](../../15.how-to-guides/secrets/index.md) or check out the [Enterprise Edition](../../oss-vs-paid/index.md) to incorporate your own external [Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md).
+Note that we hide the Slack Webhook URL with a secret expression to not expose private endpoints or credentials. Follow our [Open-source Secrets guide](../../06.concepts/04.secret/index.md#secrets-in-open-source) or check out the [Enterprise Edition](../../oss-vs-paid/index.md) to incorporate your own external [Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md).
 :::
 
 Taking our flow from earlier stages, we can add a Slack alert on an execution error like the following:

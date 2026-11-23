@@ -1,8 +1,8 @@
 import { Marked, type Tokens } from "marked"
 import { markedHighlight } from "marked-highlight"
 
-const LIGHT_THEME = "github-light-default"
-const DARK_THEME = "github-dark-default"
+const LIGHT_THEME = "kestra-light"
+const DARK_THEME = "kestra-dark"
 
 let instance: Marked | undefined
 let plainInstance: Marked | undefined
@@ -22,7 +22,7 @@ export function getMarked() {
             async highlight(code, lang) {
                 // Dynamic import, and the only way in: a static one would pull
                 // the core, the themes and the grammars into every route.
-                const { getHighlighterCore, resolveLanguage } = await import(
+                const { getHighlighterCore, resolveLanguage, pebbleTransformer } = await import(
                     "~/components/plugins/schema/shikiToolset"
                 )
                 // Languages the toolset doesn't carry render as plain text.
@@ -37,6 +37,7 @@ export function getMarked() {
                 const html = highlighter.codeToHtml(code, {
                     lang: loaded ? resolved : "text",
                     themes: { light: LIGHT_THEME, dark: DARK_THEME },
+                    transformers: [pebbleTransformer()],
                 })
                 // Strip Shiki's outer `<pre><code>`; marked-highlight adds its own.
                 return html

@@ -164,7 +164,8 @@ All Worker metrics except `worker.killed.count` are tagged with `worker_group`.
 |-|-|-|
 |worker.job.thread|`GAUGE`|Number of Worker threads|
 |worker.max.concurrency|`GAUGE`|Maximum number of jobs the Worker can hold: running threads plus jobs waiting in its buffer|
-|worker.running.count|`GAUGE`|Number of tasks currently running|
+|worker.running.count|`GAUGE`|Number of tasks currently running in the Worker|
+|worker.tasks.running.count|`GAUGE`|Number of tasks currently running, also tagged with `task_type`, `namespace_id`, `flow_id`, and `tenant_id`|
 |worker.pending.count|`GAUGE`|Number of tasks waiting for a free Worker thread|
 |worker.abandoned.count|`GAUGE`|Number of jobs past their deadline that still hold a Worker thread|
 |worker.queued.duration|`TIMER`|Time a task waited inside the Worker before running|
@@ -183,6 +184,8 @@ All Worker metrics except `worker.killed.count` are tagged with `worker_group`.
 |worker.queue.remaining.capacity|`GAUGE`|Remaining capacity of an internal Worker buffer, tagged by buffer `name`|
 |worker.queue.enqueued|`COUNTER`|Count of items added to an internal Worker buffer|
 |worker.queue.dequeued|`COUNTER`|Count of items taken from an internal Worker buffer|
+
+Before 2.0.10, Kestra didn't export the per-flow count of running tasks. In 1.x, it was part of `worker.running.count`. If a dashboard or alert filters `worker.running.count` by flow, namespace, or task type, query `worker.tasks.running.count` instead.
 
 :::alert{type="info"}
 The `worker.job.thread`, `worker.max.concurrency`, `worker.running.count`, and `worker.pending.count` metrics are intended for autoscaling [worker servers](../../08.architecture/02.server-components/index.md#worker).

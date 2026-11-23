@@ -11,7 +11,7 @@ Use Terraform to provision, manage, and automate changes to Kestra resources.
 ## Manage Kestra resources with Terraform
 
 The [official Kestra Terraform Provider](https://registry.terraform.io/providers/kestra-io/kestra/latest) lets you manage Kestra resources as code.
-You can define flows, templates, and namespaces declaratively — Terraform will handle creation, updates, and deletions automatically.
+Define flows, namespaces, and other resources declaratively, and Terraform creates, updates, and deletes them for you.
 
 :::alert{type="info"}
 For flows managed through CI/CD or infrastructure-as-code, add the [`system.readOnly`](../../../06.concepts/system-labels/index.md#systemreadonly) label set to `"true"` so the UI editor is disabled and production configurations stay immutable. This is especially recommended for critical production flows:
@@ -21,8 +21,6 @@ labels:
   system.readOnly: true
 ```
 :::
-
----
 
 ## Multitenancy
 
@@ -36,13 +34,11 @@ provider "kestra" {
 }
 ```
 
----
-
 ## Example configuration
 
-Start by creating a Terraform configuration file — typically named `provider.tf` or `main.tf` — to set up the Kestra provider.
+Start with a Terraform configuration file, typically named `provider.tf` or `main.tf`, that sets up the Kestra provider.
 
-### **`provider.tf`**
+### `provider.tf`
 
 ```hcl
 provider "kestra" {
@@ -53,18 +49,18 @@ provider "kestra" {
   tenant_id = "kestra-tech"
 
   # Optional: basic authentication
-  username = "john"
-  password = "my-password"
+  username = "admin@example.com"
+  password = var.kestra_password
 
   # Optional: API token (Enterprise Edition)
-  api_token = "my-api-token"
+  api_token = var.kestra_api_token
 
-  # Optional: JWT authentication
-  jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Iktlc3RyYS5pbyIsImlhdCI6MTUxNjIzOTAyMn0.hm2VKztDJP7CUsI69Th6Y5NLEQrXx7OErLXay55GD5U"
+  # Optional: JWT authentication (Enterprise Edition)
+  jwt = "<your-jwt>"
 }
 ```
 
-### **`version.tf`**
+### `version.tf`
 
 Define the provider source and version to ensure compatibility.
 
@@ -73,38 +69,21 @@ terraform {
   required_providers {
     kestra = {
       source  = "kestra-io/kestra"
-      version = "~> 0.18.1"
+      version = "~> 2.0"
     }
   }
 }
 ```
 
-### **`flows.tf`**
+### `flows.tf`
 
-Create a flow resource referencing a YAML file containing your flow definition.
+Create a flow resource from a YAML file that contains your flow definition. The flow's ID and namespace come from the file:
 
 ```hcl
 resource "kestra_flow" "flow_example" {
-  namespace = "company.team"
-  flow_id   = "myflow"
-  content   = file("kestra/flows/my-flow.yml")
+  content = file("kestra/flows/my-flow.yml")
 }
 ```
-
-### **`templates.tf`**
-
-Define a template resource. Use the `depends_on` attribute to ensure flows are deployed first.
-
-```hcl
-resource "kestra_template" "template_example" {
-  namespace   = "company.team"
-  template_id = "my-template"
-  content     = file("kestra/templates/my-template.yml")
-  depends_on  = [kestra_flow.flow_example]
-}
-```
-
----
 
 ## Next steps
 

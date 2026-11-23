@@ -24,6 +24,7 @@ The **Preferences** section includes the following options:
 - **Default Triggers Tab**: Tab selected when navigating to the triggers page.
 - **Auto Refresh Interval**: Seconds between automatic data refreshes on list pages.
 - **Playground**: Toggle to enable or disable the editor playground, which lets you run tasks individually.
+- **Default Flow Template**: YAML that opens in the editor when you create a flow from scratch. Leave out `id` and `namespace` and Kestra generates them. Invalid YAML shows a warning but is still saved. **Reset to default** clears it, so new flows use the instance template from [`kestra.flowTemplate`](../../configuration/03.observability-and-networking/index.md#default-flow-template), or the built-in Hello World flow if none is set. The template is stored in your browser and doesn't follow you to another browser or device.
 - **Customize Sidebar**: Drag and drop items to reorder the left navigation sidebar, or remove items you don't need.
 
 ## Profile
@@ -48,7 +49,8 @@ Below is a detailed list of the Appearance options you can configure:
 
 - **Theme Mode**: Dark or Light
 - **Chart Color Scheme**: Classic (red-green) or Kestra (pink-purple)
-- **Editor Theme**: Dark or Light
+- **Editor Theme in Dark Mode**: syntax colors of the code editor when the app is in Dark mode. Match the app theme (default), Kestra Dark, Kestra Dark Classic, Kestra Midnight or Kestra Dark High Contrast
+- **Editor Theme in Light Mode**: syntax colors of the code editor when the app is in Light mode. Match the app theme (default), Kestra Light or Kestra Light High Contrast
 - **Editor Font Size**: e.g., 12 — arbitrary integer number
 - **Editor Font Family**: one of the following:
   - Source Code Pro

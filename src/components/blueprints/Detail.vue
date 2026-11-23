@@ -17,7 +17,6 @@
     defineProps<{
         page: {
             id: string | number;
-            title: string;
         }
         flow: string
         graph?: any

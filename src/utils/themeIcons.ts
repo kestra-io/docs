@@ -11,6 +11,23 @@ const THEME_ICON_SELECTOR = "img[data-theme-responsive]"
 
 const SUFFIX = /(-white|-black)?\.svg$/
 
+/**
+ * Split the `[cls]` param of `/icons/[cls].svg` into the plugin class and the
+ * colour variant. Only the `-white` / `-black` suffixes this module produces
+ * count as a variant: plugin groups can contain hyphens
+ * (`io.kestra.plugin.ee.new-relic`), so splitting on the first `-` would
+ * truncate the class and fetch the API's generic fallback icon.
+ */
+export function parseIconParam(param: string): {
+    cls: string
+    modifier?: "white" | "black"
+} {
+    const match = /^(.+)-(white|black)$/.exec(param)
+    return match
+        ? { cls: match[1], modifier: match[2] as "white" | "black" }
+        : { cls: param }
+}
+
 export function isDarkTheme(): boolean {
     return document.documentElement.classList.contains("dark")
 }

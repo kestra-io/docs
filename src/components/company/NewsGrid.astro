@@ -5,6 +5,80 @@ import TeamsImages from "~/utils/teamsImages"
 const newsItems = [
     {
         id: 1,
+        title: "Kestra 2.0 Gives Enterprises One Governed Orchestration Layer Across Every Environment",
+        source: "Business Wire",
+        url: "https://www.businesswire.com/news/home/20260922260162/en/Kestra-2.0-Gives-Enterprises-One-Governed-Orchestration-Layer-Across-Every-Environment",
+        external: true,
+        logo: TeamsImages["businesswire.svg"],
+        width: 119,
+        height: 22,
+        invertOnDark: true,
+    },
+    {
+        id: 2,
+        title: "Kestra 2.0: Unified orchestration. Now, everywhere.",
+        source: "Medium",
+        url: "https://medium.com/@edarras/kestra-2-0-unified-orchestration-now-everywhere-b73212312596",
+        external: true,
+        logo: TeamsImages["medium.svg"],
+        width: 52,
+        height: 52,
+    },
+    {
+        id: 3,
+        title: "Kestra: Ops automation beyond CI/CD",
+        source: "heise",
+        url: "https://www.heise.de/en/background/Kestra-Ops-automation-beyond-CI-CD-11338819.html",
+        external: true,
+        logo: TeamsImages["heise.svg"],
+        width: 120,
+        height: 17,
+        invertOnDark: true,
+    },
+    {
+        id: 4,
+        title: "How Kestra Raised $25M: Our Series A Deck, Now Public",
+        source: "Medium",
+        url: "https://medium.com/@edarras/how-kestra-raised-25m-our-series-a-deck-now-public-8a5b2d625434",
+        external: true,
+        logo: TeamsImages["medium.svg"],
+        width: 52,
+        height: 52,
+    },
+    {
+        id: 5,
+        title: "French open-source orchestration platform Kestra raises $25M",
+        source: "The Next Web",
+        url: "https://thenextweb.com/news/orchestration-platform-kestra-raises-25m",
+        external: true,
+        logo: TeamsImages["thenextweb.svg"],
+        width: 82,
+        height: 21,
+    },
+    {
+        id: 6,
+        title: "Kestra raises $25M Series A to build the enterprise orchestration standard",
+        source: "Tech.eu",
+        url: "https://tech.eu/2026/03/31/kestra-raises-25m-series-a-to-build-the-enterprise-orchestration-standard/",
+        external: true,
+        logo: TeamsImages["techeu.svg"],
+        width: 53,
+        height: 40,
+        invertOnDark: true,
+    },
+    {
+        id: 7,
+        title: "Taking a declarative approach to data orchestration with this open source platform can improve reliability up to 97%",
+        source: "VentureBeat",
+        url: "https://venturebeat.com/data/taking-a-declarative-approach-to-data-orchestration-with-this-open-source",
+        external: true,
+        logo: TeamsImages["venturebeat.svg"],
+        width: 125,
+        height: 16,
+        invertOnDark: true,
+    },
+    {
+        id: 8,
         title: "Kestra raises another $8M for its open source orchestration platform",
         source: "TechCrunch",
         url: "https://techcrunch.com/2024/09/23/kestra-raises-another-8-million-for-its-open-source-orchestration-platform/",
@@ -14,7 +88,7 @@ const newsItems = [
         height: 51,
     },
     {
-        id: 2,
+        id: 9,
         title: "How Kestra Raised $8M: Our Seed Deck, Now Public",
         source: "Medium",
         url: "https://medium.com/@edarras/how-kestra-raised-8m-our-seed-deck-now-public-b3493f5a9fbb",
@@ -24,7 +98,7 @@ const newsItems = [
         height: 52,
     },
     {
-        id: 3,
+        id: 10,
         title: "Kestra is an open source data orchestration platform for complex workflows",
         source: "TechCrunch",
         url: "https://techcrunch.com/2023/10/04/kestra-is-an-open-source-data-orchestration-platform-for-complex-workflows/",
@@ -34,7 +108,7 @@ const newsItems = [
         height: 51,
     },
     {
-        id: 4,
+        id: 11,
         title: "Kestra: a Scalable Open-Source Orchestration and Scheduling Platform",
         source: "InfoQ",
         url: "https://www.infoq.com/news/2022/03/kestra-orchestration-platform/",
@@ -42,16 +116,6 @@ const newsItems = [
         logo: TeamsImages["infoq.svg"],
         width: 65,
         height: 19,
-    },
-    {
-        id: 5,
-        title: "Kestra Secures $8 Million to Simplify and Unify Orchestration for All Engineers",
-        source: "Medium",
-        url: "https://medium.com/@edarras/kestra-secures-8-million-to-simplify-and-unify-orchestration-for-all-engineers-28e7d61e3511",
-        external: true,
-        logo: TeamsImages["medium.svg"],
-        width: 52,
-        height: 52,
     },
 ]
 ---
@@ -68,7 +132,7 @@ const newsItems = [
             newsItems.map((news, index) => (
                 <div
                     class="news-card"
-                    data-usal={`fade-u delay-${200 + index * 100}`}
+                    data-usal={`fade-u delay-${200 + (index % 3) * 100}`}
                 >
                     <a
                         href={news.url}
@@ -82,6 +146,7 @@ const newsItems = [
                                 alt={news.source}
                                 width={news.width}
                                 height={news.height}
+                                class:list={[{ "invert-on-dark": news.invertOnDark }]}
                             />
                         </div>
                     </a>
@@ -152,14 +217,11 @@ const newsItems = [
         }
 
         @media (min-width: 1200px) {
-            &:nth-child(1),
-            &:nth-child(2),
-            &:nth-child(3) {
+            &:not(:nth-last-child(-n + 3)) {
                 border-bottom: 1px solid var(--ks-border-primary);
             }
 
-            &:nth-child(2),
-            &:nth-child(5) {
+            &:nth-child(3n + 2) {
                 border-left: 1px solid var(--ks-border-primary);
                 border-right: 1px solid var(--ks-border-primary);
             }
@@ -212,6 +274,10 @@ const newsItems = [
         img {
             margin-top: auto;
             align-self: flex-start;
+        }
+
+        :global(html.dark) & img.invert-on-dark {
+            filter: brightness(0) invert(1);
         }
     }
 

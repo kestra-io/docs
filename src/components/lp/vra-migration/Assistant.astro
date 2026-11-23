@@ -80,11 +80,10 @@ const points = [
             </p>
             <a href="#contact-sales" class="cta">Run it with us</a>
             <p class="webinar">
-                See it run live with our team:
-                <strong>November 4, 2 PM CET</strong> (8 AM ET), on LinkedIn and
-                YouTube.
+                See it run with our team in the
+                <strong>webinar replay</strong>.
                 <a href={WEBINAR_HREF} target="_blank" rel="noopener"
-                    >Register →</a
+                    >Watch it →</a
                 >
             </p>
         </div>
@@ -162,11 +161,12 @@ const points = [
 </section>
 
 <style lang="scss">
+    @use "/src/components/lp/shared/lp" as *;
+
     .assistant {
         position: relative;
         overflow: clip;
-        padding: 5rem 1rem;
-        background-color: var(--lp-bg-dark);
+        @include lp-section(var(--lp-bg-dark));
         background-image: radial-gradient(
             60% 55% at 85% 50%,
             rgba(109, 40, 217, 0.45) 0%,
@@ -178,8 +178,7 @@ const points = [
         display: flex;
         flex-direction: column;
         gap: 3rem;
-        max-width: 1140px;
-        margin-inline: auto;
+        @include lp-container;
         @include media-breakpoint-up(lg) {
             flex-direction: row;
             align-items: center;
@@ -198,14 +197,7 @@ const points = [
 
     h2 {
         margin: 0;
-        color: #ffffff;
-        font-size: 1.875rem;
-        font-weight: 600;
-        line-height: 1.0417;
-        letter-spacing: -0.045rem;
-        @include media-breakpoint-up(lg) {
-            font-size: 3rem;
-        }
+        @include lp-heading($color: #ffffff);
     }
 
     .lead-copy {
@@ -267,22 +259,8 @@ const points = [
         align-self: flex-start;
         align-items: center;
         justify-content: center;
-        min-width: 160px;
-        height: 50px;
-        padding: 0.5rem 1.25rem;
-        border: 1px solid #ffffff;
-        border-radius: 8px;
-        background-color: var(--lp-purple);
-        color: #ffffff;
-        font-size: $font-size-lg;
-        font-weight: 700;
         text-decoration: none;
-        box-shadow:
-            inset 0 0 14px 0 #be62ff,
-            2px 2px 5.5px rgba(0, 0, 0, 0.1);
-        &:hover {
-            background-color: #7737fe;
-        }
+        @include lp-cta;
     }
 
     .visual {
@@ -416,30 +394,21 @@ const points = [
 </style>
 
 <script>
-    // The session ends on November 4 at 4 PM CET (15:00 UTC). After that the
-    // line goes, until it is removed from the source.
-    const WEBINAR_ENDS = Date.UTC(2026, 10, 4, 15)
-
-    // Each click is pushed to the dataLayer for GTM: registrations happen on
-    // Luma, which reports nothing back.
+    // Each click is pushed to the dataLayer for GTM: the replay is on YouTube,
+    // which reports nothing back.
     function setUpWebinarLine() {
         const line = document.querySelector<HTMLElement>(".assistant .webinar")
         if (!line || line.dataset.ready !== undefined) return
-        if (Date.now() > WEBINAR_ENDS) {
-            line.remove()
-            return
-        }
         line.dataset.ready = ""
         const link = line.querySelector("a")!
         const track = () => {
             window.dataLayer = window.dataLayer || []
             window.dataLayer.push({
-                event: "vra_webinar_register_click",
-                webinar_session: "eu",
+                event: "vra_webinar_replay_click",
             })
         }
         link.addEventListener("click", track)
-        // Middle-click opens the session too; right-click only opens a menu.
+        // Middle-click opens the replay too; right-click only opens a menu.
         link.addEventListener("auxclick", (event) => {
             if (event.button === 1) track()
         })

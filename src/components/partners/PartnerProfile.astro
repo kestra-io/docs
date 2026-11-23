@@ -822,6 +822,16 @@ const related = listPartners(partner.type)
             margin: 0;
             color: var(--ks-content-secondary);
             line-height: 1.7;
+
+            :global(a) {
+                color: var(--ks-content-link);
+                text-decoration: underline;
+                text-underline-offset: 0.15em;
+            }
+
+            :global(a:hover) {
+                color: var(--ks-content-primary);
+            }
         }
 
         .visual {

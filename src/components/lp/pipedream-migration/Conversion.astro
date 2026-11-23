@@ -55,6 +55,8 @@ const points = [
 </section>
 
 <style lang="scss">
+    @use "/src/components/lp/shared/lp" as *;
+
     /* Same dark band as the vRA page's Migration Assistant section. */
     .conversion {
         position: relative;
@@ -72,8 +74,7 @@ const points = [
         display: flex;
         flex-direction: column;
         gap: 4rem;
-        max-width: 1140px;
-        margin-inline: auto;
+        @include lp-container;
         @include media-breakpoint-up(lg) {
             flex-direction: row;
             align-items: center;
@@ -92,14 +93,7 @@ const points = [
 
     h2 {
         margin: 0;
-        color: #ffffff;
-        font-size: 1.875rem;
-        font-weight: 600;
-        line-height: 1.0417;
-        letter-spacing: -0.045rem;
-        @include media-breakpoint-up(lg) {
-            font-size: 3rem;
-        }
+        @include lp-heading($color: #ffffff);
     }
 
     .lead-copy {
@@ -140,22 +134,8 @@ const points = [
         align-self: flex-start;
         align-items: center;
         justify-content: center;
-        min-width: 160px;
-        height: 50px;
-        padding: 0.5rem 1.25rem;
-        border: 1px solid #ffffff;
-        border-radius: 8px;
-        background-color: var(--lp-purple);
-        color: #ffffff;
-        font-size: $font-size-lg;
-        font-weight: 700;
         text-decoration: none;
-        box-shadow:
-            inset 0 0 14px 0 #be62ff,
-            2px 2px 5.5px rgba(0, 0, 0, 0.1);
-        &:hover {
-            background-color: #7737fe;
-        }
+        @include lp-cta;
     }
 
     .visual {

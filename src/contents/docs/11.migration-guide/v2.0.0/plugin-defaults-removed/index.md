@@ -172,7 +172,7 @@ Create this via `POST /api/v1/{tenant}/policies` (tenant level). The `target.nam
 
 ### Step 3 — flow-level pluginDefaults
 
-Flow-level `pluginDefaults` never supported `forced` in 1.x (it was stripped with a warning). Two migration options:
+Flow-level `pluginDefaults` never supported `forced` in 1.x (it was stripped with a warning). Three migration options:
 
 **Option A — inline the values (recommended for one or two flows).** Copy each default's `values` onto the matching tasks and delete the `pluginDefaults:` block.
 
@@ -227,7 +227,63 @@ tasks:
     script: ...
 ```
 
-A `REFERENCE` Policy applies only to flows that list it in `policyRefs`. `ACTIVE` Policies apply automatically to every flow in scope.
+A `REFERENCE` Policy applies only where a flow, task, or trigger lists it in `policyRefs`. `ACTIVE` Policies apply automatically to every flow in scope.
+
+**Option C: one reference Policy per connection, referenced from each task.** Use this when a flow's `pluginDefaults` picked a database account or another connection. Create one `REFERENCE` Policy per account, and list it in `policyRefs` on each task that uses that account. The account stays visible on each task, as it was in the flow's `pluginDefaults`, and two tasks in the same flow can use different accounts.
+
+**Before (1.x flow):**
+
+```yaml
+id: orders-report
+namespace: company.team
+
+pluginDefaults:
+  - type: io.kestra.plugin.jdbc.oracle.Query
+    values:
+      url: jdbc:oracle:thin:@orders-db:1521/ORDERS
+      username: "{{ secret('ORDERS_USER') }}"
+      password: "{{ secret('ORDERS_PASSWORD') }}"
+
+tasks:
+  - id: daily_totals
+    type: io.kestra.plugin.jdbc.oracle.Query
+    sql: SELECT SUM(amount) FROM orders WHERE order_date = TRUNC(SYSDATE)
+```
+
+**After: the reference Policy for the account (created once, on `company.team`):**
+
+```yaml
+id: oracle-orders
+description: "Orders database account."
+enforcement: REFERENCE
+rules:
+  - type: io.kestra.plugin.ee.rules.Add
+    on: PLUGIN
+    where:
+      - field: type
+        operator: STARTS_WITH
+        value: io.kestra.plugin.jdbc.oracle
+    values:
+      url: jdbc:oracle:thin:@orders-db:1521/ORDERS
+      username: "{{ secret('ORDERS_USER') }}"
+      password: "{{ secret('ORDERS_PASSWORD') }}"
+```
+
+**After: the flow:**
+
+```yaml
+id: orders-report
+namespace: company.team
+
+tasks:
+  - id: daily_totals
+    type: io.kestra.plugin.jdbc.oracle.Query
+    policyRefs:
+      - oracle-orders
+    sql: SELECT SUM(amount) FROM orders WHERE order_date = TRUNC(SYSDATE)
+```
+
+See [Reference policies](../../../07.enterprise/02.governance/policies/index.md#reference-policies) for which rules apply at each level.
 
 ### Forced defaults
 
@@ -304,8 +360,8 @@ GET /api/v1/{tenant}/namespaces/{namespace}/policies/{id}/evaluate
 1. Inventory all plugin defaults before upgrading — server config, namespace/tenant UI, and flow YAML files.
 2. Remove `kestra.plugins.defaults` from server config and add equivalent static policies under `kestra.policies`.
 3. For each namespace that had Plugin Defaults, review the auto-migrated Policies and adjust if needed.
-4. For each flow with a `pluginDefaults:` block, either inline the values onto tasks or create a reference Policy and add `policyRefs:` to the flow.
-5. Verify flows parse correctly: `kestra flow validate /path/to/flow.yml`
+4. For each flow with a `pluginDefaults:` block, either inline the values onto tasks or create a reference Policy and add `policyRefs` to the flow or to each task that needs it.
+5. Verify flows parse correctly: `kestractl flows validate /path/to/flow.yml`
 6. Grant teams that managed namespace defaults the `POLICY` permission (`VIEW`, `CREATE`, `UPDATE`, `DELETE`) — it is separate from namespace edit rights.
 
 :::alert{type="info"}

@@ -89,7 +89,7 @@ We made changes to the way triggers of type [Flow](../../docs/05.workflow-compon
 The [Pause](/plugins/core/flow/io.kestra.plugin.core.flow.pause) task has a new `timeout` property that can be used instead of a delay. At timeout, the Pause task will fail whereas at delay expiration it ends in success.
 Flow executions have a new variable `originalId`, this identifier will not change between replays so can be used to uniquely identify a flow execution.
 Flows can now be executed at a revision, this allows the execution of an old version of a flow.
-If you use [helper functions](../../docs/version-control-cicd/cicd/04.helpers/index.md) in your CI/CD, there is a new flow expand command that allows expanding the definition of a flow by including the external files from the helpers.
+If you use [helper functions](/docs/migration-guide/v2.0.0/server-cli-flow-commands-removed#include-helpers) in your CI/CD, there is a new flow expand command that allows expanding the definition of a flow by including the external files from the helpers.
 We also made a lot of small enhancements, fixes, and updates. See the [list of all the changes since 0.7.0](https://github.com/kestra-io/kestra/compare/v0.7.0...0.8.0).
 
 We wanted to thank all the contributors who helped us make this release.

@@ -51,6 +51,10 @@
         overflow: hidden;
         line-height: 1.2;
         min-height: 2.4rem;
+
+        a {
+            color: inherit;
+        }
     }
 
     .description {

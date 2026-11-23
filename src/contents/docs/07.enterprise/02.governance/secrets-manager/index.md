@@ -74,7 +74,7 @@ Required tags that must be set externally in read-only mode:
 Set the backend globally in your Kestra configuration file using `kestra.secret.type`, or scope it to a specific [tenant](../tenants/index.md) or [namespace](../../../05.workflow-components/02.namespace/index.md) via the **Dedicated secrets manager** setting in the UI. Each backend uses its own sub-key matching the type name.
 
 :::alert{type="warning"}
-**Property naming differs between global config and the UI.** In your `kestra.yml` configuration file, use kebab-case (e.g., `safe-name`, `auth-method`). When configuring a dedicated secrets manager for a namespace or tenant via the UI, use camelCase (e.g., `safeName`, `authMethod`).
+**Property naming differs between global config and the UI.** In your `kestra.yml` configuration file, use kebab-case (e.g., `safe-name`, `auth-method`). When configuring a dedicated secrets manager for a namespace or tenant via the UI, use camelCase (e.g., `safeName`, `authMethod`). See [Use camelCase keys](../tenants/index.md#use-camelcase-keys) for examples and common renames.
 :::
 
 **Supported backends:** [AWS Secrets Manager](#aws-secrets-manager) · [AWS SSM Parameter Store](#aws-ssm-parameter-store) · [Azure Key Vault](#azure-key-vault) · [Google Secret Manager](#google-secret-manager) · [HashiCorp Vault](#hashicorp-vault) · [CyberArk](#cyberark) · [Doppler](#doppler) · [1Password](#1password) · [BeyondTrust](#beyondtrust) · [Delinea Secret Server](#delinea-secret-server) · [Bitwarden](#bitwarden) · [JDBC](#jdbc-postgresql-h2-mysql) · [Elasticsearch](#elasticsearch)
@@ -545,7 +545,6 @@ kestra:
 | `prefix` | string | No | `""` | Prefix applied to all secret paths. |
 | `secret-path-prefix` | string | No | `""` | Path prefix within the engine to scope Kestra's access. |
 | `role` | string | No | — | Vault role name (used with some auth methods). |
-| `read-only` | boolean | No | `false` | Enable read-only mode for this backend. |
 | `connect-timeout` | duration | No | `PT15S` | Vault API connection timeout. |
 | `read-timeout` | duration | No | `PT1M` | Vault API read timeout. |
 | `tags` | map | No | — | Default tags added to every new or updated secret. |
@@ -556,19 +555,17 @@ In Vault, secrets created through Kestra are stored under `TENANT_ID/NAMESPACE_P
 
 ### Read-only mode
 
-Set `read-only: true` inside the `vault` config block (unlike other backends which use `kestra.secret.read-only`):
-
 ```yaml
 kestra:
   secret:
     type: vault
+    read-only: true
     vault:
       address: https://my-vault:8200/
       root-engine: secret
       secret-path-prefix: app1
       token:
         token: my-vault-access-token
-      read-only: true
 ```
 
 `secret-path-prefix` scopes Kestra's view to a specific path within the engine. In the example above, only secrets under the `app1` path are visible. Reference a subkey in a flow with:

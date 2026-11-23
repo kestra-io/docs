@@ -59,7 +59,7 @@ Automated workflows can execute diagnostic and remediation runbooks in seconds. 
 ### Eliminating Manual Toil in Service Request Fulfillment
 Service requests, such as onboarding a new employee, granting access to an application, or provisioning a development environment, are often repetitive and time-consuming. These multi-step processes typically involve several teams and systems.
 
-ITSM automation turns these processes into self-service offerings. A new employee request can trigger a single workflow that creates accounts in Active Directory, assigns licenses in Microsoft 365, grants access to specific SaaS applications, and notifies the hiring manager—all without a single manual touchpoint from the IT team.
+ITSM automation turns these processes into [self-service offerings](/resources/infrastructure/self-service-infrastructure). A new employee request can trigger a single workflow that creates accounts in Active Directory, assigns licenses in Microsoft 365, grants access to specific SaaS applications, and notifies the hiring manager—all without a single manual touchpoint from the IT team.
 
 ### Enforcing Consistency and Compliance Across Changes
 Inconsistent change management processes introduce risk and can lead to compliance violations. Manual changes are difficult to audit and can vary significantly depending on the engineer performing the task.

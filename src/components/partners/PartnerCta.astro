@@ -56,7 +56,19 @@ const photo = custom?.image
                 <h2>{copy.title}.</h2>
                 <p>{copy.text}</p>
                 <div class="actions">
-                    <Link href={href} class="btn btn-primary">{copy.cta}</Link>
+                    {
+                        custom ? (
+                            <span class="surface-dark">
+                                <a href={href} class="btn-ghost">
+                                    {copy.cta}
+                                </a>
+                            </span>
+                        ) : (
+                            <Link href={href} class="btn btn-primary">
+                                {copy.cta}
+                            </Link>
+                        )
+                    }
                     {
                         showFind && (
                             <a href="/partners/find" class="btn btn-secondary">
@@ -71,7 +83,11 @@ const photo = custom?.image
 </section>
 
 <style lang="scss">
+    @use "/src/assets/styles/buttons" as *;
+
     .partner-cta {
+        @include cta-buttons;
+
         padding: 4rem 0 5rem;
         background: var(--ks-background-body);
 
