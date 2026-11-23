@@ -10,9 +10,9 @@ Infrastructure self-service in a dedicated tenant type, searchable execution val
 
 ## Infrastructure and assets
 
-- **Infrastructure tenants (EE)**: a tenant type with a self-service catalog, requests, deployments, inventory, and approvals. [Docs](../../../07.enterprise/02.governance/tenants/infrastructure/index.md)
-- **App templates (EE)**: one template creates a flow and the app that runs it, with guardrails set by the platform team. [Docs](../../../07.enterprise/02.governance/tenants/infrastructure/app-templates/index.md)
-- **Inventory import (EE)**: import Terraform state, CSV, JSON, or YAML into the asset inventory. [Docs](../../../07.enterprise/02.governance/tenants/infrastructure/index.md#import-an-existing-inventory)
+- **Infrastructure tenants (EE)**: a tenant type with a self-service catalog, requests, deployments, inventory, and approvals. [Docs](../../../kestra-for-infra/index.mdx)
+- **App templates (EE)**: one template creates a flow and the app that runs it, with guardrails set by the platform team. [Docs](../../../kestra-for-infra/05.app-templates/index.md)
+- **Inventory import (EE)**: import Terraform state, CSV, JSON, or YAML into the asset inventory. [Docs](../../../kestra-for-infra/04.inventory/index.md#import-an-existing-inventory)
 - **Asset leases and day-2 actions (EE, Cloud)**: `ttl`, `owner`, and `status` fields on assets, the `TtlTrigger`, and asset actions with `when` conditions. [Docs](../../../07.enterprise/02.governance/01.assets/02.tasks-and-triggers/index.md#ttltrigger)
 - **ASSET input and output (EE, Cloud)**: let users pick assets from a searchable list filtered by type, ID, namespace, status, or metadata, and read them in tasks with the new `asset()` function. [Docs](../../../05.workflow-components/05.inputs/index.md#asset-inputs)
 - **Asset relations (EE, Cloud)**: `partOf` and `related` model deployments and their resources, and replace lineage events. [Migration guide](../../../11.migration-guide/v2.1.0/asset-relations/index.md)

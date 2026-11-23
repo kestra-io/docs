@@ -1,0 +1,60 @@
+---
+title: "Kestra for Infra: Self-Service Infrastructure in Kestra Enterprise"
+h1: Self-Service Infrastructure with an Infrastructure Tenant
+description: Give teams a catalog to request infrastructure, track what they own in deployments and an inventory, and run day-2 operations, all in an Enterprise Infrastructure tenant.
+sidebarTitle: Infrastructure Tenant
+icon: /src/contents/docs/icons/admin.svg
+editions: ["EE"]
+version: ">= 2.1.0"
+hideSubMenus: true
+---
+
+import ChildCard from "~/components/docs/ChildCard.astro"
+
+An Infrastructure tenant turns a Kestra tenant into a self-service portal for infrastructure. Kestra for Infra is available in Kestra Enterprise Edition only.
+
+Platform teams publish request forms to a **Catalog**. Other teams request a VM, a database, or a full environment from a form, follow their request, and manage what they received: extend a lease, resize a machine, or decommission it. Platform teams keep every request, resource, and lease in one place.
+
+An Infrastructure tenant runs on the same engine as any other tenant. It doesn't add a separate product: it puts self-service screens first and builds them from Kestra features you already know.
+
+| Screen | What it shows | Built on |
+|---|---|---|
+| **Catalog** | The forms teams can request resources from | [Apps](../07.enterprise/04.scalability/apps/index.md) published to the catalog |
+| **Requests** | Every request made from the Catalog, and its state | The [executions](../05.workflow-components/03.execution/index.md) those apps started |
+| **Deployments** | The environments teams received, with a lease on each | [Assets](../07.enterprise/02.governance/01.assets/index.md) of type `io.kestra.plugin.ee.assets.Deployment` |
+| **Inventory** | The individual resources inside those deployments | Every other asset in the tenant |
+| **Templates** | Reusable definitions that publish new catalog entries | [App templates](./05.app-templates/index.md) |
+
+A request runs a flow, so everything a flow can do applies, such as an [approval](../07.enterprise/02.governance/approvals/index.md) before provisioning. [Policies](../07.enterprise/02.governance/policies/index.md) apply to the flows behind the Catalog, and [audit logs](../07.enterprise/02.governance/06.audit-logs/index.md) record who requested what.
+
+## How a request flows through the tenant
+
+1. A platform team writes a flow that provisions a resource and declares the result as assets: a deployment, and the resources that are `partOf` it.
+2. They publish an app that runs the flow to the Catalog, either by writing it or by using an [app template](./05.app-templates/index.md).
+3. A user opens the Catalog, clicks **Request**, and fills in the form. Kestra starts an execution of the flow.
+4. The request appears in **Requests**. When the flow finishes, the deployment appears in **Deployments** with its lease, and its resources appear in **Inventory**.
+5. Later, the user or the platform team extends the lease or runs a day-2 action, such as a resize, from the deployment's page.
+
+## Navigation
+
+When a tenant's type is `INFRASTRUCTURE`, every member of the tenant sees the Catalog as the home page and this sidebar:
+
+| Group | Entries |
+|---|---|
+| **Self-Service** | Catalog, Requests, Deployments, Inventory, Approvals, Cases, Dashboards |
+| **Automation** | Templates, AI Copilot, Flows, Promote, Executions, System Flows, Logs, Tests, Triggers, MCP Servers, Plugins, Blueprints |
+| **Infrastructure** | Namespaces |
+| **Tenant** | System Overview, Policies, KV Store, Secrets, Credentials, Audit Logs, IAM |
+
+Entries appear only when your license and permissions allow them, as in any tenant. **Templates** appears only in Infrastructure tenants.
+
+**Apps**, **Assets**, and **Concurrency Limits** aren't in this sidebar. Open the apps list with **Manage apps** on the Catalog, or reach any of these pages by its URL.
+
+The Catalog, Deployments, Inventory, and Templates pages exist only in Infrastructure tenants. Opening one of them in a tenant of another type redirects to that tenant's home page.
+
+## Requirements
+
+- Kestra Enterprise Edition, with a license that includes Infrastructure tenants. To get the example environment, the license must also include Apps and Assets.
+- An Instance Owner to create the tenant or change its type. See [Set up an Infrastructure tenant](./01.setup/index.md).
+
+<ChildCard />

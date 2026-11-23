@@ -91,7 +91,7 @@ The old multi-tenancy and default-tenant configuration is no longer supported.
 
 ## Tenant example seeding (kestra.ee.tenant-examples)
 
-When a tenant of a type that ships an example bundle (`INFRASTRUCTURE`) is created, Kestra seeds it with a namespace, flows, apps, a dashboard, and a bootstrap execution. This behavior is enabled by default and controlled with:
+When a tenant of a type that ships an example bundle (`INFRASTRUCTURE`) is created, Kestra seeds it with a namespace, flows, apps, a dashboard, and a bootstrap execution. See [Example environment](../../kestra-for-infra/01.setup/index.md#example-environment) for what it contains and how to remove it. This behavior is enabled by default and controlled with:
 
 ```yaml
 kestra:

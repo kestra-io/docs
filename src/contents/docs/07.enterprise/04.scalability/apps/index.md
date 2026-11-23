@@ -506,7 +506,7 @@ In the no-code editor, a `Grid` is added like any other block. Select it to edit
 
 Apps can also be built using the no-code editor. Every block, property, and configuration option available in YAML is fully supported visually. Changes made in the no-code editor are immediately reflected in the code view, and vice versa — teams can switch between approaches at any time without losing the underlying YAML definition.
 
-To create an app together with the flow it runs from a reusable template, see [App templates](../../02.governance/tenants/infrastructure/app-templates/index.md).
+To create an app together with the flow it runs from a reusable template, see [App templates](../../../kestra-for-infra/05.app-templates/index.md).
 
 ---
 
@@ -517,6 +517,8 @@ The App Catalog lists all available apps in a tenant. Filter by name, type, name
 ![apps_catalog](./apps_catalog.png)
 
 Kestra provides a direct access URL to the Apps Catalog in the format `http://your_host/ui/your_tenant/apps/catalog`. Any Kestra user with `APP: LIST` permission on at least one namespace in that tenant can reach this URL.
+
+In an [Infrastructure tenant](../../../kestra-for-infra/index.mdx), the catalog is the tenant's home page, listed as **Catalog** in the sidebar. See [Catalog and Requests](../../../kestra-for-infra/02.catalog-and-requests/index.md).
 
 The catalog page requires authentication, so it is never publicly accessible. Users see only the apps they are permitted to see based on their RBAC permissions. You can limit visibility to specific groups by setting the `groups` property in the `access` block:
 
