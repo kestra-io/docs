@@ -26,7 +26,7 @@ CI/CD pipelines that run these commands, for example `/app/kestra flow validate`
 | `kestra namespace files update <namespace> <directory> <path>` | `kestractl nsfiles upload <namespace> <directory> <path> --no-root --override` |
 | `kestra flow expand <file>` | None. See [Include helpers](#include-helpers). |
 
-`kestractl flows deploy` never deletes flows. If a pipeline relied on the old commands deleting flows that were missing from the directory, use `kestractl flows namespace-sync` with `--delete`.
+`kestractl flows deploy` never deletes flows. If a pipeline relied on the old commands deleting flows that were missing from the directory, use `kestractl flows namespace-sync <namespace> <directory> --delete`, which syncs the directory directly.
 
 The server CLI commands that run Kestra itself, such as `kestra server standalone`, `kestra flow test`, and `kestra migrate`, are unchanged. See [Kestra Server CLI](../../../kestra-cli/kestra-server/index.md).
 

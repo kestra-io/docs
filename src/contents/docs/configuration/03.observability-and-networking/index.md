@@ -296,6 +296,17 @@ kestra:
 
 Platform emails for invitations and notifications use the Enterprise Edition [mail service](../06.enterprise-and-advanced/index.md#mail-service), configured under `kestra.ee.mail-service`.
 
+### Default time range for charts
+
+`kestra.ui.charts.default-duration` sets the time range the UI applies when you haven't selected one: on dashboards, on the flow and namespace overview charts, and on lists that filter by date. It takes an ISO 8601 duration and defaults to `PT24H`. For example, to show the last 7 days by default:
+
+```yaml
+kestra:
+  ui:
+    charts:
+      default-duration: P7D
+```
+
 ### Security response headers
 
 Kestra adds browser security response headers to every HTTP response, including error responses (401, 403) and static file responses.
@@ -380,6 +391,66 @@ When the UI is disabled:
 - the REST API (`/api/v1/**`) and health endpoints keep working as usual.
 
 The setting can also be provided through the `KESTRA_WEBSERVER_UI_ENABLED` environment variable.
+
+### Default flow template
+
+`kestra.flowTemplate` sets the YAML that opens in the editor when someone creates a flow from scratch. Use it to give every team the same starting point, such as standard labels or error handling. Kestra adds `id` and `namespace` when the template leaves them out, and keeps them when it sets them.
+
+```yaml
+kestra:
+  flowTemplate: |
+    labels:
+      team: data
+    tasks:
+      - id: hello
+        type: io.kestra.plugin.core.log.Log
+        message: Hello World!
+```
+
+The template doesn't apply to flows created from a blueprint. Users can replace it with their own template in the **Default Flow Template** preference, described on the [Settings](../../09.ui/06.settings/index.md#preferences) page. When neither template is set, the editor opens a built-in Hello World flow.
+
+### File preview rows
+
+`kestra.server.preview.initial-rows` sets how many rows a file preview shows when it opens, and defaults to `100`. `kestra.server.preview.max-rows` caps how many rows a user can request in the preview or through the API's `maxRows` parameter, and defaults to `5000`.
+
+```yaml
+kestra:
+  server:
+    preview:
+      initial-rows: 200
+      max-rows: 10000
+```
+
+### Hidden label prefixes
+
+`kestra.hidden-labels.prefixes` lists the label prefixes that the UI hides by default. The default list is `system.` and `internal.`. Setting the property replaces that list, so include both prefixes if you still want those labels hidden:
+
+```yaml
+kestra:
+  hidden-labels:
+    prefixes:
+      - system.
+      - internal.
+      - admin.
+```
+
+See [Hidden labels](../../06.concepts/system-labels/index.md#hidden-labels) for how hidden labels appear in the UI.
+
+### Query filter limits
+
+`kestra.webserver.query-filter.max-depth` and `kestra.webserver.query-filter.max-width` cap how deeply API filter groups can nest and how many filters or groups each one holds. They default to `3` and `20`, and lower values are raised to the defaults. To set different limits for one resource, add them under `resources`, keyed by the resource name in lowercase, such as `execution` or `flow`. This example allows 30 filters per group on every endpoint and 50 on execution endpoints:
+
+```yaml
+kestra:
+  webserver:
+    query-filter:
+      max-width: 30
+      resources:
+        execution:
+          max-width: 50
+```
+
+A request over the limit is rejected with an `invalid-query-filters` error. See [Query filters](../../api-reference/04.query-filters.md#limits).
 
 ## Typical use cases
 
