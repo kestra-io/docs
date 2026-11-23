@@ -6,7 +6,7 @@ icon: /src/contents/docs/icons/admin.svg
 description: Best practices for hardening Kestra security, including network isolation, host-level controls, and plugin validation.
 ---
 
-Secure a Kestra deployment with credential setup, network and worker isolation, transport security, request filtering, and endpoint protection.
+Secure a Kestra deployment with credential setup, network and worker isolation, transport security, request filtering, response headers, and endpoint protection.
 
 ## Credential initialization
 
@@ -199,6 +199,14 @@ Configure plugin restrictions and worker isolation under [Worker Isolation](../0
 - Plugin configuration: use Kestra’s plugin architecture, including [Plugin Versioning](../07.enterprise/05.instance/versioned-plugins/index.md), to control which plugins are allowed and [which should be prohibited](../07.enterprise/02.governance/worker-isolation/index.md).
 - CI/CD validation: add a [Flow Validation step in your CI/CD pipeline](../version-control-cicd/cicd/index.md) to scan task definitions for disallowed patterns (e.g., `169.254.169.254`) and block merging if detected.
 
+## Security response headers
+
+Kestra adds browser security headers to every HTTP response the Webserver sends, including error responses. Three are on by default: `X-Frame-Options`, `X-Content-Type-Options`, and `Referrer-Policy`.
+
+`Content-Security-Policy` and `Strict-Transport-Security` (HSTS) are off until you set them under `kestra.webserver.security-headers`. Kestra sends HSTS only when it terminates TLS itself, so behind a TLS-terminating reverse proxy, set HSTS at the proxy.
+
+See [Security response headers](../configuration/03.observability-and-networking/index.md#security-response-headers) for the configuration properties, a report-only CSP example, and how to disable headers.
+
 ## Management endpoint access
 
 Kestra exposes internal endpoints on a separate management port (default `8081`). These include health checks, metrics (`/metrics`), and runtime log level inspection (`/loggers`). This port is unauthenticated by default.
@@ -222,13 +230,13 @@ See [Kestra endpoints](../10.administrator-guide/03.monitoring/index.md#kestra-e
 
 ## Webhook endpoints
 
-Webhook URLs (`/api/v1/{tenant}/executions/webhook/{namespace}/{flowId}/{key}`) are served without authentication, even when Basic Authentication or SSO is enabled. The trigger's `key` is the only credential, and anyone who has it can start the flow and choose the request body it receives.
+Webhook URLs (`/api/v1/{tenant}/executions/webhook/{namespace}/{flowId}/{key}`) are served without authentication, even when Basic Authentication or SSO is enabled. The trigger's `key` is the only credential unless the trigger also verifies a signature, and anyone who has it can start the flow and choose the request body it receives.
 
 - Treat the key as a credential: generate a long random value, store it as a [secret](../06.concepts/04.secret/index.md), and reference it with `{{ secret('WEBHOOK_KEY') }}`. To rotate it, update the secret; the flow does not change.
 - The key is part of the URL path, so it appears in reverse proxy, load balancer, and access logs. Restrict who can read those logs.
 - Treat request data as untrusted input. Pass it to script tasks through `env`, never inside `commands`, `beforeCommands`, `script`, or `interpreter`. See [Pass request data to scripts through environment variables](../05.workflow-components/07.triggers/03.webhook-trigger/index.md#pass-request-data-to-scripts-through-environment-variables).
 - Run script tasks in webhook-triggered flows on the [Docker or Kubernetes task runners](../task-runners/index.mdx) rather than the Process runner. A command that runs through the Process runner runs on the worker host with the worker's privileges.
-- If your callers can authenticate (mTLS, IP ranges, or a provider signature such as HMAC), enforce it in a reverse proxy or API gateway in front of `/api/v1/*/executions/webhook/`. The core `Webhook` trigger does not verify signatures.
+- If the provider signs its requests with an HMAC, such as GitHub's `X-Hub-Signature-256`, set the trigger's [`signature`](../05.workflow-components/07.triggers/03.webhook-trigger/index.md#verify-the-request-signature) property so Kestra rejects unsigned or tampered requests before creating an execution. For other caller authentication, such as mTLS or IP ranges, enforce it in a reverse proxy or API gateway in front of `/api/v1/*/executions/webhook/`.
 - Keep [recursive rendering](../11.migration-guide/v0.14.0/recursive-rendering/index.md) (`kestra.variables.recursive-rendering`) disabled, which is the default. When enabled, expressions inside request data are evaluated.
 
 ## ZIP bomb protection

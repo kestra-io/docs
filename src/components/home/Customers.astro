@@ -615,6 +615,18 @@ const {
             span {
                 color: var(--ks-content-tertiary);
             }
+
+            :global(a) {
+                color: var(--ks-content-link);
+            }
+        }
+
+        @include media-breakpoint-down(lg) {
+            .stat,
+            blockquote,
+            .detail {
+                max-width: none;
+            }
         }
 
         .read {

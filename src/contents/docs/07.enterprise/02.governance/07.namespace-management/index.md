@@ -131,6 +131,32 @@ tasks:
 
 When building new flows in a Namespace, Namespace variables are accessible from the **Variables** tab.
 
+Child Namespaces inherit variables from their parents. A `POSTGRES_HOSTNAME` variable set on `company` is available as `{{ namespace.POSTGRES_HOSTNAME }}` in flows under `company.team` and `company.team.project`, so you can manage shared configuration in one place.
+
+Variables can also be nested to group related settings. With the following variables, a flow reads the hostname with `{{ namespace.postgres.hostname }}`:
+
+```yaml
+postgres:
+  hostname: my-postgres-prod-hostname
+  port: 5432
+dataLake:
+  s3BucketName: my-datalake-s3-bucket-name
+  region: us-east-1
+```
+
+#### Variables or KV Store
+
+Both the **Variables** and **KV Store** tabs hold key-value pairs, but they serve different purposes:
+
+- Use **Variables** for slowly changing configuration that administrators set once and that child Namespaces inherit, such as database hostnames, bucket names, or cloud project IDs.
+- Use the [KV Store](../../../06.concepts/05.kv-store/index.md) for values that flows set or update at runtime, such as a last processed timestamp or a consumer offset.
+
+Don't store sensitive values in either; use [secrets](../../../06.concepts/04.secret/index.md) instead. For a fuller comparison, see [Credentials, secrets, or KV Store](../../../14.best-practices/10.credentials-vs-secrets-vs-kv-store/index.md).
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/fs86GLg-OGM?si=aKz38pdclO54Z2jh" title="Namespace variables vs. KV Store" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## Creating Namespaces
 
 ### From the UI

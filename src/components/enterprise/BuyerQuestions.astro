@@ -1,0 +1,139 @@
+---
+import { Image } from "astro:assets"
+import { Icon } from "astro-icon/components"
+import Faq from "~/components/common/Faq.vue"
+import soc2Img from "~/components/layout/assets/soc2.png"
+import gdprImg from "~/components/layout/assets/gdpr.svg"
+
+interface Props {
+    items: { question: string; answer: string }[]
+    title?: string
+}
+
+const { items, title = "Frequently asked questions" } = Astro.props
+---
+
+<section class="ee-faq" aria-labelledby="ee-faq">
+    <div class="container-xl">
+        <div class="grid">
+            <header class="head">
+                <h2 id="ee-faq">{title}</h2>
+                <div class="trust">
+                    <div class="badges">
+                        <Image src={soc2Img} alt="SOC 2" height="56" />
+                        <Image src={gdprImg} alt="GDPR" height="56" />
+                    </div>
+                    <p>
+                        SOC 2 Type 2 and GDPR, independently audited. The report
+                        is available on request.
+                    </p>
+                    <a href="/security">
+                        Security overview <Icon name="mdi:arrow-right" />
+                    </a>
+                </div>
+            </header>
+            <div class="list">
+                <Faq {items} showHeader={false} client:visible />
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .ee-faq {
+        position: relative;
+        background: var(--ks-background-body);
+        border-bottom: 1px solid var(--ks-border-primary);
+    }
+
+    .grid {
+        --rule: 1px solid var(--ks-border-primary);
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+
+        display: grid;
+        grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+        border-left: var(--rule);
+        border-right: var(--rule);
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    .head {
+        padding: 8.5rem var(--inset);
+
+        @include media-breakpoint-down(lg) {
+            padding-bottom: 1rem;
+        }
+
+        @include media-breakpoint-down(md) {
+            padding-top: 4.5rem;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            color: var(--ks-content-primary);
+        }
+    }
+
+    .trust {
+        max-width: 22rem;
+        margin-top: 2.5rem;
+
+        .badges {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+
+            img {
+                width: auto;
+                height: 3.5rem;
+            }
+        }
+
+        p {
+            margin: 0 0 0.75rem;
+            font-size: $font-size-sm;
+            line-height: 1.6;
+            color: var(--ks-content-secondary);
+        }
+
+        a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: $font-size-sm;
+            font-weight: 600;
+            color: var(--ks-content-link);
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .list {
+        padding: 8rem var(--inset) clamp(4rem, 6vw, 5.5rem);
+
+        @include media-breakpoint-down(lg) {
+            padding-top: 1.5rem;
+        }
+
+        :global(section.faq) {
+            padding: 0;
+            background: transparent;
+        }
+
+        :global(.container.content) {
+            max-width: none;
+            padding: 0;
+        }
+    }
+</style>

@@ -64,7 +64,7 @@ For organizations operating across multiple public clouds or in a hybrid model, 
 
 ### Accelerating Innovation and Time-to-Market
 
-A well-defined orchestration layer allows teams to build and deploy new services faster. Instead of reinventing the wheel for scheduling, error handling, and logging, developers can focus on business logic. Reusable workflow components (subflows) and a clear, declarative approach to defining processes make it easier to onboard new team members and collaborate on complex projects, helping to [solve orchestration problems without adding complexity](/resources/infrastructure/orchestration-problems-complexity).
+A well-defined orchestration layer allows teams to build and deploy new services faster. Instead of reinventing the wheel for scheduling, error handling, and logging, developers can focus on business logic. Reusable workflow components (subflows) and a clear, declarative approach to defining processes make it easier to onboard new team members and collaborate on complex projects, helping to [solve orchestration problems without adding complexity](/resources/orchestration).
 
 ## Essential Features for Cloud Orchestration Tools
 

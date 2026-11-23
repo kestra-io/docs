@@ -4,6 +4,7 @@ description: "Explore the star schema, a foundational data modeling technique fo
 metaTitle: "Star Schema Explained: Design & Orchestration | Kestra"
 metaDescription: "Design fast analytics and data warehouses with a star schema. Understand its components, compare it to snowflake schemas, and learn ETL orchestration."
 tag: "data"
+noindex: true
 date: 2026-07-07
 slug: "star-schema"
 faq:

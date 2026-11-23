@@ -16,7 +16,7 @@ Kestra provides three official [GitHub Actions](https://github.com/features/acti
 - **Deploy your flows**
 - **Deploy namespace files**
 
-To use these Actions, your Kestra instance must be reachable by the GitHub Actions runner—either publicly or via a self-hosted runner. If you need to validate flows offline — without connecting to a running Kestra instance — use the legacy marketplace action instead: [kestra-validate-action](https://github.com/marketplace/actions/kestra-validate-action).
+To use these Actions, your Kestra instance must be reachable by the GitHub Actions runner, either publicly or through a self-hosted runner.
 
 :::alert{type="info"}
 For flows managed through CI/CD, add the [`system.readOnly`](../../../06.concepts/system-labels/index.md#systemreadonly) label set to `"true"` so the UI editor is disabled and production configurations stay immutable. This is especially recommended for critical production flows:
@@ -53,6 +53,7 @@ Kestra provides these three Actions for CI/CD pipelines:
 | `user`      | ❌       | —        | Basic auth username. |
 | `password`  | ❌       | —        | Basic auth password. |
 | `tenant`    | ✅       | `"main"` | Tenant identifier (EE and Cloud only, for multi-tenancy). |
+| `kestractlVersion` | ❌ | `latest` | Version of [`kestractl`](../../../kestra-cli/kestractl/index.md) that the action installs. |
 
 [(See action.yml)](https://github.com/kestra-io/validate-flows-action-v2/blob/main/action.yml)
 
@@ -70,6 +71,7 @@ Kestra provides these three Actions for CI/CD pipelines:
 | `user`      | ❌       | —        | Basic auth username. |
 | `password`  | ❌       | —        | Basic auth password. |
 | `tenant`    | ✅       | `"main"` | Tenant identifier (EE and Cloud only, for multi-tenancy). |
+| `kestractlVersion` | ❌ | `latest` | Version of [`kestractl`](../../../kestra-cli/kestractl/index.md) that the action installs. |
 
 [(See action.yml)](https://github.com/kestra-io/deploy-flows-action-v2/blob/main/action.yml)
 
@@ -88,6 +90,7 @@ Kestra provides these three Actions for CI/CD pipelines:
 | `user`         | ❌       | —        | Basic auth username. |
 | `password`     | ❌       | —        | Basic auth password. |
 | `tenant`       | ✅       | `"main"` | Tenant identifier (EE and Cloud only, for multi-tenancy). |
+| `kestractlVersion` | ❌ | `latest` | Version of [`kestractl`](../../../kestra-cli/kestractl/index.md) that the action installs. |
 
 [(See action.yml)](https://github.com/kestra-io/deploy-namespace-files-action/blob/main/action.yml)
 
@@ -152,7 +155,7 @@ jobs:
 :::alert{type="info"}
 **Tips:**
 - Store your Kestra server credentials and tokens as GitHub Secrets for security.
-- All actions invoke the Kestra CLI via a managed binary—no manual CLI install needed.
+- Each action installs and runs [`kestractl`](../../../kestra-cli/kestractl/index.md), so you don't need to install a CLI yourself. Set `kestractlVersion` to pin the version it installs.
 
 - You can authenticate using either an **API token** (Enterprise Edition) or basic auth credentials (username and password):
 
@@ -318,11 +321,20 @@ jobs:
           override: true
 ```
 
+## Block broken flows with a branch ruleset
+
+When the deploy workflow runs on every push to `main`, a broken flow merged into `main` goes straight to your Kestra instance. A [branch ruleset](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets) on `main` makes the validate job a required gate.
+
+1. In your GitHub repository, open **Settings**, then **Rules** > **Rulesets**, and create a new branch ruleset targeting `main`.
+2. Enable **Require a pull request before merging** so no one commits directly to `main`.
+3. Enable **Require status checks to pass** and add the job that runs the Validate Flows Action.
+
+Every change now reaches `main` through a pull request, and the pull request can't merge until validation passes. For example, if a flow has incorrect indentation, the validate check fails and GitHub blocks the merge until the flow is fixed.
+
 ---
 
 ## Additional resources
 
-- [How-to Guide: GitHub Actions CI/CD](../../../15.how-to-guides/github-actions/index.md) — More examples and advanced workflows.
 - [Kestra Validate Flows Action](https://github.com/kestra-io/validate-flows-action-v2)
 - [Kestra Deploy Flows Action](https://github.com/kestra-io/deploy-flows-action-v2)
 - [Kestra Deploy Namespace Files Action](https://github.com/kestra-io/deploy-namespace-files-action)

@@ -45,7 +45,7 @@ Kestra provides built-in primitives to make workflow execution idempotent. A com
 
 Many systems provide an idempotency key in their webhook headers (e.g., `Idempotency-Key` or `X-Request-ID`). Kestra can map this header to a special `system.correlationId` label, which can then be used to build a duplicate-processing guard with the [KV Store](/docs/concepts/kv-store).
 
-The following workflow demonstrates this pattern. It's triggered by a [webhook](/docs/how-to-guides/webhooks), checks if the event's correlation ID has been processed before, and only proceeds if it's a new event.
+The following workflow demonstrates this pattern. It's triggered by a [webhook](/docs/workflow-components/triggers/webhook-trigger), checks if the event's correlation ID has been processed before, and only proceeds if it's a new event.
 
 ```yaml
 id: idempotent-webhook-processor
