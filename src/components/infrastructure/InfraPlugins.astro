@@ -132,7 +132,10 @@ const tiles = (
                             plugins, and reaches any other tool through its API.
                         </p>
                     </div>
-                    <a href="/plugins?category=INFRASTRUCTURE" class="btn-ghost">
+                    <a
+                        href="/plugins?category=INFRASTRUCTURE"
+                        class="btn-ghost"
+                    >
                         See all plugins
                     </a>
                 </header>
@@ -162,10 +165,15 @@ const tiles = (
 </section>
 
 <script>
-    const dock = document.querySelector<HTMLElement>("[data-dock]")
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    function initDock() {
+        const dock = document.querySelector<HTMLElement>(
+            "[data-dock]:not([data-wired])",
+        )
+        if (!dock) return
+        dock.dataset.wired = ""
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+            return
 
-    if (dock && !still) {
         const tiles = [...dock.querySelectorAll<HTMLElement>(".tile")]
         const REACH = 130
         const GROW = 0.55
@@ -173,19 +181,24 @@ const tiles = (
         let frame = 0
 
         const magnify = () => {
-            for (const tile of tiles) {
+            if (pointer === null || !dock.isConnected) return
+            const centres = tiles.map((tile) => {
                 const box = tile.getBoundingClientRect()
-                const away = (box.left + box.width / 2 - pointer!) / REACH
+                return box.left + box.width / 2
+            })
+            tiles.forEach((tile, index) => {
+                const away = (centres[index] - pointer!) / REACH
                 const zoom = 1 + GROW * Math.exp(-away * away)
                 tile.style.setProperty("--zoom", zoom.toFixed(3))
-            }
+            })
             frame = requestAnimationFrame(magnify)
         }
 
         dock.addEventListener("pointermove", (event) => {
             if (event.pointerType !== "mouse") return
-            if (pointer === null) frame = requestAnimationFrame(magnify)
+            const idle = pointer === null
             pointer = event.clientX
+            if (idle) frame = requestAnimationFrame(magnify)
         })
 
         dock.addEventListener("pointerleave", () => {
@@ -194,6 +207,9 @@ const tiles = (
             for (const tile of tiles) tile.style.removeProperty("--zoom")
         })
     }
+
+    document.addEventListener("astro:page-load", initDock)
+    initDock()
 </script>
 
 <style lang="scss">
