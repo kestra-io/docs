@@ -59,7 +59,7 @@ Infrastructure self-service in a dedicated tenant type, searchable execution val
 
 ## Security and governance
 
-- **OIDC issuer (EE, Cloud)**: exchange a short-lived Kestra token for AWS or Google Cloud credentials, with no stored keys. [Docs](../../../07.enterprise/03.auth/oidc-issuer/index.md)
+- **OIDC issuer (EE)**: exchange a short-lived Kestra token for AWS, Google Cloud, or JFrog credentials, with no stored keys, per instance, tenant, or namespace. [Docs](../../../07.enterprise/03.auth/oidc-issuer/index.md)
 - **SAML 2.0 SSO (EE)**: SP-initiated SAML login with group sync and Single Logout. [Docs](../../../07.enterprise/03.auth/sso/saml/index.md)
 - **Password expiration and reuse prevention (EE)**: Basic Auth password policies. [Docs](../../../07.enterprise/03.auth/rbac/index.md#password-expiration-and-reuse)
 - **One session per sign-in (EE, Cloud)**: signing in on another browser or device no longer ends your other sessions. [Docs](../../../07.enterprise/03.auth/04.authentication/index.md#sessions)

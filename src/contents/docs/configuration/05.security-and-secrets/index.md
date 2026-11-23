@@ -481,7 +481,7 @@ See [Passwordless (OTP)](../../07.enterprise/03.auth/04.authentication/index.md#
 
 ## OIDC issuer
 
-Enable the OIDC issuer so executions can exchange a short-lived token, minted with `oidcToken()`, for AWS or Google Cloud credentials instead of static keys. Enterprise Edition only.
+Enable the OIDC issuer so executions can exchange a short-lived token, minted with `oidcToken()`, for AWS, Google Cloud, or JFrog credentials instead of static keys. Enterprise Edition only, not yet available on Kestra Cloud.
 
 ```yaml
 kestra:
@@ -494,12 +494,10 @@ kestra:
         keys:
           - kid: 2026-11
             active: true
-            private-key: |
-              -----BEGIN PRIVATE KEY-----
-              ...
+            private-key: ${OIDC_KEY_INSTANCE}
 ```
 
-See [OIDC issuer](../../07.enterprise/03.auth/oidc-issuer/index.md) for every property, dedicated issuers per tenant or namespace, and the AWS and Google Cloud setup.
+The issuer URL, `kestra.url` by default, must be reachable from the public internet over HTTPS. See [OIDC issuer](../../07.enterprise/03.auth/oidc-issuer/index.md) for every property, dedicated issuers per tenant or namespace, and the AWS, Google Cloud, and JFrog setup.
 
 ## Related docs
 
