@@ -8,6 +8,7 @@ const markScrollbar = () => {
 }
 markScrollbar()
 new ResizeObserver(markScrollbar).observe(root)
+document.addEventListener("astro:after-swap", markScrollbar)
 
 // Declarative modal triggers: `data-modal-target="#id"` opens that <dialog>.
 // Close fallbacks for browsers without invoker commands or `closedby="any"`.
