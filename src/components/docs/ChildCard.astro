@@ -98,7 +98,10 @@ const children = await Promise.all(
 <div
     class:list={[
         "ks-card-grid",
-        { "ks-card-grid--single": items !== undefined && children.length === 1 },
+        {
+            "ks-card-grid--single":
+                items !== undefined && children.length === 1,
+        },
     ]}
 >
     {
@@ -132,9 +135,7 @@ const children = await Promise.all(
         gap: 1rem;
 
         &.ks-card-grid--single {
-            @include media-breakpoint-up(md) {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         }
 
         .ks-card {
