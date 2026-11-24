@@ -24,7 +24,7 @@ DRAFT NOTES (remove before publishing)
 
 Kestra 2.1 is about who gets to act on your flows, and how you keep control when they do. AI agents can now work with your instance through the Kestra MCP Server, with your permissions and in your audit log. And when a decision belongs to a person, the new Approval task waits for a real yes or no.
 
-Not everything in 2.1 is about who's in charge. Plenty of it works in every edition, open source included: you can now find an execution by the order ID it processed, and a long script can pick up where it left off after a failure. Here are the highlights, with the edition each one is in.
+In 2.1, additionally, you can now find an execution by the order ID it processed, and a long script can pick up where it left off after a failure. Here are the highlights, with the edition each one is in.
 
 | Feature | What it does | Edition |
 |---|---|---|
