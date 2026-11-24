@@ -238,7 +238,7 @@ The menu entry appears if you have the `TESTSUITE` `CREATE` permission on the fl
 
 Copilot needs an LLM provider. Add providers under `kestra.ai.providers` in your Kestra configuration. An open-source instance with no provider uses the [free tier](#free-tier) until you add one. Without a provider or the free tier, the Copilot panel opens with a notice that no provider is configured, and its prompt box, mode selector, and suggestions stay disabled.
 
-Kestra Open Source supports Google Gemini:
+Copilot supports Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and open-source models served by Ollama, in both the open-source and Enterprise editions. This example registers Gemini:
 
 ```yaml
 kestra:
@@ -252,7 +252,7 @@ kestra:
           model-name: gemini-3.5-flash-lite
 ```
 
-Enterprise Edition supports Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and open-source models served by Ollama. If you need another provider, [contact us](https://kestra.io/demo).
+If you need another provider, [contact us](https://kestra.io/demo).
 
 For every configuration property, including generation parameters, extended reasoning, request timeouts, mTLS, and custom headers, see the [AI Copilot configuration reference](../../configuration/06.enterprise-and-advanced/index.md#ai-copilot).
 
@@ -281,7 +281,7 @@ In Enterprise Edition, the free tier is off by default. Set `kestra.ai.free-tier
 
 ### Register multiple providers
 
-In Enterprise Edition, register several providers and mark one with `is-default: true`. Users can switch between them from the model dropdown in the Copilot panel.
+Register several providers and mark one with `is-default: true`. Users can switch between them from the model dropdown in the Copilot panel.
 
 ```yaml
 kestra:
@@ -304,7 +304,7 @@ kestra:
 
 ### Provider examples
 
-Each example below shows the minimum configuration for one Enterprise Edition provider.
+Each example below shows the minimum configuration for one provider.
 
 #### Amazon Bedrock
 

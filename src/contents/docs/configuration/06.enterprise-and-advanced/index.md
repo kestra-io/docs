@@ -1118,7 +1118,7 @@ AI Copilot configuration lives under `kestra.ai` and controls which LLM provider
 
 #### Providers
 
-Enterprise Edition lets you configure multiple providers in a single deployment. Each entry in `kestra.ai.providers` is an independent provider the UI can offer to users.
+You can configure several providers in a single deployment, in both the open-source and Enterprise editions. Each entry in `kestra.ai.providers` is an independent provider the UI can offer to users.
 
 ```yaml
 kestra:
@@ -1146,27 +1146,13 @@ kestra:
 |---|---|---|
 | `id` | ✅ | Unique identifier for this provider entry. |
 | `display-name` | ✅ | Label shown to users in the Copilot UI. |
-| `type` | ✅ | Provider type. One of: `openai`, `azure-openai`, `gemini`, `googlevertexai`, `anthropic`, `bedrock`, `deepseek`, `mistralai`, `ollama`, `open-router`. |
+| `type` | ✅ | Provider type. One of: `openai`, `azure-openai`, `gemini`, `googlevertexai`, `anthropic`, `bedrock`, `deepseek`, `mistralai`, `ollama`, `open-router`. Kestra logs and skips an entry with any other type. |
 | `is-default` | ❌ | When `true`, this provider is selected automatically when no explicit choice is made. |
 | `configuration` | ❌ | Provider-specific settings. See the property reference and provider sections below. |
 | `system-prompt` | ❌ | (EE only) Override the built-in system prompt per Copilot mode. A non-blank value for a mode fully replaces the built-in prompt for that mode. |
 | `system-prompt.ask` | ❌ | Custom system prompt for Ask mode. |
 | `system-prompt.plan` | ❌ | Custom system prompt for Plan mode. |
 | `system-prompt.edit` | ❌ | Custom system prompt for Edit mode. |
-
-
-For OSS users, only Gemini is currently available; you can provide your Gemini API key to use the AI Copilot.
-
-```yaml
-kestra:
-  ai:
-    - id: gemini
-      display-name: Gemini
-      type: gemini
-      configuration:
-        api-key: YOUR_GEMINI_API_KEY
-        model-name: gemini-3.5-flash-lite
-```
 
 #### Configuration property reference
 

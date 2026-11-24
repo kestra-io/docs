@@ -51,9 +51,10 @@ Approvals, asset leases and the ASSET input, searchable execution values, custom
 - **Platform MCP server**: give external MCP clients the AI Copilot's tools at `/api/v1/mcp`, up to 78 of them, to read and change flows, executions, logs, namespace files, and KV entries, plus apps, test suites, groups, and banners in EE, where every call runs with the caller's permissions. [Docs](../../../ai-orchestration/03.mcp-server/index.md#platform-mcp-server)
 - **Copilot unit tests (EE, Cloud)**: generate a unit test for an existing flow. [Docs](../../../develop-with-ai/01.ai-copilot/index.md#generate-a-unit-test)
 - **Review Copilot flow changes on the graph**: a flow draft's Graph tab marks each task as added, changed, renamed, moved, or removed, and the apply confirmation counts each kind of change. [Docs](../../../develop-with-ai/01.ai-copilot/index.md#review-a-flow-change)
+- **All Copilot providers in Open Source**: the open-source edition supports every AI Copilot provider (Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and Ollama) and several providers with a default, not only Gemini. A provider entry with an unknown `type` is now logged and skipped instead of stopping startup. [Docs](../../../develop-with-ai/01.ai-copilot/index.md#configure-an-llm-provider)
 - **Copilot free tier (OSS)**: an instance with no LLM provider uses a free Copilot hosted by Kestra. Turn it off with `kestra.ai.free-tier.enabled: false`. [Docs](../../../develop-with-ai/01.ai-copilot/index.md#free-tier)
 - **Copilot usage limits**: cap each provider's spend for the whole instance and per user, by day, week, or month. Copilot shows the share left. [Docs](../../../develop-with-ai/01.ai-copilot/index.md#set-usage-limits)
-- **`thinking-effort: none` (EE)**: AI Copilot works with OpenAI and Azure OpenAI reasoning deployments that reject tool calls unless reasoning is off. [Docs](../../../configuration/06.enterprise-and-advanced/index.md)
+- **`thinking-effort: none`**: AI Copilot works with OpenAI and Azure OpenAI reasoning deployments that reject tool calls unless reasoning is off. [Docs](../../../configuration/06.enterprise-and-advanced/index.md)
 
 ## Security and governance
 
