@@ -527,6 +527,10 @@ const SPEND_MARKS: Record<string, [number, number]> = {
 
         position: relative;
         border-block: 1px solid rgba(255, 255, 255, 0.11);
+
+        :global(html.dark) & {
+            border-block-color: var(--ks-border-primary);
+        }
         color: #ffffff;
 
         :global(.section-head h2) {

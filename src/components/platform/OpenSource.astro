@@ -42,42 +42,45 @@ const STATS = [
             </Fragment>
         </SectionHead>
 
-        <ul class="cards">
-            {CARDS.map((card) => (
-                <li>
-                    <Icon name={card.icon} class="icon" />
-                    <h3>
-                        {card.href ? (
-                            <a href={card.href}>{card.title}</a>
-                        ) : (
-                            card.title
-                        )}
-                    </h3>
-                    <p>{card.text}</p>
-                </li>
-            ))}
-        </ul>
-
-        <dl class="stats">
-            {STATS.map((stat) => (
-                <div>
-                    <dt>{stat.label}</dt>
-                    <dd>
-                        <span class="arrow" aria-hidden="true">
-                            ↑
-                        </span>
-                        <span
-                            class="value"
-                            data-count={stat.value}
-                            data-live={stat.live}
-                        >
-                            {stat.value}
-                        </span>
-                        <span class="suffix">+</span>
-                    </dd>
-                </div>
-            ))}
-        </dl>
+        <div class="open-grid">
+            <dl class="stats">
+                {STATS.map((stat) => (
+                    <div>
+                        <dt>{stat.label}</dt>
+                        <dd>
+                            <span class="arrow" aria-hidden="true">
+                                ↑
+                            </span>
+                            <span
+                                class="value"
+                                data-count={stat.value}
+                                data-live={stat.live}
+                            >
+                                {stat.value}
+                            </span>
+                            <span class="suffix">+</span>
+                        </dd>
+                    </div>
+                ))}
+            </dl>
+            <ul class="cards">
+                {CARDS.map((card) => (
+                    <li>
+                        <Icon name={card.icon} class="icon" />
+                        <div>
+                            <h3>
+                                {card.href ? (
+                                    <a href={card.href}>{card.title}</a>
+                                ) : (
+                                    card.title
+                                )}
+                            </h3>
+                            <p>{card.text}</p>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </div>
     </Rails>
 </section>
 
@@ -146,25 +149,157 @@ const STATS = [
 </script>
 
 <style lang="scss">
-    @use "./style/platform" as *;
-
     .open-source {
         border-bottom: 1px solid var(--ks-border-primary);
     }
 
+    .open-grid {
+        --rule: 1px solid var(--ks-border-primary);
+
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+        margin: 0 calc(-1 * var(--inset));
+        border-block: var(--rule);
+
+        @include media-breakpoint-down(xl) {
+            margin: 0;
+            border: var(--rule);
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    .stats {
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+        margin: 0;
+        border-right: var(--rule);
+
+        @include media-breakpoint-down(lg) {
+            grid-template-rows: none;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            border-right: 0;
+            border-bottom: var(--rule);
+        }
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        div {
+            display: flex;
+            flex-direction: column-reverse;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2.5rem var(--inset);
+
+            & + div {
+                border-top: var(--rule);
+
+                @include media-breakpoint-down(lg) {
+                    border-top: 0;
+                    border-left: var(--rule);
+                }
+
+                @include media-breakpoint-down(sm) {
+                    border-left: 0;
+                    border-top: var(--rule);
+                }
+            }
+        }
+
+        dd {
+            display: flex;
+            align-items: flex-start;
+            margin: 0;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+            color: var(--ks-content-primary);
+        }
+
+        .arrow {
+            margin: 0.35em 0.15em 0 0;
+            font-size: clamp(1.25rem, 2.2vw, 2rem);
+            line-height: 1;
+            color: var(--ks-content-color-highlight);
+        }
+
+        .value {
+            font-size: clamp(3.25rem, 6.5vw, 6rem);
+            font-weight: 500;
+            letter-spacing: -0.05em;
+            line-height: 0.9;
+        }
+
+        .suffix {
+            align-self: flex-end;
+            margin-left: 0.15em;
+            font-size: clamp(1.75rem, 2.8vw, 2.5rem);
+            font-weight: 500;
+            line-height: 1;
+            color: var(--ks-content-secondary);
+        }
+
+        dt {
+            font-family: $font-family-monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--ks-content-tertiary);
+        }
+    }
+
     .cards {
-        @include ruled-grid(3);
+        display: grid;
+        margin: 0;
+        padding: 0;
+        list-style: none;
 
         li {
-            padding: 2.25rem var(--inset) 2.5rem;
+            position: relative;
+            display: grid;
+            grid-template-columns: 1.75rem minmax(0, 1fr);
+            gap: 1.25rem;
+            padding: 2rem var(--inset);
+            transition: background-color 0.3s ease;
 
-            &:hover :global(.icon) {
-                color: var(--ks-content-link);
+            & + li {
+                border-top: var(--rule);
+            }
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: -1px;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: var(--ks-content-primary);
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+            }
+
+            &:hover {
+                background: var(--ks-background-secondary);
+
+                &::before {
+                    transform: none;
+                }
+
+                :global(.icon) {
+                    color: var(--ks-content-link);
+                }
             }
         }
 
         h3 {
-            margin: 0 0 0.5rem;
+            margin: 0 0 0.375rem;
             font-size: 1.125rem;
             font-weight: 600;
             color: var(--ks-content-primary);
@@ -191,68 +326,8 @@ const STATS = [
         :global(.icon) {
             width: 1.75rem;
             height: 1.75rem;
-            margin-bottom: 1.25rem;
             color: var(--ks-content-tertiary);
             transition: color 0.3s ease;
-        }
-    }
-
-    .stats {
-        @include ruled-grid(2, $hover: null);
-
-        border-top: 0;
-
-        @include media-breakpoint-down(xl) {
-            margin-top: 1rem;
-            border-top: var(--rule);
-        }
-
-        div {
-            display: flex;
-            flex-direction: column-reverse;
-            gap: 1rem;
-            padding: 3rem var(--inset);
-        }
-
-        dd {
-            display: flex;
-            align-items: flex-start;
-            margin: 0;
-            font-variant-numeric: tabular-nums;
-            white-space: nowrap;
-            color: var(--ks-content-primary);
-        }
-
-        .arrow {
-            margin: 0.35em 0.15em 0 0;
-            font-size: clamp(1.25rem, 2.4vw, 2.25rem);
-            line-height: 1;
-            color: var(--ks-content-color-highlight);
-        }
-
-        .value {
-            font-size: clamp(3.5rem, 8vw, 7.5rem);
-            font-weight: 500;
-            letter-spacing: -0.05em;
-            line-height: 0.9;
-        }
-
-        .suffix {
-            align-self: flex-end;
-            margin-left: 0.15em;
-            font-size: clamp(1.75rem, 3.2vw, 3rem);
-            font-weight: 500;
-            line-height: 1;
-            color: var(--ks-content-secondary);
-        }
-
-        dt {
-            font-family: $font-family-monospace;
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--ks-content-tertiary);
         }
     }
 </style>

@@ -64,26 +64,24 @@
             }
         }
 
-        @if $hover {
+        &::before {
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: $bar;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        &:hover {
+            background: $hover;
+
             &::before {
-                content: "";
-                position: absolute;
-                top: -1px;
-                left: 0;
-                right: 0;
-                height: 2px;
-                background: $bar;
-                transform: scaleX(0);
-                transform-origin: left;
-                transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-            }
-
-            &:hover {
-                background: $hover;
-
-                &::before {
-                    transform: none;
-                }
+                transform: none;
             }
         }
     }

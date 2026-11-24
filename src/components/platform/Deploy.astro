@@ -65,6 +65,10 @@ const OPTIONS = [
 
         position: relative;
         border-block: var(--rule);
+
+        :global(html.dark) & {
+            border-block-color: var(--ks-border-primary);
+        }
         background: linear-gradient(180deg, #000000 0, var(--bg) 18rem);
         color: #ffffff;
 

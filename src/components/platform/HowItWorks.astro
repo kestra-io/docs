@@ -1882,12 +1882,9 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
         padding: 22%;
         border: 1px solid var(--line);
         border-radius: 28%;
-        background: var(--panel);
+        background: #ffffff;
         box-shadow: var(--shadow);
-
-        :global(html.dark) & {
-            background: #ffffff;
-        }
+        color: #2b2b33;
 
         :global(svg) {
             width: 100%;
