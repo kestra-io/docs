@@ -1,4 +1,50 @@
 ---
+interface Edition {
+    id: "core" | "cloud" | "enterprise"
+    title: string
+    badge?: string
+    text: string
+    cta: { label: string; href: string }
+    featured?: boolean
+}
+
+interface Props {
+    title?: string
+    lead?: string
+    editions?: Edition[]
+    compare?: { label: string; href: string }
+}
+
+const DEFAULT_EDITIONS: Edition[] = [
+    {
+        id: "core",
+        title: "Kestra Core",
+        badge: "Open Source",
+        text: "Where most teams start, and where many experiment with a first production. Self-hosted and free, with no limits on flows or executions.",
+        cta: { label: "Get started", href: "/get-started" },
+    },
+    {
+        id: "cloud",
+        title: "Kestra Cloud",
+        badge: "Early Access",
+        text: "Managed by the people who build Kestra. No platform to run, pay for what you use.",
+        cta: { label: "Try Kestra Cloud", href: "/cloud" },
+    },
+    {
+        id: "enterprise",
+        title: "Kestra Enterprise",
+        text: "The Kestra experience scaled for the enterprise: multi-team organization, security and governance, support with SLAs. Self-hosted, cloud or air-gapped.",
+        cta: { label: "Book a demo", href: "/demo" },
+        featured: true,
+    },
+]
+
+const {
+    title = "Three ways to run Kestra",
+    lead = "Try it alone, try it managed, or talk to an expert who has done the migration before.",
+    editions = DEFAULT_EDITIONS,
+    compare = { label: "Find the edition that fits your team", href: "/pricing" },
+} = Astro.props
 ---
 
 <section class="run-kestra" aria-labelledby="run-kestra">
@@ -6,55 +52,35 @@
     <div class="container-xl">
         <div class="stage">
             <header class="head">
-                <h2 id="run-kestra">Three ways to run Kestra</h2>
-                <p>
-                    Try it alone, try it managed, or talk to an expert who has
-                    done the migration before.
-                </p>
+                <h2 id="run-kestra">{title}</h2>
+                <p>{lead}</p>
             </header>
-
             <div class="side">
                 <div class="editions surface-dark">
-                    <article class="edition" data-edition="core">
-                        <h3>Kestra Core</h3>
-                        <p class="badge">Open Source</p>
-                        <p>
-                            Where most teams start, and where many experiment
-                            with a first production. Self-hosted and free, with
-                            no limits on flows or executions.
-                        </p>
-                        <a href="/get-started" class="btn-ghost compact">
-                            Get started
-                        </a>
-                    </article>
-
-                    <article class="edition" data-edition="cloud">
-                        <h3>Kestra Cloud</h3>
-                        <p class="badge">Early Access</p>
-                        <p>
-                            Managed by the people who build Kestra. No platform
-                            to run, pay for what you use.
-                        </p>
-                        <a href="/cloud" class="btn-ghost compact">
-                            Try Kestra Cloud
-                        </a>
-                    </article>
-
-                    <article class="edition featured" data-edition="enterprise">
-                        <h3>Kestra Enterprise</h3>
-                        <p>
-                            The Kestra experience scaled for the enterprise:
-                            multi-team organization, security and governance,
-                            support with SLAs. Self-hosted, cloud or air-gapped.
-                        </p>
-                        <a href="/demo" class="btn-solid compact">
-                            Book a demo
-                        </a>
-                    </article>
+                    {
+                        editions.map((edition) => (
+                            <article
+                                class:list={["edition", { featured: edition.featured }]}
+                                data-edition={edition.id}
+                            >
+                                <h3>{edition.title}</h3>
+                                {edition.badge && <p class="badge">{edition.badge}</p>}
+                                <p>{edition.text}</p>
+                                <a
+                                    href={edition.cta.href}
+                                    class:list={[
+                                        edition.featured ? "btn-solid" : "btn-ghost",
+                                        "compact",
+                                    ]}
+                                >
+                                    {edition.cta.label}
+                                </a>
+                            </article>
+                        ))
+                    }
                 </div>
-                <a href="/pricing" class="compare">
-                    Find the edition that fits your team{" "}
-                    <span aria-hidden="true">→</span>
+                <a href={compare.href} class="compare">
+                    {compare.label} <span aria-hidden="true">→</span>
                 </a>
             </div>
         </div>

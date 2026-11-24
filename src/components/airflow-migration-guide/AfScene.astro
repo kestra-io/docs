@@ -1,0 +1,822 @@
+---
+import { Icon } from "astro-icon/components"
+import airflowMark from "~/components/versus/assets/airflow-monograme.svg"
+import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
+import { DAILY_AIRFLOW } from "./code"
+import { HOW } from "./guide"
+import { python, yamlLine } from "~/components/migration/highlight"
+
+interface Props {
+    kind: "translate" | "backfill" | "compare"
+}
+
+const { kind } = Astro.props
+
+const PAIRS = [
+    { at: 700, py: [8, 9], yaml: [1, 2], label: "DAG → flow id" },
+    {
+        at: 1600,
+        py: [10, 11, 12],
+        yaml: [4, 5, 6, 7, 8],
+        label: "schedule, catchup → Schedule trigger",
+    },
+    {
+        at: 2500,
+        py: [13],
+        yaml: [10, 11, 12, 13],
+        label: "default_args → retry",
+    },
+    {
+        at: 3400,
+        py: [19, 20, 21, 22, 23],
+        yaml: [15, 16, 17, 18, 19],
+        label: "SQLExecuteQueryOperator → Queries",
+    },
+    {
+        at: 4300,
+        py: [25, 26, 27, 28, 30],
+        yaml: [21, 22, 23, 24, 25, 26],
+        label: "BashOperator → DbtCLI",
+    },
+    {
+        at: 5200,
+        py: [14, 15, 16, 17],
+        yaml: [28, 29, 30, 31],
+        label: "on_failure_callback → errors",
+    },
+]
+const timeFor = (side: "py" | "yaml", row: number) =>
+    PAIRS.find((pair) => pair[side].includes(row))?.at
+
+const PY_LINES = DAILY_AIRFLOW.split("\n").map((text, i) => ({
+    html: python(text),
+    at: timeFor("py", i + 1),
+}))
+const YAML_LINES = HOW.flow.split("\n").map((text, i) => ({
+    html: yamlLine(text),
+    at: timeFor("yaml", i + 1),
+    blank: text.trim() === "",
+}))
+
+const RUNS = [
+    { day: "Nov 21", at: 1500, done: 2300 },
+    { day: "Nov 22", at: 2500, done: 3300 },
+    { day: "Nov 23", at: 3500, done: 4300 },
+]
+
+const ROWS = [
+    { day: "2026-11-21", airflow: "12,480", kestra: "12,480", at: 900 },
+    { day: "2026-11-22", airflow: "12,512", kestra: "12,512", at: 2100 },
+    { day: "2026-11-23", airflow: "12,497", kestra: "12,497", at: 3300 },
+]
+---
+
+{kind === "translate" && (
+    <div class="scene-grid translate" aria-hidden="true">
+        <div class="sheet code light">
+            <div class="head">
+                <span class="tab">
+                    <img src={airflowMark.src} alt="" />
+                    <span>orders_daily.py</span>
+                </span>
+                <code>Airflow</code>
+            </div>
+            <pre class="scroll-pane" data-follow>{PY_LINES.map((line, i) => (
+                <span class:list={["ln", { pair: line.at }]} data-on={line.at}><i>{i + 1}</i><Fragment set:html={line.html} />{"\n"}</span>
+            ))}</pre>
+        </div>
+        <ol class="pairs">
+            {PAIRS.map((pair) => (
+                <li data-on={pair.at}>
+                    <Icon name="mdi:arrow-right" />
+                    {pair.label}
+                </li>
+            ))}
+        </ol>
+        <div class="sheet code light">
+            <div class="head">
+                <span class="tab">
+                    <span class="kmark">
+                        <img src={kestraMark.src} alt="" />
+                    </span>
+                    <span>orders_daily.yaml</span>
+                </span>
+                <code>Kestra</code>
+            </div>
+            <pre class="scroll-pane" data-follow>{YAML_LINES.map((line, i) => (
+                <span class:list={["ln", "out", { blank: line.blank }]} data-on={line.at}><i>{i + 1}</i><Fragment set:html={line.html} />{"\n"}</span>
+            ))}</pre>
+        </div>
+    </div>
+)}
+
+{kind === "backfill" && (
+    <div class="scene-grid backfill" aria-hidden="true">
+        <div class="sheet light grid-view">
+            <div class="head">
+                <span class="tab">
+                    <img src={airflowMark.src} alt="" />
+                    <span>orders_daily</span>
+                </span>
+                <code>Grid</code>
+            </div>
+            <div class="af-grid">
+                <span class="label" />
+                {RUNS.map((run) => (
+                    <span class="col-head" data-on={run.at}>
+                        <span class="bar" />
+                        {run.day}
+                    </span>
+                ))}
+                {["stage_orders", "dbt_build"].map((task) => (
+                    <>
+                        <span class="label">{task}</span>
+                        {RUNS.map((run) => (
+                            <span class="cell" data-on={run.at}>
+                                <i />
+                            </span>
+                        ))}
+                    </>
+                ))}
+            </div>
+            <p class="caption">Three runs the DAG already made</p>
+        </div>
+        <span class="arrow flow" data-on="600">
+            <Icon name="mdi:arrow-right" />
+        </span>
+        <div class="sheet light backfill-card">
+            <div class="head">
+                <span class="tab">
+                    <span class="kmark">
+                        <img src={kestraMark.src} alt="" />
+                    </span>
+                    <span>Backfill · daily</span>
+                </span>
+                <code>Schedule</code>
+            </div>
+            <dl>
+                <div>
+                    <dt>Start</dt>
+                    <dd>2026-11-21 06:00</dd>
+                </div>
+                <div>
+                    <dt>End</dt>
+                    <dd>2026-11-23 06:00</dd>
+                </div>
+                <div>
+                    <dt>Labels</dt>
+                    <dd>
+                        <code>schema: shadow</code>
+                    </dd>
+                </div>
+            </dl>
+            <span class="execute" data-on="600">
+                <Icon name="mdi:play" /> Execute backfill
+            </span>
+            <ul class="execs">
+                {RUNS.map((run) => (
+                    <li data-on={run.at} style={`--dur: ${run.done - run.at}ms`}>
+                        <code>{run.day} 06:00</code>
+                        <span class="prog" />
+                        <span class="pill running">Running</span>
+                        <span class="pill success" data-on={run.done}>
+                            <Icon name="mdi:check-circle" /> Success
+                        </span>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    </div>
+)}
+
+{kind === "compare" && (
+    <div class="scene-grid compare" aria-hidden="true">
+        <div class="sheet light table-card">
+            <div class="head">
+                <span class="tab">
+                    <Icon name="mdi:table-check" />
+                    <span>Rows written to orders, per day</span>
+                </span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>
+                            <img src={airflowMark.src} alt="" /> Airflow DAG
+                        </th>
+                        <th>
+                            <span class="kmark">
+                                <img src={kestraMark.src} alt="" />
+                            </span>{" "}
+                            Kestra flow
+                        </th>
+                        <th />
+                    </tr>
+                </thead>
+                <tbody>
+                    {ROWS.map((row) => (
+                        <tr data-on={row.at}>
+                            <td>
+                                <code>{row.day}</code>
+                            </td>
+                            <td>{row.airflow}</td>
+                            <td>{row.kestra}</td>
+                            <td>
+                                <span class="pill success">
+                                    <Icon name="mdi:check-circle" /> match
+                                </span>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <div class="verdict" data-on="4500">
+                <span class="toggle">
+                    <i />
+                </span>
+                <span>
+                    <strong>orders_daily</strong> paused, then deleted from
+                    Airflow
+                </span>
+            </div>
+        </div>
+    </div>
+)}
+
+<script>
+    function follow() {
+        document
+            .querySelectorAll<HTMLElement>("[data-follow]:not([data-wired])")
+            .forEach((pane) => {
+                pane.dataset.wired = ""
+                const lines = [...pane.querySelectorAll<HTMLElement>(".ln")]
+                const observer = new MutationObserver((records) => {
+                    const lit = records
+                        .map((record) => record.target as HTMLElement)
+                        .filter((line) => line.classList.contains("on"))
+                    const last = lit[lit.length - 1]
+                    const any = lines.some((line) =>
+                        line.classList.contains("on"),
+                    )
+                    if (!last && any) return
+                    const top = last
+                        ? Math.max(0, last.offsetTop - pane.clientHeight * 0.45)
+                        : 0
+                    pane.scrollTo({ top, behavior: "smooth" })
+                })
+                lines.forEach((line) =>
+                    observer.observe(line, {
+                        attributes: true,
+                        attributeFilter: ["class"],
+                    }),
+                )
+            })
+    }
+
+    document.addEventListener("astro:page-load", follow)
+    follow()
+</script>
+
+<style lang="scss">
+    @use "/src/components/enterprise/mocks/tokens" as *;
+
+    .scene-grid {
+        @include tokens;
+
+        --bar: #f7f7fa;
+        --run-bg: rgba(132, 5, 255, 0.08);
+        --code-key: #631bf3;
+        --code-str: #ab0009;
+        --code-const: #1a7a55;
+        --code-comment: #5f5f7c;
+        --hl: rgba(132, 5, 255, 0.08);
+
+        :global(html.dark) & {
+            --bar: #1e1e26;
+            --run-bg: rgba(152, 105, 247, 0.18);
+            --code-key: #cdb6fb;
+            --code-str: #ffc5b7;
+            --code-const: #06f0b1;
+            --code-comment: #7e7e9b;
+            --hl: rgba(152, 105, 247, 0.16);
+        }
+
+        display: grid;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+        height: 100%;
+        color: var(--text);
+        font-size: 0.75rem;
+    }
+
+    code {
+        padding: 0.0625rem 0.3125rem;
+        border-radius: 4px;
+        background: var(--chip);
+        font-family: $font-family-monospace;
+        font-size: 0.6875rem;
+        color: var(--text);
+    }
+
+    .translate {
+        grid-template-columns: minmax(0, 1fr) 12rem minmax(0, 1fr);
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    .backfill {
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    .compare {
+        grid-template-columns: minmax(0, 44rem);
+        justify-content: center;
+    }
+
+    .sheet {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 0.75rem;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+    }
+
+    .head {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.75rem;
+        height: 2.75rem;
+        padding: 0 0.875rem;
+        border-bottom: 1px solid var(--line);
+        background: var(--bar);
+        color: var(--muted);
+
+        code {
+            align-self: center;
+            margin-left: auto;
+            padding: 0.0625rem 0.375rem;
+            border-radius: 4px;
+            background: var(--chip);
+            font-size: 0.625rem;
+            color: var(--muted);
+        }
+    }
+
+    .tab {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        height: 2.125rem;
+        margin-bottom: -1px;
+        padding: 0 0.875rem 0 0.5rem;
+        border: 1px solid var(--line);
+        border-bottom: 0;
+        border-radius: 8px 8px 0 0;
+        background: var(--panel);
+        font-size: 0.8125rem;
+        font-weight: 500;
+        white-space: nowrap;
+        color: var(--text);
+
+        img,
+        > :global(svg) {
+            width: 1rem;
+            height: 1rem;
+        }
+    }
+
+    .kmark {
+        display: inline-grid;
+        place-items: center;
+        width: 1.25rem;
+        height: 1.25rem;
+        border-radius: 6px;
+        background: #0d0d10;
+
+        img {
+            width: 0.75rem;
+            height: 0.75rem;
+        }
+    }
+
+    pre {
+        max-height: 26rem;
+        margin: 0;
+        padding: 0.5rem 0 3rem;
+        overflow: hidden;
+        border: 0;
+        background: transparent;
+        font-family: $font-family-monospace;
+        font-size: 0.625rem;
+        line-height: 1.5;
+        color: var(--text) !important;
+        white-space: pre;
+    }
+
+    .ln {
+        display: block;
+        padding-right: 0.5rem;
+        transition:
+            opacity 0.3s ease,
+            background-color 0.6s ease;
+
+        i {
+            display: inline-block;
+            width: 2rem;
+            padding-right: 0.5rem;
+            font-style: normal;
+            text-align: right;
+            color: var(--muted);
+        }
+
+        :global(.k) {
+            color: var(--code-key);
+        }
+
+        :global(.s) {
+            color: var(--code-str);
+        }
+
+        :global(.v) {
+            color: var(--code-const);
+        }
+
+        :global(.c) {
+            font-style: italic;
+            color: var(--code-comment);
+        }
+
+        &.pair:global(.on) {
+            background: linear-gradient(90deg, var(--hl), transparent 85%);
+            box-shadow: inset 2px 0 0 var(--code-key);
+            animation: lit 0.9s ease;
+        }
+
+        &.out {
+            opacity: 0.12;
+        }
+
+        &.out.blank,
+        &.out:global(.on) {
+            opacity: 1;
+        }
+
+        &.out:global(.on) {
+            animation: lit 0.9s ease;
+        }
+    }
+
+    @keyframes lit {
+        from {
+            background: var(--run-bg);
+        }
+    }
+
+    .pairs {
+        display: grid;
+        gap: 0.5rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.375rem;
+            padding: 0.4375rem 0.5rem;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--panel);
+            font-family: $font-family-monospace;
+            font-size: 0.625rem;
+            line-height: 1.4;
+            color: var(--muted);
+            opacity: 0.3;
+            transition:
+                opacity 0.3s ease,
+                border-color 0.3s ease,
+                color 0.3s ease;
+
+            :global(svg) {
+                flex: none;
+                width: 0.875rem;
+                height: 0.875rem;
+                color: var(--ok);
+            }
+
+            &:global(.on) {
+                border-color: var(--ok);
+                color: var(--text);
+                opacity: 1;
+            }
+        }
+    }
+
+    .af-grid {
+        display: grid;
+        grid-template-columns: 6.5rem repeat(3, minmax(0, 1fr));
+        gap: 0.375rem 0.5rem;
+        padding: 0.75rem;
+
+        .col-head {
+            display: grid;
+            justify-items: center;
+            gap: 0.25rem;
+            color: var(--muted);
+        }
+
+        .bar {
+            width: 0.75rem;
+            height: 3rem;
+            border-radius: 2px;
+            background: #008000;
+        }
+
+        .label {
+            align-self: center;
+            font-family: $font-family-monospace;
+            font-size: 0.6875rem;
+        }
+
+        .cell {
+            display: grid;
+            place-items: center;
+
+            i {
+                width: 0.75rem;
+                height: 0.75rem;
+                border-radius: 2px;
+                background: #008000;
+            }
+        }
+    }
+
+    .caption {
+        margin: 0;
+        padding: 0 0.75rem 0.75rem;
+        color: var(--muted);
+    }
+
+    .arrow {
+        display: grid;
+        place-items: center;
+        color: var(--muted);
+    }
+
+    .backfill-card {
+        dl {
+            display: grid;
+            gap: 0.375rem;
+            margin: 0;
+            padding: 0.75rem;
+        }
+
+        dl > div {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        dt {
+            font-weight: 400;
+            color: var(--muted);
+        }
+
+        dd {
+            margin: 0;
+            font-weight: 500;
+        }
+    }
+
+    .execute {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin: 0 0.75rem;
+        padding: 0.375rem 0.75rem;
+        border-radius: 6px;
+        background: var(--chip);
+        font-weight: 600;
+        color: var(--muted);
+        transition:
+            background-color 0.3s ease,
+            color 0.3s ease;
+
+        &:global(.on) {
+            background: var(--run);
+            color: #ffffff;
+        }
+    }
+
+    .execs {
+        display: grid;
+        margin: 0.75rem 0 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4375rem 0.75rem;
+            border-top: 1px solid var(--line);
+            opacity: 0;
+            transform: translateY(4px);
+            transition:
+                opacity 0.3s ease,
+                transform 0.3s ease;
+
+            &:global(.on) {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .pill {
+            margin-left: auto;
+        }
+    }
+
+    .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.125rem 0.5rem;
+        border-radius: 999px;
+        font-size: 0.6875rem;
+        font-weight: 600;
+
+        :global(svg) {
+            width: 0.75rem;
+            height: 0.75rem;
+        }
+
+        &.running {
+            background: var(--run-bg);
+            color: var(--run);
+        }
+
+        &.success {
+            background: var(--ok-bg);
+            color: var(--ok);
+        }
+    }
+
+    .execs .success {
+        display: none;
+    }
+
+    .execs .success:global(.on) {
+        display: inline-flex;
+    }
+
+    .execs li:has(.success:global(.on)) .running {
+        display: none;
+    }
+
+    .table-card {
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8125rem;
+        }
+
+        th {
+            padding: 0.5rem 0.875rem;
+            background: var(--deep);
+            font-weight: 500;
+            text-align: left;
+            color: var(--muted);
+
+            img {
+                width: 0.875rem;
+                height: 0.875rem;
+                vertical-align: -0.125rem;
+            }
+        }
+
+        td {
+            padding: 0.625rem 0.875rem;
+            border-top: 1px solid var(--line);
+            font-variant-numeric: tabular-nums;
+        }
+
+        tbody tr {
+            opacity: 0;
+            transition: opacity 0.4s ease;
+
+            &:global(.on) {
+                opacity: 1;
+                animation: lit 0.9s ease;
+            }
+        }
+    }
+
+    .verdict {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        padding: 0.75rem 0.875rem;
+        border-top: 1px solid var(--line);
+        font-size: 0.8125rem;
+        opacity: 0.3;
+        transition: opacity 0.4s ease;
+
+        .toggle {
+            position: relative;
+            width: 1.75rem;
+            height: 1rem;
+            border-radius: 999px;
+            background: #017cee;
+            transition: background-color 0.3s ease;
+
+            i {
+                position: absolute;
+                top: 0.125rem;
+                left: 0.875rem;
+                width: 0.75rem;
+                height: 0.75rem;
+                border-radius: 50%;
+                background: #ffffff;
+                transition: left 0.3s ease;
+            }
+        }
+
+        &:global(.on) {
+            opacity: 1;
+
+            .toggle {
+                background: var(--line);
+
+                i {
+                    left: 0.125rem;
+                }
+            }
+        }
+    }
+    .af-grid .col-head,
+    .af-grid .cell {
+        border-radius: 6px;
+        transition:
+            background-color 0.3s ease,
+            box-shadow 0.3s ease;
+
+        &:global(.on) {
+            background: var(--run-bg);
+            box-shadow: inset 0 0 0 1px var(--ring);
+        }
+    }
+
+    .arrow.flow :global(svg) {
+        transition: color 0.3s ease;
+    }
+
+    .arrow.flow:global(.on) :global(svg) {
+        color: var(--run);
+        animation: push 1s ease-in-out infinite;
+    }
+
+    @keyframes push {
+        50% {
+            transform: translateX(4px);
+        }
+    }
+
+    .execs .prog {
+        flex: 1;
+        height: 3px;
+        margin: 0 0.5rem;
+        overflow: hidden;
+        border-radius: 2px;
+        background: var(--chip);
+
+        &::after {
+            content: "";
+            display: block;
+            height: 100%;
+            background: linear-gradient(90deg, var(--run), #06c28a);
+            transform: scaleX(0);
+            transform-origin: left;
+        }
+    }
+
+    .execs li:global(.on) .prog::after {
+        transform: scaleX(1);
+        transition: transform var(--dur) linear;
+    }
+
+    .scroll-pane {
+        scroll-behavior: smooth;
+    }
+</style>

@@ -1,0 +1,288 @@
+---
+import kestraMark from "./assets/ai/kestra-logo-mark-on-dark.svg"
+
+export interface TerminalLine {
+    cmd?: string
+    out?: string[]
+    note?: string
+}
+
+export interface Props {
+    label: string
+    lines: TerminalLine[]
+}
+
+const { label, lines } = Astro.props
+---
+
+<figure class="cp-term" aria-label={label} data-cp-term>
+    <figcaption>
+        <span class="dots" aria-hidden="true">
+            <i></i>
+            <i></i>
+            <i></i>
+        </span>
+        <span class="term-tab">
+            <span class="logo">
+                <img src={kestraMark.src} alt="" width="16" height="16" />
+            </span>
+            Terminal
+        </span>
+    </figcaption>
+    <pre data-screen>{lines.map((line) =>
+        line.cmd ? (
+            <span class="line"><span class="ps">$ </span><span class="cmd">{line.cmd}</span></span>
+        ) : (
+            <>
+                {(line.out ?? []).map((text) => (
+                    <span class="line out">{text}</span>
+                ))}
+                {line.note && <span class="line note"># {line.note}</span>}
+            </>
+        ),
+    )}</pre>
+    <script
+        type="application/json"
+        data-lines
+        set:html={JSON.stringify(lines)}
+    />
+</figure>
+
+<script>
+    type Line = { cmd?: string; out?: string[]; note?: string }
+
+    const TYPE_MS = 26
+    const LINE_MS = 170
+    const AFTER_CMD_MS = 420
+
+    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
+    function play(root: HTMLElement) {
+        const screen = root.querySelector<HTMLElement>("[data-screen]")!
+        const lines: Line[] = JSON.parse(
+            root.querySelector("[data-lines]")!.textContent ?? "[]",
+        )
+        const host = root.closest<HTMLElement>("[data-domain-visual]")
+        const stacked = matchMedia("(max-width: 991.98px)")
+        let visible = false
+        new IntersectionObserver(([entry]) => {
+            visible = entry.isIntersecting
+        }).observe(root)
+        const shown = () =>
+            visible &&
+            root.offsetParent !== null &&
+            (!host || stacked.matches || host.classList.contains("active"))
+        const report = (type: string, detail?: number) =>
+            root.dispatchEvent(new CustomEvent(type, { bubbles: true, detail }))
+
+        const add = (cls: string, text = "") => {
+            const row = document.createElement("span")
+            row.className = `line ${cls}`.trim()
+            row.textContent = text
+            screen.appendChild(row)
+            return row
+        }
+        const prompt = () => {
+            const row = add("")
+            const ps = document.createElement("span")
+            ps.className = "ps"
+            ps.textContent = "$ "
+            const cmd = document.createElement("span")
+            cmd.className = "cmd typing"
+            row.appendChild(ps)
+            row.appendChild(cmd)
+            return cmd
+        }
+
+        const total = lines.reduce(
+            (n, line) =>
+                n +
+                (line.cmd ? 1 : 0) +
+                (line.out?.length ?? 0) +
+                (line.note ? 1 : 0),
+            0,
+        )
+
+        const loop = async () => {
+            for (;;) {
+                while (!shown()) {
+                    await sleep(200)
+                    if (!root.isConnected) return
+                }
+                screen.textContent = ""
+                let done = 0
+                const step = () => report("topology:progress", ++done / total)
+                let interrupted = false
+                for (const line of lines) {
+                    if (line.cmd) {
+                        const cmd = prompt()
+                        for (let c = 1; c <= line.cmd.length; c++) {
+                            cmd.textContent = line.cmd.slice(0, c)
+                            await sleep(TYPE_MS)
+                        }
+                        cmd.classList.remove("typing")
+                        step()
+                        await sleep(AFTER_CMD_MS)
+                    }
+                    for (const text of line.out ?? []) {
+                        add("out", text)
+                        step()
+                        await sleep(LINE_MS)
+                    }
+                    if (line.note) {
+                        add("note", `# ${line.note}`)
+                        step()
+                        await sleep(LINE_MS)
+                    }
+                    if (!shown()) {
+                        interrupted = true
+                        break
+                    }
+                }
+                if (interrupted) continue
+                prompt()
+                report("topology:done")
+                while (shown()) {
+                    await sleep(300)
+                    if (!root.isConnected) return
+                }
+            }
+        }
+        loop()
+    }
+
+    function wire() {
+        document
+            .querySelectorAll<HTMLElement>("[data-cp-term]:not([data-wired])")
+            .forEach((root) => {
+                root.dataset.wired = ""
+                if (matchMedia("(prefers-reduced-motion: reduce)").matches)
+                    return
+                play(root)
+            })
+    }
+
+    document.addEventListener("astro:page-load", wire)
+    wire()
+</script>
+
+<style lang="scss">
+    .cp-term {
+        --line: #2e2e3c;
+        width: 100%;
+        margin: 0;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 0.75rem;
+        background: #18181e;
+        box-shadow: 0 30px 80px -24px rgba(0, 0, 0, 0.45);
+        text-align: left;
+    }
+
+    figcaption {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.75rem;
+        height: 3rem;
+        padding: 0 1rem;
+        border-bottom: 1px solid var(--line);
+        background: #1e1e26;
+        font-size: 0.875rem;
+        color: #adadbf;
+    }
+
+    .dots {
+        display: inline-flex;
+        align-self: center;
+        gap: 0.375rem;
+
+        i {
+            width: 0.625rem;
+            height: 0.625rem;
+            border-radius: 50%;
+            background: var(--line);
+        }
+    }
+
+    .term-tab {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        height: 2.375rem;
+        margin-bottom: -1px;
+        padding: 0 0.875rem 0 0.5rem;
+        border: 1px solid var(--line);
+        border-bottom: 0;
+        border-radius: 8px 8px 0 0;
+        background: #18181e;
+        font-weight: 500;
+        color: #ffffff;
+    }
+
+    .logo {
+        display: grid;
+        place-items: center;
+        width: 1.375rem;
+        height: 1.375rem;
+        border-radius: 6px;
+        background: #0d0d10;
+
+        img {
+            width: 1rem;
+            height: 1rem;
+        }
+    }
+
+    pre {
+        height: 15rem;
+        margin: 0;
+        padding: 1.25rem 1.5rem;
+        overflow: hidden;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        font-family: $font-family-monospace;
+        font-size: 0.8125rem;
+        line-height: 1.75;
+        color: #d6d6e0 !important;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+    pre :global(.line) {
+        display: block;
+    }
+
+    pre :global(.ps) {
+        color: #80fac5;
+    }
+
+    pre :global(.cmd) {
+        color: #ffffff;
+    }
+
+    pre :global(.out) {
+        color: #adadbf;
+    }
+
+    pre :global(.note) {
+        color: #cdb6fb;
+    }
+
+    pre :global(.typing)::after {
+        content: "";
+        display: inline-block;
+        width: 0.5rem;
+        height: 1rem;
+        margin-left: 1px;
+        vertical-align: -0.15rem;
+        background: #ffffff;
+        animation: cp-caret 1s steps(1) infinite;
+    }
+
+    @keyframes cp-caret {
+        50% {
+            opacity: 0;
+        }
+    }
+</style>
