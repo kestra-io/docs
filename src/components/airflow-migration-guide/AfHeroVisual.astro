@@ -1,6 +1,6 @@
 ---
 import { Icon } from "astro-icon/components"
-import { API_URL } from "astro:env/client"
+import { fetchPluginIcon } from "~/utils/pluginIcon"
 import airflowMark from "~/components/versus/assets/airflow-monograme.svg"
 import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
 
@@ -33,12 +33,8 @@ const paint = (line: string) =>
 const icons = await Promise.all(
     ROWS.map(async ({ kestra }) => {
         try {
-            const response = await fetch(
-                `${API_URL}/plugins/icons/io.kestra.plugin.${kestra.type}`,
-            )
-            if (!response.ok) return null
-            const svg = Buffer.from(await response.arrayBuffer())
-            return `data:image/svg+xml;base64,${svg.toString("base64")}`
+            const svg = await fetchPluginIcon(`io.kestra.plugin.${kestra.type}`)
+            return `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`
         } catch {
             return null
         }

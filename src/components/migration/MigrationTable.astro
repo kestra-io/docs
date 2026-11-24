@@ -25,7 +25,6 @@ export interface TableTab {
     columns: readonly TableHead[]
     widths?: readonly string[]
     groups: readonly TableGroup[]
-    note?: string
 }
 
 interface Props {
@@ -36,7 +35,6 @@ interface Props {
     widths?: readonly string[]
     groups?: readonly TableGroup[]
     tabs?: readonly TableTab[]
-    tone?: "default" | "muted"
 }
 
 const {
@@ -47,7 +45,6 @@ const {
     widths = [],
     groups = [],
     tabs,
-    tone = "default",
 } = Astro.props
 
 const parts = (text: string) =>
@@ -59,9 +56,30 @@ const head = (column: TableHead): TableColumn =>
 const panels: readonly TableTab[] = tabs ?? [
     { id: `${id}-table`, label: title, columns, widths, groups },
 ]
+
+const logos = [
+    ...new Set(
+        panels.flatMap((panel) =>
+            panel.columns.map(head).flatMap((column) => column.logo ?? []),
+        ),
+    ),
+].map((svg, idx) => ({
+    svg,
+    ref: `${id}-logo-${idx}`,
+    viewBox: svg.match(/viewBox="([^"]+)"/)?.[1] ?? "0 0 100 100",
+    body: svg.replace(/^[\s\S]*?<svg[^>]*>/, "").replace(/<\/svg>\s*$/, ""),
+}))
+const logoOf = (svg: string) => logos.find((logo) => logo.svg === svg)!
 ---
 
-<section class:list={["mig-table", tone]} aria-labelledby={id} data-mig-table>
+<section class="mig-table" aria-labelledby={id} data-mig-table>
+    {logos.length > 0 && (
+        <svg class="sprite" aria-hidden="true">
+            {logos.map((logo) => (
+                <symbol id={logo.ref} viewBox={logo.viewBox} set:html={logo.body} />
+            ))}
+        </svg>
+    )}
     <div class="container-xl">
         <div class="rails">
             <header>
@@ -115,12 +133,14 @@ const panels: readonly TableTab[] = tabs ?? [
                                             }
                                         >
                                             {column.logo ? (
-                                                <span
+                                                <svg
                                                     class="logo"
                                                     role="img"
                                                     aria-label={column.label}
-                                                    set:html={column.logo}
-                                                />
+                                                    viewBox={logoOf(column.logo).viewBox}
+                                                >
+                                                    <use href={`#${logoOf(column.logo).ref}`} />
+                                                </svg>
                                             ) : (
                                                 column.label
                                             )}
@@ -185,9 +205,6 @@ const panels: readonly TableTab[] = tabs ?? [
                                 </tbody>
                             ))}
                         </table>
-                        {panel.note && (
-                            <div class="after" set:html={panel.note} />
-                        )}
                     </div>
                 )
             })}
@@ -241,6 +258,13 @@ const panels: readonly TableTab[] = tabs ?? [
 
 <style lang="scss">
     @use "/src/components/about/style/section" as *;
+
+    .sprite {
+        position: absolute;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+    }
 
     .mig-table {
         --rule: 1px solid var(--ks-border-primary);
@@ -398,15 +422,10 @@ const panels: readonly TableTab[] = tabs ?? [
         }
 
         .logo {
-            display: inline-flex;
-            align-items: center;
+            display: block;
+            width: auto;
             height: 1.75rem;
             color: var(--ks-content-primary);
-
-            :global(svg) {
-                width: auto;
-                height: 100%;
-            }
         }
 
         &.brand:first-child .logo {
@@ -472,37 +491,6 @@ const panels: readonly TableTab[] = tabs ?? [
         font-size: 0.8125rem;
         font-weight: 400;
         color: var(--ks-content-primary);
-    }
-
-    .after {
-        max-width: 52rem;
-        padding: 2.5rem var(--inset) 0;
-        font-size: 1rem;
-        line-height: 1.65;
-        color: var(--ks-content-secondary);
-
-        :global(p) {
-            margin: 0 0 1rem;
-        }
-
-        :global(strong) {
-            font-weight: 600;
-            color: var(--ks-content-primary);
-        }
-
-        :global(a) {
-            color: var(--ks-content-link);
-        }
-
-        :global(code) {
-            padding: 0.0625rem 0.3125rem;
-            border: 1px solid var(--ks-border-primary);
-            border-radius: 4px;
-            background: var(--ks-background-secondary);
-            font-family: $font-family-monospace;
-            font-size: 0.8125rem;
-            color: var(--ks-content-primary);
-        }
     }
 
     @media (hover: hover) {

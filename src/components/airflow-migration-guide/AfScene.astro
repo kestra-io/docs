@@ -4,6 +4,7 @@ import airflowMark from "~/components/versus/assets/airflow-monograme.svg"
 import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
 import { DAILY_AIRFLOW } from "./code"
 import { HOW } from "./guide"
+import { python, yamlLine } from "~/components/migration/highlight"
 
 interface Props {
     kind: "translate" | "backfill" | "compare"
@@ -47,34 +48,12 @@ const PAIRS = [
 const timeFor = (side: "py" | "yaml", row: number) =>
     PAIRS.find((pair) => pair[side].includes(row))?.at
 
-const escape = (text: string) =>
-    text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-const python = (line: string) =>
-    escape(line).replace(
-        /("[^"]*")|\b(from|import|with|as|None)\b/g,
-        (match, str, kw) =>
-            str
-                ? `<span class="s">${match}</span>`
-                : kw
-                  ? `<span class="k">${match}</span>`
-                  : match,
-    )
-const yaml = (line: string) => {
-    const m = line.match(/^(\s*)(- )?([\w.]+)(:)(.*)$/)
-    if (!m) return escape(line)
-    const [, ind, dash = "", key, colon, rest] = m
-    const hash = rest.indexOf(" #")
-    const value = hash >= 0 ? rest.slice(0, hash) : rest
-    const comment = hash >= 0 ? rest.slice(hash) : ""
-    return `${ind}${dash}<span class="k">${key}${colon}</span><span class="v">${escape(value)}</span>${comment ? `<span class="c">${escape(comment)}</span>` : ""}`
-}
-
 const PY_LINES = DAILY_AIRFLOW.split("\n").map((text, i) => ({
     html: python(text),
     at: timeFor("py", i + 1),
 }))
 const YAML_LINES = HOW.flow.split("\n").map((text, i) => ({
-    html: yaml(text),
+    html: yamlLine(text),
     at: timeFor("yaml", i + 1),
     blank: text.trim() === "",
 }))
@@ -94,7 +73,7 @@ const ROWS = [
 
 {kind === "translate" && (
     <div class="scene-grid translate" aria-hidden="true">
-        <div class="card code light">
+        <div class="sheet code light">
             <div class="head">
                 <img src={airflowMark.src} alt="" />
                 <span>orders_daily.py</span>
@@ -112,7 +91,7 @@ const ROWS = [
                 </li>
             ))}
         </ol>
-        <div class="card code light">
+        <div class="sheet code light">
             <div class="head">
                 <span class="kmark">
                     <img src={kestraMark.src} alt="" />
@@ -129,7 +108,7 @@ const ROWS = [
 
 {kind === "backfill" && (
     <div class="scene-grid backfill" aria-hidden="true">
-        <div class="card light grid-view">
+        <div class="sheet light grid-view">
             <div class="head">
                 <img src={airflowMark.src} alt="" />
                 <span>orders_daily</span>
@@ -159,7 +138,7 @@ const ROWS = [
         <span class="arrow flow" data-on="600">
             <Icon name="mdi:arrow-right" />
         </span>
-        <div class="card light backfill-card">
+        <div class="sheet light backfill-card">
             <div class="head">
                 <span class="kmark">
                     <img src={kestraMark.src} alt="" />
@@ -204,7 +183,7 @@ const ROWS = [
 
 {kind === "compare" && (
     <div class="scene-grid compare" aria-hidden="true">
-        <div class="card light table-card">
+        <div class="sheet light table-card">
             <div class="head">
                 <Icon name="mdi:table-check" />
                 <span>Rows written to orders, per day</span>
@@ -337,7 +316,11 @@ const ROWS = [
         justify-content: center;
     }
 
-    .card {
+    .sheet {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
         overflow: hidden;
         border: 1px solid var(--line);
         border-radius: 10px;

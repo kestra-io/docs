@@ -26,29 +26,28 @@ const DEFAULT_ROWS: { label: string; values: string[] }[] = [
         values: ["Open Source", "Usage-based", "Instance-based"],
     },
 ]
+
 interface Props {
     headingId?: string
     title?: string
     blockTitle?: string
     columns?: string[]
     rows?: { label: string; values: string[] }[]
-    featured?: number
 }
 
 const {
     headingId = "how-to-choose",
     title = "How to choose",
-    blockTitle = "HOW TO CHOOSE",
-    columns: EDITIONS = DEFAULT_COLUMNS,
-    rows: ROWS = DEFAULT_ROWS,
-    featured = EDITIONS.length - 1,
+    blockTitle = title.toUpperCase(),
+    columns = DEFAULT_COLUMNS,
+    rows = DEFAULT_ROWS,
 } = Astro.props
 ---
 
 <section
     class="pricing-choose surface-dark"
     aria-labelledby={headingId}
-    style={`--cols: ${EDITIONS.length}`}
+    style={`--cols: ${columns.length}`}
 >
     <div class="container-xl">
         <div class="rails">
@@ -63,13 +62,13 @@ const {
                     <thead>
                         <tr>
                             <td></td>
-                            {EDITIONS.map((edition) => (
+                            {columns.map((edition) => (
                                 <th scope="col">{edition}</th>
                             ))}
                         </tr>
                     </thead>
                     <tbody>
-                        {ROWS.map((row) => (
+                        {rows.map((row) => (
                             <tr>
                                 <th scope="row">{row.label}</th>
                                 {row.values.map((value) => (
@@ -81,11 +80,11 @@ const {
                 </table>
             </div>
             <ul class="cards">
-                {EDITIONS.map((edition, idx) => (
-                    <li class:list={{ featured: idx === featured }}>
+                {columns.map((edition, idx) => (
+                    <li class:list={{ featured: idx === columns.length - 1 }}>
                         <h3>{edition}</h3>
                         <dl>
-                            {ROWS.map((row) => (
+                            {rows.map((row) => (
                                 <div>
                                     <dt>{row.label}</dt>
                                     <dd>{row.values[idx]}</dd>

@@ -11,14 +11,7 @@ import {
     SHUTDOWN,
     STEPS,
 } from "~/components/pipedream-migration-guide/guide"
-
-const fence = (lang: string, code: string) => `\`\`\`${lang}\n${code}\n\`\`\``
-const table = (head: string[], rows: readonly (readonly string[])[]) =>
-    [
-        `| ${head.join(" | ")} |`,
-        `| ${head.map(() => "---").join(" | ")} |`,
-        ...rows.map((row) => `| ${row.map((cell) => cell.replaceAll("|", "\\|")).join(" | ")} |`),
-    ].join("\n")
+import { fence, table } from "~/components/migration/markdown"
 
 export const GET: APIRoute = async ({ site }) => {
     const post = await getEntry("resources", "pipedream-migration-guide")

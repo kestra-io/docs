@@ -4,30 +4,10 @@ import airflowMark from "~/components/versus/assets/airflow-monograme.svg"
 import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
 import ControlPlaneTopology from "~/components/home/ControlPlaneTopology.astro"
 import { AF_DAG_FILE, EX4_KESTRA } from "./code"
+import { flowLines, python } from "~/components/migration/highlight"
 
-const escape = (text: string) =>
-    text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-
-const python = (line: string) =>
-    escape(line).replace(
-        /("[^"]*")|(@\w+(?:\(\))?)|\b(def|return|import|from|None|with)\b|\b(requests|get|print|raise_for_status|json|xcom_push|partial|expand|datetime)\b/g,
-        (match, str, deco, kw, fn) =>
-            str
-                ? `<span class="s">${match}</span>`
-                : deco
-                  ? `<span class="d">${match}</span>`
-                  : kw
-                    ? `<span class="k">${match}</span>`
-                    : fn
-                      ? `<span class="f">${match}</span>`
-                      : match,
-    )
-
-const pebble = (value: string) =>
-    escape(value).replace(
-        /(\{\{)(.*?)(\}\})/g,
-        '<span class="pbd">$1</span><span class="pbv">$2</span><span class="pbd">$3</span>',
-    )
+const CALLS = ["requests", "get", "print", "raise_for_status", "json", "xcom_push", "partial", "expand", "datetime"]
+const script = (line: string) => python(line, CALLS)
 
 const KESTRA_LINES = EX4_KESTRA.split("\n")
 const startOf = (needle: string) =>
@@ -46,26 +26,9 @@ const MARKS: Record<string, [number, number]> = {
 const markAt = (row: number) =>
     Object.entries(MARKS).find(([, [a, b]]) => row >= a && row <= b)?.[0]
 
-let block = -1
-const FLOW_LINES = KESTRA_LINES.map((text, i) => {
-    const indent = text.match(/^\s*/)?.[0].length ?? 0
-    if (block >= 0 && text.trim() !== "" && indent <= block) block = -1
-    let html: string
-    if (block >= 0) html = python(text)
-    else {
-        const m = text.match(/^(\s*)(- )?([\w.]+)(:)(\s*)(.*)$/)
-        if (!m) html = escape(text)
-        else {
-            const [, ind, dash = "", key, colon, space, value] = m
-            if (value.trim() === "|") block = indent
-            const cls = /^["']/.test(value) ? "s" : "v"
-            html = `${ind}<span class="p">${dash}</span><span class="y">${key}${colon}</span>${space}<span class="${cls}">${pebble(value)}</span>`
-        }
-    }
-    return { html, mark: markAt(i + 1) }
-})
+const FLOW_LINES = flowLines(EX4_KESTRA, script, markAt)
 
-const AF_CODE = AF_DAG_FILE.split("\n").map(python)
+const AF_CODE = AF_DAG_FILE.split("\n").map(script)
 
 const TOPOLOGY = [
     {
@@ -155,33 +118,22 @@ const AF_TABS = [
     "mdi:code-tags",
     "mdi:alert-outline",
 ]
-interface Props {
-    bare?: boolean
-}
-
-const { bare = false } = Astro.props
-const Wrapper = bare ? "div" : "section"
 ---
 
-<Wrapper
-    class:list={["af-compare", { bare }]}
-    aria-labelledby={bare ? undefined : "af-compare-title"}
->
+<section class="af-compare" aria-labelledby="af-compare-title">
     <div class="container-xl">
         <div class="rails">
-            {!bare && (
-                <header class="head">
-                    <h2 id="af-compare-title">The Airflow UI next to Kestra</h2>
-                    <p>
-                        An Airflow DAG that fetches who is in space and runs one task
-                        per astronaut, and the same pipeline in Kestra. The fetch
-                        code is unchanged. The XCom push becomes Kestra.outputs()
-                        and .expand() becomes a Loop.
-                    </p>
-                </header>
-            )}
+            <header class="head">
+                <h2 id="af-compare-title">The Airflow UI next to Kestra</h2>
+                <p>
+                    An Airflow DAG that fetches who is in space and runs one task
+                    per astronaut, and the same pipeline in Kestra. The fetch
+                    code is unchanged. The XCom push becomes Kestra.outputs()
+                    and .expand() becomes a Loop.
+                </p>
+            </header>
             <div class="stage">
-                <div class="compare" data-compare>
+                <div class="compare" data-af-compare>
                     <div
                         class="layer af"
                         role="img"
@@ -399,14 +351,14 @@ const Wrapper = bare ? "div" : "section"
             </div>
         </div>
     </div>
-</Wrapper>
+</section>
 
 <script>
     const ORDER = ["daily", "get_astronauts", "print_astronaut_craft"]
 
     function wire() {
         document
-            .querySelectorAll<HTMLElement>("[data-compare]:not([data-wired])")
+            .querySelectorAll<HTMLElement>("[data-af-compare]:not([data-wired])")
             .forEach((root) => {
                 root.dataset.wired = ""
                 const input = root.querySelector<HTMLInputElement>("input")!
@@ -501,28 +453,8 @@ const Wrapper = bare ? "div" : "section"
 <style lang="scss">
     @use "/src/components/migration/migration" as *;
 
-    .af-compare:not(.bare) {
+    .af-compare {
         @include band;
-    }
-
-    .bare {
-        .container-xl {
-            max-width: none;
-            padding: 0;
-        }
-
-        .rails {
-            border: 0;
-        }
-
-        .stage {
-            padding: 0;
-        }
-
-        .compare {
-            border-color: #2e2e3c;
-            box-shadow: 0 30px 80px -24px rgba(0, 0, 0, 0.6);
-        }
     }
 
     .rails {

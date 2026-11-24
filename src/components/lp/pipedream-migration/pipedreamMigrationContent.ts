@@ -11,7 +11,7 @@ const trialCta = {
 const faq = [
     {
         question: "Can I import the Pipedream JSON export directly into Kestra?",
-        answer: `No. The export is the specification you convert from. A coding agent with the Kestra agent skills, or the AI Copilot in Kestra Cloud, turns each workflow file into a draft flow that you review. The guide has <a href="${GUIDE}#step-convert">the prompt</a>.`,
+        answer: `No. The export is the specification you convert from. A coding agent with the Kestra agent skills, or the AI Copilot in Kestra Cloud, turns each workflow file into a draft flow that you review. The <a href="${GUIDE}#pd-steps-title">migration guide</a> walks through the conversion step by step.`,
     },
     {
         question: "Do my code steps need rewriting?",
@@ -43,7 +43,6 @@ export const pipedreamMigrationContent = {
     title: "Migrate off Pipedream Workflows",
     description:
         "Pipedream Workflows shuts down on March 31, 2027. Convert your export to Kestra flows with your coding agent, keep your code steps, and own your credentials.",
-    guide: GUIDE,
     trialCta,
     hero: {
         formTitle: "Start your Kestra Cloud trial",

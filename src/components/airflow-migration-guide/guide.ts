@@ -1,41 +1,14 @@
 import * as CODE from "./code"
+import { escapeHtml } from "~/components/migration/highlight"
 
-const esc = (text: string) =>
-    text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
-
-export const inline = (text: string) =>
-    esc(text)
+const inline = (text: string) =>
+    escapeHtml(text)
         .replace(/`([^`]+)`/g, "<code>$1</code>")
         .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
         .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
 
-export const md = (text: string) =>
-    text
-        .trim()
-        .split(/\n\s*\n/)
-        .map((block) => {
-            const lines = block.trim().split("\n")
-            if (lines.every((line) => line.startsWith("- ")))
-                return `<ul>${lines.map((line) => `<li>${inline(line.slice(2))}</li>`).join("")}</ul>`
-            if (lines.every((line) => /^\d+\.\s/.test(line)))
-                return `<ol>${lines.map((line) => `<li>${inline(line.replace(/^\d+\.\s/, ""))}</li>`).join("")}</ol>`
-            return `<p>${inline(lines.join(" "))}</p>`
-        })
-        .join("")
-
 const P = "/plugins/core"
 const DOCS = "/docs/workflow-components"
-
-const node = (
-    id: string,
-    plugin: string,
-    fallback: string,
-    x: number,
-    y: number,
-    status: "success" | "running" | "created",
-    duration: string,
-    seconds: number,
-) => ({ id, type: plugin, plugin, fallback, x, y, status, duration, seconds })
 
 export const HERO = {
     title: "Migrate from Airflow to Kestra",
@@ -161,44 +134,32 @@ export const OPERATORS = [
 
 export const EXAMPLES = [
     {
-        id: "af-example-dbt",
-        tab: "Daily dbt build",
         title: "Stage the orders, then build the dbt models",
-        html: md("Every morning at 06:00, with two retries and a Slack alert on failure."),
+        text: "Every morning at 06:00, with two retries and a Slack alert on failure.",
         panes: [
             { label: "Airflow · orders_daily.py", lang: "python", code: CODE.DAILY_AIRFLOW },
             { label: "Kestra · orders_daily.yaml", lang: "yaml", code: CODE.DAILY_KESTRA },
         ],
-        after: md(
-            "- `default_args` retries become one flow-level `retry`, and `retries: 2` becomes `maxAttempts: 3`.\n- Write `catchup=False` as `recoverMissedSchedules: NONE`; Kestra replays missed runs otherwise.\n- The Slack connection becomes a secret and the callback an `errors` task.",
-        ),
+        after: "- `default_args` retries become one flow-level `retry`, and `retries: 2` becomes `maxAttempts: 3`.\n- Write `catchup=False` as `recoverMissedSchedules: NONE`; Kestra replays missed runs otherwise.\n- The Slack connection becomes a secret and the callback an `errors` task.",
     },
     {
-        id: "af-example-mapping",
-        tab: "API extract per account",
         title: "Call the billing API for every active account",
-        html: md("One query lists the accounts, then one API call per account, eight at a time."),
+        text: "One query lists the accounts, then one API call per account, eight at a time.",
         panes: [
             { label: "Airflow · usage_extract.py", lang: "python", code: CODE.USAGE_AIRFLOW },
             { label: "Kestra · usage_extract.yaml", lang: "yaml", code: CODE.USAGE_KESTRA },
         ],
-        after: md(
-            "- `.expand()` becomes `Loop`, and `max_active_tasks=8` becomes `concurrencyLimit: 8`.\n- `PostgresHook` and `Variable.get` only exist inside Airflow: the query becomes a JDBC task and the token a secret.\n- The API call needs no Python, and `retries=3` becomes `maxAttempts: 4`.",
-        ),
+        after: "- `.expand()` becomes `Loop`, and `max_active_tasks=8` becomes `concurrencyLimit: 8`.\n- `PostgresHook` and `Variable.get` only exist inside Airflow: the query becomes a JDBC task and the token a secret.\n- The API call needs no Python, and `retries=3` becomes `maxAttempts: 4`.",
     },
     {
-        id: "af-example-dataset",
-        tab: "Dataset-driven report",
         title: "Refresh the report after each orders update",
-        html: md("An hourly merge updates the orders table, and the report refreshes after each successful merge."),
+        text: "An hourly merge updates the orders table, and the report refreshes after each successful merge.",
         panes: [
             { label: "Airflow · orders.py", lang: "python", code: CODE.DATASETS_AIRFLOW },
             { label: "Kestra · orders_ingest.yaml", lang: "yaml", code: CODE.INGEST_KESTRA },
             { label: "Kestra · orders_report.yaml", lang: "yaml", code: CODE.REPORT_KESTRA },
         ],
-        after: md(
-            "- `outlets` and `schedule=[orders]` become a Flow trigger on `orders_ingest`.\n- Kestra Enterprise adds asset declarations with lineage and freshness triggers.",
-        ),
+        after: "- `outlets` and `schedule=[orders]` become a Flow trigger on `orders_ingest`.\n- Kestra Enterprise adds asset declarations with lineage and freshness triggers.",
     },
 ]
 
@@ -211,7 +172,7 @@ export const COMPARE_ROWS = (plugins: number | string) => [
     { label: "Best fit", values: ["Python engineers in one codebase", "Several teams, and work beyond Python"] },
 ]
 
-const STEPS = [
+export const STEPS = [
     {
         label: "Inventory",
         title: "List what you run",
@@ -313,9 +274,7 @@ const STEPS = [
     },
 ]
 
-const TINTS = ["#E6C359", "#59E659", "#59BCE6", "#E67FA2", "#9869F7", "#E6A259", "#59E6C8"]
-
-export const PLAYBOOK_STEPS = STEPS
+const TINTS = ["#E6C359", "#59E659", "#59BCE6"]
 
 export const PLAYBOOK_DOMAINS = STEPS.map((step, i) => ({
     id: `af-${step.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
@@ -329,8 +288,6 @@ export const PLAYBOOK_DOMAINS = STEPS.map((step, i) => ({
         external: step.cta.href.startsWith("http"),
     },
 }))
-
-export const PLAYBOOK_LEAD = ""
 
 export function runEditions(cloudHref = "/cloud") {
     return [
@@ -360,7 +317,6 @@ export function runEditions(cloudHref = "/cloud") {
 export const HOW = {
     headingId: "af-how-title",
     title: "Translate, backfill, compare",
-    lead: "",
     steps: [
         {
             title: "Translate",
@@ -406,74 +362,6 @@ errors:
   - id: slack_alert
     type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"`,
-    flowLabel: "The orders_daily flow translated from Airflow",
-    used: [
-        "core.trigger.Schedule",
-        "jdbc.postgresql.Queries",
-        "dbt.cli.DbtCLI",
-        "slack.notifications.SlackIncomingWebhook",
-    ],
-    run: [
-        { id: "stage_orders", duration: "3.2s", start: 0, length: 0.12 },
-        { id: "dbt_build", duration: "1m 12s", start: 0.12, length: 0.88 },
-    ],
-    logs: [
-        { at: 1500, level: "INFO", time: "06:00:03.214", task: "stage_orders", message: "4 statements executed" },
-        { at: 1750, level: "INFO", time: "06:00:03.402", task: "dbt_build", message: "dbt build --select orders+" },
-        { at: 4000, level: "INFO", time: "06:01:15.106", task: "dbt_build", message: "Done. PASS=14 WARN=0 ERROR=0 SKIP=0 TOTAL=14" },
-    ],
-    timeline: [
-        [900, 0, "running"],
-        [1500, 0, "success"],
-        [1700, 1, "running"],
-        [4300, 1, "success"],
-    ] as [number, number, string][],
-    execId: "7mQx3k",
-    git: {
-        title: "orders_daily.py",
-        icon: "mdi:language-python",
-        branch: "Airflow",
-        items: [
-            { avatar: "AF", text: "SQLExecuteQueryOperator → Queries", on: 1400, fresh: true },
-            { avatar: "AF", text: "BashOperator → DbtCLI", on: 1800 },
-            { avatar: "AF", text: "retries: 2 → maxAttempts: 3", on: 2200 },
-            { avatar: "AF", text: "on_failure_callback → errors", on: 2600 },
-        ],
-    },
-    ci: {
-        title: "Checks",
-        icon: "mdi:check-decagram-outline",
-        done: "Deployed",
-        doneOn: 3800,
-        open: "Running",
-        items: [
-            { text: "Flow validated", on: 2900 },
-            { text: "DAG paused in Airflow", on: 3300 },
-            { text: "kestractl flows deploy", on: 3600 },
-        ],
-    },
-    gov: {
-        title: "Side by side",
-        icon: "mdi:compare-horizontal",
-        items: [
-            { icon: "mdi:numeric-1-circle-outline", text: "Run 1", small: "Same rows as Airflow", on: 1600 },
-            { icon: "mdi:numeric-2-circle-outline", text: "Run 2", small: "Same rows as Airflow", on: 2800 },
-            { icon: "mdi:numeric-3-circle-outline", text: "Run 3", small: "DAG deleted", on: 4500 },
-        ],
-    },
     foot: { label: "Agent skills for the translation", href: "/docs/develop-with-ai/agent-skills" },
-    compare: {
-        title: "orders_daily.py",
-        branch: "Airflow",
-        code: CODE.DAILY_AIRFLOW,
-        topology: {
-            label: "Kestra topology of orders_daily: daily schedule, stage_orders, dbt_build",
-            nodes: [
-                node("daily", "core.trigger.Schedule", "mdi:clock-outline", 0, 0, "success", "0.2s", 0.2),
-                node("stage_orders", "jdbc.postgresql.Queries", "mdi:database-outline", 0, 140, "success", "3.2s", 3.2),
-                node("dbt_build", "dbt.cli.DbtCLI", "mdi:database", 0, 280, "success", "1m 12s", 72),
-            ],
-        },
-    },
 }
 

@@ -23,7 +23,7 @@ const DEFAULT_STEPS = [
     },
 ]
 
-const DEFAULT_FLOW = `id: nightly_close
+const FLOW = `id: nightly_close
 namespace: finance
 
 triggers:
@@ -44,7 +44,7 @@ tasks:
     script: |
       post_journal(read_csv('{{ outputs.extract.uri }}'))`
 
-const DEFAULT_USED = [
+const USED = [
     "core.trigger.Schedule",
     "jdbc.postgresql.Query",
     "core.flow.Pause",
@@ -79,14 +79,13 @@ const CROWD = [
     "redis.list.ListPush",
 ]
 
-
-const DEFAULT_RUN = [
+const RUN = [
     { id: "extract", duration: "2.1s", start: 0, length: 0.14 },
     { id: "approve", duration: "3m 40s", start: 0.14, length: 0.6 },
     { id: "post_to_erp", duration: "4.6s", start: 0.74, length: 0.26 },
 ]
 
-const DEFAULT_LOGS = [
+const LOGS = [
     {
         at: 1500,
         level: "INFO",
@@ -124,15 +123,6 @@ const DEFAULT_LOGS = [
     },
 ]
 
-const DEFAULT_TIMELINE: [number, number, string][] = [
-    [900, 0, "running"],
-    [1500, 0, "success"],
-    [1650, 1, "paused"],
-    [3300, 1, "success"],
-    [3450, 2, "running"],
-    [4400, 2, "success"],
-]
-
 interface CardItem {
     text: string
     avatar?: string
@@ -153,7 +143,7 @@ interface GovItem {
     on: number
 }
 
-const DEFAULT_GIT = {
+const GIT = {
     title: "Versioned in Git",
     icon: "mdi:source-branch",
     branch: "main",
@@ -165,7 +155,7 @@ const DEFAULT_GIT = {
     ] as CardItem[],
 }
 
-const DEFAULT_CI = {
+const CI = {
     title: "CI/CD",
     icon: "mdi:rocket-launch-outline",
     done: "Deployed",
@@ -178,7 +168,7 @@ const DEFAULT_CI = {
     ],
 }
 
-const DEFAULT_GOV = {
+const GOV = {
     title: "Governance",
     icon: "mdi:shield-check-outline",
     items: [
@@ -193,16 +183,6 @@ interface Props {
     title?: string
     lead?: string
     steps?: { title: string; text: string }[]
-    flow?: string
-    flowLabel?: string
-    used?: string[]
-    run?: { id: string; duration: string; start: number; length: number }[]
-    logs?: { at: number; level: string; time: string; task: string; message: string }[]
-    timeline?: [number, number, string][]
-    execId?: string
-    git?: typeof DEFAULT_GIT
-    ci?: typeof DEFAULT_CI
-    gov?: typeof DEFAULT_GOV
     foot?: { label: string; href: string } | null
 }
 
@@ -211,22 +191,12 @@ const {
     title = "How it works",
     lead = "Define workflows in YAML that teams review and version in Git, then run them on a schedule, on events, or through the API.",
     steps: STEPS = DEFAULT_STEPS,
-    flow: FLOW = DEFAULT_FLOW,
-    flowLabel = "The nightly_close flow",
-    used: USED = DEFAULT_USED,
-    run: RUN = DEFAULT_RUN,
-    logs: LOGS = DEFAULT_LOGS,
-    timeline = DEFAULT_TIMELINE,
-    execId = "4dTq2x",
-    git = DEFAULT_GIT,
-    ci = DEFAULT_CI,
-    gov = DEFAULT_GOV,
     foot = { label: "See the platform", href: "/features" },
 } = Astro.props
 
 const SCENES = Astro.slots.has("scene-0")
     ? await Promise.all(
-          [0, 1, 2].map((idx) => Astro.slots.render(`scene-${idx}`)),
+          STEPS.map((_, idx) => Astro.slots.render(`scene-${idx}`)),
       )
     : null
 
@@ -241,9 +211,9 @@ const fetchIcon = async (type: string) => {
         return null
     }
 }
-const [generic, ...fetched] = await Promise.all(
-    ["unknown.Plugin", ...USED, ...CROWD].map(fetchIcon),
-)
+const [generic, ...fetched] = SCENES
+    ? []
+    : await Promise.all(["unknown.Plugin", ...USED, ...CROWD].map(fetchIcon))
 const dataUri = (svg: string | null) =>
     svg && svg !== generic ? `data:image/svg+xml;base64,${svg}` : null
 const icons = fetched.slice(0, USED.length).map(dataUri)
@@ -319,7 +289,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
     class="how-it-works"
     aria-labelledby={headingId}
     data-how
-    data-timeline={JSON.stringify(timeline)}
 >
     <PixelEdges left="wide" right="cluster" />
     <div class="container-xl">
@@ -404,13 +373,13 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
 
                 {SCENES ? (
                     SCENES.map((html, idx) => (
-                        <div class="scene" data-scene={idx}>
+                        <div class="scene" data-scene={idx} data-scene-slot={idx}>
                             <Fragment set:html={html} />
                         </div>
                     ))
                 ) : (
                     <>
-                <div class="card editor" aria-label={flowLabel}>
+                <div class="card editor" aria-label="The nightly_close flow">
                     <div class="tabs">
                         <span class="tab active yaml-tab">
                             <span class="logo"
@@ -442,7 +411,7 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                         <div class="gantt" aria-hidden="true">
                             <div class="gantt-head">
                                 <span>
-                                    Execution <code>{execId}</code>
+                                    Execution <code>4dTq2x</code>
                                 </span>
                             </div>
                             <ul>
@@ -508,12 +477,12 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
 
                 <div class="card side git" data-scene="0">
                     <div class="card-head">
-                        <Icon name={git.icon} />
-                        <span>{git.title}</span>
-                        <code class="branch">{git.branch}</code>
+                        <Icon name={GIT.icon} />
+                        <span>{GIT.title}</span>
+                        <code class="branch">{GIT.branch}</code>
                     </div>
                     <ul>
-                        {git.items.map((item) => (
+                        {GIT.items.map((item) => (
                             <li
                                 class:list={{ fresh: item.fresh, past: item.past }}
                                 data-on={item.on}
@@ -538,13 +507,13 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                 </div>
                 <div class="card side ci" data-scene="0">
                     <div class="card-head">
-                        <Icon name={ci.icon} />
-                        <span>{ci.title}</span>
-                        <span class="pill merged" data-on={ci.doneOn}>{ci.done}</span>
-                        <span class="pill open">{ci.open}</span>
+                        <Icon name={CI.icon} />
+                        <span>{CI.title}</span>
+                        <span class="pill merged" data-on={CI.doneOn}>{CI.done}</span>
+                        <span class="pill open">{CI.open}</span>
                     </div>
                     <ul>
-                        {ci.items.map((item) => (
+                        {CI.items.map((item) => (
                             <li data-on={item.on}>
                                 <span class="what">{item.text}</span>
                                 <span class="state">
@@ -557,11 +526,11 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
 
                 <div class="card side gov" data-scene="2">
                     <div class="card-head">
-                        <Icon name={gov.icon} />
-                        <span>{gov.title}</span>
+                        <Icon name={GOV.icon} />
+                        <span>{GOV.title}</span>
                     </div>
                     <ul>
-                        {gov.items.map((item) => (
+                        {GOV.items.map((item) => (
                             <li class:list={{ approval: !!item.waiting }} data-on={item.on}>
                                 <Icon name={item.icon} class="glyph" />
                                 <span class="what">
@@ -635,20 +604,30 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
 </section>
 
 <script>
-    const STEP_MS = [7000, 7000, 7000]
+    const STEP_MS = 7000
+    const RUN: [number, number, string][] = [
+        [900, 0, "running"],
+        [1500, 0, "success"],
+        [1650, 1, "paused"],
+        [3300, 1, "success"],
+        [3450, 2, "running"],
+        [4400, 2, "success"],
+    ]
 
     function wireHow() {
         for (const root of document.querySelectorAll<HTMLElement>(
             "[data-how]:not([data-wired])",
         )) {
             root.dataset.wired = "true"
-            const RUN: [number, number, string][] = JSON.parse(
-                root.dataset.timeline ?? "[]",
-            )
             const steps = [...root.querySelectorAll<HTMLElement>(".step")]
             const body = root.querySelector<HTMLElement>(".body")!
             const tasks = [...root.querySelectorAll<HTMLElement>("[data-task]")]
-            const timed = [...root.querySelectorAll<HTMLElement>("[data-on]")]
+            const scenes = !!root.querySelector("[data-scene-slot]")
+            const timedIn = (idx: number) => [
+                ...root.querySelectorAll<HTMLElement>(
+                    scenes ? `[data-scene-slot="${idx}"] [data-on]` : "[data-on]",
+                ),
+            ]
             const still = matchMedia("(prefers-reduced-motion: reduce)").matches
             let auto = !still
             let inView = false
@@ -701,7 +680,7 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                     dot.setAttribute("cy", String(y1))
                 })
             }
-            window.addEventListener("resize", drawLinks)
+            if (editor) window.addEventListener("resize", drawLinks)
             document.addEventListener(
                 "astro:before-swap",
                 () => {
@@ -718,7 +697,7 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                 steps.forEach((step, i) => {
                     step.classList.toggle("active", i === idx)
                     step.classList.toggle("timed", auto && i === idx)
-                    step.style.setProperty("--dur", `${STEP_MS[i]}ms`)
+                    step.style.setProperty("--dur", `${STEP_MS}ms`)
                     step.querySelector("button")!.ariaPressed = String(
                         i === idx,
                     )
@@ -729,15 +708,17 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                 void body.offsetWidth
                 body.classList.add("enter")
 
-                timed.forEach((el) => el.classList.remove("on"))
-                for (const el of timed)
+                root.querySelectorAll("[data-on].on").forEach((el) =>
+                    el.classList.remove("on"),
+                )
+                for (const el of timedIn(idx))
                     later(Number(el.dataset.on), () => el.classList.add("on"))
 
                 tasks.forEach((_, i) => setTask(i, "created"))
                 delete body.dataset.run
                 body.dataset.exec = "idle"
                 body.classList.remove("pressing", "executing")
-                if (idx === 2) {
+                if (idx === 2 && tasks.length) {
                     later(400, () => body.classList.add("pressing"))
                     later(600, () => {
                         body.classList.remove("pressing")
@@ -748,7 +729,7 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                         later(at, () => setTask(task, status))
                 }
                 if (auto)
-                    later(STEP_MS[idx], () => {
+                    later(STEP_MS, () => {
                         const next = (idx + 1) % steps.length
                         if (inView) open(next)
                         else waiting = next

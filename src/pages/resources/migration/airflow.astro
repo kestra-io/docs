@@ -28,8 +28,7 @@ import {
     MAPPING,
     OPERATORS,
     PLAYBOOK_DOMAINS,
-    PLAYBOOK_LEAD,
-    PLAYBOOK_STEPS,
+    STEPS,
     runEditions,
     COMPARE_ROWS,
 } from "~/components/airflow-migration-guide/guide"
@@ -96,9 +95,9 @@ const jsonLinkedData = {
 const howToData = {
     "@context": "https://schema.org",
     "@type": "HowTo",
-    name: "Migrate from Airflow to Kestra in four steps",
-    description: PLAYBOOK_LEAD,
-    step: PLAYBOOK_STEPS.map((step, index) => ({
+    name: "Migrate from Airflow to Kestra in three steps",
+    description: HERO.lead,
+    step: STEPS.map((step, index) => ({
         "@type": "HowToStep",
         position: index + 1,
         name: step.title,
@@ -170,11 +169,16 @@ const howToData = {
         <HowToChoose
             headingId="af-compare-choose"
             title="Airflow vs Kestra"
-            blockTitle="AIRFLOW VS KESTRA"
             columns={["Airflow", "Kestra"]}
             rows={COMPARE_ROWS(totalPlugins)}
         />
-        <HowItWorks {...HOW}>
+        <HowItWorks
+            headingId={HOW.headingId}
+            title={HOW.title}
+            lead=""
+            steps={HOW.steps}
+            foot={HOW.foot}
+        >
             <AfScene slot="scene-0" kind="translate" />
             <AfScene slot="scene-1" kind="backfill" />
             <AfScene slot="scene-2" kind="compare" />
@@ -183,12 +187,12 @@ const howToData = {
         <ControlPlane
             headingId="af-playbook-title"
             title="Migration plan"
-            lead={PLAYBOOK_LEAD}
+            lead=""
             domains={PLAYBOOK_DOMAINS}
             bridge={false}
         >
             {PLAYBOOK_DOMAINS.map((domain, i) => (
-                <AfStep slot={`visual-${domain.id}`} {...PLAYBOOK_STEPS[i].visual} />
+                <AfStep slot={`visual-${domain.id}`} {...STEPS[i].visual} />
             ))}
         </ControlPlane>
         <Enterprise

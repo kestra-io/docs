@@ -3,7 +3,7 @@ import { Icon } from "astro-icon/components"
 import PixelEdges from "~/components/about/PixelEdges.astro"
 import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
 
-const DEFAULT_CARDS = [
+const CARDS = [
     {
         id: "governance",
         label: "Governance",
@@ -38,18 +38,12 @@ const DEFAULT_CARDS = [
     },
 ]
 
-const DEFAULT_TARGETS = [
+const TARGETS = [
     { name: "On premise", angle: 45 },
     { name: "Cloud", angle: 135 },
     { name: "Hybrid", angle: 225 },
     { name: "Air-gapped", angle: 315 },
 ]
-interface Card {
-    id?: string
-    label: string
-    states: { value: string; tag: string; tone: string }[]
-}
-
 interface Button {
     label: string
     href: string
@@ -63,9 +57,6 @@ interface Props {
     title?: string
     lead?: string
     buttons?: Button[]
-    cards?: Card[]
-    targets?: { name: string; angle: number }[]
-    plane?: string
 }
 
 const {
@@ -77,9 +68,6 @@ const {
         { label: "Book a demo", href: "/demo", solid: true, chevron: true },
         { label: "Compare editions", href: "/pricing#comparison-table" },
     ],
-    cards: CARDS = DEFAULT_CARDS,
-    targets: TARGETS = DEFAULT_TARGETS,
-    plane = "Control plane",
 } = Astro.props
 
 const beam = (angle: number, r: number) => {
@@ -202,7 +190,7 @@ const DUST = [
                                 </li>
                             ))}
                         </ul>
-                        <span class="plane">{plane}</span>
+                        <span class="plane">Control plane</span>
                         <div class="wheel" data-wheel>
                             {WHEEL.map((card, idx) => (
                                 <div

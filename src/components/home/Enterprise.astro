@@ -190,7 +190,7 @@ const SETUPS = [
 const icons = Object.fromEntries(
     await Promise.all(
         [...BACKENDS.repository, ...BACKENDS.queue]
-            .filter((backend) => backend.plugin)
+            .filter((backend) => FEATURES.length > 0 && backend.plugin)
             .map(async (backend) => {
                 try {
                     const response = await fetch(

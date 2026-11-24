@@ -247,7 +247,8 @@ tasks:
     type: io.kestra.plugin.core.http.Request
     uri: "{{ secret('NETSUITE_URL') }}/vendorBill"
     method: POST
-    body: "{{ outputs.transform.vars | toJson }}"`
+    body: "{{ outputs.transform.vars | toJson }}"
+    timeout: PT15M`
 
 const TERMINALS = [
     [

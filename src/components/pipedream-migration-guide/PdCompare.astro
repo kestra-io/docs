@@ -4,57 +4,22 @@ import pipedreamMark from "./assets/pipedream.png"
 import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
 import ControlPlaneTopology from "~/components/home/ControlPlaneTopology.astro"
 import { BEFORE, FLOW_INLINE } from "./guide"
+import { flowLines, python } from "~/components/migration/highlight"
 
-const escape = (text: string) =>
-    text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-
-const python = (line: string) =>
-    escape(line).replace(
-        /("[^"]*")|\b(def|return|import|from)\b|\b(round|float|handler|loads|outputs)\b/g,
-        (match, str, kw, fn) =>
-            str
-                ? `<span class="s">${match}</span>`
-                : kw
-                  ? `<span class="k">${match}</span>`
-                  : fn
-                    ? `<span class="f">${match}</span>`
-                    : match,
-    )
-
-const pebble = (value: string) =>
-    escape(value).replace(
-        /(\{\{)(.*?)(\}\})/g,
-        '<span class="pbd">$1</span><span class="pbv">$2</span><span class="pbd">$3</span>',
-    )
+const CALLS = ["round", "float", "handler", "loads", "outputs"]
+const script = (line: string) => python(line, CALLS)
 
 const MARKS: Record<string, [number, number]> = {
     webhook: [5, 7],
     transform: [10, 20],
-    post_to_netsuite: [22, 26],
+    post_to_netsuite: [22, 27],
 }
 const markAt = (row: number) =>
     Object.entries(MARKS).find(([, [a, b]]) => row >= a && row <= b)?.[0]
 
-let block = -1
-const FLOW_LINES = FLOW_INLINE.split("\n").map((text, i) => {
-    const indent = text.match(/^\s*/)?.[0].length ?? 0
-    if (block >= 0 && text.trim() !== "" && indent <= block) block = -1
-    let html: string
-    if (block >= 0) html = python(text)
-    else {
-        const m = text.match(/^(\s*)(- )?([\w.]+)(:)(\s*)(.*)$/)
-        if (!m) html = escape(text)
-        else {
-            const [, ind, dash = "", key, colon, space, value] = m
-            if (value.trim() === "|") block = indent
-            const cls = /^["']/.test(value) ? "s" : "v"
-            html = `${ind}<span class="p">${dash}</span><span class="y">${key}${colon}</span>${space}<span class="${cls}">${pebble(value)}</span>`
-        }
-    }
-    return { html, mark: markAt(i + 1) }
-})
+const FLOW_LINES = flowLines(FLOW_INLINE, script, markAt)
 
-const PD_CODE = BEFORE.split("\n").map(python)
+const PD_CODE = BEFORE.split("\n").map(script)
 
 const TOPOLOGY = [
     {
@@ -140,7 +105,7 @@ const K_TABS = [
                 </p>
             </header>
             <div class="stage">
-                <div class="compare" data-compare>
+                <div class="compare" data-pd-compare>
                     <div
                         class="layer pd"
                         role="img"
@@ -328,7 +293,7 @@ const K_TABS = [
 
     function wire() {
         document
-            .querySelectorAll<HTMLElement>("[data-compare]:not([data-wired])")
+            .querySelectorAll<HTMLElement>("[data-pd-compare]:not([data-wired])")
             .forEach((root) => {
                 root.dataset.wired = ""
                 const input = root.querySelector<HTMLInputElement>("input")!

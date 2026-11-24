@@ -10,10 +10,9 @@ interface Props {
     title: string
     lead: string
     ctas: Cta[]
-    stacked?: boolean
 }
 
-const { id, title, lead, ctas, stacked = false } = Astro.props
+const { id, title, lead, ctas } = Astro.props
 ---
 
 <section
@@ -23,7 +22,7 @@ const { id, title, lead, ctas, stacked = false } = Astro.props
     data-mig-hero
 >
     <div class="container-xl">
-        <div class:list={["rails", { stacked }]}>
+        <div class="rails">
             <div class="copy">
                 <h1 {id}>{title}</h1>
                 <p>{lead}</p>
@@ -84,41 +83,6 @@ const { id, title, lead, ctas, stacked = false } = Astro.props
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);
             padding-block: 7rem 4rem;
-        }
-    }
-
-    .rails.stacked {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 3.5rem;
-        padding-bottom: 5rem;
-
-        .copy {
-            grid-template-columns: minmax(0, 1fr) auto;
-            align-items: end;
-            column-gap: 3rem;
-
-            @include media-breakpoint-down(lg) {
-                grid-template-columns: minmax(0, 1fr);
-            }
-
-            h1 {
-                grid-column: 1;
-            }
-
-            p {
-                grid-column: 1;
-            }
-
-            .ctas {
-                grid-column: 2;
-                grid-row: 1 / span 2;
-                align-self: end;
-
-                @include media-breakpoint-down(lg) {
-                    grid-column: 1;
-                    grid-row: auto;
-                }
-            }
         }
     }
 

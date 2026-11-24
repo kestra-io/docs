@@ -21,10 +21,7 @@ interface Props {
     items?: Item[]
     ctas?: Cta[]
     tone?: "default" | "muted"
-    head?: boolean
     size?: "default" | "compact"
-    label?: string
-    columns?: number
 }
 
 const DEFAULT_PROBLEMS: Item[] = [
@@ -56,74 +53,58 @@ const {
         },
     ],
     tone = "default",
-    head = true,
     size = "default",
-    label,
-    columns,
 } = Astro.props
 ---
 
 <section
-    class:list={["replace", tone, size]}
-    aria-labelledby={head ? id : undefined}
-    aria-label={head ? undefined : label}
+    class:list={["replace", tone, { compact: size === "compact" }]}
+    aria-labelledby={id}
 >
     <PixelEdges left="tall" right="wide" />
     <div class="container-xl">
         <div class="grid">
-            {head && (
-                <header
-                    class:list={[
-                        "head",
-                        { "has-visual": Astro.slots.has("visual") },
-                    ]}
-                >
-                    <h2 {id}>
-                        <slot name="title">
-                            Replace what no longer serves you
-                        </slot>
-                    </h2>
-                    {(Astro.slots.has("lead") || !Astro.slots.has("title")) && (
-                        <p>
-                            <slot name="lead">
-                                Fragmented orchestration slows recovery, drives
-                                up costs, and leaves gaps in AI governance.
-                                Bring your workflows together while keeping the
-                                code and systems they already run on.
-                            </slot>
-                        </p>
-                    )}
-                    {ctas.length > 0 && (
-                        <div class="ctas">
-                            {ctas.map((cta) => (
-                                <a
-                                    href={cta.href}
-                                    class={
-                                        cta.solid ? "btn-solid" : "btn-ghost"
-                                    }
-                                    target={cta.external ? "_blank" : undefined}
-                                    rel={cta.external ? "noopener" : undefined}
-                                >
-                                    {cta.label}
-                                </a>
-                            ))}
-                        </div>
-                    )}
-                    {Astro.slots.has("visual") && (
-                        <div class="visual">
-                            <slot name="visual" />
-                        </div>
-                    )}
-                </header>
-            )}
-
-            <ul
+            <header
                 class:list={[
-                    "problems",
-                    { wrap: columns !== undefined && columns < items.length },
+                    "head",
+                    { "has-visual": Astro.slots.has("visual") },
                 ]}
-                style={`--columns: ${columns ?? items.length}`}
             >
+                <h2 {id}>
+                    <slot name="title">Replace what no longer serves you</slot>
+                </h2>
+                {(Astro.slots.has("lead") || !Astro.slots.has("title")) && (
+                    <p>
+                        <slot name="lead">
+                            Fragmented orchestration slows recovery, drives up
+                            costs, and leaves gaps in AI governance. Bring your
+                            workflows together while keeping the code and
+                            systems they already run on.
+                        </slot>
+                    </p>
+                )}
+                {ctas.length > 0 && (
+                    <div class="ctas">
+                        {ctas.map((cta) => (
+                            <a
+                                href={cta.href}
+                                class={cta.solid ? "btn-solid" : "btn-ghost"}
+                                target={cta.external ? "_blank" : undefined}
+                                rel={cta.external ? "noopener" : undefined}
+                            >
+                                {cta.label}
+                            </a>
+                        ))}
+                    </div>
+                )}
+                {Astro.slots.has("visual") && (
+                    <div class="visual">
+                        <slot name="visual" />
+                    </div>
+                )}
+            </header>
+
+            <ul class="problems" style={`--columns: ${items.length}`}>
                 {items.map((problem, idx) => (
                     <li class={`problem-${idx}`}>
                         {problem.icon && <Icon name={problem.icon} />}
@@ -195,14 +176,6 @@ const {
                 border-bottom: 0;
 
                 &::after {
-                    display: none;
-                }
-            }
-
-            &:first-child {
-                border-top: 0;
-
-                &::before {
                     display: none;
                 }
             }
@@ -413,12 +386,6 @@ const {
                 }
             }
         }
-    }
-
-    .problems.wrap > li {
-        border-left: 0;
-        border-top: 0;
-        box-shadow: -1px -1px 0 var(--ks-border-primary);
     }
 
     .problems :global(code) {

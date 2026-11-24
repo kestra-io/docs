@@ -10,10 +10,9 @@ export interface TerminalLine {
 export interface Props {
     label: string
     lines: TerminalLine[]
-    title?: string
 }
 
-const { label, lines, title = "Terminal" } = Astro.props
+const { label, lines } = Astro.props
 ---
 
 <figure class="cp-term" aria-label={label} data-cp-term>
@@ -27,7 +26,7 @@ const { label, lines, title = "Terminal" } = Astro.props
             <span class="logo">
                 <img src={kestraMark.src} alt="" width="16" height="16" />
             </span>
-            {title}
+            Terminal
         </span>
     </figcaption>
     <pre data-screen>{lines.map((line) =>
