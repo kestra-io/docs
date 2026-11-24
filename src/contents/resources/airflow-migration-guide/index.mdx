@@ -13,6 +13,8 @@ faq:
     answer: 'No. The function bodies inside <code>PythonOperator</code> and <code>@task</code> run unchanged in a <code>io.kestra.plugin.scripts.python.Script</code> or <code>.Commands</code> task. You remove Airflow imports, the operator wrapper and the context dictionary, and replace XCom calls with <code>Kestra.outputs()</code>.'
   - question: "Can Kestra and Airflow run at the same time?"
     answer: "Yes, and running both for a while is the usual path. Kestra can trigger Airflow DAGs through the Airflow REST API and Airflow can trigger Kestra flows the same way, so cross-dependencies do not block a gradual move."
+  - question: "Should we upgrade to Airflow 3 or move to Kestra?"
+    answer: 'Both touch every DAG. Airflow 3 removes SubDAGs and context variables such as <code>execution_date</code>, moves <code>BashOperator</code> and <code>PythonOperator</code> to the standard provider, and splits the webserver into an API server and a DAG processor. Stay on Airflow if your team is mostly Python engineers in one codebase and the pain is infrastructure. Move to Kestra if several teams need to own workflows, or if SQL, dbt and shell work ends up wrapped in <code>PythonOperator</code>.'
   - question: "What is the Kestra equivalent of an Airflow DAG?"
     answer: 'A flow: a YAML document with an <code>id</code>, a <code>namespace</code>, a <code>tasks</code> list and optional <code>triggers</code>, <code>inputs</code>, <code>errors</code> and <code>variables</code>. Kestra stores flows as YAML, so there is no DAG bag or parse interval.'
   - question: "How does catchup work in Kestra?"

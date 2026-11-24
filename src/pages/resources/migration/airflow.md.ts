@@ -8,6 +8,7 @@ import {
     LEAVE,
     MAPPING,
     OPERATORS,
+    PITFALLS,
     STEPS,
     COMPARE_ROWS,
 } from "~/components/airflow-migration-guide/guide"
@@ -55,7 +56,7 @@ export const GET: APIRoute = async ({ site }) => {
             (step, i) =>
                 `${i + 1}. **${step.title}.** ${step.text} Checks: ${step.visual.checks.join("; ")}.`,
         ).join("\n")}`,
-        `## Airflow to Kestra mapping\n\n### Concepts\n\n${groupedTable(["Airflow", "Kestra", "Watch out"], MAPPING)}\n\n### Operators\n\n${groupedTable(["Airflow operator", "Kestra task type", "Note"], OPERATORS)}`,
+        `## Airflow to Kestra mapping\n\n### Concepts\n\n${groupedTable(["Airflow", "Kestra", "Watch out"], MAPPING)}\n\n### Operators\n\n${groupedTable(["Airflow operator", "Kestra task type", "Note"], OPERATORS)}\n\n### Pitfalls in translated flows\n\n${groupedTable(["In the translated flow", "What to do"], PITFALLS)}`,
         `## Before you move, read the whitepaper\n\nThe [whitepaper](${link("/resources/airflow-2-eol-whitepaper")}) covers where the Airflow model works against growing teams and when to move.`,
         ...(faq ? [`## FAQ\n\n${faq}`] : []),
     ].join("\n\n")

@@ -132,6 +132,22 @@ export const OPERATORS = [
     },
 ]
 
+export const PITFALLS = [
+    {
+        title: "",
+        icon: "",
+        rows: [
+            row(["Schedule without `recoverMissedSchedules`", "Kestra replays every missed tick after a pause. Translate `catchup=False` as `recoverMissedSchedules: NONE`"], `${DOCS}/triggers/schedule-trigger`),
+            row(["`maxAttempts` copied from `retries`", "`retries: 2` means three runs in Airflow. Write `maxAttempts: 3`"], `${DOCS}/retries`),
+            row(["`conditions:` on a trigger", "Write the condition as one `when:` expression"], `${DOCS}/triggers`),
+            row(["`pluginDefaults` in the flow", "Set the values on each task, or in flow `variables`"], `${DOCS}/variables`),
+            row(["`trigger.date` used as `data_interval_start`", "`trigger.date` is the tick itself. Use `trigger.previous` for the prior period, or the first run skips or repeats a day"], `${DOCS}/triggers/schedule-trigger`),
+            row(["Python that still calls Airflow", "`Variable.get`, hooks and `from airflow` imports fail in a clean container. Swap them for `secret()`, `kv()` or a plugin task"], "/docs/concepts/secret"),
+            row(["One flow-level `errors` for per-task callbacks", "Flow-level `errors` runs once per failed execution. Put `errors` on the task to alert per task"], `${DOCS}/errors`),
+        ],
+    },
+]
+
 export const EXAMPLES = [
     {
         title: "Stage the orders, then build the dbt models",

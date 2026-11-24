@@ -27,6 +27,7 @@ import {
     LEAVE,
     MAPPING,
     OPERATORS,
+    PITFALLS,
     PLAYBOOK_DOMAINS,
     STEPS,
     runEditions,
@@ -69,6 +70,13 @@ const REFERENCE = [
         columns: BRANDS,
         widths: ["38%"],
         groups: twoColumns(OPERATORS),
+    },
+    {
+        id: "af-ref-pitfalls",
+        label: "Pitfalls",
+        columns: ["In the translated flow", "What to do"],
+        widths: ["38%"],
+        groups: PITFALLS,
     },
 ]
 
