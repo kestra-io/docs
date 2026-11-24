@@ -57,6 +57,7 @@ interface Props {
     title?: string
     lead?: string
     buttons?: Button[]
+    size?: "compact" | "standard" | "tall"
 }
 
 const {
@@ -68,6 +69,7 @@ const {
         { label: "Book a demo", href: "/demo", solid: true, chevron: true },
         { label: "Compare editions", href: "/pricing#comparison-table" },
     ],
+    size = "tall",
 } = Astro.props
 
 const beam = (angle: number, r: number) => {
@@ -120,7 +122,7 @@ const DUST = [
             ))}
         </div>
         <div class="container-xl">
-            <div class="stage">
+            <div class:list={["stage", size]}>
                 <div class="copy">
                     {eyebrow && (
                         <p class="eyebrow" data-edition>
@@ -424,6 +426,8 @@ const DUST = [
 </script>
 
 <style lang="scss">
+    @use "/src/assets/styles/hero" as *;
+
     .ee-hero {
         position: relative;
         margin-top: -67px;
@@ -954,6 +958,12 @@ const DUST = [
         align-items: center;
         gap: 2rem 3rem;
         padding: 7.5rem clamp(1.5rem, 4vw, 3.5rem) 4rem;
+
+        @each $size in compact, standard, tall {
+            &.#{$size} {
+                @include hero-size($size);
+            }
+        }
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);

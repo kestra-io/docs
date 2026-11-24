@@ -101,7 +101,6 @@ const icons = await Promise.all(
     .hero-visual {
         --cycle: 7s;
         width: 100%;
-        perspective: 1400px;
         text-align: left;
     }
 
@@ -126,12 +125,6 @@ const icons = await Promise.all(
             0 40px 100px -40px rgba(0, 0, 0, 0.9),
             inset 0 1px 0 rgba(255, 255, 255, 0.08);
         backdrop-filter: blur(10px);
-        transform: rotateY(-8deg) rotateX(3deg);
-        transform-origin: left center;
-
-        @include media-breakpoint-down(lg) {
-            transform: none;
-        }
     }
 
     .heads,

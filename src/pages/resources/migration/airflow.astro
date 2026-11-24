@@ -4,7 +4,6 @@ import { Image } from "astro:assets"
 import Layout from "~/components/layout.astro"
 import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 import PageShell from "~/components/home/PageShell.astro"
-import EnterpriseHero from "~/components/enterprise/EnterpriseHero.astro"
 import ReplaceLegacy from "~/components/home/ReplaceLegacy.astro"
 import HowItWorks from "~/components/home/HowItWorks.astro"
 import ControlPlane from "~/components/home/ControlPlane.astro"
@@ -17,6 +16,7 @@ import kestraLogo from "~/assets/logo-black.svg?raw"
 import HowToChoose from "~/components/pricing/HowToChoose.astro"
 import AfCompare from "~/components/airflow-migration-guide/AfCompare.astro"
 import AfStep from "~/components/airflow-migration-guide/AfStep.astro"
+import MigrationHero from "~/components/migration/MigrationHero.astro"
 import AfHeroVisual from "~/components/airflow-migration-guide/AfHeroVisual.astro"
 import AfScene from "~/components/airflow-migration-guide/AfScene.astro"
 import bookMockup from "~/components/airflow-2-eol-whitepaper/assets/book-mockup.png"
@@ -142,20 +142,27 @@ const howToData = {
         <SchemaFAQ items={faqItems} />
     </Fragment>
     <PageShell>
-        <EnterpriseHero
-            headingId="af-hero-title"
-            eyebrow={null}
+        <MigrationHero
+            id="af-hero-title"
             title={HERO.title}
             lead={HERO.lead}
-            buttons={HERO.ctas.map((cta) => ({ ...cta, chevron: cta.solid }))}
+            ctas={HERO.ctas}
         >
-            <AfHeroVisual slot="visual" />
-        </EnterpriseHero>
+            <AfHeroVisual />
+        </MigrationHero>
         <ReplaceLegacy id="af-leave-title" items={LEAVE} ctas={[]}>
             <Fragment slot="title">
                 Why teams leave Airflow
             </Fragment>
-            <figure slot="visual" class="quote">
+            <figure slot="after" class="quote">
+                <svg viewBox="0 0 46 40" class="glyph" aria-hidden="true">
+                    <path
+                        d="M0 0v20.742h11.843c-.161 2.37-.822 6.365-3.33 9.113C6.543 32.01 3.757 33.06 0 33.06V40c5.683 0 10.228-1.823 13.513-5.417 4.062-4.446 5.244-10.484 5.422-13.835V0H0Z"
+                    ></path>
+                    <path
+                        d="M27.06 0v20.742h11.842c-.161 2.37-.821 6.365-3.33 9.113-1.97 2.155-4.756 3.205-8.512 3.205V40c5.682 0 10.227-1.823 13.512-5.417 4.063-4.446 5.245-10.484 5.422-13.835V0H27.06Z"
+                    ></path>
+                </svg>
                 <blockquote>
                     Apache Airflow is complex and has been challenging to
                     manage, with significant operational overhead.
@@ -221,7 +228,7 @@ const howToData = {
                 src={bookMockup}
                 alt="Cover of the Kestra Airflow whitepaper"
                 class="book"
-                width={640}
+                width={1024}
             />
         </Enterprise>
         <MigrationTable
@@ -242,16 +249,32 @@ const howToData = {
 <style lang="scss">
 
     .quote {
+        --surface: #f0f0fd;
+        --glyph: #4f6df7;
+
         display: grid;
-        gap: 1rem;
-        max-width: 26rem;
+        justify-items: start;
+        gap: 1.5rem;
         margin: 0;
-        padding-left: 1.5rem;
-        border-left: 2px solid var(--ks-content-primary);
+        padding: 3rem var(--inset);
+        background: var(--surface);
+
+        :global(html.dark) & {
+            --surface: #1c1b2e;
+            --glyph: #a796ff;
+        }
+
+        .glyph {
+            width: 1.75rem;
+            height: 1.5rem;
+            fill: var(--glyph);
+            transform: scaleX(-1);
+        }
 
         blockquote {
+            max-width: 46rem;
             margin: 0;
-            font-size: 1.25rem;
+            font-size: clamp(1.25rem, 2vw, 1.5rem);
             font-weight: 500;
             line-height: 1.4;
             color: var(--ks-content-primary);
@@ -268,7 +291,7 @@ const howToData = {
     }
 
     :global(.book) {
-        width: min(100%, 24rem);
+        width: min(100%, 32rem);
         height: auto;
     }
 </style>

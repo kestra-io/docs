@@ -75,8 +75,10 @@ const ROWS = [
     <div class="scene-grid translate" aria-hidden="true">
         <div class="sheet code light">
             <div class="head">
-                <img src={airflowMark.src} alt="" />
-                <span>orders_daily.py</span>
+                <span class="tab">
+                    <img src={airflowMark.src} alt="" />
+                    <span>orders_daily.py</span>
+                </span>
                 <code>Airflow</code>
             </div>
             <pre class="scroll-pane" data-follow>{PY_LINES.map((line, i) => (
@@ -93,10 +95,12 @@ const ROWS = [
         </ol>
         <div class="sheet code light">
             <div class="head">
-                <span class="kmark">
-                    <img src={kestraMark.src} alt="" />
+                <span class="tab">
+                    <span class="kmark">
+                        <img src={kestraMark.src} alt="" />
+                    </span>
+                    <span>orders_daily.yaml</span>
                 </span>
-                <span>orders_daily.yaml</span>
                 <code>Kestra</code>
             </div>
             <pre class="scroll-pane" data-follow>{YAML_LINES.map((line, i) => (
@@ -110,8 +114,10 @@ const ROWS = [
     <div class="scene-grid backfill" aria-hidden="true">
         <div class="sheet light grid-view">
             <div class="head">
-                <img src={airflowMark.src} alt="" />
-                <span>orders_daily</span>
+                <span class="tab">
+                    <img src={airflowMark.src} alt="" />
+                    <span>orders_daily</span>
+                </span>
                 <code>Grid</code>
             </div>
             <div class="af-grid">
@@ -140,10 +146,12 @@ const ROWS = [
         </span>
         <div class="sheet light backfill-card">
             <div class="head">
-                <span class="kmark">
-                    <img src={kestraMark.src} alt="" />
+                <span class="tab">
+                    <span class="kmark">
+                        <img src={kestraMark.src} alt="" />
+                    </span>
+                    <span>Backfill · daily</span>
                 </span>
-                <span>Backfill · daily</span>
                 <code>Schedule</code>
             </div>
             <dl>
@@ -167,7 +175,7 @@ const ROWS = [
             </span>
             <ul class="execs">
                 {RUNS.map((run) => (
-                    <li data-on={run.at} style={`--run: ${run.done - run.at}ms`}>
+                    <li data-on={run.at} style={`--dur: ${run.done - run.at}ms`}>
                         <code>{run.day} 06:00</code>
                         <span class="prog" />
                         <span class="pill running">Running</span>
@@ -185,8 +193,10 @@ const ROWS = [
     <div class="scene-grid compare" aria-hidden="true">
         <div class="sheet light table-card">
             <div class="head">
-                <Icon name="mdi:table-check" />
-                <span>Rows written to orders, per day</span>
+                <span class="tab">
+                    <Icon name="mdi:table-check" />
+                    <span>Rows written to orders, per day</span>
+                </span>
             </div>
             <table>
                 <thead>
@@ -269,30 +279,45 @@ const ROWS = [
 </script>
 
 <style lang="scss">
+    @use "/src/components/enterprise/mocks/tokens" as *;
+
     .scene-grid {
-        --line: #e2e8f0;
-        --ink: #1a202c;
-        --muted: #718096;
-        --ok: #1c7e57;
-        --ok-bg: #e7f6ef;
-        --run: #8405ff;
-        --run-bg: #f1e9ff;
+        @include tokens;
+
+        --bar: #f7f7fa;
+        --run-bg: rgba(132, 5, 255, 0.08);
+        --code-key: #631bf3;
+        --code-str: #ab0009;
+        --code-const: #1a7a55;
+        --code-comment: #5f5f7c;
+        --hl: rgba(132, 5, 255, 0.08);
+
+        :global(html.dark) & {
+            --bar: #1e1e26;
+            --run-bg: rgba(152, 105, 247, 0.18);
+            --code-key: #cdb6fb;
+            --code-str: #ffc5b7;
+            --code-const: #06f0b1;
+            --code-comment: #7e7e9b;
+            --hl: rgba(152, 105, 247, 0.16);
+        }
+
         display: grid;
         align-items: center;
         gap: 1rem;
         width: 100%;
         height: 100%;
-        color: var(--ink);
+        color: var(--text);
         font-size: 0.75rem;
     }
 
     code {
         padding: 0.0625rem 0.3125rem;
         border-radius: 4px;
-        background: #f0f0f5;
+        background: var(--chip);
         font-family: $font-family-monospace;
         font-size: 0.6875rem;
-        color: var(--ink);
+        color: var(--text);
     }
 
     .translate {
@@ -323,31 +348,52 @@ const ROWS = [
         min-width: 0;
         overflow: hidden;
         border: 1px solid var(--line);
-        border-radius: 10px;
-        background: #ffffff;
-        box-shadow: 0 18px 40px -24px rgba(43, 43, 51, 0.35);
+        border-radius: 0.75rem;
+        background: var(--panel);
+        box-shadow: var(--shadow);
     }
 
     .head {
         display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.5rem 0.75rem;
+        align-items: flex-end;
+        gap: 0.75rem;
+        height: 2.75rem;
+        padding: 0 0.875rem;
         border-bottom: 1px solid var(--line);
-        font-weight: 600;
-
-        img {
-            width: 1rem;
-            height: 1rem;
-        }
+        background: var(--bar);
+        color: var(--muted);
 
         code {
+            align-self: center;
             margin-left: auto;
             padding: 0.0625rem 0.375rem;
             border-radius: 4px;
-            background: #f0f0f5;
+            background: var(--chip);
             font-size: 0.625rem;
             color: var(--muted);
+        }
+    }
+
+    .tab {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        height: 2.125rem;
+        margin-bottom: -1px;
+        padding: 0 0.875rem 0 0.5rem;
+        border: 1px solid var(--line);
+        border-bottom: 0;
+        border-radius: 8px 8px 0 0;
+        background: var(--panel);
+        font-size: 0.8125rem;
+        font-weight: 500;
+        white-space: nowrap;
+        color: var(--text);
+
+        img,
+        > :global(svg) {
+            width: 1rem;
+            height: 1rem;
         }
     }
 
@@ -356,8 +402,8 @@ const ROWS = [
         place-items: center;
         width: 1.25rem;
         height: 1.25rem;
-        border-radius: 5px;
-        background: #1a1a24;
+        border-radius: 6px;
+        background: #0d0d10;
 
         img {
             width: 0.75rem;
@@ -375,7 +421,7 @@ const ROWS = [
         font-family: $font-family-monospace;
         font-size: 0.625rem;
         line-height: 1.5;
-        color: var(--ink) !important;
+        color: var(--text) !important;
         white-space: pre;
     }
 
@@ -392,26 +438,29 @@ const ROWS = [
             padding-right: 0.5rem;
             font-style: normal;
             text-align: right;
-            color: #a0aec0;
+            color: var(--muted);
         }
 
         :global(.k) {
-            color: #6d52f5;
+            color: var(--code-key);
         }
 
-        :global(.s),
+        :global(.s) {
+            color: var(--code-str);
+        }
+
         :global(.v) {
-            color: #1c7e57;
+            color: var(--code-const);
         }
 
         :global(.c) {
             font-style: italic;
-            color: var(--muted);
+            color: var(--code-comment);
         }
 
         &.pair:global(.on) {
-            background: rgba(28, 126, 87, 0.08);
-            box-shadow: inset 2px 0 0 var(--ok);
+            background: linear-gradient(90deg, var(--hl), transparent 85%);
+            box-shadow: inset 2px 0 0 var(--code-key);
             animation: lit 0.9s ease;
         }
 
@@ -431,7 +480,7 @@ const ROWS = [
 
     @keyframes lit {
         from {
-            background: rgba(132, 5, 255, 0.16);
+            background: var(--run-bg);
         }
     }
 
@@ -449,7 +498,7 @@ const ROWS = [
             padding: 0.4375rem 0.5rem;
             border: 1px solid var(--line);
             border-radius: 8px;
-            background: #ffffff;
+            background: var(--panel);
             font-family: $font-family-monospace;
             font-size: 0.625rem;
             line-height: 1.4;
@@ -469,7 +518,7 @@ const ROWS = [
 
             &:global(.on) {
                 border-color: var(--ok);
-                color: var(--ink);
+                color: var(--text);
                 opacity: 1;
             }
         }
@@ -557,7 +606,7 @@ const ROWS = [
         margin: 0 0.75rem;
         padding: 0.375rem 0.75rem;
         border-radius: 6px;
-        background: #f0f0f5;
+        background: var(--chip);
         font-weight: 600;
         color: var(--muted);
         transition:
@@ -645,7 +694,7 @@ const ROWS = [
 
         th {
             padding: 0.5rem 0.875rem;
-            background: #fafafc;
+            background: var(--deep);
             font-weight: 500;
             text-align: left;
             color: var(--muted);
@@ -708,7 +757,7 @@ const ROWS = [
             opacity: 1;
 
             .toggle {
-                background: #cbd5e0;
+                background: var(--line);
 
                 i {
                     left: 0.125rem;
@@ -724,8 +773,8 @@ const ROWS = [
             box-shadow 0.3s ease;
 
         &:global(.on) {
-            background: rgba(132, 5, 255, 0.08);
-            box-shadow: inset 0 0 0 1px rgba(132, 5, 255, 0.35);
+            background: var(--run-bg);
+            box-shadow: inset 0 0 0 1px var(--ring);
         }
     }
 
@@ -750,7 +799,7 @@ const ROWS = [
         margin: 0 0.5rem;
         overflow: hidden;
         border-radius: 2px;
-        background: #f0f0f5;
+        background: var(--chip);
 
         &::after {
             content: "";
@@ -764,7 +813,7 @@ const ROWS = [
 
     .execs li:global(.on) .prog::after {
         transform: scaleX(1);
-        transition: transform var(--run) linear;
+        transition: transform var(--dur) linear;
     }
 
     .scroll-pane {

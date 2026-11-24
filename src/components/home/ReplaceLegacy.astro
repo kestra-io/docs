@@ -120,6 +120,11 @@ const {
                     </li>
                 ))}
             </ul>
+            {Astro.slots.has("after") && (
+                <div class="after">
+                    <slot name="after" />
+                </div>
+            )}
         </div>
     </div>
 </section>
@@ -250,6 +255,10 @@ const {
                 }
             }
         }
+    }
+
+    .after {
+        padding-bottom: clamp(3rem, 6vw, 5rem);
     }
 
     .problems {

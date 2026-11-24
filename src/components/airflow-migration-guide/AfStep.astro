@@ -293,13 +293,21 @@ const KESTRA_PAGE = {
 </script>
 
 <style lang="scss">
+    @use "/src/components/enterprise/mocks/tokens" as *;
+
     .af-step {
-        --line: #e2e8f0;
-        --ink: #1a202c;
-        --muted: #718096;
-        --ok: #1c7e57;
-        --ok-bg: #e7f6ef;
-        --run: #8405ff;
+        @include tokens;
+
+        --bar: #f7f7fa;
+        --af-blue: #017cee;
+        --danger: #c53030;
+
+        :global(html.dark) & {
+            --bar: #1e1e26;
+            --af-blue: #5aa9ff;
+            --danger: #ff6b6b;
+        }
+
         display: grid;
         gap: 1rem;
         width: 100%;
@@ -325,10 +333,10 @@ const KESTRA_PAGE = {
         min-height: 15rem;
         overflow: hidden;
         border: 1px solid var(--line);
-        border-radius: 10px;
-        background: #ffffff;
-        box-shadow: 0 18px 40px -24px rgba(43, 43, 51, 0.35);
-        color: var(--ink);
+        border-radius: 0.75rem;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        color: var(--text);
         font-size: 0.75rem;
     }
 
@@ -346,8 +354,10 @@ const KESTRA_PAGE = {
         display: flex;
         align-items: center;
         gap: 0.75rem;
-        padding: 0.5rem 0.75rem;
+        height: 2.75rem;
+        padding: 0 0.875rem;
         border-bottom: 1px solid var(--line);
+        background: var(--bar);
         white-space: nowrap;
         overflow: hidden;
 
@@ -358,15 +368,15 @@ const KESTRA_PAGE = {
 
         strong {
             font-weight: 500;
-            color: #51504f;
+            color: var(--soft);
         }
 
         span {
-            color: #51504f;
+            color: var(--soft);
             font-weight: 500;
 
             &.on {
-                color: #017cee;
+                color: var(--af-blue);
             }
         }
     }
@@ -383,10 +393,10 @@ const KESTRA_PAGE = {
 
         th {
             padding: 0.375rem 0.5rem;
-            background: #f5f5f5;
+            background: var(--deep);
             font-weight: 600;
             text-align: left;
-            color: #51504f;
+            color: var(--soft);
         }
 
         td {
@@ -398,16 +408,16 @@ const KESTRA_PAGE = {
 
     .dag {
         font-weight: 600;
-        color: #017cee;
+        color: var(--af-blue);
     }
 
     .chip {
         padding: 0.0625rem 0.375rem;
         border-radius: 3px;
-        background: #e2e2e2;
+        background: var(--chip);
         font-size: 0.6875rem;
         font-weight: 600;
-        color: #51504f;
+        color: var(--soft);
     }
 
     .last {
@@ -421,7 +431,7 @@ const KESTRA_PAGE = {
         width: 1.75rem;
         height: 1rem;
         border-radius: 999px;
-        background: #017cee;
+        background: var(--af-blue);
         transition: background-color 0.3s ease;
 
         i {
@@ -438,7 +448,7 @@ const KESTRA_PAGE = {
 
     tr.paused .toggle,
     tr:global(.hit) .toggle {
-        background: #cbd5e0;
+        background: var(--line);
 
         i {
             left: 0.125rem;
@@ -484,7 +494,7 @@ const KESTRA_PAGE = {
 
         .name {
             font-weight: 600;
-            color: #017cee;
+            color: var(--af-blue);
         }
     }
 
@@ -496,13 +506,13 @@ const KESTRA_PAGE = {
         font-weight: 700;
 
         &.before {
-            background: #c6f6d5;
-            color: #22543d;
+            background: var(--ok-bg);
+            color: var(--ok);
         }
 
         &.after {
-            background: #e2e8f0;
-            color: #4a5568;
+            background: var(--chip);
+            color: var(--soft);
         }
     }
 
@@ -537,8 +547,10 @@ const KESTRA_PAGE = {
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        padding: 0.5rem 0.75rem;
+        height: 2.75rem;
+        padding: 0 0.875rem;
         border-bottom: 1px solid var(--line);
+        background: var(--bar);
 
         .kmark {
             display: grid;
@@ -546,7 +558,7 @@ const KESTRA_PAGE = {
             width: 1.375rem;
             height: 1.375rem;
             border-radius: 6px;
-            background: #1a1a24;
+            background: #0d0d10;
 
             img {
                 width: 0.875rem;
@@ -555,7 +567,7 @@ const KESTRA_PAGE = {
         }
 
         .slash {
-            color: #a0aec0;
+            color: var(--muted);
         }
 
         strong {
@@ -565,7 +577,7 @@ const KESTRA_PAGE = {
 
     .flows {
         th {
-            background: #fafafc;
+            background: var(--deep);
             font-weight: 500;
             color: var(--muted);
         }
@@ -595,7 +607,7 @@ const KESTRA_PAGE = {
 
         &.before {
             display: inline-flex;
-            background: #f0f0f5;
+            background: var(--chip);
             color: var(--muted);
         }
 
@@ -606,8 +618,8 @@ const KESTRA_PAGE = {
     }
 
     .tags tr[data-tone="retire"] .tag {
-        background: #fff1dc;
-        color: #b25f00;
+        background: var(--wait-bg);
+        color: var(--wait);
     }
 
     .checks {

@@ -281,7 +281,7 @@ const WORKERS = [
         ))
     }
     <div class="container-xl">
-        <div class="grid">
+        <div class:list={["grid", { bare: FEATURES.length === 0 }]}>
             <header class:list={["head", { solo: !layers && !hasVisual }]}>
                 <div>
                     <h2 id={headingId}>
@@ -1016,6 +1016,17 @@ const WORKERS = [
 
         @include media-breakpoint-down(xl) {
             border-inline: 0;
+        }
+
+        &.bare::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: -100vw;
+            right: -100vw;
+            height: 1px;
+            background: var(--rule-color);
+            pointer-events: none;
         }
     }
 
