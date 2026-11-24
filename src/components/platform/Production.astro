@@ -95,7 +95,7 @@ const MARKS: Record<string, [number, number]> = {
 <section class="production" id="production" aria-labelledby="prod-h">
     <Rails>
         <SectionHead id="prod-h" align="start">
-            Failure handling, declared in the flow.
+            Failure handling, <span>declared in the flow.</span>
             <Fragment slot="lead">
                 Every workflow fails eventually. In Kestra, what happens next is
                 written in the same YAML as the work itself, so it’s reviewed in
@@ -221,6 +221,11 @@ const MARKS: Record<string, [number, number]> = {
 
     .production {
         @include tinted;
+
+        :global(.section-head h2 span) {
+            display: block;
+            color: var(--ks-content-tertiary);
+        }
     }
 
     .grid {

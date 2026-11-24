@@ -30,7 +30,7 @@ const CARDS = [
 <section class="fit" id="fit" aria-labelledby="fit-h">
     <Rails>
         <SectionHead id="fit-h" align="start">
-            A platform that fits your existing workflows.
+            A platform that fits <span>your existing workflows.</span>
             <Fragment slot="lead">
                 Everything you can do in the UI, you can do from code. Flows are
                 YAML, so they live in Git, ship through CI/CD, and get reviewed
@@ -55,6 +55,10 @@ const CARDS = [
     @use "./style/platform" as *;
 
     .fit {
+        :global(.section-head h2 span) {
+            display: block;
+            color: var(--ks-content-tertiary);
+        }
     }
 
     .cards {

@@ -37,7 +37,7 @@ const OPTIONS = [
     <PixelEdges left="cluster" right="tall" />
     <Rails dark bottom="none">
         <SectionHead id="deploy-h" align="start">
-            Deploy and govern anywhere.
+            Deploy and govern <span>anywhere.</span>
             <Fragment slot="lead">
                 Kestra has flexible deployment options, supporting everything
                 from your laptop to an air-gapped environment.
@@ -70,6 +70,11 @@ const OPTIONS = [
 
         :global(.section-head h2) {
             color: #ffffff;
+        }
+
+        :global(.section-head h2 span) {
+            display: block;
+            color: #a9a9b8;
         }
 
         :global(.section-head .lead) {

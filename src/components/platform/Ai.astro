@@ -76,7 +76,7 @@ triggers:
     <PixelEdges left="wide" right="cluster" />
     <Rails dark>
         <SectionHead id="ai-h" align="start">
-            AI runs inside your workflows, not around them.
+            AI runs inside your workflows, <span>not around them.</span>
             <Fragment slot="lead">
                 Run models as steps in deterministic flows, let AI assistants
                 call your flows as tools, and pick the model yourself. Retries,
@@ -141,6 +141,11 @@ triggers:
 
         :global(.section-head h2) {
             color: #ffffff;
+        }
+
+        :global(.section-head h2 span) {
+            display: block;
+            color: #a9a9b8;
         }
 
         :global(.section-head .lead) {

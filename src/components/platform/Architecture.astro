@@ -1,13 +1,8 @@
 ---
 import Rails from "./Rails.astro"
-import SectionHead from "~/components/home/SectionHead.astro"
-import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
 import ArchitectureDiagram from "./ArchitectureDiagram.astro"
 
-const EDITIONS = [
-    { label: "Open source", tint: "#8405ff" },
-    { label: "Enterprise", tint: "#7e68ff" },
-]
+const EDITIONS = ["Open source", "Enterprise"]
 
 const PARTS = [
     {
@@ -30,82 +25,85 @@ const PARTS = [
 
 <section class="architecture" id="architecture" aria-labelledby="arch-h">
     <Rails>
-        <SectionHead id="arch-h" align="start">
-            Coordinate in one place. Run anywhere.
-            <Fragment slot="lead">
+        <header class="intro">
+            <h2 id="arch-h">
+                Coordinate in one place.
+                <span>Run anywhere.</span>
+            </h2>
+            <p>
                 Kestra separates orchestration from execution. The control plane
                 decides what runs, workers run it next to your data, and the
                 queue keeps both in sync.
-            </Fragment>
-        </SectionHead>
+            </p>
+        </header>
 
         <div class="edition" data-edition-tabs>
-            <div class="tabs" role="tablist" aria-label="Edition">
-                {EDITIONS.map((edition, idx) => (
-                    <button
-                        type="button"
-                        role="tab"
-                        class="tab"
-                        id={`edition-tab-${idx + 1}`}
-                        aria-selected={idx === 0 ? "true" : "false"}
-                        aria-controls="edition-panel"
-                        tabindex={idx === 0 ? 0 : -1}
-                        style={`--tint: ${edition.tint}`}
-                    >
-                        <span class="swatch" aria-hidden="true" />
-                        {edition.label}
-                    </button>
-                ))}
-            </div>
-
             <div
                 class="panel"
                 id="edition-panel"
                 role="tabpanel"
                 aria-labelledby="edition-tab-1"
-                style={`--pixels: url("${pixelCluster}")`}
             >
-                <span class="pixels" aria-hidden="true"></span>
-                <div class="swap">
-                    <div class="copy" data-edition="oss">
-                        <h3>Trusted by thousands of customers worldwide</h3>
-                        <p>
-                            Full-featured orchestration, free to self-host, and
-                            built in the open.
-                        </p>
+                <div class="head">
+                    <div class="swap">
+                        <div class="copy" data-edition="oss">
+                            <h3>Trusted by thousands of customers worldwide</h3>
+                            <p>
+                                Full-featured orchestration, free to self-host,
+                                and built in the open.
+                            </p>
+                        </div>
+                        <div class="copy" data-edition="ent">
+                            <h3>
+                                Scalability and performance enterprises demand
+                            </h3>
+                            <p>
+                                Worker groups isolate and scale workloads. Kafka
+                                and Elasticsearch backends handle enterprise
+                                throughput.{" "}
+                                <a href="/enterprise">
+                                    Learn more about Enterprise Edition.
+                                </a>
+                            </p>
+                        </div>
                     </div>
-                    <div class="copy" data-edition="ent">
-                        <h3>Scalability and performance enterprises demand</h3>
-                        <p>
-                            Worker groups isolate and scale workloads. Kafka and
-                            Elasticsearch backends handle enterprise throughput.{" "}
-                            <a href="/enterprise">
-                                Learn more about Enterprise Edition.
-                            </a>
-                        </p>
+                    <div class="tabs" role="tablist" aria-label="Edition">
+                        <span class="thumb" aria-hidden="true" />
+                        {EDITIONS.map((label, idx) => (
+                            <button
+                                type="button"
+                                role="tab"
+                                class="tab"
+                                id={`edition-tab-${idx + 1}`}
+                                aria-selected={idx === 0 ? "true" : "false"}
+                                aria-controls="edition-panel"
+                                tabindex={idx === 0 ? 0 : -1}
+                            >
+                                {label}
+                            </button>
+                        ))}
                     </div>
                 </div>
                 <div class="diagram" data-arch-diagram>
                     <ArchitectureDiagram />
                 </div>
             </div>
+            <ul class="parts">
+                {PARTS.map((part) => (
+                    <li tabindex="0" data-zone={part.zone}>
+                        <h3>{part.title}</h3>
+                        <p>{part.text}</p>
+                    </li>
+                ))}
+            </ul>
         </div>
 
-        <ul class="parts">
-            {PARTS.map((part) => (
-                <li tabindex="0" data-zone={part.zone}>
-                    <h3>{part.title}</h3>
-                    <p>{part.text}</p>
-                </li>
-            ))}
-        </ul>
-
-        <p class="closing">
-            Add workers to absorb load. Your flows don’t change.
-        </p>
-        <a class="more" href="/docs/architecture">
-            Learn more about architecture <span class="arrow">→</span>
-        </a>
+        <div class="closing">
+            <p>Add workers to absorb load. Your flows don’t change.</p>
+            <a href="/docs/architecture">
+                Learn more about architecture <span class="arrow">→</span>
+            </a>
+        </div>
     </Rails>
 </section>
 
@@ -199,6 +197,15 @@ const PARTS = [
             display: grid;
         }
 
+        @media (prefers-reduced-motion: no-preference) {
+            &:not(:has(#edition-tab-2[aria-selected="true"]))
+                :global(.swap > [data-edition="oss"]),
+            &:has(#edition-tab-2[aria-selected="true"])
+                :global(.swap > [data-edition="ent"]) {
+                animation: edition-in 0.5s ease both;
+            }
+        }
+
         :global(.swap > [data-edition]) {
             grid-area: 1 / 1;
             display: flex;
@@ -223,19 +230,62 @@ const PARTS = [
         }
 
         @include media-breakpoint-down(lg) {
-            .panel > .swap > [data-edition="ent"] {
+            .head > .swap > [data-edition="ent"] {
                 display: none;
             }
 
             &:has(#edition-tab-2[aria-selected="true"]) {
-                .panel > .swap > [data-edition="oss"] {
+                .head > .swap > [data-edition="oss"] {
                     display: none;
                 }
 
-                .panel > .swap > [data-edition="ent"] {
+                .head > .swap > [data-edition="ent"] {
                     display: flex;
                 }
             }
+        }
+    }
+
+    .intro {
+        display: grid;
+        justify-items: center;
+        row-gap: 1.25rem;
+        padding-bottom: 4rem;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            padding-bottom: 3rem;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+            color: var(--ks-content-primary);
+            text-wrap: balance;
+
+            span {
+                display: block;
+                color: var(--ks-content-tertiary);
+            }
+        }
+
+        p {
+            max-width: 40rem;
+            margin: 0;
+            font-size: 1.125rem;
+            line-height: 1.55;
+            color: var(--ks-content-tertiary);
+            text-wrap: balance;
+        }
+    }
+
+    @keyframes edition-in {
+        from {
+            opacity: 0;
+            filter: blur(4px);
         }
     }
 
@@ -244,6 +294,22 @@ const PARTS = [
 
         margin: 0 calc(-1 * var(--inset));
         border-block: var(--rule);
+        background:
+            radial-gradient(
+                ellipse 50% 40% at 100% 0%,
+                rgba(126, 104, 255, 0.1),
+                transparent 70%
+            ),
+            radial-gradient(
+                ellipse 50% 40% at 0% 70%,
+                rgba(126, 104, 255, 0.08),
+                transparent 70%
+            ),
+            color-mix(
+                in srgb,
+                var(--ks-background-secondary) 60%,
+                var(--ks-background-body)
+            );
 
         @include media-breakpoint-down(xl) {
             margin: 0;
@@ -253,78 +319,72 @@ const PARTS = [
         }
     }
 
+    .head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 2rem;
+
+        @include media-breakpoint-down(lg) {
+            flex-direction: column-reverse;
+            gap: 1.25rem;
+        }
+    }
+
     .tabs {
-        display: grid;
+        position: relative;
+        display: inline-grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        border-bottom: var(--rule);
+        flex: none;
+        padding: 0.25rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 0.625rem;
+        background: var(--ks-background-body);
+    }
+
+    .thumb {
+        position: absolute;
+        top: 0.25rem;
+        bottom: 0.25rem;
+        left: 0.25rem;
+        width: calc(50% - 0.25rem);
+        border-radius: 0.375rem;
+        background: var(--ks-background-secondary);
+        transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+
+        .tabs:has(#edition-tab-2[aria-selected="true"]) > & {
+            transform: translateX(100%);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            transition: none;
+        }
     }
 
     .tab {
         position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.625rem;
-        padding: 1.375rem 1rem;
+        padding: 0.5rem 1.125rem;
         border: 0;
-        background: var(--ks-background-body);
-        font-size: 1.0625rem;
+        border-radius: 0.375rem;
+        background: transparent;
+        font-size: 1rem;
         font-weight: 500;
-        color: var(--ks-content-primary);
+        color: var(--ks-content-tertiary);
         cursor: pointer;
-        transition: background-color 0.3s ease;
-
-        & + & {
-            border-left: var(--rule);
-        }
+        transition: color 0.2s ease;
 
         &:hover {
-            background: color-mix(
-                in srgb,
-                var(--tint) 4%,
-                var(--ks-background-body)
-            );
+            color: var(--ks-content-primary);
         }
 
         &:focus-visible {
             outline: 2px solid var(--ks-border-active);
-            outline-offset: -2px;
+            outline-offset: 1px;
         }
 
         &[aria-selected="true"] {
+            color: var(--ks-content-primary);
             cursor: default;
-        }
-
-        &::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: -1px;
-            height: 2px;
-            background: var(--tint);
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-
-        &[aria-selected="true"]::after {
-            opacity: 1;
-        }
-    }
-
-    .swatch {
-        width: 0.5rem;
-        height: 0.5rem;
-        border-radius: 2px;
-        background: var(--ks-content-tertiary);
-        opacity: 0.5;
-        transition:
-            background-color 0.3s ease,
-            opacity 0.3s ease;
-
-        [aria-selected="true"] > & {
-            background: var(--tint);
-            opacity: 1;
         }
     }
 
@@ -332,48 +392,19 @@ const PARTS = [
         position: relative;
         display: flex;
         flex-direction: column;
-        gap: 2rem;
-        padding: var(--inset);
-        background: var(--ks-background-body);
-        transition: background-color 0.4s ease;
-
-        .architecture:has(#edition-tab-2[aria-selected="true"]) & {
-            background:
-                radial-gradient(
-                    ellipse 60% 50% at 100% 0%,
-                    rgba(126, 104, 255, 0.1),
-                    transparent 70%
-                ),
-                radial-gradient(
-                    ellipse 60% 60% at 0% 100%,
-                    rgba(126, 104, 255, 0.08),
-                    transparent 70%
-                ),
-                var(--ks-background-body);
-        }
+        gap: 1.5rem;
+        padding: 2.5rem var(--inset);
 
         @include media-breakpoint-down(lg) {
             padding: 1.25rem;
         }
     }
 
-    .pixels {
-        position: absolute;
-        top: 1.5rem;
-        right: 1.5rem;
-        width: 96px;
-        aspect-ratio: 194 / 168;
-        background: #8405ff;
-        mask: var(--pixels) no-repeat center / contain;
-        opacity: 0.18;
-        pointer-events: none;
-    }
-
     .copy {
         position: relative;
         flex-direction: column;
         gap: 0.5rem;
-        max-width: 36rem;
+        max-width: 46rem;
 
         &[data-edition="oss"] {
             display: flex;
@@ -405,17 +436,10 @@ const PARTS = [
 
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        margin: 0 calc(-1 * var(--inset));
+        margin: 0;
         padding: 0;
-        border-bottom: var(--rule);
+        border-top: var(--rule);
         list-style: none;
-
-        @include media-breakpoint-down(xl) {
-            margin: 1rem 0 0;
-            border: var(--rule);
-            border-radius: 0.75rem;
-            overflow: hidden;
-        }
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);
@@ -423,15 +447,9 @@ const PARTS = [
 
         li {
             position: relative;
-            padding: clamp(2.5rem, 4vw, 3.5rem) var(--inset)
-                clamp(3rem, 5vw, 4.5rem);
-            background: var(--ks-background-body);
+            padding: 2rem var(--inset) 2.25rem;
             cursor: default;
             transition: background-color 0.3s ease;
-
-            @include media-breakpoint-down(lg) {
-                padding-block: 2rem 2.25rem;
-            }
 
             &::before {
                 content: "";
@@ -450,7 +468,7 @@ const PARTS = [
             &:focus-visible,
             &.lit {
                 outline: none;
-                background: var(--ks-background-secondary);
+                background: var(--ks-background-body);
 
                 &::before {
                     transform: none;
@@ -468,8 +486,8 @@ const PARTS = [
         }
 
         h3 {
-            margin: 0 0 1rem;
-            font-size: 1.375rem;
+            margin: 0 0 0.625rem;
+            font-size: 1.25rem;
             font-weight: 600;
             letter-spacing: -0.01em;
             color: var(--ks-content-primary);
@@ -479,19 +497,35 @@ const PARTS = [
             max-width: 26rem;
             margin: 0;
             font-size: 1rem;
-            line-height: 1.7;
+            line-height: 1.6;
             color: var(--ks-content-secondary);
         }
     }
 
     .closing {
-        margin: 3rem 0 0.75rem;
-        font-size: $font-size-lg;
-        font-weight: 600;
-        color: var(--ks-content-primary);
-    }
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem 2rem;
+        margin: 0 calc(-1 * var(--inset));
+        padding: 1.75rem var(--inset);
+        border-bottom: 1px solid var(--ks-border-primary);
 
-    .more {
-        @include text-link;
+        @include media-breakpoint-down(xl) {
+            margin: 0;
+            padding-inline: 0;
+        }
+
+        p {
+            margin: 0;
+            font-size: $font-size-lg;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        a {
+            @include text-link;
+        }
     }
 </style>
