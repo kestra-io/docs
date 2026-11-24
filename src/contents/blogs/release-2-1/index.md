@@ -1,6 +1,6 @@
 ---
-title: "Kestra 2.1: Approvals, the Kestra MCP Server, and Searchable Executions"
-description: "Kestra 2.1 gives flows a real yes or no with the new Approval task, and lets AI agents work with your instance through the Kestra MCP Server, under the caller's own permissions. The release also adds asset leases, an ASSET input, searchable executions, and script checkpoints."
+title: "Kestra 2.1: AI Agents in Kestra, Approvals, and Searchable Executions"
+description: "Kestra 2.1 lets AI agents work with your instance through the Kestra MCP Server, with your permissions and in your audit log, and gives flows a real yes or no with the new Approval task. The release also adds asset leases, an ASSET input, searchable executions, and script checkpoints."
 date: 2026-12-01T10:00:00
 category: News & Product Updates
 authors:
@@ -22,17 +22,15 @@ DRAFT NOTES (remove before publishing)
 -->
 
 
-With Kestra 2.1, a flow can finally stop and ask. The new Approval task waits for a yes or a no and runs different tasks for each, and the Enterprise Edition adds a page to assign and follow every request. AI agents get a way in too: the new Kestra MCP Server gives Claude, Cursor, or any other MCP client the same tools as the AI Copilot, so an agent can read your flows and executions, find out why a run failed, and restart it.
+Kestra 2.1 is about who gets to act on your flows, and how you keep control when they do. AI agents can now work with your instance through the Kestra MCP Server, with your permissions and in your audit log. And when a decision belongs to a person, the new Approval task waits for a real yes or no.
 
-There's plenty more, and much of it is in every edition, open source included. Forms can offer existing assets to pick from, you can find an execution by the order ID it processed, and long scripts can pick up where they left off after a failure.
-
-The table below lists the highlights and the edition each one belongs to. Everything else is in the sections that follow and in the changelog.
+Not everything in 2.1 is about who's in charge. Plenty of it works in every edition, open source included: you can now find an execution by the order ID it processed, and a long script can pick up where it left off after a failure. Here are the highlights, with the edition each one is in.
 
 | Feature | What it does | Edition |
 |---|---|---|
+| Kestra MCP Server | Let AI agents read and change flows, executions, and more, with your permissions | OSS, EE |
 | Approval task | Pause a flow until someone approves or denies it | OSS, EE, Cloud |
 | Approvals page | Assign reviewers, follow every request, and chain sign-offs | EE, Cloud |
-| Kestra MCP Server | Let AI agents read and change flows, executions, and more, with your permissions | OSS, EE |
 | Asset leases and the ASSET input | Give every asset an owner and a lease, and let people pick assets in a form | EE, Cloud |
 | Searchable inputs and outputs | Find executions by a business value such as an order ID | OSS, EE, Cloud |
 | TABLE input | Collect rows of records in a grid | EE, Cloud |
@@ -45,29 +43,6 @@ The table below lists the highlights and the edition each one belongs to. Everyt
 :::alert{type="info"}
 **Upgrading from 2.0?** Most flows need no changes, but a few API and configuration changes do. See [Upgrade and Migration](#upgrade-and-migration) before you upgrade.
 :::
-
-## Approvals
-
-Until now, asking someone for a decision meant a `Pause` task, and the only way to say no was to kill the execution. The new `Approval` task gives your flow a real yes or no: it waits for a reviewer, then runs the tasks for whichever way they decided. Reviewers can leave a comment and fill in a few fields, and a request can approve itself when a condition is met or expire after a while.
-
-```yaml
-- id: approve_deploy
-  type: io.kestra.plugin.core.flow.Approval
-  timeout: P1D
-  commentRequired: ON_DENY
-  onApprove:
-    - id: deploy
-      type: io.kestra.plugin.core.log.Log
-      message: "Approved by {{ outputs.approve_deploy.by }}"
-  onDeny:
-    - id: report_denial
-      type: io.kestra.plugin.core.log.Log
-      message: "Stopped by {{ outputs.approve_deploy.by }}: {{ outputs.approve_deploy.comment }}"
-```
-
-In the Enterprise Edition, you can assign a request to specific people or groups and follow every request on the new **Approvals** page, with notifications for reviewers and requesters. You can chain several approvals into one multi-step sign-off, and reviewers can decide from an App without opening Kestra. `Pause` and `HumanTask` keep working as before. See the [Approval task](/docs/workflow-components/approvals) and [Approvals in Kestra Enterprise](/docs/enterprise/governance/approvals).
-
-![The Approvals page listing four deployment approval requests, two pending with Review buttons and two resolved, one approved and one denied, with their deadlines and assignees](./approvals-page.png)
 
 ## Kestra MCP Server
 
@@ -100,7 +75,32 @@ You can limit the server to some tenants, choose the sign-in methods it accepts 
 
 <!-- VERIFY: the link depends on docs#6386 (new page develop-with-ai/05.kestra-mcp-server) merging into docs/release-2-1; until then the tools are documented at /docs/ai-orchestration/mcp-server#platform-mcp-server. Also confirm with engineering that the 78 tools ship in 2.1 (no releases/v2.1.x branch yet). -->
 
+The AI Copilot in the Kestra UI got the same tools, so you can do the same work from a chat. In Edit and Plan modes, it asks you to confirm before it changes anything. It can also draft a unit test for a flow: pick **Generate a unit test** in the flow's menu, and Copilot writes the test cases with fixtures, mocks, and assertions for you to apply or review. See [Generate a unit test](/docs/develop-with-ai/ai-copilot#generate-a-unit-test).
+
 The 2.0 feature that turns your own flows into tools for agents is now called [MCP Flows](/docs/ai-orchestration/mcp-server).
+
+## Approvals
+
+Until now, asking someone for a decision meant a `Pause` task, and the only way to say no was to kill the execution. The new `Approval` task gives your flow a real yes or no: it waits for a reviewer, then runs the tasks for whichever way they decided. Reviewers can leave a comment and fill in a few fields, and a request can approve itself when a condition is met or expire after a while.
+
+```yaml
+- id: approve_deploy
+  type: io.kestra.plugin.core.flow.Approval
+  timeout: P1D
+  commentRequired: ON_DENY
+  onApprove:
+    - id: deploy
+      type: io.kestra.plugin.core.log.Log
+      message: "Approved by {{ outputs.approve_deploy.by }}"
+  onDeny:
+    - id: report_denial
+      type: io.kestra.plugin.core.log.Log
+      message: "Stopped by {{ outputs.approve_deploy.by }}: {{ outputs.approve_deploy.comment }}"
+```
+
+In the Enterprise Edition, you can assign a request to specific people or groups and follow every request on the new **Approvals** page, with notifications for reviewers and requesters. You can chain several approvals into one multi-step sign-off, and reviewers can decide from an App without opening Kestra. `Pause` and `HumanTask` keep working as before. See the [Approval task](/docs/workflow-components/approvals) and [Approvals in Kestra Enterprise](/docs/enterprise/governance/approvals).
+
+![The Approvals page listing four deployment approval requests, two pending with Review buttons and two resolved, one approved and one denied, with their deadlines and assignees](./approvals-page.png)
 
 ## Assets
 
@@ -198,10 +198,6 @@ Apps get new building blocks that make them work well as internal dashboards and
 - Each app can render narrow for a form, or wide for tables and charts.
 
 See [Apps](/docs/enterprise/scalability/apps).
-
-## AI
-
-**Generate a unit test** in a flow's menu asks the AI Copilot to draft a test for that flow, with fixtures, mocks, and assertions. Apply it right away or review it in the editor first. See [Generate a unit test](/docs/develop-with-ai/ai-copilot#generate-a-unit-test).
 
 ## Keyless Cloud Access
 
