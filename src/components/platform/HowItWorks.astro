@@ -2,9 +2,11 @@
 import { Icon } from "astro-icon/components"
 import { fetchPluginIcon } from "~/utils/pluginIcon"
 import CodeCard from "./CodeCard.astro"
+import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
 
 const STEPS = [
     {
+        tab: "Flows",
         title: "Flows define your work",
         text: "A YAML file with an id, a namespace, and tasks. Reviewed and versioned like code.",
         link: {
@@ -13,6 +15,7 @@ const STEPS = [
         },
     },
     {
+        tab: "Plugins",
         title: "Plugins connect your systems",
         text: "Native connectivity to thousands of services like Terraform, Postgres, ServiceNow, and others.",
         link: {
@@ -21,6 +24,7 @@ const STEPS = [
         },
     },
     {
+        tab: "Triggers",
         title: "Triggers start flows",
         text: "Start a flow on a schedule, a webhook, another flow’s result, or a poll.",
         link: {
@@ -29,10 +33,12 @@ const STEPS = [
         },
     },
     {
+        tab: "No-code",
         title: "Write flows with no code",
         text: "Don’t like to code? Author flows in the no-code editor. Edits are interchangeable with YAML, so both views stay in sync.",
     },
     {
+        tab: "Observability",
         title: "Execution with insight",
         text: "Each execution retains its logs, outputs, and timing, so “what happened?” always has an answer. Metrics and alerts feed the tools you already monitor.",
         link: {
@@ -137,130 +143,153 @@ const GANTT = [
                 <h2 id="how-h">How it works</h2>
             </header>
 
-            <ol class="steps">
+            <div class="tabs" role="tablist" aria-label="How it works">
                 {STEPS.map((step, idx) => (
-                    <li
-                        class:list={["step", { active: idx === 0 }]}
-                        data-step={idx}
+                    <button
+                        type="button"
+                        role="tab"
+                        class:list={["tab", { active: idx === 0 }]}
+                        id={`how-tab-${idx}`}
+                        aria-selected={idx === 0 ? "true" : "false"}
+                        aria-controls="how-panel"
+                        tabindex={idx === 0 ? 0 : -1}
                     >
-                        <button type="button" aria-pressed={idx === 0}>
-                            <span class="bar" aria-hidden="true" />
+                        <span class="swatch" aria-hidden="true" />
+                        {step.tab}
+                    </button>
+                ))}
+            </div>
+
+            <div
+                class="body"
+                id="how-panel"
+                role="tabpanel"
+                aria-labelledby="how-tab-0"
+                data-at="0"
+                style={`--pixels: url("${pixelCluster}")`}
+            >
+                <span class="pixels" aria-hidden="true" />
+                <div class="copies">
+                    {STEPS.map((step, idx) => (
+                        <div class="copy" data-copy={idx}>
                             <h3>{step.title}</h3>
                             <p>{step.text}</p>
-                        </button>
-                    </li>
-                ))}
-            </ol>
-
-            <div class="body" data-at="0">
-                <div class="view" data-view="0">
-                    <CodeCard
-                        file="company.team / etl_orders.yml"
-                        code={FLOW}
-                    />
-                </div>
-
-                <div class="view" data-view="1">
-                    <ul class="chips">
-                        {PLUGINS.map((plugin, idx) => (
-                            <li
-                                class:list={{ accent: plugin.accent }}
-                                style={`--k: ${idx}`}
-                            >
-                                {icons[idx] && (
-                                    <span class="logo" set:html={icons[idx]} />
-                                )}
-                                {plugin.name}
-                            </li>
-                        ))}
-                        <li class="more-chip" style={`--k: ${PLUGINS.length}`}>
-                            + 2,400 more
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="view" data-view="2">
-                    <ul class="triggers">
-                        {TRIGGERS.map((trigger, idx) => (
-                            <li style={`--k: ${idx}`}>
-                                <Icon name={trigger.icon} />
-                                <b>{trigger.name}</b>
-                                <span>{trigger.text}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
-                <div class="view nocode" data-view="3">
-                    <div class="nodes">
-                        <p class="pane-label">No-code</p>
-                        <div class="node">
-                            <Icon name="mdi:clock-outline" />
-                            <div>
-                                <b>Trigger · Schedule</b>
-                                <span>every day at 09:00</span>
-                            </div>
-                        </div>
-                        <span class="down" aria-hidden="true">
-                            ↓
-                        </span>
-                        <div class="node">
-                            <Icon name="mdi:play" />
-                            <div>
-                                <b>Task · Log</b>
-                                <span>message: Hello from Kestra</span>
-                            </div>
-                        </div>
-                    </div>
-                    <span class="sync" aria-hidden="true">
-                        <Icon name="mdi:swap-horizontal" />
-                    </span>
-                    <CodeCard file="YAML" code={NO_CODE} />
-                </div>
-
-                <div class="view" data-view="4">
-                    <div class="exec-card">
-                        <p class="exec">
-                            EXECUTION 4f2a… · etl_orders ·{" "}
-                            <span class="bad">FAILED</span> → restarted
-                        </p>
-                        <ul class="gantt">
-                            {GANTT.map((row, idx) => (
-                                <li style={`--k: ${idx}`}>
-                                    <span>{row.task}</span>
-                                    <span class="track">
-                                        <em
-                                            class={row.status}
-                                            style={`left: ${row.start}%; width: ${row.width}%`}
-                                        />
-                                    </span>
-                                    <span>{row.time}</span>
-                                </li>
-                            ))}
-                        </ul>
-                        <ul class="chips signals">
-                            {SIGNALS.map((signal) => (
-                                <li>
-                                    {signal.name}
-                                    {signal.enterprise && (
-                                        <span class="tag">ENT</span>
-                                    )}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="links">
-                    {STEPS.map(
-                        (step, idx) =>
-                            step.link && (
-                                <a href={step.link.href} data-link={idx}>
-                                    {step.link.label}{" "}
-                                    <span class="arrow">→</span>
+                            {step.link && (
+                                <a
+                                    href={step.link.href}
+                                    class="btn-ghost compact"
+                                >
+                                    {step.link.label}
                                 </a>
-                            ),
-                    )}
+                            )}
+                        </div>
+                    ))}
+                </div>
+
+                <div class="views">
+                    <div class="view" data-view="0">
+                        <CodeCard
+                            file="company.team / etl_orders.yml"
+                            code={FLOW}
+                        />
+                    </div>
+
+                    <div class="view" data-view="1">
+                        <ul class="chips">
+                            {PLUGINS.map((plugin, idx) => (
+                                <li
+                                    class:list={{ accent: plugin.accent }}
+                                    style={`--k: ${idx}`}
+                                >
+                                    {icons[idx] && (
+                                        <span
+                                            class="logo"
+                                            set:html={icons[idx]}
+                                        />
+                                    )}
+                                    {plugin.name}
+                                </li>
+                            ))}
+                            <li
+                                class="more-chip"
+                                style={`--k: ${PLUGINS.length}`}
+                            >
+                                + 2,400 more
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="view" data-view="2">
+                        <ul class="triggers">
+                            {TRIGGERS.map((trigger, idx) => (
+                                <li style={`--k: ${idx}`}>
+                                    <Icon name={trigger.icon} />
+                                    <b>{trigger.name}</b>
+                                    <span>{trigger.text}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    <div class="view nocode" data-view="3">
+                        <div class="nodes">
+                            <p class="pane-label">No-code</p>
+                            <div class="node">
+                                <Icon name="mdi:clock-outline" />
+                                <div>
+                                    <b>Trigger · Schedule</b>
+                                    <span>every day at 09:00</span>
+                                </div>
+                            </div>
+                            <span class="down" aria-hidden="true">
+                                ↓
+                            </span>
+                            <div class="node">
+                                <Icon name="mdi:play" />
+                                <div>
+                                    <b>Task · Log</b>
+                                    <span>message: Hello from Kestra</span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="sync" aria-hidden="true">
+                            <Icon name="mdi:swap-horizontal" />
+                        </span>
+                        <CodeCard file="YAML" code={NO_CODE} />
+                    </div>
+
+                    <div class="view" data-view="4">
+                        <div class="exec-card">
+                            <p class="exec">
+                                EXECUTION 4f2a… · etl_orders ·{" "}
+                                <span class="bad">FAILED</span> → restarted
+                            </p>
+                            <ul class="gantt">
+                                {GANTT.map((row, idx) => (
+                                    <li style={`--k: ${idx}`}>
+                                        <span>{row.task}</span>
+                                        <span class="track">
+                                            <em
+                                                class={row.status}
+                                                style={`left: ${row.start}%; width: ${row.width}%`}
+                                            />
+                                        </span>
+                                        <span>{row.time}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                            <ul class="chips signals">
+                                {SIGNALS.map((signal) => (
+                                    <li>
+                                        {signal.name}
+                                        {signal.enterprise && (
+                                            <span class="tag">ENT</span>
+                                        )}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -275,7 +304,7 @@ const GANTT = [
             "[data-platform-how]:not([data-wired])",
         )) {
             root.dataset.wired = "true"
-            const steps = [...root.querySelectorAll<HTMLElement>(".step")]
+            const tabs = [...root.querySelectorAll<HTMLElement>(".tab")]
             const body = root.querySelector<HTMLElement>(".body")!
             const still = matchMedia("(prefers-reduced-motion: reduce)").matches
             let auto = !still
@@ -294,32 +323,47 @@ const GANTT = [
 
             const open = (idx: number) => {
                 stop()
-                steps.forEach((step, i) => {
-                    step.classList.toggle("active", i === idx)
-                    step.classList.toggle("timed", auto && i === idx)
-                    step.style.setProperty("--dur", `${STEP_MS}ms`)
-                    step.querySelector("button")!.ariaPressed = String(
-                        i === idx,
-                    )
+                tabs.forEach((tab, i) => {
+                    tab.classList.toggle("active", i === idx)
+                    tab.classList.toggle("timed", auto && i === idx)
+                    tab.style.setProperty("--dur", `${STEP_MS}ms`)
+                    tab.setAttribute("aria-selected", String(i === idx))
+                    tab.tabIndex = i === idx ? 0 : -1
                 })
                 body.dataset.at = String(idx)
+                body.setAttribute("aria-labelledby", tabs[idx].id)
                 body.classList.remove("enter")
                 void body.offsetWidth
                 body.classList.add("enter")
                 if (auto)
                     timer = window.setTimeout(() => {
-                        const next = (idx + 1) % steps.length
+                        const next = (idx + 1) % tabs.length
                         if (inView) open(next)
                         else waiting = next
                     }, STEP_MS)
             }
 
-            steps.forEach((step, idx) =>
-                step.querySelector("button")!.addEventListener("click", () => {
+            tabs.forEach((tab, idx) => {
+                tab.addEventListener("click", () => {
                     auto = false
                     open(idx)
-                }),
-            )
+                })
+                tab.addEventListener("keydown", (e) => {
+                    const n = tabs.length
+                    const moves: Record<string, number> = {
+                        ArrowRight: (idx + 1) % n,
+                        ArrowLeft: (idx - 1 + n) % n,
+                        Home: 0,
+                        End: n - 1,
+                    }
+                    const next = moves[e.key]
+                    if (next === undefined) return
+                    e.preventDefault()
+                    auto = false
+                    tabs[next].focus()
+                    open(next)
+                })
+            })
 
             new IntersectionObserver(
                 ([entry]) => {
@@ -363,7 +407,7 @@ const GANTT = [
             --tint: #9869f7;
         }
 
-        > .steps,
+        > .tabs,
         > .body {
             position: relative;
             border-top: var(--rule);
@@ -413,112 +457,99 @@ const GANTT = [
         }
     }
 
-    .steps {
+    .tabs {
         display: grid;
         grid-template-columns: repeat(5, minmax(0, 1fr));
-        margin: 0;
-        padding: 0;
-        list-style: none;
+        border-bottom: var(--rule);
 
         @include media-breakpoint-down(lg) {
-            grid-template-columns: minmax(0, 1fr);
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
         }
     }
 
-    .step {
+    .tab {
+        position: relative;
+        display: flex;
+        flex: none;
+        align-items: center;
+        justify-content: center;
+        gap: 0.625rem;
+        padding: 1.375rem 1rem;
+        border: 0;
+        background: var(--ks-background-body);
+        font-size: 1.0625rem;
+        font-weight: 500;
+        white-space: nowrap;
+        color: var(--ks-content-primary);
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
         & + & {
             border-left: var(--rule);
-
-            @include media-breakpoint-down(lg) {
-                border-left: 0;
-                border-top: var(--rule);
-            }
         }
 
-        button {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            width: 100%;
-            height: 100%;
-            padding: 1.75rem 1.5rem 2rem;
-            border: 0;
-            background: none;
-            text-align: left;
-            cursor: pointer;
-            transition: background-color 0.25s ease;
-
-            &:hover {
-                background: var(--ks-background-secondary);
-            }
-
-            &:focus-visible {
-                outline: 2px solid var(--ks-border-active);
-                outline-offset: -2px;
-            }
-
-            @include media-breakpoint-down(lg) {
-                padding: 1.5rem var(--inset);
-            }
+        @include media-breakpoint-down(lg) {
+            padding-inline: 1.25rem;
         }
 
-        .bar {
-            position: absolute;
-            top: -1px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--tint);
-            transform: scaleX(0);
-            transform-origin: left;
+        &:hover {
+            background: color-mix(
+                in srgb,
+                var(--tint) 4%,
+                var(--ks-background-body)
+            );
         }
 
-        &.active .bar {
-            transform: none;
-        }
-
-        &.timed .bar {
-            animation: step-time var(--dur) linear forwards;
-        }
-
-        h3 {
-            margin: 0 0 0.5rem;
-            font-size: 1.0625rem;
-            font-weight: 600;
-            line-height: 1.35;
-            color: var(--ks-content-tertiary);
-            transition: color 0.25s ease;
-        }
-
-        p {
-            margin: 0;
-            font-size: 0.875rem;
-            line-height: 1.55;
-            color: var(--ks-content-tertiary);
-            transition: color 0.25s ease;
-
-            @include media-breakpoint-down(lg) {
-                display: none;
-            }
+        &:focus-visible {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: -2px;
         }
 
         &.active {
-            h3 {
-                color: var(--ks-content-primary);
-            }
+            cursor: default;
+        }
 
-            p {
-                color: var(--ks-content-secondary);
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -1px;
+            height: 2px;
+            background: var(--tint);
+            opacity: 0;
+            transform-origin: left;
+            transition: opacity 0.2s ease;
+        }
 
-                @include media-breakpoint-down(lg) {
-                    display: block;
-                }
-            }
+        &.active::after {
+            opacity: 1;
+        }
+
+        &.timed::after {
+            animation: tab-time var(--dur) linear forwards;
         }
     }
 
-    @keyframes step-time {
+    .swatch {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 2px;
+        background: var(--ks-content-tertiary);
+        opacity: 0.5;
+        transition:
+            background-color 0.3s ease,
+            opacity 0.3s ease;
+
+        .active > & {
+            background: var(--tint);
+            opacity: 1;
+        }
+    }
+
+    @keyframes tab-time {
         from {
             transform: scaleX(0);
         }
@@ -533,41 +564,87 @@ const GANTT = [
 
         position: relative;
         display: grid;
-        place-items: center;
-        min-height: 32rem;
-        padding: 3.5rem var(--inset) 4.5rem;
+        grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
+        align-items: center;
+        gap: 3rem;
+        min-height: max(28rem, min(32rem, calc(100vh - 14rem)));
+        padding: var(--inset);
         overflow: hidden;
-        background:
-            radial-gradient(
-                80% 90% at 100% 0%,
-                color-mix(in srgb, var(--tint) 20%, transparent),
-                transparent 70%
-            ),
-            radial-gradient(
-                60% 70% at 0% 100%,
-                color-mix(in srgb, var(--tint) 10%, transparent),
-                transparent 70%
-            ),
-            color-mix(in srgb, var(--tint) 3%, var(--ks-background-body));
+        background: var(--ks-background-body);
 
-        :global(html.dark) & {
-            background:
-                radial-gradient(
-                    80% 90% at 100% 0%,
-                    color-mix(in srgb, var(--tint) 12%, transparent),
-                    transparent 70%
-                ),
-                radial-gradient(
-                    60% 70% at 0% 100%,
-                    color-mix(in srgb, var(--tint) 6%, transparent),
-                    transparent 70%
-                ),
-                color-mix(in srgb, var(--tint) 3%, var(--ks-background-body));
+        @include media-breakpoint-down(xl) {
+            grid-template-columns: minmax(0, 1fr);
+            align-content: start;
+            gap: 2rem;
         }
 
         @include media-breakpoint-down(lg) {
             min-height: 0;
-            padding: 2rem 1.25rem 3.5rem;
+            padding: 2rem 1.25rem 3rem;
+        }
+    }
+
+    .pixels {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        width: 96px;
+        aspect-ratio: 194 / 168;
+        background: var(--tint);
+        mask: var(--pixels) no-repeat center / contain;
+        opacity: 0.3;
+        pointer-events: none;
+
+        @include media-breakpoint-down(lg) {
+            width: 64px;
+        }
+    }
+
+    .copies,
+    .views {
+        position: relative;
+        display: grid;
+    }
+
+    .views {
+        place-items: center;
+    }
+
+    .copy {
+        grid-area: 1 / 1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(0.75rem);
+        transition:
+            opacity 0.4s ease,
+            transform 0.4s ease,
+            visibility 0s linear 0.4s;
+
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+
+        h3 {
+            margin: 0 0 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            margin: 0;
+            font-size: 1.0625rem;
+            line-height: 1.65;
+            color: var(--ks-content-secondary);
+        }
+
+        a {
+            margin-top: 1.75rem;
         }
     }
 
@@ -598,8 +675,15 @@ const GANTT = [
                 visibility 0s;
         }
 
-        .body[data-at="#{$i}"] .links a[data-link="#{$i}"] {
-            display: inline-block;
+        .body[data-at="#{$i}"] .copy[data-copy="#{$i}"] {
+            display: flex;
+            visibility: visible;
+            opacity: 1;
+            transform: none;
+            transition:
+                opacity 0.4s ease,
+                transform 0.4s ease,
+                visibility 0s;
         }
     }
 
@@ -636,38 +720,6 @@ const GANTT = [
         .body.enter :global(.line),
         .body.enter [style*="--k"] {
             animation: none;
-        }
-    }
-
-    .links {
-        position: absolute;
-        left: var(--inset);
-        bottom: 1.5rem;
-
-        a {
-            display: none;
-            font-weight: 600;
-            color: var(--ks-content-primary);
-            text-decoration: underline;
-            text-decoration-color: var(--ks-border-secondary);
-            text-underline-offset: 0.25em;
-
-            &:hover {
-                text-decoration-color: var(--ks-content-link);
-            }
-
-            .arrow {
-                display: inline-block;
-                transition: transform 0.2s ease;
-            }
-
-            &:hover .arrow {
-                transform: translateX(0.25em);
-            }
-        }
-
-        @include media-breakpoint-down(lg) {
-            left: 1.25rem;
         }
     }
 
@@ -763,8 +815,8 @@ const GANTT = [
 
     .nocode {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.2fr);
-        gap: 1.25rem;
+        grid-template-columns: minmax(0, 0.75fr) auto minmax(0, 1.5fr);
+        gap: 1rem;
         align-items: center;
 
         @include media-breakpoint-down(md) {
