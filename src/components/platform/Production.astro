@@ -7,36 +7,42 @@ import CodeCard from "./CodeCard.astro"
 const FEATURES = [
     {
         mark: "conc",
+        side: "left",
         key: "concurrency",
         title: "Concurrency limits",
         text: "Cap concurrent executions per flow, and choose whether extra runs queue, cancel, or fail.",
     },
     {
         mark: "sla",
+        side: "right",
         key: "sla",
         title: "SLAs",
         text: "Declare a maximum duration or an assertion on each execution. A breach fails the run, cancels it, or adds a label your alerts can act on.",
     },
     {
         mark: "trigger",
+        side: "left",
         key: "triggers",
         title: "Backfills",
         text: "Rerun a schedule over a past date range.",
     },
     {
         mark: "timeout",
+        side: "left",
         key: "timeout",
         title: "Timeouts",
         text: "Set a maximum duration on any task.",
     },
     {
         mark: "retry",
+        side: "right",
         key: "retry",
         title: "Retries",
         text: "Backoff per task, capped by attempts or time.",
     },
     {
         mark: "err",
+        side: "right",
         key: "errors",
         title: "Error handlers",
         text: "Run alerting, cleanup, or compensation tasks when a flow fails.",
@@ -82,6 +88,10 @@ errors:
   - id: page_oncall
     type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook`
 
+const SIDES = ["left", "right"].map((side) =>
+    FEATURES.filter((feature) => feature.side === side),
+)
+
 const MARKS: Record<string, [number, number]> = {
     conc: [3, 5],
     sla: [6, 10],
@@ -103,18 +113,18 @@ const MARKS: Record<string, [number, number]> = {
             </Fragment>
         </SectionHead>
 
-        <div class="grid" data-prod>
-            <div class="side">
-                <p class="hint">
-                    <Icon name="mdi:cursor-default-click-outline" />
-                    Hover a feature to see it in the flow
-                    <span class="arrow" aria-hidden="true">
-                        →
-                    </span>
-                </p>
-                <ul class="features">
-                    {FEATURES.map((feature) => (
-                        <li tabindex="0" data-k={feature.mark}>
+        <div class="annotated" data-prod>
+            <CodeCard
+                class="code"
+                file="finance / nightly_ledger.yml"
+                code={FLOW}
+                marks={MARKS}
+                editor
+            />
+            {SIDES.map((notes, idx) => (
+                <ol class:list={["notes", idx ? "right" : "left"]}>
+                    {notes.map((feature) => (
+                        <li class="note" tabindex="0" data-k={feature.mark}>
                             <b>
                                 {feature.title}
                                 <code class="key">{feature.key}</code>
@@ -122,94 +132,124 @@ const MARKS: Record<string, [number, number]> = {
                             <span>{feature.text}</span>
                         </li>
                     ))}
-                </ul>
-                <div class="runtime">
-                    <p class="runtime-head">After a run, in the UI or API</p>
-                    <ul>
-                        {RUNTIME.map((item) => (
-                            <li>
-                                <Icon name={item.icon} />
-                                <span>
-                                    <b>{item.title}</b>
-                                    {item.text}
-                                </span>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </div>
-            <CodeCard
-                class="sticky"
-                file="finance / nightly_ledger.yml"
-                code={FLOW}
-                marks={MARKS}
-                editor
-            />
+                </ol>
+            ))}
+            <svg class="links" aria-hidden="true"></svg>
         </div>
+
+        <ul class="runtime">
+            <li class="runtime-head">
+                <p>After a run, in the UI or API</p>
+            </li>
+            {RUNTIME.map((item) => (
+                <li>
+                    <Icon name={item.icon} />
+                    <b>{item.title}</b>
+                    <span>{item.text}</span>
+                </li>
+            ))}
+        </ul>
     </Rails>
 </section>
 
 <script>
-    const STEP_MS = 2400
+    const SVG = "http://www.w3.org/2000/svg"
+    const GAP = 14
 
     function wireProduction() {
-        const grid = document.querySelector<HTMLElement>(
+        const box = document.querySelector<HTMLElement>(
             "[data-prod]:not([data-wired])",
         )
-        if (!grid) return
-        grid.dataset.wired = "true"
-        const lines = grid.querySelectorAll<HTMLElement>(".line[data-k]")
-        const items = [...grid.querySelectorAll<HTMLElement>(".features li")]
-        const light = (item?: HTMLElement) => {
-            const mark = item?.dataset.k
+        if (!box) return
+        box.dataset.wired = "true"
+        const card = box.querySelector<HTMLElement>(".code")!
+        const lines = [...card.querySelectorAll<HTMLElement>(".line[data-k]")]
+        const notes = [...box.querySelectorAll<HTMLElement>(".note")]
+        const svg = box.querySelector<SVGSVGElement>(".links")!
+        const wide = matchMedia("(min-width: 1200px)")
+
+        const linesOf = (mark: string) =>
+            lines.filter((line) => line.dataset.k === mark)
+
+        const light = (mark?: string) => {
             for (const line of lines)
                 line.classList.toggle("on", !!mark && line.dataset.k === mark)
-            for (const other of items)
-                other.classList.toggle("active", other === item)
+            for (const note of notes)
+                note.classList.toggle("on", note.dataset.k === mark)
+            for (const path of svg.querySelectorAll("[data-k]"))
+                path.classList.toggle(
+                    "on",
+                    (path as SVGElement).dataset.k === mark,
+                )
         }
 
-        let timer = 0
-        let step = 0
-        const stopDemo = () => {
-            window.clearInterval(timer)
-            timer = 0
-        }
-        const startDemo = () => {
-            if (timer) return
-            light(items[step])
-            timer = window.setInterval(() => {
-                step = (step + 1) % items.length
-                light(items[step])
-            }, STEP_MS)
-        }
-
-        for (const item of items) {
-            const on = () => {
-                stopDemo()
-                light(item)
+        const layout = () => {
+            svg.replaceChildren()
+            for (const note of notes) note.style.top = ""
+            for (const side of box.querySelectorAll<HTMLElement>(".notes"))
+                side.style.minHeight = ""
+            if (!wide.matches) return
+            const base = box.getBoundingClientRect()
+            const code = card.getBoundingClientRect()
+            svg.setAttribute("viewBox", `0 0 ${base.width} ${base.height}`)
+            for (const side of box.querySelectorAll<HTMLElement>(".notes")) {
+                const left = side.classList.contains("left")
+                let floor = 0
+                for (const note of side.querySelectorAll<HTMLElement>(
+                    ".note",
+                )) {
+                    const range = linesOf(note.dataset.k!)
+                    const first = range[0].getBoundingClientRect()
+                    const last = range.at(-1)!.getBoundingClientRect()
+                    const lineY = (first.top + last.bottom) / 2 - base.top
+                    const title = note.querySelector("b")!
+                    const half = title.offsetHeight / 2
+                    const top = Math.max(lineY - half, floor)
+                    note.style.top = `${top}px`
+                    floor = top + note.offsetHeight + GAP
+                    const rect = note.getBoundingClientRect()
+                    const y = top + half
+                    const from = left
+                        ? rect.right - base.left + 10
+                        : rect.left - base.left - 10
+                    const to = left
+                        ? code.left - base.left
+                        : code.right - base.left
+                    const mid = (from + to) / 2
+                    const path = document.createElementNS(SVG, "path")
+                    path.setAttribute(
+                        "d",
+                        `M${from} ${y} H${mid} V${lineY} H${to}`,
+                    )
+                    path.dataset.k = note.dataset.k
+                    const dot = document.createElementNS(SVG, "circle")
+                    dot.setAttribute("cx", String(to))
+                    dot.setAttribute("cy", String(lineY))
+                    dot.setAttribute("r", "3")
+                    dot.dataset.k = note.dataset.k
+                    svg.appendChild(path)
+                    svg.appendChild(dot)
+                }
+                side.style.minHeight = `${floor}px`
             }
-            item.addEventListener("mouseenter", on)
-            item.addEventListener("focus", on)
-            item.addEventListener("mouseleave", () => light())
-            item.addEventListener("blur", () => light())
         }
 
-        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
-        const io = new IntersectionObserver(
-            ([entry]) => {
-                if (!entry.isIntersecting) return stopDemo()
-                if (!grid.dataset.touched) startDemo()
-            },
-            { threshold: 0.4 },
-        )
-        io.observe(grid)
-        grid.querySelector(".features")!.addEventListener(
-            "pointerenter",
-            () => {
-                grid.dataset.touched = "true"
-                stopDemo()
-            },
-        )
+        for (const note of notes) {
+            const on = () => light(note.dataset.k)
+            note.addEventListener("mouseenter", on)
+            note.addEventListener("focus", on)
+            note.addEventListener("mouseleave", () => light())
+            note.addEventListener("blur", () => light())
+        }
+
+        const pre = card.querySelector<HTMLElement>("pre")!
+        for (const line of pre.querySelectorAll<HTMLElement>(".line"))
+            line.addEventListener("mouseenter", () => light(line.dataset.k))
+        pre.addEventListener("mouseleave", () => light())
+
+        new ResizeObserver(layout).observe(box)
+        wide.addEventListener("change", layout)
+        void document.fonts.ready.then(layout)
     }
 
     document.addEventListener("astro:page-load", wireProduction)
@@ -217,7 +257,6 @@ const MARKS: Record<string, [number, number]> = {
 </script>
 
 <style lang="scss">
-    @use "/src/components/about/style/section" as *;
     @use "./style/platform" as *;
 
     .production {
@@ -229,112 +268,102 @@ const MARKS: Record<string, [number, number]> = {
         }
     }
 
-    .grid {
+    .annotated {
+        position: relative;
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 2.5rem;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 40rem) minmax(0, 1fr);
+        gap: 3.5rem;
         align-items: start;
 
-        @include media-breakpoint-down(lg) {
-            grid-template-columns: 1fr;
+        @include media-breakpoint-down(xl) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.5rem 2rem;
         }
 
-        :global(.sticky) {
-            position: sticky;
-            top: calc(var(--top-bar-height, 67px) + 5rem);
+        @include media-breakpoint-down(md) {
+            grid-template-columns: minmax(0, 1fr);
+        }
 
-            @include media-breakpoint-down(lg) {
-                position: static;
+        :global(.code) {
+            grid-column: 2;
+            grid-row: 1;
+
+            @include media-breakpoint-down(xl) {
+                grid-column: 1 / -1;
             }
         }
     }
 
-    .side {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .hint {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin: 0;
-        font-size: $font-size-sm;
-        font-weight: 500;
-        color: var(--ks-content-link);
-
-        :global(svg) {
-            width: 1.125rem;
-            height: 1.125rem;
-        }
-
-        .arrow {
-            animation: nudge 1.6s ease-in-out infinite;
-
-            @media (prefers-reduced-motion: reduce) {
-                animation: none;
-            }
-
-            @include media-breakpoint-down(lg) {
-                transform: rotate(90deg);
-                animation: none;
-            }
-        }
-    }
-
-    @keyframes nudge {
-        50% {
-            transform: translateX(4px);
-        }
-    }
-
-    .features {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.75rem;
+    .notes {
+        position: relative;
+        grid-row: 1;
+        align-self: stretch;
         margin: 0;
         padding: 0;
         list-style: none;
 
-        @include media-breakpoint-down(sm) {
-            grid-template-columns: 1fr;
+        &.left {
+            grid-column: 1;
+            text-align: right;
         }
 
-        li {
-            display: flex;
-            flex-direction: column;
-            gap: 0.375rem;
-            padding: 1.125rem 1.25rem;
-            border: 1px solid var(--ks-border-primary);
-            border-radius: 0.75rem;
-            background: var(--ks-background-body);
-            cursor: pointer;
-            transition:
-                border-color 0.2s ease,
-                box-shadow 0.2s ease;
+        &.right {
+            grid-column: 3;
+        }
 
-            &:hover,
-            &:focus-visible,
-            &.active {
-                outline: none;
-                border-color: var(--ks-content-link);
-                box-shadow: 0 10px 30px rgba(132, 5, 255, 0.12);
+        @include media-breakpoint-down(xl) {
+            display: grid;
+            gap: 1.25rem;
+            grid-row: 2;
 
-                .key {
-                    background: var(--ks-content-primary);
-                    color: var(--ks-background-body);
-                }
+            &.left {
+                grid-column: 1;
+                text-align: left;
+            }
+
+            &.right {
+                grid-column: 2;
             }
         }
 
+        @include media-breakpoint-down(md) {
+            &.right {
+                grid-column: 1;
+                grid-row: 3;
+            }
+        }
+    }
+
+    .note {
+        display: flex;
+        flex-direction: column;
+        gap: 0.375rem;
+        outline: none;
+        cursor: default;
+
+        @include media-breakpoint-up(xl) {
+            position: absolute;
+            left: 0;
+            right: 0;
+        }
+
         b {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            justify-content: space-between;
             gap: 0.5rem;
+            font-size: 1rem;
             font-weight: 600;
             color: var(--ks-content-primary);
+
+            .left & {
+                justify-content: flex-end;
+            }
+
+            @include media-breakpoint-down(xl) {
+                .left & {
+                    justify-content: flex-start;
+                }
+            }
         }
 
         span {
@@ -342,10 +371,15 @@ const MARKS: Record<string, [number, number]> = {
             line-height: 1.5;
             color: var(--ks-content-secondary);
         }
+
+        &:global(.on) .key,
+        &:focus-visible .key {
+            background: var(--ks-content-primary);
+            color: var(--ks-background-body);
+        }
     }
 
     .key {
-        flex: none;
         padding: 0 0.25rem;
         border-radius: var(--ks-border-radius);
         background-color: var(--ks-background-function);
@@ -358,52 +392,93 @@ const MARKS: Record<string, [number, number]> = {
             color 0.2s ease;
     }
 
-    .runtime {
-        margin-top: 0.75rem;
-        padding-top: 1.25rem;
-        border-top: 1px dashed var(--ks-border-primary);
+    .links {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        pointer-events: none;
 
-        ul {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 1.25rem;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-
-            @include media-breakpoint-down(sm) {
-                grid-template-columns: 1fr;
-            }
+        @include media-breakpoint-down(xl) {
+            display: none;
         }
+
+        :global(path) {
+            fill: none;
+            stroke: var(--ks-border-secondary);
+            stroke-width: 1;
+            stroke-dasharray: 3 3;
+            transition: stroke 0.2s ease;
+        }
+
+        :global(circle) {
+            fill: var(--ks-border-secondary);
+            transition: fill 0.2s ease;
+        }
+
+        :global(path.on) {
+            stroke: var(--ks-content-link);
+        }
+
+        :global(circle.on) {
+            fill: var(--ks-content-link);
+        }
+    }
+
+    .runtime {
+        @include ruled-grid(3);
+
+        margin-top: 4rem;
 
         li {
             display: flex;
-            gap: 0.75rem;
-            font-size: $font-size-sm;
-            line-height: 1.5;
-            color: var(--ks-content-secondary);
+            flex-direction: column;
+            gap: 0.375rem;
+            padding: 2rem var(--inset) 2.25rem;
 
             > :global(svg) {
-                flex: none;
-                width: 1.25rem;
-                height: 1.25rem;
-                margin-top: 0.125rem;
+                width: 1.5rem;
+                height: 1.5rem;
+                margin-bottom: 0.75rem;
                 color: var(--ks-content-tertiary);
+                transition: color 0.3s ease;
+            }
+
+            &:hover > :global(svg) {
+                color: var(--ks-content-link);
             }
         }
 
         b {
-            display: block;
-            margin-bottom: 0.25rem;
+            font-size: 1.0625rem;
             font-weight: 600;
             color: var(--ks-content-primary);
+        }
+
+        span {
+            font-size: $font-size-sm;
+            line-height: 1.55;
+            color: var(--ks-content-secondary);
         }
     }
 
     .runtime-head {
-        margin: 0 0 1rem;
-        font-size: 0.9375rem;
-        font-weight: 600;
-        color: var(--ks-content-secondary);
+        &:hover {
+            background: none;
+
+            &::before {
+                transform: scaleX(0);
+            }
+        }
+
+        p {
+            margin: 0;
+            font-size: 1.375rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            line-height: 1.25;
+            color: var(--ks-content-primary);
+        }
     }
 </style>
