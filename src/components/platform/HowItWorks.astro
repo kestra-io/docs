@@ -1,5 +1,6 @@
 ---
 import { Icon } from "astro-icon/components"
+import sharp from "sharp"
 import { fetchPluginIcon } from "~/utils/pluginIcon"
 import CodeCard from "./CodeCard.astro"
 import TopologyNode from "~/components/home/TopologyNode.astro"
@@ -157,16 +158,42 @@ const PLUGIN_ROWS = [
     ],
 ]
 
+const isDark = async (svg: string) => {
+    try {
+        const { data } = await sharp(Buffer.from(svg))
+            .resize(24, 24)
+            .ensureAlpha()
+            .raw()
+            .toBuffer({ resolveWithObject: true })
+        let light = 0
+        let ink = 0
+        for (let i = 0; i < data.length; i += 4) {
+            const alpha = data[i + 3] / 255
+            light +=
+                alpha *
+                (0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2])
+            ink += alpha
+        }
+        return ink > 0 && light / ink < 70
+    } catch {
+        return false
+    }
+}
+
 const ROWS = await Promise.all(
     PLUGIN_ROWS.map(async (row) =>
         (
             await Promise.all(
-                row.map(async ([name, group]) => ({
-                    name,
-                    icon: await fetchPluginIcon(
+                row.map(async ([name, group]) => {
+                    const icon = await fetchPluginIcon(
                         `io.kestra.plugin.${group}`,
-                    ).catch(() => null),
-                })),
+                    ).catch(() => null)
+                    return {
+                        name,
+                        icon,
+                        dark: icon ? await isDark(icon) : false,
+                    }
+                }),
             )
         ).filter((plugin) => plugin.icon),
     ),
@@ -452,7 +479,12 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
                                                         }
                                                     >
                                                         <span
-                                                            class="tile"
+                                                            class:list={[
+                                                                "tile",
+                                                                {
+                                                                    ink: plugin.dark,
+                                                                },
+                                                            ]}
                                                             title={plugin.name}
                                                             set:html={
                                                                 plugin.icon
@@ -1885,6 +1917,19 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
         background: #ffffff;
         box-shadow: var(--shadow);
         color: #2b2b33;
+
+        :global(html.dark) & {
+            border-color: rgba(255, 255, 255, 0.14);
+            background: linear-gradient(180deg, #26262c, #18181c);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.12),
+                0 10px 30px rgba(0, 0, 0, 0.5);
+            color: #ffffff;
+        }
+
+        :global(html.dark) &.ink :global(svg) {
+            filter: brightness(0) invert(1);
+        }
 
         :global(svg) {
             width: 100%;
