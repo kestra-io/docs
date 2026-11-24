@@ -86,7 +86,8 @@ Approvals, asset leases and the ASSET input, searchable execution values, custom
 ## Plugins
 
 - **Microsoft Defender XDR**: list, get, and update alerts and incidents, run advanced hunting queries, and trigger flows on new or updated alerts and incidents, in the Microsoft 365 plugin from version 1.11.0. [Docs](/plugins/plugin-microsoft365)
-
+- **Proofpoint TAP (EE)**: a new plugin that fetches URL clicks, threat messages, and the events that reached users from the TAP SIEM API, gets threat summaries and forensic evidence, lists Very Attacked People, and triggers flows on new SIEM events. [Docs](/plugins/plugin-ee-proofpoint)
+- **Torq (EE)**: a new plugin that runs Torq workflows through their webhook, lists and reads workflows and their executions, queries, reads, updates, and comments on cases, and triggers flows on new or updated cases. [Docs](/plugins/plugin-ee-torq)
 ## Behavior changes
 
 Smaller changes to existing behavior that don't need a migration guide.
