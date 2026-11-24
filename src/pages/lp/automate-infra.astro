@@ -252,6 +252,11 @@ const migrationSteps = [
                     <strong>{hero.strong}</strong>
                 </span>
             ))}
+            <span class="try-link" data-variant-only="awx">
+                <a href="#run-a-playbook" data-event="lp_infra_hero_try_click">
+                    Or try it yourself in 5 minutes ↓
+                </a>
+            </span>
         </Fragment>
         <Fragment slot="form-title">
             <span data-variant-hide="awx">{content.hero.formTitle}</span>
@@ -705,6 +710,22 @@ const migrationSteps = [
         display: flex;
         flex-direction: column;
         gap: 0.75rem;
+    }
+
+    /* G_AWX hero: the self-serve way out, under the lead, outside the card. */
+    .try-link {
+        display: block;
+        margin-top: 1rem;
+        font-size: $font-size-base;
+        a {
+            color: #ffffff;
+            font-weight: 600;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            &:hover {
+                text-decoration-thickness: 2px;
+            }
+        }
     }
 
     /* G_AWX hero card: the offer form only. */

@@ -146,12 +146,12 @@ const awxHeroes: Record<AwxHeadline, AwxHero> = {
     awx: {
         title: [
             { text: "AWX", grad: "a" },
-            { text: " stopped shipping releases. Your " },
+            { text: " stopped shipping releases. Keep your " },
             { text: "playbooks", grad: "b" },
-            { text: " keep running." },
+            { text: ", replace AWX." },
         ],
-        lead: "AWX releases are no longer published. The last one, 24.6.1, came out in July 2024. Run the playbooks and inventories you already have in Kestra.",
-        strong: "Open source and self-hosted, with schedules, approvals, retries and a log of every run.",
+        lead: "Kestra runs the playbooks and inventories you already have, with schedules, approvals, retries and a log of every run.",
+        strong: "Open source and self-hosted.",
     },
     tower: {
         title: [
@@ -204,7 +204,7 @@ const awxHeroes: Record<AwxHeadline, AwxHero> = {
             { text: "approvals", grad: "b" },
             { text: "." },
         ],
-        lead: "Keep your controller if you want. Kestra runs the chain around it: request, approval, provision, configure, notify, in one YAML file.",
+        lead: "Kestra runs the chain around your playbooks: request, approval, provision, configure and notify, in one YAML file.",
         strong: "Open source and self-hosted.",
     },
     ui: {
