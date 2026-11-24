@@ -68,6 +68,19 @@ Kestra.outputs({
     "amount": round(float(body["total"]), 2),
 })`
 
+export const CHANGES = {
+    title: "What changes on Kestra Cloud",
+    lead: "One finance team is moving 62 Pipedream workflows, across 16 projects, to Kestra Cloud. Five things change.",
+    columns: ["", "Pipedream", "Kestra Cloud"],
+    rows: [
+        ["Credits", "One credit per 30 seconds of compute, more when you raise memory", "Task runs. Loops, conditions and triggers aren't counted"],
+        ["Credentials", "Connected accounts that Pipedream holds and deletes by April 30, 2027", "Your own OAuth client or token, stored as a secret in the namespace"],
+        ["Memory", "One setting per workflow, paid in credits", "Memory and CPU set per task on the task runner"],
+        ["Access", "A shared workspace", "SSO, RBAC per namespace and audit logs"],
+        ["Git", "GitHub sync for projects on paid plans", "Flows are YAML: Git sync, CI/CD and a Terraform provider"],
+    ],
+}
+
 export const FLOW = `id: invoice_intake
 namespace: finance
 triggers:

@@ -13,6 +13,7 @@ import PdDates from "~/components/pipedream-migration-guide/PdDates.astro"
 import MigrationTable from "~/components/migration/MigrationTable.astro"
 import RunKestra from "~/components/home/RunKestra.astro"
 import {
+    CHANGES,
     HERO_CLI,
     MAPPING_GROUPS,
     STEP_DOMAINS,
@@ -92,6 +93,14 @@ const jsonLinkedData = {
             />
         </MigrationHero>
         <PdDates />
+        <MigrationTable
+            id="pd-changes-title"
+            title={CHANGES.title}
+            lead={CHANGES.lead}
+            columns={CHANGES.columns}
+            widths={["14%", "43%"]}
+            groups={[{ title: "", icon: "", rows: CHANGES.rows.map((cells) => ({ cells })) }]}
+        />
         <PdCompare />
         <ControlPlane
             headingId="pd-steps-title"

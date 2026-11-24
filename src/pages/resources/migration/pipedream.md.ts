@@ -3,6 +3,7 @@ import { getEntry } from "astro:content"
 import { mdxToMarkdown } from "~/components/vra-migration-guide/mdxToMarkdown"
 import {
     AFTER_SCRIPT,
+    CHANGES,
     BEFORE,
     COMPOSE,
     FLOW,
@@ -32,6 +33,7 @@ export const GET: APIRoute = async ({ site }) => {
         `# ${post.data.title}`,
         post.data.description,
         `## Pipedream Workflows shutdown dates\n\n${SHUTDOWN.map((d) => `- **${d.title}.** ${d.text}`).join("\n")}`,
+        `## ${CHANGES.title}\n\n${CHANGES.lead}\n\n${table(CHANGES.columns, CHANGES.rows)}`,
         "## Where each part of a workflow goes\n\nPipedream keeps the trigger, the code and the connected accounts in its workspace. In Kestra, a Webhook, Schedule or polling trigger starts a flow stored as YAML in your Git repository, a worker runs it on Kestra Cloud or in your own cloud, and credentials come from a secret manager scoped per namespace.",
         `## From export to cutover\n\n${steps}\n\nWhat the export leaves out, and where it goes in Kestra:\n\n${table(["Pipedream", "In Kestra"], GAPS)}\n\nAgent skills: ${link("/docs/develop-with-ai/agent-skills")}`,
         `## One workflow, before and after\n\nPipedream code step:\n\n${fence("python", BEFORE)}\n\ntransform.py, a namespace file in Kestra:\n\n${fence("python", AFTER_SCRIPT)}\n\ninvoice_intake.yaml:\n\n${fence("yaml", FLOW)}`,
