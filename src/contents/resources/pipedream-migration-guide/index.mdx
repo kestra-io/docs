@@ -9,8 +9,10 @@ lastUpdated: 2026-11-24
 href: /resources/migration/pipedream
 resourceCta: false
 faq:
+  - question: "Is Pipedream shutting down?"
+    answer: 'Pipedream Workflows and String are. Pipedream''s own documentation states both shut down on March 31, 2027, that Workflows is in maintenance mode with no new signups, and that all Workflows data, including credentials and OAuth tokens, is deleted by April 30, 2027. Pipedream Connect, the integration layer for AI agents, continues. See <a href="#pd-dates-title">the shutdown dates</a>.'
   - question: "Can I import the Pipedream JSON export directly into Kestra?"
-    answer: 'No. The export is the specification you convert from. A coding agent with the Kestra agent skills, or the AI Copilot in Kestra Cloud, turns each workflow file into a draft flow that you review. See <a href="#pd-steps-title">the prompt</a>.'
+    answer: 'No. The export is the specification you convert from. A coding agent with the Kestra agent skills, or the AI Copilot in Kestra Cloud, turns each workflow file into a draft flow that you review. See <a href="#pd-steps-title">the migration steps</a>.'
   - question: "Do my code steps need rewriting?"
     answer: 'The logic copies into a Script task in the same language. Two lines change: the step reads its input from <code>{{ trigger.body }}</code> or an earlier task''s outputs instead of <code>pd.steps</code>, and it exports its result with <code>Kestra.outputs()</code> instead of <code>return</code> (an <code>::{"outputs":…}::</code> line in Bash).'
   - question: "What happens to my connected accounts?"

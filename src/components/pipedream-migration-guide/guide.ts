@@ -74,6 +74,7 @@ triggers:
   - id: webhook
     type: io.kestra.plugin.core.trigger.Webhook
     key: "{{ secret('INVOICE_WEBHOOK_KEY') }}"
+    allowConcurrent: true
 
 tasks:
   - id: transform
@@ -229,6 +230,7 @@ triggers:
   - id: webhook
     type: io.kestra.plugin.core.trigger.Webhook
     key: "{{ secret('INVOICE_WEBHOOK_KEY') }}"
+    allowConcurrent: true
 
 tasks:
   - id: transform

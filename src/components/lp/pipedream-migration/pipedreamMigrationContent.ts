@@ -10,6 +10,10 @@ const trialCta = {
 
 const faq = [
     {
+        question: "Is Pipedream shutting down?",
+        answer: "Pipedream Workflows and String are. Both stop on March 31, 2027. Workflows is in maintenance mode with no new signups, and all Workflows data, credentials and OAuth tokens included, is deleted by April 30, 2027. Pipedream Connect continues.",
+    },
+    {
         question: "Can I import the Pipedream JSON export directly into Kestra?",
         answer: `No. The export is the specification you convert from. A coding agent with the Kestra agent skills, or the AI Copilot in Kestra Cloud, turns each workflow file into a draft flow that you review. The <a href="${GUIDE}#pd-steps-title">migration guide</a> walks through the conversion step by step.`,
     },
