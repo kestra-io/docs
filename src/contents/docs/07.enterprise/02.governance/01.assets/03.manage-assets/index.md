@@ -167,7 +167,7 @@ The Assets API is available at `/api/v1/{tenant}/assets`. Create and update requ
 | `GET /assets/{id}` | Get one asset. The response's `actionAvailability` lists, for each asset action, whether its conditions hold and the asset's current value for each unmet one. | `ASSET:VIEW` |
 | `GET /assets/search` | Search assets with query filters | `ASSET:LIST` |
 | `PATCH /assets/{id}` | Update `description`, `displayName`, or `metadata` with a JSON body. Metadata keys are merged into the stored metadata. | `ASSET:UPDATE` |
-| `POST /assets/bulk` | Create or update many assets from YAML documents separated by `---`. Add `dryRun=true` to preview. See [Import through the API](../../../../kestra-for-infra/04.inventory/index.md#import-through-the-api). | `ASSET:CREATE`, and `ASSET:UPDATE` to update existing assets |
+| `POST /assets/bulk` | Create or update many assets from YAML documents separated by `---`. Add `dryRun=true` to preview. See [Create or update assets in bulk](#create-or-update-assets-in-bulk). | `ASSET:CREATE`, and `ASSET:UPDATE` to update existing assets |
 | `GET /assets/{id}/dependencies` | Get the dependencies graph of one asset. Filter with `kinds`, and use `expandAll` and `hubCursor` to page through large parents. | `ASSET:VIEW` |
 | `GET /api/v1/{tenant}/flows/{namespace}/{id}/asset-dependencies` | Get the asset relation graph around a flow. Takes the same `kinds`, `expandAll`, and `hubCursor` parameters as `GET /assets/{id}/dependencies`. | `ASSET:VIEW`, and `FLOW:VIEW` or `ASSET:VIEW` on the flow's namespace |
 | `GET /assets/{id}/relations` | List one page of an asset's relations of one kind. `kind` and `direction` are required: `OUTBOUND` or `INBOUND` for directed kinds, `BOTH` for `RELATED`. Page with `size` (default `20`) and `after`, set to the previous page's `nextCursor`. | `ASSET:VIEW` |
@@ -203,6 +203,37 @@ EOF
 ```
 
 For request and response schemas, see the [Enterprise API reference](../../../../api-reference/01.enterprise/index.mdx).
+
+### Create or update assets in bulk
+
+`POST /assets/bulk` takes asset definitions as YAML documents separated by `---`, for example to register resources that Kestra didn't create. This `assets.yaml` defines a deployment and one resource in it:
+
+```yaml
+id: web-prod
+type: io.kestra.plugin.ee.assets.Deployment
+namespace: company.infra
+---
+id: vm-web-01
+type: VirtualMachine
+namespace: company.infra
+partOf:
+  id: web-prod
+metadata:
+  region: eu-west-1
+```
+
+Send the file with `dryRun=true` to preview the result without writing anything:
+
+```bash
+curl -X POST "https://kestra.example.com/api/v1/main/assets/bulk?dryRun=true" \
+  -H "Authorization: Bearer $KESTRA_API_TOKEN" \
+  -H "Content-Type: application/x-yaml" \
+  --data-binary @assets.yaml
+```
+
+The response lists asset IDs under `created`, `updated`, and `skipped`. `skipped` holds existing assets that belong to a different deployment, which Kestra leaves untouched. To write the assets, set `dryRun=false` or omit it.
+
+A bulk request can't change the namespace or the type of an existing asset, except to or from `External`. Kestra validates every asset before writing, so if any asset is invalid or [locked](#lock-an-asset), nothing is written.
 
 ## Automate with kestractl
 

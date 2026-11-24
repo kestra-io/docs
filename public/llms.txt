@@ -175,10 +175,6 @@ Enterprise and Cloud features require a Kestra EE license or a Kestra Cloud acco
 
 **Governance**
 - [Tenants](https://kestra.io/docs/enterprise/governance/tenants.md): Hard multi-tenancy — fully isolated namespaces, users, and data per tenant
-- [Kestra for Infra](https://kestra.io/docs/kestra-for-infra.md): Enterprise Infrastructure tenant for infrastructure self-service — Catalog home, Requests, Deployments with leases and day-2 actions, Inventory; start here, then follow its pages for setup, the example environment, and permissions
-- [Deployments, leases, and day-2 actions](https://kestra.io/docs/kestra-for-infra/deployments.md): Declare a `io.kestra.plugin.ee.assets.Deployment` and `partOf` resources from a flow, change a lease, attach `TtlTrigger` flows, and run or attach asset actions
-- [Inventory import](https://kestra.io/docs/kestra-for-infra/inventory.md): Import Terraform state, CSV, JSON, or YAML as assets under a deployment; ID rules, preview results, and the `POST /api/v1/{tenant}/assets/bulk?dryRun=` endpoint
-- [App templates](https://kestra.io/docs/kestra-for-infra/app-templates.md): Create a flow and the app that runs it from one reusable template, in a namespace chosen at use time; use it to publish self-service catalog entries with fixed platform choices
 - [Audit logs](https://kestra.io/docs/enterprise/governance/audit-logs.md): Immutable record of all user and system actions across the platform
 - [Secrets Manager](https://kestra.io/docs/enterprise/governance/secrets-manager.md): Connect Kestra to an external secrets backend — AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or HashiCorp Vault
 - [Assets](https://kestra.io/docs/enterprise/governance/assets.md): Start here for lineage and inventory. Explains how tasks declare `assets.inputs`/`outputs`, then routes to the declaration reference, the triggers/tasks reference (correct FQCNs: `io.kestra.plugin.ee.assets.EventTrigger`, `io.kestra.plugin.kestra.ee.assets.FreshnessTrigger`), UI/API/CLI management, and use-case how-to guides
@@ -498,12 +494,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [CLI Guide: kestractl vs Kestra Server CLI](https://kestra.io/docs/kestra-cli.md)
 - [Server CLI in Kestra: Commands and Options](https://kestra.io/docs/kestra-cli/kestra-server.md)
 - [kestractl: Kestra CLI for Flows and Executions](https://kestra.io/docs/kestra-cli/kestractl.md)
-- [Kestra for Infra: Self-Service Infrastructure in Kestra Enterprise](https://kestra.io/docs/kestra-for-infra.md)
-- [Set Up an Infrastructure Tenant in Kestra Enterprise](https://kestra.io/docs/kestra-for-infra/setup.md)
-- [Catalog and Requests in a Kestra Infrastructure Tenant](https://kestra.io/docs/kestra-for-infra/catalog-and-requests.md)
-- [Deployments, Leases, and Day-2 Actions in Kestra](https://kestra.io/docs/kestra-for-infra/deployments.md)
-- [Infrastructure Inventory and Import in Kestra](https://kestra.io/docs/kestra-for-infra/inventory.md)
-- [App Templates in Kestra: Self-Service Flows and Apps](https://kestra.io/docs/kestra-for-infra/app-templates.md)
 - [Kestra Migration Guide: Version Upgrades & Changes](https://kestra.io/docs/migration-guide.md)
 - [Kestra 0.11.0 Migration Guide: What Changed](https://kestra.io/docs/migration-guide/v0.11.0.md)
 - [Script Tasks Moved to Plugins in Kestra 0.11.0](https://kestra.io/docs/migration-guide/v0.11.0/core-script-tasks.md)

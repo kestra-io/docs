@@ -9,8 +9,6 @@ version: ">= 0.13.0"
 docId: tenants
 ---
 
-import ChildCard from "~/components/docs/ChildCard.astro"
-
 Multi-tenancy lets you run isolated environments for different teams, projects, or customers within a single Kestra instance.
 
 <div class="video-container">
@@ -48,40 +46,13 @@ Tenants must be created upfront, and a user needs to be granted access to use a 
 3. **Simple Configuration**: create new tenants at any time, each providing a fresh, fully isolated workspace accessible from your existing Kestra instance.
 4. **Intuitive UI Navigation**: the UI provides a dropdown as well as tenant identifiers included in the URL to make switching between tenants seamless.
 
-
-## Tenant types
-
-Every tenant has a **type** that sets the home page, sidebar layout, and vocabulary for everyone in the tenant. The engine, API, and data model are the same for every type, and no type removes a feature.
-
-| Type | Home page | Use case |
-|---|---|---|
-| `DEFAULT` | Dashboards | General-purpose workflow orchestration. Every feature appears in its usual place. Tenants get this type unless you choose another. |
-| `INFRASTRUCTURE` | Catalog | Infrastructure self-service and day-2 operations. See [Infrastructure tenant](../../../kestra-for-infra/index.mdx). |
-
-Creating an `INFRASTRUCTURE` tenant, or changing a tenant to that type, requires a license that includes Infrastructure tenants.
-
-### Set the type
-
-- **When you create a tenant**: the creation wizard has a **Type** step. The type also appears in the final review step.
-- **On an existing tenant**: open **Instance Owner → Tenants**, open the tenant's **Settings** page, and change the type. Members see the new navigation and home page on their next page load. Switching a tenant to `INFRASTRUCTURE` also seeds it with the [example environment](../../../kestra-for-infra/01.setup/index.md#example-environment).
-- **Through the API**: set `type` in the body of `POST /api/v1/tenants` or `PUT /api/v1/tenants/{id}`. `kestractl` and the Terraform provider don't set the type.
-
-A type change is recorded in the audit log as a tenant update.
-
-### See a tenant's type
-
-- The **Instance Owner → Tenants** list has a **Tenant type** column with a colored badge.
-- In the tenant switcher, each tenant shows an icon in its type's color, and tenants other than `DEFAULT` are labeled with their type.
-
-<ChildCard />
-
 ## Creating and managing tenants
 
 Tenants are created and managed through the **Instance Owner console**. Only users with the Instance Owner privilege can create, edit, or delete tenants. The console lists tenants under **Instance Owner → Tenants → All tenants**. Tenants can also be managed with `kestractl`, the API, or Terraform.
 
 ### Creating a tenant from the UI
 
-Go to **Instance Owner → Tenants → All tenants** and click **Create**. The wizard steps through identity (ID and name), type, worker selector, optionally storage and secrets, and the retention policy. On the **Type** step, select `DEFAULT` for the standard experience or `INFRASTRUCTURE` for the self-service vertical. See [Set up an Infrastructure tenant](../../../kestra-for-infra/01.setup/index.md). Click **Create** on the final review step.
+Go to **Instance Owner → Tenants → All tenants** and click **Create**. The wizard steps through identity (ID and name), type, worker selector, optionally storage and secrets, and the retention policy. Click **Create** on the final review step.
 
 On the **Retention policy** step, set how long the tenant keeps finished executions and logs, and whether it keeps `FAILED` executions forever. The form starts from the default policy chosen at [instance setup](../../01.overview/02.setup/index.md#step-3-choose-a-retention-policy), or from 90 days for both when there is none. Kestra generates a daily `retention` flow in the tenant's system flows namespace from these values. Click **Skip**, or keep both executions and logs forever, to create the tenant without the flow. See [Default retention flow](../../../10.administrator-guide/purge/index.md#default-retention-flow).
 
@@ -119,8 +90,6 @@ curl -X POST "https://kestra.example.com/api/v1/tenants" \
   -H "Content-Type: application/json" \
   -d '{"id": "stage", "name": "Staging"}'
 ```
-
-To create an [Infrastructure tenant](../../../kestra-for-infra/index.mdx), add `"type": "INFRASTRUCTURE"` to the body.
 
 To choose the tenant's retention policy, add `retentionPolicy` to the body. `executionsDays` and `logsDays` are numbers of days, or `null` to keep forever, and `keepFailedExecutions` keeps `FAILED` executions and their `ERROR` logs forever:
 

@@ -86,7 +86,6 @@ The [asset declaration reference](./01.declare-assets/index.md) covers the first
 | Start a flow when an upstream table changes | `EventTrigger` | [Run a flow when a table changes](../../../15.how-to-guides/asset-event-triggers/index.md) |
 | Detect resources that haven't been refreshed on time | `FreshnessTrigger` | [Detect and refresh stale data](../../../15.how-to-guides/asset-freshness/index.md) |
 | Keep an inventory of the infrastructure your flows provision | Output assets with metadata | [Build an infrastructure inventory](../../../15.how-to-guides/asset-infrastructure-inventory/index.md) |
-| Let teams request infrastructure from a catalog, with a lease on each deployment | Infrastructure tenant | [Kestra for Infra](../../../kestra-for-infra/index.mdx) |
 | Pick targets for an operation from the inventory instead of typing them | `assets()` Pebble function | [Target fleet operations with asset metadata](../../../15.how-to-guides/asset-fleet-operations/index.md) |
 | Stop two executions from changing the same resource at once | `Acquire` and `Release` locks | [Prevent concurrent changes to a resource](../../../15.how-to-guides/asset-locks/index.md) |
 | Let a platform team publish resources that other teams build on | Global assets and allowed namespaces | [Share platform resources across teams](../../../15.how-to-guides/asset-platform-sharing/index.md) |
