@@ -77,6 +77,6 @@ Below is a detailed list of the Appearance options you can configure:
   - `Monday, September 30, 2024 12:44 PM`
 
 :::alert{type="info"}
-This setting only affects the UI display. It does not affect [Schedule triggers](../../05.workflow-components/07.triggers/01.schedule-trigger/index.md) or flow execution times, which run on UTC by default.
+This setting only affects the UI. It sets the zone in which dates are displayed and in which you enter dates in the Execute dialog, such as a `DATETIME` input. It does not affect [Schedule triggers](../../05.workflow-components/07.triggers/01.schedule-trigger/index.md) or flow execution times, which run on UTC by default.
 :::
 
