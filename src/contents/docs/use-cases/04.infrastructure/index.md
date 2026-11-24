@@ -138,6 +138,7 @@ tasks:
 ---
 
 ## Next Steps
+- [Offer self-service infrastructure](../../kestra-for-infra/index.mdx) to other teams from a catalog, with leases and day-2 actions, in an Enterprise Infrastructure tenant.
 - [Explore plugins](https://kestra.io/plugins) for Docker, Terraform, OpenTofu, Terragrunt, Ansible, Script tasks (Python, Go, Shell, Powershell, Ruby and more), and cloud providers.
 - [Explore Task Runners](../../task-runners/index.mdx) for scaling custom scripts and containers.
 - [Read how-to guides](../../15.how-to-guides/index.mdx) on how to integrate with Grafana, Prometheus, and other monitoring tools.

@@ -191,6 +191,8 @@ For a complete walkthrough, see [Detect and refresh stale data](../../../../15.h
 
 `io.kestra.plugin.ee.assets.TtlTrigger` starts a flow when an asset's [`ttl`](../01.declare-assets/index.md#lifecycle-fields) enters a warning window or has passed. It starts the flow at most once per window. Repeated checks don't restart it, and changing the TTL resets the windows.
 
+In an Infrastructure tenant, you can create these flows from a deployment's **TTL & Lease** card. See [Act when a lease expires](../../../../kestra-for-infra/03.deployments/index.md#act-when-a-lease-expires).
+
 | Property | Required | Description |
 | --- | --- | --- |
 | `on` | Yes | `EXPIRING` fires once when the TTL enters the warning window. `EXPIRED` fires once when the TTL has passed. |
@@ -261,7 +263,7 @@ The TTL check also notifies the asset's `owner` in the app, once per window:
 - **Expiring**: sent only when an `EXPIRING` trigger starts a flow for the asset.
 - **Expired**: sent when the TTL has passed, even if no flow reacts. This applies to every asset type, not only deployments.
 
-Clicking the notification opens the asset.
+Clicking the notification opens the asset. In an [Infrastructure tenant](../../../../kestra-for-infra/index.mdx), a deployment opens on its Deployments page and any other asset opens in Inventory.
 
 Kestra resolves `owner` to the users to notify:
 
