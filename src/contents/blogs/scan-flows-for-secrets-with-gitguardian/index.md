@@ -2,7 +2,7 @@
 title: "Your Orchestrator Holds the Keys: Scan Kestra Flows for Secrets With GitGuardian"
 metaTitle: "Scan Kestra Flows for Secrets With GitGuardian ggshield | Kestra"
 description: "Flows written in the Kestra UI never reach git, so your secrets scanner never sees them. Export them, scan them with ggshield and alert Slack, in about 40 lines of YAML."
-date: 2026-11-26T10:00:00
+date: 2026-11-24T10:00:00
 category: Solutions
 image: ./main.png
 author:
