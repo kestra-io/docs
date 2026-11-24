@@ -104,7 +104,7 @@ const MARKS: Record<string, [number, number]> = {
 
 <section class="production" id="production" aria-labelledby="prod-h">
     <Rails>
-        <SectionHead id="prod-h" align="start">
+        <SectionHead id="prod-h" align="center">
             Failure handling, <span>declared in the flow.</span>
             <Fragment slot="lead">
                 Every workflow fails eventually. In Kestra, what happens next is
@@ -138,9 +138,6 @@ const MARKS: Record<string, [number, number]> = {
         </div>
 
         <ul class="runtime">
-            <li class="runtime-head">
-                <p>After a run, in the UI or API</p>
-            </li>
             {RUNTIME.map((item) => (
                 <li>
                     <Icon name={item.icon} />
@@ -265,6 +262,11 @@ const MARKS: Record<string, [number, number]> = {
         :global(.section-head h2 span) {
             display: block;
             color: var(--ks-content-tertiary);
+        }
+
+        :global(.section-head) {
+            max-width: 56rem;
+            margin-bottom: 2.5rem;
         }
     }
 
@@ -427,7 +429,7 @@ const MARKS: Record<string, [number, number]> = {
     }
 
     .runtime {
-        @include ruled-grid(3);
+        @include ruled-grid(2);
 
         margin-top: 4rem;
 
@@ -460,25 +462,6 @@ const MARKS: Record<string, [number, number]> = {
             font-size: $font-size-sm;
             line-height: 1.55;
             color: var(--ks-content-secondary);
-        }
-    }
-
-    .runtime-head {
-        &:hover {
-            background: none;
-
-            &::before {
-                transform: scaleX(0);
-            }
-        }
-
-        p {
-            margin: 0;
-            font-size: 1.375rem;
-            font-weight: 600;
-            letter-spacing: -0.01em;
-            line-height: 1.25;
-            color: var(--ks-content-primary);
         }
     }
 </style>
