@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Instance-owner-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Instance-owner-only are not tenant-scoped.
-  version: 2.0.12
+  version: 2.0.13
 tags:
 - name: Flows
   description: Flows api
@@ -27437,7 +27437,8 @@ paths:
     get:
       tags:
       - Policies
-      summary: 'Search for policies across scopes (without a global grant, restricted to what concerns the caller''s namespaces: INSTANCE and TENANT policies plus NAMESPACE policies on their subtrees and ancestors)'
+      summary: 'Search for policies across scopes (without a global grant, restricted to what concerns the caller''s namespaces: STATIC and INSTANCE and TENANT policies plus NAMESPACE policies on their subtrees and ancestors)'
+      description: The read-only STATIC policies declared in configuration are included when they apply to the tenant.
       operationId: searchPolicies
       parameters:
       - name: tenant
