@@ -492,6 +492,8 @@ After defining the data source, specify the columns to display in the chart. Eac
 | `LEVEL` | Log level (e.g., `INFO`, `WARN`, `ERROR`) |
 | `MESSAGE` | Log message text (cannot be aggregated) |
 
+The dashboard filters on state, scope and labels also apply to `Logs` and `LogsKPI` charts, although a log line does not store them: Kestra first looks up the executions matching those filters that started within the dashboard time window, then keeps only their logs. If more than 10,000 executions match, which you can change with the `kestra.dashboards.logs-execution-filter-limit` configuration property, the chart keeps showing all its logs and tells you the filter was not applied.
+
 **Metrics / MetricsKPI:**
 
 | Field | Description |
