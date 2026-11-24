@@ -9,7 +9,7 @@ docId: namespaces
 
 Namespaces are logical groupings of flows that control access to secrets, key-value pairs, and variables.
 
-Namespaces form a dot-separated hierarchy with no enforced depth limit, separating environments, teams, and projects within a single instance. Namespace names consist of lowercase alphanumeric characters, dots, underscores, and hyphens. They must start with a letter or digit and have a maximum length of 150 characters:
+Namespaces form a dot-separated hierarchy with no enforced depth limit, separating environments, teams, and projects within a single instance. Namespace names consist of lowercase alphanumeric characters, dots, underscores, and hyphens. They must start with a letter or digit, can't end with a dot or contain two dots in a row, and have a maximum length of 150 characters:
 
 - `project_one`
 - `company.project_two`
