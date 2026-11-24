@@ -1,6 +1,6 @@
 ---
-title: "Kestra 2.1: Introducing Kestra for Infrastructure, with Approvals and Searchable Executions"
-description: "Kestra 2.1 launches Kestra for Infrastructure, the first product built on the Kestra platform, so platform and IT teams can make infrastructure available to the whole company without losing control. The release also adds an Approval task, an ASSET input, searchable executions, and durable scripts."
+title: "Kestra 2.1: Approvals, the Kestra MCP Server, and Searchable Executions"
+description: "Kestra 2.1 gives flows a real yes or no with the new Approval task, and lets AI agents work with your instance through the Kestra MCP Server, under the caller's own permissions. The release also adds asset leases, an ASSET input, searchable executions, and script checkpoints."
 date: 2026-12-01T10:00:00
 category: News & Product Updates
 authors:
@@ -14,78 +14,37 @@ authors:
 
 <!--
 DRAFT NOTES (remove before publishing)
-- Sources: Release=2.1 + kind/highlight issues (project 15), the docs/release-2-1 branch, the CEO/CTO positioning note for Kestra for Infrastructure, the marketing positioning artifact, and the Verticals product enablement deck.
-- Kestra for Infrastructure wording follows the positioning note: always the full name, presented as a product built on the Kestra platform. Never "tenant", "tenant type", "mode", "workspace", or "a setting you turn on" in this post; setup stays in the docs. No customer names, no roadmap, no dates beyond launch, no names of next products, no Cloud availability. Don't claim every request is approved, that expired leases are decommissioned automatically, or that the open-source Terraform/OpenTofu/Ansible tasks fill the Inventory on their own. Governed provisioning (EE beta) stays out until it ships.
+- Sources: Release=2.1 + kind/highlight issues (project 15) and the docs/release-2-1 branch.
+- Kestra for Infrastructure is out of this post: its launch moved to mid-January 2027 (docs parked in docs#6444). Don't mention it, Infrastructure tenants, the Catalog home page, the Deployments or Inventory pages, inventory import, or app templates. Generic asset features (leases, relations, actions, the ASSET input) stay.
 - Embargoed: Data Orchestration Artifacts (dbt/Airbyte/Fivetran/JDBC artifacts) and the deep dbt integration stay out of this post (changelog only, kept for a later announcement). Plugin endpoints are described generically for that reason. The dbt asset types migration guide is left out of the upgrade table.
 - Left out on purpose: Bring Your Own Worker, asset health (ee#11937 open), dataURL() (2.0.8), by-query flat-param rejection (2.0.7), Replay with modified inputs (2.0.0), auto-emitted Terraform/OpenTofu assets (ee#9222 not planned), plugin auto-install on EE (ee#11724 not planned), Failure Debug panel (closed as duplicate), Health Center/Diagnostics (open), Source Search (2.0), EmbeddedSubflow (ee#3501, no work done).
 - TODO markers: TODO(arcade, priority N) for interactive demos, TODO(screenshot) for static images, VERIFY for facts to confirm before publishing.
 -->
 
 
-Kestra 2.1 is out, and it's a release we've been looking forward to sharing. Many of you already use Kestra to give your teams infrastructure on demand, so we turned that into a product: **Kestra for Infrastructure**, the first product built on the Kestra platform. It's made for platform and IT teams who want to make infrastructure available to the whole company without losing control of what gets created.
+With Kestra 2.1, a flow can finally stop and ask. The new Approval task waits for a yes or a no and runs different tasks for each, and the Enterprise Edition adds a page to assign and follow every request. AI agents get a way in too: the new Kestra MCP Server gives Claude, Cursor, or any other MCP client the same tools as the AI Copilot, so an agent can read your flows and executions, find out why a run failed, and restart it.
 
-If infrastructure isn't your world, there's plenty in 2.1 for you too, and much of it is in every edition, open source included. Flows can now stop for a real yes-or-no decision, forms can offer existing resources to pick from, you can find an execution by the order ID it processed, and long scripts can pick up where they left off after a failure.
+There's plenty more, and much of it is in every edition, open source included. Forms can offer existing assets to pick from, you can find an execution by the order ID it processed, and long scripts can pick up where they left off after a failure.
 
 The table below lists the highlights and the edition each one belongs to. Everything else is in the sections that follow and in the changelog.
 
 | Feature | What it does | Edition |
 |---|---|---|
-| Kestra for Infrastructure | Self-service provisioning: a Catalog, Requests, Deployments with leases, Inventory, and Day 2 actions | EE |
 | Approval task | Pause a flow until someone approves or denies it | OSS, EE, Cloud |
 | Approvals page | Assign reviewers, follow every request, and chain sign-offs | EE, Cloud |
+| Kestra MCP Server | Let AI agents read and change flows, executions, and more, with your permissions | OSS, EE |
 | Asset leases and the ASSET input | Give every asset an owner and a lease, and let people pick assets in a form | EE, Cloud |
 | Searchable inputs and outputs | Find executions by a business value such as an order ID | OSS, EE, Cloud |
 | TABLE input | Collect rows of records in a grid | EE, Cloud |
 | Script checkpoints (beta) | Resume a long script from where it stopped | OSS, EE, Cloud |
 | Execution timeline | See your executions on a time axis | OSS, EE, Cloud |
 | Dashboard charts from flow outputs | Chart a file that a flow returns | EE, Cloud |
-| Kestra MCP Server | Give AI agents Kestra's own tools | OSS, EE |
 | Keyless cloud access | Reach AWS, Google Cloud, and JFrog without storing keys | EE |
 | New queue backends | Google Cloud Pub/Sub, NATS JetStream, Amazon SQS/SNS, and Azure Event Hubs | EE |
 
 :::alert{type="info"}
 **Upgrading from 2.0?** Most flows need no changes, but a few API and configuration changes do. See [Upgrade and Migration](#upgrade-and-migration) before you upgrade.
 :::
-
-## Kestra for Infrastructure
-
-If you work on a platform team, you probably know the pattern. More and more people need infrastructure: developers testing a branch, data teams who need a database for a week, and now AI agents too. Direct access to the cloud is usually restricted, so each of those needs turns into a ticket that someone handles by hand, and environments nobody uses anymore are rarely cleaned up. Many teams are also rebuilding the self-service portal they had on VMware vRA and vRO, or looking for an alternative to Ansible Automation Platform and AWX.
-
-Infrastructure automation has become one of the two largest ways teams use Kestra, alongside data. Kestra for Infrastructure turns what those teams built into a product, with examples ready to use. It starts with **self-service provisioning**: everyone requests what they need from a catalog, and your platform team stays in control of what gets created and how long it lives, with the Terraform, OpenTofu, and Ansible code it already uses.
-
-![The Kestra for Infrastructure Catalog, with the Self-Service menu and request cards for a virtual machine, object storage, a database, and an environment](./infrastructure-catalog.png)
-
-This is what your platform team gets:
-
-- The home page is the **Catalog**. Each entry is a request form with a flow behind it, so anyone can ask for a VM, a database, or a whole environment without opening a ticket or reading Terraform code. Forms can have several steps, and a flow can wait for an approval before anything is provisioned.
-- Every request shows up under **Requests**, with who asked, what they entered, and what it created. Behind each request is a regular Kestra execution, with the logs, retries, permissions, and audit trail you already rely on.
-- A deployment groups everything for one project, application, or environment, with an owner and a lease. The **Deployments** page flags leases that end within a week or have already ended, you can extend one in a couple of clicks, and a flow can run when a lease is about to end and once it has.
-- Your existing runbooks become **Day 2 actions**. Attach any flow to a deployment or a resource to resize, snapshot, or decommission it, and offer each action only where it applies, for example on active VMs in staging or production.
-- The **Inventory** lists every resource and the deployment it belongs to. Flows add resources as they create them, and you can bring in the ones Kestra didn't create from a Terraform state file, a CSV, or JSON and YAML, with a preview before anything is saved.
-- Templates describe a whole setup, like an application with its database and its machine. Answer a few questions and Kestra creates the flow and its Catalog entry for you. You can start a template from scratch or from a flow you already have.
-- An overview dashboard shows deployments by environment and resources by type and by owner, and you can chart any metadata you record on a resource.
-
-![A deployment page with its owner and metadata, the TTL & Lease card showing when the lease expires, the Inventory card listing a table and a VM, and the Actions card](./infrastructure-deployment.png)
-
-You won't start from an empty page. Example catalog entries, flows, deployments, and a dashboard are ready on your first visit, and a short product tour shows you around: request a sandbox, see the flow behind it, extend its lease, and decommission it. The examples only declare resources, so nothing is created in your cloud while you explore.
-
-The first demo requests a VM from the Catalog and follows it to the deployment it creates:
-
-<div style="position: relative; padding-bottom: calc(56.4617% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/3DXLsMaDFuodZH72jPAC?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Provision a Virtual Machine Using the Self-Service Catalog" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
-
-The second runs a Day 2 action on an existing deployment, resizing one of its VMs:
-
-<div style="position: relative; padding-bottom: calc(56.4617% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/CXQzSthSroYruAfZJmgK?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Change VM Size in an Existing Deployment" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
-
-AI agents play by the same rules as people. Expose a catalog flow to an agent with the [MCP Tool trigger](/docs/workflow-components/triggers/mcp-tool-trigger), and its requests go through the same flow, approval step, and audit trail as anyone else's.
-
-Because it's built on the Kestra platform, Kestra for Infrastructure comes with everything else Kestra does. [Cases](/docs/enterprise/governance/cases) follow up on failed requests with linked Jira or ServiceNow tickets, [Assets](/docs/enterprise/governance/assets) let other teams and flows find every resource, and [Apps](/docs/enterprise/scalability/apps) put a form in front of any flow.
-
-Your flows are YAML, versioned in Git, and run the Terraform, OpenTofu, Ansible, Shell, Python, and PowerShell code you already have, VMware PowerCLI scripts included. RBAC, SSO, secrets, audit logs, and isolated workers for on-premises and air-gapped environments come along too. And the resources your platform team provisions are right there for data teams on the same platform.
-
-Kestra for Infrastructure is part of Kestra Enterprise Edition, self-hosted, and covers provisioning and Day 2 operations. To set it up, see [Kestra for Infrastructure in the docs](/docs/kestra-for-infra), and if you'd like to see it with your own use cases, [talk to our team](/demo).
-
-<!-- VERIFY: confirm the sales/demo link marketing wants here (product page on kestra.io, or /demo). -->
 
 ## Approvals
 
@@ -110,9 +69,42 @@ In the Enterprise Edition, you can assign a request to specific people or groups
 
 ![The Approvals page listing four deployment approval requests, two pending with Review buttons and two resolved, one approved and one denied, with their deadlines and assignees](./approvals-page.png)
 
+## Kestra MCP Server
+
+The new Kestra MCP Server gives Claude, Cursor, or any other MCP client the same tools as the AI Copilot, and there are a lot of them. An agent can read and edit flows, start, restart, replay, or kill executions, search logs, and manage namespace files and KV entries. It can also draft a new flow for you to review before anything is saved. In the Enterprise Edition, agents can work with apps, test suites, groups, and announcement banners too, for 78 tools in all.
+
+Here's what that looks like. Asked why a nightly sync failed, Claude Code finds the execution, reads the logs, and checks the KV store: the key the flow needs doesn't exist. Give it the value, and it creates the key and restarts the run from the failed task.
+
+<div style="position: relative; padding-bottom: calc(64.2857% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/IArRp3Gt6ocLCQtAbOIT?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Fix a Failed Execution with Claude Code and the Kestra MCP Server" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+
+In Kestra, it's a regular restart. The first task keeps its result, and the second one succeeds on its second attempt.
+
+![The restarted nightly_orders_sync execution on its Gantt tab: Execution is Restarted, 2 attempts, extract_orders and load_to_warehouse both successful, and the system.restarted label](./mcp-server-restarted-execution.png)
+
+Agents don't get a back door. The server is off until you turn it on, and every request has to be authenticated. In the Enterprise Edition, each call runs as the person behind the agent, so the agent can only see and do what they can, and every change shows up in the audit log under their name. Each tool also tells the client whether it only reads, makes changes, or deletes or starts something, so your client can ask before acting.
+
+![The Audit Logs page filtered to the acme.sales namespace, showing the KV entry warehouse_bucket and the restarted execution, both created by the user whose token the agent used](./mcp-server-audit-logs.png)
+
+Turning it on takes a few lines of configuration:
+
+```yaml
+kestra:
+  mcp:
+    platform-server:
+      enabled: true
+      tenants: [dev]
+      instructions: "Only restart executions in the dev tenant."
+```
+
+You can limit the server to some tenants, choose the sign-in methods it accepts (OAuth included), and give agents standing instructions like the one above. See [Kestra MCP Server](/docs/develop-with-ai/kestra-mcp-server).
+
+<!-- VERIFY: the link depends on docs#6386 (new page develop-with-ai/05.kestra-mcp-server) merging into docs/release-2-1; until then the tools are documented at /docs/ai-orchestration/mcp-server#platform-mcp-server. Also confirm with engineering that the 78 tools ship in 2.1 (no releases/v2.1.x branch yet). -->
+
+The 2.0 feature that turns your own flows into tools for agents is now called [MCP Flows](/docs/ai-orchestration/mcp-server).
+
 ## Assets
 
-Assets got a lot of love in this release. Kestra for Infrastructure is built on them, so every team using assets in the Enterprise Edition and Cloud gets the same improvements.
+Assets got a lot of love in this release, especially if you use them to keep track of the infrastructure your flows create. These changes are in the Enterprise Edition and Cloud.
 
 - Every asset can now have an owner, a status, and a lease. A flow can react when a lease is about to end or has ended, for example to warn the owner a week ahead and clean up afterwards, and owners get a notification in Kestra too. See [TtlTrigger](/docs/enterprise/governance/assets/tasks-and-triggers#ttltrigger).
 - Actions show up only where they make sense. Give an action like Decommission a condition on status, namespace, or metadata, and Kestra explains why it's unavailable everywhere else. See [Asset actions](/docs/enterprise/governance/assets/declare-assets#asset-actions).
@@ -210,8 +202,6 @@ See [Apps](/docs/enterprise/scalability/apps).
 ## AI
 
 **Generate a unit test** in a flow's menu asks the AI Copilot to draft a test for that flow, with fixtures, mocks, and assertions. Apply it right away or review it in the editor first. See [Generate a unit test](/docs/develop-with-ai/ai-copilot#generate-a-unit-test).
-
-The new Kestra MCP Server gives AI agents like Claude or Cursor the same tools the AI Copilot uses, so they can look at your flows and executions or restart a failed run. It's off by default, and in the Enterprise Edition every call runs with the caller's permissions. See [Kestra MCP Server](/docs/develop-with-ai/kestra-mcp-server). The 2.0 feature that turns your own flows into tools for agents is now called [MCP Flows](/docs/ai-orchestration/mcp-server).
 
 ## Keyless Cloud Access
 
