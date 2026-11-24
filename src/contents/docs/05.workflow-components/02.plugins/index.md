@@ -72,14 +72,14 @@ username: "{{ secret('POSTGRES_USERNAME') }}"
 password: "{{ secret('POSTGRES_PASSWORD') }}"
 ```
 
-See [Secrets in Open Source](../../15.how-to-guides/secrets/index.md) or [Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md) (Enterprise Edition).
+See [Secrets in Open Source](../../06.concepts/04.secret/index.md#secrets-in-open-source) or [Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md) (Enterprise Edition).
 
 ## Installing plugins
 
 - **OSS**: the standard Kestra Docker image ships with plugins pre-installed.
 - **UI (Enterprise Edition)**: install, upgrade, and pin versions under **Instance → Versioned Plugins**.
 
-See [Selected Plugin Installation](../../15.how-to-guides/selected-plugin-installation/index.md) for full setup options including Docker Compose automation.
+See [Install Selected Plugins on a Slim Kestra Image](../../15.how-to-guides/slim-image-plugins/index.md) to download plugins with [`kestractl`](../../kestra-cli/kestractl/index.md#installation) and add them to a custom image or Docker Compose setup.
 
 ## Building or requesting plugins
 

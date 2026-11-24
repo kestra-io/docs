@@ -84,7 +84,7 @@ Selecting the right platform requires a clear understanding of your organization
 
 While both Kestra and Morpheus provide automation, they address different core problems. Understanding this distinction is key to choosing the right tool.
 
-Morpheus is a unified cloud management portal designed for provisioning, maintaining a CMDB, and governing costs. Its primary function is to provide a self-service catalog for infrastructure resources.
+Morpheus is a unified cloud management portal designed for provisioning, maintaining a CMDB, and governing costs. Its primary function is to provide a [self-service catalog for infrastructure resources](/resources/infrastructure/self-service-infrastructure).
 
 Kestra, on the other hand, is a [universal orchestration engine](/docs/why-kestra). It uses declarative YAML to define and execute workflows that can span your entire technology stack. With [event-driven triggers](/docs/workflow-components/triggers) and a library of over 1,400 [plugins](/plugins), Kestra excels at coordinating complex processes. For example, a single Kestra flow can provision infrastructure with Terraform, run a dbt transformation, call a microservice API, and send a Slack notification upon completion.
 

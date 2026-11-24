@@ -78,8 +78,8 @@ const techArticleSchema = {
 >
     <Fragment slot="head">
         <script is:inline type="application/ld+json" set:html={JSON.stringify(techArticleSchema)} />
+        <link rel="preload" as="image" href={squaredGrid.src} />
     </Fragment>
-    <link rel="preload" as="image" href={squaredGrid.src} />
     <div
         style={{
             backgroundImage: `url(${squaredGrid.src})`,
@@ -140,7 +140,6 @@ const techArticleSchema = {
 <style lang="scss">
     .container-fluid {
         background-color: var(--ks-background-body);
-        gap: calc($spacer * 4);
         padding-left: 1rem;
         padding-right: 1rem;
         max-width: 1520px;
@@ -148,14 +147,16 @@ const techArticleSchema = {
         overflow: clip !important;
         z-index: 10;
 
+        @include media-breakpoint-up(lg) {
+            gap: calc($spacer * 4);
+        }
+
         @include media-breakpoint-down(md) {
-            gap: calc($spacer * 2);
             padding-left: 0.75rem;
             padding-right: 0.75rem;
         }
 
         @include media-breakpoint-down(sm) {
-            gap: $spacer;
             padding-left: 0.5rem;
             padding-right: 0.5rem;
         }

@@ -76,6 +76,8 @@ Kestra emits each event in these situations:
 | `DELETED` | An asset is deleted or purged. |
 | `USED` | A task declares the asset as an input or an output. Kestra emits `USED` for every such task run, including failed ones. |
 
+An `UPDATED` event from a task carries the asset as the task declared it, not the merged stored asset. If the task leaves out `namespace` or a metadata key, the event doesn't have it either, so a trigger that filters on `namespace` or `metadataQuery` doesn't match. Declare the filtered fields on every output that should start the flow.
+
 The execution exposes the asset that matched as `trigger.asset`:
 
 | Variable | Description |
@@ -302,7 +304,7 @@ assets(id=null, type=null, namespace=null, metadata=null)
 | --- | --- |
 | `id` | Only return the asset with this ID. IDs are unique per tenant, so this returns at most one asset. |
 | `type` | Only return assets of this exact type. |
-| `namespace` | Only return assets in this namespace and its child namespaces. When omitted, the function doesn't filter by namespace. |
+| `namespace` | Only return assets whose namespace starts with this value. This includes child namespaces, and also sibling namespaces that share the prefix: `company.infra` matches `company.infrastructure`. When omitted, the function doesn't filter by namespace. |
 | `metadata` | Only return assets whose metadata contains every key-value pair in this map, for example `{"environment": "prod"}`. |
 
 When you pass `namespace`, Kestra also checks [allowed namespaces](../../07.namespace-management/index.md#allowed-namespaces): if any namespace in the tenant restricts its allowed namespaces without listing the namespace you pass, the function fails with `All namespaces are not allowed`. Namespaces allow all others by default, so this only matters once you restrict them. To avoid the check, filter by `type` or `metadata` instead.

@@ -14,7 +14,7 @@ Follow a `company.team` structure for namespaces to maintain a clean, scalable, 
 This approach helps with:
 
 1. Centralized governance for credentials and configurations
-2. Easier sharing of variables, plugin defaults, and secrets across teams
+2. Easier sharing of variables and secrets across teams
 3. Simplified Git synchronization
 
 ## Why use the `company.team` structure
@@ -90,7 +90,7 @@ namespace: prod.marketing.attribution
 
 inputs:
   - id: api_endpoint
-    type: URL
+    type: URI
     defaults: https://dummyjson.com/products
 
 tasks:
@@ -125,6 +125,7 @@ tasks:
 
 outputs:
   - id: final_result
+    type: FILE
     value: "{{ outputs.sql_query.uri }}"
 
 triggers:
@@ -144,7 +145,7 @@ namespace: prod.marketing.attribution
 
 inputs:
   - id: apiEndpoint
-    type: URL
+    type: URI
     defaults: https://dummyjson.com/products
 
 tasks:
@@ -179,6 +180,7 @@ tasks:
 
 outputs:
   - id: finalResult
+    type: FILE
     value: "{{ outputs.sqlQuery.uri }}"
 
 triggers:

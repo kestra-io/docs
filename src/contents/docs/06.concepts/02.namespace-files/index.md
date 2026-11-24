@@ -141,8 +141,8 @@ tasks:
 ```
 
 Dedicated guides:
-- [PushNamespaceFiles](../../15.how-to-guides/pushnamespacefiles/index.md)
-- [SyncNamespaceFiles](../../15.how-to-guides/syncnamespacefiles/index.md)
+- [PushNamespaceFiles](../../version-control-cicd/04.git/01.push-to-git/index.md#push-namespace-files)
+- [SyncNamespaceFiles](../../version-control-cicd/04.git/02.sync-from-git/index.md#sync-namespace-files)
 
 ### GitHub Actions CI/CD
 
@@ -194,7 +194,7 @@ resource "kestra_namespace_file" "prod_scripts" {
 
 ### Deploy namespace files via kestractl
 
-[kestractl](../../kestra-cli/kestractl/index.md) uploads namespace files from the command line. The following example synchronizes an entire local directory with the `prod` namespace:
+[kestractl](../../kestra-cli/kestractl/index.md#installation) uploads namespace files from the command line. The following example synchronizes an entire local directory with the `prod` namespace:
 
 ```bash
 kestractl nsfiles upload prod ./scripts --override

@@ -366,7 +366,9 @@ VIEW / LIST (any `DASHBOARD` action — no dedicated per-action check at control
 - `GET /api/v1/{tenant}/dashboards`
 - `GET /api/v1/{tenant}/dashboards/{id}`
 - `POST /api/v1/{tenant}/dashboards/{id}/charts/{chartId}`
+- `POST /api/v1/{tenant}/dashboards/{id}/charts/{chartId}/state-counts`
 - `POST /api/v1/{tenant}/dashboards/charts/preview`
+- `POST /api/v1/{tenant}/dashboards/charts/state-counts`
 - `POST /api/v1/{tenant}/dashboards/validate`
 - `POST /api/v1/{tenant}/dashboards/validate/chart`
 - `POST /api/v1/{tenant}/dashboards/{id}/charts/{chartId}/export`
@@ -962,4 +964,4 @@ Notes
 
 - [RBAC overview](../index.md) — resources, actions, and managed roles explained
 - [RBAC action model migration guide](../../../../11.migration-guide/v2.0.0/rbac-action-model/index.md) — how old CRUD permissions map to the new actions when upgrading from 1.x
-- [kestractl roles](../../../../kestra-cli/kestractl/index.md#roles) — create and manage roles from the CLI
+- [kestractl roles](../../../../kestra-cli/kestractl/index.md#roles) — create and manage roles from the CLI ([install kestractl](../../../../kestra-cli/kestractl/index.md#installation))

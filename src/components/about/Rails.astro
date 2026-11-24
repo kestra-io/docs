@@ -1,0 +1,28 @@
+<div class="rails" aria-hidden="true">
+    <div class="container">
+        <div class="lines"></div>
+    </div>
+</div>
+
+<style lang="scss">
+    .rails {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+
+        .container {
+            height: 100%;
+        }
+    }
+
+    .lines {
+        height: 100%;
+        margin-inline: -3rem;
+        border-left: 1px solid var(--ks-border-primary);
+        border-right: 1px solid var(--ks-border-primary);
+
+        @include media-breakpoint-down(md) {
+            margin-inline: -1.5rem;
+        }
+    }
+</style>

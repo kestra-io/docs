@@ -3,6 +3,7 @@ import Layout from "~/components/layout.astro"
 import AboutHero from "~/components/about/AboutHero.astro"
 import Company from "~/components/about/Company.astro"
 import WhyWeExist from "~/components/about/WhyWeExist.astro"
+import FounderQuote from "~/components/about/FounderQuote.astro"
 import Numbers from "~/components/about/Numbers.astro"
 import Customers from "~/components/about/Customers.astro"
 import Principles from "~/components/about/Principles.astro"
@@ -15,18 +16,19 @@ import Trust from "~/components/about/Trust.astro"
 import Backers from "~/components/about/Backers.astro"
 import Contact from "~/components/about/Contact.astro"
 import PartnerCta from "~/components/partners/PartnerCta.astro"
-import careersPhoto from "~/components/about/assets/team-35.jpg"
+import careersPhoto from "~/components/about/assets/team/team-35.jpg"
 
 const title = "About Kestra: Founders, Team & Investors"
 const description =
     "Kestra is the open-source unified orchestration platform, run in production by more than 40,000 organizations. Founded in 2021 by Emmanuel Darras and Ludovic Dehon."
 ---
 
-<Layout {title} {description} headerTheme="darkHeader" headerBg="#111114">
+<Layout {title} {description} headerClean headerOverDark>
     <div class="about-us">
         <AboutHero />
         <Company />
         <WhyWeExist />
+        <FounderQuote />
         <Numbers />
         <Customers />
         <Principles />
@@ -50,22 +52,35 @@ const description =
     </div>
 </Layout>
 
+<script>
+    import { watchDarkSections } from "~/utils/headerDarkSections"
+
+    document.addEventListener("astro:page-load", watchDarkSections)
+    watchDarkSections()
+</script>
+
 <style lang="scss">
+    @use "/src/assets/styles/buttons" as *;
+
     :global(main:has(> .about-us)) {
         background: #111114;
     }
 
     .about-us {
         overflow-x: clip;
+        --ks-border-primary: #e2e2e8;
+
         background: var(--ks-background-body);
 
+        @include cta-buttons;
+
         :global(html.dark) & {
-            --ks-border-primary: #2c2b31;
+            --ks-border-primary: #46454d;
         }
 
         :global(.container) {
             @include media-breakpoint-up(xxl) {
-                max-width: 1320px;
+                max-width: 1424px;
             }
 
             @include media-breakpoint-down(md) {

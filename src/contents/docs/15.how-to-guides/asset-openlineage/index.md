@@ -60,7 +60,7 @@ triggers:
 
 Replace `http://marquez:5000` with your endpoint's base URL. The exporter sends no authentication, so the endpoint must accept unauthenticated requests from Kestra.
 
-Notice `lookbackPeriod: P7D`. The first run has no stored offset, so it exports the last seven days of events. After each run, `AssetShipper` stores the timestamp of the last exported event in the KV Store of the flow's namespace, and the next run continues from there. The KV key is `AssetShipper-state_<flow id>_<task id>` unless you set `offsetKey` to change the prefix.
+Notice `lookbackPeriod: P7D`. The first run has no stored offset, so it exports the last seven days of events. After each run, `AssetShipper` stores the timestamp of the last exported event in the KV Store of the flow's namespace, and the next run continues from there. The KV key is `AssetShipper-state_<flow id>_<task id>`, with both IDs slugified, so underscores become hyphens. For this flow, the key is `AssetShipper-state_ship-lineage-to-marquez_ship-lineage`. Set `offsetKey` to change the `AssetShipper-state` prefix.
 
 Execute the flow once to send the backlog. The `ship_lineage` task's `size` output shows how many events it exported.
 

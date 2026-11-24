@@ -31,7 +31,7 @@ Before diving into FastMCP, it's essential to understand the protocol it impleme
 
 LLMs, by their nature, are stateless and disconnected from the real world. They operate on a fixed set of training data and have no inherent ability to check a database, call an API, or access a file system. To perform useful tasks, they need to be connected to tools. MCP provides the standardized communication layer for this interaction.
 
-It acts as a secure "language" that an LLM client (like an AI agent) can use to discover and invoke tools exposed by an MCP server. This protocol addresses several key challenges:
+It acts as a secure "language" that an LLM client (like an AI agent) can use to discover and invoke tools exposed by an [MCP server](/resources/ai/mcp-server). This protocol addresses several key challenges:
 - **Standardization**: It creates a common interface, so any MCP-compliant agent can talk to any MCP-compliant server, regardless of the underlying programming language or tools.
 - **Security**: It defines a clear boundary, allowing server administrators to control which tools are exposed and how they can be used.
 - **Discoverability**: It allows an agent to ask a server, "What can you do?" and receive a structured, machine-readable list of available tools and their parameters.

@@ -16,6 +16,8 @@ import jlcp from "./assets/jlcp.svg"
 import landeranalytics from "./assets/landeranalytics.avif"
 import digitalocean from "./assets/digitalocean.svg"
 import modeo from "./assets/modeo.svg"
+import smile from "./assets/smile.svg"
+import splunk from "./assets/splunk.svg"
 
 export type PartnerType = "Technology" | "Services"
 
@@ -52,6 +54,17 @@ export const listPartners = (type?: PartnerType): ListPartner[] =>
     )
 
 export const PARTNERS: Partner[] = [
+    {
+        name: "Splunk",
+        country: "United States",
+        region: "North America",
+        expertise: ["Infrastructure & DevOps"],
+        logo: splunk,
+        type: "Technology",
+        description:
+            "Splunk is where teams search and monitor their infrastructure and security data. With the Kestra Add-on for Splunk, a Splunk alert starts a Kestra flow that runs the response.",
+        href: "/partners/splunk",
+    },
     {
         name: "DigitalOcean",
         country: "United States",
@@ -95,6 +108,17 @@ export const PARTNERS: Partner[] = [
         description:
             "Independent data and AI consultancy in Paris that designs and industrializes modern, sovereign Data Platforms and DataOps with Kestra.",
         href: "/partners/modeo",
+    },
+    {
+        name: "Smile",
+        country: "France",
+        region: "Europe",
+        expertise: ["Data", "AI & ML"],
+        logo: smile,
+        type: "Services",
+        description:
+            "European digital services group with 1,500 people in 9 countries. Its Data & AI teams build open data and AI platforms, with Kestra orchestrating pipelines, models and agents.",
+        href: "/partners/smile",
     },
     {
         name: "Converteo",

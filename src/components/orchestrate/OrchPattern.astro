@@ -21,6 +21,7 @@ interface Props {
         description: string
         cta: { label: string; href: string }
     }
+    video?: { youtubeId: string; caption: string }
     blueprints: BlueprintItem[]
     toolColor?: string
     toolName?: string
@@ -31,6 +32,7 @@ const {
     heading,
     nutshell,
     callout,
+    video,
     blueprints,
     toolColor,
     toolName,
@@ -50,6 +52,23 @@ const hasMore = toolName && allBlueprintsCount > tabs.length
             {heading && <h2 class="pattern-title">{heading}</h2>}
             {nutshell && <p class="nutshell" set:html={nutshell} />}
             {callout && <CalloutCard class="pattern-callout" {...callout} />}
+            {
+                video && (
+                    <figure class="pattern-video">
+                        <div class="video-container">
+                            <iframe
+                                src={`https://www.youtube.com/embed/${video.youtubeId}`}
+                                title={video.caption}
+                                loading="lazy"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen
+                            />
+                        </div>
+                        <figcaption>{video.caption}</figcaption>
+                    </figure>
+                )
+            }
 
             {
                 hasTabs && (
@@ -317,6 +336,24 @@ const hasMore = toolName && allBlueprintsCount > tabs.length
 
     :global(.pattern-callout) {
         margin-top: 1.5rem;
+    }
+
+    /* Framed like the callout above it so the two read as one block. */
+    .pattern-video {
+        margin: 1.5rem 0 0;
+
+        .video-container {
+            border: 1px solid var(--ks-border-secondary);
+            border-radius: 0.625rem;
+            box-shadow: 2px 3px 12px 0 var(--ks-shadows-light);
+        }
+
+        figcaption {
+            margin-top: 0.75rem;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: var(--ks-content-secondary);
+        }
     }
 
     .nutshell {

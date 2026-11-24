@@ -14,7 +14,17 @@ To deploy Kestra without Docker, there's a standalone JAR available that allows 
 
 Make sure that you have [Java](https://adoptium.net/en-GB/temurin/releases) installed on your machine.
 
-The latest OSS JAR can be downloaded [via Kestra API](https://api.kestra.io/v1/versions/download).
+Download the OSS executable from [Kestra's GitHub releases](https://github.com/kestra-io/kestra/releases/latest). Each release includes a `kestra-VERSION` file, such as `kestra-2.0.11`, and a `checksums_sha256.txt` file. To download a release and check the file's integrity:
+
+```bash
+VERSION=2.0.11
+curl -LO https://github.com/kestra-io/kestra/releases/download/v${VERSION}/kestra-${VERSION}
+curl -LO https://github.com/kestra-io/kestra/releases/download/v${VERSION}/checksums_sha256.txt
+grep " kestra-${VERSION}$" checksums_sha256.txt | sha256sum -c -
+chmod +x kestra-${VERSION}
+```
+
+The `sha256sum` check prints `kestra-2.0.11: OK` when the file is intact. On macOS, use `shasum -a 256 -c -` instead of `sha256sum -c -`.
 
 For Enterprise Edition, see the [EE standalone server installation guide](../../07.enterprise/01.overview/standalone-server-installation/index.md). The EE JAR requires license credentials and is served from a different endpoint.
 
@@ -27,7 +37,7 @@ For example, to launch Kestra:
 For more information on database configuration, check out the [Runtime and Storage configuration guide](../../configuration/02.runtime-and-storage/index.md)
 
 :::alert{type="warning"}
-Running the jar version comes without any [plugins](/plugins) — the JAR is kept small on purpose. When running `server local`, Kestra can install missing plugins automatically the first time a flow needs them (plugin auto-install, enabled with the `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` environment variable or `kestra.plugins.auto-install.enabled: true` in the configuration). Alternatively, install plugins manually with the `kestra plugins install directory_with_plugins/` command, or point to a directory with the plugins in the configuration file or an environment variable `KESTRA_PLUGINS_PATH` (e.g., `KESTRA_PLUGINS_PATH=/Users/anna/dev/plugins`).
+Running the jar version comes without any [plugins](/plugins) — the JAR is kept small on purpose. When running `server local`, Kestra can install missing plugins automatically the first time a flow needs them (plugin auto-install, enabled with the `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` environment variable or `kestra.plugins.auto-install.enabled: true` in the configuration). Alternatively, [install `kestractl`](../../kestra-cli/kestractl/index.md#installation), download plugins with [`kestractl plugins download`](../../kestra-cli/kestractl/index.md#plugin-management), and point Kestra to that directory with the `-p` flag or the `KESTRA_PLUGINS_PATH` environment variable (for example, `KESTRA_PLUGINS_PATH=/Users/anna/dev/plugins`).
 :::
 
 ## Configuration

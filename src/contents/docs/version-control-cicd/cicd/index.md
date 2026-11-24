@@ -9,13 +9,13 @@ icon: /src/contents/docs/icons/dev.svg
 Automate the validation and deployment of your Kestra flows using CI/CD pipelines.
 
 :::alert{type="info"}
-If you are on Kestra Enterprise and want to move flows between environments without building a pipeline, see [Promote](../../07.enterprise/02.governance/promote/index.md) — a UI-first alternative that requires no Git or automation setup.
+If you are on Kestra Enterprise and want to move flows between environments without building a pipeline, see [Promote](../../07.enterprise/02.governance/promote/index.md), a UI-first alternative that requires no Git or automation setup.
 :::
 
 ## Automate validation and deployment with CI/CD
 
 Continuous integration and delivery (CI/CD) pipelines enable teams to deploy updates automatically and consistently as soon as they are reviewed and merged into a version control system (VCS) like Git.
-This section covers multiple approaches to building a CI/CD pipeline for Kestra — from using the CLI and GitHub Actions to integrating with Terraform.
+This section covers multiple approaches to building a CI/CD pipeline for Kestra, from `kestractl` and GitHub Actions to Terraform.
 
 :::alert{type="info"}
 When flows are deployed through CI/CD, add the [`system.readOnly`](/docs/concepts/system-labels#systemreadonly) label set to `"true"` so the UI editor is disabled and production configurations stay immutable. This is especially recommended for critical production flows:
@@ -26,147 +26,63 @@ labels:
 ```
 :::
 
----
-
 ## Why use a CI/CD pipeline?
 
-A CI/CD process ensures **fast, reliable, and repeatable deployments**.
-It removes manual steps, reduces human error, and accelerates delivery from development to production environments.
-
----
+A pipeline deploys the same reviewed flow definitions the same way every time. It removes manual steps, catches invalid flows before they reach production, and keeps a record of what was deployed and when.
 
 ## CI/CD for Kestra flows
 
 Kestra supports several approaches for automating flow validation and deployment. Choose the one that best fits your environment and tooling preferences.
 
----
+### kestractl
 
-### Kestra CLI
+[`kestractl`](../../kestra-cli/kestractl/index.md) is the command-line client for the Kestra API. It validates and deploys flows from any CI system, or from your terminal.
 
-The [Kestra CLI](/docs/version-control-cicd/cicd/helpers) includes built-in commands for validating and deploying your flows.
+`kestractl` reads its connection settings from environment variables, which suits CI pipelines:
+
+```bash
+export KESTRACTL_HOST=http://localhost:8080
+export KESTRACTL_TOKEN=<your-api-token>   # Enterprise Edition and Cloud
+# In Open-Source, use basic authentication instead:
+# export KESTRACTL_USERNAME=<username>
+# export KESTRACTL_PASSWORD=<password>
+```
+
+On your own machine, you can save the same settings once with `kestractl config add`. See [Quick Setup](../../kestra-cli/kestractl/index.md#quick-setup).
 
 #### Validate and deploy a single flow
 
 ```bash
-## Validate a single flow
-./kestra flow validate flow_directory/myflow.yml --server http://localhost:8080 --api-token <your-api-token>
-
-## Deploy a single flow to a namespace (without deleting existing flows)
-./kestra flow namespace update namespace_name flow_directory/myflow.yml --no-delete --server http://localhost:8080 --api-token <your-api-token>
-```
-
-:::alert{type="info"}
-The `--api-token` flag is available in the [Enterprise Edition and Cloud](/docs/enterprise/auth/api-tokens).
-In the open-source edition, use basic authentication with the `--user` flag:
-
-```bash
-./kestra flow namespace update namespace_name flow_directory/myflow.yml --no-delete --server http://localhost:8080 --user=USERNAME:PASSWORD
-```
-:::
-
-#### Running CLI commands in Docker
-
-If Kestra runs inside a Docker container, you can access the CLI as follows:
-
-```bash
-docker exec -it kestra-container-name /bin/bash
-./kestra flow --help
+kestractl flows validate flow_directory/myflow.yml
+kestractl flows deploy flow_directory/myflow.yml --override
 ```
 
 #### Validate and deploy multiple flows
 
-To process all flows in a directory:
-
 ```bash
-./kestra flow validate flows/ --server http://localhost:8080 --api-token <your-api-token>
-./kestra flow namespace update namespace_name flows/ --no-delete --server http://localhost:8080 --api-token <your-api-token>
+kestractl flows validate flows/
+kestractl flows deploy flows/ --namespace prod --override --fail-fast
 ```
 
-Use `--no-delete` to preserve existing flows. Omit it if your Git repository or local directory should serve as the **single source of truth** — Kestra will then delete any previously stored flows not present in the directory.
+- `flows validate` checks each flow against your Kestra instance and exits non-zero if any flow is invalid, so the pipeline stops before deploying.
+- `flows deploy` creates flows, and `--override` updates flows that already exist. Existing flows that aren't in the directory are kept.
+- `--namespace` deploys every flow to one namespace. Omit it to keep the namespace written in each flow file, or use `--namespace-prefix` to prepend a prefix such as `staging` to each flow's namespace.
 
-#### CLI options
-
-The CLI provides options to tailor the validation and deployment process:
-
-- `--local`: Validates flows locally using the client. By default, validation occurs server-side via the Kestra API.
-- `--server`: Specifies the Kestra webserver/standalone server URL (default: `http://localhost:8080`).
-
-For a full list of available options, use:
-
-```bash
-./kestra flow validate -h
-./kestra flow namespace update -h
-```
-
----
+To make the repository the single source of truth and delete flows that aren't in it, use `kestractl flows namespace-sync`. It takes the flows directory directly, for example `kestractl flows namespace-sync prod flows/ --delete`. For every command and option, see the [`kestractl` reference](../../kestra-cli/kestractl/index.md).
 
 ### Automate deployments within Kestra
 
-You can run CLI commands directly from a Kestra flow to manage your CI/CD pipeline within Kestra itself.
-
-```yaml
-id: ci-cd
-namespace: company.team
-
-tasks:
-  - id: github-ci-cd
-    type: io.kestra.plugin.core.flow.WorkingDirectory
-    tasks:
-      - id: clone-repository
-        type: io.kestra.plugin.git.Clone
-        url: https://github.com/anna-geller/kestra-ci-cd
-        branch: main
-
-      - id: validate-flows
-        type: io.kestra.plugin.scripts.shell.Commands
-        description: "Validate flows from Git before deploying them."
-        taskRunner:
-          type: io.kestra.plugin.core.runner.Process
-        commands:
-          - /app/kestra flow validate flows/ --server http://localhost:8080 --api-token "{{ secret('KESTRA_API_TOKEN') }}"
-
-      - id: deploy-flows
-        type: io.kestra.plugin.scripts.shell.Commands
-        description: "Deploy flows to production namespaces."
-        taskRunner:
-          type: io.kestra.plugin.core.runner.Process
-        commands:
-          - /app/kestra flow namespace update prod flows/prod/ --server http://localhost:8080 --api-token "{{ secret('KESTRA_API_TOKEN') }}"
-          - /app/kestra flow namespace update prod.marketing flows/prod.marketing/ --server http://localhost:8080 --api-token "{{ secret('KESTRA_API_TOKEN') }}"
-
-triggers:
-  - id: github
-    type: io.kestra.plugin.core.trigger.Webhook
-    key: "yourSecretKey1234"
-```
-
-You can trigger this CI/CD flow manually via the UI or API — or automatically using a Git webhook.
-
-#### Configuring a GitHub webhook
-
-To trigger your Kestra CI/CD flow on each Git push:
-
-1. Go to your GitHub repository → **Settings** → **Webhooks**
-2. Select **Add webhook**
-3. Set the *Payload URL* to your Kestra webhook endpoint:
-
-```bash
-https://kestra_host_url/api/v1/main/executions/webhook/namespace/flow_id/webhook_key
-```
-
-4. Choose the **Push event** to trigger your pipeline (or customize for pull requests, tags, etc.)
-
-![github_webhook_2](./github_webhook_2.png)
-
----
+To deploy from Git without an external CI system, run the deployment as a Kestra flow. The [SyncFlows](/plugins/plugin-git/io.kestra.plugin.git.syncflows) and [SyncNamespaceFiles](/plugins/plugin-git/io.kestra.plugin.git.syncnamespacefiles) tasks read a Git branch and apply its flows and namespace files to Kestra, on a schedule or on every push through a GitHub webhook. See [Sync from Git](../04.git/02.sync-from-git/index.md).
 
 ### Deploy flows with GitHub Actions
 
 Kestra provides [official GitHub Actions](https://github.com/kestra-io/kestra-actions) to validate and deploy flows:
 
-- [`validate-flows`](https://github.com/kestra-io/validate-flows-action-v2) — validate flows in a directory against a Kestra server
-- [`deploy-flows`](https://github.com/kestra-io/deploy-flows-action-v2) — create or update flows from a directory
-- [`deploy-namespace-files`](https://github.com/kestra-io/deploy-namespace-files-action) — deploy namespace files from a local path
+- [`validate-flows`](https://github.com/kestra-io/validate-flows-action-v2): validate flows in a directory against a Kestra server.
+- [`deploy-flows`](https://github.com/kestra-io/deploy-flows-action-v2): create or update flows from a directory.
+- [`deploy-namespace-files`](https://github.com/kestra-io/deploy-namespace-files-action): deploy namespace files from a local path.
+
+Each action installs and runs `kestractl` for you. See [GitHub Actions](./01.github-action/index.md) for every input.
 
 #### Example GitHub Actions workflow
 
@@ -180,7 +96,7 @@ jobs:
   prod:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Validate flows
         uses: kestra-io/validate-flows-action-v2@main
         with:
@@ -216,43 +132,37 @@ with:
 ```
 :::
 
----
+### Deploy flows with GitLab CI and Bitbucket Pipelines
 
-### Deploy flows with GitLab CI/CD
-
-GitLab CI/CD uses a similar approach to GitHub Actions.
-See the [GitLab guide](/docs/version-control-cicd/cicd/gitlab) for examples and configuration details.
-
----
+GitLab CI and Bitbucket Pipelines run `kestractl` in the `kestra/kestractl` image. See [GitLab CI](./02.gitlab/index.md) and [Bitbucket Pipes](./06.bitbucket-pipes/index.md) for complete pipelines.
 
 ### Deploy flows with Terraform
 
-Terraform provides the most flexible, **Infrastructure-as-Code** approach to managing Kestra deployments.
-It allows you to define, validate, and deploy flows alongside the rest of your cloud infrastructure.
+With the [Kestra Terraform provider](../../13.terraform/index.mdx), you manage flows as infrastructure as code, alongside the rest of your cloud infrastructure.
 
-Here’s an example Terraform configuration for deploying flows stored in a `flows` directory:
+This configuration deploys every flow in the `flows` directory. Each flow's ID and namespace come from its file:
 
 ```hcl
 terraform {
   required_providers {
     kestra = {
       source  = "kestra-io/kestra"
-      version = "~> 0.15.0"
+      version = "~> 2.0"
     }
   }
 }
 
 provider "kestra" {
-  url = "http://localhost:8080" # Kestra webserver/standalone server URL
-  api_token = "<your-api-token>" # EE and Cloud only
+  url       = "http://localhost:8080"
+  api_token = var.kestra_api_token # Enterprise Edition and Cloud
+  # In Open-Source, use basic authentication instead:
+  # username = var.kestra_username
+  # password = var.kestra_password
 }
 
 resource "kestra_flow" "flows" {
-  for_each  = fileset(path.module, "flows/*.yml")
-  flow_id   = yamldecode(templatefile(each.value, {}))["id"]
-  namespace = yamldecode(templatefile(each.value, {}))["namespace"]
-  content   = templatefile(each.value, {})
-  keep_original_source = true
+  for_each = fileset(path.module, "flows/*.yml")
+  content  = file(each.value)
 }
 ```
 
@@ -264,8 +174,11 @@ terraform validate    # Validate both the configuration and your flows
 terraform apply -auto-approve   # Deploy your flows automatically
 ```
 
----
-
 ## Next steps
 
-Explore detailed documentation for each CI/CD option below to choose the best fit for your workflow and deployment process.
+- [GitHub Actions](./01.github-action/index.md)
+- [GitLab CI](./02.gitlab/index.md)
+- [Terraform](./03.terraform/index.md)
+- [Azure DevOps](./05-azure-devops/index.md)
+- [Bitbucket Pipes](./06.bitbucket-pipes/index.md)
+- [`kestractl` reference](../../kestra-cli/kestractl/index.md)

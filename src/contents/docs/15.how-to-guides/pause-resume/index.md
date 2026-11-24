@@ -87,7 +87,7 @@ tasks:
     onResume:
       - id: approved
         description: Approve the request?
-        type: BOOLEAN
+        type: BOOL
         defaults: true
       - id: reason
         description: Reason for approval or rejection?
@@ -104,6 +104,7 @@ tasks:
   - id: log
     type: io.kestra.plugin.core.log.Log
     message: Status is {{ outputs.waitForApproval.onResume.reason }}. Process finished with {{ outputs.approve.body }}
+```
 
 When you click on the `Resume` button in the UI, you will be prompted to provide the approval status and the reason for their decision. The workflow will then continue with the provided input values.
 

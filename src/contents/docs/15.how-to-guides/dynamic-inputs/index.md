@@ -202,10 +202,65 @@ inputs:
 
 **Constraints to be aware of:**
 
-- `subflow()` is only valid in the `expression:` property of a `SELECT` or `MULTISELECT` input. It throws if used in a task or trigger property.
+- `subflow()` is only valid in an input's `expression:` or `defaults:`. It throws if used in a task or trigger property.
+- `subflow()` only runs when an execution is created from the UI or the API. A flow started by a `Subflow` task or a trigger needs its values passed in, as described in the next section.
 - The subflow must complete within the timeout (default `PT1M`, max `PT5M`). Keep data-fetching subflows fast.
 - Recursion is capped at depth 3.
 - Each subflow referenced in a `SELECT` or `MULTISELECT` expression appears in the parent flow's **Dependencies** graph automatically.
+
+### Start the flow from a Subflow task or a trigger
+
+`subflow()` doesn't run when a `Subflow` task or a trigger creates the execution. To start a flow with a `subflow()` dropdown from another flow, pass a value for each input from the caller, and set `allowCustomValue: true` on each `SELECT` or `MULTISELECT` input that uses `subflow()`:
+
+```yaml
+id: deploy_to_region
+namespace: company.ops
+
+inputs:
+  - id: region
+    type: SELECT
+    displayName: AWS Region
+    allowCustomValue: true
+    expression: "{{ subflow(namespace='company.ops', id='fetch_aws_regions').outputs.regions }}"
+
+tasks:
+  - id: deploy
+    type: io.kestra.plugin.core.log.Log
+    message: "Deploying to {{ inputs.region }}"
+```
+
+When an execution is created with a value for `region`, Kestra accepts the value and doesn't render the `expression`. The Execute form still renders it, so UI users keep the dropdown. The same applies to an execution created from the API with a value for `region`: Kestra doesn't run `fetch_aws_regions`.
+
+If the caller needs the list first, run the data-fetching flow as a `Subflow` task and pass its output:
+
+```yaml
+id: deploy_first_region
+namespace: company.ops
+
+tasks:
+  - id: get_regions
+    type: io.kestra.plugin.core.flow.Subflow
+    namespace: company.ops
+    flowId: fetch_aws_regions
+    wait: true
+    transmitFailed: true
+
+  - id: deploy
+    type: io.kestra.plugin.core.flow.Subflow
+    namespace: company.ops
+    flowId: deploy_to_region
+    wait: true
+    transmitFailed: true
+    inputs:
+      region: "{{ outputs.get_regions.outputs.regions[0] }}"
+```
+
+Keep these rules in mind:
+
+- Kestra checks each input separately. With chained dropdowns, pass a value for every input whose `expression` calls `subflow()`, including the inputs listed in `dependsOn`.
+- With `allowCustomValue: true`, Kestra doesn't check the value against the list, from a caller or from the Execute form. If the value must belong to the list, validate it in the flow's tasks.
+- If an input calls `subflow()` only in `defaults:`, passing a value is enough. Kestra renders `defaults` only when no value is passed.
+- If the caller passes no value, Kestra doesn't create the execution. A calling `Subflow` task fails with an error that asks you to pass the value of the input from the caller.
 
 ## Conditional inputs
 

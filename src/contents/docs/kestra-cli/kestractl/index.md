@@ -19,8 +19,16 @@ Source code and releases are available at [github.com/kestra-io/kestractl](https
 curl -fsSL https://raw.githubusercontent.com/kestra-io/kestractl/main/install-scripts/install.sh | bash
 ```
 
-:::alert{type="warning"}
-The default install script installs kestractl 2.0, compatible with Kestra 2.0 only. For Kestra 1.x, pass `VERSION=1`:
+The script installs to `/usr/local/bin` when that folder is writable, and to `~/.local/bin` otherwise. To choose the folder, set `INSTALL_DIR`:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/kestra-io/kestractl/main/install-scripts/install.sh | INSTALL_DIR=~/.local/bin bash
+```
+
+Binaries for every platform, including Windows, are on the [releases page](https://github.com/kestra-io/kestractl/releases).
+
+:::alert{type="info"}
+The install script installs the latest kestractl 3.x release, which works with Kestra 2.x and Kestra 1.3. For an earlier Kestra 1.x version, install the legacy kestractl 1.x line with `VERSION=1`:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/kestra-io/kestractl/main/install-scripts/install.sh | VERSION=1 bash
@@ -60,14 +68,14 @@ For basic auth contexts, `auth_method` is `basicAuth` and the file stores `usern
 ### Examples
 
 ```bash
-# Deploy flows, then run one and wait for completion
+# Deploy flows, then run one and wait for completion; the run exits non-zero if the execution fails, so the CI job fails too
 kestractl flows deploy ./flows --namespace prod --override --fail-fast
 kestractl executions run prod nightly-refresh --wait --output json
 ```
 
 ```bash
 # Sync namespace files for a release
-kestractl nsfiles upload prod ./assets --path resources --override --fail-fast
+kestractl nsfiles upload prod ./assets resources --override --fail-fast
 ```
 
 ```bash
@@ -81,12 +89,13 @@ kestractl flows list my.namespace --output json
 - `flows`: list, get, deploy, validate, enable, disable, delete, export, import, and sync flows.
 - `executions`: run, inspect, control, and bulk-manage executions.
 - `triggers`: list, enable, disable, unlock, delete, manage backfills, and export triggers.
-- `namespaces`: list, get, create, update, delete namespaces and manage their plugin defaults.
+- `namespaces`: list, get, search, create, update, and delete namespaces, manage their variables, and list inherited secrets and variables.
 - `nsfiles`: list, get, upload, search, move, export, manage revisions, and delete namespace files.
 - `kv`: list, set (with optional TTL), update, get, and delete key-value pairs. Note: `kv list` requires token auth and returns 401 with basic auth.
 - `dashboards`: list, get, create, update, and delete dashboards. Requires Kestra EE.
 - `apps`: list, get, deploy, update, and delete apps. Requires Kestra EE.
 - `assets`: list, get, create, and delete assets. Requires Kestra EE.
+- `policies`: list, get, create, update, delete, validate, and export policies. Requires Kestra EE; tenant-scoped.
 - `blueprints`: search and retrieve community blueprints; manage internal flow blueprints (EE).
 - `test-suites`: create, run, validate, and manage test suites and their results. Requires Kestra EE.
 - `users`: list, get, create, update, delete, set group membership, set passwords, and manage API tokens for users. Requires Kestra EE; operates at the instance level (not tenant-scoped).
@@ -182,8 +191,11 @@ kestractl flows export            --namespace my.namespace --output-file flows.z
 kestractl flows export-by-ids     my.namespace/flow-a my.namespace/flow-b --output-file export.zip
 kestractl flows export-by-query   --namespace my.namespace --output-file export.zip
 
-# Sync an entire namespace from a YAML file (deletes flows absent from the file)
-kestractl flows namespace-sync my.namespace flows.yaml --delete --override
+# Sync an entire namespace from a YAML file (flows missing from the file are deleted only with --delete)
+kestractl flows namespace-sync my.namespace flows.yaml
+
+# Sync an entire namespace from a directory (one flow per .yaml/.yml file) and delete missing flows
+kestractl flows namespace-sync my.namespace flows/ --delete
 
 # Manage flow revisions
 kestractl flows revisions        my.namespace my-flow
@@ -219,8 +231,10 @@ kestractl flows usage-report --detailed                               # include 
 ## Execution management
 
 ```bash
-# Run a flow and optionally wait for completion
+# Run a flow
 kestractl executions run my.namespace my-flow
+
+# Run a flow and wait for completion — exits non-zero on FAILED, KILLED, or CANCELLED
 kestractl executions run my.namespace my-flow --wait --output json
 
 # List executions
@@ -243,12 +257,12 @@ kestractl executions restart   2TLGqHrXC9k8BczKJe5djX
 kestractl executions force-run 2TLGqHrXC9k8BczKJe5djX
 kestractl executions unqueue   2TLGqHrXC9k8BczKJe5djX
 
-# Replay an execution
-kestractl executions replay             2TLGqHrXC9k8BczKJe5djX
+# Replay an execution with its original inputs
+kestractl executions replay 2TLGqHrXC9k8BczKJe5djX
 
-# Replay from a specific task run (optionally targeting a revision or setting breakpoints)
-kestractl executions replay-with-inputs 2TLGqHrXC9k8BczKJe5djX --task-run-id <taskRunId>
-kestractl executions replay-with-inputs 2TLGqHrXC9k8BczKJe5djX --revision 3
+# Replay from a specific task run, optionally on another flow revision
+kestractl executions replay 2TLGqHrXC9k8BczKJe5djX --task-run-id <taskRunId>
+kestractl executions replay 2TLGqHrXC9k8BczKJe5djX --task-run-id <taskRunId> --revision 3
 
 # Bulk operations by IDs (positional execution IDs)
 kestractl executions kill-bulk        id1 id2 id3
@@ -438,7 +452,7 @@ kestractl nsfiles list my.namespace --output json
 kestractl nsfiles get my.namespace workflows/my-flow.yml
 
 # Upload files or directories
-kestractl nsfiles upload my.namespace ./assets --path resources --override --fail-fast
+kestractl nsfiles upload my.namespace ./assets resources --override --fail-fast
 
 # Search files in a namespace
 kestractl nsfiles search my.namespace
@@ -699,6 +713,14 @@ kestractl test-suites last-result    --ids my.namespace/suite-a --ids my.namespa
 kestractl test-suites get-result     <result_id>
 ```
 
+`run`, `run-by-query`, and `validate` print their results, then exit with code `1` when the outcome is a failure, so a CI job that runs them fails with the tests:
+
+- `run` exits `1` when the suite or any of its test cases ends `FAILED` or `ERROR`.
+- `run-by-query` exits `1` when any suite it runs, or any test case in one, ends `FAILED` or `ERROR`.
+- `validate` exits `1` when the definition has violations. Warnings don't change the exit code.
+
+A test case that ends `SUCCESS` or `SKIPPED` doesn't fail the command. The exit code is the same with `--output json` and table output.
+
 ## Reusable inputs (Enterprise Edition)
 
 A reusable inputs block is a named set of flow input definitions that flows reference through a `REUSABLE_INPUTS` input type. Requires Kestra Enterprise Edition 2.0.1 or later.
@@ -728,6 +750,37 @@ kestractl reusable-inputs delete my.namespace my-inputs-block
 # List the namespaces that define at least one reusable inputs block
 kestractl reusable-inputs namespaces
 ```
+
+## Policies (Enterprise Edition)
+
+[Policies](../../07.enterprise/02.governance/policies/index.md) are created from YAML files, like flows. The `policies` commands manage tenant-scoped policies in the active tenant.
+
+```bash
+# List policies (alias: ls)
+kestractl policies list
+kestractl policies list --output json
+
+# Get a policy and its YAML source (aliases: show, describe)
+kestractl policies get prod-cost-controls
+
+# Validate a policy file without saving it
+kestractl policies validate --file prod-cost-controls.yml
+
+# Create a policy, or update an existing one, from a YAML file
+kestractl policies create --file prod-cost-controls.yml
+kestractl policies update prod-cost-controls --file prod-cost-controls.yml
+
+# Delete a policy (alias: rm); prompts for confirmation unless --yes is set
+kestractl policies delete prod-cost-controls --yes
+
+# Export every policy in the tenant, or only the given IDs, to a YAML file
+kestractl policies export --output-file policies.yml
+kestractl policies export prod-cost-controls cost-alerts --output-file policies.yml
+```
+
+`validate` exits with code `1` when the policy is invalid, such as a rule with an unknown `type`, so a CI job that runs it fails. `create` accepts a file written by `export` that holds a single policy, so you can copy a policy to another tenant or instance.
+
+The `policies` commands only work with tenant-scoped policies. Manage namespace-scoped policies in the UI or through the API. `kestractl` has no command for importing several policies at once, evaluating a policy against saved flows, or previewing a flow's policies.
 
 ## MCP servers
 
@@ -1104,7 +1157,7 @@ kestractl server generate --from 2024-01-01
 
 ## Plugin management
 
-The `plugins` command group manages the plugins a Kestra worker needs to start. Use it when deploying standalone or remote workers without Docker, where plugins must be pre-installed as JAR files.
+The `plugins` command group is the recommended way to download Kestra plugins. It writes plugin JARs to a local directory that you then copy into a custom Docker image, mount into a container, or point a standalone server or remote worker at. For an end-to-end walkthrough, see [Install Selected Plugins on a Slim Kestra Image](../../15.how-to-guides/slim-image-plugins/index.md).
 
 ### `kestractl plugins list <version>`
 
@@ -1130,16 +1183,25 @@ Download a single plugin JAR by its Maven coordinates (`groupId:artifactId:versi
 kestractl plugins get io.kestra.plugin:plugin-kafka:1.6.0
 ```
 
+To let `kestractl` pick the plugin version that matches your Kestra release, omit the version and pass `--compatible-for`:
+
+```bash
+kestractl plugins get io.kestra.storage:storage-s3 --compatible-for 2.0.2
+```
+
+The version is resolved from the same compatibility catalog that `plugins list` prints. If the artifact isn't in that catalog, the command fails and names it.
+
 | Flag | Default | Description |
 |---|---|---|
 | `--plugins-dir` | `./plugins` | Directory to write the downloaded JAR into |
+| `--compatible-for` | — | Kestra version to resolve the plugin version against when the coordinates omit it (`groupId:artifactId`) |
 | `--force-redownload` | `false` | Re-download even if the JAR already exists |
 | `--global-timeout` | `5m` | Maximum time allowed for the download |
 | `--maven-repository` | Maven Central | Custom Maven repository base URL |
 | `--maven-username` | — | Username for Maven basic authentication |
 | `--maven-password` | — | Password for Maven basic authentication |
 
-If the JAR already exists on disk, the download is skipped unless `--force-redownload` is set. For new downloads, the JAR is verified against its published SHA-1 checksum when available. The version must be an exact version number — symbolic aliases like `latest` and `develop` are not supported and produce an error.
+If the JAR already exists on disk, the download is skipped unless `--force-redownload` is set. For new downloads, the JAR is verified against its published SHA-1 checksum when available. A version in the coordinates must be an exact version number. Symbolic aliases like `latest` and `develop` are not supported and produce an error; use `--compatible-for` instead.
 
 Use `--maven-repository`, `--maven-username`, and `--maven-password` to pull from a private registry, or the global `--header` flag for bearer token authentication. For example, to install an Enterprise Edition plugin from a private registry:
 
@@ -1167,13 +1229,20 @@ Download plugins to a local directory. By default, all compatible plugins for th
 kestractl plugins download 2.0.0
 ```
 
-The version argument is required unless `--plugins` is set.
+The version argument is required unless `--plugins` is set. To download only selected plugins at the versions compatible with your Kestra release, pass unversioned coordinates with `--compatible-for`:
+
+```bash
+kestractl plugins download --compatible-for 2.0.2 \
+  --plugins io.kestra.storage:storage-s3 \
+  --plugins io.kestra.plugin:plugin-dbt
+```
 
 | Flag | Default | Description |
 |---|---|---|
 | `--plugins-dir` | `./plugins` | Directory to write downloaded JARs into |
 | `--edition` | `ALL` | Filter by edition: `ALL`, `OSS`, or `EE` |
-| `--plugins` | — | Explicit coordinates to download (`groupId:artifactId:version`, space-separated or repeated); bypasses API lookup and makes version optional |
+| `--plugins` | — | Explicit coordinates to download (`groupId:artifactId:version`, space-separated or repeated); bypasses API lookup and makes version optional. The coordinate version can be omitted when `--compatible-for` or a version argument is given |
+| `--compatible-for` | — | Kestra version to resolve unversioned `--plugins` coordinates against; requires `--plugins` and can't be combined with `--from-config` |
 | `--from-config` | — | Download only the core plugins required by one or more config files; requires a version argument (see below) |
 | `--concurrency` | `1` | Number of parallel downloads |
 | `--keep-only-last-version` | `true` | Remove older versions of each plugin from the plugins directory after downloading |

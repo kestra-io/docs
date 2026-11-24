@@ -1,55 +1,37 @@
 ---
-import { WEBINAR_HREF_EU, WEBINAR_HREF_US } from "./assistant/links"
-
-// The Americas session is November 5 at 11 AM PT; the banner stays up until
-// the end of that day in PT (PST, UTC-8), then hides itself client-side.
-const endsAt = Date.UTC(2026, 10, 6, 8)
+import { WEBINAR_HREF } from "./assistant/links"
 ---
 
 <aside class="webinar-banner" aria-label="Webinar">
     <p>
-        <strong>Live webinar:</strong> Moving off VMware? Start with the orchestrator.
+        <strong>Webinar replay:</strong> Moving off VMware? Start with the orchestrator.
         <span class="sessions">
-            <a
-                href={WEBINAR_HREF_EU}
-                target="_blank"
-                rel="noopener"
-                data-webinar-session="eu">Wed Nov 4, 2 PM CET</a
-            >
-            <a
-                href={WEBINAR_HREF_US}
-                target="_blank"
-                rel="noopener"
-                data-webinar-session="us">Thu Nov 5, 11 AM PT</a
+            <a href={WEBINAR_HREF} target="_blank" rel="noopener"
+                >Watch the replay</a
             >
         </span>
     </p>
 </aside>
-<script is:inline define:vars={{ endsAt }}>
-    if (Date.now() >= endsAt)
-        document.currentScript.previousElementSibling.remove()
-</script>
 
 <script>
     // Each click is pushed to the dataLayer for GTM, like the webinar line in
-    // the LP's Assistant section: registrations happen on Contrast, which
-    // reports nothing back.
+    // the LP's Assistant section: the replay is on YouTube, which reports
+    // nothing back.
     function trackWebinarBanner() {
         for (const link of document.querySelectorAll<HTMLAnchorElement>(
-            ".webinar-banner a[data-webinar-session]",
+            ".webinar-banner a",
         )) {
             if (link.dataset.tracked !== undefined) continue
             link.dataset.tracked = ""
             const track = () => {
                 window.dataLayer = window.dataLayer || []
                 window.dataLayer.push({
-                    event: "vra_webinar_register_click",
-                    webinar_session: link.dataset.webinarSession,
+                    event: "vra_webinar_replay_click",
                     placement: "banner",
                 })
             }
             link.addEventListener("click", track)
-            // Middle-click opens the session too; right-click only opens a menu.
+            // Middle-click opens the replay too; right-click only opens a menu.
             link.addEventListener("auxclick", (event) => {
                 if (event.button === 1) track()
             })

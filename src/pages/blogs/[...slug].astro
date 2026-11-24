@@ -130,37 +130,39 @@ const jsonLinkedData = {
     canonical={page.canonical}
     lang={lang}
 >
+    {/* Direct child of Layout: Astro only honours `slot` on direct children,
+        so inside <section> these tags rendered in the body, not <head>. */}
+    <Fragment slot="head">
+        <meta property="og:type" content="article" />
+        <meta
+            property="article:published_time"
+            content={new Date(date).toISOString()}
+        />
+        <script
+            is:inline
+            type="application/ld+json"
+            set:html={JSON.stringify(jsonLinkedData)}
+        />
+        {
+            languages.map((l) => (
+                <link
+                    rel="alternate"
+                    hreflang={l.code}
+                    href={new URL(l.href, Astro.url.origin).href}
+                />
+            ))
+        }
+        {
+            page.schema && (
+                <script
+                    is:inline
+                    type="application/ld+json"
+                    set:html={JSON.stringify(page.schema)}
+                />
+            )
+        }
+    </Fragment>
     <section>
-        <Fragment slot="head">
-            <meta property="og:type" content="article" />
-            <meta
-                property="article:published_time"
-                content={new Date(date).toISOString()}
-            />
-            <script
-                is:inline
-                type="application/ld+json"
-                set:html={JSON.stringify(jsonLinkedData)}
-            />
-            {
-                languages.map((l) => (
-                    <link
-                        rel="alternate"
-                        hreflang={l.code}
-                        href={new URL(l.href, Astro.url.origin).href}
-                    />
-                ))
-            }
-            {
-                page.schema && (
-                    <script
-                        is:inline
-                        type="application/ld+json"
-                        set:html={JSON.stringify(page.schema)}
-                    />
-                )
-            }
-        </Fragment>
         <div class="hero-blog">
             <Mesh client:visible>
                 <div
@@ -345,5 +347,141 @@ const jsonLinkedData = {
             display: block;
             margin-top: 4rem;
         }
+    }
+
+    // Figures written as raw HTML in posts: a Markdown image (so it still goes
+    // through the image pipeline) wrapped in <figure> with a <figcaption>.
+    .bd-content :global(figure) {
+        margin: 0 0 1.5rem;
+
+        :global(p) {
+            margin: 0;
+        }
+
+        :global(img) {
+            display: block;
+            margin: 0 auto;
+        }
+    }
+
+    .bd-content :global(figcaption) {
+        margin-top: 0.5rem;
+        text-align: center;
+        font-size: 0.875em;
+        font-style: italic;
+        color: var(--ks-content-secondary);
+    }
+
+    // Clickable video poster: the image links to the webinar at a timestamp,
+    // with a play icon and the clip length on top.
+    .bd-content :global(figure.video-poster > a) {
+        position: relative;
+        display: block;
+        border-radius: 8px;
+        overflow: hidden;
+
+        // The image is only a link target here, so it must not open the zoom.
+        :global(img) {
+            pointer-events: none;
+        }
+    }
+
+    // Reuses the external-link icon pseudo-element as the hover darkening.
+    .bd-content :global(figure.video-poster > a::after) {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        width: auto;
+        height: auto;
+        margin: 0;
+        -webkit-mask: none;
+        mask: none;
+        background-color: rgba(0, 0, 0, 0);
+        transition: background-color 0.2s ease;
+    }
+
+    .bd-content :global(figure.video-poster > a:hover::after),
+    .bd-content :global(figure.video-poster > a:focus-visible::after) {
+        background-color: rgba(0, 0, 0, 0.25);
+    }
+
+    .bd-content :global(.video-poster-play) {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 2;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background-color: rgba(10, 11, 13, 0.75);
+        transform: translate(-50%, -50%);
+        transition: transform 0.2s ease;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 54%;
+            width: 22px;
+            height: 24px;
+            background-color: #fff;
+            clip-path: polygon(0 0, 100% 50%, 0 100%);
+            transform: translate(-50%, -50%);
+        }
+
+        @include media-breakpoint-down(md) {
+            width: 48px;
+            height: 48px;
+
+            &::before {
+                width: 16px;
+                height: 18px;
+            }
+        }
+    }
+
+    .bd-content :global(figure.video-poster > a:hover .video-poster-play) {
+        transform: translate(-50%, -50%) scale(1.08);
+    }
+
+    .bd-content :global(.video-poster-duration) {
+        position: absolute;
+        right: 0.75rem;
+        bottom: 0.75rem;
+        z-index: 2;
+        padding: 0.125rem 0.5rem;
+        border-radius: 999px;
+        background-color: rgba(10, 11, 13, 0.8);
+        color: #fff;
+        font-size: 0.75rem;
+        font-weight: 600;
+        line-height: 1.5;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .bd-content :global(.key-takeaways) {
+        margin: 0 0 1.5rem;
+        padding-left: 20px;
+        border-left: 3px solid var(--ks-border-active);
+
+        :global(ul) {
+            margin-bottom: 0;
+        }
+    }
+
+    .bd-content :global(.key-takeaways-label) {
+        margin-bottom: 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ks-content-secondary);
+    }
+
+    .bd-content :global(.pull-quote-attribution) {
+        margin-top: 0.5rem;
+        font-size: 0.875em;
+        color: var(--ks-content-secondary);
     }
 </style>

@@ -33,7 +33,7 @@ const { mainTitle, kestra, competitor } = Astro.props as Props
                 data-usal="fade"
             >
                 <h5>{kestra?.title}</h5>
-                <p>{kestra?.description}</p>
+                <p set:html={kestra?.description} />
                 <div class="sub-card">
                     {kestra?.subCardText}
                 </div>
@@ -46,7 +46,7 @@ const { mainTitle, kestra, competitor } = Astro.props as Props
                 data-usal="fade"
             >
                 <h5>{competitor?.title}</h5>
-                <p>{competitor?.description}</p>
+                <p set:html={competitor?.description} />
                 <div class="sub-card">
                     {competitor?.subCardText}
                 </div>

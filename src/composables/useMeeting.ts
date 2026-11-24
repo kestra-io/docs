@@ -14,6 +14,8 @@ export const LUKE_MEETING_LINK =
     "https://hs.kestra.io/meetings/luke-lipan?uuid=c75c198e-f6c2-43cb-8e05-d622bd9fa06c&embed=true"
 export const JONATHAN_MEETING_LINK =
     "https://meetings-eu1.hubspot.com/jonathan-lowe?embed=true"
+export const MARCUS_MEETING_LINK =
+    "https://meetings-eu1.hubspot.com/marcus-urbatschek?embed=true"
 
 export interface MeetingOptions {
     fallback?: string
@@ -36,8 +38,13 @@ function americasMeetingUrl(territory: VisitorTerritory) {
     return undefined
 }
 
+function regionalMeetingUrl(territory: VisitorTerritory) {
+    if (territory === "dach") return MARCUS_MEETING_LINK
+    return americasMeetingUrl(territory)
+}
+
 export function getGeoMeetingUrl(territory: VisitorTerritory = visitorTerritory()) {
-    return americasMeetingUrl(territory) ?? DAVID_MEETING_LINK
+    return regionalMeetingUrl(territory) ?? DAVID_MEETING_LINK
 }
 
 export function getMeetingUrl(
@@ -45,7 +52,7 @@ export function getMeetingUrl(
     { fallback = CONNOR_MEETING_LINK, territory }: MeetingOptions = {},
 ) {
     if (tier === "T1") return getGeoMeetingUrl(territory)
-    if (tier === "T2") return americasMeetingUrl(territory ?? visitorTerritory()) ?? fallback
+    if (tier === "T2") return regionalMeetingUrl(territory ?? visitorTerritory()) ?? fallback
     return fallback
 }
 

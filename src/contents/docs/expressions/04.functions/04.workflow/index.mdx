@@ -10,7 +10,7 @@ This group is more situational, but it becomes valuable in complex flows where y
 
 ## `loopOutputs()`
 
-Extracts a named output from every iteration of a [Loop](../../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop) task and returns the values as an ordered list.
+Extracts a named output from every iteration of a [Loop](../../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop) task and returns the values as a list.
 
 **Prerequisite**: the Loop task must declare an `outputs:` block. Without it, `outputs.loop.outputs` does not exist and this function will fail.
 
@@ -18,21 +18,33 @@ Extracts a named output from every iteration of a [Loop](../../../05.workflow-co
 {{ loopOutputs(outputs.myLoop.outputs, 'result') }}
 ```
 
-The first argument must be the loop task's `.outputs` list. The second argument is the output ID — it must match an output ID declared in the Loop task's `outputs:` block. The function returns one value per iteration in order, with `null` for iterations where that key is missing.
+The first argument must be the loop task's `.outputs` list. The second argument is the output ID, which must match an output ID declared in the Loop task's `outputs:` block. The function returns one value per iteration, with `null` for iterations where that key is missing.
+
+The values follow the order in which iterations finished, not the order of `values`. With `concurrencyLimit: 1`, iterations run one at a time, so the two orders match. When iterations run in parallel, which is the `Loop` default, the order can change from one execution to the next. Sort the list when you need a stable result.
 
 For a `Loop` over `["a", "b", "c"]` with a declared output `result`:
 
 ```twig
 {{ loopOutputs(outputs.loop.outputs, 'result') }}
+{# → ["processed c", "processed a", "processed b"], in completion order #}
+
+{{ loopOutputs(outputs.loop.outputs, 'result') | sort }}
 {# → ["processed a", "processed b", "processed c"] #}
 ```
 
-To access a single iteration directly, use list index notation:
+Each entry in `outputs.loop.outputs` holds one iteration: `item.iteration` is its zero-based index, `item.value` its input value, and `outputs` its declared outputs. Because the list is in completion order, `outputs.loop.outputs[0]` is the first iteration to finish. To read a specific iteration, filter on `item.iteration`:
 
 ```twig
-{{ outputs.loop.outputs[0].outputs.result }}   {# first iteration's declared output #}
-{{ outputs.loop.outputs[0].item.value }}        {# first iteration's input value #}
-{{ outputs.loop.outputs[0].item.iteration }}    {# first iteration's zero-based index #}
+{{ outputs.loop.outputs | jq('.[] | select(.item.iteration == 0) | .outputs.result') | first }}
+```
+
+`loopOutputs()` returns the output values only, so don't match its list to `values` by position. To keep each result with its input, read `item.iteration` and `outputs` from the same entry of `outputs.loop.outputs`, or declare an output that carries the iteration index, available as `item.index` inside the loop. Use the index rather than `item.value`, because `values` can contain duplicates:
+
+```yaml
+outputs:
+  - id: result
+    type: STRING
+    value: "{{ item.index }}: {{ outputs.process.value }}"
 ```
 
 ## `errorLogs()`
@@ -96,9 +108,9 @@ When a user opens the Execute form, Kestra runs the subflow synchronously, reads
 
 **Important constraints:**
 
-- Only valid in an input `expression:` context. Using `subflow()` inside a task or trigger property throws an error, because blocking a worker thread while waiting for a child execution can deadlock a worker under load.
+- Only valid in an input's `expression:` or `defaults:`. Using `subflow()` inside a task or trigger property throws an error, because blocking a worker thread while waiting for a child execution can deadlock a worker under load.
 - Flows referenced by `subflow()` in a `SELECT` or `MULTISELECT` input expression appear in the parent flow's **Dependencies** graph, the same way a `Subflow` task reference does.
-- Only available on `WEBSERVER` and `STANDALONE` server types. The function is not registered on other server types.
+- Only runs when an execution is created from the UI or the API, on the `WEBSERVER` and `STANDALONE` server types. When a `Subflow` task or a trigger starts the flow, the caller must pass a value for the input, and a `SELECT` or `MULTISELECT` input must set `allowCustomValue: true` so Kestra skips its `expression`. Otherwise, Kestra doesn't create the execution, and the error asks you to pass the value from the caller. See [Start the flow from a Subflow task or a trigger](../../../15.how-to-guides/dynamic-inputs/index.md#start-the-flow-from-a-subflow-task-or-a-trigger).
 - The default timeout is `PT1M`. The hard cap is `PT5M` — passing a larger `timeout` value is rejected at runtime. Both limits are configurable; see [configuration reference](../../../configuration/04.plugins-and-execution/index.md#subflow-function-configuration).
 - Subflow recursion depth is capped at 3. A subflow whose own inputs call `subflow()` counts against this limit.
 - Executions triggered by `subflow()` carry a `system.from: subflow` label automatically.

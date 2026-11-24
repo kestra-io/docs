@@ -37,16 +37,16 @@ For a detailed overview of how task runs transition through states, see the [Sta
 
 The `{{ taskrun }}` expression provides access to information about the current task run.
 
-The following example outputs task run details using `{{ taskrun }}`:
+The following example logs task run details using `{{ taskrun }}`:
 
 ```yaml
 id: taskrun
 namespace: company.team
 
 tasks:
-  - id: return
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ taskrun }}"
+  - id: log_taskrun
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ taskrun }}"
 ```
 
 The logs show the following:

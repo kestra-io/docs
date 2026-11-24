@@ -15,10 +15,10 @@ The [`kubectl.Apply`](/plugins/plugin-kubernetes/kubernetes-api-kubectl/io.kestr
 
 - A running OpenShift cluster
 - The `oc` CLI installed and authenticated (`oc login`)
-- The [Kubernetes plugin](/plugins/plugin-kubernetes) version 1.9.4 or later installed in your Kestra instance:
+- The [Kubernetes plugin](/plugins/plugin-kubernetes) version 1.9.4 or later installed in your Kestra instance. The default Kestra image includes it. On a slim image, download it with [`kestractl`](../../kestra-cli/kestractl/index.md#installation) and add it to your image as described in [Install Selected Plugins on a Slim Kestra Image](../slim-image-plugins/index.md):
 
 ```bash
-kestra plugins install io.kestra.plugin:plugin-kubernetes:1.9.4
+kestractl plugins get io.kestra.plugin:plugin-kubernetes:1.9.4
 ```
 - Two Kestra secrets:
 

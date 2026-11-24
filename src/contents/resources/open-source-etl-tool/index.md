@@ -133,7 +133,7 @@ Talend Open Studio is a long-standing, open-source data integration tool that of
 
 ### Pentaho Data Integration (PDI): Classic ETL with Business Intelligence Focus
 
-Pentaho Data Integration, also known as Kettle, is another mature, GUI-based ETL tool. It uses a visual workflow designer called Spoon to create transformations (data flows) and jobs (process flows). PDI is part of the broader Pentaho business analytics platform, which gives it strong integration with business intelligence and reporting tools. It's a solid choice for traditional data warehousing use cases.
+[Pentaho](/resources/data/pentaho-alternatives) Data Integration, also known as Kettle, is another mature, GUI-based ETL tool. It uses a visual workflow designer called Spoon to create transformations (data flows) and jobs (process flows). PDI is part of the broader Pentaho business analytics platform, which gives it strong integration with business intelligence and reporting tools. It's a solid choice for traditional data warehousing use cases.
 
 **Best for:** Enterprises with a focus on traditional ETL for data warehousing and strong integration with business intelligence tools.
 

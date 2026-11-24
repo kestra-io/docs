@@ -27,6 +27,7 @@ This section covers two distinct things: (1) guidance for AI agents interacting 
 - [Agent Skills](https://kestra.io/docs/develop-with-ai/agent-skills.md): **Start here if you are an AI agent.** How coding agents should interact with Kestra — reading flow definitions, calling the API, deploying flows, and avoiding common mistakes
 - [Docs MCP Server](https://kestra.io/docs/develop-with-ai/kestra-mcp-resources.md): Connect Claude Code, Cursor, or any MCP-compatible coding agent to the hosted, read-only Kestra MCP server for live plugin schemas, blueprints, and documentation
 - [Docs for Agents](https://kestra.io/docs/develop-with-ai/docs-for-agents.md): All machine-readable Kestra resources in one place — MCP server, Agent Skills, llms.txt endpoints, plain Markdown docs, plugin schemas, and OpenAPI specs
+- [Claude Code Quickstart](https://kestra.io/docs/claude-code-quickstart.md): Step-by-step setup that connects Claude Code to the Docs MCP server, Agent Skills, and kestractl, then writes, deploys, and runs a flow
 - [Develop with AI overview](https://kestra.io/docs/develop-with-ai.md): Use AI to build and operate Kestra, with AI Copilot in the UI or a coding agent with the Docs MCP server, Agent Skills, and kestractl
 - [AI Copilot](https://kestra.io/docs/develop-with-ai/ai-copilot.md): Build and edit flows, diagnose failed executions, and run approved plans from a chat sidebar inside the Kestra UI
 - [AI Orchestration overview](https://kestra.io/docs/ai-orchestration.md): Run AI inside flows with LLM tasks, AI agents, and RAG, and expose flows to external AI agents as MCP tools
@@ -71,6 +72,51 @@ Use this section to find the right `type` for a task, understand its properties,
 - [Script tasks](https://kestra.io/docs/scripts.md): Run Python, Shell, Node.js, R, Julia, Ruby, Perl, and PowerShell inline or from files inside a flow
 - [Task runners](https://kestra.io/docs/task-runners.md): Execute script tasks on remote compute — Docker, Kubernetes, AWS Batch, AWS EC2, Azure Batch, Azure VM, Google Batch, or Google Cloud Run — instead of the local worker
 
+## Integrations: orchestrate your tools
+
+Use this section to see how Kestra runs a specific tool in production: the plugin used, typical flows, a comparison with the tool's native scheduling, and an FAQ. Each page is also available as Markdown by appending `.md`.
+
+- [Orchestration integrations overview](https://kestra.io/orchestration): All tools Kestra orchestrates, grouped by category
+- [Orchestrate Airbyte with Kestra](https://kestra.io/orchestration/airbyte.md): Trigger Airbyte syncs from any event, chain them with dbt and reverse-ETL, wait for terminal status, and trace every connector run across the data stack from one place.
+- [Orchestrate Apify with Kestra](https://kestra.io/orchestration/apify.md): Run Apify actors on a schedule, wait for the dataset, enforce cost and quality guardrails, and chain scrapes into Postgres, BigQuery, RAG vector stores, and HubSpot from one flow.
+- [Orchestrate BigQuery with Kestra](https://kestra.io/orchestration/bigquery.md): Load BigQuery on GCS arrivals or Pub/Sub events, refresh only the partitions that changed, chain with dbt and ingestion, and trace every query across the data stack from one place.
+- [Orchestrate Databricks with Kestra](https://kestra.io/orchestration/databricks.md): Orchestrate Databricks jobs, SQL and Unity Catalog from one YAML flow: submit runs and wait, gate on data quality, use ephemeral clusters, and chain Databricks with ingestion, dbt and alerts.
+- [Orchestrate Dataproc with Kestra](https://kestra.io/orchestration/dataproc.md): Submit Spark and PySpark jobs to Dataproc Serverless on a schedule or event, gate them on data readiness, chain GCS to Spark to BigQuery, and get retries and lineage around every batch.
+- [Orchestrate DuckDB with Kestra](https://kestra.io/orchestration/duckdb.md): Query CSV and Parquet in place, schedule and persist DuckDB runs, productionize a notebook ETL, and run dbt or SQLMesh on a DuckDB engine, all from one execution history.
+- [Orchestrate Hightouch with Kestra](https://kestra.io/orchestration/hightouch.md): Run the Airbyte to dbt to Hightouch chain in one flow, gate activation on dbt tests, fan out to multiple destinations, and audit every row push from one place.
+- [Orchestrate Kafka with Kestra](https://kestra.io/orchestration/kafka.md): Start a flow per Kafka record or on batched pulls, stream events into the warehouse, produce events after a pipeline, and trace every consumer run without running your own consumer service.
+- [Orchestrate Microsoft Fabric with Kestra](https://kestra.io/orchestration/microsoft-fabric.md): Trigger Fabric notebooks, data pipelines, and Spark jobs on any event, layer OneLake bronze to gold, query the Fabric warehouse, and chain Fabric with the rest of your stack.
+- [Orchestrate Postgres with Kestra](https://kestra.io/orchestration/postgres.md): Bulk-load files with COPY, run transactional multi-statement loads, react to row changes with Debezium CDC, and chain Postgres with dbt and object storage from one execution history.
+- [Orchestrate Pub/Sub with Kestra](https://kestra.io/orchestration/pubsub.md): Start one execution per Pub/Sub message, micro-batch events into BigQuery, fan messages out to databases and APIs, and publish completion events, all with retries and one execution history.
+- [Orchestrate Redis with Kestra](https://kestra.io/orchestration/redis.md): Consume a Redis list as a real-time trigger, warm and invalidate caches on a schedule, build a semantic LLM cache, and coordinate Redis with databases and APIs from one execution history.
+- [Orchestrate SQL Server with Kestra](https://kestra.io/orchestration/sql-server.md): Trigger SQL Server queries on events instead of Agent cron jobs, bulk-load between instances in chunks, run transactional multi-statement loads, and react to CDC changes without deploying Kafka Connect.
+- [Orchestrate Snowflake with Kestra](https://kestra.io/orchestration/snowflake.md): Load files to Snowflake stages, run COPY and incremental MERGE upserts on every event, chain with ingestion and dbt, and trace every query across the data stack from one place.
+- [Orchestrate dbt Cloud with Kestra](https://kestra.io/orchestration/dbt-cloud.md): Trigger dbt Cloud jobs when Fivetran finishes, chain with downstream activation, add approval gates, and track every run across your data stack in one place.
+- [Orchestrate dbt Core with Kestra](https://kestra.io/orchestration/dbt-core.md): Wrap every dbt build with event triggers, approval gates between layers, retries, and full lineage visibility, without touching your dbt models.
+- [Orchestrate Ansible with Kestra](https://kestra.io/orchestration/ansible.md): Drive ansible-playbook from cron and events, gate wave promotion, parse per-host results via the Kestra callback, and chain with Terraform and ServiceNow.
+- [Orchestrate Argo CD with Kestra](https://kestra.io/orchestration/argocd.md): Trigger argocd app sync on CI completions or image pushes. Add approval gates before prod, retry transient failures, and chain Terraform, Ansible, and Argo CD.
+- [Orchestrate Docker with Kestra](https://kestra.io/orchestration/docker.md): Build, scan with Trivy, sign with Cosign, and promote the same sha256 digest from staging to prod, with Compose stacks for tests and guaranteed teardown.
+- [Orchestrate Git with Kestra](https://kestra.io/orchestration/git.md): Push flows, dashboards, and Namespace Files to any Git provider. Sync back on schedule. Treat Git as source of truth with dryRun diffs and protected namespaces.
+- [Orchestrate GitHub Actions with Kestra](https://kestra.io/orchestration/github-actions.md): Dispatch GitHub Actions workflows from cron, S3, Kafka, or any HTTP signal. Chain Actions output with non-GitHub tools, gate deploys, auto-manage issues and PRs.
+- [Orchestrate GitLab with Kestra](https://kestra.io/orchestration/gitlab.md): Open GitLab issues on failure, raise merge requests from automation, trigger and poll GitLab CI pipelines, and tie GitLab into a cross-tool workflow from one place.
+- [Orchestrate Jenkins with Kestra](https://kestra.io/orchestration/jenkins.md): Trigger Jenkins jobs from webhooks or schedules, chain them with Terraform, Ansible, and Argo CD in one flow, add Pause-with-notification gates between build and deploy, and trace every step from one execution view.
+- [Orchestrate Kubernetes with Kestra](https://kestra.io/orchestration/kubernetes.md): Run heavy Pods inside the cluster as flow steps. Server-side apply on event, rolling restarts on Secret rotation, and the same flow across many K8s clusters.
+- [Orchestrate NetBox with Kestra](https://kestra.io/orchestration/netbox.md): Drive Ansible flows from NetBox device and site lists. Auto-allocate IPs from prefixes on VM provision. Reconcile scan reality with declared inventory weekly.
+- [Orchestrate Nutanix with Kestra](https://kestra.io/orchestration/nutanix.md): Orchestrate Nutanix from one flow: crash- or app-consistent recovery points, cross-cluster DR replication, and Category-driven Prism inventory.
+- [Orchestrate OPA with Kestra](https://kestra.io/orchestration/opa.md): Evaluate Rego policies before destructive flow steps. Upload from Git with dryRun review. Audit every decision in execution history. EE plugin, self-hosted.
+- [Orchestrate Proxmox with Kestra](https://kestra.io/orchestration/proxmox.md): Drive Proxmox VE from one flow: VMware-to-Proxmox migrations, node drain via live migration, snapshot rollback, and vzdump backup restore drills, all in YAML.
+- [Orchestrate Terraform with Kestra](https://kestra.io/orchestration/terraform.md): Schedule Terraform plans for drift detection, gate plan to apply with a named reviewer, retry only the failed step, and chain with Ansible or ArgoCD.
+- [Orchestrate VMware with Kestra](https://kestra.io/orchestration/vmware.md): Orchestrate vSphere from one flow: vCenter event triggers, snapshot-gated patching, approval gates, and one audit trail across VMware, Ansible, and ServiceNow.
+- [Orchestrate AWS with Kestra](https://kestra.io/orchestration/aws.md): Trigger S3, Lambda, Glue, EMR, DynamoDB, Athena from one flow. Native S3 fan-out, cross-account ops via stsRole, no EventBridge rule sprawl.
+- [Orchestrate Azure with Kestra](https://kestra.io/orchestration/azure.md): Trigger on Blob and Event Hub arrivals, stream Service Bus messages, call Functions, and run Data Factory pipelines and Batch jobs from one flow, no Logic Apps glue between services.
+- [Orchestrate Cloudflare with Kestra](https://kestra.io/orchestration/cloudflare.md): Drive Cloudflare DNS, CDN purges, WAF rules, and Workers KV from upstream events. Multi-zone updates, Worker deploys, and zone-aware ops in one flow.
+- [Orchestrate DigitalOcean with Kestra](https://kestra.io/orchestration/digitalocean.md): Drive DigitalOcean droplets, managed databases, DNS, firewalls, and DOKS from event-driven flows. Ephemeral compute, scheduled resizes, snapshot policies, and account governance in one place.
+- [Orchestrate GCS with Kestra](https://kestra.io/orchestration/gcs.md): Fire a flow when objects land in GCS, load them into BigQuery, run partition-aware refreshes, curate raw drops with Python, and archive processed files, all from one execution history.
+- [Orchestrate Gemini with Kestra](https://kestra.io/orchestration/gemini.md): Add retries, model-version fallback, concurrency limits, and full execution history around Gemini ChatCompletion, StructuredOutputCompletion, and MultimodalCompletion calls made with a direct API key.
+- [Orchestrate Vertex AI with Kestra](https://kestra.io/orchestration/vertex-ai.md): Run Gemini models on Vertex AI as governed pipeline steps: batch-enrich warehouse rows with rate control, keep a RAG index fresh, classify events inline, and cap cost with automated guardrails.
+- [Orchestrate ServiceNow with Kestra](https://kestra.io/orchestration/servicenow.md): Read ServiceNow change requests, run the matching runbook, update tickets with execution links. Open incidents on flow failures. Patch waves driven by CMDB.
+- [Orchestrate Slack with Kestra](https://kestra.io/orchestration/slack.md): Connect Slack to dbt, Terraform, Argo CD, AWS, Snowflake, and the stack. Notifications, scheduled reports, approval gates, incident channels, history exports.
+
 ## Data, state, and storage
 
 Use this section when a flow needs to store or retrieve data that lives outside the flow itself — files, shared state, secrets, or reusable scripts.
@@ -78,7 +124,7 @@ Use this section when a flow needs to store or retrieve data that lives outside 
 - [Internal storage](https://kestra.io/docs/concepts/storage.md): Kestra's built-in file system for passing large files between tasks; tasks return internal storage URIs as output attributes (e.g. `uri`)
 - [Namespace files](https://kestra.io/docs/concepts/namespace-files.md): Scripts, configs, and SQL files stored at the namespace level and available to all flows in that namespace via `WorkingDirectory` or `{{ namespaceFiles }}`
 - [KV Store](https://kestra.io/docs/concepts/kv-store.md): Persistent key-value pairs scoped to a namespace; read with `{{ kv('key') }}`, written via tasks or the API; use for shared state and counters
-- [Secrets](https://kestra.io/docs/concepts/secret.md): Encrypted values referenced with `{{ secret('NAME') }}`; stored in Kestra or delegated to an external secrets manager
+- [Secrets](https://kestra.io/docs/concepts/secret.md): Sensitive values referenced with `{{ secret('NAME') }}`; base64-encoded environment variables in Open-Source, a secrets manager in Enterprise Edition and Cloud; log masking limits
 - [Backfill](https://kestra.io/docs/workflow-components/triggers/schedule-trigger.md#using-backfill): Re-execute a scheduled trigger over a past date range to reprocess historical data
 
 ## Best practices
@@ -90,7 +136,6 @@ Use this section when deciding *how* to structure a flow or *which* pattern to u
 - [Loop task best practices](https://kestra.io/docs/best-practices/loop.md): How to use the Loop task, how to access sibling outputs inside loops with `outputs.task_id[taskrun.value]`, and common mistakes
 - [Outputs patterns](https://kestra.io/docs/best-practices/outputs.md): Clean patterns for producing and consuming task outputs across tasks and flows
 - [Credentials vs Secrets vs KV Store](https://kestra.io/docs/best-practices/credentials-vs-secrets-vs-kv-store.md): Decision guide for choosing the right storage backend for each type of value
-- [Secrets management](https://kestra.io/docs/best-practices/secrets-management.md): How to handle credentials and sensitive values safely in flows
 - [Asset best practices](https://kestra.io/docs/best-practices/assets.md): Stable asset IDs that join with plugin-emitted IDs, shared metadata keys, namespaced vs Global assets, and trigger design
 - [Naming conventions](https://kestra.io/docs/best-practices/naming-conventions.md): Consistent `id`, `namespace`, and label conventions for maintainable flows
 
@@ -164,7 +209,8 @@ Use this section when building custom plugins, managing flows in Git, deploying 
 - [Plugin developer guide](https://kestra.io/docs/plugin-developer-guide.md): Build, test, document, and publish custom Kestra plugins in Java
 - [Version control and CI/CD](https://kestra.io/docs/version-control-cicd.md): GitOps patterns — Git push/pull for flows, and automated deployment pipelines using GitHub Actions, GitLab CI, and others
 - [Promote (EE)](https://kestra.io/docs/enterprise/governance/promote): Move flows between environments directly from the Kestra UI with a diff review and confirmation gate — no Git or pipeline required
-- [VS Code extension](https://kestra.io/docs/version-control-cicd/vscode.md): Edit flows in VS Code with instance-aware validation, Pebble autocompletion, topology preview, and run-from-editor with live log streaming
+- [VS Code extension](https://kestra.io/docs/ide-extensions/vscode.md): Edit flows in VS Code with instance-aware validation, Pebble autocompletion, topology preview, and run-from-editor with live log streaming
+- [JetBrains plugin](https://kestra.io/docs/ide-extensions/jetbrains.md): Edit flows in IntelliJ IDEA, PyCharm, and other JetBrains IDEs with instance-aware completion, live validation, topology preview, and run-from-editor with live logs
 - [No Code editor](https://kestra.io/docs/ui/flows.md): Build flows visually using the No Code canvas — drag-and-drop editing that stays in three-way sync with the YAML editor and AI Copilot in real time
 
 ## Reference
@@ -227,6 +273,13 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Main Components of Kestra Architecture: Queue, Repository, Storage, and Plugins](https://kestra.io/docs/architecture/main-components.md)
 - [Multi-Tenancy in Kestra: Tenant Isolation Model](https://kestra.io/docs/architecture/multi-tenancy.md)
 - [Server Components in Kestra Architecture Explained](https://kestra.io/docs/architecture/server-components.md)
+- [Executor in Kestra: How Executions Move Forward](https://kestra.io/docs/architecture/server-components/executor.md)
+- [Indexer in Kestra: How Logs and Metrics Are Stored](https://kestra.io/docs/architecture/server-components/indexer.md)
+- [Scheduler in Kestra: How Triggers Are Evaluated](https://kestra.io/docs/architecture/server-components/scheduler.md)
+- [Webserver in Kestra: API, UI, and Live Streams](https://kestra.io/docs/architecture/server-components/webserver.md)
+- [Worker in Kestra: How Tasks and Triggers Run](https://kestra.io/docs/architecture/server-components/worker.md)
+- [Worker Controller in Kestra: How Workers Get Jobs](https://kestra.io/docs/architecture/server-components/worker-controller.md)
+- [Worker Groups in Kestra: How Tasks Are Routed](https://kestra.io/docs/architecture/server-components/worker-group.md)
 - [Workflow Best Practices in Kestra: Design & Patterns](https://kestra.io/docs/best-practices.md)
 - [Kestra Asset Best Practices: IDs, Metadata, and Namespaces](https://kestra.io/docs/best-practices/assets.md): How to choose stable asset IDs that match plugin-emitted IDs, a shared metadata vocabulary, namespaced vs Global assets, failure behavior, trigger design, and catalog cleanup
 - [Business Unit Separation in Kestra Enterprise](https://kestra.io/docs/best-practices/business-unit-separation.md)
@@ -238,11 +291,9 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Dev to Production in Kestra: Promote Flows Safely](https://kestra.io/docs/best-practices/from-dev-to-prod.md)
 - [Version Control with Git in Kestra](https://kestra.io/docs/best-practices/git.md)
 - [Managing Environments in Kestra: Dev, Prod & Tenants](https://kestra.io/docs/best-practices/manage-environments.md)
-- [Managing pip Dependencies in Kestra: Docker & Caching](https://kestra.io/docs/best-practices/managing-pip-dependencies.md)
 - [Naming Conventions in Kestra: Flows and Namespaces](https://kestra.io/docs/best-practices/naming-conventions.md)
 - [Managing and Purging Flow Outputs in Kestra](https://kestra.io/docs/best-practices/outputs.md)
 - [Data Retention and Purging in Kestra: Choose a Strategy](https://kestra.io/docs/best-practices/purging-data.md)
-- [Secrets Management in Kestra: Avoid Accidental Exposure](https://kestra.io/docs/best-practices/secrets-management.md)
 - [Kestra Brand Assets: Logos and Visual Identity](https://kestra.io/docs/brand-assets.md)
 - [Core Concepts in Kestra: Architecture and Templating](https://kestra.io/docs/concepts.md)
 - [Blueprints in Kestra: Reusable Workflow Templates](https://kestra.io/docs/concepts/blueprints.md)
@@ -377,7 +428,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Create a Dynamic Dropdown for Inputs](https://kestra.io/docs/how-to-guides/dynamic-inputs.md)
 - [Build ETL Pipelines in Kestra](https://kestra.io/docs/how-to-guides/etl-pipelines.md)
 - [Generate and Pseudonymize Test Data in Kestra](https://kestra.io/docs/how-to-guides/generate-and-pseudonymize-data.md)
-- [Validate and Deploy Flows with GitHub Actions](https://kestra.io/docs/how-to-guides/github-actions.md)
 - [Back Up GitHub Repos with Kestra Playground](https://kestra.io/docs/how-to-guides/github-repo-backup.md)
 - [Configure a Google Service Account in Kestra](https://kestra.io/docs/how-to-guides/google-credentials.md)
 - [Connect Google Sheets to Kestra](https://kestra.io/docs/how-to-guides/google-sheets.md)
@@ -391,11 +441,9 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Set Up Secrets from a Helm Chart](https://kestra.io/docs/how-to-guides/kubernetes-secrets.md)
 - [Synchronize Local Flows in Kestra](https://kestra.io/docs/how-to-guides/local-flow-sync.md)
 - [Long-Running Tasks on Kubernetes in Kestra](https://kestra.io/docs/how-to-guides/long-running-intensive-tasks.md)
-- [Loop Over a List of Values](https://kestra.io/docs/how-to-guides/loop.md)
 - [Safeguard Microservices with Unit Tests](https://kestra.io/docs/how-to-guides/microservices-unit-tests.md)
 - [Configure Monitoring with Grafana and Prometheus](https://kestra.io/docs/how-to-guides/monitoring.md)
 - [MultipleCondition Listener in Kestra: How It Works](https://kestra.io/docs/how-to-guides/multiplecondition-listener.md)
-- [Namespace Variables vs. KV Store in Kestra](https://kestra.io/docs/how-to-guides/namespace-variables-vs-kvstore.md)
 - [Connect a Neon Database to Kestra](https://kestra.io/docs/how-to-guides/neon.md)
 - [Integrate Notion Webhooks with Kestra](https://kestra.io/docs/how-to-guides/notion-webhook.md)
 - [Handle Null and Undefined Values in Kestra](https://kestra.io/docs/how-to-guides/null-values.md)
@@ -405,33 +453,27 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Populate Your Instance with Sample Data](https://kestra.io/docs/how-to-guides/populate-demo-data.md)
 - [Run PowerShell Inside Your Flows](https://kestra.io/docs/how-to-guides/powershell.md)
 - [Trigger a Flow on a Prometheus Alert](https://kestra.io/docs/how-to-guides/prometheus-alert-trigger.md)
-- [Push Flows to a Git Repository](https://kestra.io/docs/how-to-guides/pushflows.md)
-- [Push Namespace Files to a Git Repository](https://kestra.io/docs/how-to-guides/pushnamespacefiles.md)
 - [Run Python Inside Your Flows](https://kestra.io/docs/how-to-guides/python.md)
-- [Manage Python Dependencies in Kestra](https://kestra.io/docs/how-to-guides/python-dependencies.md)
-- [Manage Python Dependencies with uv in Kestra](https://kestra.io/docs/how-to-guides/python-uv.md)
 - [Realtime Triggers in Kestra: Kafka, SQS, Pub/Sub](https://kestra.io/docs/how-to-guides/realtime-triggers.md)
 - [Replay Executions in Kestra: Rerun from Any Task](https://kestra.io/docs/how-to-guides/replay.md)
 - [Build SecOps Workflows with Kestra](https://kestra.io/docs/how-to-guides/secops-with-kestra.md)
-- [Configure Secrets in Kestra](https://kestra.io/docs/how-to-guides/secrets.md)
-- [Install Only Selected Plugins in Kestra OSS](https://kestra.io/docs/how-to-guides/selected-plugin-installation.md)
 - [Trigger Kestra Flows from ServiceNow](https://kestra.io/docs/how-to-guides/servicenow-trigger.md)
 - [Trigger Kestra Flows from Splunk Alerts](https://kestra.io/docs/how-to-guides/splunk-alert-trigger.md)
 - [Run Shell Scripts Inside Your Flows](https://kestra.io/docs/how-to-guides/shell.md)
-- [Add Plugins to a Slim Kestra Docker Image](https://kestra.io/docs/how-to-guides/slim-image-plugins.md)
+- [Install Selected Plugins on a Slim Kestra Image](https://kestra.io/docs/how-to-guides/slim-image-plugins.md)
 - [Slack Events API with Kestra: Trigger Flows](https://kestra.io/docs/how-to-guides/slack-webhook.md)
 - [Use SQLMesh to Run dbt Projects](https://kestra.io/docs/how-to-guides/sqlmesh.md)
 - [Subflow Retries, Restarts, and Replays in Kestra](https://kestra.io/docs/how-to-guides/subflow-executions.md)
 - [Connect a Supabase Database to Kestra](https://kestra.io/docs/how-to-guides/supabase-db.md)
-- [Sync Flows from a Git Repository](https://kestra.io/docs/how-to-guides/syncflows.md)
 - [Synchronous Executions API in Kestra](https://kestra.io/docs/how-to-guides/synchronous-executions-api.md)
-- [Sync Namespace Files from a Git Repository](https://kestra.io/docs/how-to-guides/syncnamespacefiles.md)
 - [Modularize Triggers and Schedules with Terraform](https://kestra.io/docs/how-to-guides/terraform-modules-for-triggers.md)
 - [Terraform for Flow Modularity in Kestra](https://kestra.io/docs/how-to-guides/terraform-templating.md)
 - [Kestra with Pulumi's Terraform Provider](https://kestra.io/docs/how-to-guides/using-pulumis-terraform-provider.md)
 - [Access Values Between Flows](https://kestra.io/docs/how-to-guides/values-between-flows.md)
 - [Use HashiCorp Vault as a Read-Only Secrets Backend in Kestra](https://kestra.io/docs/how-to-guides/vault-read-only-secrets.md)
-- [Set Up Webhooks to Trigger Flows](https://kestra.io/docs/how-to-guides/webhooks.md)
+- [Kestra IDE Extensions: VS Code and JetBrains](https://kestra.io/docs/ide-extensions.md)
+- [Kestra VS Code Extension: Edit, Validate, and Run Flows](https://kestra.io/docs/ide-extensions/vscode.md)
+- [Kestra JetBrains Plugin: Edit, Validate, and Run Flows](https://kestra.io/docs/ide-extensions/jetbrains.md)
 - [Install Kestra: Docker, Kubernetes, VM, and JAR](https://kestra.io/docs/installation.md)
 - [Deploy Kestra on AWS EC2 – RDS and S3 Backend](https://kestra.io/docs/installation/aws-ec2.md)
 - [Deploy Kestra on Azure VM – Azure Database Backend](https://kestra.io/docs/installation/azure-vm.md)
@@ -560,13 +602,13 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [MySQL READ COMMITTED Isolation Level](https://kestra.io/docs/migration-guide/v2.0.0/mysql-read-committed.md)
 - [Execution Data in Internal Storage Removed](https://kestra.io/docs/migration-guide/v2.0.0/execution-data-internal-storage.md)
 - [Super Admin Renamed to Instance Owner](https://kestra.io/docs/migration-guide/v2.0.0/superadmin-renamed-instance-owner.md)
+- [Flow and Namespace File Server CLI Commands Removed](https://kestra.io/docs/migration-guide/v2.0.0/server-cli-flow-commands-removed.md)
 - [Open-Source vs. Enterprise Edition of Kestra](https://kestra.io/docs/oss-vs-paid.md)
 - [Performance in Kestra: Benchmarks and Tuning](https://kestra.io/docs/performance.md)
 - [Benchmarks: Orchestration Throughput & Latency](https://kestra.io/docs/performance/benchmark.md)
 - [Performance Tuning in Kestra: Workers, JDBC, Kafka](https://kestra.io/docs/performance/performance-tuning.md)
 - [Size & Scale Kestra: Executors, Workers, Schedulers](https://kestra.io/docs/performance/sizing-and-scaling-infrastructure.md)
 - [Plugin Developer Guide: Build & Publish in Kestra](https://kestra.io/docs/plugin-developer-guide.md)
-- [Develop a Kestra Condition Plugin](https://kestra.io/docs/plugin-developer-guide/condition.md)
 - [Plugin Contribution Guidelines for Kestra](https://kestra.io/docs/plugin-developer-guide/contribution-guidelines.md)
 - [Document Your Kestra Plugin with Annotations](https://kestra.io/docs/plugin-developer-guide/document.md)
 - [Develop a Kestra File Renderer Plugin](https://kestra.io/docs/plugin-developer-guide/file-renderer.md)
@@ -680,10 +722,10 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Bitbucket Pipes for Kestra: Build and Deploy Flows](https://kestra.io/docs/version-control-cicd/cicd/bitbucket-pipes.md)
 - [GitHub Actions for Kestra – CI/CD Workflow Examples](https://kestra.io/docs/version-control-cicd/cicd/github-action.md)
 - [GitLab CI for Kestra: Automate Flow Validation](https://kestra.io/docs/version-control-cicd/cicd/gitlab.md)
-- [CI/CD Helpers in Kestra: Local Dev and Read-Only Flows](https://kestra.io/docs/version-control-cicd/cicd/helpers.md)
 - [Terraform for Kestra – Manage Resources as Code](https://kestra.io/docs/version-control-cicd/cicd/terraform.md)
 - [Version Control with Git: Sync, Push, and Clone Flows](https://kestra.io/docs/version-control-cicd/git.md)
-- [Kestra VS Code Extension: Edit, Validate, and Run Flows](https://kestra.io/docs/version-control-cicd/vscode.md)
+- [Push Flows and Namespace Files to Git](https://kestra.io/docs/version-control-cicd/git/push-to-git.md)
+- [Sync Flows and Namespace Files from Git](https://kestra.io/docs/version-control-cicd/git/sync-from-git.md)
 - [Why Kestra: Simpler, More Powerful Orchestration](https://kestra.io/docs/why-kestra.md)
 - [Workflow Components in Kestra: Complete Reference](https://kestra.io/docs/workflow-components.md)
 - [afterExecution Tasks in Kestra – Post-Run Actions](https://kestra.io/docs/workflow-components/afterexecution.md)

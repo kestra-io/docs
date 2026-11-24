@@ -1,9 +1,11 @@
 ---
 import PixelEdges from "./PixelEdges.astro"
+import Rails from "./Rails.astro"
 ---
 
 <section class="why">
     <PixelEdges left="tall" right="cluster" />
+    <Rails />
     <div class="container">
         <header>
             <span class="eyebrow">Why we exist</span>
@@ -35,11 +37,13 @@ import PixelEdges from "./PixelEdges.astro"
     .why {
         @include section;
         position: relative;
+        border-top: 1px solid var(--ks-border-primary);
         background: var(--ks-background-body);
 
         .container {
             display: grid;
             grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+            position: relative;
             gap: 4rem;
 
             @include media-breakpoint-down(lg) {

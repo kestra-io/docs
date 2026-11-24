@@ -48,13 +48,14 @@ tasks:
               course: "{{ inputs.select_a_zoomcamp }}"
 
   - id: context_template
-    type: io.kestra.plugin.core.debug.Return
-    format: |
-      {% for row in outputs.search.rows %}
-        Section: {{ row.section }}
-        Question: {{ row.question }}
-        Text: {{ row.text }}
-      {% endfor %}
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      context: |
+        {% for row in outputs.search.rows %}
+          Section: {{ row.section }}
+          Question: {{ row.question }}
+          Text: {{ row.text }}
+        {% endfor %}
 
   - id: generate_response
     type: io.kestra.plugin.openai.ChatCompletion
@@ -71,7 +72,7 @@ tasks:
 
       If the CONTEXT doesn't contain the answer, return "NONE".
       QUESTION: {{ inputs.question }}
-      CONTEXT: {{ outputs.context_template.value }}
+      CONTEXT: {{ outputs.context_template.values.context }}
 
   - id: log_output
     type: io.kestra.plugin.core.log.Log
@@ -80,7 +81,7 @@ tasks:
 `,
         plugins: [
             "io.kestra.plugin.elasticsearch.Search",
-            "io.kestra.plugin.core.debug.Return",
+            "io.kestra.plugin.core.output.OutputValues",
             "io.kestra.plugin.openai.ChatCompletion",
             "io.kestra.plugin.core.log.Log",
         ],

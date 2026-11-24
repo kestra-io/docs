@@ -145,7 +145,7 @@ Improvements to the tools and workflows used to build and manage flows.
 
 ### VS Code extension: Namespace files
 
-The [VS Code extension](./version-control-cicd/05.vscode/index.md) now supports three namespace file commands: **Open namespace** (mounts a namespace as a live folder), **Upload file to namespace**, and **Sync folder to namespace**. The `kestra.namespaceFiles.exclude` setting controls which files are skipped during upload and sync.
+The [VS Code extension](./ide-extensions/01.vscode/index.md) now supports three namespace file commands: **Open namespace** (mounts a namespace as a live folder), **Upload file to namespace**, and **Sync folder to namespace**. The `kestra.namespaceFiles.exclude` setting controls which files are skipped during upload and sync.
 
 ### Plugin file renderers
 
@@ -165,7 +165,7 @@ A new `FORM` input type groups related inputs into a labeled multi-step wizard i
 
 ### `kestractl` IAM commands
 
-The `kestractl` CLI now supports IAM management: roles, role bindings, service accounts, and invitations. See the [kestractl reference](./kestra-cli/kestractl/index.md).
+The [`kestractl`](./kestra-cli/kestractl/index.md#installation) CLI now supports IAM management: roles, role bindings, service accounts, and invitations. See the [kestractl reference](./kestra-cli/kestractl/index.md).
 
 ### Plugin Artifacts
 

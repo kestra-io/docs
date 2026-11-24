@@ -526,7 +526,7 @@ After defining the data source, specify the columns to display in the chart. Eac
 | `TYPE` | Asset type (e.g., `io.kestra.plugin.ee.assets.VM`) |
 | `NAMESPACE` | Asset namespace |
 | `DISPLAY_NAME` | Asset display name |
-| `METADATA` | Asset metadata map. Use `metadataKey` in the column definition to group or filter by a specific metadata key. |
+| `METADATA` | Asset metadata map. Set `key` in the column definition to group or filter by a specific metadata key. |
 | `CREATED` | Asset creation timestamp |
 | `UPDATED` | Asset last updated timestamp |
 
@@ -543,7 +543,7 @@ Each entry in `data.columns` supports the following properties:
 | `agg` | Aggregation function: `AVG`, `COUNT`, `MAX`, `MIN`, or `SUM` |
 | `graphStyle` | Series render style for TimeSeries charts: `LINES`, `BARS`, or `POINTS` (defaults to `LINES` when `agg` is set) |
 | `columnAlignment` | Column text alignment for Table charts: `LEFT`, `RIGHT`, or `CENTER` |
-| `labelKey` | When `field: LABELS`, filters to a specific [label](../../05.workflow-components/08.labels/index.md) key |
+| `key` | When `field` is `LABELS`, the [label](../../05.workflow-components/08.labels/index.md) key to show. When `field` is `METADATA`, the asset metadata key to show. `labelKey` is accepted as an alias. |
 
 ### Filtering data
 

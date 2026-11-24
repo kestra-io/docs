@@ -17,7 +17,7 @@ Two executions that patch the same server, or a patch that runs while an invento
 ## Prerequisites
 
 - A Kestra Enterprise Edition or Cloud instance.
-- `LOCK` and `UNLOCK` permissions on the `ASSET` resource for the credentials that the lock tasks use. See [Connection properties for API-based tasks](../../07.enterprise/02.governance/01.assets/02.tasks-and-triggers/index.md#connection-properties-for-api-based-tasks).
+- `LOCK` and `UNLOCK` permissions on the `ASSET` resource for the credentials that the lock tasks use, plus `VIEW` on the `EXECUTION` resource in the flow's namespace, because `Acquire` locks on behalf of the execution. See [Connection properties for API-based tasks](../../07.enterprise/02.governance/01.assets/02.tasks-and-triggers/index.md#connection-properties-for-api-based-tasks).
 - An asset to lock. A lock can only be taken on an asset that exists.
 
 ## Register the resource as an asset

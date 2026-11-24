@@ -63,9 +63,9 @@ Task outputs inside a loop are not visible outside it by default. Declare an `ou
 - `STORE`: writes each iteration's outputs to an ION file in internal storage and keeps only its `uri` (preferred for large iteration counts). `loopOutputs()` cannot read declared output IDs in this mode.
 
 After the loop:
-- `outputs.<loop_id>.outputs` is a list of per-iteration results
-- `outputs.<loop_id>.outputs[n].outputs.<output_id>` accesses a specific iteration by index
-- `loopOutputs(outputs.<loop_id>.outputs, '<output_id>')` extracts one field across all iterations as a flat list
+- `outputs.<loop_id>.outputs` is a list of per-iteration results, in the order the iterations finished
+- `item.iteration` on each entry identifies the iteration; filter on it to read a specific iteration, because `outputs[n]` is the nth iteration to finish
+- `loopOutputs(outputs.<loop_id>.outputs, '<output_id>')` extracts one field across all iterations as a flat list, also in completion order
 
 ### Example: collect outputs and read them downstream
 
@@ -94,7 +94,7 @@ tasks:
 
   - id: log_first
     type: io.kestra.plugin.core.log.Log
-    message: "{{ outputs.enrich_regions.outputs[0].outputs.message }}"
+    message: "{{ outputs.enrich_regions.outputs | jq('.[] | select(.item.iteration == 0) | .outputs.message') | first }}"
 
   - id: log_all
     type: io.kestra.plugin.core.log.Log

@@ -1,9 +1,12 @@
 import type {HighlighterCore} from "shiki/core"
+import { yamlKeysInjection } from "@kestra-io/plumage"
+
+export { pebbleTransformer } from "@kestra-io/plumage"
 
 // Everything Shiki is behind `import()`: a static import here puts the core,
 // the themes and every grammar in the static closure of each importing route.
 const LANG_LOADERS = {
-    yaml: () => import("shiki/langs/yaml.mjs"),
+    yaml: () => import("shiki/langs/yaml.mjs").then((module) => ({ default: [...module.default, yamlKeysInjection] })),
     python: () => import("shiki/langs/python.mjs"),
     javascript: () => import("shiki/langs/javascript.mjs"),
     bash: () => import("shiki/langs/bash.mjs"),
@@ -59,8 +62,8 @@ async function createCore() {
     const [core, engine, light, dark] = await Promise.all([
         import("shiki/core"),
         import("shiki/engine/javascript"),
-        import("shiki/themes/github-light-default.mjs"),
-        import("shiki/themes/github-dark-default.mjs"),
+        import("@kestra-io/plumage/shiki/kestra-light"),
+        import("@kestra-io/plumage/shiki/kestra-dark"),
     ])
     // The JavaScript regex engine, not the default Oniguruma WASM one, which
     // workerd refuses to compile ("Wasm code generation disallowed by embedder").

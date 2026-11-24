@@ -296,6 +296,7 @@ In the event of a primary database failure, a self-healing workflow can automate
 ## Related concepts
 -   [What is a Runbook?](/resources/infrastructure/runbook)
 -   [Runbook Automation Tools](/resources/infrastructure/runbook-automation-tools-2026)
+-   [Day 2 Operations](/resources/infrastructure/day-2-operations)
 -   [Incident Management Workflow](/resources/infrastructure/incident-management-workflow)
 -   [Workflow Observability](/resources/infrastructure/workflow-observability)
 -   [IT Process Automation](/resources/infrastructure/it-process-automation)

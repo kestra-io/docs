@@ -67,7 +67,7 @@ The market for data platforms is diverse, with options ranging from direct compe
 
 ### 1. Kestra: The Declarative Orchestration Control Plane
 
-Kestra is not a direct, feature-for-feature replacement for Databricks' data processing capabilities. Instead, it offers a superior orchestration layer that sits *above* platforms like Databricks, providing a unified control plane for your entire data and AI stack. Workflows are defined in declarative YAML, making them easy to write, version, and manage.
+Kestra is not a direct, feature-for-feature replacement for Databricks' data processing capabilities. Instead, it offers a superior orchestration layer that sits *above* platforms like Databricks, providing a unified control plane for your entire data and AI stack. Workflows are defined in declarative YAML, making them easy to write, version, and manage. See [Databricks orchestration with Kestra](/orchestration/databricks) for the tasks and patterns.
 
 Kestra's language-agnostic architecture allows you to run Python, SQL, Shell, Docker containers, and more as first-class citizens within a single workflow. This is crucial for modern data teams that use a variety of tools. Instead of being locked into a single platform's orchestrator, Kestra lets you coordinate Databricks jobs, dbt transformations, cloud services, and infrastructure tasks from one place. Its event-driven capabilities enable complex, reactive workflows that can be triggered by file uploads, API calls, or messages.
 

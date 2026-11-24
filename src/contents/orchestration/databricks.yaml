@@ -1,0 +1,307 @@
+title: "Databricks Orchestration: Run Databricks Jobs from Kestra"
+description: "Orchestrate Databricks jobs, SQL and Unity Catalog from one YAML flow: submit runs and wait, gate on data quality, use ephemeral clusters, and chain Databricks with ingestion, dbt and alerts."
+
+tool:
+  name: "Databricks"
+  pluginClass: "io.kestra.plugin.databricks.job.SubmitRun"
+  category: "Data"
+  color: "#FF3621"
+
+hero:
+  title: "Orchestrate Databricks jobs across your whole stack."
+  description: "Databricks runs the compute. Kestra decides when a run starts, what feeds it, what checks it, and what runs next. Submit Databricks runs from a YAML flow, wait for them, gate on SQL checks, and chain them with ingestion, dbt and alerting in one execution history."
+  cta:
+    label: "Book a Demo"
+    href: "/demo"
+  secondaryCta:
+    label: "Get Started"
+    href: "/get-started"
+
+answer:
+  question: "How do you orchestrate Databricks jobs with Kestra?"
+  text: "Kestra orchestrates Databricks from outside the workspace. A YAML flow submits a Databricks run with the <code>SubmitRun</code> task, waits for it to finish, runs SQL checks on a SQL warehouse, and chains the result with ingestion, dbt and alerting. Flows start on a schedule, a file arrival, a new Unity Catalog table or an API call."
+  facts:
+    - label: "Kestra task"
+      value: "<code>databricks.job.SubmitRun</code> submits the run, waits for it, and adopts it after a worker loss"
+    - label: "Starts on"
+      value: "A schedule, a file arrival, a new Unity Catalog table, a webhook or an API call"
+    - label: "Runs on"
+      value: "Self-hosted (Docker, Kubernetes, air-gapped) or Kestra Cloud · Apache 2.0"
+
+updated: 2026-10-29
+
+howTo:
+  title: "How do I orchestrate a Databricks job with Kestra?"
+  intro: "Four steps take a Databricks job from a manual run to a scheduled, checked and alerted pipeline. The flow below puts them together."
+  steps:
+    - title: "Store the Databricks credentials as secrets"
+      description: "Save the workspace host and a personal access token (or an OAuth M2M service principal) as Kestra secrets, so no credential appears in the flow YAML."
+    - title: "Submit the run and wait for it"
+      description: "Use <code>io.kestra.plugin.databricks.job.SubmitRun</code> with an existing cluster or a cluster created in the same flow. <code>waitForCompletion</code> keeps the task running until Databricks reports a terminal state, and the run ID and console URL become task outputs."
+    - title: "Gate on a data quality query"
+      description: "Run a check with <code>io.kestra.plugin.databricks.sql.Query</code> on a SQL warehouse. If the query returns bad rows, a <code>Fail</code> task stops the flow before anything downstream reads the table."
+    - title: "Schedule it and alert on failure"
+      description: "Add a <code>Schedule</code> trigger, or start the flow on an event such as a new Unity Catalog table, an S3 file or a webhook. An <code>errors</code> branch posts to Slack with the execution ID when any step fails."
+  flow:
+    caption: "A complete flow: daily Databricks run, data quality gate, Slack alert on failure."
+    code: |
+      id: databricks_daily_orders
+      namespace: company.data
+
+      tasks:
+        - id: transform
+          type: io.kestra.plugin.databricks.job.SubmitRun
+          host: "{{ secret('DATABRICKS_HOST') }}"
+          authentication:
+            token: "{{ secret('DATABRICKS_TOKEN') }}"
+          runName: "daily-orders-{{ execution.id }}"
+          runTasks:
+            - existingClusterId: "{{ secret('DATABRICKS_CLUSTER_ID') }}"
+              taskKey: transform_orders
+              sparkPythonTask:
+                pythonFile: /Shared/transform_orders.py
+                sparkPythonTaskSource: WORKSPACE
+          waitForCompletion: PT1H
+          retry:
+            type: constant
+            interval: PT5M
+            maxAttempts: 2
+
+        - id: quality_check
+          type: io.kestra.plugin.databricks.sql.Query
+          host: "{{ secret('DATABRICKS_HOST') }}"
+          httpPath: "{{ secret('DATABRICKS_SQL_HTTP_PATH') }}"
+          accessToken: "{{ secret('DATABRICKS_TOKEN') }}"
+          sql: |
+            SELECT order_id
+            FROM main.sales.orders
+            WHERE order_date = current_date() AND amount IS NULL
+
+        - id: stop_on_bad_rows
+          type: io.kestra.plugin.core.execution.Fail
+          condition: "{{ outputs.quality_check.size > 0 }}"
+          errorMessage: "{{ outputs.quality_check.size }} orders without amount for today"
+
+      errors:
+        - id: alert
+          type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          payload: |
+            {"text": "Databricks pipeline {{ flow.id }} failed: execution {{ execution.id }}"}
+
+      triggers:
+        - id: daily
+          type: io.kestra.plugin.core.trigger.Schedule
+          cron: "0 6 * * *"
+
+nutshell: "Databricks Lakeflow Jobs schedule work inside the workspace. Kestra covers everything around it: it starts Databricks runs when upstream data is ready, runs SQL quality gates before anyone reads the result, creates and deletes clusters per run, and chains Databricks with <a href='/orchestration/airbyte'>Airbyte</a> ingestion, <a href='/orchestration/dbt-core'>dbt</a> transforms and <a href='/orchestration/slack'>Slack</a> alerts in one flow. Databricks keeps doing the compute; Kestra gives one execution history across every tool."
+
+pillars:
+  title: "Above the Databricks job scheduler."
+  subtitle: "Databricks runs the notebooks, the Spark code and the SQL warehouse. Kestra runs the steps around them: what triggers a run, what it depends on, which checks it must pass, and where the cross-tool audit trail lives."
+  items:
+    - icon: "mdi:play-circle-outline"
+      title: "Submit runs and wait, without duplicates"
+      description: "<code>SubmitRun</code> sends one or more tasks (notebook, Spark Python, Spark JAR, Spark Submit, Python wheel or pipeline) as a Databricks run and waits for a terminal state. The submission is idempotent: if the Kestra worker is lost mid-run, the resubmitted task adopts the run already in flight instead of launching a second one."
+    - icon: "mdi:lightning-bolt-outline"
+      title: "Event-driven starts, inside and outside Databricks"
+      description: "Start a flow when a new table appears in a Unity Catalog schema with the <code>unitycatalog.table.Trigger</code>, when a Lakebase query returns rows, or on events Databricks does not see: an S3 file, a Kafka message, a webhook, or another flow finishing."
+    - icon: "mdi:pipe-disconnected"
+      title: "One pipeline across ingestion, Databricks and dbt"
+      description: "Ingestion with <a href='/orchestration/airbyte'>Airbyte</a>, the Databricks run, a <a href='/orchestration/dbt-core'>dbt</a> build and a notification run as ordered steps of one flow. A failed dbt step retries on its own; the Databricks run does not start again."
+    - icon: "mdi:server-minus"
+      title: "Ephemeral clusters per run"
+      description: "<code>CreateCluster</code> provisions a cluster, the job runs on it, and <code>DeleteCluster</code> removes it in the same flow, so compute exists only for the job. A scheduled audit flow can also find clusters left running outside working hours."
+    - icon: "mdi:shield-check-outline"
+      title: "SQL quality gates before downstream reads"
+      description: "<code>sql.Query</code> runs checks on a cluster or SQL warehouse and returns the row count. A <code>Fail</code> or <code>If</code> task turns that result into a gate, so a bad load stops the pipeline instead of reaching dashboards."
+    - icon: "mdi:database-lock-outline"
+      title: "Unity Catalog as code"
+      description: "Create and update catalogs, schemas, volumes and grants from a flow, read table metadata, and run compliance checks on permissions on a schedule. Every change lands in the execution history with the run that made it."
+
+useCases:
+  title: "How data teams use Databricks and Kestra"
+  subtitle: "Patterns data platform teams run in production. Each one shows the flow end to end, with the real plugin classes in play."
+  items:
+    - badge: "Full pipeline"
+      badgeIcon: "mdi:pipe-disconnected"
+      title: "Ingest, transform in Databricks, then run dbt"
+      description: "<a href='/orchestration/airbyte'>Airbyte</a> loads raw data, Kestra submits the Databricks transformation and waits for it, then runs <a href='/orchestration/dbt-core'>dbt</a> on the curated tables. Slack confirms or alerts. Each step retries on its own."
+      flow:
+        - node: "airbyte sync"
+          label: "ingest"
+          pluginClass: "io.kestra.plugin.airbyte.connections.Sync"
+        - node: "databricks run"
+          label: "transform"
+          pluginClass: "io.kestra.plugin.databricks.job.SubmitRun"
+        - node: "dbt build"
+          label: "models"
+          pluginClass: "io.kestra.plugin.dbt.cli.DbtCLI"
+        - node: "notify"
+          label: "Slack"
+          pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      items:
+        - title: "Run ID passed forward"
+          description: "The Databricks run ID and console URL are task outputs available to every later step."
+        - title: "Per-step retries"
+          description: "A dbt failure retries dbt only; the Databricks run is not resubmitted."
+        - title: "One execution history"
+          description: "Ingestion, compute and transformation share one execution ID and one log."
+          wide: true
+    - badge: "Cost control"
+      badgeIcon: "mdi:server-minus"
+      title: "Ephemeral cluster for each run"
+      description: "Create a cluster sized for the job, run the job on it, and delete the cluster when the job ends, even if the job fails, so no cluster is left running between runs."
+      flow:
+        - node: "schedule"
+          label: "nightly"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        - node: "create cluster"
+          label: "per run"
+          pluginClass: "io.kestra.plugin.databricks.cluster.CreateCluster"
+        - node: "run job"
+          label: "wait"
+          pluginClass: "io.kestra.plugin.databricks.job.CreateJob"
+        - node: "delete cluster"
+          label: "always"
+          pluginClass: "io.kestra.plugin.databricks.cluster.DeleteCluster"
+      items:
+        - title: "Cluster ID as an output"
+          description: "The job runs on the cluster the previous task created."
+        - title: "Cleanup on failure"
+          description: "The delete step runs even when the job fails."
+        - title: "Audit idle clusters"
+          description: "A scheduled flow lists clusters still running outside working hours."
+          wide: true
+    - badge: "Event-driven"
+      badgeIcon: "mdi:lightning-bolt-outline"
+      title: "React to a new Unity Catalog table"
+      description: "The Unity Catalog table trigger polls a schema and starts the flow when a table appears. The flow reads its metadata, runs a validation query and posts the result."
+      flow:
+        - node: "table trigger"
+          label: "new table"
+          pluginClass: "io.kestra.plugin.databricks.unitycatalog.table.Trigger"
+        - node: "get table"
+          label: "schema"
+          pluginClass: "io.kestra.plugin.databricks.unitycatalog.table.Get"
+        - node: "validate"
+          label: "SQL check"
+          pluginClass: "io.kestra.plugin.databricks.sql.Query"
+        - node: "notify"
+          label: "Slack"
+          pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      items:
+        - title: "No polling script"
+          description: "The trigger stores the tables it has already seen in the KV Store."
+        - title: "Create or update"
+          description: "React to new tables, updated tables, or both."
+        - title: "Typed metadata"
+          description: "Column definitions come from the Get task, ready for checks."
+          wide: true
+
+quotes: []
+
+blueprints:
+  title: "Blueprints for Databricks orchestration."
+  items:
+    - name: "On-demand cluster"
+      blueprintId: "on-demand-cluster-job"
+      title: "Run a job on an on-demand Databricks cluster"
+      description: "Create a cluster, run a Databricks job on it, and delete the cluster in the same flow, so compute exists only while the job runs."
+    - name: "SQL and Python"
+      blueprintId: "databricks-sql"
+      title: "Query Databricks SQL and process the result in Python"
+      description: "Run a SQL query on a Databricks warehouse, convert the result to CSV and load it into Pandas for checks or reporting."
+    - name: "Grant compliance"
+      blueprintId: "databricks-unity-catalog-grant-compliance-gate"
+      title: "Unity Catalog grant compliance gate"
+      description: "Read the grants on a Unity Catalog object and stop the flow when they drift from the expected policy."
+
+comparison:
+  title: "Kestra vs the orchestration options Databricks teams evaluate"
+  subtitle: "When Lakeflow Jobs cover scheduling inside the workspace but the pipeline around Databricks needs more, here is how the options compare."
+  competitors:
+    - name: "Databricks Lakeflow Jobs"
+      logoAsset: "databricks-workflows"
+    - name: "Apache Airflow"
+      logoAsset: "airflow"
+    - name: "Dagster"
+      logoAsset: "dagster"
+  rows:
+    - feature: "Submit a Databricks run and wait for it"
+      kestra: "✓ SubmitRun / CreateJob tasks"
+      values:
+        - "Native"
+        - "Databricks provider operators"
+        - "dagster-databricks integration"
+    - feature: "Steps outside Databricks (other clouds, on-prem, SaaS)"
+      kestra: "✓ Native plugins in the same flow"
+      values:
+        - "Limited to workspace tasks and API calls"
+        - "Provider operators"
+        - "Python resources"
+    - feature: "Event triggers outside Databricks (S3, Kafka, webhooks)"
+      kestra: "✓ Native triggers"
+      values:
+        - "File arrival and table update triggers on Databricks storage"
+        - "Sensors and datasets"
+        - "Sensors, Python required"
+    - feature: "Workflow definition"
+      kestra: "✓ Declarative YAML"
+      values:
+        - "UI, JSON or Asset Bundles"
+        - "Python DAGs"
+        - "Python assets"
+    - feature: "Infrastructure and business steps in the same pipeline"
+      kestra: "✓ Terraform, ServiceNow and {totalPlugins}+ plugins"
+      values:
+        - "No"
+        - "Provider-dependent"
+        - "Python code"
+    - feature: "Runs without a Databricks dependency"
+      kestra: "✓ Self-hosted or cloud"
+      values:
+        - "Databricks only"
+        - "Self-hosted or managed"
+        - "Self-hosted or managed"
+
+faq:
+  - question: "What's the best orchestrator for Databricks?"
+    answer: "It depends on where the pipeline lives. If every step runs inside the Databricks workspace, Lakeflow Jobs (formerly Databricks Workflows) is the simplest choice. When the pipeline also involves ingestion tools, other warehouses, dbt, infrastructure or business systems, an external orchestrator fits better. Kestra does this in declarative YAML with native Databricks tasks; Airflow and Dagster do it in Python."
+  - question: "What is the difference between Databricks Lakeflow Jobs and Kestra?"
+    answer: "Lakeflow Jobs schedules and runs tasks inside one Databricks workspace. Kestra runs above it: it submits Databricks runs, waits for them, and chains them with steps Databricks does not run, such as Airbyte syncs, dbt builds, Terraform, ServiceNow tickets or Slack alerts, with one execution history across all of them. Kestra works with Databricks, not instead of it."
+  - question: "Which Databricks task types can Kestra run?"
+    answer: "The <code>SubmitRun</code> and <code>CreateJob</code> tasks accept notebook, Spark Python, Spark JAR, Spark Submit, Python wheel and pipeline tasks. The plugin also runs SQL on clusters and SQL warehouses, the Databricks CLI, cluster creation and deletion, Unity Catalog operations, Lakebase queries and Genie questions."
+  - question: "Can Kestra trigger a flow when a Databricks table changes?"
+    answer: "Yes. The <code>io.kestra.plugin.databricks.unitycatalog.table.Trigger</code> polls a Unity Catalog schema and starts a flow for tables created or updated since the previous check, and the Lakebase trigger starts a flow when a SQL query returns rows."
+  - question: "How do I avoid paying for idle Databricks clusters?"
+    answer: "Create the cluster in the flow with <code>CreateCluster</code>, run the job on it, and delete it with <code>DeleteCluster</code> at the end, including when the job fails. A separate scheduled flow can list clusters still running outside working hours and alert or terminate them."
+  - question: "Does Kestra replace Databricks?"
+    answer: "No. Databricks keeps running the compute, the notebooks and the SQL warehouse. Kestra decides when Databricks work runs and connects it to the rest of the stack. Kestra is open source under Apache 2.0, runs self-hosted on Docker or Kubernetes or on Kestra Cloud, and has no dependency on Databricks to run."
+
+seeHow:
+  title: "Ready to orchestrate your Databricks pipelines?"
+  description: "Submit runs, gate on data quality, use ephemeral clusters, and chain Databricks with ingestion and dbt in one flow. Open source, self-hosted, event-driven."
+  cta:
+    label: "Book a Demo"
+    href: "/demo"
+
+resources:
+  title: "More on Databricks and Kestra"
+  items:
+    - kind: "resource"
+      title: "Databricks Workflows alternatives"
+      description: "When teams look beyond Databricks Workflows, and how the main orchestrators compare."
+      href: "/resources/data/databricks-workflows-alternatives"
+    - kind: "resource"
+      title: "Databricks vs Snowflake"
+      description: "How the two platforms differ for data engineering, analytics and AI workloads."
+      href: "/resources/data/databricks-vs-snowflake"
+    - kind: "blog"
+      title: "Simplifying Databricks Workflow Management with Kestra"
+      description: "Running and coordinating Databricks jobs from Kestra alongside the rest of the data stack."
+      href: "/blogs/kestra-over-databricks-workflows"
+    - kind: "plugin"
+      title: "Databricks plugin reference"
+      description: "Every Databricks task and trigger with its properties."
+      href: "/plugins/plugin-databricks"

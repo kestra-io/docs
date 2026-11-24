@@ -109,6 +109,12 @@ Additionally:
 - **{props.totalPlugins}+ plugins, and writing your own is documented.** They cover the storage, network and compute systems vRO estates usually integrate with by hand, such as Infoblox, NetBox and SolarWinds, so the integration code your team wrote and maintained for vRO is replaced by a plugin someone else maintains. Extending it further is a normal engineering task rather than a professional services engagement.
 - **You can prove it before you buy it.** Start by running the Migration Assistant on your exports to see what your migration involves, then prove it on real workflows. [Section 8](#section-8) covers how to do that, from an assessment on your own machine to a proof of concept run with us.
 
+<p id="demo-video"><strong>See it running.</strong> This 8-minute demo shows Kestra running the VM lifecycle on vSphere, from the request to the audit trail. Only the vCenter steps are tied to VMware, so you can swap in another hypervisor whenever you want to try one.</p>
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/brZo-5NdP2E" title="Kestra replacing vRA: the VM lifecycle on vSphere" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ### 1.4 What your security and platform teams will ask
 
 The questions that stop a migration usually come from the security review and the platform team rather than from the workflow inventory: where it runs, whether it can be air-gapped, how identity and secrets work, what the audit trail looks like, and how it behaves across segmented network zones. All of them are answerable, and none of them need to wait until the end. [**Dataport**](/stories/dataport), which provides IT services to German public administration and had no SaaS option open to it, validated compliance on a self-hosted deployment in three weeks.
@@ -408,7 +414,7 @@ Kept, with one open decision.
 - The CMDB, IPAM, DNS, Terraform state and configuration state all stay. Kestra reads them and writes to them from inside flows, the same way vRO did. Kestra has plugins for Infoblox, NetBox and SolarWinds IPAM.
 - The open decision is the **vRA deployment object**. This is the record vRA kept of everything it provisioned: what it is, who requested it, which project it belongs to, where it is in its lifecycle, and which day-2 actions are available against it. When vRA goes, that record has to live somewhere, and there are two possibilities: it can become a **Kestra Asset**, which puts the inventory and the automation that acts on it in the same place, and the existing records can be loaded in bulk, for example from a CSV export. Or it lands in the **CMDB**. Neither is wrong, and the choice usually follows the catalog decision in Part 1. Teams that keep the catalog in the ITSM tend to keep the inventory there too. If you keep both, decide which fields each system owns and how they stay in step.
 
-Resource actions, the day-2 operations users invoke against a deployment, become ordinary flows. What that takes depends on the inventory decision above. If the inventory lands in Kestra Assets, each action is a flow bound to the asset, so the resource and the actions available against it sit together. If the inventory stays in your CMDB, the flow looks its target up there instead, and where the list of available actions lives becomes a design decision of its own.
+Resource actions, the [day-2 operations](/resources/infrastructure/day-2-operations) users invoke against a deployment, become ordinary flows. What that takes depends on the inventory decision above. If the inventory lands in Kestra Assets, each action is a flow bound to the asset, so the resource and the actions available against it sit together. If the inventory stays in your CMDB, the flow looks its target up there instead, and where the list of available actions lives becomes a design decision of its own.
 
 </Fragment>
 </ExplorerPart>
@@ -964,6 +970,8 @@ The final proposal should make clear what the organization will spend, what it e
 ## 8. Getting started
 
 There are three ways to start. The quickest is to run the Migration Assistant on your own estate, which needs no conversation and no Kestra install. From there, the next step is a migration proof of concept with us, built on what the assessment found. A vRA migration usually crosses several systems, and many of the capabilities needed to test it properly are available only in Enterprise Edition. If you want to explore the product and its authoring model first, you can install Kestra Open Source without contacting us.
+
+Want to see it running before you install anything? Watch the [8-minute demo](https://www.youtube.com/watch?v=brZo-5NdP2E).
 
 ### 8.1 Run the assessment on your own estate
 

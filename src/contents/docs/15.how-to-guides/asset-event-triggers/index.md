@@ -133,7 +133,7 @@ Execute `load_staging_orders`. When `load_orders` succeeds, Kestra creates `ware
 - **Always set `events`.** A trigger without `events` never fires.
 - **Expect `UPDATED` on every producer run.** Kestra emits `UPDATED` each time a successful task writes the asset, even when the data didn't change. If the downstream flow must only run on real changes, compare a value such as a row count or a `metadata` field inside the flow before doing the work.
 - **Don't use `USED` to detect new data.** `USED` fires every time a task reads or writes the asset, including failed runs.
-- **Match the namespace exactly.** The `namespace` filter doesn't include child namespaces. Assets in `company.data.sales` don't match `namespace: company.data`. Global assets have no namespace and only match a trigger without a `namespace` filter.
+- **Match the namespace exactly.** The `namespace` filter doesn't include child namespaces. Assets in `company.data.sales` don't match `namespace: company.data`. Global assets have no namespace and only match a trigger without a `namespace` filter. An `UPDATED` event carries the asset as the task declared it, so a producer that leaves out `namespace` on a later run doesn't match either.
 - **Use the full type.** `assetType: TABLE` only matches assets whose type is the literal string `TABLE`.
 - **Don't let a flow trigger itself.** If the downstream flow writes an asset that matches its own trigger filters, each run starts another. Give its outputs metadata or a type the filter excludes, as `model_layer: mart` does here.
 
