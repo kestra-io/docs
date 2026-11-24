@@ -94,7 +94,7 @@ const STATS = [
                 const step = (now: number) => {
                     const final = el.dataset.count!
                     const end = Number(final.replace(/\D/g, ""))
-                    const t = Math.min(1, (now - start) / 1400)
+                    const t = Math.min(1, Math.max(0, (now - start) / 1400))
                     const eased = 1 - Math.pow(1 - t, 3)
                     el.textContent = format.format(Math.round(end * eased))
                     if (t < 1) requestAnimationFrame(step)
@@ -146,16 +146,31 @@ const STATS = [
 </script>
 
 <style lang="scss">
-    @use "/src/components/about/style/section" as *;
     @use "./style/platform" as *;
 
     .cards {
-        @include card-grid(3);
+        @include ruled-grid(3);
 
         li {
-            @include card;
+            padding: 2.25rem var(--inset) 2.5rem;
 
-            position: relative;
+            &:hover :global(.icon) {
+                color: var(--ks-content-link);
+            }
+        }
+
+        h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            margin: 0;
+            font-size: $font-size-md;
+            line-height: 1.55;
+            color: var(--ks-content-secondary);
         }
 
         a {
@@ -169,45 +184,30 @@ const STATS = [
             }
         }
 
-        li:has(a):hover {
-            border-color: var(--ks-content-link);
+        :global(.icon) {
+            width: 1.75rem;
+            height: 1.75rem;
+            margin-bottom: 1.25rem;
+            color: var(--ks-content-tertiary);
+            transition: color 0.3s ease;
         }
     }
 
-    .cards :global(.icon) {
-        width: 1.75rem;
-        height: 1.75rem;
-        margin-bottom: 1rem;
-        color: var(--ks-content-link);
-    }
-
     .stats {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        margin: 4rem 0 0;
-        border-top: 1px solid var(--ks-border-secondary);
+        @include ruled-grid(2, $hover: null);
 
-        @include media-breakpoint-down(md) {
-            grid-template-columns: minmax(0, 1fr);
+        border-top: 0;
+
+        @include media-breakpoint-down(xl) {
+            margin-top: 1rem;
+            border-top: var(--rule);
         }
 
         div {
             display: flex;
             flex-direction: column-reverse;
             gap: 1rem;
-            padding: 3rem 0 0;
-
-            & + div {
-                padding-left: 3rem;
-                border-left: 1px solid var(--ks-border-secondary);
-
-                @include media-breakpoint-down(md) {
-                    margin-top: 2.5rem;
-                    padding-left: 0;
-                    border-left: 0;
-                    border-top: 1px solid var(--ks-border-secondary);
-                }
-            }
+            padding: 3rem var(--inset);
         }
 
         dd {

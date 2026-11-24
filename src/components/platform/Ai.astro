@@ -75,15 +75,20 @@ triggers:
 >
     <PixelEdges left="wide" right="cluster" />
     <Rails dark>
-        <SectionHead id="ai-h" align="start">
-            AI runs inside your workflows, <span>not around them.</span>
-            <Fragment slot="lead">
-                Run models as steps in deterministic flows, let AI assistants
-                call your flows as tools, and pick the model yourself. Retries,
-                approvals, and execution history apply to AI steps like
-                everything else.
-            </Fragment>
-        </SectionHead>
+        <div class="top">
+            <SectionHead id="ai-h" align="start">
+                AI runs inside your workflows, <span>not around them.</span>
+                <Fragment slot="lead">
+                    Run models as steps in deterministic flows, let AI
+                    assistants call your flows as tools, and pick the model
+                    yourself. Retries, approvals, and execution history apply to
+                    AI steps like everything else.
+                </Fragment>
+            </SectionHead>
+            <a class="btn-ghost" href="/docs/develop-with-ai">
+                Explore AI in Kestra
+            </a>
+        </div>
 
         <ul class="cards">
             {CARDS.map((card) => (
@@ -123,15 +128,12 @@ triggers:
                 </div>
             </TabPanel>
         </TabGroup>
-
-        <a class="more" href="/docs/develop-with-ai">
-            Explore AI in Kestra <span class="arrow">→</span>
-        </a>
     </Rails>
 </section>
 
 <style lang="scss">
     @use "/src/components/about/style/section" as *;
+    @use "./style/platform" as *;
 
     .ai {
         @include dark-band;
@@ -152,28 +154,73 @@ triggers:
             color: rgba(255, 255, 255, 0.72);
         }
 
-        :global(.ks-tabs.on-dark > .tablist) {
+        &#ai :global(.ks-tabs.on-dark > .tablist) {
+            position: relative;
+            display: inline-grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0;
             margin-bottom: 1.5rem;
+            padding: 0.25rem;
+            border: 1px solid #{$dark-band-line};
+            border-radius: 0.625rem;
+        }
+
+        &#ai :global(.ks-tabs.on-dark > .tablist)::before {
+            content: "";
+            position: absolute;
+            top: 0.25rem;
+            bottom: 0.25rem;
+            left: 0.25rem;
+            width: calc(50% - 0.25rem);
+            border-radius: 0.375rem;
+            background: rgba(255, 255, 255, 0.1);
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+
+            @media (prefers-reduced-motion: reduce) {
+                transition: none;
+            }
+        }
+
+        &#ai
+            :global(.tablist:has(> :last-child[aria-selected="true"]))::before {
+            transform: translateX(100%);
+        }
+
+        &#ai :global(.ks-tabs.on-dark > .tablist > [role="tab"]) {
+            position: relative;
+            padding: 0.5rem 1.125rem;
+            border: 0;
+            border-radius: 0.375rem;
+            background: transparent;
+            box-shadow: none;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.55);
+            transition: color 0.2s ease;
+        }
+
+        &#ai :global(.ks-tabs.on-dark > .tablist > [role="tab"]:hover),
+        &#ai
+            :global(
+                .ks-tabs.on-dark > .tablist > [role="tab"][aria-selected="true"]
+            ) {
+            color: #ffffff;
         }
     }
 
     .cards {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 1rem;
-        margin: 0 0 3.5rem;
-        padding: 0;
-        list-style: none;
+        @include ruled-grid(
+            3,
+            $dark-band-line,
+            #ffffff,
+            rgba(255, 255, 255, 0.04)
+        );
 
-        @include media-breakpoint-down(lg) {
-            grid-template-columns: 1fr;
-        }
+        margin-bottom: 3.5rem;
 
         li {
-            padding: 1.5rem;
-            border: 1px solid $dark-band-line;
-            border-radius: 0.875rem;
-            background: rgba(255, 255, 255, 0.03);
+            padding: 2.25rem var(--inset) 2.5rem;
         }
 
         h3 {
@@ -205,15 +252,23 @@ triggers:
         max-height: 30rem;
     }
 
-    .more {
-        display: inline-block;
-        margin-top: 2rem;
-        font-weight: 600;
-        color: #ffffff;
-        text-decoration: underline;
-        text-decoration-color: rgba(255, 255, 255, 0.3);
-        text-underline-offset: 0.25em;
+    .top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1.5rem 3rem;
 
-        @include arrow-nudge;
+        @include media-breakpoint-down(lg) {
+            flex-direction: column;
+            margin-bottom: 3rem;
+
+            :global(.section-head) {
+                margin-bottom: 0;
+            }
+        }
+
+        > a {
+            flex: none;
+        }
     }
 </style>
