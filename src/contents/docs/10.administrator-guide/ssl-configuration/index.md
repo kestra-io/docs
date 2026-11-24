@@ -206,75 +206,9 @@ Ensure that you expose the secure port of the connection if different from the d
 
 ## Outbound SSL configuration
 
-If Kestra tasks make outbound calls to services that require SSL, configure the JVM to trust your certificates by setting the following options in the `JAVA_OPTS` environment variable in your [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md):
+The `micronaut.server.ssl.trustStore` setting above applies only to connections made to the Kestra webserver. Outbound HTTPS calls from tasks, including calls to the Kestra API at `kestra.url`, use the JVM truststore instead.
 
-```yaml
-JAVA_OPTS: "-Djavax.net.ssl.trustStore=/app/ssl/truststore.jks -Djavax.net.ssl.trustStorePassword=changeit"
-```
-
-The following example shows the full service configuration with `JAVA_OPTS` set:
-
-```yaml
-  kestra:
-    image: registry.kestra.io/docker/kestra:latest
-    pull_policy: always
-    user: "root"
-    command: server standalone --worker-thread=128
-    volumes:
-      - kestra-data:/app/storage
-      - /var/run/docker.sock:/var/run/docker.sock
-      - tmp-kestra:/tmp/kestra-wd
-      - /app/ssl:/app/ssl
-    ports:
-      - "8443:8443"
-    environment:
-      JAVA_OPTS: "-Djavax.net.ssl.trustStore=/app/ssl/truststore.jks -Djavax.net.ssl.trustStorePassword=changeit"
-      KESTRA_CONFIGURATION: |
-        micronaut:
-          security:
-            x509:
-              enabled: false
-          ssl:
-            enabled: true
-          server:
-            ssl:
-              port: 8443
-              enabled: true
-              clientAuthentication: want
-              keyStore:
-                path: file:/app/ssl/server.p12
-                password: changeit
-                type: PKCS12
-              trustStore:
-                path: file:/app/ssl/truststore.jks
-                password: changeit
-                type: JKS
-        datasources:
-          postgres:
-            url: jdbc:postgresql://postgres:5432/kestra
-            driver-class-name: org.postgresql.Driver
-            username: kestra
-            password: k3str4
-        kestra:
-          server:
-            basic-auth:
-              enabled: false
-              username: "admin@kestra.io" # it must be a valid email address
-              password: Admin1234! # it must be at least 8 characters long with uppercase letter and a number
-          repository:
-            type: postgres
-          storage:
-            type: local
-            local:
-              base-path: "/app/storage"
-          queue:
-            type: postgres
-          tasks:
-            tmp-dir:
-              path: /tmp/kestra-wd/tmp
-          ports:
-            - "8443:8443"
-```
+To trust an internal CA for those calls, build a truststore from the Kestra image's `cacerts` plus your root CA and pass it with `JAVA_OPTS`. Don't reuse the `truststore.jks` created above: it holds only your CA, and pointing the JVM at it stops Kestra from trusting public endpoints. See [Trust an internal CA for outbound HTTPS connections](../custom-ca/index.md) for the Docker, Docker Compose, and Kubernetes steps.
 
 ## CSRF protection
 
@@ -435,4 +369,4 @@ NAME        READY   SECRET      AGE
 kestra-tls  True    kestra-tls  5m
 ```
 
-For a step-by-step guide to adding a self-signed or internal CA to the JVM truststore in a Kubernetes deployment, see [Trusting a custom CA for outbound connections on Kubernetes](../custom-ca-kubernetes/index.md).
+To trust a self-signed or internal CA for outbound calls from tasks, see [Trust an internal CA for outbound HTTPS connections](../custom-ca/index.md).

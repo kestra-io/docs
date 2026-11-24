@@ -301,3 +301,7 @@
   to: "/docs/develop-with-ai$1"
 - regexp: "^/docs/how-to-guides/selected-plugin-installation(\\.md|/.*)?$"
   to: "/docs/how-to-guides/slim-image-plugins"
+- regexp: "^/docs/administrator-guide/custom-ca-kubernetes\\.md$"
+  to: "/docs/administrator-guide/custom-ca.md"
+- regexp: "^/docs/administrator-guide/custom-ca-kubernetes(/.*)?$"
+  to: "/docs/administrator-guide/custom-ca"

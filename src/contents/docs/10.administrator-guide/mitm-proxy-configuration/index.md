@@ -16,22 +16,31 @@ Route and inspect Kestra’s outbound HTTP/S traffic through an MITM proxy. In s
 
 ### 1. Create a Java truststore with the MITM CA certificate
 
-Import the MITM CA certificate into a Java keystore so the JVM trusts intercepted TLS connections:
+Build a truststore from the Kestra image's default `cacerts` and add the MITM CA certificate, so the JVM trusts both intercepted connections and hosts that bypass the proxy. Starting from an empty truststore breaks every connection that doesn't go through the proxy, such as hosts listed in `http.nonProxyHosts`.
 
 ```bash
-keytool -importcert   -alias mitmproxy-ca   -storepass changeit   -keystore truststore.jks   -trustcacerts   -file mitmproxy-ca.crt   -noprompt
+KESTRA_IMAGE=registry.kestra.io/docker/kestra:latest  # replace with the tag you deploy
+
+docker run --rm --entrypoint cat "$KESTRA_IMAGE" \
+  /opt/java/openjdk/lib/security/cacerts > truststore.p12
+
+docker run --rm --user "$(id -u):$(id -g)" -v "$PWD:/work" \
+  --entrypoint keytool "$KESTRA_IMAGE" \
+  -importcert -noprompt \
+  -alias mitmproxy-ca \
+  -file /work/mitmproxy-ca.crt \
+  -keystore /work/truststore.p12 \
+  -storepass changeit
 ```
 
-:::alert{type="info"}
-Tip: prefer a strong password instead of `changeit` in production. You can also use PKCS12 by setting `-deststoretype PKCS12`.
-:::
+Rebuild the truststore on every Kestra upgrade. See [Trust an internal CA for outbound HTTPS connections](../custom-ca/index.md) for verification and rotation steps.
 
 ### 2. (Kubernetes) Create a Secret containing the truststore
 
-Create a Kubernetes secret from the `truststore.jks`:
+Create a Kubernetes secret from `truststore.p12`:
 
 ```bash
-kubectl create secret generic kestra-ssl   --from-file=truststore.jks   -n kestra
+kubectl create secret generic kestra-ssl --from-file=truststore.p12 -n kestra
 ```
 
 This secret will be mounted into Kestra pods.
@@ -42,7 +51,7 @@ The [Observability and Networking configuration](../../configuration/03.observab
 
 ### 1. Micronaut / Kestra configuration
 
-Add proxy settings and truststore configuration to your [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) (merged via Helm `configurations.application` or a config file):
+Add proxy settings to your [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) (merged via Helm `configurations.application` or a config file):
 
 ```yaml
 ## values.yaml
@@ -53,13 +62,6 @@ configurations:
         client:
           proxy-address: "your.proxy.net:8000"
           proxy-type: HTTP
-      server:
-        ssl:
-          clientAuthentication: want
-          trustStore:
-            path: "file:/app/ssl/truststore.jks"
-            password: "changeit"
-            type: "JKS"
 ```
 
 #### Bypass the proxy for internal hosts
@@ -102,7 +104,7 @@ services:
       - kestra-data:/app/storage
       - /var/run/docker.sock:/var/run/docker.sock
       - tmp-kestra:/tmp/kestra-wd
-      - ./ssl:/app/ssl   # ensure ./ssl/truststore.jks exists on host
+      - ./ssl:/app/ssl   # ensure ./ssl/truststore.p12 exists on host
 ```
 
 ### 3. JVM environment variables (JAVA_OPTS)
@@ -114,9 +116,9 @@ common:
   extraEnv:
     - name: JAVA_OPTS
       value: >-
-        -Djavax.net.ssl.trustStore=/app/ssl/truststore.jks
+        -Djavax.net.ssl.trustStore=/app/ssl/truststore.p12
         -Djavax.net.ssl.trustStorePassword=changeit
-        -Djavax.net.ssl.trustStoreType=JKS
+        -Djavax.net.ssl.trustStoreType=PKCS12
         -Dhttp.proxyHost=your.proxy.net
         -Dhttp.proxyPort=8000
         -Dhttps.proxyHost=your.proxy.net
@@ -130,13 +132,13 @@ common:
 services:
   kestra:
     environment:
-      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/app/ssl/truststore.jks -Djavax.net.ssl.trustStorePassword=changeit -Djavax.net.ssl.trustStoreType=JKS -Dhttp.proxyHost=your.proxy.net -Dhttp.proxyPort=8000 -Dhttps.proxyHost=your.proxy.net -Dhttps.proxyPort=8000 -Dhttp.nonProxyHosts=localhost|127.0.0.1|your.nexus.domain.com
+      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/app/ssl/truststore.p12 -Djavax.net.ssl.trustStorePassword=changeit -Djavax.net.ssl.trustStoreType=PKCS12 -Dhttp.proxyHost=your.proxy.net -Dhttp.proxyPort=8000 -Dhttps.proxyHost=your.proxy.net -Dhttps.proxyPort=8000 -Dhttp.nonProxyHosts=localhost|127.0.0.1|your.nexus.domain.com
 ```
 
 ## Troubleshooting
 
 1. **TLS handshake errors**
-   Verify `truststore.jks` contains the correct CA (`keytool -list -keystore truststore.jks`).
+   Verify `truststore.p12` contains the MITM CA (`keytool -list -keystore truststore.p12 -storepass changeit -alias mitmproxy-ca`).
 
 2. **Requests not reaching the proxy**
    Confirm `http.proxyHost` / `https.proxyHost` and `http.nonProxyHosts` are correct.
