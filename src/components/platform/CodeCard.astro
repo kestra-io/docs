@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components"
 import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
 
 interface Props {
@@ -7,10 +8,18 @@ interface Props {
     marks?: Record<string, [number, number]>
     dots?: boolean
     dark?: boolean
+    editor?: boolean
     class?: string
 }
 
-const { file, code, marks = {}, dots = false, dark = false } = Astro.props
+const {
+    file,
+    code,
+    marks = {},
+    dots = false,
+    dark = false,
+    editor = false,
+} = Astro.props
 
 const escape = (text: string) =>
     text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
@@ -130,12 +139,21 @@ const HTML = code
                 <i />
             </span>
         )}
-        <span class="tab">
-            <span class="logo">
-                <img src={kestraMark.src} alt="" width="16" height="16" />
+        {editor ? (
+            <span class="tab editor">
+                <Icon name="mdi:code-tags" />
+                Flow Code
+                <Icon name="mdi:close" class="x" />
             </span>
-            {file}
-        </span>
+        ) : (
+            <span class="tab">
+                <span class="logo">
+                    <img src={kestraMark.src} alt="" width="16" height="16" />
+                </span>
+                {file}
+            </span>
+        )}
+        <slot name="status" />
     </figcaption>
     <pre><code set:html={HTML} /></pre>
 </figure>
@@ -241,6 +259,23 @@ const HTML = code
         font-weight: 500;
         white-space: nowrap;
         color: var(--text);
+    }
+
+    .editor {
+        gap: 0.5rem;
+        padding-inline: 0.75rem;
+
+        > :global(svg) {
+            width: 16px;
+            height: 16px;
+        }
+
+        > :global(.x) {
+            width: 14px;
+            height: 14px;
+            margin-left: 0.25rem;
+            color: var(--muted);
+        }
     }
 
     .logo {
