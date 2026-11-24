@@ -30,6 +30,7 @@ const timedSide = z.object({
 const qaItem = z.object({ question: z.string(), answer: z.string() })
 const featureRow = z.object({ feature: z.string(), kestra: z.string(), competitor: z.string() })
 const strengthItem = z.object({ title: z.string(), description: z.string() })
+const textCard = z.object({ title: z.string(), body: z.string() })
 
 export const vsSchema = z.object({
     title: z.string(),
@@ -46,6 +47,8 @@ export const vsSchema = z.object({
     businessValue: z.object({ mainTitle: z.string(), kestra: textSide, competitor: textSide, footerText: z.string().optional() }),
     setupSpeed: z.object({ title: z.string(), subtitle: z.string().optional(), kestra: timedSide, competitor: timedSide }),
     easeOfUse: z.object({ title: z.string(), kestra: codeSide, competitor: codeSide }),
+    // Optional text-only section of side-by-side cards (markdown body), rendered after easeOfUse.
+    cardSection: z.object({ title: z.string(), cards: z.array(textCard) }).optional(),
     visualPreview: z.object({
         mainTitle: z.string(),
         kestra: z.object({ description: z.string() }),

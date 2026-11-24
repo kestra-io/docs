@@ -15,6 +15,8 @@ import PlatformStrengths from "~/components/common/PlatformStrengths.astro"
 import DecisionGuide from "~/components/versus/DecisionGuide.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import CalloutCard from "~/components/common/CalloutCard.astro"
+import Card from "~/components/common/CardPair.astro"
+import MarkdownRenderer from "~/components/MarkdownRenderer.astro"
 import Faq from "~/components/common/Faq.vue"
 import data1 from "~/components/versus/assets/data-1.svg"
 import data2 from "~/components/versus/assets/data-2.svg"
@@ -66,11 +68,13 @@ const {
     title,
     shortDescription,
     competitorName,
+    brandColor,
     intro,
     philosophy,
     businessValue,
     setupSpeed,
     easeOfUse,
+    cardSection,
     visualPreview,
     featureGrid,
     testimonials,
@@ -140,6 +144,26 @@ const competitorImg = getImgSvg(imgFilename)
             logo: competitorLogo,
         }}
     />
+    {
+        cardSection && (
+            <section class="vs-card-section">
+                <div class="container">
+                    <h2 set:html={cardSection.title} />
+                    <div class="comparison-box d-flex flex-column flex-lg-row">
+                        {cardSection.cards.map((card) => (
+                            <Card shadowColor={brandColor.color}>
+                                <h5>{card.title}</h5>
+                                <MarkdownRenderer
+                                    class="vs-card-body"
+                                    content={card.body}
+                                />
+                            </Card>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        )
+    }
     <VisualPreview
         {...visualPreview}
         kestra={{
@@ -183,5 +207,50 @@ const competitorImg = getImgSvg(imgFilename)
 <style lang="scss">
     .vs-guide-cta {
         padding: 2rem 0 0;
+    }
+
+    .vs-card-section {
+        padding: $spacer * 4 0;
+        background-color: var(--ks-background-body);
+
+        @include media-breakpoint-down(lg) {
+            padding: $spacer * 2 0.75rem;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: $rem-2;
+
+            @include media-breakpoint-up(lg) {
+                padding: 0;
+            }
+        }
+
+        h2 {
+            color: var(--ks-content-primary);
+            @include media-breakpoint-up(lg) {
+                font-size: $h2-font-size;
+            }
+        }
+
+        h5 {
+            color: var(--ks-content-primary);
+        }
+
+        .comparison-box {
+            gap: $rem-2;
+            width: 100%;
+        }
+
+        :global(.vs-card-body) {
+            color: var(--ks-content-primary);
+            font-size: $font-size-md;
+
+            :global(p:last-child),
+            :global(ul:last-child) {
+                margin-bottom: 0;
+            }
+        }
     }
 </style>

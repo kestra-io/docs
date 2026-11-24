@@ -191,8 +191,11 @@ kestractl flows export            --namespace my.namespace --output-file flows.z
 kestractl flows export-by-ids     my.namespace/flow-a my.namespace/flow-b --output-file export.zip
 kestractl flows export-by-query   --namespace my.namespace --output-file export.zip
 
-# Sync an entire namespace from a YAML file (deletes flows absent from the file)
-kestractl flows namespace-sync my.namespace flows.yaml --delete
+# Sync an entire namespace from a YAML file (flows missing from the file are deleted only with --delete)
+kestractl flows namespace-sync my.namespace flows.yaml
+
+# Sync an entire namespace from a directory (one flow per .yaml/.yml file) and delete missing flows
+kestractl flows namespace-sync my.namespace flows/ --delete
 
 # Manage flow revisions
 kestractl flows revisions        my.namespace my-flow
