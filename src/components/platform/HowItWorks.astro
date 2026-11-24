@@ -2,12 +2,14 @@
 import { Icon } from "astro-icon/components"
 import { fetchPluginIcon } from "~/utils/pluginIcon"
 import CodeCard from "./CodeCard.astro"
+import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
 import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
 
 const STEPS = [
     {
         tab: "Flows",
         title: "Flows define your work",
+        dur: 13000,
         text: "A YAML file with an id, a namespace, and tasks. Reviewed and versioned like code.",
         link: {
             href: "/docs/workflow-components/flow",
@@ -60,6 +62,41 @@ tasks:
   - id: load
     type: io.kestra.plugin.jdbc.postgresql.Query`
 
+const SUGGEST = [
+    {
+        line: 5,
+        after: "core.http.",
+        pick: 0,
+        options: [
+            { label: "Download", kind: "Task" },
+            { label: "Request", kind: "Task" },
+            { label: "Trigger", kind: "Trigger" },
+        ],
+    },
+    {
+        line: 8,
+        after: "plugin.scripts.",
+        pick: 2,
+        options: [
+            { label: "node.Script", kind: "Task" },
+            { label: "python.Commands", kind: "Task" },
+            { label: "python.Script", kind: "Task" },
+            { label: "shell.Commands", kind: "Task" },
+        ],
+    },
+    {
+        line: 11,
+        after: "plugin.jdbc.",
+        pick: 2,
+        options: [
+            { label: "mysql.Query", kind: "Task" },
+            { label: "postgresql.Queries", kind: "Task" },
+            { label: "postgresql.Query", kind: "Task" },
+            { label: "snowflake.Query", kind: "Task" },
+        ],
+    },
+]
+
 const NO_CODE = `triggers:
   - id: daily
     type: io.kestra.plugin.core.trigger.Schedule
@@ -70,17 +107,13 @@ tasks:
     message: Hello from Kestra`
 
 const PLUGINS = [
-    { name: "Terraform", group: "io.kestra.plugin.terraform", accent: true },
+    { name: "Terraform", group: "io.kestra.plugin.terraform" },
     { name: "Ansible", group: "io.kestra.plugin.ansible" },
     { name: "Kubernetes", group: "io.kestra.plugin.kubernetes" },
-    {
-        name: "PostgreSQL",
-        group: "io.kestra.plugin.jdbc.postgresql",
-        accent: true,
-    },
+    { name: "PostgreSQL", group: "io.kestra.plugin.jdbc.postgresql" },
     { name: "Snowflake", group: "io.kestra.plugin.jdbc.snowflake" },
     { name: "dbt", group: "io.kestra.plugin.dbt" },
-    { name: "ServiceNow", group: "io.kestra.plugin.servicenow", accent: true },
+    { name: "ServiceNow", group: "io.kestra.plugin.servicenow" },
     { name: "Jira", group: "io.kestra.plugin.jira" },
     { name: "Kafka", group: "io.kestra.plugin.kafka" },
     { name: "AWS", group: "io.kestra.plugin.aws" },
@@ -95,6 +128,15 @@ const PLUGINS = [
 const icons = await Promise.all(
     PLUGINS.map((plugin) => fetchPluginIcon(plugin.group).catch(() => null)),
 )
+
+const LOGOS = PLUGINS.map((plugin, idx) => ({
+    ...plugin,
+    icon: icons[idx],
+})).filter((plugin) => plugin.icon)
+const RINGS = [
+    { name: "inner", plugins: LOGOS.slice(0, 6) },
+    { name: "outer", plugins: LOGOS.slice(6) },
+]
 
 const TRIGGERS = [
     {
@@ -153,6 +195,7 @@ const GANTT = [
                         aria-selected={idx === 0 ? "true" : "false"}
                         aria-controls="how-panel"
                         tabindex={idx === 0 ? 0 : -1}
+                        data-dur={step.dur}
                     >
                         <span class="swatch" aria-hidden="true" />
                         {step.tab}
@@ -187,36 +230,49 @@ const GANTT = [
                 </div>
 
                 <div class="views">
-                    <div class="view" data-view="0">
-                        <CodeCard
-                            file="company.team / etl_orders.yml"
-                            code={FLOW}
-                        />
+                    <div class="view typed" data-view="0">
+                        <div
+                            class="typer"
+                            data-typer
+                            data-suggest={JSON.stringify(SUGGEST)}
+                        >
+                            <CodeCard
+                                file="company.team / etl_orders.yml"
+                                code={FLOW}
+                            />
+                            <div class="suggest" aria-hidden="true">
+                                <ul></ul>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="view" data-view="1">
-                        <ul class="chips">
-                            {PLUGINS.map((plugin, idx) => (
-                                <li
-                                    class:list={{ accent: plugin.accent }}
-                                    style={`--k: ${idx}`}
+                        <div class="orbit">
+                            {RINGS.map((ring) => (
+                                <ul
+                                    class:list={["ring", ring.name]}
+                                    style={`--n: ${ring.plugins.length}`}
                                 >
-                                    {icons[idx] && (
-                                        <span
-                                            class="logo"
-                                            set:html={icons[idx]}
-                                        />
-                                    )}
-                                    {plugin.name}
-                                </li>
+                                    {ring.plugins.map((plugin, idx) => (
+                                        <li style={`--i: ${idx}`}>
+                                            <span
+                                                class="tile"
+                                                title={plugin.name}
+                                                set:html={plugin.icon}
+                                            />
+                                        </li>
+                                    ))}
+                                </ul>
                             ))}
-                            <li
-                                class="more-chip"
-                                style={`--k: ${PLUGINS.length}`}
-                            >
-                                + 2,400 more
-                            </li>
-                        </ul>
+                            <span class="core">
+                                <img
+                                    src={kestraMark.src}
+                                    alt="Kestra"
+                                    width="40"
+                                    height="40"
+                                />
+                            </span>
+                        </div>
                     </div>
 
                     <div class="view" data-view="2">
@@ -298,6 +354,127 @@ const GANTT = [
 
 <script>
     const STEP_MS = 7000
+    const TYPE_MS = 22
+    const LINE_MS = 90
+
+    interface Hint {
+        line: number
+        after: string
+        pick: number
+        options: { label: string; kind: string }[]
+    }
+
+    const wait = (ms: number) =>
+        new Promise((resolve) => setTimeout(resolve, ms))
+
+    function makeTyper(box: HTMLElement) {
+        const pop = box.querySelector<HTMLElement>(".suggest")!
+        const list = pop.querySelector("ul")!
+        const hints = JSON.parse(box.dataset.suggest!) as Hint[]
+        const rows = [...box.querySelectorAll<HTMLElement>(".line")].map(
+            (line) => {
+                const txt = document.createElement("span")
+                txt.className = "txt"
+                const nodes = [...line.childNodes].slice(1)
+                if (nodes.at(-1)?.textContent === "\n") nodes.pop()!.remove()
+                for (const node of nodes) txt.appendChild(node)
+                line.appendChild(txt)
+                return { line, txt, text: txt.textContent ?? "" }
+            },
+        )
+        let token = 0
+
+        const fill = (hint: Hint, active: number) => {
+            list.replaceChildren()
+            hint.options.forEach((option, i) => {
+                const item = document.createElement("li")
+                item.classList.toggle("on", i === active)
+                const label = document.createElement("b")
+                label.textContent = option.label
+                const kind = document.createElement("span")
+                kind.textContent = option.kind
+                item.appendChild(label)
+                item.appendChild(kind)
+                list.appendChild(item)
+            })
+        }
+
+        const place = (txt: HTMLElement) => {
+            const base = box.getBoundingClientRect()
+            const caret = txt.getBoundingClientRect()
+            const left = Math.min(
+                caret.right - base.left,
+                base.width - pop.offsetWidth - 8,
+            )
+            const below = caret.bottom - base.top + 4
+            const top =
+                below + pop.offsetHeight > base.height
+                    ? caret.top - base.top - pop.offsetHeight - 4
+                    : below
+            pop.style.transform = `translate(${Math.max(8, left)}px, ${top}px)`
+        }
+
+        const suggest = async (hint: Hint, txt: HTMLElement, id: number) => {
+            fill(hint, 0)
+            place(txt)
+            pop.classList.add("open")
+            await wait(550)
+            for (let i = 1; i <= hint.pick && id === token; i++) {
+                fill(hint, i)
+                await wait(260)
+            }
+            await wait(450)
+            pop.classList.remove("open")
+        }
+
+        const reset = () => {
+            pop.classList.remove("open")
+            for (const row of rows) {
+                row.txt.style.width = ""
+                row.line.classList.remove("seen", "typing")
+            }
+        }
+
+        const run = async () => {
+            const id = ++token
+            reset()
+            for (const row of rows) row.txt.style.width = "0ch"
+            box.classList.add("running")
+            for (const [i, row] of rows.entries()) {
+                row.line.classList.add("seen", "typing")
+                row.txt.style.width = "0ch"
+                const hint = hints.find((h) => h.line === i + 1)
+                const stop = hint
+                    ? row.text.indexOf(hint.after) + hint.after.length
+                    : -1
+                for (let c = 1; c <= row.text.length; c++) {
+                    row.txt.style.width = `${c}ch`
+                    if (hint && c === stop) {
+                        await suggest(hint, row.txt, id)
+                        if (id !== token) return
+                        row.txt.style.width = `${row.text.length}ch`
+                        break
+                    }
+                    await wait(TYPE_MS)
+                    if (id !== token) return
+                }
+                await wait(LINE_MS)
+                if (id !== token) return
+                if (i < rows.length - 1) row.line.classList.remove("typing")
+            }
+        }
+
+        const stop = () => {
+            token++
+            reset()
+            box.classList.remove("running")
+        }
+
+        const view = Number(
+            box.closest<HTMLElement>("[data-view]")!.dataset.view,
+        )
+        return { run, stop, view }
+    }
 
     function wirePlatformHow() {
         for (const root of document.querySelectorAll<HTMLElement>(
@@ -307,6 +484,8 @@ const GANTT = [
             const tabs = [...root.querySelectorAll<HTMLElement>(".tab")]
             const body = root.querySelector<HTMLElement>(".body")!
             const still = matchMedia("(prefers-reduced-motion: reduce)").matches
+            const typerBox = root.querySelector<HTMLElement>("[data-typer]")
+            const typer = typerBox && !still ? makeTyper(typerBox) : null
             let auto = !still
             let inView = false
             let started = false
@@ -326,7 +505,10 @@ const GANTT = [
                 tabs.forEach((tab, i) => {
                     tab.classList.toggle("active", i === idx)
                     tab.classList.toggle("timed", auto && i === idx)
-                    tab.style.setProperty("--dur", `${STEP_MS}ms`)
+                    tab.style.setProperty(
+                        "--dur",
+                        `${Number(tab.dataset.dur) || STEP_MS}ms`,
+                    )
                     tab.setAttribute("aria-selected", String(i === idx))
                     tab.tabIndex = i === idx ? 0 : -1
                 })
@@ -335,12 +517,17 @@ const GANTT = [
                 body.classList.remove("enter")
                 void body.offsetWidth
                 body.classList.add("enter")
+                if (typer && idx === typer.view) typer.run()
+                else typer?.stop()
                 if (auto)
-                    timer = window.setTimeout(() => {
-                        const next = (idx + 1) % tabs.length
-                        if (inView) open(next)
-                        else waiting = next
-                    }, STEP_MS)
+                    timer = window.setTimeout(
+                        () => {
+                            const next = (idx + 1) % tabs.length
+                            if (inView) open(next)
+                            else waiting = next
+                        },
+                        Number(tabs[idx].dataset.dur) || STEP_MS,
+                    )
             }
 
             tabs.forEach((tab, idx) => {
@@ -687,12 +874,12 @@ const GANTT = [
         }
     }
 
-    .body.enter :global(.line) {
+    .body.enter .view:not(.typed) :global(.line) {
         animation: line-in 0.35s ease both;
     }
 
     @for $n from 1 through 12 {
-        .body.enter :global(.line:nth-child(#{$n})) {
+        .body.enter .view:not(.typed) :global(.line:nth-child(#{$n})) {
             animation-delay: #{0.1 + $n * 0.04}s;
         }
     }
@@ -700,6 +887,88 @@ const GANTT = [
     .body.enter [style*="--k"] {
         animation: pop-in 0.4s ease both;
         animation-delay: calc(0.15s + var(--k) * 0.05s);
+    }
+
+    .typer {
+        position: relative;
+
+        &.running :global(.txt) {
+            display: inline-block;
+            overflow: hidden;
+            white-space: pre;
+            vertical-align: top;
+        }
+
+        &.running :global(.line:not(.seen) .no) {
+            visibility: hidden;
+        }
+
+        :global(.line.typing::after) {
+            content: "";
+            display: inline-block;
+            width: 2px;
+            height: 1.15em;
+            margin-left: 1px;
+            vertical-align: -0.2em;
+            background: var(--tint);
+            animation: caret 1s steps(1) infinite;
+        }
+    }
+
+    .suggest {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        width: 16rem;
+        padding: 0.25rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 8px;
+        background: var(--ks-background-body);
+        box-shadow: 0 16px 36px -14px rgba(43, 43, 51, 0.35);
+        font-family: $font-family-monospace;
+        font-size: 0.75rem;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.15s ease;
+
+        &:global(.open) {
+            opacity: 1;
+        }
+
+        :global(li) {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.3125rem 0.5rem;
+            border-radius: 5px;
+            color: var(--ks-content-primary);
+        }
+
+        :global(li.on) {
+            background: color-mix(in srgb, var(--tint) 12%, transparent);
+        }
+
+        :global(li b) {
+            font-weight: 500;
+        }
+
+        :global(li.on b) {
+            color: var(--tint);
+        }
+
+        :global(li span) {
+            font-family: $font-family-sans-serif;
+            font-size: 0.6875rem;
+            color: var(--ks-content-tertiary);
+        }
+    }
+
+    @keyframes caret {
+        50% {
+            opacity: 0;
+        }
     }
 
     @keyframes line-in {
@@ -717,7 +986,7 @@ const GANTT = [
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .body.enter :global(.line),
+        .body.enter .view:not(.typed) :global(.line),
         .body.enter [style*="--k"] {
             animation: none;
         }
@@ -747,28 +1016,116 @@ const GANTT = [
             font-size: $font-size-sm;
             font-weight: 600;
             color: var(--soft);
-
-            &.accent {
-                border-color: var(--ring);
-                color: var(--text);
-            }
-        }
-
-        .more-chip {
-            border-style: dashed;
-            box-shadow: none;
-            color: var(--run);
         }
     }
 
-    .logo {
-        display: inline-flex;
-        width: 1.25rem;
-        height: 1.25rem;
+    .orbit {
+        --size: min(100%, 26rem);
+        --tile: 3rem;
+
+        position: relative;
+        width: var(--size);
+        aspect-ratio: 1;
+        margin-inline: auto;
+        container-type: inline-size;
+
+        @include media-breakpoint-down(sm) {
+            --tile: 2.5rem;
+        }
+    }
+
+    .ring {
+        position: absolute;
+        inset: 0;
+        border: 1px dashed var(--line);
+        border-radius: 50%;
+        animation: orbit var(--turn) linear infinite;
+
+        &.inner {
+            --r: 26cqw;
+            --turn: 48s;
+
+            inset: calc(50% - var(--r));
+        }
+
+        &.outer {
+            --r: 46cqw;
+            --turn: 72s;
+
+            inset: calc(50% - var(--r));
+            animation-direction: reverse;
+        }
+
+        li {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: var(--tile);
+            height: var(--tile);
+            margin: calc(var(--tile) / -2);
+            transform: rotate(calc(360deg / var(--n) * var(--i)))
+                translateY(calc(-1 * var(--r)))
+                rotate(calc(-360deg / var(--n) * var(--i)));
+        }
+    }
+
+    .tile {
+        display: grid;
+        place-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 22%;
+        border: 1px solid var(--line);
+        border-radius: 28%;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        animation: orbit var(--turn) linear infinite reverse;
+
+        .outer & {
+            animation-direction: normal;
+        }
+
+        :global(html.dark) & {
+            background: #ffffff;
+        }
 
         :global(svg) {
             width: 100%;
             height: 100%;
+        }
+    }
+
+    .core {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        display: grid;
+        place-items: center;
+        width: 24cqw;
+        aspect-ratio: 1;
+        border-radius: 26%;
+        background: radial-gradient(circle at 50% 40%, #1d0b3a, #0d0d10 70%);
+        box-shadow:
+            inset 0 0 0 1px rgba(132, 5, 255, 0.45),
+            0 0 40px 6px rgba(132, 5, 255, 0.25);
+        transform: translate(-50%, -50%);
+
+        img {
+            width: 55%;
+            height: auto;
+        }
+    }
+
+    @keyframes orbit {
+        to {
+            rotate: 360deg;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .ring,
+        .tile {
+            animation: none;
         }
     }
 
