@@ -281,7 +281,7 @@ The `author_*` tools use the AI provider configured for the [AI Copilot](../../d
 
 MCP clients can use the annotations in their approval prompts. Kestra doesn't ask for confirmation itself, even for tools that the in-app Copilot asks you to confirm.
 
-Every tool takes an optional `tenant` argument. When the caller can act on a single tenant, it's used by default. Otherwise, the call fails with a message listing the tenants to choose from. The tenants a caller can act on are those they have access to, limited to the `tenants` list when it's set.
+Every tool takes an optional `tenant` argument. When the caller can act on a single tenant, it's used by default. Otherwise, the call fails with a message listing the tenants to choose from. The tenants a caller can act on are those they have access to, limited to the `tenants` list when it's set. Each tool's `tenant` parameter lists, as allowed values, the tenants where the caller can use that tool, so MCP clients can offer them instead of guessing.
 
 In the Enterprise Edition, each call runs as the caller in the requested tenant, so their [RBAC](../../07.enterprise/03.auth/rbac/index.md) permissions apply to both the tool and the namespace. A caller only sees the tools they can use in at least one of the tenants they can act on. Calling a tool that isn't in their list returns a `Tool not found` error. When a listed tool is denied for a namespace, the call returns an error result instead, for example `Execution not found`. Changes made through the server are recorded in the [audit log](../../07.enterprise/02.governance/06.audit-logs/index.md) under the caller, like changes made in the UI.
 
