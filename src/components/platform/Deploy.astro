@@ -85,9 +85,9 @@ const OPTIONS = [
     .options {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
-        margin: 0 calc(-1 * var(--inset));
+        margin: 0 calc(-1 * var(--inset)) clamp(3rem, 6vw, 5rem);
         padding: 0;
-        border-top: var(--rule);
+        border-block: var(--rule);
         list-style: none;
 
         @include media-breakpoint-down(lg) {
