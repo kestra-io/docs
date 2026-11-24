@@ -138,7 +138,7 @@ Use migrate-airflow-kestra to migrate dags/ingest_pipeline.py from Airflow to Ke
 ## Prerequisites
 
 - **AI coding agent**: Claude Code, Cursor, Windsurf, OpenAI Codex, OpenCode, or any agent that supports skill files
-- **For kestra-flow**: the [Docs MCP server](../02.kestra-mcp-resources/index.md) connected to your agent. Installing the skills with skills.sh or copying them manually doesn't connect it, so add the server to your agent yourself.
+- **For kestra-flow**: the [Docs MCP server](../02.kestra-mcp-resources/index.md) connected to your agent. Installing the skills as a [plugin](#install-as-a-plugin) connects it. Installing them with skills.sh or copying them manually doesn't, so add the server to your agent yourself.
 - **For kestra-flow-hardening and migrate-airflow-kestra**: `curl` and network access to `https://api.kestra.io`
 - **For kestra-ops and migrate-kestra-2**: [`kestractl`](../../kestra-cli/kestractl/index.md) installed with valid credentials
 
@@ -154,7 +154,7 @@ To install a single skill, add its name: `npx skills add kestra-io/agent-skills@
 
 ### Install as a plugin
 
-Claude Code, Codex, and Cursor can also install the skills as a plugin that bundles all of them.
+Claude Code, Codex, and Cursor can also install the skills as a plugin that bundles all of them and connects the [Docs MCP server](../02.kestra-mcp-resources/index.md) that `kestra-flow` needs.
 
 In Claude Code, add the repository as a plugin marketplace, then install the `kestra` plugin from it:
 
@@ -178,6 +178,8 @@ In Cursor, add the plugin, then check that the skills appear under **Settings â†
 /add-plugin kestra-io/agent-skills
 ```
 
+Kestra isn't in the ChatGPT plugin directory yet. To try the plugin in the ChatGPT desktop app, clone the [repository](https://github.com/kestra-io/agent-skills), add it as a repository marketplace, restart the app, and install **Kestra** from the Plugins directory. Workspace admins can then publish it to the workspace from **Plugins â†’ Personal**. In ChatGPT, `kestra-flow`, `kestra-flow-hardening`, and `migrate-airflow-kestra` work when web access is on, and `migrate-kestra-2` only gives guidance. `kestra-ops` isn't available, since it needs a shell to run `kestractl`.
+
 ### Manual installation
 
 You can also manually download skill files from the [kestra-io/agent-skills](https://github.com/kestra-io/agent-skills) repository. Each skill is a `SKILL.md` file under `skills/<skill-name>/`.
@@ -191,6 +193,16 @@ curl -sL https://raw.githubusercontent.com/kestra-io/agent-skills/main/skills/ke
 ```
 
 Repeat for any other skill you need, and use the skills directory your agent documents. Some skills ship supporting files next to `SKILL.md`, such as `references/hardening-patterns.md` in `kestra-flow-hardening`. Copy the whole skill directory so the agent can read them.
+
+## Usage data
+
+The skills send anonymous usage data so Kestra can see which skills people use. It's metadata only, never the content of your prompts, flows, files, or credentials:
+
+- When a skill runs `kestractl`, the `kestractl` usage event records which skill called it.
+- With a plugin install, each request to the Docs MCP server carries an `X-Kestra-Plugin: agent-skills/<agent>` header.
+- In Claude Code, the plugin sends an event when one of its skills loads, with the skill name, the plugin's Git reference, the operating system and architecture, and a random anonymous ID.
+
+To turn off the `kestractl` data and the Claude Code event, set `KESTRACTL_TELEMETRY_DISABLED=true`. To turn off only the Claude Code event, set `KESTRA_SKILLS_TELEMETRY_DISABLED=true`. The MCP header can't be turned off with a variable: remove the `headers` entry from the plugin's MCP configuration (`.mcp.json` for Claude Code, `mcp.json` for Codex, `.cursor-plugin/mcp.json` for Cursor), or connect the Docs MCP server yourself instead of through the plugin.
 
 ## Example workflows
 
