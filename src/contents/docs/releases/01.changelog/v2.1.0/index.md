@@ -48,7 +48,7 @@ Approvals, asset leases and the ASSET input, searchable execution values, custom
 
 ## AI
 
-- **Platform MCP server**: expose the AI Copilot's tools for flows and executions to external MCP clients at `/api/v1/mcp`. [Docs](../../../ai-orchestration/03.mcp-server/index.md#platform-mcp-server)
+- **Platform MCP server**: give external MCP clients the AI Copilot's tools at `/api/v1/mcp`, up to 78 of them, to read and change flows, executions, logs, namespace files, and KV entries, plus apps, test suites, groups, and banners in EE, where every call runs with the caller's permissions. [Docs](../../../ai-orchestration/03.mcp-server/index.md#platform-mcp-server)
 - **Copilot unit tests (EE, Cloud)**: generate a unit test for an existing flow. [Docs](../../../develop-with-ai/01.ai-copilot/index.md#generate-a-unit-test)
 - **Review Copilot flow changes on the graph**: a flow draft's Graph tab marks each task as added, changed, renamed, moved, or removed, and the apply confirmation counts each kind of change. [Docs](../../../develop-with-ai/01.ai-copilot/index.md#review-a-flow-change)
 - **Copilot free tier (OSS)**: an instance with no LLM provider uses a free Copilot hosted by Kestra. Turn it off with `kestra.ai.free-tier.enabled: false`. [Docs](../../../develop-with-ai/01.ai-copilot/index.md#free-tier)
