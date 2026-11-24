@@ -37,7 +37,7 @@ In 2.1, additionally, you can now find an execution by the order ID it processed
 | Script checkpoints (beta) | Resume a long script from where it stopped | OSS, EE, Cloud |
 | Execution timeline | See your executions on a time axis | OSS, EE, Cloud |
 | Dashboard charts from flow outputs | Chart a file that a flow returns | EE, Cloud |
-| Keyless cloud access | Reach AWS, Google Cloud, and JFrog without storing keys | EE |
+| Keyless cloud access with OIDC | Reach AWS, Google Cloud, and JFrog with short-lived OIDC tokens instead of stored keys | EE |
 | New queue backends | Google Cloud Pub/Sub, NATS JetStream, Amazon SQS/SNS, and Azure Event Hubs | EE |
 
 :::alert{type="info"}
@@ -208,9 +208,11 @@ Apps get new building blocks that make them work well as internal dashboards and
 
 See [Apps](/docs/enterprise/scalability/apps).
 
-## Keyless Cloud Access
+## Keyless Cloud Access with OIDC
 
-Storing cloud keys in Kestra secrets always meant one more thing to rotate. In 2.1, Kestra can vouch for your flows the way GitHub Actions does: each task gets a short-lived token that AWS, Google Cloud, or JFrog swaps for temporary credentials, so there are no keys to store. You decide on their side which flows or namespaces get in.
+Storing cloud keys in Kestra secrets always meant one more thing to rotate. In 2.1, Kestra can act as an OpenID Connect (OIDC) issuer and vouch for your flows the way GitHub Actions does: each task gets a short-lived OIDC token that AWS, Google Cloud, or JFrog swaps for temporary credentials, so there are no keys to store. On the provider's side, you register Kestra like any other OIDC identity provider and decide which flows or namespaces get in.
+
+The tokens identify flows, namespaces, and tenants, not people. To sign users in to Kestra with OIDC, see [SSO](/docs/enterprise/auth/sso).
 
 This helps most when Kestra runs on-premises or on a different cloud from the one it needs to reach. Each tenant, or even a single namespace, can also get its own issuer, so one team's cloud account never trusts another team's flows. One thing to plan for: your Kestra URL has to be reachable over HTTPS from the internet, because that's where the provider checks each token.
 
