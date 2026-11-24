@@ -1,0 +1,103 @@
+---
+import PdHeroCli from "./PdHeroCli.astro"
+---
+
+<section class="pd-hero surface-dark" aria-labelledby="pd-hero-title" data-header-dark>
+    <div class="container-xl">
+        <div class="rails">
+            <div class="copy">
+                <h1 id="pd-hero-title">Migrate Pipedream workflows to Kestra</h1>
+                <p>
+                    Pipedream Workflows shuts down on March 31, 2027. Export
+                    the JSON, convert it to Kestra YAML with your coding agent,
+                    and repoint each webhook.
+                </p>
+                <div class="ctas">
+                    <a href="/cloud" class="btn-solid">
+                        Start your Cloud trial
+                    </a>
+                    <a href="/demo" class="btn-ghost">
+                        Talk to our team
+                    </a>
+                </div>
+            </div>
+            <div class="visual">
+                <PdHeroCli />
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function clearMenu() {
+        if (!document.querySelector(".pd-hero")) return
+        document.body.setAttribute("data-header-clear", "")
+        document.addEventListener(
+            "astro:before-swap",
+            () => document.body.removeAttribute("data-header-clear"),
+            { once: true },
+        )
+    }
+
+    document.addEventListener("astro:page-load", clearMenu)
+    clearMenu()
+</script>
+
+<style lang="scss">
+    @use "/src/components/about/style/section" as *;
+    @use "./pd" as *;
+
+    .pd-hero {
+        @include band;
+        margin-top: -67px;
+        @include dark-band;
+        color: #ffffff;
+        border-bottom-color: $dark-band-line;
+    }
+
+    .rails {
+        @include rails;
+        --rule: 1px solid #{$dark-band-line};
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        align-items: center;
+        gap: 2rem;
+        padding: 10rem var(--inset) 6rem;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+            padding-block: 7rem 4rem;
+        }
+    }
+
+    .copy {
+        display: grid;
+        row-gap: 1.5rem;
+        justify-items: start;
+    }
+
+    h1 {
+        margin: 0;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 600;
+        letter-spacing: -0.03em;
+        line-height: 1.05;
+        text-wrap: balance;
+    }
+
+    p {
+        max-width: 34rem;
+        margin: 0;
+        font-size: 1.1875rem;
+        line-height: 1.55;
+        color: #b9b8c4;
+    }
+
+    .ctas {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 0.5rem;
+    }
+
+</style>

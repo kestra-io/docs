@@ -21,6 +21,9 @@ interface Props {
     items?: Item[]
     ctas?: Cta[]
     tone?: "default" | "muted"
+    head?: boolean
+    size?: "default" | "compact"
+    label?: string
 }
 
 const DEFAULT_PROBLEMS: Item[] = [
@@ -52,24 +55,33 @@ const {
         },
     ],
     tone = "default",
+    head = true,
+    size = "default",
+    label,
 } = Astro.props
 ---
 
-<section class:list={["replace", tone]} aria-labelledby={id}>
+<section
+    class:list={["replace", tone, size]}
+    aria-labelledby={head ? id : undefined}
+    aria-label={head ? undefined : label}
+>
     <PixelEdges left="tall" right="wide" />
     <div class="container-xl">
         <div class="grid">
-            <header
-                class:list={[
-                    "head",
-                    { "has-visual": Astro.slots.has("visual") },
-                ]}
-            >
-                <h2 {id}>
-                    <slot name="title">Replace what no longer serves you</slot>
-                </h2>
-                {
-                    (Astro.slots.has("lead") || !Astro.slots.has("title")) && (
+            {head && (
+                <header
+                    class:list={[
+                        "head",
+                        { "has-visual": Astro.slots.has("visual") },
+                    ]}
+                >
+                    <h2 {id}>
+                        <slot name="title">
+                            Replace what no longer serves you
+                        </slot>
+                    </h2>
+                    {(Astro.slots.has("lead") || !Astro.slots.has("title")) && (
                         <p>
                             <slot name="lead">
                                 Fragmented orchestration slows recovery, drives
@@ -78,10 +90,8 @@ const {
                                 code and systems they already run on.
                             </slot>
                         </p>
-                    )
-                }
-                {
-                    ctas.length > 0 && (
+                    )}
+                    {ctas.length > 0 && (
                         <div class="ctas">
                             {ctas.map((cta) => (
                                 <a
@@ -96,34 +106,30 @@ const {
                                 </a>
                             ))}
                         </div>
-                    )
-                }
-                {
-                    Astro.slots.has("visual") && (
+                    )}
+                    {Astro.slots.has("visual") && (
                         <div class="visual">
                             <slot name="visual" />
                         </div>
-                    )
-                }
-            </header>
+                    )}
+                </header>
+            )}
 
             <ul class="problems" style={`--columns: ${items.length}`}>
-                {
-                    items.map((problem, idx) => (
-                        <li class={`problem-${idx}`}>
-                            {problem.icon && <Icon name={problem.icon} />}
-                            {problem.title && <h3>{problem.title}</h3>}
-                            {problem.text && <p>{problem.text}</p>}
-                            {problem.list && (
-                                <ul class="list">
-                                    {problem.list.map((entry) => (
-                                        <li>{entry}</li>
-                                    ))}
-                                </ul>
-                            )}
-                        </li>
-                    ))
-                }
+                {items.map((problem, idx) => (
+                    <li class={`problem-${idx}`}>
+                        {problem.icon && <Icon name={problem.icon} />}
+                        {problem.title && <h3>{problem.title}</h3>}
+                        {problem.text && <p>{problem.text}</p>}
+                        {problem.list && (
+                            <ul class="list">
+                                {problem.list.map((entry) => (
+                                    <li>{entry}</li>
+                                ))}
+                            </ul>
+                        )}
+                    </li>
+                ))}
             </ul>
         </div>
     </div>
@@ -181,6 +187,14 @@ const {
                 border-bottom: 0;
 
                 &::after {
+                    display: none;
+                }
+            }
+
+            &:first-child {
+                border-top: 0;
+
+                &::before {
                     display: none;
                 }
             }
@@ -390,6 +404,44 @@ const {
                     transform: rotate(-45deg);
                 }
             }
+        }
+    }
+
+    .compact .head {
+        padding: 3.5rem 0 2rem;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 2.5rem 1.5rem;
+        }
+
+        h2 {
+            font-size: clamp(1.5rem, 2.4vw, 2rem);
+        }
+    }
+
+    .compact .problems {
+        > li {
+            padding-block: 2.5rem 2.75rem;
+
+            @include media-breakpoint-down(lg) {
+                padding-block: 1.75rem 2rem;
+            }
+
+            > :global(svg) {
+                width: 1.25rem;
+                height: 1.25rem;
+                margin-bottom: 1.25rem;
+            }
+        }
+
+        h3 {
+            margin-bottom: 0.625rem;
+            font-size: 1.25rem;
+        }
+
+        p {
+            font-size: 0.9375rem;
+            line-height: 1.6;
         }
     }
 

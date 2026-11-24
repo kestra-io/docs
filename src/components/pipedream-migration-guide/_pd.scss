@@ -1,0 +1,116 @@
+@use "/src/assets/styles/variable" as *;
+@use "/src/assets/styles/buttons" as *;
+
+@mixin band {
+    position: relative;
+    background: var(--ks-background-body);
+    border-bottom: 1px solid var(--ks-border-primary);
+    @include cta-buttons;
+}
+
+@mixin rails {
+    --rule: 1px solid var(--ks-border-primary);
+    --inset: clamp(1.5rem, 4vw, 3.5rem);
+    position: relative;
+    border-left: var(--rule);
+    border-right: var(--rule);
+
+    @include media-breakpoint-down(xl) {
+        border-inline: 0;
+    }
+}
+
+@mixin bleed-rule($side: top) {
+    position: relative;
+    border-#{$side}: var(--rule);
+
+    &::before {
+        content: "";
+        position: absolute;
+        #{$side}: -1px;
+        left: -100vw;
+        right: -100vw;
+        height: 1px;
+        background: var(--ks-border-primary);
+        pointer-events: none;
+    }
+}
+
+@mixin head {
+    display: grid;
+    justify-items: start;
+    row-gap: 1.25rem;
+    padding: 7rem var(--inset) 3.5rem;
+
+    @include media-breakpoint-down(md) {
+        padding-block: 4.5rem 2.5rem;
+    }
+
+    h2 {
+        margin: 0;
+        font-size: clamp(2rem, 3.6vw, 3rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+        color: var(--ks-content-primary);
+        text-wrap: balance;
+
+        span {
+            color: var(--ks-content-tertiary);
+        }
+    }
+
+    p {
+        max-width: 40rem;
+        margin: 0;
+        font-size: 1.125rem;
+        line-height: 1.55;
+        color: var(--ks-content-tertiary);
+        text-wrap: pretty;
+    }
+}
+
+@mixin code-panel {
+    overflow: hidden;
+    border: 1px solid #2a2932;
+    border-radius: 0.75rem;
+    background: #0e0d14;
+
+    .bar {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.625rem 1rem;
+        border-bottom: 1px solid #2a2932;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: #a3a2ae;
+
+        i {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            background: #34333d;
+        }
+    }
+
+    :global(:root) & :global(.expressive-code.dark) {
+        --ec-codeBg: #0e0d14;
+        --ec-frm-edBg: #0e0d14;
+        --ec-brdCol: transparent;
+        --ec-brdRad: 0;
+        --ec-codeFontSize: 0.8125rem;
+        --ec-codeLineHt: 1.6;
+        --ec-codeFontFml: var(--font-family-jetbrains-mono);
+        --ec-frm-frameBoxShdCssVal: none;
+        --ec-frm-tooltipSuccessBg: var(--ks-background-button-primary);
+    }
+
+    :global(pre) {
+        margin: 0;
+    }
+
+    :global(pre[data-language])::before {
+        display: none;
+    }
+}

@@ -1,0 +1,1092 @@
+---
+import { Icon } from "astro-icon/components"
+import pipedreamMark from "./assets/pipedream.png"
+import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
+import ControlPlaneTopology from "~/components/home/ControlPlaneTopology.astro"
+import { BEFORE, FLOW_INLINE } from "./guide"
+
+const escape = (text: string) =>
+    text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+
+const python = (line: string) =>
+    escape(line).replace(
+        /("[^"]*")|\b(def|return|import|from)\b|\b(round|float|handler|loads|outputs)\b/g,
+        (match, str, kw, fn) =>
+            str
+                ? `<span class="s">${match}</span>`
+                : kw
+                  ? `<span class="k">${match}</span>`
+                  : fn
+                    ? `<span class="f">${match}</span>`
+                    : match,
+    )
+
+const pebble = (value: string) =>
+    escape(value).replace(
+        /(\{\{)(.*?)(\}\})/g,
+        '<span class="pbd">$1</span><span class="pbv">$2</span><span class="pbd">$3</span>',
+    )
+
+const MARKS: Record<string, [number, number]> = {
+    webhook: [5, 7],
+    transform: [10, 20],
+    post_to_netsuite: [22, 26],
+}
+const markAt = (row: number) =>
+    Object.entries(MARKS).find(([, [a, b]]) => row >= a && row <= b)?.[0]
+
+let block = -1
+const FLOW_LINES = FLOW_INLINE.split("\n").map((text, i) => {
+    const indent = text.match(/^\s*/)?.[0].length ?? 0
+    if (block >= 0 && text.trim() !== "" && indent <= block) block = -1
+    let html: string
+    if (block >= 0) html = python(text)
+    else {
+        const m = text.match(/^(\s*)(- )?([\w.]+)(:)(\s*)(.*)$/)
+        if (!m) html = escape(text)
+        else {
+            const [, ind, dash = "", key, colon, space, value] = m
+            if (value.trim() === "|") block = indent
+            const cls = /^["']/.test(value) ? "s" : "v"
+            html = `${ind}<span class="p">${dash}</span><span class="y">${key}${colon}</span>${space}<span class="${cls}">${pebble(value)}</span>`
+        }
+    }
+    return { html, mark: markAt(i + 1) }
+})
+
+const PD_CODE = BEFORE.split("\n").map(python)
+
+const TOPOLOGY = [
+    {
+        id: "webhook",
+        type: "core.trigger.Webhook",
+        plugin: "core.trigger.Webhook",
+        fallback: "mdi:webhook",
+        x: 0,
+        y: 70,
+        status: "success" as const,
+        duration: "0s",
+        seconds: 0.01,
+    },
+    {
+        id: "transform",
+        type: "scripts.python.Script",
+        plugin: "scripts.python.Script",
+        fallback: "mdi:language-python",
+        x: 310,
+        y: 70,
+        status: "success" as const,
+        duration: "4.6s",
+        seconds: 4.6,
+    },
+    {
+        id: "post_to_netsuite",
+        type: "core.http.Request",
+        plugin: "core.http.Request",
+        fallback: "mdi:web",
+        x: 620,
+        y: 70,
+        status: "success" as const,
+        duration: "0.03s",
+        seconds: 0.03,
+    },
+]
+
+const FEED = [
+    {
+        node: 1,
+        at: "start",
+        time: "10:27:29",
+        who: "transform",
+        what: "Installing packages with uv",
+    },
+    {
+        node: 1,
+        at: "done",
+        time: "10:27:31",
+        who: "transform",
+        what: "Exit code 0 · invoice_id INV-1042 · amount 1280.5",
+        tone: "ok",
+    },
+    {
+        node: 2,
+        at: "done",
+        time: "10:27:31",
+        who: "post_to_netsuite",
+        what: "POST /vendorBill · response 200",
+        tone: "ok",
+    },
+]
+
+const K_TABS = [
+    { icon: "mdi:code-tags", label: "Flow Code", on: true },
+    { icon: "mdi:gesture-tap", label: "No-code" },
+    { icon: "mdi:sitemap-outline", label: "Topology", on: true },
+    { icon: "mdi:file-document-outline", label: "Docs" },
+    { icon: "mdi:folder-outline", label: "Files" },
+    { icon: "mdi:view-grid-plus-outline", label: "Blueprints" },
+]
+---
+
+<section class="pd-compare" aria-labelledby="pd-compare-title">
+    <div class="container-xl">
+        <div class="rails">
+            <header class="head">
+                <h2 id="pd-compare-title">One workflow, before and after</h2>
+                <p>
+                    The Python keeps its logic. Input comes from trigger.body,
+                    output goes through Kestra.outputs(), and the connected
+                    account becomes a secret.
+                </p>
+            </header>
+            <div class="stage">
+                <div class="compare" data-compare>
+                    <div
+                        class="layer pd"
+                        role="img"
+                        aria-label="The invoice workflow in the Pipedream builder: a trigger and two Python steps, with the transform step's code open."
+                    >
+                        <aside class="pd-rail">
+                            <img src={pipedreamMark.src} alt="" />
+                            <Icon name="mdi:magnify" />
+                            <Icon name="mdi:format-list-bulleted" />
+                            <Icon name="mdi:application-cog-outline" />
+                        </aside>
+                        <div class="pd-main">
+                            <div class="pd-top">
+                                <Icon name="mdi:cube-outline" />
+                                <span>finance</span>
+                                <Icon name="mdi:chevron-right" class="sep" />
+                                <strong>invoice-intake</strong>
+                                <span class="pd-btn">Deploy</span>
+                            </div>
+                            <div class="cols">
+                                <div class="pd-canvas">
+                                    <div class="pd-node">
+                                        <span class="pd-icon hook">
+                                            <Icon name="mdi:webhook" />
+                                        </span>
+                                        <span>
+                                            <strong>trigger</strong>
+                                            <small>
+                                                https://eo3k9x2m1v8p4.m.pipedream.net
+                                            </small>
+                                        </span>
+                                    </div>
+                                    <span class="pd-link"></span>
+                                    <div class="pd-node on">
+                                        <span class="pd-icon py">
+                                            <Icon name="mdi:language-python" />
+                                        </span>
+                                        <span>
+                                            <strong>transform</strong>
+                                        </span>
+                                    </div>
+                                    <span class="pd-link"></span>
+                                    <div class="pd-node">
+                                        <span class="pd-icon py">
+                                            <Icon name="mdi:language-python" />
+                                        </span>
+                                        <span>
+                                            <strong>post_to_netsuite</strong>
+                                        </span>
+                                    </div>
+                                    <span class="pd-link"></span>
+                                    <span class="pd-add">
+                                        <Icon name="mdi:plus" />
+                                    </span>
+                                </div>
+                                <div class="pd-panel">
+                                    <div class="pd-tab">
+                                        <Icon name="mdi:language-python" />
+                                        transform
+                                        <Icon name="mdi:close" class="x" />
+                                    </div>
+                                    <div class="pd-sec">CONFIGURE</div>
+                                    <div class="pd-sec pd-sec-tools">
+                                        CODE
+                                        <span class="pd-chip">
+                                            <Icon name="mdi:code-tags" /> Code
+                                            examples
+                                        </span>
+                                        <span class="pd-chip">
+                                            <Icon name="mdi:creation-outline" />{" "}
+                                            Edit with AI <b>BETA</b>
+                                        </span>
+                                    </div>
+                                    <pre class="pd-code">{PD_CODE.map((line, i) => (
+                                        <span class="ln"><i>{i + 1}</i><Fragment set:html={line} /></span>
+                                    ))}</pre>
+                                    <div class="pd-sec">RESULTS</div>
+                                    <div class="pd-ok">
+                                        <strong>Success</strong>
+                                        <span>
+                                            <u>View the details</u> of the
+                                            execution below
+                                        </span>
+                                    </div>
+                                    <div class="pd-tabs">
+                                        <span class="on">Exports</span>
+                                        <span>Inputs</span>
+                                        <span>Logs</span>
+                                        <span>Details</span>
+                                    </div>
+                                    <pre class="pd-exports">steps.transform
+  $return_value
+    invoice_id: "INV-1042"
+    amount: 1280.5</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="layer ks"
+                        role="img"
+                        aria-label="The same workflow in the Kestra flow editor, with Topology and Flow Code open side by side while an execution runs through webhook, transform and post_to_netsuite."
+                        data-ks
+                    >
+                        <div class="ks-top">
+                            <img src={kestraMark.src} alt="" class="ks-logo" />
+                            <span class="slash">/</span>
+                            <Icon name="mdi:sitemap-outline" />
+                            <strong>Flows</strong>
+                            <span class="ks-right">
+                                <span class="toggle">
+                                    <i></i>
+                                </span>
+                                Playground
+                                <span class="ks-btn ghost">
+                                    <Icon name="mdi:download" /> Export flow
+                                </span>
+                                <span class="ks-btn">Save</span>
+                            </span>
+                        </div>
+                        <div class="ks-tabs">
+                            {K_TABS.map((tab) => (
+                                <span class:list={{ on: tab.on }}>
+                                    <Icon name={tab.icon} />
+                                    {tab.label}
+                                </span>
+                            ))}
+                        </div>
+                        <div class="cols">
+                            <div class="ks-panel">
+                                <div class="ks-ptab">
+                                    <Icon name="mdi:code-tags" /> Flow Code{" "}
+                                    <Icon name="mdi:close" class="x" />
+                                </div>
+                                <pre class="ks-code">{FLOW_LINES.map((line, i) => (
+                                    <span class="line" data-k={line.mark}><i class="no">{i + 1}</i><Fragment set:html={line.html} /></span>
+                                ))}</pre>
+                            </div>
+                            <div class="ks-panel">
+                                <div class="ks-ptab">
+                                    <Icon name="mdi:sitemap-outline" /> Topology{" "}
+                                    <Icon name="mdi:close" class="x" />
+                                </div>
+                                <div class="ks-topology surface-dark">
+                                    <ControlPlaneTopology
+                                        nodes={TOPOLOGY}
+                                        label="Kestra topology of the invoice_intake flow running: webhook, transform and post_to_netsuite run one after the other"
+                                    />
+                                </div>
+                                <ol
+                                    class="feed"
+                                    aria-hidden="true"
+                                    data-feed
+                                ></ol>
+                                <script
+                                    type="application/json"
+                                    data-feed-rows
+                                    set:html={JSON.stringify(FEED)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        step="0.1"
+                        value="50"
+                        aria-label="Compare the Pipedream workflow with the Kestra flow"
+                    />
+                    <div class="handle" aria-hidden="true">
+                        <span class="knob">
+                            <Icon name="mdi:chevron-left" />
+                            <Icon name="mdi:chevron-right" />
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const ORDER = ["webhook", "transform", "post_to_netsuite"]
+
+    function wire() {
+        document
+            .querySelectorAll<HTMLElement>("[data-compare]:not([data-wired])")
+            .forEach((root) => {
+                root.dataset.wired = ""
+                const input = root.querySelector<HTMLInputElement>("input")!
+                const ks = root.querySelector<HTMLElement>("[data-ks]")!
+                input.addEventListener("input", () =>
+                    root.style.setProperty("--pos", `${input.value}%`),
+                )
+
+                const lines = [...ks.querySelectorAll<HTMLElement>(".line")]
+                const nodes = [
+                    ...ks.querySelectorAll<HTMLElement>("[data-node]"),
+                ]
+                const feed = ks.querySelector<HTMLOListElement>("[data-feed]")!
+                const rows: {
+                    node: number
+                    at: string
+                    time: string
+                    who: string
+                    what: string
+                    tone?: string
+                }[] = JSON.parse(
+                    ks.querySelector("[data-feed-rows]")!.textContent ?? "[]",
+                )
+                let shown = 0
+                const sync = () => {
+                    const state = nodes.map((node) =>
+                        node.classList.contains("is-success")
+                            ? 2
+                            : node.classList.contains("is-running")
+                              ? 1
+                              : 0,
+                    )
+                    const due = rows.filter(
+                        (row) => state[row.node] >= (row.at === "done" ? 2 : 1),
+                    )
+                    if (due.length < shown) {
+                        feed.replaceChildren()
+                        shown = 0
+                    }
+                    for (const row of due.slice(shown)) {
+                        const li = document.createElement("li")
+                        if (row.tone) li.dataset.tone = row.tone
+                        for (const [cls, text] of [
+                            ["time", row.time],
+                            ["who", row.who],
+                            ["what", row.what],
+                        ]) {
+                            const cell = document.createElement("span")
+                            cell.className = cls
+                            cell.textContent = text
+                            li.appendChild(cell)
+                        }
+                        feed.insertBefore(li, feed.firstChild)
+                        while (feed.children.length > 3)
+                            feed.lastElementChild!.remove()
+                    }
+                    shown = due.length
+                    const running = nodes.findIndex((node) =>
+                        node.classList.contains("is-running"),
+                    )
+                    const focus = running >= 0 ? ORDER[running] : ""
+                    lines.forEach((line) =>
+                        line.classList.toggle(
+                            "on",
+                            !!focus && line.dataset.k === focus,
+                        ),
+                    )
+                }
+                const observer = new MutationObserver(sync)
+                nodes.forEach((node) =>
+                    observer.observe(node, {
+                        attributes: true,
+                        attributeFilter: ["class"],
+                    }),
+                )
+            })
+    }
+
+    wire()
+    document.addEventListener("astro:page-load", wire)
+</script>
+
+<style lang="scss">
+    @use "./pd" as *;
+
+    .pd-compare {
+        @include band;
+    }
+
+    .rails {
+        @include rails;
+    }
+
+    .head {
+        @include head;
+    }
+
+    .stage {
+        padding: 0 var(--inset) 3.5rem;
+
+        @include media-breakpoint-down(md) {
+            padding-bottom: 2.5rem;
+        }
+    }
+
+    .compare {
+        --pos: 50%;
+        --k: #8405ff;
+        position: relative;
+        display: grid;
+        overflow: hidden;
+        border: 1px solid #ebebf0;
+        border-radius: 10px;
+        box-shadow: 0 16px 36px -18px rgba(43, 43, 51, 0.22);
+        user-select: none;
+
+        :global(html.dark) & {
+            --k: #9869f7;
+            border-color: #2e2e3c;
+            box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.7);
+        }
+    }
+
+    .layer {
+        display: grid;
+        grid-area: 1 / 1;
+        min-width: 0;
+        font-size: 0.8125rem;
+    }
+
+    .cols {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        min-height: 0;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    pre {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        font-family: var(--font-family-jetbrains-mono);
+        font-size: 0.75rem;
+        line-height: 1.7;
+        white-space: pre;
+        overflow: hidden;
+    }
+
+    .ln {
+        display: block;
+
+        i {
+            display: inline-block;
+            width: 2.25rem;
+            padding-right: 0.75rem;
+            font-style: normal;
+            text-align: right;
+        }
+    }
+
+    .x {
+        margin-left: 0.25rem;
+        opacity: 0.6;
+    }
+
+    .pd {
+        grid-template-columns: 3rem minmax(0, 1fr);
+        background: #f3f3f4;
+        color: #1f2328;
+    }
+
+    .pd-rail {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem 0;
+        border-right: 1px solid #e3e3e6;
+        background: #ffffff;
+        color: #6e7781;
+        font-size: 1.125rem;
+
+        img {
+            width: 1.625rem;
+            height: 1.625rem;
+            margin-bottom: 0.5rem;
+            border-radius: 6px;
+        }
+    }
+
+    .pd-main {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        min-width: 0;
+    }
+
+    .pd-top {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.625rem 1rem;
+        border-bottom: 1px solid #e3e3e6;
+        background: #ffffff;
+        color: #57606a;
+
+        strong {
+            font-weight: 500;
+            color: #1f2328;
+        }
+
+        .sep {
+            opacity: 0.5;
+        }
+    }
+
+    .pd-btn {
+        margin-left: auto;
+        padding: 0.25rem 0.75rem;
+        border: 1px solid #d0d7de;
+        border-radius: 6px;
+        background: #f6f8fa;
+        font-weight: 500;
+        color: #1f2328;
+    }
+
+    .pd-canvas {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2.5rem 1.5rem;
+        background-image: radial-gradient(#dcdce0 1px, transparent 1px);
+        background-size: 16px 16px;
+    }
+
+    .pd-node {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        width: min(100%, 17rem);
+        padding: 0.625rem 0.75rem;
+        border: 1px solid #e3e3e6;
+        border-radius: 8px;
+        background: #ffffff;
+        box-shadow: 0 1px 2px rgba(31, 35, 40, 0.06);
+
+        &.on {
+            border-color: #34d28b;
+            box-shadow: 0 0 0 3px rgba(52, 210, 139, 0.18);
+        }
+
+        > span:last-child {
+            display: grid;
+            min-width: 0;
+        }
+
+        strong {
+            font-weight: 500;
+        }
+
+        small {
+            overflow: hidden;
+            font-size: 0.6875rem;
+            color: #8c959f;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    .pd-icon {
+        display: grid;
+        flex: none;
+        place-items: center;
+        width: 1.75rem;
+        height: 1.75rem;
+        border-radius: 6px;
+        font-size: 1.125rem;
+
+        &.hook {
+            background: #fde8ec;
+            color: #e0245e;
+        }
+
+        &.py {
+            background: #eef4fb;
+            color: #3572a5;
+        }
+    }
+
+    .pd-link {
+        width: 1px;
+        height: 1.25rem;
+        background: #c9c9cf;
+    }
+
+    .pd-add {
+        display: grid;
+        place-items: center;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 6px;
+        background: #c9c9cf;
+        color: #ffffff;
+    }
+
+    .pd-panel {
+        border-left: 1px solid #e3e3e6;
+        background: #ffffff;
+
+        @include media-breakpoint-down(lg) {
+            border-left: 0;
+            border-top: 1px solid #e3e3e6;
+        }
+    }
+
+    .pd-tab {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        padding: 0.625rem 1rem;
+        border-right: 1px solid #e3e3e6;
+        font-size: 0.875rem;
+
+        :global(svg:first-child) {
+            color: #3572a5;
+        }
+    }
+
+    .pd-sec {
+        padding: 0.5rem 1rem;
+        border-top: 1px solid #e3e3e6;
+        font-size: 0.6875rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        color: #6e7781;
+
+        &.pd-sec-tools {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    }
+
+    .pd-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.125rem 0.5rem;
+        border: 1px solid #d0d7de;
+        border-radius: 6px;
+        font-size: 0.6875rem;
+        letter-spacing: 0;
+        color: #1f2328;
+
+        &:first-of-type {
+            margin-left: auto;
+        }
+
+        b {
+            font-size: 0.5625rem;
+            color: #0969da;
+        }
+    }
+
+    .pd-code {
+        padding: 0.5rem 0 0.75rem;
+        border-top: 1px solid #e3e3e6;
+        color: #1f2328 !important;
+
+        i {
+            color: #8c959f;
+        }
+
+        :global(.k) {
+            color: #0550ae;
+        }
+
+        :global(.s) {
+            color: #a31515;
+        }
+
+        :global(.f) {
+            color: #0a3069;
+        }
+    }
+
+    .pd-ok {
+        display: grid;
+        margin: 0.75rem 1rem;
+        padding: 0.5rem 0.75rem;
+        border-left: 4px solid #34d28b;
+        background: #ecfdf3;
+
+        span {
+            color: #57606a;
+        }
+
+        u {
+            color: #0969da;
+            text-decoration: none;
+        }
+    }
+
+    .pd-tabs {
+        display: flex;
+        gap: 1.25rem;
+        margin: 0 1rem;
+        border-bottom: 1px solid #e3e3e6;
+        color: #8c959f;
+
+        span {
+            padding: 0.375rem 0;
+        }
+
+        .on {
+            border-bottom: 2px solid #0969da;
+            color: #1f2328;
+        }
+    }
+
+    .pd-exports {
+        padding: 0.5rem 1rem 1rem;
+        color: #1f2328 !important;
+    }
+
+    .ks {
+        grid-template-rows: auto auto 1fr;
+        background: #18181e;
+        color: #ffffff;
+        clip-path: inset(0 0 0 var(--pos));
+    }
+
+    .ks-top {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-bottom: 1px solid #2e2e3c;
+        background: #121216;
+
+        .slash {
+            color: #5c5d66;
+        }
+
+        strong {
+            font-weight: 600;
+        }
+    }
+
+    .ks-logo {
+        width: 1.5rem;
+        height: 1.5rem;
+        padding: 0.25rem;
+        border-radius: 6px;
+        background: #0d0d10;
+    }
+
+    .ks-right {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-left: auto;
+        color: #d6d6e0;
+    }
+
+    .toggle {
+        position: relative;
+        width: 1.75rem;
+        height: 1rem;
+        border-radius: 999px;
+        background: #2e2e3c;
+
+        i {
+            position: absolute;
+            top: 0.125rem;
+            left: 0.125rem;
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            background: #ffffff;
+        }
+    }
+
+    .ks-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.3125rem 0.75rem;
+        border-radius: 6px;
+        background: #8405ff;
+        font-weight: 600;
+        color: #ffffff;
+
+        &.ghost {
+            background: #26262f;
+            font-weight: 500;
+        }
+    }
+
+    .ks-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        padding: 0.375rem 0.75rem;
+        border-bottom: 1px solid #2e2e3c;
+        color: #adadbf;
+
+        span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.3125rem 0.625rem;
+            border-radius: 6px;
+        }
+
+        .on {
+            background: #26262f;
+            color: #ffffff;
+        }
+    }
+
+    .ks-panel {
+        min-width: 0;
+
+        & + & {
+            border-left: 1px solid #2e2e3c;
+
+            @include media-breakpoint-down(lg) {
+                border-left: 0;
+                border-top: 1px solid #2e2e3c;
+            }
+        }
+    }
+
+    .ks-ptab {
+        display: inline-flex;
+        align-self: flex-start;
+        align-items: center;
+        gap: 0.375rem;
+        margin: 0.5rem 0.75rem 0;
+        padding: 0.3125rem 0.625rem;
+        border-radius: 6px;
+        background: #26262f;
+        color: #ffffff;
+    }
+
+    .ks-panel:has(.ks-topology) {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .ks-topology {
+        display: flex;
+        margin-top: auto;
+        align-items: center;
+        padding: 1rem 0.75rem;
+
+        :global(.topology) {
+            --z: 0.6;
+            --node-bg: #1a1c22;
+            --node-border: #2e2e3c;
+            --node-text: #ffffff;
+            --node-muted: #adadbf;
+            --edge: #4a4a5a;
+            --track: #2a2a36;
+            --success: #1e875e;
+            --success-line: #06f0b1;
+            --success-border: #1e875e;
+            --success-bg: rgba(30, 135, 94, 0.14);
+            --running: #9869f7;
+            --running-bg: rgba(152, 105, 247, 0.14);
+            --runner: #718bfe;
+            --runner-bg: rgba(152, 105, 247, 0.12);
+            --trigger: #1e875e;
+            --trigger-button: #1e875e;
+            --trigger-border: rgba(6, 240, 177, 0.35);
+            --trigger-bg: rgba(6, 240, 177, 0.06);
+            height: 17rem;
+            align-self: center;
+        }
+    }
+
+    .feed {
+        display: grid;
+        align-content: start;
+        gap: 0.375rem;
+        min-height: 5.25rem;
+        margin: 0 1rem auto;
+        padding: 0.875rem 0.5rem 0;
+        border-top: 1px solid #2e2e3c;
+        list-style: none;
+        font-size: 0.8125rem;
+
+        :global(li) {
+            display: grid;
+            grid-template-columns: 4.5rem 8.5rem minmax(0, 1fr);
+            gap: 0.75rem;
+            color: #adadbf;
+            animation: feed-in 0.35s ease-out;
+        }
+
+        :global(li:not(:first-child)) {
+            opacity: 0.55;
+        }
+
+        :global(.time) {
+            font-variant-numeric: tabular-nums;
+            color: #6c6c7a;
+        }
+
+        :global(.who) {
+            overflow: hidden;
+            font-weight: 500;
+            color: #ffffff;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        :global(li[data-tone="ok"] .what) {
+            color: #06f0b1;
+        }
+    }
+
+    @keyframes feed-in {
+        from {
+            opacity: 0;
+            transform: translateY(-4px);
+        }
+    }
+
+    .ks-code {
+        padding: 0.75rem 0 1rem;
+        color: #d6d6e0 !important;
+
+        :global(.line) {
+            display: block;
+            padding-right: 1rem;
+            transition:
+                background-color 0.3s ease,
+                box-shadow 0.3s ease,
+                opacity 0.3s ease;
+        }
+
+        :global(.no) {
+            display: inline-block;
+            width: 2.5rem;
+            padding-right: 0.875rem;
+            font-style: normal;
+            text-align: right;
+            color: #adadbf;
+            opacity: 0.6;
+        }
+
+        &:has(:global(.line.on)) :global(.line:not(.on)) {
+            opacity: 0.4;
+        }
+
+        :global(.line.on) {
+            background: linear-gradient(
+                90deg,
+                rgba(152, 105, 247, 0.16),
+                transparent 85%
+            );
+            box-shadow: inset 2px 0 0 #cdb6fb;
+        }
+
+        :global(.line.on .no) {
+            color: #cdb6fb;
+            opacity: 1;
+        }
+
+        :global(.y) {
+            color: #cdb6fb;
+        }
+
+        :global(.v) {
+            color: #d6d6e0;
+        }
+
+        :global(.s) {
+            color: #ffc5b7;
+        }
+
+        :global(.p) {
+            color: #9696a5;
+        }
+
+        :global(.pbd) {
+            color: #80fac5;
+        }
+
+        :global(.pbv) {
+            color: #bffddd;
+        }
+
+        :global(.k) {
+            color: #cdb6fb;
+        }
+
+        :global(.f) {
+            color: #718bfe;
+        }
+    }
+
+    input {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        opacity: 0;
+        cursor: ew-resize;
+    }
+
+    .handle {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: var(--pos);
+        z-index: 1;
+        width: 2px;
+        margin-left: -1px;
+        background: var(--k);
+        box-shadow: 0 0 1rem rgba(132, 5, 255, 0.55);
+        pointer-events: none;
+    }
+
+    .knob {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+        background: var(--k);
+        box-shadow:
+            0 0 0 4px rgba(132, 5, 255, 0.18),
+            0 0.5rem 1.25rem rgba(0, 0, 0, 0.35);
+        color: #ffffff;
+        font-size: 1rem;
+        translate: -50% -50%;
+
+        :global(svg) {
+            margin-inline: -0.25rem;
+        }
+    }
+
+    input:focus-visible ~ .handle .knob {
+        outline: 3px solid var(--k);
+        outline-offset: 3px;
+    }
+</style>
