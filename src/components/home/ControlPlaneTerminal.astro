@@ -90,7 +90,8 @@ const { label, lines, title = "Terminal" } = Astro.props
             ps.textContent = "$ "
             const cmd = document.createElement("span")
             cmd.className = "cmd typing"
-            row.append(ps, cmd)
+            row.appendChild(ps)
+            row.appendChild(cmd)
             return cmd
         }
 

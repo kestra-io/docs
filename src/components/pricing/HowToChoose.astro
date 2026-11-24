@@ -1,9 +1,9 @@
 ---
 import BlockTitle from "~/components/enterprise/BlockTitle.astro"
 
-const EDITIONS = ["Kestra Core", "Kestra Cloud", "Kestra Enterprise"]
+const DEFAULT_COLUMNS = ["Kestra Core", "Kestra Cloud", "Kestra Enterprise"]
 
-const ROWS: { label: string; values: string[] }[] = [
+const DEFAULT_ROWS: { label: string; values: string[] }[] = [
     { label: "Who operates", values: ["You", "Kestra", "You"] },
     {
         label: "Where it runs",
@@ -26,15 +26,36 @@ const ROWS: { label: string; values: string[] }[] = [
         values: ["Open Source", "Usage-based", "Instance-based"],
     },
 ]
+interface Props {
+    headingId?: string
+    title?: string
+    blockTitle?: string
+    columns?: string[]
+    rows?: { label: string; values: string[] }[]
+    featured?: number
+}
+
+const {
+    headingId = "how-to-choose",
+    title = "How to choose",
+    blockTitle = "HOW TO CHOOSE",
+    columns: EDITIONS = DEFAULT_COLUMNS,
+    rows: ROWS = DEFAULT_ROWS,
+    featured = EDITIONS.length - 1,
+} = Astro.props
 ---
 
-<section class="pricing-choose surface-dark" aria-labelledby="how-to-choose">
+<section
+    class="pricing-choose surface-dark"
+    aria-labelledby={headingId}
+    style={`--cols: ${EDITIONS.length}`}
+>
     <div class="container-xl">
         <div class="rails">
             <header>
-                <h2 id="how-to-choose">
-                    <span class="visually-hidden">How to choose</span>
-                    <BlockTitle text="HOW TO CHOOSE" prefix="pricing-choose" />
+                <h2 id={headingId}>
+                    <span class="visually-hidden">{title}</span>
+                    <BlockTitle text={blockTitle} prefix={headingId} />
                 </h2>
             </header>
             <div class="scroll">
@@ -61,7 +82,7 @@ const ROWS: { label: string; values: string[] }[] = [
             </div>
             <ul class="cards">
                 {EDITIONS.map((edition, idx) => (
-                    <li class:list={{ featured: idx === EDITIONS.length - 1 }}>
+                    <li class:list={{ featured: idx === featured }}>
                         <h3>{edition}</h3>
                         <dl>
                             {ROWS.map((row) => (
@@ -141,7 +162,7 @@ const ROWS: { label: string; values: string[] }[] = [
                 position: absolute;
                 inset: 0 0 0 auto;
                 z-index: 1;
-                width: 26%;
+                width: calc(78% / var(--cols, 3));
                 border-radius: 1rem;
                 background: linear-gradient(
                     180deg,

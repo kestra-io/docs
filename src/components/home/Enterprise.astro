@@ -32,6 +32,7 @@ interface Props {
     layers?: boolean
     actions?: boolean
     light?: boolean
+    headingId?: string
 }
 
 const DEFAULT_FEATURES: Feature[] = [
@@ -62,7 +63,10 @@ const {
     layers = true,
     actions = true,
     light = false,
+    headingId = "enterprise",
 } = Astro.props
+const hasVisual = Astro.slots.has("visual")
+const hasActions = Astro.slots.has("actions")
 
 const ROOT = "acme"
 const NAMESPACES = [
@@ -214,7 +218,7 @@ const WORKERS = [
 
 <section
     class:list={["enterprise", light ? "light" : "surface-dark"]}
-    aria-labelledby="enterprise"
+    aria-labelledby={headingId}
     data-header-dark={light ? undefined : ""}
 >
     {
@@ -278,9 +282,9 @@ const WORKERS = [
     }
     <div class="container-xl">
         <div class="grid">
-            <header class:list={["head", { solo: !layers }]}>
+            <header class:list={["head", { solo: !layers && !hasVisual }]}>
                 <div>
-                    <h2 id="enterprise">
+                    <h2 id={headingId}>
                         <slot name="title">
                             <span>Achieve more with</span>{" "}
                             <em>Kestra Enterprise.</em>
@@ -294,8 +298,13 @@ const WORKERS = [
                             cloud or air-gapped.
                         </slot>
                     </p>
+                    {hasActions && (
+                        <div class="actions">
+                            <slot name="actions" />
+                        </div>
+                    )}
                     {
-                        actions && (
+                        actions && !hasActions && (
                             <div class="actions">
                                 <a href="/enterprise" class="btn-solid">
                                     Explore Enterprise
@@ -307,10 +316,16 @@ const WORKERS = [
                         )
                     }
                 </div>
-                {layers && <EnterpriseLayers />}
+                {hasVisual ? (
+                    <div class="visual">
+                        <slot name="visual" />
+                    </div>
+                ) : (
+                    layers && <EnterpriseLayers />
+                )}
             </header>
 
-            <ul class="features">
+            {FEATURES.length > 0 && <ul class="features">
                 {
                     FEATURES.map((feature) => (
                         <li>
@@ -856,7 +871,7 @@ const WORKERS = [
                         </li>
                     ))
                 }
-            </ul>
+            </ul>}
         </div>
     </div>
 </section>
@@ -1002,6 +1017,11 @@ const WORKERS = [
         @include media-breakpoint-down(xl) {
             border-inline: 0;
         }
+    }
+
+    .head .visual {
+        display: grid;
+        place-items: center;
     }
 
     .head {

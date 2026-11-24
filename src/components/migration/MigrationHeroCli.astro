@@ -1,20 +1,26 @@
 ---
 import { Icon } from "astro-icon/components"
-import pipedreamMark from "./assets/pipedream.png"
 import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
 
-const SCRIPT = [
-    { cmd: "unzip project_export-proj_abc123.zip -d export" },
-    { out: "  inflating: export/invoice-intake-p_abc123.json" },
-    { cmd: 'claude "Convert ./export to Kestra flows"' },
-    { out: "# wrote flows/finance/invoice_intake.yaml", note: true },
-    { cmd: "kestractl flows deploy ./flows/ --override" },
-]
+export interface CliLine {
+    cmd?: string
+    out?: string
+    note?: boolean
+}
+
+interface Props {
+    label: string
+    script: CliLine[]
+    from: { logo: string; label: string }
+    to: { label: string }
+}
+
+const { label, script, from, to } = Astro.props
 ---
 
 <figure
     class="hero-cli"
-    aria-label="A Pipedream workflow converted to a Kestra flow from the command line"
+    aria-label={label}
     data-hero-cli
 >
     <figcaption>
@@ -30,7 +36,7 @@ const SCRIPT = [
             Terminal
         </span>
     </figcaption>
-    <pre data-screen>{SCRIPT.map((line) =>
+    <pre data-screen>{script.map((line) =>
         line.cmd ? (
             <span class="line"><span class="ps">$ </span><span class="cmd">{line.cmd}</span></span>
         ) : (
@@ -39,22 +45,22 @@ const SCRIPT = [
     )}</pre>
     <div class="track" aria-hidden="true">
         <span class="end from">
-            <img src={pipedreamMark.src} alt="" />
-            invoice-intake
+            <img src={from.logo} alt="" />
+            {from.label}
         </span>
         <span class="rail">
             <i></i>
         </span>
         <span class="end to">
             <img src={kestraMark.src} alt="" class="k" />
-            finance.invoice_intake
+            {to.label}
             <Icon name="mdi:check-circle" class="ok" />
         </span>
     </div>
     <script
         type="application/json"
         data-script
-        set:html={JSON.stringify(SCRIPT)}
+        set:html={JSON.stringify(script)}
     />
 </figure>
 
@@ -95,7 +101,8 @@ const SCRIPT = [
                                 ps.textContent = "$ "
                                 const cmd = document.createElement("span")
                                 cmd.className = "cmd typing"
-                                row.append(ps, cmd)
+                                row.appendChild(ps)
+                                row.appendChild(cmd)
                                 for (let c = 1; c <= line.cmd.length; c++) {
                                     cmd.textContent = line.cmd.slice(0, c)
                                     await sleep(32)

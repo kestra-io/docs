@@ -1,0 +1,825 @@
+---
+import { Icon } from "astro-icon/components"
+import ControlPlaneTopology, {
+    type Props as TopologyProps,
+} from "~/components/home/ControlPlaneTopology.astro"
+import airflowMark from "~/components/versus/assets/airflow-monograme.svg"
+import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
+
+export interface DagRow {
+    dag: string
+    schedule: string
+    last: string
+    paused?: boolean
+    at?: number
+}
+
+export interface GraphNode {
+    id: string
+    operator: string
+}
+
+export interface HealthRow {
+    name: string
+    at?: number
+    after?: string
+}
+
+export interface FlowRow {
+    id: string
+    namespace: string
+    at?: number
+    note?: string
+}
+
+export interface TagRow {
+    dag: string
+    tag: string
+    tone?: "move" | "retire"
+    at: number
+}
+
+export type AirflowSide =
+    | { kind: "dags"; rows: DagRow[] }
+    | { kind: "graph"; dag: string; nodes: GraphNode[]; deletedAt?: number }
+    | { kind: "health"; unpausedAt?: number; rows: HealthRow[] }
+
+export type KestraSide =
+    | { kind: "flows"; rows: FlowRow[] }
+    | { kind: "topology"; flow: string; topology: TopologyProps }
+    | { kind: "tags"; title: string; rows: TagRow[] }
+
+export interface Props {
+    label: string
+    airflow: AirflowSide
+    kestra: KestraSide
+    checks: string[]
+}
+
+const { label, airflow, kestra, checks } = Astro.props
+
+const COLORS: Record<string, string> = {
+    SQLExecuteQueryOperator: "#cdaaed",
+    BashOperator: "#f0ede4",
+    "@task": "#ffefeb",
+}
+const AIRFLOW_PAGE = {
+    dags: "DAGs",
+    graph: "DAGs",
+    health: "Cluster Activity",
+}[airflow.kind]
+const KESTRA_PAGE = {
+    flows: "Flows",
+    topology: "Flows",
+    tags: "KV Store",
+}[kestra.kind]
+---
+
+<figure class="af-step" aria-label={label} data-af-step>
+    <div class="screens" aria-hidden="true">
+        <div class="screen airflow">
+            <div class="af-bar">
+                <img src={airflowMark.src} alt="" />
+                <strong>Airflow</strong>
+                {["DAGs", "Cluster Activity", "Datasets", "Browse"].map(
+                    (item) => (
+                        <span class:list={{ on: item === AIRFLOW_PAGE }}>
+                            {item}
+                        </span>
+                    ),
+                )}
+            </div>
+            <div class="af-body">
+                {airflow.kind === "dags" && (
+                    <table class="dags">
+                        <thead>
+                            <tr>
+                                <th />
+                                <th>DAG</th>
+                                <th>Schedule</th>
+                                <th>Last Run</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {airflow.rows.map((row) => (
+                                <tr
+                                    data-at={row.at}
+                                    class:list={{ paused: row.paused }}
+                                >
+                                    <td>
+                                        <span class="toggle">
+                                            <i />
+                                        </span>
+                                    </td>
+                                    <td class="dag">{row.dag}</td>
+                                    <td>
+                                        <span class="chip">{row.schedule}</span>
+                                    </td>
+                                    <td class="last">{row.last}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
+                {airflow.kind === "graph" && (
+                    <div class="graph" data-at={airflow.deletedAt}>
+                        <span class="dag-title">
+                            <small>DAG:</small> {airflow.dag}
+                        </span>
+                        <div class="nodes">
+                            {airflow.nodes.map((node, i) => (
+                                <>
+                                    {i > 0 && <span class="edge" />}
+                                    <span
+                                        class="node"
+                                        style={`--fill: ${COLORS[node.operator] ?? "#ffffff"}`}
+                                    >
+                                        <strong>{node.id}</strong>
+                                        <small>{node.operator}</small>
+                                    </span>
+                                </>
+                            ))}
+                        </div>
+                        <span class="deleted">
+                            <Icon name="mdi:delete-outline" /> DAG deleted
+                        </span>
+                    </div>
+                )}
+                {airflow.kind === "health" && (
+                    <div class="health">
+                        <div class="tile" data-at={airflow.unpausedAt}>
+                            <small>Unpaused DAGs</small>
+                            <strong>
+                                <span class="before">3</span>
+                                <span class="after">0</span>
+                            </strong>
+                        </div>
+                        <ul>
+                            {airflow.rows.map((row) => (
+                                <li data-at={row.at}>
+                                    <span class="name">{row.name}</span>
+                                    <span class="badge before">HEALTHY</span>
+                                    <span class="badge after">
+                                        {row.after ?? "STOPPED"}
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+            </div>
+        </div>
+
+        <span class="arrow">
+            <Icon name="mdi:arrow-right" />
+        </span>
+
+        <div class="screen kestra">
+            <div class="ks-bar">
+                <span class="kmark">
+                    <img src={kestraMark.src} alt="" />
+                </span>
+                <span class="slash">/</span>
+                <strong>{KESTRA_PAGE}</strong>
+            </div>
+            <div class="ks-body">
+                {kestra.kind === "flows" && (
+                    <table class="flows">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Namespace</th>
+                                <th>Last execution status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {kestra.rows.map((row) => (
+                                <tr data-at={row.at}>
+                                    <td class="id">
+                                        {row.id}
+                                        {row.note && <small>{row.note}</small>}
+                                    </td>
+                                    <td class="ns">{row.namespace}</td>
+                                    <td>
+                                        <span class="status before">
+                                            Created
+                                        </span>
+                                        <span class="status after">
+                                            <Icon name="mdi:check-circle" />
+                                            Success
+                                        </span>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
+                {kestra.kind === "topology" && (
+                    <div class="topo">
+                        <span class="flow-title">{kestra.flow}</span>
+                        <ControlPlaneTopology {...kestra.topology} />
+                    </div>
+                )}
+                {kestra.kind === "tags" && (
+                    <table class="flows tags">
+                        <thead>
+                            <tr>
+                                <th>{kestra.title}</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {kestra.rows.map((row) => (
+                                <tr
+                                    data-at={row.at}
+                                    data-tone={row.tone ?? "move"}
+                                >
+                                    <td class="id">{row.dag}</td>
+                                    <td>
+                                        <span class="status before">—</span>
+                                        <span class="status after tag">
+                                            {row.tag}
+                                        </span>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
+            </div>
+        </div>
+    </div>
+
+    <ol class="checks">
+        {checks.map((check) => (
+            <li data-check>
+                <span class="kmark">
+                    <Icon name="mdi:loading" class="spin" />
+                    <Icon name="mdi:check-circle" class="ok" />
+                </span>
+                {check}
+            </li>
+        ))}
+    </ol>
+</figure>
+
+<script>
+    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
+    function play(root: HTMLElement) {
+        const checks = [...root.querySelectorAll<HTMLElement>("[data-check]")]
+        const marked = [...root.querySelectorAll<HTMLElement>("[data-at]")]
+        const host = root.closest<HTMLElement>("[data-domain-visual]")
+        const stacked = matchMedia("(max-width: 991.98px)")
+        let visible = false
+        new IntersectionObserver(([entry]) => {
+            visible = entry.isIntersecting
+        }).observe(root)
+        const shown = () =>
+            visible &&
+            root.offsetParent !== null &&
+            (!host || stacked.matches || host.classList.contains("active"))
+        const report = (type: string, detail?: number) =>
+            root.dispatchEvent(new CustomEvent(type, { bubbles: true, detail }))
+
+        const loop = async () => {
+            for (;;) {
+                while (!shown()) {
+                    await sleep(200)
+                    if (!root.isConnected) return
+                }
+                checks.forEach((c) => c.classList.remove("running", "done"))
+                marked.forEach((m) => m.classList.remove("hit"))
+                await sleep(700)
+                let interrupted = false
+                for (const [k, check] of checks.entries()) {
+                    check.classList.add("running")
+                    await sleep(1100)
+                    check.classList.replace("running", "done")
+                    marked
+                        .filter((m) => Number(m.dataset.at) === k)
+                        .forEach((m) => m.classList.add("hit"))
+                    report("topology:progress", (k + 1) / checks.length)
+                    await sleep(700)
+                    if (!shown()) {
+                        interrupted = true
+                        break
+                    }
+                }
+                if (interrupted) continue
+                report("topology:done")
+                while (shown()) {
+                    await sleep(300)
+                    if (!root.isConnected) return
+                }
+            }
+        }
+        loop()
+    }
+
+    function wire() {
+        document
+            .querySelectorAll<HTMLElement>("[data-af-step]:not([data-wired])")
+            .forEach((root) => {
+                root.dataset.wired = ""
+                if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                    root.querySelectorAll("[data-check]").forEach((c) =>
+                        c.classList.add("done"),
+                    )
+                    root.querySelectorAll("[data-at]").forEach((m) =>
+                        m.classList.add("hit"),
+                    )
+                    return
+                }
+                play(root)
+            })
+    }
+
+    document.addEventListener("astro:page-load", wire)
+    wire()
+</script>
+
+<style lang="scss">
+    .af-step {
+        --line: #e2e8f0;
+        --ink: #1a202c;
+        --muted: #718096;
+        --ok: #1c7e57;
+        --ok-bg: #e7f6ef;
+        --run: #8405ff;
+        display: grid;
+        gap: 1rem;
+        width: 100%;
+        margin: 0;
+        text-align: left;
+    }
+
+    .screens {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        align-items: stretch;
+        gap: 0.75rem;
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    .screen {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        min-height: 15rem;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #ffffff;
+        box-shadow: 0 18px 40px -24px rgba(43, 43, 51, 0.35);
+        color: var(--ink);
+        font-size: 0.75rem;
+    }
+
+    .arrow {
+        display: grid;
+        place-items: center;
+        color: var(--muted);
+
+        @include media-breakpoint-down(md) {
+            transform: rotate(90deg);
+        }
+    }
+
+    .af-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 0.75rem;
+        border-bottom: 1px solid var(--line);
+        white-space: nowrap;
+        overflow: hidden;
+
+        img {
+            width: 1.125rem;
+            height: 1.125rem;
+        }
+
+        strong {
+            font-weight: 500;
+            color: #51504f;
+        }
+
+        span {
+            color: #51504f;
+            font-weight: 500;
+
+            &.on {
+                color: #017cee;
+            }
+        }
+    }
+
+    .af-body,
+    .ks-body {
+        flex: 1;
+        padding: 0.625rem 0.75rem;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th {
+            padding: 0.375rem 0.5rem;
+            background: #f5f5f5;
+            font-weight: 600;
+            text-align: left;
+            color: #51504f;
+        }
+
+        td {
+            padding: 0.4375rem 0.5rem;
+            border-top: 1px solid var(--line);
+            vertical-align: middle;
+        }
+    }
+
+    .dag {
+        font-weight: 600;
+        color: #017cee;
+    }
+
+    .chip {
+        padding: 0.0625rem 0.375rem;
+        border-radius: 3px;
+        background: #e2e2e2;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        color: #51504f;
+    }
+
+    .last {
+        color: var(--muted);
+        white-space: nowrap;
+    }
+
+    .toggle {
+        position: relative;
+        display: block;
+        width: 1.75rem;
+        height: 1rem;
+        border-radius: 999px;
+        background: #017cee;
+        transition: background-color 0.3s ease;
+
+        i {
+            position: absolute;
+            top: 0.125rem;
+            left: 0.875rem;
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            background: #ffffff;
+            transition: left 0.3s ease;
+        }
+    }
+
+    tr.paused .toggle,
+    tr:global(.hit) .toggle {
+        background: #cbd5e0;
+
+        i {
+            left: 0.125rem;
+        }
+    }
+
+    tr:global(.hit) td {
+        animation: flash 0.8s ease;
+    }
+
+    .graph {
+        position: relative;
+        display: grid;
+        gap: 0.5rem;
+        height: 100%;
+        background-image: radial-gradient(#cbd2dc 0.8px, transparent 0.8px);
+        background-size: 14px 14px;
+
+        .nodes {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.4s ease;
+        }
+
+        .deleted {
+            position: absolute;
+            inset: auto 0 0.25rem;
+            display: none;
+            justify-content: center;
+            gap: 0.25rem;
+            font-weight: 600;
+            color: #c53030;
+        }
+
+        &:global(.hit) {
+            .nodes {
+                opacity: 0.25;
+            }
+
+            .deleted {
+                display: flex;
+            }
+        }
+    }
+
+    .dag-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+
+        small {
+            font-size: 0.875rem;
+            font-weight: 400;
+            color: #a0aec0;
+        }
+    }
+
+    .node {
+        display: grid;
+        gap: 0.125rem;
+        padding: 0.375rem 0.5rem 1rem;
+        border: 2px solid #a0aec0;
+        border-radius: 4px;
+        background: var(--fill);
+
+        small {
+            font-size: 0.625rem;
+            color: #4a5568;
+        }
+    }
+
+    .edge {
+        width: 1rem;
+        height: 2px;
+        background: #a0aec0;
+    }
+
+    .health {
+        display: grid;
+        grid-template-columns: 7rem minmax(0, 1fr);
+        gap: 0.75rem;
+
+        .tile {
+            display: grid;
+            align-content: start;
+            gap: 0.25rem;
+            padding: 0.5rem;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            text-align: center;
+
+            strong {
+                font-size: 1.5rem;
+            }
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4375rem 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .name {
+            font-weight: 600;
+            color: #017cee;
+        }
+    }
+
+    .badge {
+        margin-left: auto;
+        padding: 0.0625rem 0.375rem;
+        border-radius: 3px;
+        font-size: 0.625rem;
+        font-weight: 700;
+
+        &.before {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        &.after {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+    }
+
+    .status.after,
+    .badge.after,
+    .tile .after {
+        display: none;
+    }
+
+    :global(.hit) {
+        .status.before,
+        .badge.before,
+        .tile .before {
+            display: none;
+        }
+
+        .status.after,
+        .badge.after {
+            display: inline-flex;
+        }
+
+        &.tile .before {
+            display: none;
+        }
+
+        &.tile .after {
+            display: inline;
+        }
+    }
+
+    .ks-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        border-bottom: 1px solid var(--line);
+
+        .kmark {
+            display: grid;
+            place-items: center;
+            width: 1.375rem;
+            height: 1.375rem;
+            border-radius: 6px;
+            background: #1a1a24;
+
+            img {
+                width: 0.875rem;
+                height: 0.875rem;
+            }
+        }
+
+        .slash {
+            color: #a0aec0;
+        }
+
+        strong {
+            font-weight: 600;
+        }
+    }
+
+    .flows {
+        th {
+            background: #fafafc;
+            font-weight: 500;
+            color: var(--muted);
+        }
+
+        .id {
+            font-weight: 600;
+
+            small {
+                display: block;
+                font-weight: 400;
+                color: var(--muted);
+            }
+        }
+
+        .ns {
+            color: var(--muted);
+        }
+    }
+
+    .status {
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.125rem 0.5rem;
+        border-radius: 999px;
+        font-size: 0.6875rem;
+        font-weight: 600;
+
+        &.before {
+            display: inline-flex;
+            background: #f0f0f5;
+            color: var(--muted);
+        }
+
+        &.after {
+            background: var(--ok-bg);
+            color: var(--ok);
+        }
+    }
+
+    .tags tr[data-tone="retire"] .tag {
+        background: #fff1dc;
+        color: #b25f00;
+    }
+
+    .topo {
+        display: grid;
+        gap: 0.25rem;
+        height: 100%;
+
+        :global(.topology) {
+            --z: 0.5;
+            height: 11.5rem;
+        }
+    }
+
+    .flow-title {
+        font-weight: 600;
+    }
+
+    .checks {
+        display: grid;
+        grid-auto-columns: minmax(0, 1fr);
+        grid-auto-flow: column;
+        gap: 0.5rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-down(md) {
+            grid-auto-flow: row;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 0.75rem;
+            border: 1px solid var(--ks-border-primary);
+            border-radius: 8px;
+            background: var(--ks-background-body);
+            font-size: 0.8125rem;
+            line-height: 1.35;
+            color: var(--ks-content-tertiary);
+            transition:
+                color 0.3s ease,
+                border-color 0.3s ease;
+
+            &:global(.running) {
+                border-color: var(--run);
+                color: var(--ks-content-primary);
+            }
+
+            &:global(.done) {
+                color: var(--ks-content-primary);
+            }
+        }
+
+        .kmark {
+            display: grid;
+            flex: none;
+            width: 1rem;
+            height: 1rem;
+
+            :global(svg) {
+                grid-area: 1 / 1;
+                width: 1rem;
+                height: 1rem;
+                opacity: 0;
+            }
+
+            :global(.spin) {
+                color: var(--run);
+                animation: spin 0.9s linear infinite;
+            }
+
+            :global(.ok) {
+                color: var(--ok);
+            }
+        }
+
+        li:global(.running) :global(.spin),
+        li:global(.done) :global(.ok) {
+            opacity: 1;
+        }
+
+        li:not(:global(.running)):not(:global(.done)) .kmark {
+            border: 1.5px solid var(--ks-border-primary);
+            border-radius: 50%;
+        }
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes flash {
+        from {
+            background: rgba(132, 5, 255, 0.1);
+        }
+    }
+</style>

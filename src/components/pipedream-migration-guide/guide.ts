@@ -307,3 +307,20 @@ export const STEP_DOMAINS = STEPS.map((step, i) => ({
         lines: TERMINALS[i],
     },
 }))
+
+export const HERO_CLI = [
+    { cmd: "unzip project_export-proj_abc123.zip -d export" },
+    { out: "  inflating: export/invoice-intake-p_abc123.json" },
+    { cmd: 'claude "Convert ./export to Kestra flows"' },
+    { out: "# wrote flows/finance/invoice_intake.yaml", note: true },
+    { cmd: "kestractl flows deploy ./flows/ --override" },
+]
+
+export const MAPPING_GROUPS = MAPPING.map((group) => ({
+    title: group.title,
+    icon: group.icon,
+    rows: group.rows.map(([pipedream, kestra, yaml, href]) => ({
+        cells: [pipedream, kestra, yaml],
+        href,
+    })),
+}))

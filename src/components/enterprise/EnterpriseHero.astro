@@ -3,7 +3,7 @@ import { Icon } from "astro-icon/components"
 import PixelEdges from "~/components/about/PixelEdges.astro"
 import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
 
-const CARDS = [
+const DEFAULT_CARDS = [
     {
         id: "governance",
         label: "Governance",
@@ -38,12 +38,50 @@ const CARDS = [
     },
 ]
 
-const TARGETS = [
+const DEFAULT_TARGETS = [
     { name: "On premise", angle: 45 },
     { name: "Cloud", angle: 135 },
     { name: "Hybrid", angle: 225 },
     { name: "Air-gapped", angle: 315 },
 ]
+interface Card {
+    id?: string
+    label: string
+    states: { value: string; tag: string; tone: string }[]
+}
+
+interface Button {
+    label: string
+    href: string
+    solid?: boolean
+    chevron?: boolean
+}
+
+interface Props {
+    headingId?: string
+    eyebrow?: string | null
+    title?: string
+    lead?: string
+    buttons?: Button[]
+    cards?: Card[]
+    targets?: { name: string; angle: number }[]
+    plane?: string
+}
+
+const {
+    headingId = "ee-hero-title",
+    eyebrow = "Kestra Enterprise",
+    title = "Scale orchestration across teams.",
+    lead = "Kestra Enterprise gives your teams the security, governance, and operational capabilities to automate workflows across your organization.",
+    buttons = [
+        { label: "Book a demo", href: "/demo", solid: true, chevron: true },
+        { label: "Compare editions", href: "/pricing#comparison-table" },
+    ],
+    cards: CARDS = DEFAULT_CARDS,
+    targets: TARGETS = DEFAULT_TARGETS,
+    plane = "Control plane",
+} = Astro.props
+
 const beam = (angle: number, r: number) => {
     const rad = (angle * Math.PI) / 180
     return [(Math.sin(rad) * r).toFixed(1), (-Math.cos(rad) * r).toFixed(1)]
@@ -71,7 +109,7 @@ const DUST = [
 ]
 ---
 
-<section class="ee-hero" aria-labelledby="ee-hero-title">
+<section class="ee-hero" aria-labelledby={headingId}>
     <PixelEdges left="tall" right="wide" />
     <div class="frame surface-dark" data-header-dark data-ee-orbit>
         <div class="depth" aria-hidden="true">
@@ -96,35 +134,39 @@ const DUST = [
         <div class="container-xl">
             <div class="stage">
                 <div class="copy">
-                    <p class="eyebrow" data-edition>
-                        <span class="sheen" />
-                        <img
-                            class="kestra"
-                            src={kestraMark.src}
-                            alt=""
-                            width="16"
-                            height="16"
-                        />
-                        <span class="name">Kestra Enterprise</span>
-                    </p>
-                    <h1 id="ee-hero-title">
-                        Scale orchestration across teams.
-                    </h1>
-                    <p class="lead">
-                        Kestra Enterprise gives your teams the security,
-                        governance, and operational capabilities to automate
-                        workflows across your organization.
-                    </p>
+                    {eyebrow && (
+                        <p class="eyebrow" data-edition>
+                            <span class="sheen" />
+                            <img
+                                class="kestra"
+                                src={kestraMark.src}
+                                alt=""
+                                width="16"
+                                height="16"
+                            />
+                            <span class="name">{eyebrow}</span>
+                        </p>
+                    )}
+                    <h1 id={headingId}>{title}</h1>
+                    <p class="lead">{lead}</p>
                     <div class="buttons">
-                        <a href="/demo" class="btn-solid">
-                            Book a demo <Icon name="mdi:chevron-right" />
-                        </a>
-                        <a href="/pricing#comparison-table" class="btn-ghost">
-                            Compare editions
-                        </a>
+                        {buttons.map((button) => (
+                            <a
+                                href={button.href}
+                                class={button.solid ? "btn-solid" : "btn-ghost"}
+                            >
+                                {button.label}
+                                {button.chevron && <Icon name="mdi:chevron-right" />}
+                            </a>
+                        ))}
                     </div>
                 </div>
 
+                {Astro.slots.has("visual") ? (
+                    <div class="hero-slot">
+                        <slot name="visual" />
+                    </div>
+                ) : (
                 <div class="orbit" aria-hidden="true">
                     <div class="hub" data-hub>
                         <svg class="rings" viewBox="-480 -480 960 960">
@@ -160,7 +202,7 @@ const DUST = [
                                 </li>
                             ))}
                         </ul>
-                        <span class="plane">Control plane</span>
+                        <span class="plane">{plane}</span>
                         <div class="wheel" data-wheel>
                             {WHEEL.map((card, idx) => (
                                 <div
@@ -198,6 +240,7 @@ const DUST = [
                         </span>
                     </div>
                 </div>
+                )}
             </div>
         </div>
     </div>
@@ -654,6 +697,13 @@ const DUST = [
         syntax: "<angle>";
         inherits: true;
         initial-value: 0deg;
+    }
+
+    .hero-slot {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        place-items: center;
     }
 
     .orbit {

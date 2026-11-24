@@ -24,6 +24,7 @@ interface Props {
     head?: boolean
     size?: "default" | "compact"
     label?: string
+    columns?: number
 }
 
 const DEFAULT_PROBLEMS: Item[] = [
@@ -58,6 +59,7 @@ const {
     head = true,
     size = "default",
     label,
+    columns,
 } = Astro.props
 ---
 
@@ -115,12 +117,18 @@ const {
                 </header>
             )}
 
-            <ul class="problems" style={`--columns: ${items.length}`}>
+            <ul
+                class:list={[
+                    "problems",
+                    { wrap: columns !== undefined && columns < items.length },
+                ]}
+                style={`--columns: ${columns ?? items.length}`}
+            >
                 {items.map((problem, idx) => (
                     <li class={`problem-${idx}`}>
                         {problem.icon && <Icon name={problem.icon} />}
-                        {problem.title && <h3>{problem.title}</h3>}
-                        {problem.text && <p>{problem.text}</p>}
+                        {problem.title && <h3 set:html={problem.title} />}
+                        {problem.text && <p set:html={problem.text} />}
                         {problem.list && (
                             <ul class="list">
                                 {problem.list.map((entry) => (
@@ -405,6 +413,26 @@ const {
                 }
             }
         }
+    }
+
+    .problems.wrap > li {
+        border-left: 0;
+        border-top: 0;
+        box-shadow: -1px -1px 0 var(--ks-border-primary);
+    }
+
+    .problems :global(code) {
+        padding: 0.0625rem 0.3125rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 4px;
+        background: var(--ks-background-secondary);
+        font-family: $font-family-monospace;
+        font-size: 0.8125rem;
+        color: var(--ks-content-primary);
+    }
+
+    .problems :global(a) {
+        color: var(--ks-content-link);
     }
 
     .compact .head {

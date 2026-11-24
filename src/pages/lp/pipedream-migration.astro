@@ -8,8 +8,9 @@ import PdCompare from "~/components/pipedream-migration-guide/PdCompare.astro"
 import ControlPlane from "~/components/home/ControlPlane.astro"
 import RunKestra from "~/components/home/RunKestra.astro"
 import PdDates from "~/components/pipedream-migration-guide/PdDates.astro"
-import PdMapping from "~/components/pipedream-migration-guide/PdMapping.astro"
+import MigrationTable from "~/components/migration/MigrationTable.astro"
 import {
+    MAPPING_GROUPS,
     STEP_DOMAINS,
     runEditions,
 } from "~/components/pipedream-migration-guide/guide"
@@ -53,7 +54,14 @@ const cloudForm = { pageUri: routePath, submitLabel: "Request trial access" }
             domains={STEP_DOMAINS}
             bridge={false}
         />
-        <PdMapping />
+        <MigrationTable
+            id="pd-map-title"
+            title="Pipedream to Kestra mapping"
+            lead="Every Pipedream construct, the Kestra feature that replaces it, and what you write in the flow YAML."
+            columns={["Pipedream", "Kestra", "In the flow YAML"]}
+            widths={["30%", "32%"]}
+            groups={MAPPING_GROUPS}
+        />
         <RunKestra
             title="Where to run the flows"
             lead="The same YAML runs on all three editions."

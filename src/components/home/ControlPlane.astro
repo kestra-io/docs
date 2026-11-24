@@ -318,6 +318,18 @@ const {
     domains: DOMAINS_IN = DOMAINS,
     bridge = true,
 } = Astro.props
+
+const VISUALS = Object.fromEntries(
+    await Promise.all(
+        DOMAINS_IN.map(async (domain) => {
+            const name = `visual-${domain.id}`
+            return [
+                domain.id,
+                Astro.slots.has(name) ? await Astro.slots.render(name) : null,
+            ] as const
+        }),
+    ),
+)
 ---
 
 <section class="control-plane" aria-labelledby={headingId} data-domains>
@@ -329,7 +341,12 @@ const {
                 {lead && <p>{lead}</p>}
             </header>
             <div class="body">
-                <div class="tabs" role="tablist" aria-label="Use cases">
+                <div
+                    class="tabs"
+                    role="tablist"
+                    aria-label="Use cases"
+                    style={`--tabs: ${DOMAINS_IN.length}`}
+                >
                     {
                         DOMAINS_IN.map((domain, idx) => (
                             <button
@@ -381,7 +398,11 @@ const {
                                     </a>
                                 </div>
                                 <div class="panel-topology">
-                                    {domain.terminal ? (
+                                    {VISUALS[domain.id] ? (
+                                        <Fragment
+                                            set:html={VISUALS[domain.id]}
+                                        />
+                                    ) : domain.terminal ? (
                                         <ControlPlaneTerminal
                                             {...domain.terminal}
                                         />
@@ -688,7 +709,7 @@ const {
 
     .tabs {
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(var(--tabs, 4), minmax(0, 1fr));
         border-bottom: var(--rule);
 
         @include media-breakpoint-down(md) {
