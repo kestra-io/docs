@@ -4,6 +4,9 @@ import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
 import ControlPlaneTopology, {
     type Props as TopologyProps,
 } from "./ControlPlaneTopology.astro"
+import ControlPlaneTerminal, {
+    type Props as TerminalProps,
+} from "./ControlPlaneTerminal.astro"
 
 interface Domain {
     id: string
@@ -12,7 +15,17 @@ interface Domain {
     title: string
     description: string
     solutionHref?: string
-    topology: TopologyProps
+    cta?: { label: string; href: string; external?: boolean }
+    topology?: TopologyProps
+    terminal?: TerminalProps
+}
+
+interface Props {
+    headingId?: string
+    title?: string
+    lead?: string
+    domains?: Domain[]
+    bridge?: boolean
 }
 
 const DOMAINS: Domain[] = [
@@ -297,23 +310,45 @@ const DOMAINS: Domain[] = [
         },
     },
 ]
+
+const {
+    headingId = "control-plane",
+    title = "One control plane for every workflow",
+    lead = "Unified orchestration, with shared visibility and consistent governance across every team's workflows.",
+    domains: DOMAINS_IN = DOMAINS,
+    bridge = true,
+} = Astro.props
+
+const VISUALS = Object.fromEntries(
+    await Promise.all(
+        DOMAINS_IN.map(async (domain) => {
+            const name = `visual-${domain.id}`
+            return [
+                domain.id,
+                Astro.slots.has(name) ? await Astro.slots.render(name) : null,
+            ] as const
+        }),
+    ),
+)
 ---
 
-<section class="control-plane" aria-labelledby="control-plane" data-domains>
+<section class="control-plane" aria-labelledby={headingId} data-domains>
     <PixelEdges left="cluster" right="wide" />
     <div class="container-xl">
         <div class="grid">
             <header class="head">
-                <h2 id="control-plane">One control plane for every workflow</h2>
-                <p>
-                    Unified orchestration, with shared visibility and consistent
-                    governance across every team's workflows.
-                </p>
+                <h2 id={headingId}>{title}</h2>
+                {lead && <p>{lead}</p>}
             </header>
             <div class="body">
-                <div class="tabs" role="tablist" aria-label="Use cases">
+                <div
+                    class="tabs"
+                    role="tablist"
+                    aria-label="Use cases"
+                    style={`--tabs: ${DOMAINS_IN.length}`}
+                >
                     {
-                        DOMAINS.map((domain, idx) => (
+                        DOMAINS_IN.map((domain, idx) => (
                             <button
                                 type="button"
                                 role="tab"
@@ -333,7 +368,7 @@ const DOMAINS: Domain[] = [
 
                 <div class="visuals">
                     {
-                        DOMAINS.map((domain, idx) => (
+                        DOMAINS_IN.map((domain, idx) => (
                             <div
                                 id={`domain-panel-${domain.id}`}
                                 role="tabpanel"
@@ -348,29 +383,50 @@ const DOMAINS: Domain[] = [
                                     <p>{domain.description}</p>
                                     <a
                                         href={
-                                            domain.solutionHref ?? "/blueprints"
+                                            domain.cta?.href ??
+                                            domain.solutionHref ??
+                                            "/blueprints"
                                         }
                                         class="btn-ghost compact solution"
+                                        target={domain.cta?.external ? "_blank" : undefined}
+                                        rel={domain.cta?.external ? "noopener" : undefined}
                                     >
-                                        {domain.solutionHref
-                                            ? "Explore the solution"
-                                            : "Browse blueprints"}
+                                        {domain.cta?.label ??
+                                            (domain.solutionHref
+                                                ? "Explore the solution"
+                                                : "Browse blueprints")}
                                     </a>
                                 </div>
                                 <div class="panel-topology">
-                                    <ControlPlaneTopology
-                                        {...domain.topology}
-                                    />
+                                    {VISUALS[domain.id] ? (
+                                        <Fragment
+                                            set:html={VISUALS[domain.id]}
+                                        />
+                                    ) : domain.terminal ? (
+                                        <ControlPlaneTerminal
+                                            {...domain.terminal}
+                                        />
+                                    ) : (
+                                        domain.topology && (
+                                            <ControlPlaneTopology
+                                                {...domain.topology}
+                                            />
+                                        )
+                                    )}
                                 </div>
                             </div>
                         ))
                     }
                 </div>
             </div>
-            <span class="bridge" aria-hidden="true">
-                <span class="node"></span>
-                <span class="run"></span>
-            </span>
+            {
+                bridge && (
+                    <span class="bridge" aria-hidden="true">
+                        <span class="node" />
+                        <span class="run" />
+                    </span>
+                )
+            }
         </div>
     </div>
 </section>
@@ -653,7 +709,7 @@ const DOMAINS: Domain[] = [
 
     .tabs {
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(var(--tabs, 4), minmax(0, 1fr));
         border-bottom: var(--rule);
 
         @include media-breakpoint-down(md) {
