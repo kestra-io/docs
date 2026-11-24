@@ -57,6 +57,34 @@ The AWS plugin runs on the official AWS SDK for Java, and other plugins use the 
 
 Every plugin repository runs a security scan on top of the Dependabot updates, so a CVE in a transitive dependency of a client library is ours to find and fix.
 
+## Plugins Can Start Flows, Scripts Can't
+
+A plugin can also ship **triggers**. A trigger watches an external system and starts an execution when something happens: a new file lands in an S3 bucket, a row appears in a Postgres table, a message arrives on Kafka or SQS. The flow runs only when there is something to process, and the trigger hands the event to the flow as data.
+
+```yaml
+triggers:
+  - id: new_files
+    type: io.kestra.plugin.aws.s3.Trigger
+    bucket: company-imports
+    prefix: incoming/
+    interval: PT1M
+    action: MOVE
+    moveTo:
+      bucket: company-imports
+      key: processed/
+```
+
+This is hard to do well in a script, because a script only runs when something calls it. To react to a bucket you end up with one of two designs:
+
+- A **cron job** that lists the bucket every minute. It has no memory, so you have to store what it already saw somewhere, handle two runs overlapping, and decide what happens to a file that arrives while the previous run is still going.
+- A **long-running process** that loops forever. Now you own its restarts, its memory leaks, its health checks and the worker slot it holds, and a silent crash means events are missed until someone notices.
+
+In both cases the logic that decides "is this event new?" lives inside the script, next to the business logic, and each team writes it a bit differently. A missed or duplicated event doesn't raise an error, it just means a file was never processed or was processed twice.
+
+With a plugin trigger, the polling, the state and the deduplication belong to the plugin and the platform. The trigger's state is tracked by Kestra, so a restart picks up where it left off. Each event becomes a normal execution, with logs, outputs, retries and alerts like any other run, and the files it found are already in internal storage when your first task starts. Realtime triggers (Kafka, SQS and similar) go further and start an execution per message as it arrives, with no polling interval to tune.
+
+The trigger is also covered by the same tests, schema validation and LTS support as the tasks in the plugin. A script that tries to do the same job gets none of that, and you find out it broke when the data stops showing up.
+
 ## Supported for the Life of the LTS
 
 Kestra publishes [LTS releases](/docs/releases) that are supported for one year, with up to two active at the same time. Security and bug fixes are backported to every supported line, and patch releases ship weekly. Plugins follow the same promise: the plugins that belong to an LTS release are supported for as long as that LTS is. If you pin an LTS, you don't have to chase upstream changes in every integration you use.
