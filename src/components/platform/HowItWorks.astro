@@ -2,7 +2,7 @@
 import { Icon } from "astro-icon/components"
 import { fetchPluginIcon } from "~/utils/pluginIcon"
 import CodeCard from "./CodeCard.astro"
-import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
 
 const STEPS = [
@@ -106,37 +106,67 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: Hello from Kestra`
 
-const PLUGINS = [
-    { name: "Terraform", group: "io.kestra.plugin.terraform" },
-    { name: "Ansible", group: "io.kestra.plugin.ansible" },
-    { name: "Kubernetes", group: "io.kestra.plugin.kubernetes" },
-    { name: "PostgreSQL", group: "io.kestra.plugin.jdbc.postgresql" },
-    { name: "Snowflake", group: "io.kestra.plugin.jdbc.snowflake" },
-    { name: "dbt", group: "io.kestra.plugin.dbt" },
-    { name: "ServiceNow", group: "io.kestra.plugin.servicenow" },
-    { name: "Jira", group: "io.kestra.plugin.jira" },
-    { name: "Kafka", group: "io.kestra.plugin.kafka" },
-    { name: "AWS", group: "io.kestra.plugin.aws" },
-    { name: "Azure", group: "io.kestra.plugin.azure" },
-    { name: "Google Cloud", group: "io.kestra.plugin.gcp" },
-    { name: "Python", group: "io.kestra.plugin.scripts.python" },
-    { name: "Docker", group: "io.kestra.plugin.docker" },
-    { name: "Slack", group: "io.kestra.plugin.notifications.slack" },
-    { name: "OpenAI", group: "io.kestra.plugin.openai" },
+const PLUGIN_ROWS = [
+    [
+        ["Terraform", "terraform"],
+        ["Ansible", "ansible"],
+        ["Kubernetes", "kubernetes"],
+        ["Docker", "docker"],
+        ["AWS", "aws"],
+        ["Azure", "azure"],
+        ["Google Cloud", "gcp"],
+        ["GitHub", "github"],
+        ["GitLab", "gitlab"],
+        ["Argo CD", "argocd"],
+        ["Databricks", "databricks"],
+        ["Spark", "spark"],
+    ],
+    [
+        ["PostgreSQL", "jdbc.postgresql"],
+        ["Snowflake", "jdbc.snowflake"],
+        ["MySQL", "jdbc.mysql"],
+        ["MongoDB", "mongodb"],
+        ["Elasticsearch", "elasticsearch"],
+        ["Redis", "redis"],
+        ["ClickHouse", "jdbc.clickhouse"],
+        ["DuckDB", "jdbc.duckdb"],
+        ["dbt", "dbt"],
+        ["Airbyte", "airbyte"],
+        ["Fivetran", "fivetran"],
+        ["Kafka", "kafka"],
+    ],
+    [
+        ["Slack", "notifications.slack"],
+        ["Microsoft Teams", "notifications.teams"],
+        ["PagerDuty", "notifications.pagerduty"],
+        ["Jira", "jira"],
+        ["ServiceNow", "servicenow"],
+        ["HubSpot", "hubspot"],
+        ["Zendesk", "zendesk"],
+        ["Notion", "notion"],
+        ["OpenAI", "openai"],
+        ["Hugging Face", "huggingface"],
+        ["Python", "scripts.python"],
+        ["Node.js", "scripts.node"],
+    ],
 ]
 
-const icons = await Promise.all(
-    PLUGINS.map((plugin) => fetchPluginIcon(plugin.group).catch(() => null)),
+const ROWS = await Promise.all(
+    PLUGIN_ROWS.map(async (row) =>
+        (
+            await Promise.all(
+                row.map(async ([name, group]) => ({
+                    name,
+                    icon: await fetchPluginIcon(
+                        `io.kestra.plugin.${group}`,
+                    ).catch(() => null),
+                })),
+            )
+        ).filter((plugin) => plugin.icon),
+    ),
 )
 
-const LOGOS = PLUGINS.map((plugin, idx) => ({
-    ...plugin,
-    icon: icons[idx],
-})).filter((plugin) => plugin.icon)
-const ROWS = [0, 6, 11].map((start) => [
-    ...LOGOS.slice(start),
-    ...LOGOS.slice(0, start),
-])
+const totalPlugins = await fetchTotalPluginsCount()
 
 const TRIGGERS = [
     {
@@ -247,36 +277,35 @@ const GANTT = [
                     </div>
 
                     <div class="view wide" data-view="1">
-                        <div class="marquee">
-                            {ROWS.map((row) => (
-                                <div class="row">
-                                    <ul class="track">
-                                        {[...row, ...row].map((plugin, idx) => (
-                                            <li
-                                                aria-hidden={
-                                                    idx >= row.length
-                                                        ? "true"
-                                                        : undefined
-                                                }
-                                            >
-                                                <span
-                                                    class="tile"
-                                                    title={plugin.name}
-                                                    set:html={plugin.icon}
-                                                />
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            ))}
-                            <span class="core">
-                                <img
-                                    src={kestraMark.src}
-                                    alt="Kestra"
-                                    width="40"
-                                    height="40"
-                                />
-                            </span>
+                        <div class="plugins">
+                            <div class="marquee">
+                                {ROWS.map((row) => (
+                                    <div class="row">
+                                        <ul class="track">
+                                            {[...row, ...row].map(
+                                                (plugin, idx) => (
+                                                    <li
+                                                        aria-hidden={
+                                                            idx >= row.length
+                                                                ? "true"
+                                                                : undefined
+                                                        }
+                                                    >
+                                                        <span
+                                                            class="tile"
+                                                            title={plugin.name}
+                                                            set:html={
+                                                                plugin.icon
+                                                            }
+                                                        />
+                                                    </li>
+                                                ),
+                                            )}
+                                        </ul>
+                                    </div>
+                                ))}
+                            </div>
+                            <p class="count">{totalPlugins}+ plugins</p>
                         </div>
                     </div>
 
@@ -761,7 +790,6 @@ const GANTT = [
         gap: 3rem;
         min-height: max(28rem, min(32rem, calc(100vh - 14rem)));
         padding: var(--inset);
-        overflow: hidden;
         background: var(--ks-background-body);
 
         @include media-breakpoint-down(xl) {
@@ -1052,7 +1080,8 @@ const GANTT = [
 
     .row {
         overflow: hidden;
-        padding-block: 0.375rem;
+        margin-block: -1rem;
+        padding-block: 1rem 1.75rem;
 
         &:nth-child(2) .track {
             animation-direction: reverse;
@@ -1105,31 +1134,20 @@ const GANTT = [
         }
     }
 
-    .core {
-        position: absolute;
-        top: 50%;
-        left: 50%;
+    .plugins {
         display: grid;
-        place-items: center;
-        z-index: 1;
-        width: 6.5rem;
-        aspect-ratio: 1;
+        justify-items: center;
+        gap: 1.5rem;
+    }
 
-        @include media-breakpoint-down(sm) {
-            width: 5rem;
-        }
-
-        border-radius: 26%;
-        background: radial-gradient(circle at 50% 40%, #1d0b3a, #0d0d10 70%);
-        box-shadow:
-            inset 0 0 0 1px rgba(132, 5, 255, 0.45),
-            0 0 40px 6px rgba(132, 5, 255, 0.25);
-        transform: translate(-50%, -50%);
-
-        img {
-            width: 55%;
-            height: auto;
-        }
+    .count {
+        margin: 0;
+        padding: 0.375rem 0.875rem;
+        border: 1px dashed var(--line);
+        border-radius: 999px;
+        font-size: $font-size-sm;
+        font-weight: 600;
+        color: var(--run);
     }
 
     @media (prefers-reduced-motion: reduce) {
