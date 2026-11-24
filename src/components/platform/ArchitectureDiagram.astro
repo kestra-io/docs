@@ -260,7 +260,7 @@ const WORKER_ICON = "mdi:account-cog-outline"
 
     function draw(diagram: HTMLElement) {
         const svg = diagram.querySelector<SVGSVGElement>(".links")!
-        const layer = svg.querySelector("[data-links]")!
+        const layer = svg.querySelector<SVGGElement>("[data-links]")!
         const wire = diagram.querySelector<HTMLElement>("[data-wire]")!
         layer.replaceChildren()
         if (window.innerWidth < LG) return

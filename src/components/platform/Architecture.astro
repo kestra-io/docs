@@ -116,16 +116,26 @@ const PARTS = [
         )
         if (!diagram) return
         diagram.dataset.wired = "true"
-        for (const part of document.querySelectorAll<HTMLElement>(
-            ".architecture [data-zone]",
-        )) {
-            if (diagram.contains(part)) continue
-            const on = () => (diagram.dataset.focus = part.dataset.zone)
-            const off = () => delete diagram.dataset.focus
-            part.addEventListener("mouseenter", on)
-            part.addEventListener("focus", on)
-            part.addEventListener("mouseleave", off)
-            part.addEventListener("blur", off)
+        const zones = [
+            ...document.querySelectorAll<HTMLElement>(
+                ".architecture [data-zone]",
+            ),
+        ]
+        const parts = zones.filter((zone) => !diagram.contains(zone))
+        const focus = (zone?: string) => {
+            if (zone) diagram.dataset.focus = zone
+            else delete diagram.dataset.focus
+            for (const part of parts)
+                part.classList.toggle("lit", part.dataset.zone === zone)
+        }
+        for (const zone of zones) {
+            const on = () => focus(zone.dataset.zone)
+            const off = () => focus()
+            zone.addEventListener("mouseenter", on)
+            zone.addEventListener("mouseleave", off)
+            if (!parts.includes(zone)) continue
+            zone.addEventListener("focus", on)
+            zone.addEventListener("blur", off)
         }
     }
 
@@ -437,7 +447,8 @@ const PARTS = [
             }
 
             &:hover,
-            &:focus-visible {
+            &:focus-visible,
+            &.lit {
                 outline: none;
                 background: var(--ks-background-secondary);
 
