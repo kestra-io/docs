@@ -39,7 +39,12 @@ const STEPS = [
     {
         tab: "No-code",
         title: "Write flows with no code",
+        dur: 11000,
         text: "Don’t like to code? Author flows in the no-code editor. Edits are interchangeable with YAML, so both views stay in sync.",
+        link: {
+            href: "/docs/ui/flows#no-code-view",
+            label: "Learn more about the no-code editor",
+        },
     },
     {
         tab: "Observability",
@@ -98,15 +103,6 @@ const SUGGEST = [
         ],
     },
 ]
-
-const NO_CODE = `triggers:
-  - id: daily
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "0 9 * * *"
-tasks:
-  - id: hello
-    type: io.kestra.plugin.core.log.Log
-    message: Hello from Kestra`
 
 const PLUGIN_ROWS = [
     [
@@ -209,6 +205,21 @@ const triggerIcons = await Promise.all(
     TRIGGERS.map((trigger) => iconSrc(trigger.plugin)),
 )
 const flowIcon = await iconSrc("core.flow.Subflow")
+const filterIcon = await iconSrc("transform.Filter")
+
+const WHERE = "todecimal(total) > 10"
+
+const SOURCE = [
+    '<span class="k">id</span><span class="p">:</span> filter',
+    '<span class="k">type</span><span class="p">:</span> io.kestra.plugin.transform.Filter',
+    '<span class="k">from</span><span class="p">:</span> <span class="s">"</span><span class="d">{{</span> <span class="v">item.value</span> <span class="d">}}</span><span class="s">"</span>',
+    `<span class="k">where</span><span class="p">:</span> <span data-where-source>${WHERE.replace(">", "&gt;")}</span>`,
+]
+    .map(
+        (line, idx) =>
+            `<span class="row"${idx === 3 ? " data-where-row" : ""}><span class="no">${idx + 1}</span>${line}</span>`,
+    )
+    .join("")
 
 const NODE_W = 260
 const NODE_H = 76
@@ -555,31 +566,78 @@ const GANTT = [
                         </div>
                     </div>
 
-                    <div class="view nocode" data-view="3">
-                        <div class="nodes">
-                            <p class="pane-label">No-code</p>
-                            <div class="node">
-                                <Icon name="mdi:clock-outline" />
-                                <div>
-                                    <b>Trigger · Schedule</b>
-                                    <span>every day at 09:00</span>
-                                </div>
+                    <div class="view wide" data-view="3">
+                        <div class="nc" data-nocode data-where={WHERE}>
+                            <div class="nc-tabs">
+                                <button
+                                    type="button"
+                                    class="nc-tab"
+                                    data-pane="source"
+                                >
+                                    <Icon name="mdi:code-tags" />
+                                    Flow Code
+                                    <span class="dirty" aria-hidden="true" />
+                                    <Icon name="mdi:close" class="x" />
+                                </button>
+                                <button
+                                    type="button"
+                                    class="nc-tab on"
+                                    data-pane="form"
+                                >
+                                    <Icon name="mdi:mouse-outline" />
+                                    No Code
+                                    <Icon name="mdi:close" class="x" />
+                                </button>
                             </div>
-                            <span class="down" aria-hidden="true">
-                                ↓
-                            </span>
-                            <div class="node">
-                                <Icon name="mdi:play" />
-                                <div>
-                                    <b>Task · Log</b>
-                                    <span>message: Hello from Kestra</span>
+                            <div class="nc-panes" data-at="form">
+                                <div class="nc-form">
+                                    <div>
+                                        <p class="nc-label">
+                                            <i>*</i> type
+                                        </p>
+                                        <p class="nc-input select">
+                                            {filterIcon ? (
+                                                <img src={filterIcon} alt="" />
+                                            ) : (
+                                                <Icon name="mdi:filter-outline" />
+                                            )}
+                                            io.kestra.plugin.transform.Filter
+                                            <Icon name="mdi:chevron-down" />
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p class="nc-label">
+                                            <i>*</i> id
+                                            <span class="nc-tag">String</span>
+                                        </p>
+                                        <p class="nc-input">filter</p>
+                                    </div>
+                                    <div>
+                                        <p class="nc-label">
+                                            <i>*</i> from
+                                            <span class="nc-tag">
+                                                Expression
+                                            </span>
+                                        </p>
+                                        <p class="nc-input">
+                                            <span class="d">{"{{"}</span>{" "}
+                                            <span class="v">item.value</span>{" "}
+                                            <span class="d">{"}}"}</span>
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p class="nc-label">
+                                            <i>*</i> where
+                                            <span class="nc-tag">String</span>
+                                        </p>
+                                        <p class="nc-input">
+                                            <span data-where-form>{WHERE}</span>
+                                        </p>
+                                    </div>
                                 </div>
+                                <pre class="nc-source"><code set:html={SOURCE} /></pre>
                             </div>
                         </div>
-                        <span class="sync" aria-hidden="true">
-                            <Icon name="mdi:swap-horizontal" />
-                        </span>
-                        <CodeCard file="YAML" code={NO_CODE} />
                     </div>
 
                     <div class="view" data-view="4">
@@ -843,6 +901,72 @@ const GANTT = [
         return { run, stop, view }
     }
 
+    function makeNoCode(box: HTMLElement) {
+        const where = box.dataset.where!
+        const panes = box.querySelector<HTMLElement>(".nc-panes")!
+        const tabs = [...box.querySelectorAll<HTMLElement>(".nc-tab")]
+        const code = box.querySelector<HTMLElement>(
+            '.nc-tab[data-pane="source"]',
+        )!
+        const field = box.querySelector<HTMLElement>("[data-where-form]")!
+        const row = box.querySelector<HTMLElement>("[data-where-row]")!
+        const view = Number(
+            box.closest<HTMLElement>("[data-view]")!.dataset.view,
+        )
+        let token = 0
+
+        const show = (pane: string) => {
+            panes.dataset.at = pane
+            for (const tab of tabs)
+                tab.classList.toggle("on", tab.dataset.pane === pane)
+            if (pane === "source") code.classList.remove("dirty-on")
+            row.classList.toggle("on", pane === "source")
+        }
+
+        for (const tab of tabs)
+            tab.addEventListener("click", () => {
+                token++
+                field.classList.remove("typing")
+                field.textContent = where
+                show(tab.dataset.pane!)
+            })
+
+        const run = async () => {
+            const id = ++token
+            while (id === token) {
+                show("form")
+                field.textContent = ""
+                field.classList.add("typing")
+                await wait(600)
+                for (let c = 1; c <= where.length && id === token; c++) {
+                    field.textContent = where.slice(0, c)
+                    await wait(45)
+                }
+                if (id !== token) return
+                code.classList.add("dirty-on")
+                await wait(900)
+                field.classList.remove("typing")
+                if (id !== token) return
+                show("source")
+                await wait(2800)
+                if (id !== token) return
+                show("form")
+                await wait(1200)
+            }
+        }
+
+        const stop = () => {
+            token++
+            field.classList.remove("typing")
+            field.textContent = where
+            code.classList.remove("dirty-on")
+            show("form")
+        }
+
+        show("form")
+        return { run, stop, view }
+    }
+
     function wirePlatformHow() {
         for (const root of document.querySelectorAll<HTMLElement>(
             "[data-platform-how]:not([data-wired])",
@@ -855,6 +979,7 @@ const GANTT = [
             const still = matchMedia("(prefers-reduced-motion: reduce)").matches
             const typerBox = root.querySelector<HTMLElement>("[data-typer]")
             const firerBox = root.querySelector<HTMLElement>("[data-fire]")
+            const noCodeBox = root.querySelector<HTMLElement>("[data-nocode]")
             if (firerBox) {
                 const canvas = firerBox.querySelector<HTMLElement>(".canvas")!
                 const width = canvas.offsetWidth
@@ -863,12 +988,11 @@ const GANTT = [
                     canvas.style.zoom = String(scale)
                 }).observe(firerBox)
             }
-            const players = still
-                ? []
-                : [
-                      typerBox && makeTyper(typerBox),
-                      firerBox && makeFirer(firerBox),
-                  ].filter((player) => player !== null)
+            const players = [
+                typerBox && !still && makeTyper(typerBox),
+                firerBox && !still && makeFirer(firerBox),
+                noCodeBox && makeNoCode(noCodeBox),
+            ].filter((player) => !!player)
             let auto = !still
             let inView = false
             let started = false
@@ -901,7 +1025,7 @@ const GANTT = [
                 void body.offsetWidth
                 body.classList.add("enter")
                 for (const player of players) {
-                    if (idx === player.view) player.run()
+                    if (idx === player.view && !still) player.run()
                     else player.stop()
                 }
                 if (auto)
@@ -1234,10 +1358,6 @@ const GANTT = [
             opacity 0.4s ease,
             transform 0.4s ease,
             visibility 0s linear 0.4s;
-
-        &.nocode {
-            width: min(100%, 52rem);
-        }
 
         &.wide {
             width: 100%;
@@ -1861,86 +1981,276 @@ const GANTT = [
         }
     }
 
-    .nocode {
-        display: grid;
-        grid-template-columns: minmax(0, 0.75fr) auto minmax(0, 1.5fr);
-        gap: 1rem;
-        align-items: center;
+    .nc {
+        --c-key: #631bf3;
+        --c-val: #001233;
+        --c-punct: #424256;
+        --c-delim: #215d42;
+        --c-var: #194530;
+        --c-str: #ab0009;
+        --c-req: #e5484d;
+        --c-hl: rgba(132, 5, 255, 0.08);
+        --c-chrome: #f7f7fa;
 
-        @include media-breakpoint-down(md) {
-            grid-template-columns: minmax(0, 1fr);
-        }
-    }
-
-    .nodes {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .pane-label {
-        margin: 0 0 0.5rem;
-        font-family: $font-family-monospace;
-        font-size: 0.75rem;
-        color: var(--muted);
-    }
-
-    .nodes .node {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        width: 100%;
-        padding: 0.875rem 1rem;
+        width: min(100%, 38rem);
+        margin-inline: auto;
+        overflow: hidden;
         border: 1px solid var(--line);
-        border-radius: 0.625rem;
+        border-radius: 12px;
         background: var(--panel);
         box-shadow: var(--shadow);
+        font-family: $font-family-sans-serif;
 
-        > svg {
-            flex: none;
-            width: 2rem;
-            height: 2rem;
-            padding: 0.375rem;
-            border-radius: 0.5rem;
-            background: var(--tile);
-            color: var(--tile-ink);
+        :global(html.dark) & {
+            --c-key: #cdb6fb;
+            --c-val: #f7f7f8;
+            --c-punct: #adadbf;
+            --c-delim: #80fac5;
+            --c-var: #bffddd;
+            --c-str: #ffc5b7;
+            --c-req: #ff6a6c;
+            --c-hl: rgba(152, 105, 247, 0.16);
+            --c-chrome: #1e1e26;
+        }
+    }
+
+    .nc-tabs {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.375rem;
+        height: 3rem;
+        padding: 0 0.75rem;
+        border-bottom: 1px solid var(--line);
+        background: var(--c-chrome);
+    }
+
+    .nc-tab {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        height: 2.375rem;
+        padding: 0 0.75rem;
+        border: 1px solid transparent;
+        border-bottom: 0;
+        border-radius: 8px 8px 0 0;
+        background: none;
+        font-size: 14px;
+        font-weight: 500;
+        white-space: nowrap;
+        color: var(--muted);
+        cursor: pointer;
+        transition:
+            background-color 0.25s ease,
+            color 0.25s ease;
+
+        > :global(svg) {
+            width: 16px;
+            height: 16px;
         }
 
-        div {
-            display: flex;
-            flex-direction: column;
+        > :global(.x) {
+            width: 14px;
+            height: 14px;
+            margin-left: 0.25rem;
+            opacity: 0.7;
         }
 
-        b {
-            font-size: $font-size-sm;
+        &:global(.on) {
+            margin-bottom: -1px;
+            border-color: var(--line);
+            background: var(--panel);
             color: var(--text);
         }
 
-        span {
-            font-family: $font-family-monospace;
-            font-size: 0.75rem;
-            color: var(--muted);
+        &:focus-visible {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: -2px;
         }
     }
 
-    .down {
+    .dirty {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: 0;
+        transition: opacity 0.25s ease;
+
+        :global(.dirty-on) > & {
+            opacity: 1;
+        }
+    }
+
+    .nc-panes {
+        display: grid;
+
+        > * {
+            grid-area: 1 / 1;
+            transition:
+                opacity 0.3s ease,
+                visibility 0s linear 0.3s;
+        }
+
+        &[data-at="form"] .nc-source,
+        &[data-at="source"] .nc-form {
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        &[data-at="form"] .nc-form,
+        &[data-at="source"] .nc-source {
+            transition:
+                opacity 0.3s ease,
+                visibility 0s;
+        }
+    }
+
+    .nc-form {
+        display: grid;
+        gap: 0.875rem;
+        padding: 1rem 1.25rem 1.25rem;
+    }
+
+    .nc-label {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        margin: 0 0 0.375rem;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+
+        i {
+            font-style: normal;
+            color: var(--c-req);
+        }
+    }
+
+    .nc-tag {
+        margin-left: 0.25rem;
+        padding: 1px 0.5rem;
+        border-radius: 6px;
+        background: var(--chip);
+        font-size: 11px;
+        font-weight: 500;
         color: var(--muted);
     }
 
-    .sync {
-        display: grid;
-        place-items: center;
-        width: 2.5rem;
-        height: 2.5rem;
-        border-radius: 50%;
-        background: var(--tile);
-        color: var(--tile-ink);
-        font-size: 1.25rem;
+    .nc-input {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        min-height: 2.25rem;
+        margin: 0;
+        padding: 0 0.75rem;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--field);
+        font-family: $font-family-monospace;
+        font-size: 13px;
+        white-space: nowrap;
+        color: var(--c-val);
 
-        @include media-breakpoint-down(md) {
-            margin-inline: auto;
-            transform: rotate(90deg);
+        &.select {
+            font-family: $font-family-sans-serif;
+
+            img,
+            > :global(svg:first-child) {
+                width: 20px;
+                height: 20px;
+            }
+
+            > :global(svg:last-child) {
+                width: 18px;
+                height: 18px;
+                margin-left: auto;
+                color: var(--muted);
+            }
+        }
+
+        :global(.typing)::after {
+            content: "";
+            display: inline-block;
+            width: 2px;
+            height: 1.1em;
+            margin-left: 1px;
+            vertical-align: -0.2em;
+            background: var(--run);
+            animation: caret 1s steps(1) infinite;
+        }
+    }
+
+    .d {
+        color: var(--c-delim);
+    }
+
+    .v {
+        color: var(--c-var);
+    }
+
+    .nc-source {
+        margin: 0;
+        padding: 1rem 0;
+        background: none;
+        font-family: $font-family-monospace;
+        font-size: 13px;
+        line-height: 1.9;
+        color: var(--c-val);
+
+        code {
+            display: block;
+            padding: 0;
+            background: none;
+            font: inherit;
+            color: inherit;
+
+            :global(span) {
+                width: auto;
+                margin: 0;
+                padding: 0;
+            }
+
+            :global(.no) {
+                display: inline-block;
+                width: 3rem;
+                padding-right: 1.25rem;
+                text-align: right;
+                color: var(--muted);
+                user-select: none;
+            }
+        }
+
+        :global(.row) {
+            display: block;
+            padding-right: 1.25rem;
+            transition:
+                background-color 0.3s ease,
+                box-shadow 0.3s ease;
+        }
+
+        :global(.row.on) {
+            background: linear-gradient(90deg, var(--c-hl), transparent 85%);
+            box-shadow: inset 2px 0 0 var(--c-key);
+        }
+
+        :global(.k) {
+            color: var(--c-key);
+        }
+
+        :global(.p) {
+            color: var(--c-punct);
+        }
+
+        :global(.s) {
+            color: var(--c-str);
+        }
+
+        :global(.d) {
+            color: var(--c-delim);
+        }
+
+        :global(.v) {
+            color: var(--c-var);
         }
     }
 
