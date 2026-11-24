@@ -102,6 +102,12 @@ In the Enterprise Edition, you can assign a request to specific people or groups
 
 ![The Approvals page listing four deployment approval requests, two pending with Review buttons and two resolved, one approved and one denied, with their deadlines and assignees](./approvals-page.png)
 
+## Kestra in Your IDE and Coding Agent
+
+Flows are code, so it helps to write them where you write the rest of your code. The new [JetBrains plugin](/docs/ide-extensions/jetbrains) brings Kestra to IntelliJ IDEA, PyCharm, WebStorm, and the other JetBrains IDEs. It completes flow YAML from the plugins installed on your instance, checks it as you type, previews the flow's topology, and runs the flow from the editor with live logs.
+
+If a coding agent writes your flows, Kestra's [Agent Skills](/docs/develop-with-ai/agent-skills#install-as-a-plugin) now install as a plugin in Claude Code, Codex, and Cursor, with the Docs MCP server already connected. They help the agent write, harden, and migrate flows, then deploy and run them with `kestractl`.
+
 ## Assets
 
 Assets got a lot of love in this release, especially if you use them to keep track of the infrastructure your flows create. These changes are in the Enterprise Edition and Cloud.
@@ -109,6 +115,7 @@ Assets got a lot of love in this release, especially if you use them to keep tra
 - Every asset can now have an owner, a status, and a lease. A flow can react when a lease is about to end or has ended, for example to warn the owner a week ahead and clean up afterwards, and owners get a notification in Kestra too. See [TtlTrigger](/docs/enterprise/governance/assets/tasks-and-triggers#ttltrigger).
 - Actions show up only where they make sense. Give an action like Decommission a condition on status, namespace, or metadata, and Kestra explains why it's unavailable everywhere else. See [Asset actions](/docs/enterprise/governance/assets/declare-assets#asset-actions).
 - Relations connect a deployment to the resources inside it, or a VM to the load balancer in front of it, and both show up on the asset graph. If you used lineage events in 2.0, read the [asset relations migration guide](/docs/migration-guide/v2.1.0/asset-relations) before upgrading.
+- Assets are written while a task runs, not after it ends. A task's declared outputs appear as soon as it starts, and anything it emits shows up right away, so you can follow a VM while it's being created. See the [asset write timing migration guide](/docs/migration-guide/v2.1.0/asset-write-timing).
 
 The new **ASSET input** lets people pick existing resources from a searchable list when they run a flow, such as the VM to snapshot or the deployment a new database belongs to. You decide which types, namespaces, or statuses show up, and people only see what they're allowed to. Inputs can depend on each other, so a form can ask for a deployment first and then offer only its VMs. See [ASSET inputs](/docs/workflow-components/inputs#asset-inputs).
 
@@ -249,6 +256,7 @@ A few plugin additions from this cycle:
 - [Invitations](/docs/enterprise/auth/invitations) (EE): invite up to 25 people at once with the same groups and roles.
 - [HTTPS behind a reverse proxy](/docs/configuration/observability-and-networking#secure-cookies): HSTS and secure cookies now work when Kestra sits behind a proxy that handles HTTPS.
 - [`PurgeMetrics`](/docs/administrator-guide/purge#purge-metrics): clean up execution metrics on their own, much faster than with a full execution purge.
+- [Script libraries in 10 more languages](/docs/scripts/outputs-metrics#other-languages): send outputs, metrics, and logs from R, PowerShell, Ruby, PHP, Perl, Groovy, Lua, Julia, Go, and C# scripts with a function call instead of hand-written `::{}::` lines.
 
 The [2.1 changelog](/docs/releases/changelog/v2.1.0) lists every other improvement in this release.
 
