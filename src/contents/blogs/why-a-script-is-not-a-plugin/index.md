@@ -24,6 +24,7 @@ The code was never the hard part, keeping it working is. A script is a snapshot 
 <li>Writing a script is now nearly free. Owning one is not, and the cost lands on you.</li>
 <li>A Kestra plugin is maintained, tested, versioned and supported for the full life of each LTS.</li>
 <li>A pile of shared scripts is a copy-paste library. A plugin is a typed, validated contract that evolves without breaking your flows.</li>
+<li>Plugins are written in Java on top of the official vendor SDKs, but you only write YAML, or use the no-code editor.</li>
 <li>Kestra runs your scripts too. The skill is knowing which one to use where.</li>
 </ul>
 </div>
@@ -61,6 +62,8 @@ None of this shows up in a demo. It shows up at 3 a.m., in a flow that is by the
 
 A Kestra plugin is Java code that lives in its own repository, has an owner, and is released like any other piece of software. A few things follow from that.
 
+You never have to touch that Java. The plugin is the implementation, and what you write is a task in YAML (see the example below), or you fill in a form in the no-code editor and Kestra generates the YAML. No programming language is needed to use a plugin, so the people closest to the process, analysts and ops included, can build flows without waiting for a developer.
+
 It declares its inputs. Every task property has a type, a default, a description and validation rules. Kestra generates a [JSON Schema](https://json-schema.org/) from the plugin, and the editor uses it to validate your flow before it ever runs. A typo in a property name is a red underline in the editor, not a failed execution at midnight. A script takes whatever string you hand it.
 
 It documents itself. The reference docs, the examples and the property tables on the [plugin pages](/plugins) are generated from annotations in the code. The documentation cannot drift away from the behavior, because they come from the same source. We cover this in the [plugin developer guide](/docs/plugin-developer-guide/document).
@@ -69,7 +72,9 @@ It is tested. Each plugin ships with unit tests built on the Kestra test framewo
 
 It is released and indexed. Plugins are published as versioned artifacts, and the release and indexing process is itself a set of Kestra flows. We wrote about how we ship them in [How Kestra Ships 1300+ Plugins](/blogs/2026-04-27-how-kestra-ships-plugins). A weekly compatibility run builds the plugin library against the latest development branch of Kestra core, so a breaking change in the engine is caught by us, not by you.
 
-It is scanned. Dependencies get automated update proposals and every repository runs a security scan. A CVE in a transitive dependency of a client library is our problem to find and fix. In a script, it is a problem nobody knows they have.
+It is built on official SDKs. Where the vendor publishes an official Java SDK (the AWS SDK for the AWS plugin, for instance), the plugin uses it instead of hand-rolled HTTP calls, so you get the vendor's own authentication, retry and API behavior. Those dependencies are bumped automatically with Dependabot, both for security fixes and to keep the plugin current with the service it talks to.
+
+It is scanned. Every repository also runs a security scan on top of the Dependabot updates. A CVE in a transitive dependency of a client library is our problem to find and fix. In a script, it is a problem nobody knows they have.
 
 This is dull work, and it is what separates code that ran once from code you can build a business process on.
 
