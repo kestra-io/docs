@@ -77,6 +77,8 @@ You can limit the server to some tenants, choose the sign-in methods it accepts 
 
 The AI Copilot in the Kestra UI got the same tools, so you can do the same work from a chat. In Edit and Plan modes, it asks you to confirm before it changes anything. It can also draft a unit test for a flow: pick **Generate a unit test** in the flow's menu, and Copilot writes the test cases with fixtures, mocks, and assertions for you to apply or review. See [Generate a unit test](/docs/develop-with-ai/ai-copilot#generate-a-unit-test).
 
+The open-source edition now gets every Copilot provider the Enterprise Edition has: OpenAI, Anthropic, Google Gemini and Vertex AI, Azure OpenAI, Amazon Bedrock, Mistral, DeepSeek, OpenRouter, and models served by Ollama. You can register several and pick a default. And if you haven't set up a provider yet, Copilot runs on a free tier hosted by Kestra, so you can try it right away. See [Configure an LLM provider](/docs/develop-with-ai/ai-copilot#configure-an-llm-provider).
+
 The 2.0 feature that turns your own flows into tools for agents is now called [MCP Flows](/docs/ai-orchestration/mcp-server).
 
 ## Approvals
@@ -161,7 +163,7 @@ It can also verify signed requests, such as the ones GitHub sends, and turn away
 
 Nobody likes watching a long script fail at batch 300 of 400 and start over from batch 1. With checkpoints, your script saves its progress as it goes, and a retry or a restart picks up where it left off. Turn it on with `durable: true` on any script task.
 
-Checkpoints work with any script language and task runner. They're in beta, so details may still change, and we'd love to hear how they work for you. See [Checkpoints](/docs/scripts/checkpoints).
+Checkpoints work with any script language and task runner, and with CLI tasks that run commands the same way, such as `AzCLI` and the CloudQuery tasks. They're in beta, so details may still change, and we'd love to hear how they work for you. See [Checkpoints](/docs/scripts/checkpoints).
 
 ## Following Executions
 
@@ -245,6 +247,7 @@ A few plugin additions from this cycle:
 - [Torq](/plugins/plugin-ee-torq) (EE): run a Torq workflow through its webhook, read workflows and their executions, query, update, and comment on cases, and start flows on new or updated cases.
 - JDBC `Queries`: run several SQL statements in one task, with parameters, transactions, and an output for each statement.
 - [Task runner monitoring](/docs/task-runners/types/kubernetes-task-runner#monitoring) (EE): the Kubernetes, AWS, Azure, Google Cloud, and Huawei Cloud task runners can report CPU, memory, and network usage, and forward traces from the task.
+- [Private Service Connect for Cloud Run](/docs/task-runners/types/google-cloudrun-task-runner#private-service-connect-endpoints) (EE): the Cloud Run task runner and `cloudrun.Run` task can reach Google APIs through Private Service Connect endpoints, for Kestra running on-premises or in a locked-down network.
 
 ## Additional Improvements
 
@@ -268,6 +271,9 @@ Most flows need no changes when you upgrade from 2.0. A few things are worth a l
 - In the Enterprise Edition, a few role permissions were removed, and a role bound to a namespace can only grant namespace-level permissions. Existing bindings are moved for you.
 - With SSO, logout is now POST-only, so register `<your Kestra URL>/ui` as a post-logout redirect URI in your identity provider.
 - Asset lineage events are replaced by relations. Back up your database before you upgrade.
+- A namespace ID can no longer end with a dot or contain two dots in a row, such as `team.`. Move the flows of any such namespace before you upgrade.
+- In the Enterprise Edition, a task that reads another namespace's file by its `kestra://` URI now needs that namespace to allow it, if the namespace restricts Allowed Namespaces.
+- If you deploy the Enterprise Edition with Helm and use `workerGroups`, delete the worker group Deployments before `helm upgrade`, since each one gets its own pod selector.
 
 The [v2.1.0 migration guide](/docs/migration-guide/v2.1.0) walks through each of these, plus a few smaller changes to webhook responses, flow output types, queue configuration keys, server CLI commands, and the `assets()` function.
 
