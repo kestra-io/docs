@@ -267,7 +267,7 @@ const elbow = (y1: number, x0 = EDGE_X) => {
 const STUBS = TRIGGERS.map(
     (_, idx) => `M${EDGE_X} ${triggerMid(idx)} H${BUS_X}`,
 )
-const BUS = `M${BUS_X} ${Math.min(triggerMid(0), FLOW_MID)} V${Math.max(triggerMid(TRIGGERS.length - 1), FLOW_MID)}`
+const BUS = `M${BUS_X} ${Math.max(triggerMid(TRIGGERS.length - 1), FLOW_MID)} V${Math.min(triggerMid(0), FLOW_MID)}`
 const TRUNK = `M${BUS_X} ${FLOW_MID} H${FLOW_X - 2}`
 const TRACES = TRIGGERS.map((_, idx) => ({
     line: elbow(triggerMid(idx)),
@@ -487,21 +487,6 @@ const GANTT = [
                                             />
                                         </marker>
                                         <marker
-                                            id="how-arrow-done"
-                                            viewBox="0 0 10 10"
-                                            refX="9"
-                                            refY="5"
-                                            markerWidth="6"
-                                            markerHeight="6"
-                                            markerUnits="userSpaceOnUse"
-                                            orient="auto"
-                                        >
-                                            <path
-                                                d="M1 1.5 L9 5 L1 8.5 Q2.5 5 1 1.5 z"
-                                                class="arrow done"
-                                            />
-                                        </marker>
-                                        <marker
                                             id="how-dot"
                                             viewBox="0 0 6 6"
                                             refX="3"
@@ -533,7 +518,10 @@ const GANTT = [
                                                 class="mask"
                                                 d={trace.outside}
                                             />
-                                            <path class="line" d={trace.line} />
+                                            <path
+                                                class="stroke"
+                                                d={trace.line}
+                                            />
                                         </g>
                                     ))}
                                 </svg>
@@ -902,7 +890,7 @@ const GANTT = [
         74.318, 31.062, 112.745, 9.481, 46.207, 63.926, 18.153, 95.604,
     ]
     const TOOK = ["4.1s", "3.8s", "5.2s", "2.9s"]
-    const FIRE_MS = 2600
+    const FIRE_MS = 2800
     const ROW_H = 40
 
     const setStatus = (node: Element, status: string) => {
@@ -941,10 +929,8 @@ const GANTT = [
         const fire = async (src: number, n: number, at: number, id: number) => {
             setStatus(triggers[src], "running")
             edges[src].classList.add("active")
-            await wait(600)
+            await wait(900)
             if (id !== token) return
-            setStatus(triggers[src], "created")
-            edges[src].classList.replace("active", "done")
             setStatus(flow, "running")
             const row = template.cloneNode(true) as HTMLElement
             row.classList.add("running")
@@ -957,11 +943,14 @@ const GANTT = [
             void list.offsetHeight
             list.style.transition = ""
             list.style.transform = ""
-            await wait(1100)
+            await wait(500)
+            if (id !== token) return
+            setStatus(triggers[src], "created")
+            await wait(700)
             if (id !== token) return
             took.textContent = TOOK[n % TOOK.length]
             setStatus(flow, "success")
-            edges[src].classList.remove("done")
+            edges[src].classList.remove("active")
             row.classList.remove("running")
             while (list.children.length > 4) list.lastElementChild!.remove()
         }
@@ -971,7 +960,7 @@ const GANTT = [
             list.replaceChildren()
             for (const row of seed) list.appendChild(row.cloneNode(true))
             for (const trigger of triggers) setStatus(trigger, "created")
-            for (const edge of edges) edge.classList.remove("active", "done")
+            for (const edge of edges) edge.classList.remove("active")
             setStatus(flow, "success")
             took.textContent = initial
         }
@@ -1802,7 +1791,6 @@ const GANTT = [
     .fire {
         --edge: #d0d0da;
         --run-c: #8405ff;
-        --ok-line: #1e875e;
         --ok-c: #1c7e57;
         --ok-bg: #e7f6ef;
         --trigger: #4fb383;
@@ -1820,7 +1808,6 @@ const GANTT = [
         :global(html.dark) & {
             --edge: #4a4a5a;
             --run-c: #9869f7;
-            --ok-line: #06f0b1;
             --ok-c: #06f0b1;
             --ok-bg: rgba(30, 135, 94, 0.14);
             --trigger: #1e875e;
@@ -1846,6 +1833,15 @@ const GANTT = [
         :global([data-trigger] .progress),
         :global([data-trigger])::after {
             display: none;
+        }
+
+        :global([data-trigger].is-running) {
+            animation: trigger-ping 1s ease-out infinite;
+        }
+
+        :global([data-flow].is-running .progress) {
+            transform-origin: right;
+            animation: flow-fill 1.2s linear forwards;
         }
 
         :global([data-trigger]:has(.hint:hover)),
@@ -1969,8 +1965,7 @@ const GANTT = [
         opacity: 0;
         transition: opacity 0.3s ease;
 
-        &:global(.active),
-        &:global(.done) {
+        &:global(.active) {
             opacity: 1;
         }
 
@@ -1987,20 +1982,14 @@ const GANTT = [
             }
         }
 
-        .line {
+        .stroke {
             stroke: var(--run-c);
             stroke-width: 1.5;
             stroke-dasharray: 4 4;
             marker-start: url(#how-dot);
             marker-end: url(#how-arrow-run);
-            animation: edge-flow 0.5s linear infinite;
+            animation: edge-flow 1.2s linear infinite;
             transition: stroke 0.3s ease;
-        }
-
-        &:global(.done) .line {
-            stroke: var(--ok-line);
-            marker-end: url(#how-arrow-done);
-            animation: none;
         }
     }
 
@@ -2010,9 +1999,34 @@ const GANTT = [
         &.run {
             fill: var(--run-c);
         }
+    }
 
-        &.done {
-            fill: var(--ok-line);
+    @keyframes trigger-ping {
+        from {
+            box-shadow: 0 0 0 0
+                color-mix(in srgb, var(--run-c) 35%, transparent);
+        }
+
+        to {
+            box-shadow: 0 0 0 8px transparent;
+        }
+    }
+
+    @keyframes flow-fill {
+        from {
+            transform: scaleX(0);
+        }
+
+        to {
+            transform: scaleX(1);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .trace .stroke,
+        .canvas :global([data-trigger].is-running),
+        .canvas :global([data-flow].is-running .progress) {
+            animation: none;
         }
     }
 
