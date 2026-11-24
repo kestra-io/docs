@@ -524,28 +524,19 @@ const GANTT = [
                                         {RUNS.map((run) => (
                                             <li>
                                                 <span class="runs-icon">
-                                                    {triggerIcons[
-                                                        run.trigger
-                                                    ] ? (
+                                                    {flowIcon ? (
                                                         <img
-                                                            src={
-                                                                triggerIcons[
-                                                                    run.trigger
-                                                                ]
-                                                            }
+                                                            src={flowIcon}
                                                             alt=""
                                                         />
                                                     ) : (
-                                                        <Icon
-                                                            name={
-                                                                TRIGGERS[
-                                                                    run.trigger
-                                                                ].fallback
-                                                            }
-                                                        />
+                                                        <Icon name="mdi:sitemap-outline" />
                                                     )}
                                                 </span>
                                                 <code>{run.time}</code>
+                                                <span class="runs-by">
+                                                    {TRIGGERS[run.trigger].id}
+                                                </span>
                                                 <span class="runs-state">
                                                     <Icon
                                                         name="mdi:check-circle-outline"
@@ -804,11 +795,8 @@ const GANTT = [
             setStatus(flow, "running")
             const row = template.cloneNode(true) as HTMLElement
             row.classList.add("running")
-            const icon =
-                triggers[src].querySelector(".icon")!.firstElementChild!
-            row.querySelector(".runs-icon")!.replaceChildren(
-                icon.cloneNode(true),
-            )
+            row.querySelector(".runs-by")!.textContent =
+                triggers[src].querySelector("strong")!.textContent
             row.querySelector("code")!.textContent = clock(at)
             list.style.transition = "none"
             list.style.transform = `translateY(${-ROW_H}px)`
@@ -1826,6 +1814,11 @@ const GANTT = [
             height: 16px;
             color: #2b2b33;
         }
+    }
+
+    .runs-by {
+        font-size: 12px;
+        color: var(--muted);
     }
 
     .runs-state {
