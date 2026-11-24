@@ -234,6 +234,8 @@ A few plugin additions from this cycle:
 - [Microsoft Defender XDR](/plugins/plugin-microsoft365): list and update alerts and incidents, run advanced hunting queries, and start flows on new alerts and incidents.
 - [Microsoft Sentinel](/plugins/plugin-azure): list, read, and update incidents, comment on them, run KQL queries, and start flows on new incidents.
 - [Snyk](/plugins/plugin-snyk): list security issues, and start a flow when new ones appear.
+- [Proofpoint TAP](/plugins/plugin-ee-proofpoint) (EE): pull the clicks and messages that reached your users, look up a threat's summary and forensic evidence, list your Very Attacked People, and start flows on new SIEM events.
+- [Torq](/plugins/plugin-ee-torq) (EE): run a Torq workflow through its webhook, read workflows and their executions, query, update, and comment on cases, and start flows on new or updated cases.
 - JDBC `Queries`: run several SQL statements in one task, with parameters, transactions, and an output for each statement.
 - [Task runner monitoring](/docs/task-runners/types/kubernetes-task-runner#monitoring) (EE): the Kubernetes, AWS, Azure, Google Cloud, and Huawei Cloud task runners can report CPU, memory, and network usage, and forward traces from the task.
 
