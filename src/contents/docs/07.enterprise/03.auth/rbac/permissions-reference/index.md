@@ -366,7 +366,9 @@ VIEW / LIST (any `DASHBOARD` action — no dedicated per-action check at control
 - `GET /api/v1/{tenant}/dashboards`
 - `GET /api/v1/{tenant}/dashboards/{id}`
 - `POST /api/v1/{tenant}/dashboards/{id}/charts/{chartId}`
+- `POST /api/v1/{tenant}/dashboards/{id}/charts/{chartId}/state-counts`
 - `POST /api/v1/{tenant}/dashboards/charts/preview`
+- `POST /api/v1/{tenant}/dashboards/charts/state-counts`
 - `POST /api/v1/{tenant}/dashboards/validate`
 - `POST /api/v1/{tenant}/dashboards/validate/chart`
 - `POST /api/v1/{tenant}/dashboards/{id}/charts/{chartId}/export`
