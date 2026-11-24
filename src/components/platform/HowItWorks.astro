@@ -305,7 +305,9 @@ const GANTT = [
                                     </div>
                                 ))}
                             </div>
-                            <p class="count">{totalPlugins}+ plugins</p>
+                            <a class="count" href="/plugins">
+                                {totalPlugins}+ plugins
+                            </a>
                         </div>
                     </div>
 
@@ -1148,6 +1150,16 @@ const GANTT = [
         font-size: $font-size-sm;
         font-weight: 600;
         color: var(--run);
+        text-decoration: none;
+        transition:
+            border-color 0.2s ease,
+            background-color 0.2s ease;
+
+        &:hover {
+            border-style: solid;
+            border-color: var(--run);
+            background: color-mix(in srgb, var(--run) 6%, transparent);
+        }
     }
 
     @media (prefers-reduced-motion: reduce) {
