@@ -92,15 +92,25 @@ const HTML = code
             value = value.slice(0, hash)
         }
         if (match && value.trim() === "|") block = indent
-        const string = inBlock || /^\s*["']/.test(value) ? " string" : ""
+        const scalar = value.trim()
+        const kind =
+            inBlock || /^["']/.test(scalar)
+                ? " string"
+                : /^-?\d+(\.\d+)?$/.test(scalar)
+                  ? " number"
+                  : /^(true|false|null)$/.test(scalar)
+                    ? " literal"
+                    : ""
         const mark = markAt(row)
         return [
             `<span class="line"${mark ? ` data-k="${mark}"` : ""}>`,
             `<span class="no">${row + 1}</span>`,
             match ? match[1] : " ".repeat(indent),
             match?.[2] ? `<span class="dash">- </span>` : "",
-            match ? `<span class="key">${match[3]}:</span>` : "",
-            `<span class="value${string}">${highlight(value)}</span>`,
+            match
+                ? `<span class="key">${match[3]}</span><span class="punct">:</span>`
+                : "",
+            `<span class="value${kind}">${highlight(value)}</span>`,
             comment ? `<span class="comment">${escape(comment)}</span>` : "",
             "\n</span>",
         ].join("")
@@ -133,13 +143,32 @@ const HTML = code
 <style lang="scss">
     @use "/src/components/enterprise/mocks/tokens" as *;
 
+    @mixin dark-syntax {
+        --code-text: #f7f7f8;
+        --code-key: #cdb6fb;
+        --code-punct: #adadbf;
+        --code-comment: #7e7e9b;
+        --code-const: #06f0b1;
+        --code-line: #adadbf;
+        --pb-delim: #80fac5;
+        --pb-var: #bffddd;
+        --pb-fn: #718bfe;
+        --pb-str: #ffc5b7;
+        --pb-num: #fce070;
+        --pb-kw: #cdb6fb;
+        --hl: rgba(152, 105, 247, 0.16);
+    }
+
     .code-card {
         @include tokens;
 
         --chrome: #f7f7fa;
+        --code-text: #001233;
         --code-key: #631bf3;
-        --code-string: inherit;
-        --code-comment: #6d6d86;
+        --code-punct: #424256;
+        --code-comment: #5f5f7c;
+        --code-const: #1a7a55;
+        --code-line: #5f5f7c;
         --pb-delim: #215d42;
         --pb-var: #194530;
         --pb-fn: #0542b6;
@@ -157,35 +186,18 @@ const HTML = code
         text-align: left;
 
         :global(html.dark) & {
-            --code-key: #cdb6fb;
-            --code-string: inherit;
-            --code-comment: #9696a5;
-            --pb-delim: #80fac5;
-            --pb-var: #bffddd;
-            --pb-fn: #718bfe;
-            --pb-str: #ffc5b7;
-            --pb-num: #fce070;
-            --pb-kw: #cdb6fb;
-            --hl: rgba(152, 105, 247, 0.16);
+            @include dark-syntax;
         }
 
         &.dark {
+            @include dark-syntax;
+
             --chrome: #1e1e26;
             --panel: #18181e;
             --line: #2e2e3c;
             --text: #ffffff;
             --soft: #d6d6e0;
             --muted: #adadbf;
-            --code-key: #cdb6fb;
-            --code-string: inherit;
-            --code-comment: #9696a5;
-            --pb-delim: #80fac5;
-            --pb-var: #bffddd;
-            --pb-fn: #718bfe;
-            --pb-str: #ffc5b7;
-            --pb-num: #fce070;
-            --pb-kw: #cdb6fb;
-            --hl: rgba(152, 105, 247, 0.16);
             --shadow: 0 30px 80px -24px rgba(0, 0, 0, 0.6);
         }
     }
@@ -253,7 +265,7 @@ const HTML = code
         font-family: $font-family-monospace;
         font-size: 0.8125rem;
         line-height: 1.7;
-        color: var(--soft);
+        color: var(--code-text);
         background: transparent;
     }
 
@@ -294,8 +306,7 @@ const HTML = code
         width: 3rem;
         padding-right: 1.25rem;
         text-align: right;
-        color: var(--muted);
-        opacity: 0.7;
+        color: var(--code-line);
         user-select: none;
     }
 
@@ -303,12 +314,21 @@ const HTML = code
         color: var(--code-key);
     }
 
-    pre :global(.dash) {
-        color: var(--muted);
+    pre :global(.dash),
+    pre :global(.punct) {
+        color: var(--code-punct);
     }
 
     pre :global(.string) {
-        color: var(--code-string);
+        color: var(--pb-str);
+    }
+
+    pre :global(.number) {
+        color: var(--pb-num);
+    }
+
+    pre :global(.literal) {
+        color: var(--code-const);
     }
 
     pre :global(.pb-delim) {
