@@ -210,7 +210,10 @@ const STATS = [
         }
 
         @include media-breakpoint-down(md) {
-            grid-template-columns: minmax(0, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            margin-inline: calc(-1 * var(--inset));
+            border-inline: 0;
+            border-radius: 0;
         }
     }
 
@@ -274,19 +277,17 @@ const STATS = [
     }
 
     @include media-breakpoint-down(md) {
-        .stats > div,
-        .cards > li {
+        .stats > div {
             grid-column: auto;
-            border-left: 0;
-
-            & + * {
-                border-left: 0;
-                border-top: var(--rule);
-            }
+            padding: 1.5rem 1.25rem 1.75rem;
         }
 
-        .cards > li:first-child {
-            border-top: var(--rule);
+        .cards > li {
+            grid-column: 1 / -1;
+            border-left: 0;
+        }
+        .open-grid .stats .value {
+            font-size: 2.25rem;
         }
     }
 

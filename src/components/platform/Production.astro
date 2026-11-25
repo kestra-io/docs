@@ -159,6 +159,24 @@ const RUNTIME = [
                     </div>
                 ))}
             </div>
+
+            <ol class="stacked">
+                {FEATURES.map((feature) => (
+                    <li>
+                        <h3>
+                            {feature.title}
+                            <code class="key">{feature.key}</code>
+                        </h3>
+                        <p>{feature.text}</p>
+                        <CodeCard
+                            file="finance / nightly_ledger.yml"
+                            code={feature.code}
+                            marks={{ [feature.key]: feature.lines }}
+                            editor
+                        />
+                    </li>
+                ))}
+            </ol>
         </div>
     </Rails>
 </section>
@@ -236,7 +254,40 @@ const RUNTIME = [
 
         @include media-breakpoint-down(xl) {
             grid-template-columns: minmax(0, 1fr);
-            gap: 2.5rem;
+            gap: 2rem;
+
+            .intro {
+                display: contents;
+            }
+
+            .stage {
+                order: 1;
+            }
+
+            .runtime {
+                order: 2;
+                margin-top: 0;
+            }
+
+            :global(.section-head) {
+                margin-bottom: 0;
+            }
+
+            .panel:not(.active) {
+                display: none;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            .features,
+            .stage {
+                display: none;
+            }
+
+            .stacked {
+                display: flex;
+                order: 1;
+            }
         }
     }
 
@@ -373,6 +424,33 @@ const RUNTIME = [
             margin: 1.25rem 0 0;
             font-size: 1rem;
             line-height: 1.6;
+            color: var(--ks-content-secondary);
+        }
+    }
+
+    .stacked {
+        display: none;
+        flex-direction: column;
+        gap: 2.5rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        h3 {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin: 0 0 0.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            margin: 0 0 1rem;
+            font-size: $font-size-md;
+            line-height: 1.55;
             color: var(--ks-content-secondary);
         }
     }

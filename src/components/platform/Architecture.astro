@@ -335,6 +335,12 @@ const PARTS = [
             overflow: hidden;
         }
 
+        @include media-breakpoint-down(md) {
+            margin-inline: calc(-1 * var(--inset));
+            border-inline: 0;
+            border-radius: 0;
+        }
+
         &::before {
             @include bleed(top);
         }
@@ -365,6 +371,11 @@ const PARTS = [
         border: 1px solid var(--ks-border-primary);
         border-radius: 0.625rem;
         background: var(--ks-background-body);
+
+        @include media-breakpoint-down(md) {
+            display: grid;
+            align-self: stretch;
+        }
     }
 
     .thumb {

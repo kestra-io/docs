@@ -22,6 +22,12 @@
         overflow: hidden;
     }
 
+    @include media-breakpoint-down(md) {
+        margin-inline: calc(-1 * var(--inset));
+        border-inline: 0;
+        border-radius: 0;
+    }
+
     @include media-breakpoint-down(lg) {
         grid-template-columns: repeat(if($columns == 4, 2, 1), minmax(0, 1fr));
     }

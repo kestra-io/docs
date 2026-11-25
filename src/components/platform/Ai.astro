@@ -600,6 +600,14 @@ const SPEND_MARKS: Record<string, [number, number]> = {
             border-radius: 0.625rem;
         }
 
+        @include media-breakpoint-down(sm) {
+            &#ai :global(.ks-tabs.on-dark > .tablist > button) {
+                padding-inline: 0.75rem;
+                font-size: 0.8125rem;
+                white-space: nowrap;
+            }
+        }
+
         &#ai :global(.ks-tabs.on-dark > .tablist)::before {
             content: "";
             position: absolute;
@@ -688,6 +696,10 @@ const SPEND_MARKS: Record<string, [number, number]> = {
 
         > :global(*) {
             height: var(--pane-h);
+
+            @include media-breakpoint-down(lg) {
+                height: auto;
+            }
         }
     }
 
