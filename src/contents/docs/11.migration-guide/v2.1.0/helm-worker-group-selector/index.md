@@ -30,6 +30,8 @@ kubectl delete deployment <fullname>-workergroup-<name>
 
 For a release named `kestra` with a worker group named `default`, the Deployment is `kestra-workergroup-default`. The `worker` Deployment doesn't need to be deleted.
 
+If you set `kestra.io/worker-group` in a worker group's `podLabels`, remove it before you upgrade. The chart now sets this label to the worker group name, and any other value fails the upgrade with a `spec.template.metadata.labels: Invalid value` error.
+
 Tasks running on the deleted workers are interrupted, so delete the Deployments when the workers are idle or during a maintenance window.
 
 An autoscaled `worker` Deployment next to autoscaled worker groups still overlaps with them, because its selector matches every worker pod. Autoscale either the `worker` Deployment or the worker groups, not both.

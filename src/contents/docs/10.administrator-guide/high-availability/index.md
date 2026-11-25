@@ -37,7 +37,7 @@ kestra server indexer
 
 ## Scaling components
 
-Each role scales independently by increasing the number of replicas in the Helm chart. See the [Kubernetes deployment guide](../../02.installation/03.kubernetes/index.md) for a full setup walkthrough and the [chart values reference](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml) for all available options.
+Each role scales independently, either through its number of replicas in the Helm chart or with an autoscaler. See the [Kubernetes deployment guide](../../02.installation/03.kubernetes/index.md) for a full setup walkthrough and the [chart values reference](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml) for all available options.
 
 Workers are the primary horizontal scaling target. Additional replicas increase task throughput; the Worker Controller routes jobs across all connected workers automatically.
 
@@ -46,6 +46,50 @@ The Executor and Scheduler are coordinating roles; two or three replicas provide
 Scheduler replicas share trigger evaluation by splitting flows across virtual nodes (16 by default, set with `kestra.scheduler.vnodes`). The Executor's liveness check assigns those virtual nodes to the running Schedulers and reassigns them when a Scheduler joins or leaves, so schedules only run while at least one Executor is running.
 
 At least two Webserver replicas behind a load balancer keep the API and UI available if one instance fails.
+
+### Autoscale components
+
+The Helm chart can create a HorizontalPodAutoscaler (HPA) for a component. Set `autoscaler` under `common` to autoscale every component, or under one component in `deployments`. A component's `autoscaler` block replaces the one under `common` instead of merging with it, so set `minReplicas`, `maxReplicas`, and `metrics` in each block:
+
+```yaml
+deployments:
+  worker:
+    enabled: true
+    resources:
+      requests:
+        cpu: "1"
+    autoscaler:
+      enabled: true
+      minReplicas: 2
+      maxReplicas: 10
+      metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 70
+```
+
+A CPU utilization target needs a CPU request on the pods, which the chart doesn't set by default. Without `metrics`, the HPA targets 80% CPU utilization.
+
+When a component is autoscaled, the chart doesn't set its replica count and ignores its `replicas` value. The HPA alone owns the count, so `helm upgrade` leaves it in place.
+
+To scale a component with KEDA or an HPA you create yourself, set `autoscaler.external` on that component. The chart then leaves the replica count to your autoscaler and doesn't create an HPA:
+
+```yaml
+deployments:
+  worker:
+    enabled: true
+    autoscaler:
+      external: true
+```
+
+Point your autoscaler at the component's Deployment, named `<fullname>-<component>`, such as `kestra-worker` for a release named `kestra`. Set `external` per component rather than under `common`: under `common`, the chart stops setting the replica count of every component, including the ones no autoscaler scales.
+
+The upgrade that turns on `autoscaler` or `autoscaler.external` for a running component can drop it to one pod before the autoscaler scales it back up. This happens with Helm 3. Helm 4 keeps the current count when it applies the change server-side, its default for releases it installs.
+
+Worker groups (Enterprise Edition) accept the same `autoscaler` block under `workerGroups.<name>`, and their Deployments are named `<fullname>-workergroup-<name>`. Autoscale either the `worker` Deployment or the worker groups, not both, because the `worker` Deployment's pod selector also matches every worker group pod. See [Helm worker group selector](../../11.migration-guide/v2.1.0/helm-worker-group-selector/index.md).
 
 :::alert{type="info"}
 Ensure the underlying host system is tuned for high availability. For example, adjusting the Linux kernel parameter `net.ipv4.tcp_retries2` can reduce [TCP retransmission times](https://access.redhat.com/solutions/726753).
