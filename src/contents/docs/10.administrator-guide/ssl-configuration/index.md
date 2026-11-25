@@ -70,7 +70,7 @@ Run Caddy as a background service so it persists across reboots:
 sudo caddy start --config /etc/caddy/Caddyfile
 ```
 
-With this setup, Kestra itself runs on plain HTTP internally (`localhost:8080`) and Caddy terminates TLS at the edge — no changes to Kestra's Micronaut SSL configuration are needed.
+With this setup, Kestra itself runs on plain HTTP internally (`localhost:8080`) and Caddy terminates TLS at the edge — no changes to Kestra's Micronaut SSL configuration are needed. Set `kestra.url` to the HTTPS address, see [Webserver URL](../webserver-url/index.md).
 
 :::alert{type="info"}
 Kestra uses WebSockets for real-time execution log streaming. Caddy's `reverse_proxy` directive supports WebSocket upgrades by default, so no extra configuration is required.
@@ -127,21 +127,13 @@ keytool -importkeystore -srckeystore server.p12 \
         -srcstoretype pkcs12 -destkeystore keystore.p12 \
         -deststoretype pkcs12 \
         -deststorepass changeit -srcstorepass changeit
-
-## Create truststore.jks
-keytool -import -trustcacerts -noprompt -alias ca \
-        -ext san=dns:localhost,ip:127.0.0.1 \
-        -file cacert.pem -keystore truststore.jks \
-        -storepass changeit -keypass changeit
 ```
+
+Clients must trust `cacert.pem` to connect without certificate errors: add it to the users' browsers or operating systems, and to the JVM of Kestra components that call the webserver, as described in [Trust an internal CA for outbound HTTPS connections](../custom-ca/index.md).
 
 ## Micronaut SSL configuration
 
-Configure HTTPS through the `micronaut` settings in the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md).
-
-:::alert{type="info"}
-Ensure that you expose the secure port of the connection if different from the default port.
-:::
+To serve HTTPS from Kestra itself, without a reverse proxy, configure TLS through the `micronaut.server.ssl` settings of the webserver. The following Docker Compose service runs a standalone server with the `server.p12` keystore created in the previous section:
 
 ```yaml
   kestra:
@@ -159,24 +151,14 @@ Ensure that you expose the secure port of the connection if different from the d
     environment:
       KESTRA_CONFIGURATION: |
         micronaut:
-          security:
-            x509:
-              enabled: false
-          ssl:
-            enabled: true
           server:
             ssl:
-              port: 8443
               enabled: true
-              clientAuthentication: want
-              keyStore:
+              port: 8443
+              key-store:
                 path: file:/app/ssl/server.p12
                 password: changeit
                 type: PKCS12
-              trustStore:
-                path: file:/app/ssl/truststore.jks
-                password: changeit
-                type: JKS
         datasources:
           postgres:
             url: jdbc:postgresql://postgres:5432/kestra
@@ -184,11 +166,11 @@ Ensure that you expose the secure port of the connection if different from the d
             username: kestra
             password: k3str4
         kestra:
+          url: https://localhost:8443/
           server:
             basic-auth:
-              enabled: false
               username: "admin@kestra.io" # it must be a valid email address
-              password: Admin1234! # it must be at least 8 characters long with uppercase letter and a number
+              password: Admin1234! # at least 8 characters, with an uppercase letter, a lowercase letter, and a number
           repository:
             type: postgres
           storage:
@@ -200,15 +182,22 @@ Ensure that you expose the secure port of the connection if different from the d
           tasks:
             tmp-dir:
               path: /tmp/kestra-wd/tmp
-          ports:
-            - "8443:8443"
 ```
+
+With TLS enabled, the webserver behaves as follows:
+
+- It serves HTTPS on port `8443` only. The plain-HTTP listener on `8080` is no longer started, so `http://` URLs are refused instead of redirected. Publish `8443` (or map it to `443`) and give users the `https://` address.
+- The management port `8081` (health checks, metrics) keeps serving plain HTTP. Don't publish it outside the host or the internal network.
+- Login and CSRF cookies get the `Secure` attribute, so browsers send them over HTTPS only.
+- Set `kestra.url` to the HTTPS address. Notifications and tasks that call the Kestra API use it, see [Webserver URL](../webserver-url/index.md).
+
+In a distributed deployment, set `micronaut.server.ssl` on the webserver only. The other components don't serve the UI or API.
 
 ## Outbound SSL configuration
 
-The `micronaut.server.ssl.trustStore` setting above applies only to connections made to the Kestra webserver. Outbound HTTPS calls from tasks, including calls to the Kestra API at `kestra.url`, use the JVM truststore instead.
+The `micronaut.server.ssl` settings above apply only to connections made to the Kestra webserver. Outbound HTTPS calls from tasks, including calls to the Kestra API at `kestra.url`, use the JVM truststore instead.
 
-To trust an internal CA for those calls, build a truststore from the Kestra image's `cacerts` plus your root CA and pass it with `JAVA_OPTS`. Don't reuse the `truststore.jks` created above: it holds only your CA, and pointing the JVM at it stops Kestra from trusting public endpoints. See [Trust an internal CA for outbound HTTPS connections](../custom-ca/index.md) for the Docker, Docker Compose, and Kubernetes steps.
+To trust an internal CA for those calls, build a truststore from the Kestra image's `cacerts` plus your root CA and pass it with `JAVA_OPTS`. A truststore that holds only your CA stops Kestra from trusting public endpoints. See [Trust an internal CA for outbound HTTPS connections](../custom-ca/index.md) for the Docker, Docker Compose, and Kubernetes steps.
 
 ## CSRF protection
 
@@ -316,8 +305,7 @@ For environments where ingress TLS termination isn't available:
 1. **Create secret with SSL files**:
    ```bash
    kubectl create secret generic kestra-ssl \
-     --from-file=keystore.p12 \
-     --from-file=truststore.jks
+     --from-file=keystore.p12
    ```
 
 2. **Configure Kestra deployment**:

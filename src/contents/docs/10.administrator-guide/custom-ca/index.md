@@ -35,7 +35,7 @@ The JVM truststore covers outbound connections made by the Kestra JVM. Other TLS
 The JVM ships with a default truststore, `cacerts`, that holds the public CAs. Setting `-Djavax.net.ssl.trustStore` **replaces** that default; it doesn't add to it. The truststore you point Kestra at must therefore hold the image's `cacerts` **plus** your internal CA.
 
 :::alert{type="warning"}
-Don't point `javax.net.ssl.trustStore` at a file that holds only your internal CA, such as the truststore you built for `micronaut.server.ssl.trustStore`. Kestra then stops trusting every public endpoint, including cloud APIs, GitHub, and SaaS services, and those tasks fail with the same `PKIX path building failed` error.
+Don't point `javax.net.ssl.trustStore` at a file that holds only your internal CA. Kestra then stops trusting every public endpoint, including cloud APIs, GitHub, and SaaS services, and those tasks fail with the same `PKIX path building failed` error.
 :::
 
 Import your internal **root** CA, not the server certificates it signs. Server certificates are renewed often, and each renewal would break trust; the root CA stays valid for years and covers every certificate it issues.
