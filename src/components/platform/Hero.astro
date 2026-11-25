@@ -86,15 +86,23 @@ const SPARKS = [
 </section>
 
 <script>
-    const EDITS = [
-        { line: 6, values: ["0 9 * * *", "*/15 * * * *", "0 9 * * 1-5"] },
+    const EDITS: { line: number; keys?: string[]; values: string[] }[] = [
+        {
+            line: 5,
+            values: [
+                "io.kestra.plugin.core.trigger.Schedule",
+                "io.kestra.plugin.core.trigger.Webhook",
+            ],
+        },
+        {
+            line: 6,
+            keys: ["cron", "key"],
+            values: ['"0 9 * * *"', "orders-webhook"],
+        },
+        { line: 4, values: ["daily", "new_order"] },
         {
             line: 10,
-            values: [
-                "Hello from Kestra",
-                "Hello from {{ flow.namespace }}",
-                "Hello, {{ trigger.date }}",
-            ],
+            values: ["Hello from Kestra", "New order {{ trigger.body.id }}"],
         },
     ]
 
@@ -111,16 +119,21 @@ const SPARKS = [
 
         const lines = [...stage.querySelectorAll<HTMLElement>("pre .line")]
         const fields = EDITS.map((edit) => {
-            const value =
-                lines[edit.line - 1].querySelector<HTMLElement>(".value")!
-            const quoted = value.textContent!.trim().startsWith('"')
-            value.textContent = quoted ? ' "' : " "
+            const line = lines[edit.line - 1]
+            const value = line.querySelector<HTMLElement>(".value")!
+            value.textContent = " "
             const text = document.createElement("span")
             text.className = "edit"
             text.textContent = edit.values[0]
             value.appendChild(text)
-            if (quoted) value.appendChild(document.createTextNode('"'))
-            return { text, values: edit.values, index: 0 }
+            return {
+                text,
+                value,
+                key: line.querySelector<HTMLElement>(".key"),
+                keys: edit.keys,
+                values: edit.values,
+                index: 0,
+            }
         })
 
         const caret = document.createElement("i")
@@ -132,16 +145,25 @@ const SPARKS = [
             next: string,
             id: number,
         ) => {
-            const { text } = field
-            text.classList.add("selected")
-            text.appendChild(caret)
+            const { text, key, keys } = field
+            const current = text.textContent ?? ""
+            let same = 0
+            while (same < current.length && current[same] === next[same]) same++
+            const selection = document.createElement("span")
+            selection.className = "selected"
+            selection.textContent = current.slice(same)
+            text.replaceChildren(current.slice(0, same), selection, caret)
+            if (keys && key) key.classList.add("selected")
             await wait(650)
             if (id !== token) return
-            text.classList.remove("selected")
+            selection.remove()
+            if (keys && key) {
+                key.textContent = keys[field.index]
+                key.classList.remove("selected")
+            }
+            field.value.classList.toggle("string", next.startsWith('"'))
             stage.classList.add("typing")
-            text.textContent = ""
-            text.appendChild(caret)
-            for (const char of next) {
+            for (const char of next.slice(same)) {
                 caret.before(char)
                 await wait(55 + Math.random() * 60)
                 if (id !== token) return
@@ -171,8 +193,9 @@ const SPARKS = [
                     token++
                     caret.remove()
                     stage.classList.remove("typing")
-                    for (const field of fields)
-                        field.text.classList.remove("selected")
+                    stage
+                        .querySelectorAll(".selected")
+                        .forEach((el) => el.classList.remove("selected"))
                 }
             },
             { threshold: 0.3 },
@@ -379,7 +402,8 @@ const SPARKS = [
             transition: background-color 0.2s ease;
         }
 
-        :global(.edit.selected) {
+        :global(.edit .selected),
+        :global(.key.selected) {
             background: rgba(152, 105, 247, 0.4);
         }
 
