@@ -1679,7 +1679,7 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
             display: contents;
         }
 
-        .copy h3 {
+        .copies .copy h3 {
             order: 1;
             margin: 0;
         }
@@ -1689,11 +1689,11 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
             margin-block: 0.75rem;
         }
 
-        .copy p {
+        .copies .copy p {
             order: 3;
         }
 
-        .copy a {
+        .copies .copy a {
             order: 4;
             justify-self: start;
             margin-top: 0.5rem;
@@ -1768,6 +1768,12 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
                 opacity 0.4s ease 0.1s,
                 transform 0.4s ease 0.1s,
                 visibility 0s;
+        }
+
+        .body[data-at="#{$i}"] .view:not([data-view="#{$i}"]) {
+            @include media-breakpoint-down(lg) {
+                display: none;
+            }
         }
 
         .body[data-at="#{$i}"] .copy[data-copy="#{$i}"] {
