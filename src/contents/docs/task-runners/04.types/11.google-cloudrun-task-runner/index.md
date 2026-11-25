@@ -186,6 +186,37 @@ taskRunner:
   vpcEgress: ALL_TRAFFIC
 ```
 
+## Private Service Connect endpoints
+
+When Kestra runs where the public `*.googleapis.com` hosts aren't reachable, such as on-premises or in a locked-down network, the task runner can reach Google APIs through [Private Service Connect](https://cloud.google.com/vpc/docs/private-service-connect) endpoints instead. Each property overrides one API endpoint. Leave a property unset to use the default host:
+
+| Property | API | Format |
+|---|---|---|
+| `runEndpoint` | Cloud Run Admin API | `host:port`, for example `run-psc.p.googleapis.com:443` |
+| `loggingEndpoint` | Cloud Logging API | `host:port`, for example `logging-psc.p.googleapis.com:443` |
+| `storageEndpoint` | Cloud Storage API | URL, for example `https://storage-psc.p.googleapis.com` |
+| `iamCredentialsEndpoint` | IAM Credentials API, used to impersonate `impersonatedServiceAccount` | URL, for example `https://iamcredentials-psc.p.googleapis.com` |
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.gcp.runner.CloudRun
+  projectId: "{{ secret('GCP_PROJECT_ID') }}"
+  region: europe-west1
+  impersonatedServiceAccount: kestra-runner@my-project.iam.gserviceaccount.com
+  runEndpoint: run-psc.p.googleapis.com:443
+  loggingEndpoint: logging-psc.p.googleapis.com:443
+  storageEndpoint: https://storage-psc.p.googleapis.com
+  iamCredentialsEndpoint: https://iamcredentials-psc.p.googleapis.com
+```
+
+The access token is sent to `storageEndpoint` and `iamCredentialsEndpoint`, so they must use HTTPS: a bare host gets `https://` added, and an `http://` URL is rejected. Point every endpoint only at a Google API or Private Service Connect host you trust.
+
+When `loggingEndpoint` is set and the task runner reads logs from Cloud Logging, it checks the endpoint with one log read before it creates the job, so a wrong endpoint fails the task before anything runs. With `useBucketForLog`, logs are read from the bucket and `loggingEndpoint` isn't used.
+
+With Workload Identity Federation, the `sts` and `oauth2` hosts aren't set on the task runner. Set them as `token_url` and `service_account_impersonation_url` in the credential configuration JSON.
+
+The [`cloudrun.Run`](/plugins/plugin-ee-gcp/google-cloud-run/io.kestra.plugin.ee.gcp.cloudrun.run) task accepts the same `runEndpoint`, `loggingEndpoint`, and `iamCredentialsEndpoint` properties.
+
 ## Mounting GCS buckets as volumes
 
 Use `volumes` to mount one or more GCS buckets directly into the container at specified paths. This is independent of the `bucket` property used for file transfer, and is useful for mounting reference datasets or shared outputs:
