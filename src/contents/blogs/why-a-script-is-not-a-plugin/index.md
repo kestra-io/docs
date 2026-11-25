@@ -2,7 +2,7 @@
 title: "Why a Script Is Not a Plugin"
 metaTitle: "Why a Script Is Not a Plugin: Supported Orchestration Plugins vs Scripts"
 description: "Any coding assistant writes an S3 upload script in seconds, and someone still has to keep it working. Kestra plugins are tested and supported for the full life of each LTS, so they hold up better than any script."
-date: 2026-11-26T09:00:00
+date: 2026-11-25T09:00:00
 category: Engineering
 author:
   name: François Delbrayelle
