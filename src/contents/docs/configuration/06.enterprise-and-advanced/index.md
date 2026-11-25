@@ -91,7 +91,7 @@ The old multi-tenancy and default-tenant configuration is no longer supported.
 
 ## Tenant example seeding (kestra.ee.tenant-examples)
 
-Kestra seeds a tenant of a type that ships an example bundle (`INFRASTRUCTURE`) once, when the tenant is created or first switched to that type, with a namespace, flows, apps, a dashboard, and a bootstrap execution. After that, only **Add examples** on the tenant's settings page seeds it again. See [Example environment](../../kestra-for-infra/01.setup/index.md#example-environment) for what it contains and how to remove it. This behavior is enabled by default and controlled with:
+Kestra seeds a tenant of a type that ships an example bundle (`INFRASTRUCTURE`) when the tenant is created as, or switched to, that type and never received the examples. It seeds a namespace, flows, apps, a dashboard, and a bootstrap execution. After that, only **Add examples** on the tenant's settings page seeds it again. See [Example environment](../../kestra-for-infra/01.setup/index.md#example-environment) for what it contains and how to remove it. This behavior is enabled by default and controlled with:
 
 ```yaml
 kestra:
@@ -102,7 +102,7 @@ kestra:
 
 | Property | Default | Description |
 |---|---|---|
-| `kestra.ee.tenant-examples.enabled` | `true` | When `true`, a tenant of a seeded type receives the example bundle once, when it's created or first switched to that type, and the Instance Owner can add it again with **Add examples**. Set to `false` to turn off seeding entirely, including **Add examples**. |
+| `kestra.ee.tenant-examples.enabled` | `true` | When `true`, a tenant of a seeded type receives the example bundle once, when it's created as, or switched to, that type and never received it, and the Instance Owner can add it again with **Add examples**. Set to `false` to turn off seeding entirely, including **Add examples**. |
 
 The example bundle ships inside the JAR — no network access is required at tenant creation time.
 
