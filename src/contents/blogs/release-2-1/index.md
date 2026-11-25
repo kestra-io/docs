@@ -262,6 +262,7 @@ Security teams can now work with their detection and response tools from a flow:
 
 - [Microsoft Defender XDR](/plugins/plugin-microsoft365): list and update alerts and incidents, run advanced hunting queries, and start flows on new alerts and incidents.
 - [Microsoft Sentinel](/plugins/plugin-azure): list, read, and update incidents, comment on them, run KQL queries, and start flows on new incidents.
+- [Aikido](/plugins/plugin-aikido): list and export open security issues, snooze or unsnooze them, scan repositories and containers and export their SBOMs, get compliance reports, and start flows on new issues.
 - [Snyk](/plugins/plugin-snyk): list security issues, and start a flow when new ones appear.
 - [GitGuardian](/plugins/plugin-gitguardian): list and manage secret incidents (assign, resolve, ignore, add notes), scan content for leaked secrets, manage honeytokens, and start flows on new incidents.
 - [Proofpoint TAP](/plugins/plugin-ee-proofpoint) (EE): pull the clicks and messages that reached your users, look up a threat's summary and forensic evidence, list your Very Attacked People, and start flows on new SIEM events.
@@ -269,19 +270,40 @@ Security teams can now work with their detection and response tools from a flow:
 
 <!-- VERIFY: add GuardDuty and Okta (SOAR wave 2) once their plugin links are known. CrowdStrike and Aikido already shipped, add them if they belong in this release. -->
 
+## New Plugins
+
+Since 2.0, 60 new plugin repositories have been released, which brings the catalog to over 2,900 plugins. Here is what's new, with the Enterprise Edition ones marked. The new security plugins are in the section above.
+
+**Network automation** (EE): built-in plugins for the vendors behind most network estates, so you no longer need Ansible or raw HTTP calls. They share one contract: `GetConfig`, `DiffConfig`, `ApplyConfig`, `Check` (dry run), and pre and post checks, so a flow works the same across vendors.
+
+- Switches and routers: Arista EOS and CloudVision, Cisco IOS-XE, IOS, and NX-OS.
+- Firewalls and access: Palo Alto PAN-OS and Panorama, Fortinet FortiGate and FortiManager, Aruba Central and AOS 10, Cisco ISE.
+- Sources of truth and monitoring: NetBox, Infoblox, IP Fabric, Tufin, AKIPS, Zabbix, and F5 APM.
+- A reachability check task for ICMP ping and TCP connect.
+
+<!-- VERIFY: ship status and plugin links per vendor. Arista 1.0.0 (2026-10-27, bundled in EE 2.0.8), Cisco 1.0.0 (2026-10-27, IOS-XE only), then 1.1.0 (2026-11-25). plugin-ee-paloalto, fortinet, aruba, akips, tufin, zabbix 1.0.0 shipped 2026-11-24, ipfabric 1.0.0 on 2026-11-25. Confirm NX-OS, IOS, ISE, F5 APM (ee-f5 1.2.0), Infoblox (ee-infoblox 1.3.0 and 1.4.0), and the reachability task are in those releases, and drop what is not. Also add GuardDuty and Okta if they ship. -->
+
+**Data and AI**
+- Vector databases: [Qdrant](/plugins/plugin-qdrant), [Chroma](/plugins/plugin-chroma), [LanceDB](/plugins/plugin-lancedb), and [Milvus](/plugins/plugin-milvus).
+- [Cerebras](/plugins/plugin-cerebras) for LLM inference, [TypeSafe](/plugins/plugin-typesafe) to evaluate content with its Jev decision model, and [Sonilo](/plugins/plugin-sonilo) to generate music and sound effects.
+- [Alibaba Cloud](/plugins/plugin-alibaba).
+- Lakehouse and storage: [Apache Iceberg](/plugins/plugin-iceberg), [Apache Hudi](/plugins/plugin-hudi), [ScyllaDB](/plugins/plugin-scylladb), [Quickwit](/plugins/plugin-quickwit), [Apache Iggy](/plugins/plugin-iggy), [S2](/plugins/plugin-s2) (stream storage), and [DataHub](/plugins/plugin-ee-datahub) (EE).
+- Web and documents: [Firecrawl](/plugins/plugin-firecrawl), [Playwright](/plugins/plugin-playwright), [Selenium](/plugins/plugin-selenium), [Browser Use](/plugins/plugin-browseruse), and [Apache PDFBox](/plugins/plugin-pdfbox).
+
+**BI and analytics**: [Looker](/plugins/plugin-looker), [Apache Superset](/plugins/plugin-superset), [Metabase](/plugins/plugin-metabase), [GoodData](/plugins/plugin-gooddata), [Qlik Cloud](/plugins/plugin-qlikcloud), [Google Data Studio](/plugins/plugin-data-studio), [PostHog](/plugins/plugin-posthog), and [Datadog](/plugins/plugin-datadog).
+
+**Business apps**: [Pylon](/plugins/plugin-pylon), [Figma](/plugins/plugin-figma), [Clay](/plugins/plugin-clay), [Box](/plugins/plugin-box), [Mailchimp](/plugins/plugin-mailchimp), [Ashby](/plugins/plugin-ashby), [Deel](/plugins/plugin-deel), [Payfit](/plugins/plugin-payfit), [Pennylane](/plugins/plugin-pennylane), [Mercury](/plugins/plugin-mercury) (business banking), [Sent](/plugins/plugin-sent) (messaging and contacts), [QuickBooks](/plugins/plugin-quickbooks), [Matrix](/plugins/plugin-matrix), and [SEC EDGAR](/plugins/plugin-edgar).
+
+**Delivery and workflows**: [Helm](/plugins/plugin-helm), [Tekton](/plugins/plugin-tekton), [Camunda](/plugins/plugin-camunda), and [Apache NiFi](/plugins/plugin-nifi).
+
+<!-- VERIFY: plugin pages are generated from the releases, so check each link resolves. -->
+
 ## Plugins
 
 The Plugins page now lists each plugin once, as a card or a table row. In the Enterprise Edition, it also shows which versions are installed on your instance and which are available, and Instance Owners can install, update, and uninstall versions from the same page. See [Plugins page](/docs/enterprise/instance/versioned-plugins#from-the-ui).
 
-A few more plugin additions from this cycle:
+Other plugin improvements from this cycle:
 
-- **Network automation** (EE): built-in plugins for the vendors behind most network estates, so you no longer need Ansible or raw HTTP calls. They share one contract: `GetConfig`, `DiffConfig`, `ApplyConfig`, `Check` (dry run), and pre and post checks, so a flow works the same across vendors.
-  - Switches and routers: Arista EOS and CloudVision, Cisco IOS-XE, IOS, and NX-OS.
-  - Firewalls and access: Palo Alto PAN-OS and Panorama, Fortinet FortiGate and FortiManager, Aruba Central and AOS 10, Cisco ISE.
-  - Sources of truth and monitoring: NetBox, Infoblox, IP Fabric, Tufin, AKIPS, Zabbix, and F5 APM.
-  - A reachability check task for ICMP ping and TCP connect.
-
-<!-- VERIFY: ship status and plugin links per vendor. Arista 1.0.0 is in EE 2.0.8, Cisco 1.0.0 (IOS-XE only) shipped 2026-10-27. Confirm NX-OS, IOS, ISE, Palo Alto, Fortinet, Aruba, IP Fabric, Tufin, AKIPS, Zabbix, F5 APM, and the reachability task are in 2.1 GA, and drop any that are not. -->
 - JDBC `Queries`: run several SQL statements in one task, with parameters, transactions, and an output for each statement.
 - [Task runner monitoring](/docs/task-runners/types/kubernetes-task-runner#monitoring) (EE): the Kubernetes, AWS, Azure, Google Cloud, and Huawei Cloud task runners can report CPU, memory, and network usage, and forward traces from the task.
 - [Private Service Connect for Cloud Run](/docs/task-runners/types/google-cloudrun-task-runner#private-service-connect-endpoints) (EE): the Cloud Run task runner and `cloudrun.Run` task can reach Google APIs through Private Service Connect endpoints, for Kestra running on-premises or in a locked-down network.
