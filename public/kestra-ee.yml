@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Instance-owner-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Instance-owner-only are not tenant-scoped.
-  version: 2.0.11
+  version: 2.0.13
 tags:
 - name: Flows
   description: Flows api
@@ -5131,6 +5131,7 @@ paths:
       tags:
       - ServiceAccount
       summary: List API tokens for a specific service account
+      description: Instance-owner-only.
       operationId: listApiTokensForServiceAccount
       parameters:
       - name: id
@@ -5171,6 +5172,7 @@ paths:
       tags:
       - ServiceAccount
       summary: Create new API Token for a specific service account
+      description: Instance-owner-only.
       operationId: createApiTokensForServiceAccount
       parameters:
       - name: id
@@ -5219,6 +5221,7 @@ paths:
       tags:
       - ServiceAccount
       summary: Delete an API Token for specific service account and token id
+      description: Instance-owner-only.
       operationId: deleteApiTokenForServiceAccount
       parameters:
       - name: id
@@ -13661,6 +13664,53 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CasesController.ApiCase'
+        '401':
+          description: Authentication required
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '403':
+          description: Access denied
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/{tenant}/concurrency-limit:
+    put:
+      tags:
+      - Flows
+      summary: Update a flow, namespace or tenant concurrency limit
+      description: Instance-owner-only. Leave the namespace and the flow empty to target the tenant limit, and the flow empty to target a namespace limit.
+      operationId: updateScopedConcurrencyLimitasInstanceOwner
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConcurrencyLimitController.ConcurrencyLimitUpdateRequest'
+        required: true
+      responses:
+        '200':
+          description: updateScopedConcurrencyLimitasInstanceOwner 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConcurrencyLimit'
         '401':
           description: Authentication required
           content:
@@ -27387,7 +27437,8 @@ paths:
     get:
       tags:
       - Policies
-      summary: 'Search for policies across scopes (without a global grant, restricted to what concerns the caller''s namespaces: INSTANCE and TENANT policies plus NAMESPACE policies on their subtrees and ancestors)'
+      summary: 'Search for policies across scopes (without a global grant, restricted to what concerns the caller''s namespaces: STATIC and INSTANCE and TENANT policies plus NAMESPACE policies on their subtrees and ancestors)'
+      description: The read-only STATIC policies declared in configuration are included when they apply to the tenant.
       operationId: searchPolicies
       parameters:
       - name: tenant
@@ -32483,7 +32534,7 @@ components:
         namespace:
           maxLength: 150
           minLength: 1
-          pattern: ^[a-z0-9][a-z0-9._-]*
+          pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
           type: string
         revision:
           minimum: 1
@@ -34510,7 +34561,7 @@ components:
         namespace:
           maxLength: 150
           minLength: 1
-          pattern: ^[a-z0-9][a-z0-9._-]*
+          pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
           type: string
         id:
           maxLength: 150
@@ -35425,7 +35476,7 @@ components:
           type: string
         namespace:
           maxLength: 150
-          pattern: ^[a-z0-9][a-z0-9._-]*
+          pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
           type: string
           nullable: true
         defaultSeverity:
@@ -35669,7 +35720,7 @@ components:
         namespace:
           maxLength: 150
           minLength: 1
-          pattern: ^[a-z0-9][a-z0-9._-]*
+          pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
           type: string
         flowId:
           maxLength: 100
@@ -36024,6 +36075,21 @@ components:
           type: string
         flowId:
           type: string
+        running:
+          minimum: 0
+          type: integer
+          format: int32
+    ConcurrencyLimitController.ConcurrencyLimitUpdateRequest:
+      required:
+      - running
+      type: object
+      properties:
+        namespace:
+          type: string
+          nullable: true
+        flowId:
+          type: string
+          nullable: true
         running:
           minimum: 0
           type: integer
@@ -36875,7 +36941,7 @@ components:
           namespace:
             maxLength: 150
             minLength: 1
-            pattern: ^[a-z0-9][a-z0-9._-]*
+            pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
             type: string
           revision:
             minimum: 1
@@ -37002,7 +37068,7 @@ components:
           namespace:
             maxLength: 150
             minLength: 1
-            pattern: ^[a-z0-9][a-z0-9._-]*
+            pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
             type: string
           revision:
             minimum: 1
@@ -37381,7 +37447,7 @@ components:
           namespace:
             maxLength: 150
             minLength: 1
-            pattern: ^[a-z0-9][a-z0-9._-]*
+            pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
             type: string
           revision:
             minimum: 1
@@ -39195,7 +39261,7 @@ components:
       type: object
       properties:
         id:
-          pattern: ^[a-z0-9][a-z0-9._-]*
+          pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
           type: string
         storageIsolation:
           $ref: '#/components/schemas/Isolation'
@@ -39276,7 +39342,7 @@ components:
       type: object
       properties:
         id:
-          pattern: ^[a-z0-9][a-z0-9._-]*
+          pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
           type: string
     Notification:
       required:
@@ -42655,7 +42721,7 @@ components:
         namespace:
           maxLength: 150
           minLength: 1
-          pattern: ^[a-z0-9][a-z0-9._-]*
+          pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
           type: string
         flowId:
           maxLength: 100

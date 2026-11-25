@@ -68,7 +68,7 @@ kestractl flows deploy flows/ --namespace prod --override --fail-fast
 - `flows deploy` creates flows, and `--override` updates flows that already exist. Existing flows that aren't in the directory are kept.
 - `--namespace` deploys every flow to one namespace. Omit it to keep the namespace written in each flow file, or use `--namespace-prefix` to prepend a prefix such as `staging` to each flow's namespace.
 
-To make the repository the single source of truth and delete flows that aren't in it, use `kestractl flows namespace-sync`. For every command and option, see the [`kestractl` reference](../../kestra-cli/kestractl/index.md).
+To make the repository the single source of truth and delete flows that aren't in it, use `kestractl flows namespace-sync`. It takes the flows directory directly, for example `kestractl flows namespace-sync prod flows/ --delete`. For every command and option, see the [`kestractl` reference](../../kestra-cli/kestractl/index.md).
 
 ### Automate deployments within Kestra
 

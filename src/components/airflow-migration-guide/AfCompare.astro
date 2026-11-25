@@ -1,0 +1,1206 @@
+---
+import { Icon } from "astro-icon/components"
+import airflowMark from "~/components/versus/assets/airflow-monograme.svg"
+import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
+import ControlPlaneTopology from "~/components/home/ControlPlaneTopology.astro"
+import { AF_DAG_FILE, EX4_KESTRA } from "./code"
+import { flowLines, python } from "~/components/migration/highlight"
+
+const CALLS = ["requests", "get", "print", "raise_for_status", "json", "xcom_push", "partial", "expand", "datetime"]
+const script = (line: string) => python(line, CALLS)
+
+const KESTRA_LINES = EX4_KESTRA.split("\n")
+const startOf = (needle: string) =>
+    KESTRA_LINES.findIndex((line) => line.includes(needle)) + 1
+const MARKS: Record<string, [number, number]> = {
+    get_astronauts: [
+        startOf("- id: get_astronauts"),
+        startOf("- id: print_astronaut_craft") - 2,
+    ],
+    print_astronaut_craft: [
+        startOf("- id: print_astronaut_craft"),
+        startOf("triggers:") - 2,
+    ],
+    daily: [startOf("triggers:"), KESTRA_LINES.length],
+}
+const markAt = (row: number) =>
+    Object.entries(MARKS).find(([, [a, b]]) => row >= a && row <= b)?.[0]
+
+const FLOW_LINES = flowLines(EX4_KESTRA, script, markAt)
+
+const AF_CODE = AF_DAG_FILE.split("\n").map(script)
+
+const TOPOLOGY = [
+    {
+        id: "daily",
+        type: "core.trigger.Schedule",
+        plugin: "core.trigger.Schedule",
+        fallback: "mdi:calendar-clock",
+        x: 0,
+        y: 70,
+        status: "success" as const,
+        duration: "0s",
+        seconds: 0.01,
+    },
+    {
+        id: "get_astronauts",
+        type: "scripts.python.Script",
+        plugin: "scripts.python.Script",
+        fallback: "mdi:language-python",
+        x: 310,
+        y: 70,
+        status: "success" as const,
+        duration: "3.1s",
+        seconds: 3.1,
+    },
+    {
+        id: "print_astronaut_craft",
+        type: "core.flow.Loop",
+        plugin: "core.flow.Loop",
+        fallback: "mdi:repeat",
+        x: 620,
+        y: 70,
+        status: "success" as const,
+        duration: "1.8s",
+        seconds: 1.8,
+    },
+]
+
+const FEED = [
+    {
+        node: 1,
+        at: "start",
+        time: "11:05:13",
+        who: "get_astronauts",
+        what: "Installing packages with uv",
+    },
+    {
+        node: 1,
+        at: "done",
+        time: "11:05:15",
+        who: "get_astronauts",
+        what: "Exit code 0 · number_of_people_in_space 12",
+        tone: "ok",
+    },
+    {
+        node: 2,
+        at: "done",
+        time: "11:05:17",
+        who: "greet",
+        what: "Oleg Kononenko is currently in space flying on the ISS! Hello! :)",
+        tone: "ok",
+    },
+]
+
+const K_TABS = [
+    { icon: "mdi:code-tags", label: "Flow Code", on: true },
+    { icon: "mdi:gesture-tap", label: "No-code" },
+    { icon: "mdi:sitemap-outline", label: "Topology", on: true },
+    { icon: "mdi:file-document-outline", label: "Docs" },
+    { icon: "mdi:folder-outline", label: "Files" },
+    { icon: "mdi:view-grid-plus-outline", label: "Blueprints" },
+]
+
+const AF_NAV = [
+    { icon: "mdi:home-outline", label: "Home" },
+    { icon: "mdi:source-branch", label: "Dags", on: true },
+    { icon: "mdi:database-outline", label: "Assets" },
+    { icon: "mdi:web", label: "Browse" },
+    { icon: "mdi:cog-outline", label: "Admin" },
+]
+const AF_TABS = [
+    "mdi:chart-bar",
+    "mdi:chart-timeline-variant",
+    "mdi:source-commit",
+    "mdi:calendar-blank-outline",
+    "mdi:undo-variant",
+    "mdi:file-document-outline",
+    "mdi:code-tags",
+    "mdi:alert-outline",
+]
+---
+
+<section class="af-compare" aria-labelledby="af-compare-title">
+    <div class="container-xl">
+        <div class="rails">
+            <header class="head">
+                <h2 id="af-compare-title">The Airflow UI next to Kestra</h2>
+                <p>
+                    An Airflow DAG that fetches who is in space and runs one task
+                    per astronaut, and the same pipeline in Kestra. The fetch
+                    code is unchanged. The XCom push becomes Kestra.outputs()
+                    and .expand() becomes a Loop.
+                </p>
+            </header>
+            <div class="stage">
+                <div class="compare" data-af-compare>
+                    <div
+                        class="layer af"
+                        role="img"
+                        aria-label="The example_astronauts DAG in the Airflow UI after a successful run: the Code tab next to the Graph view with get_astronauts and 12 mapped print_astronaut_craft tasks."
+                    >
+                        <aside class="af-rail">
+                            <img src={airflowMark.src} alt="" />
+                            {AF_NAV.map((item) => (
+                                <span
+                                    class:list={["rail-item", { on: item.on }]}
+                                >
+                                    <Icon name={item.icon} />
+                                    {item.label}
+                                </span>
+                            ))}
+                            <span class="rail-item docs">
+                                <Icon name="mdi:book-open-outline" />
+                                Docs
+                            </span>
+                        </aside>
+                        <div class="af-main">
+                            <div class="af-top">
+                                <span class="crumb">
+                                    <small>Dag</small>
+                                    example_astronauts
+                                </span>
+                                <span class="search">
+                                    <Icon name="mdi:magnify" /> Search Dags
+                                </span>
+                                <span class="trigger">
+                                    <Icon name="mdi:play-outline" /> Trigger
+                                </span>
+                            </div>
+                            <div class="cols">
+                                <div class="af-graph">
+                                    <div class="af-tools">
+                                        <span>
+                                            <Icon name="mdi:view-grid-outline" />
+                                        </span>
+                                        <span class="on">
+                                            <Icon name="mdi:sitemap-outline" />
+                                        </span>
+                                    </div>
+                                    <div class="af-nodes">
+                                        <div class="af-node">
+                                            <strong>
+                                                <Icon name="mdi:source-commit" />{" "}
+                                                get_astronauts
+                                            </strong>
+                                            <small>@task</small>
+                                            <em>
+                                                <Icon name="mdi:check" />{" "}
+                                                success
+                                            </em>
+                                        </div>
+                                        <span class="af-edge"></span>
+                                        <div class="af-node mapped">
+                                            <strong>
+                                                <Icon name="mdi:source-commit" />{" "}
+                                                print_astronaut_craft [12]
+                                            </strong>
+                                            <small>@task</small>
+                                            <em>
+                                                <Icon name="mdi:check" />{" "}
+                                                success
+                                            </em>
+                                            <b></b>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="af-panel">
+                                    <div class="af-head">
+                                        <span class="name">
+                                            <Icon name="mdi:source-branch" />
+                                            example_astronauts
+                                            <span class="switch">
+                                                <i></i>
+                                            </span>
+                                        </span>
+                                        <dl>
+                                            <div>
+                                                <dt>Schedule</dt>
+                                                <dd>0 0 * * *</dd>
+                                            </div>
+                                            <div>
+                                                <dt>Latest Run</dt>
+                                                <dd class="link">
+                                                    2026-11-24 12:18:17{" "}
+                                                    <Icon
+                                                        name="mdi:check-circle"
+                                                        class="ok"
+                                                    />
+                                                </dd>
+                                            </div>
+                                            <div>
+                                                <dt>Next Run</dt>
+                                                <dd>2026-11-25 01:00:00</dd>
+                                            </div>
+                                            <div>
+                                                <dt>Max Active Runs</dt>
+                                                <dd>0 of 16</dd>
+                                            </div>
+                                            <div>
+                                                <dt>Owner</dt>
+                                                <dd class="link">airflow</dd>
+                                            </div>
+                                            <div>
+                                                <dt>Latest Dag Version</dt>
+                                                <dd>v1</dd>
+                                            </div>
+                                        </dl>
+                                    </div>
+                                    <div class="af-tabs">
+                                        {AF_TABS.map((icon) => (
+                                            <span
+                                                class:list={{
+                                                    on:
+                                                        icon ===
+                                                        "mdi:code-tags",
+                                                }}
+                                            >
+                                                <Icon name={icon} />
+                                            </span>
+                                        ))}
+                                    </div>
+                                    <div class="af-file">
+                                        example_astronauts.py
+                                    </div>
+                                    <pre class="af-code">{AF_CODE.map((line, i) => (
+                                        <span class="ln"><i>{i + 1}</i><Fragment set:html={line} /></span>
+                                    ))}</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="layer ks"
+                        role="img"
+                        aria-label="The same pipeline in the Kestra flow editor, with Flow Code and Topology open side by side while an execution runs get_astronauts and the print_astronaut_craft loop."
+                        data-ks
+                    >
+                        <div class="ks-top">
+                            <img src={kestraMark.src} alt="" class="ks-logo" />
+                            <span class="slash">/</span>
+                            <Icon name="mdi:sitemap-outline" />
+                            <strong>Flows</strong>
+                            <span class="ks-right">
+                                <span class="toggle">
+                                    <i></i>
+                                </span>
+                                Playground
+                                <span class="ks-btn ghost">
+                                    <Icon name="mdi:download" /> Export flow
+                                </span>
+                                <span class="ks-btn">Save</span>
+                            </span>
+                        </div>
+                        <div class="ks-tabs">
+                            {K_TABS.map((tab) => (
+                                <span class:list={{ on: tab.on }}>
+                                    <Icon name={tab.icon} />
+                                    {tab.label}
+                                </span>
+                            ))}
+                        </div>
+                        <div class="cols">
+                            <div class="ks-panel">
+                                <div class="ks-ptab">
+                                    <Icon name="mdi:code-tags" /> Flow Code{" "}
+                                    <Icon name="mdi:close" class="x" />
+                                </div>
+                                <pre class="ks-code">{FLOW_LINES.map((line, i) => (
+                                    <span class="line" data-k={line.mark}><i class="no">{i + 1}</i><Fragment set:html={line.html} /></span>
+                                ))}</pre>
+                            </div>
+                            <div class="ks-panel">
+                                <div class="ks-ptab">
+                                    <Icon name="mdi:sitemap-outline" /> Topology{" "}
+                                    <Icon name="mdi:close" class="x" />
+                                </div>
+                                <div class="ks-topology surface-dark">
+                                    <ControlPlaneTopology
+                                        nodes={TOPOLOGY}
+                                        label="Kestra topology of the example_astronauts flow: a daily schedule, the get_astronauts script, then a loop over each astronaut"
+                                    />
+                                </div>
+                                <ol
+                                    class="feed"
+                                    aria-hidden="true"
+                                    data-feed
+                                ></ol>
+                                <script
+                                    type="application/json"
+                                    data-feed-rows
+                                    set:html={JSON.stringify(FEED)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        step="0.1"
+                        value="50"
+                        aria-label="Compare the Airflow DAG with the Kestra flow"
+                    />
+                    <div class="handle" aria-hidden="true">
+                        <span class="knob">
+                            <Icon name="mdi:chevron-left" />
+                            <Icon name="mdi:chevron-right" />
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const ORDER = ["daily", "get_astronauts", "print_astronaut_craft"]
+
+    function wire() {
+        document
+            .querySelectorAll<HTMLElement>("[data-af-compare]:not([data-wired])")
+            .forEach((root) => {
+                root.dataset.wired = ""
+                const input = root.querySelector<HTMLInputElement>("input")!
+                const ks = root.querySelector<HTMLElement>("[data-ks]")!
+                input.addEventListener("input", () =>
+                    root.style.setProperty("--pos", `${input.value}%`),
+                )
+
+                const lines = [...ks.querySelectorAll<HTMLElement>(".line")]
+                const nodes = [
+                    ...ks.querySelectorAll<HTMLElement>("[data-node]"),
+                ]
+                const feed = ks.querySelector<HTMLOListElement>("[data-feed]")!
+                const rows: {
+                    node: number
+                    at: string
+                    time: string
+                    who: string
+                    what: string
+                    tone?: string
+                }[] = JSON.parse(
+                    ks.querySelector("[data-feed-rows]")!.textContent ?? "[]",
+                )
+                let shown = 0
+                const sync = () => {
+                    const state = nodes.map((node) =>
+                        node.classList.contains("is-success")
+                            ? 2
+                            : node.classList.contains("is-running")
+                              ? 1
+                              : 0,
+                    )
+                    const due = rows.filter(
+                        (row) => state[row.node] >= (row.at === "done" ? 2 : 1),
+                    )
+                    if (due.length < shown) {
+                        feed.replaceChildren()
+                        shown = 0
+                    }
+                    for (const row of due.slice(shown)) {
+                        const li = document.createElement("li")
+                        if (row.tone) li.dataset.tone = row.tone
+                        for (const [cls, text] of [
+                            ["time", row.time],
+                            ["who", row.who],
+                            ["what", row.what],
+                        ]) {
+                            const cell = document.createElement("span")
+                            cell.className = cls
+                            cell.textContent = text
+                            li.appendChild(cell)
+                        }
+                        feed.insertBefore(li, feed.firstChild)
+                        while (feed.children.length > 3)
+                            feed.lastElementChild!.remove()
+                    }
+                    shown = due.length
+                    const running = nodes.findIndex((node) =>
+                        node.classList.contains("is-running"),
+                    )
+                    const focus = running >= 0 ? ORDER[running] : ""
+                    lines.forEach((line) =>
+                        line.classList.toggle(
+                            "on",
+                            !!focus && line.dataset.k === focus,
+                        ),
+                    )
+                    const first = lines.find((line) =>
+                        line.classList.contains("on"),
+                    )
+                    const pre = first?.closest<HTMLElement>("pre")
+                    if (first && pre)
+                        pre.scrollTo({
+                            top: Math.max(0, first.offsetTop - 24),
+                            behavior: "smooth",
+                        })
+                }
+                const observer = new MutationObserver(sync)
+                nodes.forEach((node) =>
+                    observer.observe(node, {
+                        attributes: true,
+                        attributeFilter: ["class"],
+                    }),
+                )
+            })
+    }
+
+    wire()
+    document.addEventListener("astro:page-load", wire)
+</script>
+
+<style lang="scss">
+    @use "/src/components/migration/migration" as *;
+
+    .af-compare {
+        @include band;
+    }
+
+    .rails {
+        @include rails;
+    }
+
+    .head {
+        @include head;
+    }
+
+    .stage {
+        padding: 0 var(--inset) 3.5rem;
+
+        @include media-breakpoint-down(md) {
+            padding-bottom: 2.5rem;
+        }
+    }
+
+    .compare {
+        --pos: 50%;
+        --k: #8405ff;
+        position: relative;
+        display: grid;
+        overflow: hidden;
+        border: 1px solid #ebebf0;
+        border-radius: 10px;
+        box-shadow: 0 16px 36px -18px rgba(43, 43, 51, 0.22);
+        user-select: none;
+
+        :global(html.dark) & {
+            --k: #9869f7;
+            border-color: #2e2e3c;
+            box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.7);
+        }
+    }
+
+    .layer {
+        display: grid;
+        grid-area: 1 / 1;
+        min-width: 0;
+        font-size: 0.8125rem;
+    }
+
+    .cols {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        min-height: 0;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    pre {
+        scrollbar-width: none;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        font-family: var(--font-family-jetbrains-mono);
+        font-size: 0.75rem;
+        line-height: 1.7;
+        white-space: pre;
+        overflow: hidden;
+    }
+
+    .ln {
+        display: block;
+
+        i {
+            display: inline-block;
+            width: 2.25rem;
+            padding-right: 0.75rem;
+            font-style: normal;
+            text-align: right;
+        }
+    }
+
+    .x {
+        margin-left: 0.25rem;
+        opacity: 0.6;
+    }
+
+    .af {
+        --af-text: oklch(0.232 0.032 266);
+        --af-muted: oklch(0.52 0.03 255);
+        --af-line: oklch(0.915 0.01 253);
+        --af-link: #2563c9;
+        --af-ok: #008000;
+        grid-template-columns: 3.25rem minmax(0, 1fr);
+        background: oklch(0.98 0.006 248.7);
+        color: var(--af-text);
+    }
+
+    .af-rail {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.375rem;
+        padding: 0.625rem 0.25rem;
+        background: oklch(0.923 0.023 255);
+        color: oklch(0.45 0.055 251);
+
+        img {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .rail-item {
+            display: grid;
+            justify-items: center;
+            gap: 0.125rem;
+            width: 100%;
+            padding: 0.375rem 0;
+            border-radius: 6px;
+            font-size: 0.5625rem;
+            font-weight: 500;
+
+            :global(svg) {
+                font-size: 1rem;
+            }
+
+            &.on {
+                background: oklch(0.36 0.07 255);
+                color: #ffffff;
+            }
+
+            &.docs {
+                margin-top: auto;
+            }
+        }
+    }
+
+    .af-main {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        min-width: 0;
+    }
+
+    .af-top {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        border-bottom: 1px solid var(--af-line);
+        background: #ffffff;
+
+        .crumb {
+            display: grid;
+            margin-right: auto;
+            font-weight: 500;
+            line-height: 1.2;
+
+            small {
+                font-size: 0.625rem;
+                font-weight: 600;
+                color: var(--af-muted);
+            }
+        }
+
+        .search {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.625rem;
+            border-radius: 6px;
+            background: oklch(0.95 0.01 253);
+            color: var(--af-muted);
+        }
+
+        .trigger {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.625rem;
+            border: 1px solid var(--af-line);
+            border-radius: 6px;
+            font-weight: 500;
+        }
+    }
+
+    .af-graph {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding: 0.625rem;
+        background-color: oklch(0.98 0.006 248.7);
+        background-image: radial-gradient(
+            oklch(0.75 0.02 253) 0.8px,
+            transparent 0.8px
+        );
+        background-size: 14px 14px;
+
+        @include media-breakpoint-down(lg) {
+            min-height: 14rem;
+        }
+    }
+
+    .af-tools {
+        display: flex;
+        gap: 0.25rem;
+
+        span {
+            display: grid;
+            place-items: center;
+            width: 1.625rem;
+            height: 1.5rem;
+            border-radius: 6px;
+            background: #ffffff;
+            color: var(--af-muted);
+        }
+
+        .on {
+            background: oklch(0.36 0.07 255);
+            color: #ffffff;
+        }
+    }
+
+    .af-nodes {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: auto 0;
+    }
+
+    .af-node {
+        position: relative;
+        display: grid;
+        justify-items: start;
+        gap: 0.25rem;
+        padding: 0.5rem 0.625rem;
+        border: 2px solid var(--af-ok);
+        border-radius: 6px;
+        background: #ffffff;
+
+        strong {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.8125rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        small {
+            font-size: 0.6875rem;
+            color: var(--af-muted);
+        }
+
+        em {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.0625rem 0.5rem;
+            border-radius: 999px;
+            background: var(--af-ok);
+            font-size: 0.6875rem;
+            font-style: normal;
+            color: #ffffff;
+        }
+
+        &.mapped {
+            box-shadow:
+                3px 3px 0 -1px #ffffff,
+                3px 3px 0 1px var(--af-ok),
+                6px 6px 0 -1px #ffffff,
+                6px 6px 0 1px var(--af-ok);
+
+            b {
+                width: 100%;
+                height: 4px;
+                border-radius: 2px;
+                background: var(--af-ok);
+            }
+        }
+    }
+
+    .af-edge {
+        width: 1.25rem;
+        height: 1px;
+        background: oklch(0.45 0.03 253);
+    }
+
+    .af-panel {
+        display: flex;
+        flex-direction: column;
+        order: -1;
+        min-width: 0;
+        border-right: 1px solid var(--af-line);
+        background: #ffffff;
+
+        @include media-breakpoint-down(lg) {
+            border-right: 0;
+            border-bottom: 1px solid var(--af-line);
+        }
+    }
+
+    .af-head {
+        display: grid;
+        gap: 0.5rem;
+        margin: 0.5rem;
+        padding: 0.5rem 0.625rem;
+        border: 1px solid var(--af-line);
+        border-radius: 6px;
+
+        .name {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.9375rem;
+            font-weight: 600;
+        }
+
+        .switch {
+            position: relative;
+            width: 1.625rem;
+            height: 0.875rem;
+            border-radius: 999px;
+            background: oklch(0.36 0.07 255);
+
+            i {
+                position: absolute;
+                top: 0.125rem;
+                right: 0.125rem;
+                width: 0.625rem;
+                height: 0.625rem;
+                border-radius: 50%;
+                background: #ffffff;
+            }
+        }
+
+        dl {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.375rem 0.75rem;
+            margin: 0;
+        }
+
+        dt {
+            font-size: 0.625rem;
+            font-weight: 600;
+        }
+
+        dd {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            margin: 0;
+            font-size: 0.75rem;
+            white-space: nowrap;
+
+            &.link {
+                color: var(--af-link);
+            }
+
+            .ok {
+                color: var(--af-ok);
+            }
+        }
+    }
+
+    .af-tabs {
+        display: flex;
+        gap: 0.875rem;
+        margin: 0 0.75rem;
+        border-bottom: 1px solid var(--af-line);
+        color: var(--af-muted);
+
+        span {
+            padding: 0.375rem 0.125rem;
+        }
+
+        .on {
+            box-shadow: inset 0 -2px 0 var(--af-link);
+            color: var(--af-text);
+        }
+    }
+
+    .af-file {
+        align-self: flex-start;
+        margin: 0.625rem 0.75rem 0;
+        padding: 0.125rem 0.5rem;
+        border-radius: 4px;
+        background: oklch(0.95 0.01 253);
+        font-family: var(--font-family-jetbrains-mono);
+        font-size: 0.6875rem;
+    }
+
+    .af-code {
+        max-height: 24rem;
+        padding: 0.5rem 0 1rem;
+        color: var(--af-text) !important;
+
+        i {
+            color: var(--af-link);
+        }
+
+        :global(.k) {
+            color: #0b5cad;
+        }
+
+        :global(.s) {
+            color: #a31515;
+        }
+
+        :global(.f) {
+            color: #6f42c1;
+        }
+
+        :global(.d) {
+            color: #b35900;
+        }
+    }
+
+    .ks {
+        grid-template-rows: auto auto 1fr;
+        background: #18181e;
+        color: #ffffff;
+        clip-path: inset(0 0 0 var(--pos));
+    }
+
+    .ks-top {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-bottom: 1px solid #2e2e3c;
+        background: #121216;
+
+        .slash {
+            color: #5c5d66;
+        }
+
+        strong {
+            font-weight: 600;
+        }
+    }
+
+    .ks-logo {
+        width: 1.5rem;
+        height: 1.5rem;
+        padding: 0.25rem;
+        border-radius: 6px;
+        background: #0d0d10;
+    }
+
+    .ks-right {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-left: auto;
+        color: #d6d6e0;
+    }
+
+    .toggle {
+        position: relative;
+        width: 1.75rem;
+        height: 1rem;
+        border-radius: 999px;
+        background: #2e2e3c;
+
+        i {
+            position: absolute;
+            top: 0.125rem;
+            left: 0.125rem;
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            background: #ffffff;
+        }
+    }
+
+    .ks-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.3125rem 0.75rem;
+        border-radius: 6px;
+        background: #8405ff;
+        font-weight: 600;
+        color: #ffffff;
+
+        &.ghost {
+            background: #26262f;
+            font-weight: 500;
+        }
+    }
+
+    .ks-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        padding: 0.375rem 0.75rem;
+        border-bottom: 1px solid #2e2e3c;
+        color: #adadbf;
+
+        span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.3125rem 0.625rem;
+            border-radius: 6px;
+        }
+
+        .on {
+            background: #26262f;
+            color: #ffffff;
+        }
+    }
+
+    .ks-panel {
+        min-width: 0;
+
+        & + & {
+            border-left: 1px solid #2e2e3c;
+
+            @include media-breakpoint-down(lg) {
+                border-left: 0;
+                border-top: 1px solid #2e2e3c;
+            }
+        }
+    }
+
+    .ks-ptab {
+        display: inline-flex;
+        align-self: flex-start;
+        align-items: center;
+        gap: 0.375rem;
+        margin: 0.5rem 0.75rem 0;
+        padding: 0.3125rem 0.625rem;
+        border-radius: 6px;
+        background: #26262f;
+        color: #ffffff;
+    }
+
+    .ks-panel:has(.ks-topology) {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .ks-topology {
+        display: flex;
+        margin-top: auto;
+        align-items: center;
+        padding: 1rem 0.75rem;
+
+        :global(.topology) {
+            --z: 0.6;
+            --node-bg: #1a1c22;
+            --node-border: #2e2e3c;
+            --node-text: #ffffff;
+            --node-muted: #adadbf;
+            --edge: #4a4a5a;
+            --track: #2a2a36;
+            --success: #1e875e;
+            --success-line: #06f0b1;
+            --success-border: #1e875e;
+            --success-bg: rgba(30, 135, 94, 0.14);
+            --running: #9869f7;
+            --running-bg: rgba(152, 105, 247, 0.14);
+            --runner: #718bfe;
+            --runner-bg: rgba(152, 105, 247, 0.12);
+            --trigger: #1e875e;
+            --trigger-button: #1e875e;
+            --trigger-border: rgba(6, 240, 177, 0.35);
+            --trigger-bg: rgba(6, 240, 177, 0.06);
+            height: 17rem;
+            align-self: center;
+        }
+    }
+
+    .feed {
+        display: grid;
+        align-content: start;
+        gap: 0.375rem;
+        min-height: 5.25rem;
+        margin: 0 1rem auto;
+        padding: 0.875rem 0.5rem 0;
+        border-top: 1px solid #2e2e3c;
+        list-style: none;
+        font-size: 0.8125rem;
+
+        :global(li) {
+            display: grid;
+            grid-template-columns: 4.5rem 8.5rem minmax(0, 1fr);
+            gap: 0.75rem;
+            color: #adadbf;
+            animation: feed-in 0.35s ease-out;
+        }
+
+        :global(li:not(:first-child)) {
+            opacity: 0.55;
+        }
+
+        :global(.time) {
+            font-variant-numeric: tabular-nums;
+            color: #6c6c7a;
+        }
+
+        :global(.who) {
+            overflow: hidden;
+            font-weight: 500;
+            color: #ffffff;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        :global(li[data-tone="ok"] .what) {
+            color: #06f0b1;
+        }
+    }
+
+    @keyframes feed-in {
+        from {
+            opacity: 0;
+            transform: translateY(-4px);
+        }
+    }
+
+    .ks-code {
+        max-height: 24rem;
+        padding: 0.75rem 0 1rem;
+        color: #d6d6e0 !important;
+
+        :global(.line) {
+            display: block;
+            padding-right: 1rem;
+            transition:
+                background-color 0.3s ease,
+                box-shadow 0.3s ease,
+                opacity 0.3s ease;
+        }
+
+        :global(.no) {
+            display: inline-block;
+            width: 2.5rem;
+            padding-right: 0.875rem;
+            font-style: normal;
+            text-align: right;
+            color: #adadbf;
+            opacity: 0.6;
+        }
+
+        &:has(:global(.line.on)) :global(.line:not(.on)) {
+            opacity: 0.4;
+        }
+
+        :global(.line.on) {
+            background: linear-gradient(
+                90deg,
+                rgba(152, 105, 247, 0.16),
+                transparent 85%
+            );
+            box-shadow: inset 2px 0 0 #cdb6fb;
+        }
+
+        :global(.line.on .no) {
+            color: #cdb6fb;
+            opacity: 1;
+        }
+
+        :global(.y) {
+            color: #cdb6fb;
+        }
+
+        :global(.v) {
+            color: #d6d6e0;
+        }
+
+        :global(.s) {
+            color: #ffc5b7;
+        }
+
+        :global(.p) {
+            color: #9696a5;
+        }
+
+        :global(.pbd) {
+            color: #80fac5;
+        }
+
+        :global(.pbv) {
+            color: #bffddd;
+        }
+
+        :global(.k) {
+            color: #cdb6fb;
+        }
+
+        :global(.f) {
+            color: #718bfe;
+        }
+    }
+
+    input {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        opacity: 0;
+        cursor: ew-resize;
+    }
+
+    .handle {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: var(--pos);
+        z-index: 1;
+        width: 2px;
+        margin-left: -1px;
+        background: var(--k);
+        box-shadow: 0 0 1rem rgba(132, 5, 255, 0.55);
+        pointer-events: none;
+    }
+
+    .knob {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+        background: var(--k);
+        box-shadow:
+            0 0 0 4px rgba(132, 5, 255, 0.18),
+            0 0.5rem 1.25rem rgba(0, 0, 0, 0.35);
+        color: #ffffff;
+        font-size: 1rem;
+        translate: -50% -50%;
+
+        :global(svg) {
+            margin-inline: -0.25rem;
+        }
+    }
+
+    input:focus-visible ~ .handle .knob {
+        outline: 3px solid var(--k);
+        outline-offset: 3px;
+    }
+</style>
