@@ -262,6 +262,13 @@ A few plugin additions from this cycle:
 - [Snyk](/plugins/plugin-snyk): list security issues, and start a flow when new ones appear.
 - [Proofpoint TAP](/plugins/plugin-ee-proofpoint) (EE): pull the clicks and messages that reached your users, look up a threat's summary and forensic evidence, list your Very Attacked People, and start flows on new SIEM events.
 - [Torq](/plugins/plugin-ee-torq) (EE): run a Torq workflow through its webhook, read workflows and their executions, query, update, and comment on cases, and start flows on new or updated cases.
+- **Network automation** (EE): built-in plugins for the vendors behind most network estates, so you no longer need Ansible or raw HTTP calls. They share one contract: `GetConfig`, `DiffConfig`, `ApplyConfig`, `Check` (dry run), and pre and post checks, so a flow works the same across vendors.
+  - Switches and routers: Arista EOS and CloudVision, Cisco IOS-XE, IOS, and NX-OS.
+  - Firewalls and access: Palo Alto PAN-OS and Panorama, Fortinet FortiGate and FortiManager, Aruba Central and AOS 10, Cisco ISE.
+  - Sources of truth and monitoring: NetBox, Infoblox, IP Fabric, Tufin, AKIPS, Zabbix, and F5 APM.
+  - A reachability check task for ICMP ping and TCP connect.
+
+<!-- VERIFY: ship status and plugin links per vendor. Arista 1.0.0 is in EE 2.0.8, Cisco 1.0.0 (IOS-XE only) shipped 2026-10-27. Confirm NX-OS, IOS, ISE, Palo Alto, Fortinet, Aruba, IP Fabric, Tufin, AKIPS, Zabbix, F5 APM, and the reachability task are in 2.1 GA, and drop any that are not. Also add GuardDuty and Okta (SOAR wave 2) next to the SOAR bullets. -->
 - JDBC `Queries`: run several SQL statements in one task, with parameters, transactions, and an output for each statement.
 - [Task runner monitoring](/docs/task-runners/types/kubernetes-task-runner#monitoring) (EE): the Kubernetes, AWS, Azure, Google Cloud, and Huawei Cloud task runners can report CPU, memory, and network usage, and forward traces from the task.
 - [Private Service Connect for Cloud Run](/docs/task-runners/types/google-cloudrun-task-runner#private-service-connect-endpoints) (EE): the Cloud Run task runner and `cloudrun.Run` task can reach Google APIs through Private Service Connect endpoints, for Kestra running on-premises or in a locked-down network.
