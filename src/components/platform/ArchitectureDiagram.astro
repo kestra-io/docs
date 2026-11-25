@@ -353,6 +353,11 @@ const WORKER_ICON = "mdi:account-cog-outline"
             diagram
                 .querySelectorAll(".zone")
                 .forEach((zone) => observer.observe(zone))
+            document.addEventListener(
+                "astro:before-swap",
+                () => observer.disconnect(),
+                { once: true },
+            )
             redraw()
         }
     }

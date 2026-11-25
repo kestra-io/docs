@@ -352,17 +352,30 @@ const SPEND_MARKS: Record<string, [number, number]> = {
                 player.stop()
             }
         }
-        new IntersectionObserver(
+        const seen = new IntersectionObserver(
             ([entry]) => {
                 inView = entry.isIntersecting
                 update()
             },
             { threshold: 0.3 },
-        ).observe(box)
-        new MutationObserver(update).observe(panel, {
+        )
+        seen.observe(box)
+        const toggled = new MutationObserver(update)
+        toggled.observe(panel, {
             attributes: true,
             attributeFilter: ["hidden"],
         })
+        document.addEventListener(
+            "astro:before-swap",
+            () => {
+                seen.disconnect()
+                toggled.disconnect()
+                if (!playing) return
+                playing = false
+                player.stop()
+            },
+            { once: true },
+        )
     }
 
     function chatPlayer(box: HTMLElement) {
