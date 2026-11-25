@@ -86,7 +86,7 @@ const TOPO_EDGES = TRIAGE_NODES.slice(1).map((_, idx) => {
 })
 
 const SPEND = `id: do_spend_summary
-namespace: company.kcdc
+namespace: company.team
 tasks:
   - id: fetch_insights
     type: io.kestra.plugin.core.http.Request
@@ -282,7 +282,7 @@ const SPEND_MARKS: Record<string, [number, number]> = {
                     <ChatMock />
                     <CodeCard
                         class="spend"
-                        file="company.kcdc / do_spend_summary.yml"
+                        file="company.team / do_spend_summary.yml"
                         code={SPEND}
                         marks={SPEND_MARKS}
                         dark
