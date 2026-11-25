@@ -1,7 +1,35 @@
 ---
 import { Icon } from "astro-icon/components"
 
-const APPS = [
+interface App {
+    icon: string
+    title: string
+    text: string
+    tags: string[]
+}
+
+interface Field {
+    label: string
+    value: string
+    options?: string[]
+}
+
+interface Request {
+    name: string
+    lede: string
+    fields: Field[]
+    approver: string
+    notice: string
+    result: { icon: string; label: string; action: string; actionIcon: string }
+}
+
+interface Props {
+    apps?: App[]
+    request?: Request
+    people?: { name: string; icon: string }[]
+}
+
+const DEFAULT_APPS: App[] = [
     {
         icon: "mdi:database-export-outline",
         title: "Data Export Request",
@@ -45,14 +73,45 @@ const PEOPLE = [
     { id: "admin", name: "Admin", icon: "mdi:shield-account-outline" },
 ]
 
-const FIELDS = [
-    { label: "Requested by", value: "j.kim" },
-    { label: "Dataset", value: "customers", select: true },
-    { label: "Reason", value: "Quarterly churn analysis" },
-]
+const DEFAULT_REQUEST: Request = {
+    name: "Data Export Request",
+    lede: "Request a filtered dataset and download it as a file. Exports of customer data are approved by the data owners.",
+    fields: [
+        { label: "Requested by", value: "j.kim" },
+        {
+            label: "Dataset",
+            value: "customers",
+            options: ["customers", "orders", "invoices"],
+        },
+        { label: "Reason", value: "Quarterly churn analysis" },
+    ],
+    approver: "data-owners",
+    notice: "j.kim requests the customers dataset",
+    result: {
+        icon: "mdi:file-delimited-outline",
+        label: "customers.csv",
+        action: "Download",
+        actionIcon: "mdi:download",
+    },
+}
+
+const {
+    apps: APPS = DEFAULT_APPS,
+    request = DEFAULT_REQUEST,
+    people,
+} = Astro.props
+
+const CURSORS = PEOPLE.map((person, idx) => ({
+    ...person,
+    ...people?.[idx],
+}))
 ---
 
-<div class="ui-mock apps-mock" aria-hidden="true" data-ui-mock>
+<div
+    class:list={["ui-mock", "apps-mock", { tall: APPS.length <= 4 }]}
+    aria-hidden="true"
+    data-ui-mock
+>
     <div class="stage">
         <div class="apps">
             {APPS.map((app, idx) => (
@@ -76,27 +135,48 @@ const FIELDS = [
             ))}
         </div>
         <div class="modal">
-            <strong class="name">Data Export Request</strong>
-            <p class="lede">
-                Request a filtered dataset and download it as a file. Exports of
-                customer data are approved by the data owners.
-            </p>
+            <strong class="name">{request.name}</strong>
+            <p class="lede">{request.lede}</p>
             <div class="views">
                 <div class="view form">
                     <strong class="section">Submit a request</strong>
-                    {FIELDS.map((field, idx) => (
+                    {request.fields.map((field, idx) => (
                         <label>
                             <span>
                                 <b>*</b> {field.label}
                             </span>
                             <span
-                                class:list={["input", { select: field.select }]}
+                                class:list={[
+                                    "input",
+                                    `f${idx + 1}`,
+                                    { select: field.options },
+                                ]}
                             >
-                                <span class={`val v${idx + 1}`}>
+                                <span
+                                    class:list={[
+                                        "val",
+                                        field.options ? "pick" : "type",
+                                    ]}
+                                >
                                     {field.value}
                                 </span>
-                                {field.select && (
-                                    <Icon name="mdi:chevron-down" />
+                                {field.options && (
+                                    <>
+                                        <Icon name="mdi:chevron-down" />
+                                        <span class="menu">
+                                            {field.options.map((option) => (
+                                                <i
+                                                    class:list={{
+                                                        on:
+                                                            option ===
+                                                            field.value,
+                                                    }}
+                                                >
+                                                    {option}
+                                                </i>
+                                            ))}
+                                        </span>
+                                    </>
                                 )}
                             </span>
                         </label>
@@ -110,7 +190,7 @@ const FIELDS = [
                     <span class="state waiting">
                         <i></i> Waiting for approval
                     </span>
-                    <code>Approver: data-owners</code>
+                    <code>Approver: {request.approver}</code>
                 </div>
                 <div class="view done">
                     <span class="check">
@@ -120,10 +200,11 @@ const FIELDS = [
                         <i></i> Your request has completed.
                     </span>
                     <span class="added">
-                        <Icon name="mdi:file-delimited-outline" />
-                        customers.csv
+                        <Icon name={request.result.icon} />
+                        {request.result.label}
                         <b>
-                            <Icon name="mdi:download" /> Download
+                            <Icon name={request.result.actionIcon} />{" "}
+                            {request.result.action}
                         </b>
                     </span>
                 </div>
@@ -141,14 +222,14 @@ const FIELDS = [
             </span>
             <div>
                 <strong>Approval required</strong>
-                <p>j.kim requests the customers dataset</p>
+                <p>{request.notice}</p>
                 <span class="choices">
                     <span class="reject">Reject</span>
                     <span class="approve">Approve</span>
                 </span>
             </div>
         </div>
-        {PEOPLE.map((person) => (
+        {CURSORS.map((person) => (
             <span class:list={["cursor", person.id]}>
                 <svg viewBox="0 0 10 10">
                     <path d="M0 0 L10 4 L5.5 5.5 L4 10 Z" />
@@ -171,6 +252,149 @@ const FIELDS = [
         @include tokens;
     }
 
+    .tall {
+        @include soft;
+
+        .input,
+        .added,
+        code {
+            font-family: inherit;
+        }
+
+        --press-x: 21.1em;
+        --submit-x: 33.3em;
+        --submit-y: 27.2em;
+        --press-x-sm: 31.5em;
+        --press-sm: 10.25em;
+        --submit-y-sm: 26.2em;
+
+        .modal {
+            left: 50%;
+        }
+
+        .app {
+            grid-template-columns: minmax(0, 1fr) auto;
+            grid-template-rows: auto auto 1fr auto;
+            gap: 0.35em 0.75em;
+            padding: 1em;
+
+            .tile {
+                grid-column: 1;
+                width: auto;
+                height: auto;
+                margin-bottom: 0.6em;
+                justify-self: start;
+                background: none;
+                color: var(--soft);
+
+                [data-icon] {
+                    width: 1.4em;
+                    height: 1.4em;
+                }
+            }
+
+            > div {
+                grid-column: 1 / -1;
+            }
+
+            strong {
+                font-size: 0.82em;
+            }
+
+            p {
+                margin-top: 0.3em;
+                font-size: 0.62em;
+            }
+
+            .tags {
+                grid-column: 1;
+                grid-row: 4;
+
+                span {
+                    color: var(--muted);
+                }
+            }
+        }
+
+        .request {
+            grid-row: 4;
+            height: auto;
+            padding: 0.35em 0.8em;
+            background: var(--panel);
+            font-size: 0.6em;
+            color: var(--text);
+        }
+
+        .notice {
+            top: auto;
+            right: 0;
+            bottom: 1.2em;
+            left: 0;
+            align-items: center;
+            width: max-content;
+            margin-inline: auto;
+            padding: 0.8em 1em 0.8em 1.1em;
+            border: 0;
+            background: #18181e;
+            box-shadow: 0 10px 28px -10px rgba(0, 0, 0, 0.45);
+            color: #ffffff;
+
+            :global(html.dark) & {
+                background: #ffffff;
+                color: #18181e;
+            }
+
+            > div {
+                display: grid;
+                grid-template-columns: auto auto;
+                align-items: center;
+                column-gap: 1.6em;
+            }
+
+            strong {
+                font-size: 0.86em;
+            }
+
+            p {
+                grid-column: 1;
+                margin: 0.2em 0 0;
+                color: inherit;
+                opacity: 0.65;
+            }
+
+            .choices {
+                grid-column: 2;
+                grid-row: 1 / span 2;
+            }
+
+            .choices span {
+                border-color: rgba(255, 255, 255, 0.18);
+                background: transparent;
+                color: inherit;
+            }
+
+            :global(html.dark) & .choices span {
+                border-color: var(--line);
+            }
+
+            .choices .approve {
+                border-color: transparent;
+                background: var(--primary);
+                color: #ffffff;
+            }
+        }
+    }
+
+    @media (min-width: 576px) {
+        .tall {
+            --press: 16.1em;
+
+            .app {
+                min-height: 15.5em;
+            }
+        }
+    }
+
     .stage {
         position: relative;
         padding-block: 2.4em;
@@ -184,7 +408,7 @@ const FIELDS = [
         display: inline-flex;
         align-items: center;
         gap: 0.4em;
-        border-radius: 0.4em;
+        border-radius: calc(0.4em * var(--round, 1));
         font-weight: 600;
         white-space: nowrap;
 
@@ -212,7 +436,7 @@ const FIELDS = [
         gap: 1.4em 0.75em;
         padding: 0.95em 0.85em 0.85em;
         border: 1px solid var(--line);
-        border-radius: 0.8em;
+        border-radius: calc(0.8em * var(--round, 1));
         background: var(--panel);
         box-shadow: var(--shadow);
 
@@ -221,7 +445,7 @@ const FIELDS = [
             place-items: center;
             width: 2.2em;
             height: 2.2em;
-            border-radius: 0.4em;
+            border-radius: calc(0.4em * var(--round, 1));
             background: var(--tile);
             color: var(--tile-ink);
 
@@ -253,7 +477,7 @@ const FIELDS = [
 
             span {
                 padding: 0.3em 0.6em;
-                border-radius: 0.3em;
+                border-radius: calc(0.3em * var(--round, 1));
                 background: var(--chip);
                 font-size: 0.62em;
                 font-weight: 600;
@@ -280,7 +504,7 @@ const FIELDS = [
         width: 26em;
         padding: 2.2em 2.2em 1.9em;
         border: 1px solid var(--line);
-        border-radius: 1.1em;
+        border-radius: calc(1.1em * var(--round, 1));
         background: var(--panel);
         box-shadow: var(--shadow);
         transform: translate(-50%, -50%);
@@ -354,16 +578,43 @@ const FIELDS = [
         margin-top: 0.45em;
         padding: 0 0.85em;
         border: 1px solid transparent;
-        border-radius: 0.45em;
+        border-radius: calc(0.45em * var(--round, 1));
         background: var(--field);
         font-family: var(--ks-font-monospace);
         font-size: 1.05em;
         font-weight: 400;
 
         &.select {
+            position: relative;
             border-color: var(--line);
             font-family: inherit;
             font-weight: 500;
+        }
+
+        .menu {
+            position: absolute;
+            top: calc(100% + 0.3em);
+            right: -1px;
+            left: -1px;
+            z-index: 2;
+            display: grid;
+            padding: 0.3em;
+            border: 1px solid var(--line);
+            border-radius: calc(0.45em * var(--round, 1));
+            background: var(--panel);
+            box-shadow: var(--shadow);
+            opacity: 0;
+
+            i {
+                padding: 0.45em 0.6em;
+                border-radius: calc(0.3em * var(--round, 1));
+                font-size: 0.85em;
+                font-style: normal;
+            }
+
+            .on {
+                background: var(--chip);
+            }
         }
 
         [data-icon] {
@@ -420,7 +671,7 @@ const FIELDS = [
         width: 17em;
         padding: 0.9em 1em 1em;
         border: 1px solid var(--line);
-        border-radius: 0.9em;
+        border-radius: calc(0.9em * var(--round, 1));
         background: var(--panel);
         box-shadow: var(--shadow);
         opacity: 0;
@@ -431,7 +682,7 @@ const FIELDS = [
             flex: none;
             width: 2em;
             height: 2em;
-            border-radius: 0.5em;
+            border-radius: calc(0.5em * var(--round, 1));
             background: var(--wait-bg);
             color: var(--wait);
 
@@ -464,7 +715,7 @@ const FIELDS = [
             height: 2.5em;
             padding: 0 1em;
             border: 1px solid var(--line);
-            border-radius: 0.4em;
+            border-radius: calc(0.4em * var(--round, 1));
             background: var(--chip);
             font-size: 0.68em;
             font-weight: 600;
@@ -521,7 +772,7 @@ const FIELDS = [
         gap: 0.5em;
         padding: 0.5em 0.6em 0.5em 0.9em;
         border: 1px solid var(--line);
-        border-radius: 0.5em;
+        border-radius: calc(0.5em * var(--round, 1));
         font-family: var(--ks-font-monospace);
         font-size: 0.72em;
 
@@ -537,7 +788,7 @@ const FIELDS = [
             gap: 0.3em;
             margin-left: 0.6em;
             padding: 0.4em 0.8em;
-            border-radius: 0.35em;
+            border-radius: calc(0.35em * var(--round, 1));
             background: var(--chip);
             font-family: var(--bs-font-sans-serif);
             font-weight: 600;
@@ -572,6 +823,14 @@ const FIELDS = [
             }
         }
 
+        .tall &.admin {
+            --tone: 16, 133, 110;
+
+            :global(html.dark) & {
+                --tone: 102, 214, 180;
+            }
+        }
+
         svg {
             width: 0.95em;
             height: 0.95em;
@@ -586,7 +845,7 @@ const FIELDS = [
         margin-left: 0.6em;
         padding: 0.15em 0.55em;
         border: 1px solid rgb(var(--tone));
-        border-radius: 0.45em;
+        border-radius: calc(0.45em * var(--round, 1));
         background: rgb(var(--tone));
         font-size: 0.7em;
         font-weight: 600;
@@ -661,20 +920,45 @@ const FIELDS = [
             animation: apps-mock-done var(--loop) linear infinite both;
         }
 
-        .val {
+        .val,
+        .menu {
             animation: var(--loop) linear infinite both;
+        }
 
-            &.v1 {
-                animation-name: apps-mock-type-1;
-            }
+        .f1 .type {
+            animation-name: apps-mock-type-1;
+        }
 
-            &.v2 {
-                animation-name: apps-mock-type-2;
-            }
+        .f2 .type {
+            animation-name: apps-mock-type-2;
+        }
 
-            &.v3 {
-                animation-name: apps-mock-type-3;
-            }
+        .f3 .type {
+            animation-name: apps-mock-type-3;
+        }
+
+        .f1 .pick {
+            animation-name: apps-mock-pick-1;
+        }
+
+        .f2 .pick {
+            animation-name: apps-mock-pick-2;
+        }
+
+        .f3 .pick {
+            animation-name: apps-mock-pick-3;
+        }
+
+        .f1 .menu {
+            animation-name: apps-mock-menu-1;
+        }
+
+        .f2 .menu {
+            animation-name: apps-mock-menu-2;
+        }
+
+        .f3 .menu {
+            animation-name: apps-mock-menu-3;
         }
 
         .steps {
@@ -693,6 +977,16 @@ const FIELDS = [
 
         .notice {
             animation: apps-mock-notice var(--loop) linear infinite both;
+        }
+
+        .tall .cursor.admin {
+            animation-name: apps-mock-admin-tall;
+        }
+
+        @media (max-width: 575.98px) {
+            .tall .cursor.admin {
+                animation-name: apps-mock-admin-tall-sm;
+            }
         }
 
         .approve {
@@ -850,10 +1144,83 @@ const FIELDS = [
     @keyframes apps-mock-type-3 {
         0%,
         32% {
+            clip-path: inset(0 100% 0 0);
+            animation-timing-function: steps(12);
+        }
+        37%,
+        100% {
+            clip-path: inset(0);
+        }
+    }
+
+    @keyframes apps-mock-pick-1 {
+        0%,
+        20.9% {
+            opacity: 0;
+        }
+        21%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes apps-mock-pick-2 {
+        0%,
+        28.9% {
+            opacity: 0;
+        }
+        29%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes apps-mock-pick-3 {
+        0%,
+        35.9% {
+            opacity: 0;
+        }
+        36%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes apps-mock-menu-1 {
+        0%,
+        17%,
+        22%,
+        100% {
+            opacity: 0;
+        }
+        18%,
+        21% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes apps-mock-menu-2 {
+        0%,
+        25%,
+        30%,
+        100% {
+            opacity: 0;
+        }
+        26%,
+        29% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes apps-mock-menu-3 {
+        0%,
+        32.5%,
+        37%,
+        100% {
             opacity: 0;
         }
         33%,
-        100% {
+        36% {
             opacity: 1;
         }
     }
@@ -937,7 +1304,7 @@ const FIELDS = [
         9%,
         15% {
             opacity: 1;
-            transform: translate(20.6em, 8em);
+            transform: translate(var(--press-x, 20.6em), var(--press, 8em));
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
         18%,
@@ -949,7 +1316,10 @@ const FIELDS = [
         40%,
         48% {
             opacity: 1;
-            transform: translate(31em, 23.1em);
+            transform: translate(
+                var(--submit-x, 31em),
+                var(--submit-y, 23.1em)
+            );
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
         56%,
@@ -992,6 +1362,64 @@ const FIELDS = [
         }
     }
 
+    @keyframes apps-mock-admin-tall {
+        0%,
+        54% {
+            opacity: 0;
+            transform: translate(44em, 40em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        58% {
+            opacity: 1;
+            transform: translate(41em, 38em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        65%,
+        72% {
+            opacity: 1;
+            transform: translate(34.8em, 33.7em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        79% {
+            opacity: 1;
+            transform: translate(38em, 37em);
+        }
+        84%,
+        100% {
+            opacity: 0;
+            transform: translate(38em, 37em);
+        }
+    }
+
+    @keyframes apps-mock-admin-tall-sm {
+        0%,
+        54% {
+            opacity: 0;
+            transform: translate(34em, 37em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        58% {
+            opacity: 1;
+            transform: translate(32em, 35em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        65%,
+        72% {
+            opacity: 1;
+            transform: translate(27.8em, 31.8em);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        79% {
+            opacity: 1;
+            transform: translate(30em, 33.5em);
+        }
+        84%,
+        100% {
+            opacity: 0;
+            transform: translate(30em, 33.5em);
+        }
+    }
+
     @keyframes apps-mock-launcher-sm {
         0% {
             opacity: 0;
@@ -1005,7 +1433,10 @@ const FIELDS = [
         9%,
         15% {
             opacity: 1;
-            transform: translate(29.8em, 8.8em);
+            transform: translate(
+                var(--press-x-sm, 29.8em),
+                var(--press-sm, 8.8em)
+            );
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
         18%,
@@ -1017,7 +1448,7 @@ const FIELDS = [
         40%,
         48% {
             opacity: 1;
-            transform: translate(26em, 23.9em);
+            transform: translate(26em, var(--submit-y-sm, 23.9em));
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
         56%,

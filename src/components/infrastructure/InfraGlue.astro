@@ -1,0 +1,203 @@
+---
+import { Icon } from "astro-icon/components"
+
+const JOBS = [
+    {
+        icon: "mdi:file-search-outline",
+        title: "Know what ran, what broke and why",
+        text: "Every Terraform, Ansible and PowerShell step runs as one execution with one record. When something fails, you trace it in one place instead of four consoles.",
+    },
+    {
+        icon: "mdi:timer-sand",
+        title: "Give your platform team its time back",
+        text: "Teams request what they need, and the request closes itself when the work is done. Nobody carries a ticket forward by hand.",
+    },
+    {
+        icon: "mdi:account-clock-outline",
+        title: "Stop paying for forgotten environments",
+        text: "Every resource gets an owner and an end date, so idle environments are retired before they turn into line items. And no per-node licence grows with every server you automate.",
+    },
+    {
+        icon: "mdi:robot-outline",
+        title: "Run AI agents safely",
+        text: "Agents request infrastructure under the same rules as people. RBAC, SSO and an audit trail cover every action, self-hosted or air-gapped, and agents never hold credentials.",
+    },
+]
+---
+
+<section class="infra-glue" aria-labelledby="as-code">
+    <div class="container-xl">
+        <div class="rails">
+            <header>
+                <h2 id="as-code">
+                    Orchestrate All Your Infrastructure Automation in One Place
+                </h2>
+                <p>
+                    Cron jobs, CI pipelines and ticket queues each work on their
+                    own. Together, they hide what ran, slow every request, leave
+                    nobody accountable and give AI agents no safe way in.
+                </p>
+            </header>
+            <ul>
+                {JOBS.map((job) => (
+                    <li>
+                        <Icon name={job.icon} />
+                        <h3>{job.title}</h3>
+                        <p>{job.text}</p>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .infra-glue {
+        --rule: 1px solid var(--ks-border-primary);
+        --inset: clamp(1.5rem, 3vw, 2.5rem);
+
+        position: relative;
+        background: var(--ks-background-body);
+        border-bottom: var(--rule);
+    }
+
+    .rails {
+        border-inline: var(--rule);
+
+        @include media-breakpoint-down(xl) {
+            border-inline: 0;
+        }
+    }
+
+    header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 6.5rem var(--inset) 4rem;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            align-items: flex-start;
+            padding-block: 4.5rem 3rem;
+            text-align: left;
+        }
+
+        h2 {
+            max-width: 18em;
+            margin: 0;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            text-wrap: balance;
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            max-width: 40rem;
+            margin: 1.5rem 0 0;
+            font-size: 1.125rem;
+            line-height: 1.55;
+            text-wrap: pretty;
+            color: var(--ks-content-secondary);
+        }
+    }
+
+    ul {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        margin: 0;
+        padding: 0;
+        border-top: var(--rule);
+        list-style: none;
+
+        @include media-breakpoint-down(xl) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    li {
+        position: relative;
+        padding: 2.5rem var(--inset) 3.5rem;
+        transition: background-color 0.3s ease;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: -1px;
+            right: 0;
+            left: 0;
+            height: 2px;
+            background: var(--ks-content-primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        &:hover {
+            background: var(--ks-background-secondary);
+
+            &::before {
+                transform: none;
+            }
+        }
+
+        @include media-breakpoint-up(xl) {
+            & + li {
+                border-left: var(--rule);
+            }
+        }
+
+        @include media-breakpoint-between(md, xl) {
+            &:nth-child(even) {
+                border-left: var(--rule);
+            }
+
+            &:nth-child(n + 3) {
+                border-top: var(--rule);
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            padding-block: 2rem 2.25rem;
+
+            & + li {
+                border-top: var(--rule);
+            }
+        }
+
+        > :global(svg) {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--ks-content-primary);
+        }
+    }
+
+    h3 {
+        margin: 0 0 0.875rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        line-height: 1.25;
+        color: var(--ks-content-primary);
+    }
+
+    li p {
+        margin: 0;
+        font-size: 0.9375rem;
+        line-height: 1.6;
+        color: var(--ks-content-secondary);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        li,
+        li::before {
+            transition: none;
+        }
+    }
+</style>

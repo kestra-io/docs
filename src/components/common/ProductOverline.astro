@@ -1,0 +1,71 @@
+---
+interface Props {
+    align?: "start" | "responsive"
+}
+
+const { align = "start" } = Astro.props
+---
+
+<span class:list={["product-overline", align]}>
+    <slot />
+</span>
+
+<style lang="scss">
+    .product-overline {
+        --sheen: linear-gradient(
+                90deg,
+                #ffffff 0%,
+                #e4dcff 25%,
+                #a996ff 50%,
+                #e4dcff 75%,
+                #ffffff 100%
+            )
+            0 0 / 200% 100% repeat-x;
+
+        position: relative;
+        display: block;
+        width: fit-content;
+        margin: 0 0 1.25rem;
+        padding-bottom: 0.45em;
+        background: var(--sheen);
+        background-clip: text;
+        font-size: clamp(0.9375rem, 1.3vw, 1.125rem);
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        line-height: 1.2;
+        text-transform: uppercase;
+        color: transparent;
+
+        &::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            height: 1px;
+            background: var(--sheen);
+            opacity: 0.35;
+        }
+
+        &.responsive {
+            margin-inline: auto;
+
+            @include media-breakpoint-up(lg) {
+                margin-left: 0;
+            }
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .product-overline,
+        .product-overline::after {
+            animation: product-overline-sheen 8s linear infinite;
+        }
+    }
+
+    @keyframes product-overline-sheen {
+        to {
+            background-position-x: 200%;
+        }
+    }
+</style>

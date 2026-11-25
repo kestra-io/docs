@@ -1,138 +1,286 @@
 ---
+import { Icon } from "astro-icon/components"
 import Layout from "~/components/layout.astro"
-import SeeHow from "~/components/common/SeeHow.astro"
-import CustomerQuotes from "~/components/common/CustomerQuotes.astro"
-
-import BlueprintsGrid from "~/components/common/BlueprintsGrid.astro"
-import Explore from "~/components/layout/Explore.astro"
-import LifecycleLayout from "~/components/layout/Lifecycle.astro"
-import Versus from "~/components/layout/Versus.astro"
-
-import Arcade from "~/components/infrastructure/Arcade.astro"
-import Architecture from "~/components/infrastructure/Architecture.astro"
-import Built from "~/components/infrastructure/Built.astro"
+import PageShell from "~/components/home/PageShell.astro"
+import Customers, { type Story } from "~/components/home/Customers.astro"
+import { flat } from "~/components/home/flatLogo"
+import EnterpriseShowcase from "~/components/enterprise/EnterpriseShowcase.astro"
+import BuyerQuestions from "~/components/enterprise/BuyerQuestions.astro"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import InfraHero from "~/components/infrastructure/InfraHero.astro"
+import InfraGlue from "~/components/infrastructure/InfraGlue.astro"
+import AppsMock from "~/components/enterprise/mocks/AppsMock.astro"
+import InfraAppBuilderMock from "~/components/infrastructure/InfraAppBuilderMock.astro"
+import InfraCaseMock from "~/components/infrastructure/InfraCaseMock.astro"
+import InfraDeploymentMock from "~/components/infrastructure/InfraDeploymentMock.astro"
+import InfraInventoryMock from "~/components/infrastructure/InfraInventoryMock.astro"
+import InfraMigration from "~/components/infrastructure/InfraMigration.astro"
+import InfraClosing from "~/components/infrastructure/InfraClosing.astro"
 import InfraPlugins from "~/components/infrastructure/InfraPlugins.astro"
-import Intro from "~/components/infrastructure/Intro.astro"
-import Govern from "~/components/infrastructure/Govern.astro"
-import Operation from "~/components/infrastructure/Operation.astro"
+import InfraUseCases from "~/components/infrastructure/InfraUseCases.astro"
+import manufacturerPhoto from "~/components/enterprise/assets/manufacturer.jpg"
+import dataportPhoto from "~/components/enterprise/assets/dataport.jpg"
+import amdocsPhoto from "~/contents/customer-stories/amdocs-delivers-integration-environments-as-a-service-with-kestra/hero.jpeg"
+import dataport from "~/assets/companies/dataport.svg?raw"
+import amdocs from "~/components/home/assets/companies/amdocs.svg?raw"
 
-import infraUi from "~/assets/landing/infrastructure/infra-ui.png"
-import { $fetchApiCachedOptional } from "~/utils/fetch.ts"
-
-const title =
-    "Kestra: Orchestrate Your Entire Infrastructure from One Control Plane"
+const title = "Kestra for Infrastructure"
 const description =
-    "Kestra unifies provisioning, configuration, patching, remediation, compliance, and operational workflows into a single orchestration engine"
+    "Turn the Terraform, Ansible and scripts you already run into a self-service catalog, with an approval, an owner and a lease on every resource."
 
-const { results: blueprints = [] } =
-    (await $fetchApiCachedOptional(
-        `/blueprints/versions/latest?tags=infrastructure&page=1&size=20`,
-    )) ?? {}
-
-const tags =
-    (await $fetchApiCachedOptional(`/blueprints/versions/latest/tags`)) ?? []
-
-const VERSUS_CONTENT = {
-    title: 'Infrastructure Teams Deserve <br class="d-none d-lg-block"> a Better Way to Operate',
-    firstCard: {
-        title: "Why Infrastructure Automation Fails Today",
-        icon: "mdi:close-octagon",
-        iconColor: "#FF3434",
-        items: [
-            "Fragmented scripts, pipelines, & legacy tools",
-            "Fragile Day 2 Ops with slow, manual maintenance",
-            "Rising costs with no added value",
+const PANELS = [
+    {
+        id: "catalog" as const,
+        tab: "Catalog",
+        icon: "mdi:view-grid-outline",
+        title: "Start from the catalog",
+        intro: "The catalog is the home page of Kestra for Infrastructure. Each entry is a request form with a flow behind it, so anyone who needs a VM, a database, object storage or a whole environment picks it from the catalog without opening a ticket or reading Terraform code.",
+        points: [
+            "Starter entries for VMs, databases, storage and environments, ready to swap for your own",
+            "Filter entries by tag and group them by namespace",
+            "Platform teams publish new entries from templates or existing flows",
         ],
     },
-    secondCard: {
-        title: "The Kestra Unified Control Plane",
-        icon: "mdi:checkbox-multiple-marked-circle-outline",
-        iconColor: "#631BFF",
-        items: [
-            "One declarative platform for all workflows",
-            "Full visibility from day one",
-            "Runs anywhere cloud, on-prem, edge, or air-gapped",
+    {
+        id: "requests" as const,
+        tab: "Requests",
+        icon: "mdi:file-document-outline",
+        title: "Requests instead of tickets",
+        intro: "Turn the infrastructure as code you already have into a simple form. Developers, ops teams and AI agents pick what they need, and the request runs straight away instead of waiting in a queue.",
+        points: [
+            "Forms built on your own code, with defaults and guardrails your team sets",
+            "Sign-offs only where you want them, such as production or high-cost requests",
+            "People and AI agents over MCP request under the same RBAC",
         ],
     },
-    cta: {
-        title: 'Replace vRA, Rundeck, HP Operation Orchestration, <br class="d-none d-lg-block">Control-M, and fragmented scripts.',
-        text: "Discuss Your Automation Landscape",
-        link: "/demo",
+    {
+        id: "deployments" as const,
+        tab: "Deployments",
+        icon: "mdi:server-outline",
+        title: "Know what exists and who owns it",
+        intro: "Every request becomes a deployment you can see and act on. Teams find what they own in one place, and platform engineers stop chasing spreadsheets to work out what is still in use.",
+        points: [
+            "A status, an owner and a lease on every deployment",
+            "Extend a lease or retire a resource from the same view",
+            "Expired leases trigger a cleanup flow automatically",
+        ],
+    },
+    {
+        id: "cases" as const,
+        tab: "Cases",
+        icon: "mdi:alert-outline",
+        title: "Failures become cases",
+        intro: "When a run fails, Kestra for Infrastructure opens a case with the execution attached: inputs, logs and the step that broke. Someone owns the fix from the start, and the requester can follow progress without chasing anyone.",
+        points: [
+            "An assignee and an SLA on every case",
+            "Linked to your ServiceNow or Jira ticket",
+            "Full context for the fix, with no digging through four consoles",
+        ],
+    },
+    {
+        id: "inventory" as const,
+        tab: "Inventory",
+        icon: "mdi:layers-outline",
+        title: "An inventory of every resource",
+        intro: "Your flows declare each resource they create, so the inventory follows what you run. Import what you already have from Terraform state, CSV, JSON or YAML, and see what depends on a resource before you change or retire it.",
+        points: [
+            "Owner, status and lineage for every VM, database and network",
+            "Dependencies visible before you change or retire anything",
+            "One inventory across clouds and hypervisors",
+        ],
+    },
+]
+
+const APPS = [
+    {
+        icon: "mdi:server-outline",
+        title: "Provision a virtual machine",
+        text: "Request a VM with a lease and an owner.",
+        tags: ["Compute", "Approval"],
+    },
+    {
+        icon: "mdi:database-outline",
+        title: "Request a database",
+        text: "Attach a managed database to a deployment.",
+        tags: ["Data"],
+    },
+    {
+        icon: "mdi:bucket-outline",
+        title: "Request object storage",
+        text: "Add a bucket to one of your deployments.",
+        tags: ["Storage"],
+    },
+    {
+        icon: "mdi:layers-outline",
+        title: "Request an environment",
+        text: "A machine and its database under one lease.",
+        tags: ["Environment", "Approval"],
+    },
+]
+
+const REQUEST = {
+    name: "Provision a virtual machine",
+    lede: "Fill in the form. The machine is created with a lease and an owner once the platform team signs off.",
+    fields: [
+        { label: "Requested by", value: "Requester" },
+        {
+            label: "Environment",
+            value: "staging",
+            options: ["dev", "staging", "production"],
+        },
+        { label: "Lease", value: "14 days" },
+    ],
+    approver: "Platform team",
+    notice: "Requester asks for a Linux VM in staging",
+    result: {
+        icon: "mdi:server-outline",
+        label: "linux-vm-staging",
+        action: "Open",
+        actionIcon: "mdi:open-in-new",
     },
 }
 
-const LIFECYCLE_CARDS = [
+const FAQ = [
     {
-        title: "Ansible Playbooks, Automated the Right Way",
-        description:
-            "Wrap your playbooks in a production-grade layer. Gain structured inputs, secret injection, parallel execution, and granular logging without changing a single line of code.",
-        link: {
-            href: "/docs/how-to-guides/ansible",
-            text: "Automate your Playbooks with Kestra",
-        },
+        question: "What is Kestra for Infrastructure?",
+        answer: "Infrastructure orchestration built on the Kestra platform. Platform and IT teams turn their own infrastructure code into a self-service catalog, then track every deployment with its owner, lease, Day 2 actions and cases.",
     },
     {
-        title: "Automated Infrastructure Ticketing Lifecycle",
-        description:
-            "Enable true self-service infrastructure. Kestra turns catalog requests into provisioned resources, automatically updates the CMDB, and closes the ticket with audit proof, delivering assets in minutes, not days.",
-        link: {
-            href: "/docs/how-to-guides/servicenow-trigger",
-            text: "Manage your full ticket lifecycle",
-        },
+        question: "How is it priced?",
+        answer: "It is included in Kestra Enterprise, with no price per managed node. Contact sales for a quote sized to your instances and support level.",
+    },
+    {
+        question:
+            "Do we have to rewrite our Terraform, Ansible or PowerShell code?",
+        answer: "No. Requests run the modules, playbooks and scripts you already have, from Git.",
+    },
+    {
+        question: "Does it replace ServiceNow?",
+        answer: "ServiceNow can stay the front door. A request raised there runs on Kestra for Infrastructure, and cases link back to the ServiceNow or Jira ticket.",
+    },
+    {
+        question:
+            "Can it replace VMware Aria Automation or Ansible Automation Platform?",
+        answer: "Yes. Teams move their vRO workflows and their AWX or AAP playbooks onto it, and the hypervisor becomes their choice again.",
+    },
+    {
+        question: "Does it run on-premises or air-gapped?",
+        answer: "Yes. Kestra for Infrastructure is self-hosted, in your data center, your cloud accounts or a fully air-gapped network.",
+    },
+    {
+        question: "Is it open source?",
+        answer: "Kestra for Infrastructure is part of Kestra Enterprise. The Terraform, OpenTofu and Ansible plugins it builds on stay open source.",
+    },
+]
+
+const STORIES: Story[] = [
+    {
+        company: "Amdocs",
+        photo: amdocsPhoto,
+        story: "Amdocs",
+        logo: flat(amdocs),
+        height: 22,
+        industry: "Telecom",
+        stat: "Days → hours",
+        label: "environment delivery time",
+        more: [
+            { stat: "Test-ready", label: "environments on delivery" },
+            { stat: "2 months", label: "from evaluation to production" },
+        ],
+        quote: "From a technical point of view, Kestra sits at the first place.",
+        author: "Alex Lernerman, DevOps Engineer, Amdocs",
+    },
+    {
+        company: "Dataport",
+        photo: dataportPhoto,
+        story: "Dataport",
+        logo: flat(dataport),
+        height: 26,
+        industry: "Public sector",
+        stat: "3 weeks",
+        label: "to validate compliance",
+        more: [
+            { stat: "1", label: "control plane for private-cloud automation" },
+            { stat: "0", label: "external dependencies, fully self-hosted" },
+        ],
+        quote: "Kestra gives us a modern orchestration platform we can run ourselves without compromising on governance.",
+        author: "Platform Architect, Dataport",
+    },
+    {
+        company: "Fortune 500",
+        photo: manufacturerPhoto,
+        story: "Fortune 500 Company",
+        industry: "Heavy industry",
+        stat: "−90%",
+        label: "in licensing cost vs Aria Automation",
+        more: [{ stat: "30×", label: "faster time to deliver" }],
+        quote: "We eliminated the high cost and risk of VMware vRA. What used to take 6 months now takes 6 days with Kestra!",
+        author: "Principal Hosting",
     },
 ]
 ---
 
-<Layout {title} {description} headerTheme="lightText">
-    <div class="infra">
-        <Intro />
-        <Versus {...VERSUS_CONTENT} />
-        <CustomerQuotes />
-        <Architecture />
-        <Govern>
+<Layout {title} {description} headerClean headerClear headerOverDark>
+    <Fragment slot="head">
+        <SchemaFAQ items={FAQ} />
+    </Fragment>
+    <PageShell>
+        <InfraHero />
+        <InfraGlue />
+        <EnterpriseShowcase
+            id="infra-showcase"
+            label="Product areas"
+            panels={PANELS}
+            align="start"
+            wash
+        >
             <Fragment slot="title">
-                <span class="gradient">Orchestrate</span> And
-                <br class="d-none d-xl-block" />
-                <span class="indent">
-                    <span class="gradient">Govern</span> The Entire Infrastructure
-                    Lifecycle
-                </span>
+                How Kestra for Infrastructure works
             </Fragment>
-        </Govern>
-        <LifecycleLayout
-            title='<span class="gradient">Governed</span> Configuration & <span class="gradient">ITSM</span> Orchestration'
-            cards={LIFECYCLE_CARDS}
-        />
-        <Arcade />
-        <Explore
-            title="Want to Take a Tour?"
-            description="Explore how Kestra gives you full control over complex infrastructure workflows."
-            cta={{ text: "Take the tour", href: "/docs/quickstart" }}
-            image={{ src: infraUi }}
-        />
-        <Operation />
-        <BlueprintsGrid
-            title='Ready-to-Use <span class="gradient">Automation</span> Patterns'
-            {blueprints}
-            {tags}
-            link={{
-                href: "/blueprints?tags=Infrastructure",
-                text: "View more Infrastructure blueprints",
-            }}
-        />
+            <Fragment slot="lead">
+                Keep the flexibility of your own infrastructure as code, whether
+                Terraform, Ansible, PowerShell or any other tool, on any cloud
+                or hypervisor. Teams request what they need, and Kestra for
+                Infrastructure orchestrates every resource from request to
+                retirement.
+            </Fragment>
+            <InfraAppBuilderMock slot="catalog" />
+            <AppsMock
+                slot="requests"
+                apps={APPS}
+                request={REQUEST}
+                people={[
+                    { name: "Requester", icon: "mdi:account-outline" },
+                    { name: "Approver", icon: "mdi:account-check-outline" },
+                ]}
+            />
+            <InfraDeploymentMock slot="deployments" />
+            <InfraCaseMock slot="cases" />
+            <InfraInventoryMock slot="inventory" />
+            <a href="/demo" class="btn-solid" slot="foot">
+                Talk to our team <Icon name="mdi:chevron-right" />
+            </a>
+        </EnterpriseShowcase>
+        <InfraUseCases />
         <InfraPlugins />
-        <Built />
-        <SeeHow>
+        <Customers stories={STORIES} foot={false} placeholder={false}>
             <Fragment slot="title">
-                Ready to modernize Your Infrastructure Lifecycle?
+                Infrastructure teams that made the move
             </Fragment>
-            Teams replace vRO, Rundeck, Cron, Jenkins, and manual scripts with Kestra
-        </SeeHow>
-    </div>
+            <Fragment slot="lead">
+                What platform teams in industry, the public sector and telecom
+                say after moving their infrastructure automation to Kestra.
+            </Fragment>
+        </Customers>
+        <InfraMigration />
+        <BuyerQuestions items={FAQ} />
+        <InfraClosing />
+    </PageShell>
 </Layout>
 
-<style lang="scss">
-    .infra {
-        overflow: clip;
-    }
-</style>
+<script>
+    import { watchDarkSections } from "~/utils/headerDarkSections"
+
+    document.addEventListener("astro:page-load", watchDarkSections)
+    watchDarkSections()
+</script>

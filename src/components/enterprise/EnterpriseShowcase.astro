@@ -5,7 +5,25 @@ import SecretsMock from "~/components/enterprise/mocks/SecretsMock.astro"
 import OpsMock from "~/components/enterprise/mocks/OpsMock.astro"
 import AppsMock from "~/components/enterprise/mocks/AppsMock.astro"
 
-const PANELS = [
+interface Panel {
+    id: string
+    tab: string
+    icon: string
+    title: string
+    intro: string
+    points?: string[]
+    mock?: string
+}
+
+interface Props {
+    id?: string
+    label?: string
+    panels?: Panel[]
+    align?: "center" | "start"
+    wash?: boolean
+}
+
+const DEFAULT_PANELS: Panel[] = [
     {
         id: "ux",
         tab: "User experience",
@@ -51,30 +69,57 @@ const PANELS = [
         mock: "gov",
     },
 ]
+
+const {
+    id = "ee-showcase",
+    label = "Enterprise features",
+    panels: PANELS = DEFAULT_PANELS,
+    align = "center",
+    wash = false,
+} = Astro.props
+
+const MOCKS: Record<string, string> = {}
+for (const panel of PANELS) {
+    if (Astro.slots.has(panel.id))
+        MOCKS[panel.id] = await Astro.slots.render(panel.id)
+}
 ---
 
-<section class="ee-showcase" aria-labelledby="ee-showcase" data-showcase>
+<section
+    class:list={["ee-showcase", { wash }]}
+    aria-labelledby={id}
+    data-showcase
+>
     <div class="container-xl">
         <div class="grid">
-            <header class="head">
-                <h2 id="ee-showcase">
-                    Give every team the power to automate at scale.
+            <header class:list={["head", align]}>
+                <h2 {id}>
+                    <slot name="title">
+                        Give every team the power to automate at scale.
+                    </slot>
                 </h2>
                 <p>
-                    Customize the user experience, simplify operations, and
-                    strengthen governance to scale.
+                    <slot name="lead">
+                        Customize the user experience, simplify operations, and
+                        strengthen governance to scale.
+                    </slot>
                 </p>
             </header>
 
-            <div class="tabs" role="tablist" aria-label="Enterprise features">
+            <div
+                class="tabs"
+                role="tablist"
+                aria-label={label}
+                style={`--tabs: ${PANELS.length}`}
+            >
                 {PANELS.map((panel, idx) => (
                     <button
                         type="button"
                         role="tab"
-                        id={`ee-tab-${panel.id}`}
+                        id={`${id}-tab-${panel.id}`}
                         class:list={["tab", { active: idx === 0 }]}
                         aria-selected={idx === 0 ? "true" : "false"}
-                        aria-controls={`ee-panel-${panel.id}`}
+                        aria-controls={`${id}-panel-${panel.id}`}
                         tabindex={idx === 0 ? 0 : -1}
                     >
                         <Icon name={panel.icon} />
@@ -86,22 +131,24 @@ const PANELS = [
             <div class="panels">
                 {PANELS.map((panel, idx) => (
                     <div
-                        id={`ee-panel-${panel.id}`}
+                        id={`${id}-panel-${panel.id}`}
                         role="tabpanel"
-                        aria-labelledby={`ee-tab-${panel.id}`}
+                        aria-labelledby={`${id}-tab-${panel.id}`}
                         class:list={["panel", { active: idx === 0 }]}
                     >
                         <div class="copy">
                             <h3>{panel.title}</h3>
                             <p class="intro">{panel.intro}</p>
-                            <ul>
-                                {panel.points.map((point, i) => (
-                                    <li
-                                        style={`--i: ${i + 2}`}
-                                        set:html={point}
-                                    />
-                                ))}
-                            </ul>
+                            {panel.points && (
+                                <ul>
+                                    {panel.points.map((point, i) => (
+                                        <li
+                                            style={`--i: ${i + 2}`}
+                                            set:html={point}
+                                        />
+                                    ))}
+                                </ul>
+                            )}
                         </div>
                         <div class="media mock" data-tone={panel.id}>
                             <span
@@ -109,6 +156,9 @@ const PANELS = [
                                 aria-hidden="true"
                                 style={`--pixels: url("${pixelCluster}")`}
                             />
+                            {MOCKS[panel.id] && (
+                                <Fragment set:html={MOCKS[panel.id]} />
+                            )}
                             {panel.mock === "apps" && <AppsMock />}
                             {panel.mock === "ops" && <OpsMock />}
                             {panel.mock === "gov" && <SecretsMock />}
@@ -116,6 +166,12 @@ const PANELS = [
                     </div>
                 ))}
             </div>
+
+            {Astro.slots.has("foot") && (
+                <div class="foot">
+                    <slot name="foot" />
+                </div>
+            )}
         </div>
     </div>
 </section>
@@ -245,14 +301,43 @@ const PANELS = [
             line-height: 1.55;
             color: var(--ks-content-tertiary);
         }
+
+        &.start {
+            text-align: left;
+
+            h2 {
+                margin: 0;
+            }
+
+            p {
+                max-width: 38rem;
+                margin: 1.5rem 0 0;
+            }
+        }
+    }
+
+    .foot {
+        display: flex;
+        justify-content: center;
+        padding: clamp(2.5rem, 4vw, 3.5rem) var(--inset) 0;
+
+        @include media-breakpoint-down(xl) {
+            padding-bottom: clamp(2.5rem, 4vw, 3.5rem);
+        }
     }
 
     .tabs {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(var(--tabs), minmax(0, 1fr));
         gap: 1px;
         border-block: var(--rule);
         background: var(--ks-border-primary);
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: repeat(var(--tabs), minmax(7rem, 1fr));
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
     }
 
     .tab {
@@ -264,7 +349,7 @@ const PANELS = [
         height: 4.5rem;
         padding: 0 1rem;
         border: 0;
-        background: var(--ks-background-secondary);
+        background: var(--ks-background-body);
         font-size: 1rem;
         font-weight: 500;
         color: var(--ks-content-tertiary);
@@ -293,6 +378,11 @@ const PANELS = [
         }
 
         &:hover {
+            background: color-mix(
+                in srgb,
+                var(--accent) 4%,
+                var(--ks-background-body)
+            );
             color: var(--ks-content-primary);
         }
 
@@ -313,6 +403,7 @@ const PANELS = [
         @include media-breakpoint-down(md) {
             flex-direction: column;
             gap: 0.25rem;
+            padding: 0 0.75rem;
             font-size: 0.875rem;
         }
     }
@@ -370,7 +461,12 @@ const PANELS = [
         }
 
         .intro {
-            margin: 0.75rem 0 1.75rem;
+            margin: 0.75rem 0 0;
+
+            &:not(:last-child) {
+                margin-bottom: 1.75rem;
+            }
+
             font-size: 1.0625rem;
             line-height: 1.55;
             color: var(--ks-content-secondary);
@@ -500,6 +596,42 @@ const PANELS = [
             }
         }
 
+        &.mock[data-tone="catalog"] {
+            --tint: #8405ff;
+        }
+
+        &.mock[data-tone="requests"] {
+            --tint: #2f6df2;
+
+            :global(html.dark) & {
+                --tint: #6f93fb;
+            }
+        }
+
+        &.mock[data-tone="deployments"] {
+            --tint: #12a06c;
+
+            :global(html.dark) & {
+                --tint: #1fc48a;
+            }
+        }
+
+        &.mock[data-tone="cases"] {
+            --tint: #e8590c;
+
+            :global(html.dark) & {
+                --tint: #ff8a4c;
+            }
+        }
+
+        &.mock[data-tone="inventory"] {
+            --tint: #0f9fb3;
+
+            :global(html.dark) & {
+                --tint: #3cc8db;
+            }
+        }
+
         &.mock[data-tone="gov"] {
             --tint: #12a06c;
 
@@ -518,6 +650,63 @@ const PANELS = [
             mask: var(--pixels) no-repeat center / contain;
             opacity: 0.3;
             pointer-events: none;
+        }
+    }
+
+    .wash {
+        .panel {
+            --tint: #8405ff;
+
+            background:
+                radial-gradient(
+                    80% 90% at 100% 0%,
+                    color-mix(in srgb, var(--tint) 20%, transparent),
+                    transparent 70%
+                ),
+                radial-gradient(
+                    60% 70% at 0% 100%,
+                    color-mix(in srgb, var(--tint) 10%, transparent),
+                    transparent 70%
+                ),
+                color-mix(in srgb, var(--tint) 3%, var(--ks-background-body));
+
+            :global(html.dark) & {
+                --tint: #9869f7;
+
+                background:
+                    radial-gradient(
+                        80% 90% at 100% 0%,
+                        color-mix(in srgb, var(--tint) 12%, transparent),
+                        transparent 70%
+                    ),
+                    radial-gradient(
+                        60% 70% at 0% 100%,
+                        color-mix(in srgb, var(--tint) 6%, transparent),
+                        transparent 70%
+                    ),
+                    color-mix(
+                        in srgb,
+                        var(--tint) 3%,
+                        var(--ks-background-body)
+                    );
+            }
+        }
+
+        .media.mock {
+            --tint: inherit;
+
+            border-left: 0;
+            background: none;
+
+            :global(html.dark) & {
+                --tint: inherit;
+
+                background: none;
+            }
+
+            @include media-breakpoint-down(lg) {
+                border: var(--rule);
+            }
         }
     }
 

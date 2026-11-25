@@ -1,0 +1,222 @@
+---
+import { Icon } from "astro-icon/components"
+import PixelEdges from "~/components/about/PixelEdges.astro"
+import vmware from "./assets/migration/vmware.svg?raw"
+import vmwareDark from "./assets/migration/vmware-dark.svg?raw"
+import ansible from "./assets/migration/ansible.svg?raw"
+import ansibleDark from "./assets/migration/ansible-dark.svg?raw"
+
+const PATHS = [
+    {
+        figure: { light: vmware, dark: vmwareDark },
+        title: "Leaving VMware? Start with the orchestrator.",
+        text: "Your vRO workflows are what tie you to vSphere. Once they run on Kestra for Infrastructure, the hypervisor is your call: keep vSphere, or move to Nutanix or Proxmox when you’re ready. ServiceNow, Ansible and Terraform stay where they are.",
+        links: [
+            {
+                label: "Read the vRA migration guide",
+                href: "/resources/migration/vra",
+            },
+            {
+                label: "Kestra as a vRealize Automation alternative",
+                href: "/vs/vmware-cloud-foundation",
+            },
+        ],
+    },
+    {
+        figure: { light: ansible, dark: ansibleDark },
+        title: "Leaving AWX or the AAP controller? Keep your playbooks.",
+        text: "Your playbooks, roles and collections run as they are, from Git. Replace the controller and get what it couldn’t do: workflows that branch on what a job returned, triggers from any tool, approvals, and Terraform in the same flow. And Kestra Enterprise isn’t priced per managed node.",
+        links: [
+            {
+                label: "Kestra vs Ansible Automation Platform",
+                href: "/vs/ansible-automation-platform",
+            },
+        ],
+    },
+]
+---
+
+<section class="infra-migration" id="migrate" aria-labelledby="infra-migration">
+    <PixelEdges left="wide" right="cluster" />
+    <div class="container-xl">
+        <div class="rails">
+            <header>
+                <h2 id="infra-migration">
+                    Moving off VMware Aria, AWX or Ansible Tower?
+                </h2>
+                <p>
+                    The reasons teams leave are different, so the path is too.
+                </p>
+            </header>
+            <ul>
+                {PATHS.map((path) => (
+                    <li>
+                        <h3>{path.title}</h3>
+                        <p class="text">{path.text}</p>
+                        <div class="figure">
+                            <Fragment set:html={path.figure.light} />
+                            <Fragment set:html={path.figure.dark} />
+                        </div>
+                        <div class="links">
+                            {path.links.map((link) => (
+                                <a href={link.href}>
+                                    <span>{link.label}</span>
+                                    <Icon name="mdi:arrow-right" />
+                                </a>
+                            ))}
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "../about/style/section" as *;
+
+    .infra-migration {
+        position: relative;
+        border-bottom: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-body);
+    }
+
+    .rails {
+        --rule: 1px solid var(--ks-border-primary);
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+
+        position: relative;
+        border-inline: var(--rule);
+    }
+
+    header {
+        padding: 7.5rem var(--inset) 4rem;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem 2.5rem;
+        }
+
+        h2 {
+            @include title;
+            max-width: 16em;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            @include lead;
+            max-width: 40rem;
+        }
+    }
+
+    ul {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin: 0;
+        padding: 0;
+        border-top: var(--rule);
+        list-style: none;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    li {
+        display: flex;
+        flex-direction: column;
+        padding: 3rem var(--inset) 3.5rem;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background: var(--ks-background-secondary);
+        }
+
+        & + li {
+            border-left: var(--rule);
+
+            @include media-breakpoint-down(lg) {
+                border-top: var(--rule);
+                border-left: 0;
+            }
+        }
+    }
+
+    h3 {
+        max-width: 18em;
+        margin: 0 0 1rem;
+        font-size: clamp(1.375rem, 2vw, 1.625rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+        color: var(--ks-content-primary);
+    }
+
+    .text {
+        max-width: 34rem;
+        margin: 0 0 2rem;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--ks-content-secondary);
+    }
+
+    .figure {
+        width: 100%;
+        max-width: 34rem;
+        margin: 0 0 2rem;
+
+        > :global(svg) {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        > :global(svg:last-child),
+        :global(html.dark) & > :global(svg:first-child) {
+            display: none;
+        }
+
+        :global(html.dark) & > :global(svg:last-child) {
+            display: block;
+        }
+    }
+
+    .links {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+        margin-top: auto;
+
+        a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+
+            &:hover,
+            &:focus-visible {
+                color: var(--ks-content-link);
+            }
+
+            span {
+                background: linear-gradient(currentColor, currentColor) left
+                    bottom / 100% 1px no-repeat;
+            }
+
+            [data-icon] {
+                width: 1rem;
+                height: 1rem;
+                transition: translate 0.2s ease;
+            }
+
+            &:hover [data-icon] {
+                translate: 0.1875rem 0;
+            }
+        }
+    }
+</style>
