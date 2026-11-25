@@ -51,13 +51,23 @@ const STAGES = [
     },
 ]
 
+const CLAIM =
+    'Self-Service Orchestration<span class="brand-dot" aria-hidden="true"></span><span class="visually-hidden">.</span>'
+
 const ACTIVE = 2
 const PIXELS = Array.from({ length: 65 }, (_, index) => 10 + index * 1.25)
 ---
 
 <section class="infra-hero" aria-labelledby="infra-hero-title">
-    <PixelEdges left="tall" right="wide" />
     <div class="frame surface-dark" data-header-dark>
+        <div class="mesh" aria-hidden="true">
+            <span class="light violet"></span>
+            <span class="light lavender"></span>
+            <span class="light graphite"></span>
+        </div>
+        <div class="edges">
+            <PixelEdges left="tall" right="wide" />
+        </div>
         <div class="upper">
             <div class="container-xl">
                 <div class="stage">
@@ -68,9 +78,7 @@ const PIXELS = Array.from({ length: 65 }, (_, index) => 10 + index * 1.25)
                                     Kestra for Infrastructure
                                     <span class="visually-hidden">:</span>
                                 </span>
-                                <span class="claim">
-                                    Self-Service Orchestration
-                                </span>
+                                <span class="claim" set:html={CLAIM} />
                             </h1>
                             <p class="lead">
                                 Turn the Terraform, Ansible and scripts you
@@ -88,20 +96,22 @@ const PIXELS = Array.from({ length: 65 }, (_, index) => 10 + index * 1.25)
                                 </a>
                             </div>
                         </div>
-                        <VideoDialog
-                            id="infra-hero-video"
-                            videoId="bFR0ZxFCsSQ"
-                            title="Kestra for Infrastructure"
-                            class="video"
-                        >
-                            <span class="poster">
-                                <span class="kicker">Watch the video</span>
-                                <b>Meet Kestra for Infrastructure</b>
-                            </span>
-                            <span class="play">
-                                <Icon name="mdi:play" />
-                            </span>
-                        </VideoDialog>
+                        <div class="screen">
+                            <VideoDialog
+                                id="infra-hero-video"
+                                videoId="bFR0ZxFCsSQ"
+                                title="Kestra for Infrastructure"
+                                class="video"
+                            >
+                                <span class="poster">
+                                    <span class="kicker">Watch the video</span>
+                                    <b>Meet Kestra for Infrastructure</b>
+                                </span>
+                                <span class="play">
+                                    <Icon name="mdi:play" />
+                                </span>
+                            </VideoDialog>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -162,43 +172,131 @@ const PIXELS = Array.from({ length: 65 }, (_, index) => 10 + index * 1.25)
 
     .frame {
         position: relative;
+        isolation: isolate;
         overflow: hidden;
-        background:
-            radial-gradient(
-                90% 80% at 85% 10%,
-                rgba(150, 130, 255, 0.06),
-                transparent 60%
-            ),
-            #111114;
+        background: #09090b;
         color: #ffffff;
     }
 
-    .upper {
-        position: relative;
-        overflow: hidden;
+    .edges {
+        position: absolute;
+        inset: 0 0 auto;
+        height: calc(min(80vh, 800px) + 67px);
+        pointer-events: none;
+    }
+
+    .frame :global(.pixel-edges .edge) {
+        background: rgba(190, 176, 255, 0.16);
+    }
+
+    .mesh {
+        position: absolute;
+        z-index: -1;
+        inset: 0;
+        pointer-events: none;
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.55'/></svg>");
+            opacity: 0.22;
+            mix-blend-mode: overlay;
+        }
 
         &::before {
             content: "";
             position: absolute;
-            top: -45%;
-            right: 6%;
-            width: 30rem;
-            height: 190%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(132, 104, 255, 0.5) 36%,
-                rgba(224, 216, 255, 0.42) 50%,
-                rgba(132, 104, 255, 0.45) 64%,
+            z-index: 1;
+            inset: 0;
+            background: radial-gradient(
+                    circle,
+                    rgba(255, 255, 255, 0.5) 0.6px,
+                    transparent 1px
+                )
+                0 0 / 4px 4px;
+            opacity: 0.12;
+            mask: radial-gradient(
+                ellipse 70% 80% at 50% 50%,
+                rgba(0, 0, 0, 0.25),
+                #000
+            );
+            mix-blend-mode: overlay;
+        }
+    }
+
+    .light {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(40px);
+        animation: infra-hero-drift 28s ease-in-out infinite alternate;
+
+        &.violet {
+            top: -30%;
+            right: -14%;
+            width: 78%;
+            height: 110%;
+            background: radial-gradient(
+                closest-side,
+                rgba(84, 66, 255, 0.44),
+                rgba(72, 84, 255, 0.12) 55%,
                 transparent
             );
-            filter: blur(2.5rem);
-            transform: rotate(38deg);
-            pointer-events: none;
 
             @include media-breakpoint-down(lg) {
-                display: none;
+                top: 18%;
+                right: -20%;
+                width: 140%;
+                height: 60%;
             }
+        }
+
+        &.lavender {
+            top: -25%;
+            left: -5%;
+            width: 55%;
+            height: 70%;
+            background: radial-gradient(
+                closest-side,
+                rgba(205, 182, 251, 0.09),
+                rgba(205, 182, 251, 0.02) 55%,
+                transparent
+            );
+            animation-duration: 34s;
+            animation-delay: -12s;
+        }
+
+        &.graphite {
+            left: -20%;
+            bottom: -45%;
+            width: 75%;
+            height: 100%;
+            background: radial-gradient(
+                closest-side,
+                rgba(120, 118, 135, 0.16),
+                rgba(120, 118, 135, 0.04) 55%,
+                transparent
+            );
+            animation-duration: 40s;
+            animation-delay: -20s;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            animation: none;
+        }
+    }
+
+    @keyframes infra-hero-drift {
+        0% {
+            transform: translate(0, 0) scale(1);
+        }
+
+        50% {
+            transform: translate(5%, 4%) scale(1.06);
+        }
+
+        100% {
+            transform: translate(-3%, 6%) scale(0.96);
         }
     }
 
@@ -218,6 +316,10 @@ const PIXELS = Array.from({ length: 65 }, (_, index) => 10 + index * 1.25)
         padding: 8rem clamp(1.5rem, 4vw, 3.5rem) 5rem;
         text-align: center;
 
+        @include media-breakpoint-up(lg) {
+            padding-top: calc(min(40vh, 400px) - 7.75rem);
+        }
+
         @include media-breakpoint-down(md) {
             padding: 8rem 0 3.5rem;
         }
@@ -225,6 +327,7 @@ const PIXELS = Array.from({ length: 65 }, (_, index) => 10 + index * 1.25)
 
     .band {
         border-top: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(0, 0, 0, 0.4);
     }
 
     .timeline {
@@ -267,24 +370,71 @@ const PIXELS = Array.from({ length: 65 }, (_, index) => 10 + index * 1.25)
 
         @include media-breakpoint-up(lg) {
             align-items: flex-start;
+            align-self: start;
         }
     }
 
-    .top :global(.video) {
+    .screen {
         @include media-breakpoint-down(lg) {
             order: 1;
             margin-top: 2.5rem;
         }
 
         position: relative;
+        isolation: isolate;
+        width: 100%;
+        max-width: 44rem;
+        border-radius: 0.875rem;
+
+        &::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            inset: -1.5px;
+            border-radius: calc(0.875rem + 1.5px);
+            background: conic-gradient(
+                from var(--infra-edge-turn),
+                #6d8bff,
+                #6230ff 20%,
+                #ffffff 30%,
+                #b9a6ff 40%,
+                #6230ff 60%,
+                #2a2a3a 75%,
+                #6d8bff
+            );
+            box-shadow:
+                0 0 14px rgba(200, 190, 255, 0.18),
+                0 0 40px rgba(150, 125, 255, 0.24),
+                0 0 90px rgba(95, 77, 255, 0.2);
+            animation: infra-edge-turn 6s linear infinite;
+
+            @media (prefers-reduced-motion: reduce) {
+                animation: none;
+            }
+        }
+    }
+
+    @property --infra-edge-turn {
+        syntax: "<angle>";
+        inherits: false;
+        initial-value: 0deg;
+    }
+
+    @keyframes infra-edge-turn {
+        to {
+            --infra-edge-turn: 360deg;
+        }
+    }
+
+    .screen :global(.video) {
+        position: relative;
         display: grid;
         place-items: center;
         width: 100%;
-        max-width: 44rem;
         aspect-ratio: 16 / 9;
         padding: 0;
         overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        border: 0;
         border-radius: 0.875rem;
         background:
             radial-gradient(
@@ -427,13 +577,21 @@ const PIXELS = Array.from({ length: 65 }, (_, index) => 10 + index * 1.25)
         }
     }
 
+    .claim :global(.brand-dot) {
+        display: inline-block;
+        width: 0.15em;
+        height: 0.15em;
+        margin-left: 0.05em;
+        background: #fe0071;
+    }
+
     h1 {
         max-width: 13em;
         margin: 0;
         font-size: clamp(2.5rem, 5vw, 4rem);
 
         @include media-breakpoint-up(lg) {
-            font-size: clamp(2.5rem, 4.2vw, 3.75rem);
+            font-size: clamp(2.5rem, 4.6vw, 4rem);
         }
 
         @include media-breakpoint-down(md) {
@@ -441,8 +599,8 @@ const PIXELS = Array.from({ length: 65 }, (_, index) => 10 + index * 1.25)
         }
 
         font-weight: 600;
-        letter-spacing: -0.02em;
-        line-height: 1.05;
+        letter-spacing: -0.03em;
+        line-height: 1.04;
         text-wrap: balance;
         color: #ffffff;
     }
