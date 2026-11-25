@@ -1,0 +1,123 @@
+@use "/src/assets/styles/variable" as *;
+
+@mixin ruled-grid(
+    $columns,
+    $line: var(--ks-border-primary),
+    $bar: var(--ks-content-primary),
+    $hover: var(--ks-background-secondary)
+) {
+    --rule: 1px solid #{$line};
+
+    display: grid;
+    grid-template-columns: repeat($columns, minmax(0, 1fr));
+    margin: 0 calc(-1 * var(--inset));
+    padding: 0;
+    border-block: var(--rule);
+    list-style: none;
+
+    @include media-breakpoint-down(xl) {
+        margin-inline: 0;
+        border: var(--rule);
+        border-radius: 0.75rem;
+        overflow: hidden;
+    }
+
+    @include media-breakpoint-down(md) {
+        margin-inline: calc(-1 * var(--inset));
+        border-inline: 0;
+        border-radius: 0;
+    }
+
+    @include media-breakpoint-down(lg) {
+        grid-template-columns: repeat(if($columns == 4, 2, 1), minmax(0, 1fr));
+    }
+
+    @include media-breakpoint-down(sm) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    > * {
+        position: relative;
+        transition: background-color 0.3s ease;
+
+        & + * {
+            border-left: var(--rule);
+        }
+
+        @if $columns == 4 {
+            @include media-breakpoint-down(lg) {
+                &:nth-child(3) {
+                    border-left: 0;
+                }
+
+                &:nth-child(n + 3) {
+                    border-top: var(--rule);
+                }
+            }
+
+            @include media-breakpoint-down(sm) {
+                & + * {
+                    border-left: 0;
+                    border-top: var(--rule);
+                }
+            }
+        } @else {
+            @include media-breakpoint-down(lg) {
+                & + * {
+                    border-left: 0;
+                    border-top: var(--rule);
+                }
+            }
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: $bar;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        &:hover {
+            background: $hover;
+
+            &::before {
+                transform: none;
+            }
+        }
+    }
+}
+
+@mixin band-lines {
+    --band-line: rgba(255, 255, 255, 0.11);
+
+    :global(html.dark) & {
+        --band-line: var(--ks-border-primary);
+    }
+}
+
+@mixin tinted {
+    --blue: #3b5bdb;
+
+    background:
+        radial-gradient(
+            60% 70% at 0% 0%,
+            color-mix(in srgb, var(--blue) 8%, transparent),
+            transparent 70%
+        ),
+        radial-gradient(
+            70% 80% at 100% 100%,
+            color-mix(in srgb, var(--blue) 14%, transparent),
+            transparent 70%
+        ),
+        color-mix(in srgb, var(--blue) 3%, var(--ks-background-body));
+
+    :global(html.dark) & {
+        background: var(--ks-background-body);
+    }
+}

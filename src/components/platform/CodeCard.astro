@@ -1,0 +1,474 @@
+---
+import { Icon } from "astro-icon/components"
+import { kestraDark, kestraLight } from "@kestra-io/plumage"
+import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
+
+const SYNTAX = {
+    lightText: kestraLight.syntax.value,
+    lightKey: kestraLight.syntax.key,
+    lightPunct: kestraLight.syntax.punctuation,
+    lightComment: kestraLight.syntax.comment,
+    lightConst: kestraLight.syntax.constant,
+    lightLine: kestraLight.editor.lineNumber,
+    darkText: kestraDark.syntax.value,
+    darkKey: kestraDark.syntax.key,
+    darkPunct: kestraDark.syntax.punctuation,
+    darkComment: kestraDark.syntax.comment,
+    darkConst: kestraDark.syntax.constant,
+    darkLine: kestraDark.editor.lineNumber,
+    darkPanel: kestraDark.editor.background,
+}
+
+interface Props {
+    file: string
+    code: string
+    marks?: Record<string, [number, number]>
+    dots?: boolean
+    dark?: boolean
+    editor?: boolean
+    guides?: boolean
+    class?: string
+}
+
+const {
+    file,
+    code,
+    marks = {},
+    dots = false,
+    dark = false,
+    editor = false,
+    guides = false,
+} = Astro.props
+
+const escape = (text: string) =>
+    text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+
+const KEYWORDS = new Set([
+    "if",
+    "elseif",
+    "else",
+    "endif",
+    "for",
+    "endfor",
+    "in",
+    "set",
+    "and",
+    "or",
+    "not",
+    "is",
+])
+
+const TOKEN =
+    /('[^']*'|"[^"]*")|(\d+(?:\.\d+)?)|([A-Za-z_][\w.]*)(\s*\()?|(\|)|([\s\S])/g
+
+const span = (cls: string, text: string) =>
+    `<span class="${cls}">${escape(text)}</span>`
+
+function pebble(source: string) {
+    let html = ""
+    let afterPipe = false
+    for (const [, str, num, name, call, pipe, other] of source.matchAll(
+        TOKEN,
+    )) {
+        if (str) html += span("pb-str", str)
+        else if (num) html += span("pb-num", num)
+        else if (name) {
+            const cls = KEYWORDS.has(name)
+                ? "pb-kw"
+                : call || afterPipe
+                  ? "pb-fn"
+                  : "pb-var"
+            html += span(cls, name) + (call ? escape(call) : "")
+        } else if (pipe) html += escape(pipe)
+        else html += escape(other)
+        if (name || pipe) afterPipe = !!pipe
+        else if (other && other.trim()) afterPipe = false
+    }
+    return html
+}
+
+const highlight = (text: string) =>
+    text
+        .split(/(\{\{[\s\S]*?\}\}|\{%[\s\S]*?%\})/)
+        .map((part, idx) =>
+            idx % 2
+                ? span("pb-delim", part.slice(0, 2)) +
+                  pebble(part.slice(2, -2)) +
+                  span("pb-delim", part.slice(-2))
+                : escape(part),
+        )
+        .join("")
+
+const markAt = (row: number) =>
+    Object.entries(marks).find(
+        ([, [from, to]]) => row + 1 >= from && row + 1 <= to,
+    )?.[0]
+
+const rows = code.split("\n")
+const depth = (text: string) => text.match(/^\s*/)?.[0].length ?? 0
+const opens = rows.map((text, row) => {
+    const next = rows.slice(row + 1).find((line) => line.trim() !== "")
+    return text.trim() !== "" && next !== undefined && depth(next) > depth(text)
+})
+const lead = (width: number) =>
+    guides
+        ? " ".repeat(Math.min(width, 2)) +
+          `<span class="guide">  </span>`.repeat(
+              Math.max(0, Math.floor(width / 2) - 1),
+          ) +
+          " ".repeat(width >= 2 ? width % 2 : 0)
+        : " ".repeat(width)
+
+let block = -1
+const HTML = rows
+    .map((text, row) => {
+        const indent = depth(text)
+        if (block >= 0 && text.trim() !== "" && indent <= block) block = -1
+        const inBlock = block >= 0
+        const match = inBlock ? null : text.match(/^(\s*)(- )?([\w.]+)(:)(.*)$/)
+        let value = match ? match[5] : text.slice(indent)
+        let comment = ""
+        const hash = value.indexOf(" #")
+        if (!inBlock && hash >= 0) {
+            comment = value.slice(hash + 1)
+            value = value.slice(0, hash)
+        }
+        if (match && value.trim() === "|") block = indent
+        const scalar = value.trim()
+        const kind =
+            inBlock || /^["']/.test(scalar)
+                ? " string"
+                : /^-?\d+(\.\d+)?$/.test(scalar)
+                  ? " number"
+                  : /^(true|false|null)$/.test(scalar)
+                    ? " literal"
+                    : ""
+        const mark = markAt(row)
+        return [
+            `<span class="line"${mark ? ` data-k="${mark}"` : ""}>`,
+            `<span class="no">${row + 1}</span>`,
+            guides
+                ? `<span class="fold${opens[row] ? " open" : ""}"></span>`
+                : "",
+            lead(match ? match[1].length : indent),
+            match?.[2] ? `<span class="dash">- </span>` : "",
+            match
+                ? `<span class="key">${match[3]}</span><span class="punct">:</span>`
+                : "",
+            `<span class="value${kind}">${highlight(value)}</span>`,
+            comment ? `<span class="comment">${escape(comment)}</span>` : "",
+            "\n</span>",
+        ].join("")
+    })
+    .join("")
+---
+
+<figure
+    class:list={["code-card", Astro.props.class, { dark, guides }]}
+    aria-label={file}
+>
+    <figcaption>
+        {dots && (
+            <span class="dots" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+            </span>
+        )}
+        {editor ? (
+            <span class="tab editor">
+                <Icon name="mdi:code-tags" />
+                Flow Code
+                <Icon name="mdi:close" class="x" />
+            </span>
+        ) : (
+            <span class="tab">
+                <span class="logo">
+                    <img src={kestraMark.src} alt="" width="16" height="16" />
+                </span>
+                {file}
+            </span>
+        )}
+        <slot name="status" />
+    </figcaption>
+    <pre tabindex="0"><code set:html={HTML} /></pre>
+</figure>
+
+<style lang="scss" define:vars={SYNTAX}>
+    @use "/src/components/enterprise/mocks/tokens" as *;
+
+    @mixin dark-syntax {
+        --panel: var(--darkPanel);
+        --code-text: var(--darkText);
+        --code-key: var(--darkKey);
+        --code-punct: var(--darkPunct);
+        --code-comment: var(--darkComment);
+        --code-const: var(--darkConst);
+        --code-line: var(--darkLine);
+        --pb-delim: #80fac5;
+        --pb-var: #bffddd;
+        --pb-fn: #718bfe;
+        --pb-str: #ffc5b7;
+        --pb-num: #fce070;
+        --pb-kw: #cdb6fb;
+        --hl: rgba(152, 105, 247, 0.16);
+    }
+
+    .code-card {
+        @include tokens;
+
+        --chrome: #f7f7fa;
+        --code-text: var(--lightText);
+        --code-key: var(--lightKey);
+        --code-punct: var(--lightPunct);
+        --code-comment: var(--lightComment);
+        --code-const: var(--lightConst);
+        --code-line: var(--lightLine);
+        --pb-delim: #215d42;
+        --pb-var: #194530;
+        --pb-fn: #0542b6;
+        --pb-str: #ab0009;
+        --pb-num: #0542b6;
+        --pb-kw: #631bf3;
+        --hl: rgba(132, 5, 255, 0.08);
+
+        margin: 0;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 0.75rem;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        text-align: left;
+
+        :global(html.dark) & {
+            @include dark-syntax;
+        }
+
+        &.dark {
+            @include dark-syntax;
+
+            --chrome: #1e1e26;
+            --line: #2e2e3c;
+            --text: #ffffff;
+            --soft: #d6d6e0;
+            --muted: #adadbf;
+            --shadow: 0 30px 80px -24px rgba(0, 0, 0, 0.6);
+        }
+    }
+
+    figcaption {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.75rem;
+        height: 3rem;
+        padding: 0 1rem;
+        border-bottom: 1px solid var(--line);
+        background: var(--chrome);
+        font-size: 0.875rem;
+        color: var(--muted);
+    }
+
+    .dots {
+        display: inline-flex;
+        align-self: center;
+        gap: 0.375rem;
+
+        i {
+            width: 0.625rem;
+            height: 0.625rem;
+            border-radius: 50%;
+            background: var(--line);
+        }
+    }
+
+    .tab {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        height: 2.375rem;
+        margin-bottom: -1px;
+        padding: 0 0.875rem 0 0.5rem;
+        border: 1px solid var(--line);
+        border-bottom: 0;
+        border-radius: 8px 8px 0 0;
+        background: var(--panel);
+        font-weight: 500;
+        white-space: nowrap;
+        color: var(--text);
+    }
+
+    .editor {
+        gap: 0.5rem;
+        padding-inline: 0.75rem;
+
+        > :global(svg) {
+            width: 16px;
+            height: 16px;
+        }
+
+        > :global(.x) {
+            width: 14px;
+            height: 14px;
+            margin-left: 0.25rem;
+            color: var(--muted);
+        }
+    }
+
+    .logo {
+        display: grid;
+        flex: none;
+        place-items: center;
+        width: 1.375rem;
+        height: 1.375rem;
+        border-radius: 6px;
+        background: #0d0d10;
+
+        img {
+            width: 1rem;
+            height: 1rem;
+        }
+    }
+
+    pre {
+        margin: 0;
+        padding: 1rem 0;
+        overflow-x: auto;
+        font-family: $font-family-monospace;
+        font-size: 0.8125rem;
+        line-height: 1.7;
+        color: var(--code-text);
+        background: transparent;
+
+        &:focus-visible {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: -2px;
+        }
+    }
+
+    code {
+        display: block;
+        min-width: max-content;
+        font: inherit;
+        color: inherit;
+        background: none;
+        padding: 0;
+    }
+
+    pre :global(.line) {
+        display: block;
+        padding: 0 1.25rem 0 0;
+        transition:
+            background-color 0.25s ease,
+            box-shadow 0.25s ease,
+            opacity 0.25s ease;
+    }
+
+    pre:has(:global(.line.on)) :global(.line:not(.on)) {
+        --code-text: var(--code-comment);
+        --code-key: var(--code-comment);
+        --code-punct: var(--code-comment);
+        --code-const: var(--code-comment);
+        --pb-delim: var(--code-comment);
+        --pb-var: var(--code-comment);
+        --pb-fn: var(--code-comment);
+        --pb-str: var(--code-comment);
+        --pb-num: var(--code-comment);
+        --pb-kw: var(--code-comment);
+    }
+
+    pre :global(.line.on) {
+        background: linear-gradient(90deg, var(--hl), transparent 85%);
+        box-shadow: inset 2px 0 0 var(--code-key);
+    }
+
+    pre :global(.line.on .no) {
+        color: var(--code-key);
+        opacity: 1;
+    }
+
+    pre :global(.no) {
+        display: inline-block;
+        width: 3rem;
+        padding-right: 1.25rem;
+        text-align: right;
+        color: var(--code-line);
+        user-select: none;
+    }
+
+    .guides pre :global(.no) {
+        padding-right: 0.375rem;
+    }
+
+    pre :global(.fold) {
+        display: inline-block;
+        width: 1.25rem;
+        user-select: none;
+
+        &:global(.open)::before {
+            content: "";
+            display: inline-block;
+            width: 0.3125rem;
+            height: 0.3125rem;
+            margin: 0 0 0.1875rem 0.25rem;
+            border-right: 1.5px solid var(--code-line);
+            border-bottom: 1.5px solid var(--code-line);
+            transform: rotate(45deg);
+            opacity: 0.8;
+        }
+    }
+
+    pre :global(.guide) {
+        box-shadow: inset 1px 0 0
+            color-mix(in srgb, var(--code-line) 35%, transparent);
+    }
+
+    pre :global(.key) {
+        color: var(--code-key);
+    }
+
+    pre :global(.dash),
+    pre :global(.punct) {
+        color: var(--code-punct);
+    }
+
+    pre :global(.string) {
+        color: var(--pb-str);
+    }
+
+    pre :global(.number) {
+        color: var(--pb-num);
+    }
+
+    pre :global(.literal) {
+        color: var(--code-const);
+    }
+
+    pre :global(.pb-delim) {
+        color: var(--pb-delim);
+    }
+
+    pre :global(.pb-var) {
+        color: var(--pb-var);
+    }
+
+    pre :global(.pb-fn) {
+        color: var(--pb-fn);
+    }
+
+    pre :global(.pb-str) {
+        color: var(--pb-str);
+    }
+
+    pre :global(.pb-num) {
+        color: var(--pb-num);
+    }
+
+    pre :global(.pb-kw) {
+        color: var(--pb-kw);
+    }
+
+    pre :global(.comment) {
+        color: var(--code-comment);
+        font-style: italic;
+    }
+</style>
