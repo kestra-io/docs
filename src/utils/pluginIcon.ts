@@ -35,23 +35,3 @@ export async function fetchPluginIcon(group: string): Promise<string> {
         : svg
     return optimizeSvgIcon(icon, group)
 }
-
-const CACHE_TTL = 60 * 60 * 24 // 24 hours
-
-export async function fetchPluginIconCached(
-    cls: string,
-    runtime: { env: ENV },
-): Promise<string> {
-    const kv = runtime.env.ICON_CACHE
-    const cacheKey = `icon:${cls}`
-
-    const cached = await kv?.get(cacheKey)
-    if (cached) return cached
-
-    const result = await fetchPluginIcon(cls)
-
-    // Store with 24h TTL (in seconds)
-    await kv?.put(cacheKey, result, { expirationTtl: CACHE_TTL })
-
-    return result
-}
