@@ -52,7 +52,7 @@ The reference docs, examples and property tables on the [plugin pages](/plugins)
 
 Each plugin ships with unit tests built on the Kestra test framework, and many run against real services in containers. The checks run on every pull request. Each plugin's main branch is built on a schedule every weekday, so a break caused by an upstream change shows up even when nobody touched the code.
 
-Plugins are published as versioned artifacts, and the release and indexing process is itself a set of Kestra flows. We wrote about how one team ships 1300+ plugins this way in [How Kestra Ships 1300+ Plugins](/blogs/2026-04-27-how-kestra-ships-plugins). A weekly compatibility run builds the plugin library against the latest development branch of Kestra core, so we catch a breaking change in the engine before it reaches you.
+Plugins are published as versioned artifacts, and the release and indexing process is itself a set of Kestra flows. We wrote about how we ship 1300+ plugins this way in [How Kestra Ships 1300+ Plugins](/blogs/2026-04-27-how-kestra-ships-plugins). A weekly compatibility run builds the plugin library against the latest development branch of Kestra core, so we catch a breaking change in the engine before it reaches you.
 
 The AWS plugin runs on the official AWS SDK for Java, and other plugins use the vendor's official Java SDK when one exists, so you get the vendor's own authentication, retry and API behavior. Dependabot bumps those dependencies, both for security fixes and to keep each plugin current with the service it talks to.
 
