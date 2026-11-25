@@ -44,7 +44,7 @@ Add `workerSelector` to any task to route it to a matching Worker Queue. The `wo
 
 | Property | Description | Default |
 |---|---|---|
-| `tags` | List of RFC 1123 labels (max 20, each up to 63 characters) identifying the required Worker Queue. Tags can be [Pebble expressions](#choose-tags-at-runtime) | — |
+| `tags` | List of RFC 1123 labels (max 20, each up to 64 characters) identifying the required Worker Queue. Tags can be [Pebble expressions](#choose-tags-at-runtime) | — |
 | `match` | `ALL`: queue tags must include all selector tags. `ANY`: queue tags must include at least one selector tag | `ALL` |
 | `fallback` | Behavior when no worker is connected to any matching queue: `FAIL`, `WAIT`, `CANCEL`, or `IGNORE` | `FAIL` |
 
