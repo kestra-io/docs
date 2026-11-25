@@ -5,6 +5,7 @@ import SectionHead from "~/components/home/SectionHead.astro"
 import TabGroup from "~/components/common/TabGroup.astro"
 import TabPanel from "~/components/common/TabPanel.astro"
 import PixelEdges from "~/components/about/PixelEdges.astro"
+import { kestraDark } from "@kestra-io/plumage"
 import CodeCard from "./CodeCard.astro"
 import ChatMock from "./ChatMock.astro"
 import TopologyNode from "~/components/home/TopologyNode.astro"
@@ -541,7 +542,7 @@ const SPEND_MARKS: Record<string, [number, number]> = {
     wireAi()
 </script>
 
-<style lang="scss">
+<style lang="scss" define:vars={{ codePanel: kestraDark.editor.background }}>
     @use "./style/platform" as *;
 
     .ai {
@@ -715,7 +716,7 @@ const SPEND_MARKS: Record<string, [number, number]> = {
         overflow: hidden;
         border: 1px solid #2e2e3c;
         border-radius: 0.75rem;
-        background: #18181e;
+        background: var(--codePanel);
         box-shadow: 0 30px 80px -24px rgba(0, 0, 0, 0.6);
 
         figcaption {
@@ -738,7 +739,7 @@ const SPEND_MARKS: Record<string, [number, number]> = {
         border: 1px solid #2e2e3c;
         border-bottom: 0;
         border-radius: 8px 8px 0 0;
-        background: #18181e;
+        background: var(--codePanel);
         font-size: 0.875rem;
         font-weight: 500;
         color: #ffffff;
