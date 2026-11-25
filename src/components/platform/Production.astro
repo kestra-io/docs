@@ -3,52 +3,80 @@ import { Icon } from "astro-icon/components"
 import Rails from "./Rails.astro"
 import SectionHead from "~/components/home/SectionHead.astro"
 import CodeCard from "./CodeCard.astro"
-import RunStatus from "./RunStatus.astro"
+
+const HEAD = `id: nightly_ledger
+namespace: finance
+`
+
+const TASK = `tasks:
+  - id: extract
+    type: io.kestra.plugin.jdbc.postgresql.Query
+`
 
 const FEATURES = [
     {
-        mark: "conc",
-        side: "left",
         key: "concurrency",
         title: "Concurrency limits",
         text: "Cap concurrent executions per flow, and choose whether extra runs queue, cancel, or fail.",
+        code: `${HEAD}concurrency:
+  limit: 1
+  behavior: QUEUE`,
+        lines: [3, 5],
     },
     {
-        mark: "sla",
-        side: "right",
         key: "sla",
         title: "SLAs",
         text: "Declare a maximum duration or an assertion on each execution. A breach fails the run, cancels it, or adds a label your alerts can act on.",
+        code: `${HEAD}sla:
+  - id: max_runtime
+    type: MAX_DURATION
+    duration: PT2H
+    behavior: FAIL`,
+        lines: [3, 7],
     },
     {
-        mark: "trigger",
-        side: "left",
         key: "triggers",
         title: "Backfills",
         text: "Rerun a schedule over a past date range.",
+        code: `${HEAD}triggers:
+  - id: nightly          # backfill from the UI or API
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 2 * * *"`,
+        lines: [3, 6],
     },
     {
-        mark: "timeout",
-        side: "left",
         key: "timeout",
         title: "Timeouts",
         text: "Set a maximum duration on any task.",
+        code: `${TASK}    timeout: PT30M`,
+        lines: [4, 4],
     },
     {
-        mark: "retry",
-        side: "right",
         key: "retry",
         title: "Retries",
         text: "Backoff per task, capped by attempts or time.",
+        code: `${TASK}    retry:
+      type: exponential
+      interval: PT30S
+      maxAttempts: 5`,
+        lines: [4, 7],
     },
     {
-        mark: "err",
-        side: "right",
         key: "errors",
         title: "Error handlers",
         text: "Run alerting, cleanup, or compensation tasks when a flow fails.",
+        code: `${TASK}errors:
+  - id: page_oncall
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook`,
+        lines: [4, 6],
     },
-]
+] satisfies {
+    key: string
+    title: string
+    text: string
+    code: string
+    lines: [number, number]
+}[]
 
 const RUNTIME = [
     {
@@ -62,81 +90,63 @@ const RUNTIME = [
         text: "Each attempt keeps its own logs, outputs, and duration, so the post-incident question “what happened?” has an answer.",
     },
 ]
-
-const FLOW = `id: nightly_ledger
-namespace: finance
-concurrency:
-  limit: 1
-  behavior: QUEUE
-sla:
-  - id: max_runtime
-    type: MAX_DURATION
-    duration: PT2H
-    behavior: FAIL
-triggers:
-  - id: nightly          # backfill from the UI or API
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "0 2 * * *"
-tasks:
-  - id: extract
-    type: io.kestra.plugin.jdbc.postgresql.Query
-    timeout: PT30M
-    retry:
-      type: exponential
-      interval: PT30S
-      maxAttempts: 5
-errors:
-  - id: page_oncall
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook`
-
-const SIDES = ["left", "right"].map((side) =>
-    FEATURES.filter((feature) => feature.side === side),
-)
-
-const MARKS: Record<string, [number, number]> = {
-    conc: [3, 5],
-    sla: [6, 10],
-    trigger: [11, 14],
-    timeout: [18, 18],
-    retry: [19, 22],
-    err: [23, 25],
-}
 ---
 
 <section class="production" id="production" aria-labelledby="prod-h">
     <Rails>
-        <RunStatus />
-        <SectionHead id="prod-h" align="center">
-            Failure handling, <span>declared in the flow.</span>
-            <Fragment slot="lead">
-                Every workflow fails eventually. In Kestra, what happens next is
-                written in the same YAML as the work itself, so it’s reviewed in
-                Git, versioned with the flow, and behaves the same on every run.
-            </Fragment>
-        </SectionHead>
+        <div class="split" data-prod>
+            <div class="intro">
+                <SectionHead id="prod-h" align="start">
+                    Failure handling, <span>declared in the flow.</span>
+                    <Fragment slot="lead">
+                        Every workflow fails eventually. In Kestra, what happens
+                        next is written in the same YAML as the work itself, so
+                        it’s reviewed in Git, versioned with the flow, and
+                        behaves the same on every run.
+                    </Fragment>
+                </SectionHead>
 
-        <div class="annotated" data-prod>
-            <CodeCard
-                class="code"
-                file="finance / nightly_ledger.yml"
-                code={FLOW}
-                marks={MARKS}
-                editor
-            />
-            {SIDES.map((notes, idx) => (
-                <ol class:list={["notes", idx ? "right" : "left"]}>
-                    {notes.map((feature) => (
-                        <li class="note" tabindex="0" data-k={feature.mark}>
-                            <b>
-                                {feature.title}
-                                <code class="key">{feature.key}</code>
-                            </b>
-                            <span>{feature.text}</span>
-                        </li>
+                <div
+                    class="features"
+                    role="tablist"
+                    aria-label="Failure handling"
+                >
+                    {FEATURES.map((feature, idx) => (
+                        <button
+                            type="button"
+                            role="tab"
+                            class:list={["feature", { active: idx === 0 }]}
+                            id={`prod-tab-${feature.key}`}
+                            aria-selected={idx === 0 ? "true" : "false"}
+                            aria-controls={`prod-panel-${feature.key}`}
+                            tabindex={idx === 0 ? 0 : -1}
+                        >
+                            <span class="name">{feature.title}</span>
+                            <code class="key">{feature.key}</code>
+                            <span class="bar" aria-hidden="true" />
+                        </button>
                     ))}
-                </ol>
-            ))}
-            <svg class="links" aria-hidden="true"></svg>
+                </div>
+            </div>
+
+            <div class="stage">
+                {FEATURES.map((feature, idx) => (
+                    <div
+                        class:list={["panel", { active: idx === 0 }]}
+                        id={`prod-panel-${feature.key}`}
+                        role="tabpanel"
+                        aria-labelledby={`prod-tab-${feature.key}`}
+                    >
+                        <CodeCard
+                            file="finance / nightly_ledger.yml"
+                            code={feature.code}
+                            marks={{ [feature.key]: feature.lines }}
+                            editor
+                        />
+                        <p>{feature.text}</p>
+                    </div>
+                ))}
+            </div>
         </div>
 
         <ul class="runtime">
@@ -152,141 +162,46 @@ const MARKS: Record<string, [number, number]> = {
 </section>
 
 <script>
-    const SVG = "http://www.w3.org/2000/svg"
-    const GAP = 14
-
     function wireProduction() {
         const box = document.querySelector<HTMLElement>(
             "[data-prod]:not([data-wired])",
         )
         if (!box) return
         box.dataset.wired = "true"
-        const card = box.querySelector<HTMLElement>(".code")!
-        const lines = [...card.querySelectorAll<HTMLElement>(".line[data-k]")]
-        const notes = [...box.querySelectorAll<HTMLElement>(".note")]
-        const svg = box.querySelector<SVGSVGElement>(".links")!
-        const wide = matchMedia("(min-width: 1200px)")
+        const tabs = [...box.querySelectorAll<HTMLButtonElement>(".feature")]
+        const panels = [...box.querySelectorAll<HTMLElement>(".panel")]
+        for (const line of box.querySelectorAll(".line[data-k]"))
+            line.classList.add("on")
 
-        const linesOf = (mark: string) =>
-            lines.filter((line) => line.dataset.k === mark)
-
-        const light = (mark?: string) => {
-            for (const line of lines)
-                line.classList.toggle("on", !!mark && line.dataset.k === mark)
-            for (const note of notes)
-                note.classList.toggle("on", note.dataset.k === mark)
-            for (const path of svg.querySelectorAll("[data-k]"))
-                path.classList.toggle(
-                    "on",
-                    (path as SVGElement).dataset.k === mark,
-                )
+        const select = (index: number) => {
+            tabs.forEach((tab, idx) => {
+                const on = idx === index
+                tab.classList.toggle("active", on)
+                tab.setAttribute("aria-selected", String(on))
+                tab.tabIndex = on ? 0 : -1
+                panels[idx].classList.toggle("active", on)
+            })
         }
 
-        const layout = () => {
-            svg.replaceChildren()
-            for (const note of notes) note.style.top = ""
-            for (const side of box.querySelectorAll<HTMLElement>(".notes"))
-                side.style.minHeight = ""
-            if (!wide.matches) return
-            const base = box.getBoundingClientRect()
-            const code = card.getBoundingClientRect()
-            svg.setAttribute("viewBox", `0 0 ${base.width} ${base.height}`)
-            for (const side of box.querySelectorAll<HTMLElement>(".notes")) {
-                const left = side.classList.contains("left")
-                let floor = 0
-                for (const note of side.querySelectorAll<HTMLElement>(
-                    ".note",
-                )) {
-                    const range = linesOf(note.dataset.k!)
-                    const first = range[0].getBoundingClientRect()
-                    const last = range.at(-1)!.getBoundingClientRect()
-                    const lineY = (first.top + last.bottom) / 2 - base.top
-                    const title = note.querySelector("b")!
-                    const half = title.offsetHeight / 2
-                    const top = Math.max(lineY - half, floor)
-                    note.style.top = `${top}px`
-                    floor = top + note.offsetHeight + GAP
-                    const rect = note.getBoundingClientRect()
-                    const y = top + half
-                    const from = left
-                        ? rect.right - base.left + 10
-                        : rect.left - base.left - 10
-                    const to = left
-                        ? code.left - base.left
-                        : code.right - base.left
-                    const mid = (from + to) / 2
-                    const path = document.createElementNS(SVG, "path")
-                    path.setAttribute(
-                        "d",
-                        `M${from} ${y} H${mid} V${lineY} H${to}`,
-                    )
-                    path.dataset.k = note.dataset.k
-                    const dot = document.createElementNS(SVG, "circle")
-                    dot.setAttribute("cx", String(to))
-                    dot.setAttribute("cy", String(lineY))
-                    dot.setAttribute("r", "3")
-                    dot.dataset.k = note.dataset.k
-                    svg.appendChild(path)
-                    svg.appendChild(dot)
-                }
-                side.style.minHeight = `${floor}px`
-            }
-        }
-
-        for (const note of notes) {
-            const on = () => light(note.dataset.k)
-            note.addEventListener("mouseenter", on)
-            note.addEventListener("focus", on)
-            note.addEventListener("mouseleave", () => light())
-            note.addEventListener("blur", () => light())
-        }
-
-        const pre = card.querySelector<HTMLElement>("pre")!
-        for (const line of pre.querySelectorAll<HTMLElement>(".line"))
-            line.addEventListener("mouseenter", () => light(line.dataset.k))
-        pre.addEventListener("mouseleave", () => light())
-
-        new ResizeObserver(layout).observe(box)
-        wide.addEventListener("change", layout)
-        void document.fonts.ready.then(layout)
-
-        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
-        const order = [...new Set(lines.map((line) => line.dataset.k!))]
-        let step = 0
-        let timer = 0
-        let visible = false
-        let held = false
-        const stop = () => window.clearInterval(timer)
-        const play = () => {
-            stop()
-            if (!visible || held) return
-            light(order[step])
-            timer = window.setInterval(() => {
-                step = (step + 1) % order.length
-                light(order[step])
-            }, 2200)
-        }
-        const hold = () => {
-            held = true
-            stop()
-        }
-        const release = () => {
-            held = false
-            light()
-            play()
-        }
-        box.addEventListener("pointerenter", hold)
-        box.addEventListener("pointerleave", release)
-        box.addEventListener("focusin", hold)
-        box.addEventListener("focusout", release)
-        new IntersectionObserver(
-            ([entry]) => {
-                visible = entry.isIntersecting
-                if (visible) play()
-                else stop()
-            },
-            { threshold: 0.4 },
-        ).observe(box)
+        tabs.forEach((tab, idx) => {
+            tab.addEventListener("click", () => select(idx))
+            tab.querySelector(".bar")!.addEventListener("animationend", () =>
+                select((idx + 1) % tabs.length),
+            )
+            tab.addEventListener("keydown", (event) => {
+                const step =
+                    event.key === "ArrowDown" || event.key === "ArrowRight"
+                        ? 1
+                        : event.key === "ArrowUp" || event.key === "ArrowLeft"
+                          ? -1
+                          : 0
+                if (!step) return
+                event.preventDefault()
+                const next = (idx + step + tabs.length) % tabs.length
+                select(next)
+                tabs[next].focus()
+            })
+        })
     }
 
     document.addEventListener("astro:page-load", wireProduction)
@@ -305,166 +220,139 @@ const MARKS: Record<string, [number, number]> = {
         }
 
         :global(.section-head) {
-            max-width: 56rem;
             margin-bottom: 2.5rem;
         }
     }
 
-    .annotated {
-        position: relative;
+    .split {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 40rem) minmax(0, 1fr);
-        gap: 3.5rem;
-        align-items: start;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+        align-items: center;
+        gap: 4.5rem;
 
         @include media-breakpoint-down(xl) {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 1.5rem 2rem;
-        }
-
-        @include media-breakpoint-down(md) {
             grid-template-columns: minmax(0, 1fr);
-        }
-
-        :global(.code) {
-            grid-column: 2;
-            grid-row: 1;
-
-            @include media-breakpoint-down(xl) {
-                grid-column: 1 / -1;
-            }
+            gap: 2.5rem;
         }
     }
 
-    .notes {
-        position: relative;
-        grid-row: 1;
-        align-self: stretch;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-
-        &.left {
-            grid-column: 1;
-            text-align: right;
-        }
-
-        &.right {
-            grid-column: 3;
-        }
-
-        @include media-breakpoint-down(xl) {
-            display: grid;
-            gap: 1.25rem;
-            grid-row: 2;
-
-            &.left {
-                grid-column: 1;
-                text-align: left;
-            }
-
-            &.right {
-                grid-column: 2;
-            }
-        }
-
-        @include media-breakpoint-down(md) {
-            &.right {
-                grid-column: 1;
-                grid-row: 3;
-            }
-        }
-    }
-
-    .note {
+    .features {
         display: flex;
         flex-direction: column;
-        gap: 0.375rem;
-        outline: none;
-        cursor: default;
+        border-bottom: 1px solid var(--ks-border-primary);
+    }
 
-        @include media-breakpoint-up(xl) {
-            position: absolute;
-            left: 0;
-            right: 0;
+    .feature {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.875rem 0;
+        border: 0;
+        border-top: 1px solid var(--ks-border-primary);
+        background: none;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+
+        &:focus-visible {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: 2px;
         }
 
-        b {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1rem;
+        .name {
+            font-size: 1.0625rem;
             font-weight: 600;
+            color: var(--ks-content-tertiary);
+            transition: color 0.25s ease;
+        }
+
+        &:hover .name,
+        &.active .name {
             color: var(--ks-content-primary);
-
-            .left & {
-                justify-content: flex-end;
-            }
-
-            @include media-breakpoint-down(xl) {
-                .left & {
-                    justify-content: flex-start;
-                }
-            }
         }
 
-        span {
-            font-size: $font-size-sm;
-            line-height: 1.5;
-            color: var(--ks-content-secondary);
-        }
-
-        &:global(.on) .key,
-        &:focus-visible .key {
+        &.active .key {
             background: var(--ks-content-primary);
             color: var(--ks-background-body);
         }
     }
 
     .key {
-        padding: 0 0.25rem;
+        padding: 0 0.3125rem;
         border-radius: var(--ks-border-radius);
         background-color: var(--ks-background-function);
         font-family: $font-family-monospace;
         font-size: 0.8125rem;
-        font-weight: 400;
         color: var(--ks-content-secondary);
         transition:
-            background-color 0.2s ease,
-            color 0.2s ease;
+            background-color 0.25s ease,
+            color 0.25s ease;
     }
 
-    .links {
+    .bar {
         position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        overflow: visible;
-        pointer-events: none;
+        top: -1px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--ks-content-link);
+        transform: scaleX(0);
+        transform-origin: left;
 
-        @include media-breakpoint-down(xl) {
-            display: none;
+        .active & {
+            animation: fill 5s linear forwards;
         }
 
-        :global(path) {
-            fill: none;
-            stroke: var(--ks-border-secondary);
-            stroke-width: 1;
-            stroke-dasharray: 3 3;
-            transition: stroke 0.2s ease;
+        .split:hover &,
+        .split:focus-within & {
+            animation-play-state: paused;
         }
 
-        :global(circle) {
-            fill: var(--ks-border-secondary);
-            transition: fill 0.2s ease;
+        @media (prefers-reduced-motion: reduce) {
+            .active & {
+                animation: none;
+                transform: none;
+            }
+        }
+    }
+
+    .stage {
+        display: grid;
+    }
+
+    .panel {
+        grid-area: 1 / 1;
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(0.5rem);
+        transition:
+            opacity 0.35s ease,
+            transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+            visibility 0s linear 0.35s;
+
+        &.active {
+            visibility: visible;
+            opacity: 1;
+            transform: none;
+            transition:
+                opacity 0.35s ease,
+                transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        :global(path.on) {
-            stroke: var(--ks-content-link);
+        p {
+            max-width: 32rem;
+            margin: 1.25rem 0 0;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--ks-content-secondary);
         }
+    }
 
-        :global(circle.on) {
-            fill: var(--ks-content-link);
+    @keyframes fill {
+        to {
+            transform: none;
         }
     }
 

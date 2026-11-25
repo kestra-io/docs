@@ -134,6 +134,15 @@ const SPEND_MARKS: Record<string, [number, number]> = {
     <PixelEdges left="wide" right="cluster" />
     <Rails dark>
         <div class="top">
+            <div class="sky" aria-hidden="true">
+                <div class="planet">
+                    <span class="haze"></span>
+                    <span class="atmosphere"></span>
+                    <span class="rim"></span>
+                    <span class="limb"></span>
+                </div>
+                <span class="horizon"></span>
+            </div>
             <SectionHead id="ai-h" align="start">
                 <em class="shine">AI runs</em> inside your workflows,
                 <span>not around them.</span>
@@ -520,11 +529,10 @@ const SPEND_MARKS: Record<string, [number, number]> = {
 </script>
 
 <style lang="scss">
-    @use "/src/components/about/style/section" as *;
     @use "./style/platform" as *;
 
     .ai {
-        @include dark-band;
+        background: #060609;
 
         position: relative;
         border-block: 1px solid var(--band-line);
@@ -834,6 +842,8 @@ const SPEND_MARKS: Record<string, [number, number]> = {
     }
 
     .top {
+        position: relative;
+        isolation: isolate;
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
@@ -850,6 +860,210 @@ const SPEND_MARKS: Record<string, [number, number]> = {
 
         > a {
             flex: none;
+        }
+    }
+
+    .sky {
+        position: absolute;
+        z-index: -1;
+        top: calc(-1 * var(--full));
+        bottom: 0;
+        left: 50%;
+        width: 100vw;
+        translate: -50% 0;
+        overflow: hidden;
+        pointer-events: none;
+
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
+
+    .planet {
+        --size: 84rem;
+        --rise: 13rem;
+        --night: #060609;
+
+        position: absolute;
+        bottom: calc(var(--rise) - var(--size));
+        left: 50%;
+        width: var(--size);
+        aspect-ratio: 1;
+        translate: -50% 0;
+        border-radius: 50%;
+        background:
+            linear-gradient(transparent 20%, var(--night) 48%),
+            radial-gradient(
+                ellipse 62% 26% at 50% 0%,
+                rgba(200, 200, 216, 0.24),
+                rgba(130, 130, 150, 0.1) 40%,
+                transparent 72%
+            ),
+            var(--night);
+
+        @include media-breakpoint-down(lg) {
+            --size: 60rem;
+            --rise: 10rem;
+        }
+    }
+
+    .limb {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: conic-gradient(
+            from -90deg,
+            transparent 0deg,
+            #3a26ff 22deg,
+            #5f4dff 52deg,
+            rgba(216, 214, 236, 0.45) 80deg,
+            rgba(255, 255, 255, 0.55) 90deg,
+            rgba(216, 214, 236, 0.45) 100deg,
+            #5f4dff 128deg,
+            #3a26ff 158deg,
+            transparent 180deg
+        );
+        mask:
+            radial-gradient(
+                farthest-side,
+                transparent calc(100% - 16px),
+                #000 100%
+            ),
+            linear-gradient(#000 15%, transparent 46%);
+        mask-composite: intersect;
+    }
+
+    .atmosphere {
+        position: absolute;
+        z-index: -1;
+        inset: -20rem;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle closest-side,
+            transparent calc(100% - 20rem),
+            rgba(80, 56, 255, 0.5) calc(100% - 20rem + 1px),
+            rgba(70, 44, 255, 0.22) calc(100% - 18rem),
+            rgba(60, 30, 240, 0.08) calc(100% - 14rem),
+            transparent calc(100% - 9rem)
+        );
+        mask:
+            conic-gradient(
+                from -90deg,
+                #000 0deg,
+                #000 45deg,
+                transparent 78deg,
+                transparent 102deg,
+                #000 135deg,
+                #000 360deg
+            ),
+            linear-gradient(#000 4%, transparent 46%);
+        mask-composite: intersect;
+    }
+
+    .rim {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle closest-side,
+            transparent 82%,
+            rgba(50, 28, 220, 0.16) 92%,
+            rgba(72, 48, 255, 0.5) 98.5%,
+            rgba(118, 100, 255, 0.7) 100%
+        );
+        mask:
+            conic-gradient(
+                from -90deg,
+                #000 0deg,
+                #000 40deg,
+                transparent 75deg,
+                transparent 105deg,
+                #000 140deg,
+                #000 360deg
+            ),
+            linear-gradient(#000 20%, transparent 48%);
+        mask-composite: intersect;
+    }
+
+    .haze {
+        position: absolute;
+        z-index: -1;
+        top: -7rem;
+        left: 50%;
+        width: 44rem;
+        height: 16rem;
+        translate: -50% 0;
+        background: radial-gradient(
+            closest-side,
+            rgba(230, 230, 242, 0.1),
+            rgba(200, 200, 220, 0.04) 55%,
+            transparent
+        );
+    }
+
+    .horizon {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 1px;
+        background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.08) 12%,
+            rgba(95, 77, 255, 0.55) 32%,
+            rgba(224, 220, 255, 0.95) 50%,
+            rgba(95, 77, 255, 0.55) 68%,
+            rgba(255, 255, 255, 0.08) 88%,
+            transparent 100%
+        );
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: 15%;
+            right: 15%;
+            bottom: 0;
+            height: 9rem;
+            background: radial-gradient(
+                ellipse 50% 100% at 50% 100%,
+                rgba(120, 100, 255, 0.4),
+                rgba(70, 44, 255, 0.14) 45%,
+                transparent 75%
+            );
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: -1px;
+            width: 22rem;
+            height: 3px;
+            translate: -50% 0;
+            border-radius: 50%;
+            background: radial-gradient(
+                closest-side,
+                #ffffff,
+                rgba(190, 180, 255, 0.6) 50%,
+                transparent
+            );
+            filter: blur(1.5px);
+            animation: horizon 6s ease-in-out infinite alternate;
+
+            @media (prefers-reduced-motion: reduce) {
+                animation: none;
+            }
+        }
+    }
+
+    @keyframes horizon {
+        from {
+            opacity: 0.7;
+        }
+
+        to {
+            opacity: 1;
         }
     }
 
