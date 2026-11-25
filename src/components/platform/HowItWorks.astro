@@ -1532,6 +1532,7 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
         }
 
         @include media-breakpoint-down(lg) {
+            flex: 1 0 auto;
             padding-inline: 1.25rem;
         }
 
@@ -1645,6 +1646,7 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
         }
 
         @include media-breakpoint-down(lg) {
+            gap: 1rem;
             min-height: 0;
             padding: 2rem 1.25rem 3rem;
         }
@@ -1670,6 +1672,32 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
     .views {
         position: relative;
         display: grid;
+    }
+
+    @include media-breakpoint-down(lg) {
+        .copies {
+            display: contents;
+        }
+
+        .copy h3 {
+            order: 1;
+            margin: 0;
+        }
+
+        .views {
+            order: 2;
+            margin-block: 0.75rem;
+        }
+
+        .copy p {
+            order: 3;
+        }
+
+        .copy a {
+            order: 4;
+            justify-self: start;
+            margin-top: 0.5rem;
+        }
     }
 
     .views {
@@ -1744,6 +1772,11 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
 
         .body[data-at="#{$i}"] .copy[data-copy="#{$i}"] {
             display: flex;
+
+            @include media-breakpoint-down(lg) {
+                display: contents;
+            }
+
             visibility: visible;
             opacity: 1;
             transform: none;
