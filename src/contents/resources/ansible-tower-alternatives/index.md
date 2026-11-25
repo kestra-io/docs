@@ -19,6 +19,10 @@ faq:
     answer: "Yes. Every alternative in this guide calls ansible-core, so roles, collections and playbooks keep working from the same Git repositories. What changes is the controller configuration around them: job templates, surveys, schedules, credentials and inventories have to be recreated in the new tool, which is where most of the migration effort goes."
   - question: "Can Kestra replace Ansible Tower?"
     answer: "Kestra replaces the controller layer, not Ansible. It runs existing playbooks with its Ansible plugin, triggers them from schedules, webhooks or events, and adds approvals, retries and execution history. Tower job templates become flows and surveys become inputs. Kestra Enterprise tracks the hosts your playbooks run against as assets, and the inventory file lives in Git or is built inside the flow."
+  - question: "What are the best alternatives to Red Hat Ansible Automation Platform for enterprises?"
+    answer: "It depends on whether you keep your playbooks. To keep them and replace the platform around them, enterprises compare Kestra Enterprise, Ascender Pro from CIQ, the paid plans of Semaphore UI, and PagerDuty Runbook Automation (Rundeck). Kestra Enterprise adds RBAC, SSO and audit logs, and runs Terraform, scripts, ITSM steps and approvals in the same workflow as the playbook. To replace Ansible itself, the options are Puppet Enterprise, Progress Chef and Salt."
+  - question: "How much does Red Hat Ansible Automation Platform cost?"
+    answer: "Red Hat doesn't publish list prices for Ansible Automation Platform. Its pricing page says pricing varies with sizing and subscription choices and points to a quote, with Standard (9 AM to 5 PM) or Premium (24x7) support, and subscriptions are counted per managed node. As a public reference, Red Hat's listing on AWS Marketplace prices Ansible Automation Platform Premium at $19,250 for 12 months per pack of 100 managed nodes (November 2026). Kestra Enterprise isn't priced per managed node, and Kestra's open-source edition is free under Apache 2.0."
 resourceCtaOverride:
   href: /blueprints/ansible-playbook-from-git
   label: See your playbook run in Kestra
@@ -65,6 +69,33 @@ Teams evaluate replacements for Tower and its successor, automation controller, 
 *   **Maintenance signal on the free path:** AWX hasn't shipped a release since mid-2024. The refactor is [merged on the development branch](https://forum.ansible.com/t/awx-modernization-moving-forward/45134), and in November 2026 the maintainers removed the release pipeline ([AWX release status](/resources/infrastructure/awx-release-status)), so teams on the free path have no upgrade to plan around.
 *   **Broader scope:** Automation controller is, by design, Ansible-centric. Many platform and DevOps teams now need to coordinate Ansible playbooks with other tools like Terraform, Kubernetes, ITSM platforms (like ServiceNow), and event sources (like Kafka or webhooks) in a single, auditable workflow. AAP covers part of this with Event-Driven Ansible and an [Automation Orchestrator add-on announced in August 2026](https://forum.ansible.com/t/introducing-automation-orchestrator-for-ansible-automation-platform/46221); other teams prefer one tool-agnostic platform.
 *   **More components to run:** Since AAP 2.5, a [platform gateway](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.5/html/release_notes/new-features) handles sign-in, access control and the unified UI in front of automation controller, automation hub and Event-Driven Ansible. That is more to install and upgrade than a standalone Tower instance.
+
+## Alternatives to Red Hat Ansible Automation Platform for enterprises
+
+"Ansible Automation Platform alternatives" covers two different decisions, and the shortlist depends on which one you are making.
+
+**Keep your playbooks and replace the platform around them.** Playbooks, roles and collections stay in Git; the tool that schedules, secures and audits them changes. The enterprise options are:
+
+*   **Kestra Enterprise:** runs your playbooks with the [Ansible plugin](/plugins/plugin-ansible) and adds [RBAC](/docs/enterprise/auth/rbac), [SSO](/docs/enterprise/auth/sso) and [audit logs](/docs/enterprise/governance/audit-logs). The same workflow runs Terraform, scripts, ITSM steps and manual approvals, and the license isn't priced per managed node.
+*   **Ascender Pro:** CIQ's commercially supported build of AWX, the closest match to automation controller.
+*   **Semaphore UI (Pro and Enterprise plans):** a lightweight UI for Ansible, Terraform and scripts, with paid support tiers.
+*   **PagerDuty Runbook Automation (Rundeck):** a runbook console in which Ansible is one job type among scripts, commands and API calls.
+
+**Replace Ansible itself.** Teams that want agent-based, continuously enforced configuration move to Puppet Enterprise, Progress Chef or Salt, and rewrite their playbooks in those tools' languages. Our guide to [alternatives to Ansible](/resources/infrastructure/alternatives-to-ansible) compares them.
+
+| | Kestra Enterprise | Ansible Automation Platform | Ascender Pro | Semaphore UI (paid plans) | PagerDuty Runbook Automation |
+|---|---|---|---|---|---|
+| **Runs existing playbooks unchanged** | Yes | Yes | Yes | Yes | Yes |
+| **Role-based access control** | Yes | Yes | Yes | Yes (simpler roles) | Yes |
+| **Commercial support** | Kestra | Red Hat (Standard or Premium) | CIQ | Semaphore UI | PagerDuty |
+| **Orchestrates other tools in the same workflow** | Yes (Terraform, scripts, APIs, ITSM, approvals) | Partly (Event-Driven Ansible, Automation Orchestrator add-on) | No (Ansible-centric) | Partly (Terraform, OpenTofu, scripts) | Partly (scripts, commands, API calls) |
+| **Pricing model** | Not per managed node | Per managed node, by quote | Commercial subscription | Paid plans | Commercial subscription |
+
+### How much does Ansible Automation Platform cost?
+
+Red Hat doesn't publish list prices. Its [pricing page](https://www.redhat.com/en/technologies/management/ansible/pricing) says that pricing varies with sizing and subscription choices and asks buyers for a quote, with two support levels: Standard (9 AM to 5 PM) and Premium (24x7). Subscriptions are counted per managed node, and Red Hat [counts every endpoint the platform manages](https://access.redhat.com/articles/3331481).
+
+The clearest public reference is Red Hat's own [listing on AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-xy6tb27e6rkjm): Ansible Automation Platform Premium costs $19,250 for a 12-month contract per pack of 100 managed nodes (November 2026), and larger estates add more 100-node packs. Because the price follows the number of managed nodes, it grows with the size of the estate, not with how often automation runs. Kestra Enterprise isn't priced per managed node; see [Kestra vs. Ansible Automation Platform](/vs/ansible-automation-platform) for the full comparison.
 
 ## How we evaluated these alternatives
 
