@@ -34,7 +34,7 @@ This release also follows Kestra Hacktober, and our community made October a mon
 | Feature | What it does | Edition |
 |---|---|---|
 | Kestra MCP Server | Let AI agents read and change flows, executions, and more, with your permissions | OSS, EE |
-| Execution artifacts | See the SQL, tables, and sync stats behind a data task | OSS, EE, Cloud |
+| Execution artifacts | See the SQL, tables, sync stats, and dbt models behind a data task, in a new Artifacts tab and topology button | OSS, EE, Cloud |
 | Approval task | Pause a flow until someone approves or denies it | OSS, EE, Cloud |
 | Approvals page | Assign reviewers, follow every request, and chain sign-offs | EE, Cloud |
 | Asset leases and the ASSET input | Give every asset an owner and a lease, and let people pick assets in a form | EE, Cloud |
@@ -45,6 +45,11 @@ This release also follows Kestra Hacktober, and our community made October a mon
 | Dashboard charts from flow outputs | Chart a file that a flow returns | EE, Cloud |
 | Keyless cloud access with OIDC | Reach AWS, Google Cloud, and JFrog with short-lived OIDC tokens instead of stored keys | EE |
 | New queue backends | Google Cloud Pub/Sub, NATS JetStream, Amazon SQS/SNS, and Azure Event Hubs | EE |
+| JetBrains plugin, Agent Skills, and script libraries | Write flows in your JetBrains IDE, install Kestra skills in your coding agent, and send outputs from scripts in 10 more languages | OSS, EE, Cloud |
+| Security plugins | Aikido, Snyk, GitGuardian, Defender XDR, Sentinel, Proofpoint TAP, and Torq | OSS, EE |
+| New plugins | 60 new plugin repositories, including network automation for Arista, Cisco, Palo Alto, and Fortinet | OSS, EE |
+| Plugin screens merge | One Plugins page for browsing and, in the Enterprise Edition, managing plugin versions | OSS, EE |
+<!-- VERIFY: editions of the JetBrains plugin and Agent Skills row. -->
 
 :::alert{type="info"}
 **Upgrading from 2.0?** Most flows need no changes, but a few API and configuration changes do. See [Upgrade and Migration](#upgrade-and-migration) before you upgrade.
