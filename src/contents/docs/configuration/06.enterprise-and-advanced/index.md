@@ -102,7 +102,7 @@ kestra:
 
 | Property | Default | Description |
 |---|---|---|
-| `kestra.ee.tenant-examples.enabled` | `true` | When `true`, creating a tenant of a seeded type provisions the example bundle. Set to `false` to skip seeding entirely. |
+| `kestra.ee.tenant-examples.enabled` | `true` | When `true`, a tenant of a seeded type receives the example bundle once, when it's created or first switched to that type, and the Instance Owner can add it again with **Add examples**. Set to `false` to turn off seeding entirely, including **Add examples**. |
 
 The example bundle ships inside the JAR — no network access is required at tenant creation time.
 
