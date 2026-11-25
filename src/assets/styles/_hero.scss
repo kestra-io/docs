@@ -1,0 +1,15 @@
+@use "/src/assets/styles/variable" as *;
+
+$hero-sizes: (
+    compact: 32.5rem,
+    standard: 40.625rem,
+    tall: calc(min(80vh, 800px) + 67px),
+);
+
+@mixin hero-size($size: standard) {
+    min-height: map-get($hero-sizes, $size);
+
+    @include media-breakpoint-down(lg) {
+        min-height: 0;
+    }
+}

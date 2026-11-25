@@ -1,0 +1,143 @@
+---
+interface Cta {
+    label: string
+    href: string
+    solid?: boolean
+}
+
+interface Props {
+    id: string
+    title: string
+    lead: string
+    ctas: Cta[]
+    size?: "compact" | "standard" | "tall"
+}
+
+const { id, title, lead, ctas, size = "standard" } = Astro.props
+---
+
+<section
+    class="mig-hero surface-dark"
+    aria-labelledby={id}
+    data-header-dark
+    data-mig-hero
+>
+    <div class="container-xl">
+        <div class:list={["rails", size]}>
+            <div class="copy">
+                <h1 {id}>{title}</h1>
+                <p>{lead}</p>
+                <div class="ctas">
+                    {ctas.map((cta) => (
+                        <a
+                            href={cta.href}
+                            class={cta.solid ? "btn-solid" : "btn-ghost"}
+                        >
+                            {cta.label}
+                        </a>
+                    ))}
+                </div>
+            </div>
+            <div class="visual">
+                <slot />
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function clearMenu() {
+        if (!document.querySelector("[data-mig-hero]")) return
+        document.body.setAttribute("data-header-clear", "")
+        document.addEventListener(
+            "astro:before-swap",
+            () => document.body.removeAttribute("data-header-clear"),
+            { once: true },
+        )
+    }
+
+    document.addEventListener("astro:page-load", clearMenu)
+    clearMenu()
+</script>
+
+<style lang="scss">
+    @use "/src/components/about/style/section" as *;
+    @use "./migration" as *;
+    @use "/src/assets/styles/hero" as *;
+
+    .mig-hero {
+        @include band;
+        margin-top: -67px;
+        @include dark-band;
+        color: #ffffff;
+        border-bottom-color: $dark-band-line;
+    }
+
+    .rails {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 38rem);
+        align-items: center;
+        gap: 2rem 3rem;
+        padding: 7.5rem clamp(1.5rem, 4vw, 3.5rem) 4rem;
+
+        @each $size in compact, standard, tall {
+            &.#{$size} {
+                @include hero-size($size);
+            }
+        }
+
+        @include media-breakpoint-between(lg, xl) {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 28rem);
+            gap: 2rem;
+            padding-inline: 1.5rem;
+        }
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 3rem;
+            padding: 7rem 0 3.5rem;
+        }
+    }
+
+    .copy {
+        display: grid;
+        justify-items: start;
+        max-width: 36rem;
+
+        @include media-breakpoint-down(lg) {
+            justify-items: center;
+            margin-inline: auto;
+            text-align: center;
+        }
+    }
+
+    h1 {
+        margin: 0;
+        font-size: clamp(2.5rem, 4.6vw, 4rem);
+        font-weight: 600;
+        letter-spacing: -0.03em;
+        line-height: 1.04;
+        color: #ffffff;
+        text-wrap: balance;
+    }
+
+    p {
+        max-width: 33rem;
+        margin: 1.5rem 0 0;
+        font-size: 1.1875rem;
+        line-height: 1.55;
+        color: rgba(255, 255, 255, 0.86);
+        text-wrap: pretty;
+    }
+
+    .ctas {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 2.25rem;
+
+        @include media-breakpoint-down(lg) {
+            justify-content: center;
+        }
+    }
+</style>

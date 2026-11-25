@@ -1,0 +1,334 @@
+---
+const QUESTION = "Why did our DigitalOcean bill jump this week?"
+const ANSWER =
+    "Spend rose day over day, driven by new droplets in one region. That looks like a deployment change, not normal variation, so it’s worth confirming with the team that launched them."
+
+const MASCOT = [
+    [2, 0, 7, 4],
+    [0, 1, 2, 2],
+    [9, 1, 2, 2],
+    [2, 4, 1, 2],
+    [4, 4, 1, 2],
+    [6, 4, 1, 2],
+    [8, 4, 1, 2],
+]
+const EYES = [
+    [3, 1, 1, 1],
+    [7, 1, 1, 1],
+]
+---
+
+<figure
+    class="term"
+    aria-label="Illustrative Claude Code session"
+    data-chat
+    data-question={QUESTION}
+>
+    <figcaption aria-hidden="true">
+        <span class="dots">
+            <i></i>
+            <i></i>
+            <i></i>
+        </span>
+    </figcaption>
+
+    <div class="screen">
+        <div class="banner">
+            <svg class="mascot" viewBox="0 0 11 6" aria-hidden="true">
+                {MASCOT.map(([x, y, w, h]) => (
+                    <rect x={x} y={y} width={w} height={h} />
+                ))}
+                {EYES.map(([x, y, w, h]) => (
+                    <rect class="eye" x={x} y={y} width={w} height={h} />
+                ))}
+            </svg>
+            <p>
+                <b>Claude Code</b>
+                <span>Opus 5.5 · Kestra MCP connected</span>
+                <span>~/company.team/billing</span>
+            </p>
+        </div>
+
+        <p class="prompt" data-step="user">
+            <span>&gt;</span>
+            {QUESTION}
+        </p>
+
+        <p class="line" data-step="intro">
+            <i class="bullet"></i>I’ll check this week’s spend with the Kestra
+            tool.
+        </p>
+
+        <div class="line tool" data-step="tool">
+            <i class="bullet"></i>
+            <span>
+                <b>kestra - do_spend_summary</b> (MCP)
+                <span class="result">
+                    <span class="wait">⎿&nbsp; Running execution…</span>
+                    <span class="done">
+                        ⎿&nbsp; Done · execution 4f2a… · SUCCESS
+                    </span>
+                </span>
+            </span>
+        </div>
+
+        <p class="line answer" data-step="answer">
+            <i class="bullet"></i>
+            <span>
+                {ANSWER.split(" ").map((word) => (
+                    <span class="word">{word} </span>
+                ))}
+            </span>
+        </p>
+
+        <p class="spinner" aria-hidden="true">
+            <span class="star">✻</span> Clauding…{" "}
+            <span>(esc to interrupt)</span>
+        </p>
+    </div>
+
+    <div class="composer">
+        <span class="caret-sign">&gt;</span>
+        <span class="typed" data-typed></span>
+    </div>
+    <p class="hint">? for shortcuts</p>
+</figure>
+
+<style lang="scss">
+    .term {
+        --bg: #121214;
+        --chrome: #1c1c1f;
+        --line: #2e2e33;
+        --text: #e6e6e6;
+        --muted: #8c8c94;
+        --accent: #d97757;
+        --ok: #5fb878;
+
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 0.75rem;
+        background: var(--bg);
+        box-shadow: 0 30px 80px -24px rgba(0, 0, 0, 0.6);
+        font-family: $font-family-monospace;
+        font-size: 0.75rem;
+        line-height: 1.6;
+        color: var(--text);
+    }
+
+    figcaption {
+        padding: 0.625rem 0.875rem;
+        background: var(--chrome);
+    }
+
+    .dots {
+        display: inline-flex;
+        gap: 0.375rem;
+
+        i {
+            width: 0.625rem;
+            height: 0.625rem;
+            border-radius: 50%;
+            background: var(--line);
+        }
+    }
+
+    .screen {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 0.875rem;
+        padding: 1.125rem 1.125rem 0.5rem;
+    }
+
+    .banner {
+        display: flex;
+        align-items: center;
+        gap: 0.875rem;
+        margin-bottom: 0.25rem;
+        padding: 0.75rem 0.875rem;
+        border: 1px solid var(--accent);
+        border-radius: 0.5rem;
+
+        p {
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        b {
+            font-weight: 500;
+        }
+
+        span {
+            color: var(--muted);
+        }
+    }
+
+    .mascot {
+        flex: none;
+        width: 3.25rem;
+        fill: var(--accent);
+        shape-rendering: crispEdges;
+
+        .eye {
+            fill: var(--bg);
+        }
+    }
+
+    [data-step] {
+        transition: opacity 0.3s ease;
+
+        :global(.playing) &:not(:global(.shown)) {
+            opacity: 0;
+        }
+    }
+
+    .prompt {
+        display: flex;
+        gap: 0.625rem;
+        margin: 0;
+        padding: 0.375rem 0.625rem;
+        background: rgba(255, 255, 255, 0.06);
+
+        span {
+            color: var(--muted);
+        }
+    }
+
+    .line {
+        display: flex;
+        gap: 0.625rem;
+        margin: 0;
+    }
+
+    .bullet {
+        flex: none;
+        width: 0.4375rem;
+        height: 0.4375rem;
+        margin-top: 0.4375rem;
+        border-radius: 50%;
+        background: var(--text);
+    }
+
+    .tool {
+        .bullet {
+            background: var(--ok);
+
+            :global(.running) & {
+                background: var(--muted);
+                animation: blink 1s steps(1) infinite;
+            }
+        }
+
+        b {
+            font-weight: 600;
+        }
+
+        span {
+            color: var(--muted);
+
+            b {
+                color: var(--text);
+            }
+        }
+    }
+
+    .result {
+        display: grid;
+
+        > span {
+            grid-area: 1 / 1;
+        }
+
+        .wait {
+            visibility: hidden;
+
+            :global(.running) & {
+                visibility: visible;
+            }
+        }
+
+        .done {
+            :global(.running) & {
+                visibility: hidden;
+            }
+        }
+    }
+
+    .answer {
+        :global(.playing) & .word:not(:global(.shown)) {
+            visibility: hidden;
+        }
+    }
+
+    .spinner {
+        margin: 0;
+        color: var(--accent);
+        visibility: hidden;
+
+        span:not(.star) {
+            color: var(--muted);
+        }
+
+        :global(.thinking) & {
+            visibility: visible;
+        }
+    }
+
+    .star {
+        display: inline-block;
+        animation: pulse 1.2s ease-in-out infinite;
+    }
+
+    .composer {
+        display: flex;
+        gap: 0.625rem;
+        margin: 0.5rem 1.125rem 0;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid var(--line);
+        border-radius: 0.5rem;
+        min-height: 2.25rem;
+    }
+
+    .caret-sign {
+        color: var(--muted);
+    }
+
+    .typed {
+        overflow: hidden;
+        white-space: nowrap;
+
+        &::after {
+            content: "";
+            display: inline-block;
+            width: 0.5em;
+            height: 1.15em;
+            vertical-align: -0.2em;
+            background: var(--text);
+            opacity: 0.75;
+            animation: blink 1s steps(1) infinite;
+        }
+    }
+
+    .hint {
+        margin: 0.375rem 1.125rem 1rem;
+        font-size: 0.6875rem;
+        color: var(--muted);
+    }
+
+    @keyframes blink {
+        50% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes pulse {
+        50% {
+            opacity: 0.4;
+        }
+    }
+</style>
