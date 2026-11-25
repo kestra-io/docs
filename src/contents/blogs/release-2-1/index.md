@@ -298,7 +298,7 @@ Since 2.0, 60 new plugin repositories have been released, which brings the catal
 
 <!-- VERIFY: plugin pages are generated from the releases, so check each link resolves. -->
 
-## Plugins
+## Plugins Hub
 
 The Plugins page now lists each plugin once, as a card or a table row. In the Enterprise Edition, it also shows which versions are installed on your instance and which are available, and Instance Owners can install, update, and uninstall versions from the same page. See [Plugins page](/docs/enterprise/instance/versioned-plugins#from-the-ui).
 
