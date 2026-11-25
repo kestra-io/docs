@@ -72,7 +72,58 @@ A Worker accepts messages up to `kestra.grpc.max-inbound-message-size` (10 MiB b
 
 ## When a Worker goes away
 
-When a Worker disconnects, the Worker Controller doesn't resend its unfinished jobs itself. The Executor's liveness coordinator detects the lost Worker and resubmits its jobs to other Workers according to the Worker's restart strategy. See [worker job resubmission](../../../10.administrator-guide/server-lifecycle/index.md#worker-job-resubmission) and [liveness and worker task restarts](../../../configuration/05.security-and-secrets/index.md#liveness-and-worker-task-restarts).
+When a Worker leaves the cluster, the Worker Controller doesn't resend its unfinished jobs itself. The Executor's liveness coordinator detects the lost Worker and resubmits its jobs to other Workers according to the Worker's restart strategy. See [worker job resubmission](../../../10.administrator-guide/server-lifecycle/index.md#worker-job-resubmission) and [liveness and worker task restarts](../../../configuration/05.security-and-secrets/index.md#liveness-and-worker-task-restarts).
+
+### Jobs that never reach a Worker
+
+A task can stay in `RUNNING` without ever starting, or a trigger can stop firing, while its Worker still looks healthy. The job was lost on its way to the Worker, but the Worker keeps sending heartbeats, so Kestra doesn't treat the Worker as dead, and the recovery that applies to [a Worker that goes away](#when-a-worker-goes-away) doesn't start.
+
+This usually happens when a load balancer or proxy between the Workers and the Worker Controller terminates HTTP/2 connections and answers keep-alive pings itself: the connection looks open, but jobs no longer get through. It can also happen when the Worker Controller closes a connection right after sending a job.
+
+#### Check whether jobs are lost
+
+Kestra resubmits lost jobs on its own. To see whether it happens in your deployment, look for these metrics and logs.
+
+On the Worker Controller:
+
+- The `controller.job.resubmitted.total` metric counts resubmitted jobs, tagged by worker group and worker queue.
+- A resubmitted task logs a `WARN` message on its task run: `Resubmit WorkerTask: it never reached its worker.`
+- A resubmitted trigger logs a `WARN` message: `Trigger never reached worker '<worker-id>', notifying the scheduler.`
+
+On the Worker:
+
+- The `worker.stream.reconnect.count` metric, with the `reason` tag `sync_unacknowledged`, counts the reconnections caused by unacknowledged reports.
+- The Worker logs a `WARN` message that starts with `The controller has not acknowledged the jobs held by this worker`.
+
+An occasional resubmission is expected, for example during a network interruption or a Worker Controller restart. If these counters keep increasing, check the HTTP/2 and keep-alive settings of the load balancer or proxy between your Workers and the Worker Controller. Resubmission limits the impact, but each lost job is still delayed until Kestra recovers it.
+
+#### How Kestra recovers lost jobs
+
+Each Worker reports the jobs it holds to the Worker Controller when it connects and then at a regular interval, and the Worker Controller acknowledges each report. When a Worker doesn't report a job that the Worker Controller sent it on an earlier connection, the job never arrived, and the Worker Controller resubmits it:
+
+- A task goes back on its queue. A `WorkingDirectory` goes back as a whole, with all of its tasks.
+- A trigger goes back to the Scheduler, which evaluates it again against the current flow revision.
+
+Kestra doesn't resubmit a task whose task run already ended or whose execution was stopped.
+
+A Worker notices that its connection stopped delivering jobs when its reports are no longer acknowledged. After `sync-timeout` without an acknowledgment, the Worker opens a new connection, and the Worker Controller resubmits the lost jobs as soon as it reconnects. With the default settings, Kestra recovers a lost job in about a minute. When the Worker Controller closes the connection itself, the Worker reconnects right away, and recovery takes seconds.
+
+#### Tune the sync settings
+
+Set these properties on the Workers:
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `kestra.worker.job-stream.sync-interval` | `30s` | How often a Worker reports the jobs it holds. |
+| `kestra.worker.job-stream.sync-timeout` | `65s` | How long a Worker waits for the Worker Controller to acknowledge a report before it reconnects. It sets how long a lost job can wait before Kestra recovers it. |
+
+Keep `sync-timeout` above `sync-interval`, ideally at least twice as long. Otherwise, a Worker reconnects between two reports even when its connection is healthy.
+
+To recover lost jobs faster, lower `sync-timeout`, and lower `sync-interval` with it. Shorter intervals add traffic and work on the Worker Controller.
+
+:::alert{type="info"}
+During a rolling upgrade, a Worker connected to an older Worker Controller that doesn't acknowledge reports keeps its connection. `sync-timeout` only applies once the Worker Controller has acknowledged at least one report on that connection.
+:::
 
 ## Storage access through the Worker Controller
 
@@ -142,5 +193,7 @@ The Worker Controller publishes metrics under `kestra.controller.*`:
 See the [Worker Controller metrics](../../../10.administrator-guide/prometheus-metrics/index.md#kestra-worker-controller-metrics) for the full list, and [controller metrics](../../../07.enterprise/04.scalability/worker-group/index.md#controller-metrics) for their tags.
 
 A steadily growing count of re-queued jobs, with paused subscriptions, means the Workers serving that queue are at capacity. Add Workers, or raise their thread count.
+
+A rising `controller.job.resubmitted.total` means jobs were sent on Worker streams that stopped delivering. Check the load balancers and proxies between your Workers and Worker Controllers. See [Jobs that never reach a Worker](#jobs-that-never-reach-a-worker).
 
 If a queue record blocks the Worker Controller, start it with `--ignore-queue-records` to skip that record while you investigate. See the [kill switch CLI flags](../../../07.enterprise/05.instance/kill-switch/index.md#cli-compatibility).
