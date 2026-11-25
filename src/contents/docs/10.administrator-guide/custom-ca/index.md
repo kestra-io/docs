@@ -209,7 +209,7 @@ tasks:
 
 ## Kestra plugin tasks
 
-Tasks in the Kestra plugin can reach the Kestra API on its internal address instead of `kestra.url`, which avoids TLS for those calls. Set the default endpoint for all tasks in your configuration:
+If TLS is terminated in front of Kestra, by a reverse proxy or an ingress, the webserver itself still serves plain HTTP on port `8080` inside your network. Tasks in the Kestra plugin can call that internal address instead of `kestra.url`, and then don't need the truststore. Set the default endpoint for all tasks in your configuration:
 
 ```yaml
 kestra:
@@ -221,7 +221,9 @@ kestra:
         password: "<password>"
 ```
 
-To change a single task, set its `kestraUrl` property instead. Credentials sent to a plain HTTP address are not encrypted, so use this only on a network you trust. Otherwise, use the truststore.
+The `url` is used only together with `username` and `password`, or `api-token`. To change a single task, set its `kestraUrl` property instead. Credentials go over this connection unencrypted, so use it only on a network you trust.
+
+This doesn't apply when Kestra serves HTTPS itself with `micronaut.server.ssl`: the plain-HTTP port is then not started. Use the truststore in that case.
 
 ## Script tasks
 
