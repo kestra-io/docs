@@ -1,0 +1,513 @@
+---
+import { Icon } from "astro-icon/components"
+import awxMark from "./assets/awx-placeholder.svg"
+import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
+import { PATCH_AWX, PATCH_KESTRA } from "./code"
+import { CALLOUTS, RESULT } from "./guide"
+import { yamlLine } from "~/components/migration/highlight"
+
+interface Props {
+    kind: "translate" | "check" | "switch"
+}
+
+const { kind } = Astro.props
+
+const timeFor = (side: "awx" | "kestra", row: number) =>
+    CALLOUTS.find((pair) => pair[side].includes(row))?.at
+
+const AWX_LINES = PATCH_AWX.split("\n").map((text, i) => ({
+    html: yamlLine(text),
+    at: timeFor("awx", i + 1),
+}))
+const KESTRA_LINES = PATCH_KESTRA.split("\n").map((text, i) => ({
+    html: yamlLine(text),
+    at: timeFor("kestra", i + 1),
+    blank: text.trim() === "",
+}))
+
+// In the switch scene the rows are already there; only the verdict plays.
+const switched = kind === "switch"
+const rows = RESULT.rows.map((row, i) => ({
+    ...row,
+    at: switched ? 100 + i * 100 : row.at,
+}))
+---
+
+{kind === "translate" && (
+    <div class="scene-grid translate" aria-hidden="true">
+        <div class="sheet code light">
+            <div class="head">
+                <span class="tab">
+                    <img src={awxMark.src} alt="" />
+                    <span>linux-patching.yml</span>
+                </span>
+                <code>AWX</code>
+            </div>
+            <pre class="scroll-pane" data-follow>{AWX_LINES.map((line, i) => (
+                <span class:list={["ln", { pair: line.at }]} data-on={line.at}><i>{i + 1}</i><Fragment set:html={line.html} />{"\n"}</span>
+            ))}</pre>
+        </div>
+        <ol class="pairs">
+            {CALLOUTS.map((pair) => (
+                <li data-on={pair.at}>
+                    <Icon name="mdi:arrow-right" />
+                    {pair.label.replaceAll("`", "")}
+                </li>
+            ))}
+        </ol>
+        <div class="sheet code light">
+            <div class="head">
+                <span class="tab">
+                    <span class="kmark">
+                        <img src={kestraMark.src} alt="" />
+                    </span>
+                    <span>linux_patching.yaml</span>
+                </span>
+                <code>Kestra</code>
+            </div>
+            <pre class="scroll-pane" data-follow>{KESTRA_LINES.map((line, i) => (
+                <span class:list={["ln", "out", { blank: line.blank }]} data-on={line.at}><i>{i + 1}</i><Fragment set:html={line.html} />{"\n"}</span>
+            ))}</pre>
+        </div>
+    </div>
+)}
+
+{kind !== "translate" && (
+    <div class="scene-grid compare" aria-hidden="true">
+        <div class="sheet light table-card">
+            <div class="head">
+                <span class="tab">
+                    <Icon name="mdi:table-check" />
+                    <span>linux-patching</span>
+                </span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>{RESULT.columns[0]}</th>
+                        <th>
+                            <img src={awxMark.src} alt="" /> {RESULT.columns[1]}
+                        </th>
+                        <th>
+                            <span class="kmark">
+                                <img src={kestraMark.src} alt="" />
+                            </span>{" "}
+                            {RESULT.columns[2]}
+                        </th>
+                        <th />
+                    </tr>
+                </thead>
+                <tbody>
+                    {rows.map((row) => (
+                        <tr data-on={row.at}>
+                            <td>
+                                <code>{row.host}</code>
+                            </td>
+                            <td>{row.awx}</td>
+                            <td>{row.kestra}</td>
+                            <td>
+                                <span class="pill success">
+                                    <Icon name="mdi:check-circle" /> match
+                                </span>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            {switched && (
+                <div class="verdict" data-on="1500">
+                    <span class="toggle">
+                        <i />
+                    </span>
+                    <span>
+                        <strong>{RESULT.verdict.name}</strong>{" "}
+                        {RESULT.verdict.text}
+                    </span>
+                </div>
+            )}
+        </div>
+    </div>
+)}
+
+<script>
+    function follow() {
+        document
+            .querySelectorAll<HTMLElement>("[data-follow]:not([data-wired])")
+            .forEach((pane) => {
+                pane.dataset.wired = ""
+                const lines = [...pane.querySelectorAll<HTMLElement>(".ln")]
+                const observer = new MutationObserver((records) => {
+                    const lit = records
+                        .map((record) => record.target as HTMLElement)
+                        .filter((line) => line.classList.contains("on"))
+                    const last = lit[lit.length - 1]
+                    const any = lines.some((line) =>
+                        line.classList.contains("on"),
+                    )
+                    if (!last && any) return
+                    const top = last
+                        ? Math.max(0, last.offsetTop - pane.clientHeight * 0.45)
+                        : 0
+                    pane.scrollTo({ top, behavior: "smooth" })
+                })
+                lines.forEach((line) =>
+                    observer.observe(line, {
+                        attributes: true,
+                        attributeFilter: ["class"],
+                    }),
+                )
+            })
+    }
+
+    document.addEventListener("astro:page-load", follow)
+    follow()
+</script>
+
+<style lang="scss">
+    @use "/src/components/enterprise/mocks/tokens" as *;
+
+    .scene-grid {
+        @include tokens;
+
+        --bar: #f7f7fa;
+        --run-bg: rgba(132, 5, 255, 0.08);
+        --code-key: #631bf3;
+        --code-str: #ab0009;
+        --code-const: #1a7a55;
+        --code-comment: #5f5f7c;
+        --hl: rgba(132, 5, 255, 0.08);
+
+        :global(html.dark) & {
+            --bar: #1e1e26;
+            --run-bg: rgba(152, 105, 247, 0.18);
+            --code-key: #cdb6fb;
+            --code-str: #ffc5b7;
+            --code-const: #06f0b1;
+            --code-comment: #7e7e9b;
+            --hl: rgba(152, 105, 247, 0.16);
+        }
+
+        display: grid;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+        height: 100%;
+        color: var(--text);
+        font-size: 0.75rem;
+    }
+
+    code {
+        padding: 0.0625rem 0.3125rem;
+        border-radius: 4px;
+        background: var(--chip);
+        font-family: $font-family-monospace;
+        font-size: 0.6875rem;
+        color: var(--text);
+    }
+
+    .translate {
+        grid-template-columns: minmax(0, 1fr) 12rem minmax(0, 1fr);
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    .compare {
+        grid-template-columns: minmax(0, 44rem);
+        justify-content: center;
+    }
+
+    .sheet {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 0.75rem;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+    }
+
+    .head {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.75rem;
+        height: 2.75rem;
+        padding: 0 0.875rem;
+        border-bottom: 1px solid var(--line);
+        background: var(--bar);
+        color: var(--muted);
+
+        code {
+            align-self: center;
+            margin-left: auto;
+            padding: 0.0625rem 0.375rem;
+            border-radius: 4px;
+            background: var(--chip);
+            font-size: 0.625rem;
+            color: var(--muted);
+        }
+    }
+
+    .tab {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        height: 2.125rem;
+        margin-bottom: -1px;
+        padding: 0 0.875rem 0 0.5rem;
+        border: 1px solid var(--line);
+        border-bottom: 0;
+        border-radius: 8px 8px 0 0;
+        background: var(--panel);
+        font-size: 0.8125rem;
+        font-weight: 500;
+        white-space: nowrap;
+        color: var(--text);
+
+        img,
+        > :global(svg) {
+            width: 1rem;
+            height: 1rem;
+        }
+    }
+
+    .kmark {
+        display: inline-grid;
+        place-items: center;
+        width: 1.25rem;
+        height: 1.25rem;
+        border-radius: 6px;
+        background: #0d0d10;
+
+        img {
+            width: 0.75rem;
+            height: 0.75rem;
+        }
+    }
+
+    pre {
+        max-height: 26rem;
+        margin: 0;
+        padding: 0.5rem 0 3rem;
+        overflow: hidden;
+        border: 0;
+        background: transparent;
+        font-family: $font-family-monospace;
+        font-size: 0.625rem;
+        line-height: 1.5;
+        color: var(--text) !important;
+        white-space: pre;
+    }
+
+    .ln {
+        display: block;
+        padding-right: 0.5rem;
+        transition:
+            opacity 0.3s ease,
+            background-color 0.6s ease;
+
+        i {
+            display: inline-block;
+            width: 2rem;
+            padding-right: 0.5rem;
+            font-style: normal;
+            text-align: right;
+            color: var(--muted);
+        }
+
+        :global(.k) {
+            color: var(--code-key);
+        }
+
+        :global(.s) {
+            color: var(--code-str);
+        }
+
+        :global(.v) {
+            color: var(--code-const);
+        }
+
+        :global(.c) {
+            font-style: italic;
+            color: var(--code-comment);
+        }
+
+        &.pair:global(.on) {
+            background: linear-gradient(90deg, var(--hl), transparent 85%);
+            box-shadow: inset 2px 0 0 var(--code-key);
+            animation: lit 0.9s ease;
+        }
+
+        &.out {
+            opacity: 0.12;
+        }
+
+        &.out.blank,
+        &.out:global(.on) {
+            opacity: 1;
+        }
+
+        &.out:global(.on) {
+            animation: lit 0.9s ease;
+        }
+    }
+
+    @keyframes lit {
+        from {
+            background: var(--run-bg);
+        }
+    }
+
+    .pairs {
+        display: grid;
+        gap: 0.5rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.375rem;
+            padding: 0.4375rem 0.5rem;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--panel);
+            font-family: $font-family-monospace;
+            font-size: 0.625rem;
+            line-height: 1.4;
+            color: var(--muted);
+            opacity: 0.3;
+            transition:
+                opacity 0.3s ease,
+                border-color 0.3s ease,
+                color 0.3s ease;
+
+            :global(svg) {
+                flex: none;
+                width: 0.875rem;
+                height: 0.875rem;
+                color: var(--ok);
+            }
+
+            &:global(.on) {
+                border-color: var(--ok);
+                color: var(--text);
+                opacity: 1;
+            }
+        }
+    }
+
+    .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.125rem 0.5rem;
+        border-radius: 999px;
+        font-size: 0.6875rem;
+        font-weight: 600;
+
+        :global(svg) {
+            width: 0.75rem;
+            height: 0.75rem;
+        }
+
+        &.running {
+            background: var(--run-bg);
+            color: var(--run);
+        }
+
+        &.success {
+            background: var(--ok-bg);
+            color: var(--ok);
+        }
+    }
+
+    .table-card {
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8125rem;
+        }
+
+        th {
+            padding: 0.5rem 0.875rem;
+            background: var(--deep);
+            font-weight: 500;
+            text-align: left;
+            color: var(--muted);
+
+            img {
+                width: 0.875rem;
+                height: 0.875rem;
+                vertical-align: -0.125rem;
+            }
+        }
+
+        td {
+            padding: 0.625rem 0.875rem;
+            border-top: 1px solid var(--line);
+            font-variant-numeric: tabular-nums;
+        }
+
+        tbody tr {
+            opacity: 0;
+            transition: opacity 0.4s ease;
+
+            &:global(.on) {
+                opacity: 1;
+                animation: lit 0.9s ease;
+            }
+        }
+    }
+
+    .verdict {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        padding: 0.75rem 0.875rem;
+        border-top: 1px solid var(--line);
+        font-size: 0.8125rem;
+        opacity: 0.3;
+        transition: opacity 0.4s ease;
+
+        .toggle {
+            position: relative;
+            width: 1.75rem;
+            height: 1rem;
+            border-radius: 999px;
+            background: #017cee;
+            transition: background-color 0.3s ease;
+
+            i {
+                position: absolute;
+                top: 0.125rem;
+                left: 0.875rem;
+                width: 0.75rem;
+                height: 0.75rem;
+                border-radius: 50%;
+                background: #ffffff;
+                transition: left 0.3s ease;
+            }
+        }
+
+        &:global(.on) {
+            opacity: 1;
+
+            .toggle {
+                background: var(--line);
+
+                i {
+                    left: 0.125rem;
+                }
+            }
+        }
+    }
+
+    .scroll-pane {
+        scroll-behavior: smooth;
+    }
+</style>

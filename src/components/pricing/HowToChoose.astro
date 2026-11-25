@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components"
 import BlockTitle from "~/components/enterprise/BlockTitle.astro"
 
 const DEFAULT_COLUMNS = ["Kestra Core", "Kestra Cloud", "Kestra Enterprise"]
@@ -33,6 +34,7 @@ interface Props {
     blockTitle?: string
     columns?: string[]
     rows?: { label: string; values: string[] }[]
+    more?: { label: string; href: string }
 }
 
 const {
@@ -41,6 +43,7 @@ const {
     blockTitle = title.toUpperCase(),
     columns = DEFAULT_COLUMNS,
     rows = DEFAULT_ROWS,
+    more,
 } = Astro.props
 ---
 
@@ -94,6 +97,11 @@ const {
                     </li>
                 ))}
             </ul>
+            {more && (
+                <a href={more.href} class="more">
+                    {more.label} <Icon name="mdi:arrow-right" />
+                </a>
+            )}
         </div>
     </div>
 </section>
@@ -132,6 +140,15 @@ const {
             margin: 0 auto;
             user-select: none;
         }
+    }
+
+    .more {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin: 2rem var(--inset) 0;
+        font-weight: 600;
+        color: var(--ks-content-link);
     }
 
     .scroll {

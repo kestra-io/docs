@@ -1,0 +1,42 @@
+---
+title: "Migrate from AWX and AAP to Kestra"
+description: "Keep your playbooks, replace the controller. Move AWX and AAP job templates, workflows and surveys to Kestra flows, run both side by side, then switch AWX off."
+metaTitle: "Migrate from AWX and AAP to Kestra"
+metaDescription: "Keep your playbooks, replace the controller. Move AWX and AAP job templates, workflows and surveys to Kestra flows, run both side by side, then switch AWX off."
+tag: migration
+date: 2026-11-24
+lastUpdated: 2026-11-24
+href: /resources/migration/awx
+resourceCta: false
+faq:
+  - question: "Is AWX still maintained?"
+    answer: 'AWX releases are no longer published. On November 16, 2026, the maintainers removed the release pipeline. See <a href="/resources/infrastructure/awx-release-status">AWX release status</a>.'
+  - question: "Do I have to rewrite my playbooks?"
+    answer: 'No. Kestra runs your playbooks, roles and collections with ansible-core, from your Git repositories, with your collections installed on the AnsibleCLI task''s image. What you rewrite is the controller''s configuration around them: job templates, surveys, workflow templates, schedules and credentials. If your roles live in separate repositories pulled in at run time, keep <code>requirements.yml</code> with Git sources so the install step can fetch them.'
+  - question: "Our AWX config is already in Git. What changes?"
+    answer: 'Your <code>awx.awx</code> files become the specification for the conversion, and the custom sync that applied them goes away. Each team keeps its repository, now holding Kestra flows, and a merge to main syncs it to the team''s namespace.'
+  - question: "Can Kestra and AWX run at the same time?"
+    answer: 'Yes, and running both is the usual path. A Kestra flow can launch an existing job template or workflow template through the controller''s API, so schedules and forms move first and job templates later.'
+  - question: "Should we stay on AWX, move to Ascender or AAP, or move to Kestra?"
+    answer: 'Stay on the AWX model if your team only runs Ansible, wants vendor support for ansible-core, and is happy with the controller. Move to Kestra if you need supported releases without per-node pricing, jobs routed by region or network zone, self-service for people outside the team, or events and AI agents in the same workflow. <a href="/resources/infrastructure/awx-alternatives">AWX alternatives</a> and <a href="/resources/infrastructure/awx-release-status">AWX release status</a> go through the options.'
+  - question: "What about Red Hat's automation orchestrator?"
+    answer: 'It adds a workflow layer above the AAP controller, sold as an add-on and run on OpenShift. <a href="/vs/ansible-automation-platform">Kestra vs AAP</a> compares the two before your next renewal.'
+  - question: "Can people outside the team launch jobs?"
+    answer: 'Yes. A Kestra App puts a form in front of any flow for people who never see the YAML (Enterprise), and Jira, ServiceNow or a Slack bot start the same flow through the executions API. Every run lands in one execution history.'
+  - question: "What replaces Event-Driven Ansible?"
+    answer: 'A trigger on the flow. A webhook, a Kafka message or another realtime event starts the flow directly, with a <code>when</code> expression in place of the rule condition. See the event-triggered remediation pattern on <a href="/orchestration/ansible">Ansible orchestration with Kestra</a>.'
+  - question: "What happens to our inventories?"
+    answer: 'Static inventories and host and group variables stay in Git. Dynamic inventory plugins such as NetBox keep working, since ansible-core runs them, as long as the collection and its Python dependencies are on the task''s image. Named inventories become a dynamic inventory with filters, or Assets selected by metadata (Enterprise). Variables defined in the AWX UI live in its database, so export them first.'
+  - question: "Can jobs run in isolated networks or air-gapped sites?"
+    answer: 'In isolated networks, yes: workers connect outbound to the control plane, so a worker group inside a restricted zone needs no inbound access. In an air-gapped site with no path out, run a separate Kestra instance there, installed from mirrored images and plugins with Kubernetes and Helm. See <a href="https://hs.kestra.io/hubfs/kestra-deployment-options-enterprise-edition.pdf" target="_blank" rel="noopener">Deployment options</a>.'
+  - question: "How do upgrades work?"
+    answer: 'A patch release is an image tag change, and database migrations run when the server restarts. Pin an exact version in production and upgrade on your schedule.'
+  - question: "Can AI agents run our automation?"
+    answer: 'Yes. Kestra exposes flows as tools through its MCP server, so an agent can start a job template''s replacement with typed inputs and the same access rules as a person.'
+  - question: "How do network automation teams use it?"
+    answer: 'With more of the change in one flow: dry run, approval with the diff, the change in its window, post-checks and rollback. Kestra also has plugins for the systems around the devices, including NetBox, Infoblox, Cisco, Arista, Palo Alto, Fortinet and F5. See the network change pattern on <a href="/orchestration/ansible">Ansible orchestration with Kestra</a>.'
+  - question: "Is Kestra priced per managed node like AAP?"
+    answer: 'No. Kestra Enterprise isn''t priced per managed node. See <a href="/vs/ansible-automation-platform">Kestra vs AAP</a>.'
+  - question: "How does Kestra compare with other AWX alternatives?"
+    answer: '<a href="/resources/infrastructure/awx-alternatives">AWX alternatives</a> and Tower alternatives compare the options side by side, and <a href="/vs/ansible-automation-platform">Kestra vs AAP</a> covers AAP.'
+---

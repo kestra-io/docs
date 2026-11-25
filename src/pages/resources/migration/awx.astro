@@ -1,0 +1,304 @@
+---
+import { getEntry } from "astro:content"
+import Layout from "~/components/layout.astro"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import PageShell from "~/components/home/PageShell.astro"
+import ReplaceLegacy from "~/components/home/ReplaceLegacy.astro"
+import HowItWorks from "~/components/home/HowItWorks.astro"
+import ControlPlane from "~/components/home/ControlPlane.astro"
+import RunKestra from "~/components/home/RunKestra.astro"
+import BuyerQuestions from "~/components/enterprise/BuyerQuestions.astro"
+import HowToChoose from "~/components/pricing/HowToChoose.astro"
+import MigrationHero from "~/components/migration/MigrationHero.astro"
+import MigrationTable from "~/components/migration/MigrationTable.astro"
+import AfHeroVisual from "~/components/airflow-migration-guide/AfHeroVisual.astro"
+import AwxScene from "~/components/awx-migration-guide/AwxScene.astro"
+import AwxCompare from "~/components/awx-migration-guide/AwxCompare.astro"
+import AwxStep from "~/components/awx-migration-guide/AwxStep.astro"
+import awxMark from "~/components/awx-migration-guide/assets/awx-placeholder.svg"
+import {
+    COMPARE_MORE,
+    COMPARE_ROWS,
+    HERO,
+    HERO_ROWS,
+    HOW,
+    LEAVE,
+    MAPPING,
+    MAPPING_LEAD,
+    PATTERNS,
+    PITFALLS,
+    PLAN_DOMAINS,
+    STARTS,
+    STATUS,
+    STEPS,
+    runEditions,
+} from "~/components/awx-migration-guide/guide"
+
+const post = await getEntry("resources", "awx-migration-guide")
+if (!post) throw new Error("resources/awx-migration-guide entry missing")
+const page = post.data
+
+const description = page.metaDescription ?? page.description
+const faqItems = page.faq ?? []
+const pageUrl = Astro.url.href.split("#")[0]
+
+const REFERENCE = [
+    {
+        id: "awx-ref-concepts",
+        label: "Concepts",
+        columns: ["AWX / AAP", "Kestra", "In the flow YAML"],
+        widths: ["30%", "36%"],
+        groups: MAPPING,
+    },
+    {
+        id: "awx-ref-pitfalls",
+        label: "Pitfalls",
+        columns: ["Pitfall", "What to do"],
+        widths: ["34%"],
+        groups: PITFALLS,
+    },
+]
+
+const jsonLinkedData = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
+    headline: page.title,
+    image: [`${Astro.url.origin}/og-image.png`],
+    author: { "@id": "https://kestra.io/#organization" },
+    ...(page.date ? { datePublished: page.date } : {}),
+    ...(page.lastUpdated ? { dateModified: page.lastUpdated } : {}),
+    publisher: {
+        "@type": "Organization",
+        "@id": "https://kestra.io/#organization",
+        name: "Kestra",
+        logo: { "@type": "ImageObject", url: "https://kestra.io/logo.svg" },
+    },
+    description,
+    proficiencyLevel: "Expert",
+    dependencies: "AWX, Ansible Automation Platform, Kestra",
+}
+
+const howToData = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: "Migrate from AWX and AAP to Kestra",
+    description: HERO.lead,
+    step: STEPS.map((step, index) => ({
+        "@type": "HowToStep",
+        position: index + 1,
+        name: step.title,
+        text: step.text,
+        url: `${pageUrl}#awx-plan-title`,
+    })),
+}
+---
+
+<Layout
+    title={page.metaTitle ?? page.title}
+    {description}
+    breadcrumbTitle={page.title}
+    headerClean
+    headerClear
+    headerOverDark
+>
+    <Fragment slot="head">
+        <meta property="og:type" content="article" />
+        {page.date && (
+            <meta
+                property="article:published_time"
+                content={new Date(page.date).toISOString()}
+            />
+        )}
+        {page.lastUpdated && (
+            <meta
+                property="article:modified_time"
+                content={new Date(page.lastUpdated).toISOString()}
+            />
+        )}
+        <script
+            is:inline
+            type="application/ld+json"
+            set:html={JSON.stringify(jsonLinkedData)}
+        />
+        <script
+            is:inline
+            type="application/ld+json"
+            set:html={JSON.stringify(howToData)}
+        />
+        <SchemaFAQ items={faqItems} />
+    </Fragment>
+    <PageShell>
+        <MigrationHero
+            id="awx-hero-title"
+            title={HERO.title}
+            lead={HERO.lead}
+            ctas={HERO.ctas}
+        >
+            <AfHeroVisual
+                source={{ mark: awxMark.src, label: "AWX", file: "awx.awx" }}
+                target="infra.linux.linux_patching"
+                rows={HERO_ROWS}
+            />
+        </MigrationHero>
+        <ReplaceLegacy
+            id="awx-status-title"
+            items={STATUS.items}
+            ctas={[]}
+            size="compact"
+        >
+            <Fragment slot="title">{STATUS.title}</Fragment>
+            <p slot="after" class="note">
+                {STATUS.after}{" "}
+                <a href={STATUS.link.href}>{STATUS.link.label} →</a>
+            </p>
+        </ReplaceLegacy>
+        <ReplaceLegacy id="awx-leave-title" items={LEAVE} ctas={[]}>
+            <Fragment slot="title">Why Teams Leave AWX and AAP</Fragment>
+            <figure slot="after" class="quote">
+                <svg viewBox="0 0 46 40" class="glyph" aria-hidden="true">
+                    <path
+                        d="M0 0v20.742h11.843c-.161 2.37-.822 6.365-3.33 9.113C6.543 32.01 3.757 33.06 0 33.06V40c5.683 0 10.228-1.823 13.513-5.417 4.062-4.446 5.244-10.484 5.422-13.835V0H0Z"
+                    ></path>
+                    <path
+                        d="M27.06 0v20.742h11.842c-.161 2.37-.821 6.365-3.33 9.113-1.97 2.155-4.756 3.205-8.512 3.205V40c5.682 0 10.227-1.823 13.512-5.417 4.063-4.446 5.245-10.484 5.422-13.835V0H27.06Z"
+                    ></path>
+                </svg>
+                <!-- Placeholder: the published quote from vs AAP, until a field quote is cleared. -->
+                <blockquote>
+                    Ansible output parsing was a massive win, it's deterministic
+                    and made our life so much easier.
+                </blockquote>
+                <figcaption>
+                    Principal Hosting,{" "}
+                    <a href="/stories/fortune-500-company">
+                        Fortune 500 industrial company
+                    </a>
+                </figcaption>
+            </figure>
+        </ReplaceLegacy>
+        <HowToChoose
+            headingId="awx-compare-choose"
+            title="AWX and AAP vs Kestra"
+            columns={["AWX / AAP", "Kestra"]}
+            rows={COMPARE_ROWS}
+            more={COMPARE_MORE}
+        />
+        <ReplaceLegacy
+            id="awx-starts-title"
+            items={STARTS.items}
+            ctas={[]}
+            tone="muted"
+        >
+            <Fragment slot="title">{STARTS.title}</Fragment>
+            <Fragment slot="lead">{STARTS.lead}</Fragment>
+            <p slot="after" class="note">{STARTS.after}</p>
+        </ReplaceLegacy>
+        <HowItWorks
+            headingId={HOW.headingId}
+            title={HOW.title}
+            lead=""
+            steps={HOW.steps}
+            foot={HOW.foot}
+        >
+            <AwxScene slot="scene-0" kind="translate" />
+            <AwxScene slot="scene-1" kind="check" />
+            <AwxScene slot="scene-2" kind="switch" />
+        </HowItWorks>
+        <AwxCompare />
+        <ControlPlane
+            headingId="awx-plan-title"
+            title="Migration Plan"
+            lead=""
+            domains={PLAN_DOMAINS}
+            bridge={false}
+        >
+            {PLAN_DOMAINS.map((domain, i) => (
+                <AwxStep slot={`visual-${domain.id}`} {...STEPS[i].visual} />
+            ))}
+        </ControlPlane>
+        <ReplaceLegacy
+            id="awx-after-title"
+            items={PATTERNS.items}
+            ctas={[]}
+            columns={3}
+        >
+            <Fragment slot="title">{PATTERNS.title}</Fragment>
+            <Fragment slot="lead" set:html={PATTERNS.lead} />
+        </ReplaceLegacy>
+        <MigrationTable
+            id="awx-map-title"
+            title="AWX to Kestra Mapping"
+            lead={MAPPING_LEAD}
+            tabs={REFERENCE}
+        />
+        <RunKestra
+            title="Where to Run the Flows"
+            lead="The same flows run on all three editions."
+            editions={runEditions()}
+            compare={{ label: "Compare editions", href: "/pricing" }}
+        />
+        <BuyerQuestions
+            title="Questions from AWX and AAP Teams"
+            items={faqItems}
+        />
+    </PageShell>
+</Layout>
+
+<style lang="scss">
+    .note {
+        max-width: 46rem;
+        margin: 0;
+        padding: 2.5rem var(--inset) 0;
+        font-size: 1.0625rem;
+        line-height: 1.6;
+        color: var(--ks-content-secondary);
+
+        a {
+            color: var(--ks-content-link);
+            white-space: nowrap;
+        }
+    }
+
+    .quote {
+        --surface: #f0f0fd;
+        --glyph: #4f6df7;
+
+        display: grid;
+        justify-items: start;
+        gap: 1.5rem;
+        margin: 0;
+        padding: 3rem var(--inset);
+        background: var(--surface);
+
+        :global(html.dark) & {
+            --surface: #1c1b2e;
+            --glyph: #a796ff;
+        }
+
+        .glyph {
+            width: 1.75rem;
+            height: 1.5rem;
+            fill: var(--glyph);
+            transform: scaleX(-1);
+        }
+
+        blockquote {
+            max-width: 46rem;
+            margin: 0;
+            font-size: clamp(1.25rem, 2vw, 1.5rem);
+            font-weight: 500;
+            line-height: 1.4;
+            color: var(--ks-content-primary);
+        }
+
+        figcaption {
+            font-size: 0.9375rem;
+            color: var(--ks-content-tertiary);
+
+            a {
+                color: var(--ks-content-link);
+            }
+        }
+    }
+</style>
