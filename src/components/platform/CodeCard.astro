@@ -174,7 +174,7 @@ const HTML = rows
         )}
         <slot name="status" />
     </figcaption>
-    <pre><code set:html={HTML} /></pre>
+    <pre tabindex="0"><code set:html={HTML} /></pre>
 </figure>
 
 <style lang="scss">
@@ -321,6 +321,11 @@ const HTML = rows
         line-height: 1.7;
         color: var(--code-text);
         background: transparent;
+
+        &:focus-visible {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: -2px;
+        }
     }
 
     code {
