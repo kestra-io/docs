@@ -182,120 +182,154 @@ const groups = [
 ---
 
 <PageShell>
-<div class="vs-body">
-    <ReplaceLegacy
-        id="vs-choose-title"
-        ctas={[]}
-        items={[
-            {
-                icon: "mdi:information-outline",
-                title: choose.competitor.title,
-                list: choose.competitor.list,
-            },
-            {
-                icon: "mdi:check-circle-outline",
-                title: choose.kestra.title,
-                list: choose.kestra.list,
-            },
-        ]}
-    >
-        <Fragment slot="title">{choose.title}</Fragment>
-        {choose.lead && <Fragment slot="lead">{choose.lead}</Fragment>}
-    </ReplaceLegacy>
-    <MigrationTable
-        id="vs-table-title"
-        title={table.title}
-        lead={table.lead}
-        {columns}
-        widths={["20%", "40%"]}
-        {groups}
-    />
-    {stories.length > 0 && (
-        <Customers stories={stories} foot={false} placeholder={false}>
-            <Fragment slot="title">{proof?.title}</Fragment>
-        </Customers>
-    )}
-    {architecture && (
+    <div class="vs-body">
         <ReplaceLegacy
-            id="vs-architecture-title"
+            id="vs-choose-title"
             ctas={[]}
             items={[
                 {
-                    icon: "mdi:cog-outline",
-                    title: architecture.competitor.title,
-                    text: architecture.competitor.text,
-                    list: architecture.competitor.list,
+                    icon: "mdi:information-outline",
+                    title: choose.competitor.title,
+                    list: choose.competitor.list,
                 },
                 {
-                    icon: "mdi:sitemap-outline",
-                    title: architecture.kestra.title,
-                    text: architecture.kestra.text,
-                    list: architecture.kestra.list,
+                    icon: "mdi:check-circle-outline",
+                    title: choose.kestra.title,
+                    list: choose.kestra.list,
                 },
             ]}
         >
-            <Fragment slot="title">{architecture.title}</Fragment>
-            {architecture.lead && (
-                <Fragment slot="lead">{architecture.lead}</Fragment>
-            )}
+            <Fragment slot="title">{choose.title}</Fragment>
+            {choose.lead && <Fragment slot="lead">{choose.lead}</Fragment>}
         </ReplaceLegacy>
-    )}
-    <VsCompare
-        headingId="vs-compare-title"
-        title={compare.title}
-        lead={compare.lead}
-        cta={compare.cta}
-        competitor={{
-            ...compare.competitor,
-            name: competitorName,
-            logo: monogram,
-        }}
-        kestra={compare.kestra}
-    />
-    {setup && (
-        <VsSetup
-            title={setup.title}
-            lead={setup.lead}
+        <MigrationTable
+            id="vs-table-title"
+            title={table.title}
+            lead={table.lead}
+            {columns}
+            widths={["20%", "40%"]}
+            {groups}
+        />
+        {stories.length > 0 && (
+            <Customers stories={stories} foot={false} placeholder={false}>
+                <Fragment slot="title">{proof?.title}</Fragment>
+            </Customers>
+        )}
+        {architecture && (
+            <ReplaceLegacy
+                id="vs-architecture-title"
+                ctas={[]}
+                items={[
+                    {
+                        icon: "mdi:cog-outline",
+                        title: architecture.competitor.title,
+                        text: architecture.competitor.text,
+                        list: architecture.competitor.list,
+                    },
+                    {
+                        icon: "mdi:sitemap-outline",
+                        title: architecture.kestra.title,
+                        text: architecture.kestra.text,
+                        list: architecture.kestra.list,
+                    },
+                ]}
+            >
+                <Fragment slot="title">{architecture.title}</Fragment>
+                {architecture.lead && (
+                    <Fragment slot="lead">{architecture.lead}</Fragment>
+                )}
+            </ReplaceLegacy>
+        )}
+        <VsCompare
+            headingId="vs-compare-title"
+            title={compare.title}
+            lead={compare.lead}
+            cta={compare.cta}
             competitor={{
-                ...setup.competitor,
+                ...compare.competitor,
                 name: competitorName,
                 logo: monogram,
             }}
-            kestra={setup.kestra}
+            kestra={compare.kestra}
         />
-    )}
-    {pairs.map((pair, idx) => (
-        <VsPair
-            headingId={slug(pair.title)}
-            title={pair.title}
-            lead={pair.lead}
-            columns={pairColumns(pair)}
+        {setup && (
+            <VsSetup
+                title={setup.title}
+                lead={setup.lead}
+                competitor={{
+                    ...setup.competitor,
+                    name: competitorName,
+                    logo: monogram,
+                }}
+                kestra={setup.kestra}
+            />
+        )}
+        {pairs.map((pair) => (
+            <VsPair
+                headingId={slug(pair.title)}
+                title={pair.title}
+                lead={pair.lead}
+                columns={pairColumns(pair)}
+            />
+        ))}
+        {guide ? (
+            <RunKestra
+                lead={`${guide.title} ${guide.description}`}
+                compare={{ label: guide.cta.label, href: guide.cta.href }}
+            />
+        ) : (
+            <RunKestra />
+        )}
+        <BuyerQuestions
+            title={faqTitle ?? `Questions about ${competitorName} and Kestra`}
+            items={faq}
         />
-    ))}
-    {guide ? (
-        <RunKestra
-            lead={`${guide.title} ${guide.description}`}
-            compare={{ label: guide.cta.label, href: guide.cta.href }}
-        />
-    ) : (
-        <RunKestra />
-    )}
-    <BuyerQuestions
-        title={faqTitle ?? `Questions about ${competitorName} and Kestra`}
-        items={faq}
-    />
-</div>
+    </div>
 </PageShell>
 
 <style lang="scss">
     .vs-body {
-        :global(section[aria-labelledby="vs-architecture-title"] .problems li > p) {
+        :global(
+            section[aria-labelledby="vs-architecture-title"] .problems li > p
+        ) {
             max-width: 36rem;
             margin-bottom: 1rem;
         }
 
         :global(.mig-table tbody td) {
             color: var(--ks-content-primary);
+        }
+
+        :global(section[aria-labelledby="vs-choose-title"] .head),
+        :global(section[aria-labelledby="vs-architecture-title"] .head) {
+            padding-block: 7rem 3.5rem;
+
+            @include media-breakpoint-down(md) {
+                padding-block: 4.5rem 2.5rem;
+            }
+        }
+
+        :global(section[aria-labelledby="vs-choose-title"] .problems > li),
+        :global(
+            section[aria-labelledby="vs-architecture-title"] .problems > li
+        ) {
+            padding-block: 2.5rem 2.75rem;
+
+            @include media-breakpoint-down(lg) {
+                padding-block: 1.75rem 2rem;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            :global(.mig-table tbody tr td.main) {
+                font-weight: inherit;
+            }
+
+            :global(.mig-table tbody tr td.main::before) {
+                content: attr(data-label) " · ";
+                font-weight: 600;
+                color: var(--ks-content-secondary);
+            }
         }
     }
 </style>
