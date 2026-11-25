@@ -63,7 +63,7 @@ Creating an `INFRASTRUCTURE` tenant, or changing a tenant to that type, requires
 ### Set the type
 
 - **When you create a tenant**: the creation wizard has a **Type** step. The type also appears in the final review step.
-- **On an existing tenant**: open **Instance Owner → Tenants**, open the tenant's **Settings** page, and change the type. Members see the new navigation and home page on their next page load. Switching a tenant to `INFRASTRUCTURE` also seeds it with the [example environment](../../../kestra-for-infra/01.setup/index.md#example-environment).
+- **On an existing tenant**: open **Instance Owner → Tenants**, open the tenant's **Settings** page, and change the type. Members see the new navigation and home page on their next page load. Switching a tenant to `INFRASTRUCTURE` also seeds it with the [example environment](../../../kestra-for-infra/01.setup/index.md#example-environment), but only if the tenant never received it. See [When examples are seeded](../../../kestra-for-infra/01.setup/index.md#when-examples-are-seeded).
 - **Through the API**: set `type` in the body of `POST /api/v1/tenants` or `PUT /api/v1/tenants/{id}`. `kestractl` and the Terraform provider don't set the type.
 
 A type change is recorded in the audit log as a tenant update.
