@@ -181,7 +181,9 @@ docker run -d --name kestra \
    ```
 
 :::alert{type="warning"}
-A `JAVA_OPTS` set in a component's own `extraEnv`, such as `deployments.worker.extraEnv`, replaces the one from `common`. Repeat the truststore flags in every component-level `JAVA_OPTS`.
+The chart doesn't merge `extraEnv` entries by name. A `JAVA_OPTS` set in a component's own `extraEnv`, such as `deployments.worker.extraEnv`, is added next to the one from `common`, so the container gets two `JAVA_OPTS` entries. Helm 4 then rejects the install with `duplicate entries for key [name="JAVA_OPTS"]`. With client-side apply (Helm 3, or Helm 4 with `--server-side=false`), the component's value wins and the truststore flags are lost.
+
+Set `JAVA_OPTS` in one place only: in `common.extraEnv`, or in the `extraEnv` of each component, with the truststore flags included. To add other JVM options to a single component, use `deployments.<component>.jvm.extraOpts` instead.
 :::
 
 ## Verify outbound connections
