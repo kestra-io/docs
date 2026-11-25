@@ -49,7 +49,7 @@ const { title, subtitle, items, align = "center" } = Astro.props;
                             </span>
                         )}
                         {typeof item.icon === "string" ? <Icon name={item.icon} class="icon" /> : item.icon && <item.icon class="icon" size={24} />}
-                        {item.number && <h3 class="number">{item.number}</h3>}
+                        {item.number && <p class="number">{item.number}</p>}
                         <h6
                             class="title"
                             set:html={item.title}
@@ -226,6 +226,17 @@ const { title, subtitle, items, align = "center" } = Astro.props;
                         margin: 0;
                         color: var(--ks-icon-color);
                         align-self: flex-start;
+                        font-size: calc(1.3rem + 0.6vw);
+                        font-weight: 600;
+                        line-height: 1.2;
+
+                        @include media-breakpoint-down(lg) {
+                            font-size: $h4-font-size;
+                        }
+
+                        @include media-breakpoint-up(xl) {
+                            font-size: $h3-font-size;
+                        }
                     }
 
                     .title {
