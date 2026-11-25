@@ -227,7 +227,7 @@ title: T
 ---
 
 import ChildCard from "~/components/docs/ChildCard.astro"
-import PluginCount from "~/components/content/PluginCount.vue"
+import PluginCount from "~/components/content/PluginCount.astro"
 
 Welcome.`)
         expect(html).not.toContain("import ChildCard")
