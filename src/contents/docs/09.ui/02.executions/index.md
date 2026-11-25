@@ -31,7 +31,7 @@ The **Previous** and **Next Execution** buttons step through past and scheduled 
 
 The **Overview** tab also supports [**Replay**](../../15.how-to-guides/replay/index.md) and **Pause**, and displays execution history for comparing previous runs.
 
-The Overview tab also embeds a **topology diagram** showing each task's state in the execution graph — green for `SUCCESS`, red for `FAILED`. Click any task node to access its logs, replay it, or change its status.
+The Overview tab also embeds a **topology diagram** showing each task's state in the execution graph: green for `SUCCESS`, red for `FAILED`. Select the information icon on a task node to open the task's details: its metrics, logs, outputs, and artifacts, with actions to replay the task, change its state, or view its source.
 
 ### Loop iterations in the topology
 
@@ -135,6 +135,20 @@ The **Debug Expression** button evaluates [expressions](../../expressions/index.
 The **Metrics** tab shows every metric exposed by tasks after execution. For example, an HTTP Request task emits `request.bytes`, `response.bytes`, and `response.length` per request. A BigQuery load task might expose rows inserted and bytes processed. An AI plugin task might show token usage.
 
 ![Kestra User Interface Execution Metric](./execution-metrics-view.png)
+
+## Artifacts
+
+Some plugins add views to an execution that summarize what their tasks did, such as the SQL a JDBC task ran, the rows it affected, and the tables it read and wrote. These views are plugin artifacts. A task gets them from its plugin, or from the plugin of its task runner.
+
+When at least one task in the execution provides an artifact, the topology shows an artifact button under that task's node, and the execution gets an **Artifacts** tab. The button opens the task's details on its **Artifacts** tab.
+
+![Two JDBC task nodes in the execution topology, each with a 1 artifact button next to its duration](./execution-task-artifact-button.png)
+
+The **Artifacts** tab lists the artifacts by task, with each task's type and duration. Select one to show it next to the list, or open it in fullscreen. When a task provides several artifacts, switch between them above the view. For a task inside a [`Loop`](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop), pick the iteration to show.
+
+![The Artifacts tab of an execution showing the Execution details artifact of a JDBC Queries task: its SQL, rows affected, duration, and the tables it created and read](./execution-artifacts-tab.png)
+
+For the plugins that provide artifacts, see [Plugin artifacts and assets](../../06.concepts/plugin-artifacts-vs-assets/index.md).
 
 ## Dependencies
 

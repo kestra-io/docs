@@ -15,7 +15,7 @@ Approvals, asset leases and the ASSET input, searchable execution values, custom
 - **Asset relations (EE, Cloud)**: `partOf` and `related` model deployments and their resources, and replace lineage events. [Migration guide](../../../11.migration-guide/v2.1.0/asset-relations/index.md)
 - **Bulk asset API (EE, Cloud)**: create or update many assets in one request, with a dry run to preview the result. [Docs](../../../07.enterprise/02.governance/01.assets/03.manage-assets/index.md#create-or-update-assets-in-bulk)
 
-<!-- TODO(GA): Data Orchestration Artifacts (dbt, Airbyte, Fivetran, JDBC) are changelog-only for 2.1 (no blog or social mention). Add one bullet once their plugin releases are confirmed for GA; dbt asset types and the Airbyte asset row depend on unreleased plugin versions. -->
+<!-- TODO(GA): dbt artifacts and asset types (plugin-dbt#350, #351, #362, #364) are held for a plugin release after core 2.1. Add dbt to the Artifacts bullet under UI once they ship. -->
 
 ## Workflow components
 
@@ -36,6 +36,7 @@ Approvals, asset leases and the ASSET input, searchable execution values, custom
 
 ## UI
 
+- **Execution artifacts**: an execution's **Artifacts** tab, and an artifact button on the task nodes that have one, show what data tasks did: the SQL a JDBC task ran and the tables it read and wrote, an Airbyte job's per-stream sync stats, or a Fivetran connector's freshness and per-table breakdown. [Docs](../../../09.ui/02.executions/index.md#artifacts)
 - **Execution timeline**: a time-axis view of executions grouped by namespace and flow. [Docs](../../../09.ui/02.executions/index.md#timeline)
 - **Loop iterations in the Gantt**: expand a `Loop` to its iterations in place and step between failures. [Docs](../../../09.ui/02.executions/index.md#loop-iterations)
 - **Notifications**: the notifications bell comes to the open-source edition, and bulk actions on executions, triggers, and backfills report their progress there. A new `Notify` task sends notifications to users from a flow. [Docs](../../../09.ui/index.mdx#notifications)
