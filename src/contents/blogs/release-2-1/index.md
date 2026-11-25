@@ -277,7 +277,7 @@ Since 2.0, 60 new plugin repositories have been released, which brings the catal
 **AI**
 - [Cerebras](/plugins/plugin-cerebras) (LLM inference), [TypeSafe](/plugins/plugin-typesafe) (evaluate content with its Jev decision model), and [Sonilo](/plugins/plugin-sonilo) (generate music and sound effects).
 - Vector databases: [Qdrant](/plugins/plugin-qdrant), [Chroma](/plugins/plugin-chroma), [LanceDB](/plugins/plugin-lancedb), and [Milvus](/plugins/plugin-milvus).
-- Web data for agents: [Firecrawl](/plugins/plugin-firecrawl) and [Browser Use](/plugins/plugin-browseruse).
+- Web data and browser automation: [Firecrawl](/plugins/plugin-firecrawl), [Browser Use](/plugins/plugin-browseruse), [Playwright](/plugins/plugin-playwright), and [Selenium](/plugins/plugin-selenium).
 
 **Business**
 - [Pylon](/plugins/plugin-pylon), [Figma](/plugins/plugin-figma), [Clay](/plugins/plugin-clay), [Box](/plugins/plugin-box), [Mailchimp](/plugins/plugin-mailchimp), [Ashby](/plugins/plugin-ashby), [Matrix](/plugins/plugin-matrix), and [Camunda](/plugins/plugin-camunda).
@@ -287,12 +287,9 @@ Since 2.0, 60 new plugin repositories have been released, which brings the catal
 **Cloud**
 - [Alibaba Cloud](/plugins/plugin-alibaba).
 
-**Core**
-- [Playwright](/plugins/plugin-playwright) and [Selenium](/plugins/plugin-selenium) for browser automation, and [Apache PDFBox](/plugins/plugin-pdfbox) for PDF files.
-
 **Data**
 - Storage and streams: [Apache Iceberg](/plugins/plugin-iceberg), [Apache Hudi](/plugins/plugin-hudi), [ScyllaDB](/plugins/plugin-scylladb), [Quickwit](/plugins/plugin-quickwit), [Apache Iggy](/plugins/plugin-iggy), [S2](/plugins/plugin-s2), and [DataHub](/plugins/plugin-ee-datahub) (EE).
-- Pipelines: [Apache NiFi](/plugins/plugin-nifi).
+- Pipelines and documents: [Apache NiFi](/plugins/plugin-nifi) and [Apache PDFBox](/plugins/plugin-pdfbox) for PDF files.
 - BI and analytics: [Looker](/plugins/plugin-looker), [Apache Superset](/plugins/plugin-superset), [Metabase](/plugins/plugin-metabase), [GoodData](/plugins/plugin-gooddata), [Qlik Cloud](/plugins/plugin-qlikcloud), [Google Data Studio](/plugins/plugin-data-studio), and [PostHog](/plugins/plugin-posthog).
 
 **Infrastructure**
