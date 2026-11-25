@@ -3,7 +3,7 @@ title: "Claude Code Quickstart: Build and Deploy Kestra Flows with AI"
 h1: Set Up Claude Code to Build, Deploy, and Run Kestra Flows
 sidebarTitle: Claude Code Quickstart
 icon: /src/contents/docs/icons/ai.svg
-description: Connect Claude Code, Cursor, or Codex to Kestra with the Docs MCP server, Agent Skills, and kestractl, then write, deploy, and run a flow from a prompt.
+description: Connect Claude Code, Cursor, or Codex to Kestra with the Docs MCP Server, Agent Skills, and kestractl, then write, deploy, and run a flow from a prompt.
 ---
 
 import CodeTabs from "~/components/common/CodeTabs.vue"
@@ -16,14 +16,14 @@ This page is for anyone who wants to point a coding agent at Kestra and describe
 
 | Piece | What it gives your agent |
 | --- | --- |
-| [Docs MCP server](../develop-with-ai/02.kestra-mcp-resources/index.md) | Live plugin schemas, blueprints, and Kestra documentation, so the agent doesn't guess task properties |
+| [Docs MCP Server](../develop-with-ai/02.kestra-mcp-resources/index.md) | Live plugin schemas, blueprints, and Kestra documentation, so the agent doesn't guess task properties |
 | [Agent Skills](../develop-with-ai/03.agent-skills/index.md) | Instructions for writing valid flows, hardening them, and operating Kestra |
 | [`kestractl`](../kestra-cli/kestractl/index.md#installation) | The CLI that the agent calls to validate, deploy, and run flows |
 | A `kestractl` context | The URL, tenant, and credentials for your instance |
 
 ## Prerequisites
 
-- [Claude Code](https://docs.claude.com/en/docs/claude-code/overview) installed, or [Cursor](https://cursor.com/) or [Codex](https://developers.openai.com/codex). For other agents, see [Docs MCP server](../develop-with-ai/02.kestra-mcp-resources/index.md#other-ai-tools).
+- [Claude Code](https://docs.claude.com/en/docs/claude-code/overview) installed, or [Cursor](https://cursor.com/) or [Codex](https://developers.openai.com/codex). For other agents, see [Docs MCP Server](../develop-with-ai/02.kestra-mcp-resources/index.md#other-ai-tools).
 - A terminal on macOS or Linux. On Windows, use [WSL](https://learn.microsoft.com/en-us/windows/wsl/install).
 - [Node.js](https://nodejs.org/) to install the skills with `npx`. You can also install them manually without Node.js.
 - A running Kestra 2.0 instance. If you don't have one, start one locally in the next step.
@@ -48,9 +48,9 @@ Open `http://localhost:8080` and create your user when the UI prompts you. Keep 
 
 For a persistent setup with PostgreSQL, see [Docker Compose installation](../02.installation/03.docker-compose/index.md). For Kubernetes and cloud installs, see the [Installation guide](../02.installation/index.mdx).
 
-## Step 2: Connect the Docs MCP server
+## Step 2: Connect the Docs MCP Server
 
-The Docs MCP server is a public, read-only endpoint hosted by Kestra at `https://api.kestra.io/v1/mcp`. It needs no account or API key, and it doesn't connect to your instance.
+The Docs MCP Server is a public, read-only endpoint hosted by Kestra at `https://api.kestra.io/v1/mcp`. It needs no account or API key, and it doesn't connect to your instance.
 
 Add the server, then list your servers to check that `kestra` appears:
 
@@ -148,7 +148,7 @@ star count. Save it as ./flows/github_stars.yaml. Then use kestra-ops
 to deploy it to my Kestra instance, run it, and tell me the result.
 ```
 
-The agent uses `kestra-flow` to look up the HTTP and Log task schemas on the Docs MCP server and write the flow file. It then uses `kestra-ops` to validate, deploy, and run the flow with `kestractl`.
+The agent uses `kestra-flow` to look up the HTTP and Log task schemas on the Docs MCP Server and write the flow file. It then uses `kestra-ops` to validate, deploy, and run the flow with `kestractl`.
 
 To deploy and run the flow yourself instead, run the same commands the agent uses:
 
