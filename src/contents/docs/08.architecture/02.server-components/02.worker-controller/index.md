@@ -76,16 +76,52 @@ When a Worker leaves the cluster, the Worker Controller doesn't resend its unfin
 
 ### Jobs that never reach a Worker
 
-A Worker's stream can stop delivering jobs while the Worker stays connected. This happens behind a load balancer or proxy that terminates HTTP/2 and answers the connection's keep-alive pings itself, or when the Worker Controller recycles the stream right after sending a job. Heartbeats use separate calls, so the Worker still looks alive and the liveness coordinator never resubmits the job.
+A task can stay in `RUNNING` without ever starting, or a trigger can stop firing, while its Worker still looks healthy. The job was lost on its way to the Worker, but the Worker keeps sending heartbeats, so Kestra doesn't treat the Worker as dead and doesn't resubmit the job.
 
-To recover these jobs, the Worker reports the jobs it holds when it opens a stream, and then every `kestra.worker.job-stream.sync-interval` (30 seconds by default). A Worker holds a job from the moment it receives it until the Worker Controller accepts the job's final result. The Worker Controller acknowledges each report and compares it with the jobs it recorded as running on that Worker. A job sent on an earlier stream that the Worker doesn't hold never arrived, so the Worker Controller:
+This usually happens when a load balancer or proxy between the Workers and the Worker Controller terminates HTTP/2 connections and answers keep-alive pings itself: the connection looks open, but jobs no longer get through. It can also happen when the Worker Controller closes a connection right after sending a job.
 
-- Puts a task back on its queue. It discards the task instead when the task run already ended, the execution was killed, cancelled, or deleted, or a [kill switch](../../../07.enterprise/05.instance/kill-switch/index.md) applies to it.
-- Hands a trigger back to the Scheduler, which evaluates it again from the current flow revision.
+#### How Kestra recovers lost jobs
 
-The Worker Controller doesn't resubmit jobs sent on the current stream, since they may still be on their way. If the Worker Controller stops acknowledging reports for `kestra.worker.job-stream.sync-timeout` (65 seconds by default), the Worker drops the stream and reconnects, and the next report covers the jobs sent on the old stream. A Worker only drops a stream for this reason after the Worker Controller has acknowledged at least one report on it, so a Worker connected to an older Worker Controller that doesn't acknowledge reports keeps its stream.
+Each Worker reports the jobs it holds to the Worker Controller when it connects and then at a regular interval, and the Worker Controller acknowledges each report. When a Worker doesn't report a job that the Worker Controller sent it on an earlier connection, the job never arrived, and the Worker Controller resubmits it:
 
-Each resubmitted job increments `controller.job.resubmitted.total`. A resubmitted task logs `Resubmit WorkerTask: it never reached its worker.` on its task run.
+- A task goes back on its queue. A `WorkingDirectory` goes back as a whole, with all of its tasks.
+- A trigger goes back to the Scheduler, which evaluates it again against the current flow revision.
+
+The Worker Controller discards a task instead of resubmitting it when the task run already ended, when the execution is being killed, was killed or cancelled, or no longer exists, or when a [kill switch](../../../07.enterprise/05.instance/kill-switch/index.md) applies to it.
+
+A Worker notices that its connection stopped delivering jobs when its reports are no longer acknowledged. After `sync-timeout` without an acknowledgment, the Worker opens a new connection, and the Worker Controller resubmits the lost jobs as soon as it reconnects. With the default settings, Kestra recovers a lost job in about a minute. When the Worker Controller closes the connection itself, the Worker reconnects right away, and recovery takes seconds.
+
+#### Check whether jobs are lost
+
+On the Worker Controller:
+
+- The `controller.job.resubmitted.total` metric counts resubmitted jobs, tagged by worker group and worker queue.
+- A resubmitted task logs a `WARN` message on its task run: `Resubmit WorkerTask: it never reached its worker.`
+- A resubmitted trigger logs a `WARN` message: `Trigger never reached worker '<worker-id>', notifying the scheduler.`
+
+On the Worker:
+
+- The `worker.stream.reconnect.count` metric, with the `reason` tag `sync_unacknowledged`, counts the reconnections caused by unacknowledged reports.
+- The Worker logs a `WARN` message that starts with `The controller has not acknowledged the jobs held by this worker`.
+
+An occasional resubmission is expected, for example during a network interruption or a Worker Controller restart. If these counters keep increasing, check the HTTP/2 and keep-alive settings of the load balancer or proxy between your Workers and the Worker Controller. Resubmission limits the impact, but each lost job is still delayed until Kestra recovers it.
+
+#### Tune the sync settings
+
+Set these properties on the Workers:
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `kestra.worker.job-stream.sync-interval` | `30s` | How often a Worker reports the jobs it holds. |
+| `kestra.worker.job-stream.sync-timeout` | `65s` | How long a Worker waits for the Worker Controller to acknowledge a report before it reconnects. It sets how long a lost job can wait before Kestra recovers it. |
+
+Keep `sync-timeout` above `sync-interval`, ideally at least twice as long. Otherwise, a Worker reconnects between two reports even when its connection is healthy.
+
+To recover lost jobs faster, lower `sync-timeout`, and lower `sync-interval` with it. Shorter intervals add traffic and work on the Worker Controller.
+
+:::alert{type="info"}
+During a rolling upgrade, a Worker connected to an older Worker Controller that doesn't acknowledge reports keeps its connection. `sync-timeout` only applies once the Worker Controller has acknowledged at least one report on that connection.
+:::
 
 ## Storage access through the Worker Controller
 
