@@ -213,6 +213,8 @@ const RUNTIME = [
     @use "./style/platform" as *;
 
     .production {
+        border-top: 1px solid var(--ks-border-primary);
+
         @include tinted;
 
         :global(.section-head h2 span) {
@@ -240,6 +242,7 @@ const RUNTIME = [
     .features {
         display: flex;
         flex-direction: column;
+        margin-inline: -1rem;
         border-bottom: 1px solid var(--ks-border-primary);
     }
 
@@ -249,13 +252,35 @@ const RUNTIME = [
         align-items: center;
         justify-content: space-between;
         gap: 1rem;
-        padding: 0.875rem 0;
+        padding: 0.875rem 1rem;
         border: 0;
         border-top: 1px solid var(--ks-border-primary);
         background: none;
         font: inherit;
         text-align: left;
         cursor: pointer;
+        transition: background-color 0.25s ease;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 3px;
+            background: var(--ks-content-link);
+            transform: scaleY(0);
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        &.active {
+            background: var(--ks-background-body);
+            box-shadow: 0 8px 24px -16px rgba(43, 43, 51, 0.35);
+
+            &::before {
+                transform: none;
+            }
+        }
 
         &:focus-visible {
             outline: 2px solid var(--ks-border-active);
@@ -275,8 +300,8 @@ const RUNTIME = [
         }
 
         &.active .key {
-            background: var(--ks-content-primary);
-            color: var(--ks-background-body);
+            background: var(--ks-content-link);
+            color: #ffffff;
         }
     }
 

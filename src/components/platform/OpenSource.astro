@@ -2,6 +2,7 @@
 import Rails from "./Rails.astro"
 import { Icon } from "astro-icon/components"
 import SectionHead from "~/components/home/SectionHead.astro"
+import PixelGrid from "~/components/common/PixelGrid.astro"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
 const totalPlugins = await fetchTotalPluginsCount()
@@ -26,14 +27,28 @@ const CARDS = [
     },
 ]
 
+const MASK =
+    "radial-gradient(ellipse 32% 42% at 50% 50%, rgba(0, 0, 0, 0.35) 30%, #000 100%)"
+
 const STATS = [
-    { value: "30,000", label: "GitHub stars", live: "github-stars" },
-    { value: totalPlugins, label: "Plugins" },
+    {
+        icon: "mdi:star-outline",
+        value: "30,000",
+        label: "GitHub stars",
+        live: "github-stars",
+    },
+    { icon: "mdi:puzzle-outline", value: totalPlugins, label: "Plugins" },
 ]
 ---
 
-<section class="open-source" id="open" aria-labelledby="open-h">
-    <Rails>
+<section
+    class="open-source surface-dark"
+    id="open"
+    aria-labelledby="open-h"
+    data-header-dark
+>
+    <PixelGrid rows={56} cell={16} gap={5} mask={MASK} />
+    <Rails dark>
         <SectionHead id="open-h" align="start">
             Built in the open.
             <Fragment slot="lead">
@@ -46,6 +61,7 @@ const STATS = [
             <dl class="stats">
                 {STATS.map((stat) => (
                     <div>
+                        <Icon name={stat.icon} class="icon" />
                         <dt>{stat.label}</dt>
                         <dd>
                             <span class="arrow" aria-hidden="true">
@@ -149,69 +165,134 @@ const STATS = [
 </script>
 
 <style lang="scss">
+    @use "./style/platform" as *;
+
     .open-source {
-        border-bottom: 1px solid var(--ks-border-primary);
+        --ks-content-primary: #ffffff;
+        --ks-content-secondary: #adadbf;
+        --ks-content-tertiary: #8c8ca0;
+        --ks-content-link: #b9a6ff;
+        --ks-background-secondary: rgba(255, 255, 255, 0.04);
+
+        position: relative;
+        overflow: hidden;
+        border-block: 1px solid var(--band-line);
+        background: #111114;
+
+        @include band-lines;
+
+        > :global(.container-xl) {
+            position: relative;
+        }
     }
 
     .open-grid {
-        --rule: 1px solid var(--ks-border-primary);
+        --rule: 1px solid var(--band-line);
 
         display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+        grid-template-columns: repeat(5, minmax(0, 1fr));
         margin: 0 calc(-1 * var(--inset));
         border-block: var(--rule);
+        background: #111114;
 
         @include media-breakpoint-down(xl) {
+            grid-template-columns: repeat(6, minmax(0, 1fr));
             margin: 0;
             border: var(--rule);
             border-radius: 0.75rem;
             overflow: hidden;
         }
 
-        @include media-breakpoint-down(lg) {
+        @include media-breakpoint-down(md) {
             grid-template-columns: minmax(0, 1fr);
         }
     }
 
-    .stats {
-        display: grid;
-        grid-template-rows: 1fr 1fr;
-        margin: 0;
-        border-right: var(--rule);
+    .stats,
+    .cards {
+        display: contents;
+    }
 
-        @include media-breakpoint-down(lg) {
-            grid-template-rows: none;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            border-right: 0;
-            border-bottom: var(--rule);
+    .stats > div,
+    .cards > li {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 1.75rem;
+        padding: 1.75rem 1.75rem 2rem;
+        transition: background-color 0.3s ease;
+
+        & + * {
+            border-left: var(--rule);
         }
 
-        @include media-breakpoint-down(sm) {
-            grid-template-columns: minmax(0, 1fr);
+        &::before {
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--ks-content-primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        div {
-            display: flex;
-            flex-direction: column-reverse;
-            justify-content: center;
-            gap: 1rem;
-            padding: 2.5rem var(--inset);
+        &:hover {
+            background: var(--ks-background-secondary);
 
-            & + div {
+            &::before {
+                transform: none;
+            }
+        }
+    }
+
+    .cards > li:first-child {
+        border-left: var(--rule);
+    }
+
+    @include media-breakpoint-down(xl) {
+        .stats > div {
+            grid-column: span 3;
+        }
+
+        .cards > li {
+            grid-column: span 2;
+            border-top: var(--rule);
+
+            &:first-child {
+                border-left: 0;
+            }
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        .stats > div,
+        .cards > li {
+            grid-column: auto;
+            border-left: 0;
+
+            & + * {
+                border-left: 0;
                 border-top: var(--rule);
-
-                @include media-breakpoint-down(lg) {
-                    border-top: 0;
-                    border-left: var(--rule);
-                }
-
-                @include media-breakpoint-down(sm) {
-                    border-left: 0;
-                    border-top: var(--rule);
-                }
             }
         }
 
+        .cards > li:first-child {
+            border-top: var(--rule);
+        }
+    }
+
+    .open-grid :global(.icon) {
+        flex: none;
+        width: 1.5rem;
+        height: 1.5rem;
+        color: var(--ks-content-tertiary);
+        transition: color 0.3s ease;
+    }
+
+    .stats {
         dd {
             display: flex;
             align-items: flex-start;
@@ -222,14 +303,19 @@ const STATS = [
         }
 
         .arrow {
-            margin: 0.35em 0.15em 0 0;
-            font-size: clamp(1.25rem, 2.2vw, 2rem);
+            margin: 0.3em 0.15em 0 0;
+            font-size: 1.25rem;
             line-height: 1;
-            color: var(--ks-content-color-highlight);
+            color: var(--ks-content-tertiary);
+            transition: color 0.3s ease;
+
+            div:hover & {
+                color: var(--ks-content-link);
+            }
         }
 
         .value {
-            font-size: clamp(3.25rem, 6.5vw, 6rem);
+            font-size: clamp(2.5rem, 3.6vw, 3.5rem);
             font-weight: 500;
             letter-spacing: -0.05em;
             line-height: 0.9;
@@ -238,76 +324,39 @@ const STATS = [
         .suffix {
             align-self: flex-end;
             margin-left: 0.15em;
-            font-size: clamp(1.75rem, 2.8vw, 2.5rem);
+            font-size: 1.5rem;
             font-weight: 500;
             line-height: 1;
             color: var(--ks-content-secondary);
         }
 
         dt {
-            font-family: $font-family-monospace;
-            font-size: 0.75rem;
+            margin-bottom: -1rem;
+            font-size: 1.0625rem;
             font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--ks-content-tertiary);
+            color: var(--ks-content-primary);
+        }
+
+        div:hover :global(.icon) {
+            color: var(--ks-content-link);
         }
     }
 
     .cards {
-        display: grid;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-
-        li {
-            position: relative;
-            display: grid;
-            grid-template-columns: 1.75rem minmax(0, 1fr);
-            gap: 1.25rem;
-            padding: 2rem var(--inset);
-            transition: background-color 0.3s ease;
-
-            & + li {
-                border-top: var(--rule);
-            }
-
-            &::before {
-                content: "";
-                position: absolute;
-                top: -1px;
-                left: 0;
-                right: 0;
-                height: 2px;
-                background: var(--ks-content-primary);
-                transform: scaleX(0);
-                transform-origin: left;
-                transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-            }
-
-            &:hover {
-                background: var(--ks-background-secondary);
-
-                &::before {
-                    transform: none;
-                }
-
-                :global(.icon) {
-                    color: var(--ks-content-link);
-                }
-            }
+        li:hover :global(.icon) {
+            color: var(--ks-content-link);
         }
 
         h3 {
             margin: 0 0 0.375rem;
-            font-size: 1.125rem;
+            font-size: 1.0625rem;
             font-weight: 600;
             color: var(--ks-content-primary);
         }
 
         p {
             margin: 0;
-            font-size: $font-size-md;
+            font-size: $font-size-sm;
             line-height: 1.55;
             color: var(--ks-content-secondary);
         }
@@ -321,13 +370,6 @@ const STATS = [
                 position: absolute;
                 inset: 0;
             }
-        }
-
-        :global(.icon) {
-            width: 1.75rem;
-            height: 1.75rem;
-            color: var(--ks-content-tertiary);
-            transition: color 0.3s ease;
         }
     }
 </style>
