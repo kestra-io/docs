@@ -50,7 +50,13 @@ const SPARKS = [
     <Rails dark top="none" bottom="none" lines={false}>
         <div class="grid">
             <div class="copy">
-                <h1 id="platform-hero" set:html={TITLE} />
+                <h1 id="platform-hero">
+                    <span class="product">
+                        Lorem ipsum
+                        <span class="visually-hidden">:</span>
+                    </span>
+                    <span class="claim" set:html={TITLE} />
+                </h1>
                 <p class="lead">
                     Schedule, trigger, observe, and govern every workflow. Use
                     any language, orchestrate any system, deploy anywhere.
@@ -560,6 +566,47 @@ const SPARKS = [
         line-height: 1.05;
         text-wrap: balance;
         color: #ffffff;
+    }
+
+    .product {
+        display: block;
+        width: fit-content;
+        background: linear-gradient(
+                90deg,
+                #ffffff 0%,
+                #e4dcff 25%,
+                #a996ff 50%,
+                #e4dcff 75%,
+                #ffffff 100%
+            )
+            0 0 / 200% 100% repeat-x;
+        background-clip: text;
+        text-transform: uppercase;
+        color: transparent;
+    }
+
+    .claim {
+        display: block;
+        margin-top: 0.4em;
+        font-size: 0.5em;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+
+        @include media-breakpoint-down(md) {
+            font-size: 0.62em;
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .product {
+            animation: hero-sheen 8s linear infinite;
+        }
+    }
+
+    @keyframes hero-sheen {
+        to {
+            background-position-x: 200%;
+        }
     }
 
     h1 :global(.brand-dot) {
