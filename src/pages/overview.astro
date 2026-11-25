@@ -1,6 +1,7 @@
 ---
 import Layout from "~/components/layout.astro"
 import SchemaSoftwareApplication from "~/components/common/SchemaSoftwareApplication.astro"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 import PageShell from "~/components/home/PageShell.astro"
 import Hero from "~/components/platform/Hero.astro"
 import Architecture from "~/components/platform/Architecture.astro"
@@ -11,15 +12,52 @@ import DeveloperFit from "~/components/platform/DeveloperFit.astro"
 import Ai from "~/components/platform/Ai.astro"
 import OpenSource from "~/components/platform/OpenSource.astro"
 import RunKestra from "~/components/home/RunKestra.astro"
+import BuyerQuestions from "~/components/enterprise/BuyerQuestions.astro"
 
 const title = "Kestra Platform"
 const description =
     "Schedule, trigger, observe, and govern every workflow. Use any language, orchestrate any system, deploy anywhere."
+
+const FAQ = [
+    {
+        question: "What is Kestra?",
+        answer: "Kestra is an open-source orchestration platform. You declare workflows in YAML, and Kestra schedules, triggers, runs and tracks them across the systems you already use. Data pipelines, infrastructure jobs, business processes and AI workflows run on the same engine.",
+    },
+    {
+        question: "Can I still run my cron jobs?",
+        answer: 'Yes. A Schedule trigger takes the same cron expression and a time zone. Unlike crontab, Kestra keeps the logs of every run, can retry failed tasks, catches up on runs missed while the server was down, and lets you backfill a past date range. See the <a href="/docs/workflow-components/triggers/schedule-trigger">Schedule trigger</a>.',
+    },
+    {
+        question: "How do I replace a legacy scheduler with Kestra?",
+        answer: 'One job at a time. Start by calling the existing scripts and jobs from Kestra flows over SSH or a script task, so they keep running as they are while you gain logs, retries and alerts. Run both schedulers in parallel, compare the results, then rewrite jobs as native flows and switch them off in the old tool. See the <a href="/resources/legacy-orchestration-migration">legacy orchestration migration guide</a>.',
+    },
+    {
+        question: "Which languages can I run in Kestra?",
+        answer: 'Any language. Python, R, Node.js, Go, Ruby, PowerShell, Julia and more have dedicated script plugins. Anything else runs through Shell or your own Docker image. See <a href="/docs/scripts/languages">supported languages</a>.',
+    },
+    {
+        question: "Where does my code run?",
+        answer: 'On Kestra workers by default, as a process or in a Docker container. Task runners send a script to Kubernetes, AWS Batch, Google Batch, Azure Batch or Cloud Run. In Enterprise, worker groups keep execution next to the data, for example on-premises workers behind a cloud control plane. See <a href="/docs/task-runners">task runners</a>.',
+    },
+    {
+        question: "How does Kestra work with Git and CI/CD?",
+        answer: 'Flows are YAML files, so they live in Git with the rest of your code. Kestra syncs flows from a repository or pushes UI edits back to it. You can deploy from GitHub Actions, GitLab CI, Azure DevOps or Bitbucket, or manage Kestra with the Terraform provider. See <a href="/docs/version-control-cicd">version control and CI/CD</a>.',
+    },
+    {
+        question: "What does it take to run Kestra in production?",
+        answer: 'Docker to try it, and Kubernetes or a VM with a PostgreSQL or MySQL database in production. The scheduler, executor, workers and web server scale independently, so you add workers as the load grows. Enterprise adds a Kafka queue and an Elasticsearch repository for high volumes. See the <a href="/docs/architecture">architecture</a>.',
+    },
+    {
+        question: "How does Kestra work with AI?",
+        answer: 'Flows call LLMs and run AI agents that pick their own tools, with the model provider you choose. Kestra also exposes flows as MCP tools, so an assistant such as Claude can trigger them. See <a href="/docs/ai-orchestration">AI orchestration</a>.',
+    },
+]
 ---
 
 <Layout {title} {description} headerClean headerClear headerOverDark>
     <Fragment slot="head">
         <SchemaSoftwareApplication url="https://kestra.io/overview" />
+        <SchemaFAQ items={FAQ} />
     </Fragment>
     <PageShell>
         <Hero />
@@ -30,6 +68,7 @@ const description =
         <DeveloperFit />
         <Ai />
         <OpenSource />
+        <BuyerQuestions items={FAQ} />
         <div data-header-dark>
             <RunKestra />
         </div>
