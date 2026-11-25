@@ -183,7 +183,7 @@ It can also verify signed requests, such as the ones GitHub sends, and turn away
 
 Nobody likes watching a long script fail at batch 300 of 400 and start over from batch 1. With checkpoints, your script saves its progress as it goes, and a retry or a restart picks up where it left off. Turn it on with `durable: true` on any script task.
 
-Checkpoints work with any script language and task runner, and with CLI tasks that run commands the same way, such as `AzCLI` and the CloudQuery tasks. They're in beta, so details may still change, and we'd love to hear how they work for you. See [Checkpoints](/docs/scripts/checkpoints).
+Checkpoints work with any script language and task runner, and with CLI tasks that run commands the same way, such as `AzCLI` and the CloudQuery tasks. You can already use them with the script tasks of the [plugin-scripts](/plugins/plugin-scripts) plugins, such as Shell and Python. They're in beta, so details may still change, and we'd love to hear how they work for you. See [Checkpoints](/docs/scripts/checkpoints).
 
 ## Following Executions
 
