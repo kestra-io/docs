@@ -75,7 +75,7 @@ Approvals, asset leases and the ASSET input, searchable execution values, custom
 ## Infrastructure
 
 - **New queue backends (EE)**: Google Cloud Pub/Sub, NATS JetStream, Amazon SQS/SNS, and Azure Event Hubs, configured under `kestra.queue.<type>`. [Docs](../../../configuration/06.enterprise-and-advanced/index.md#message-broker-queue-backends)
-- **Expressions in `workerSelector` tags (EE)**: route a task, trigger, or flow from an input or an earlier output, as `workerGroup.key` allowed in 1.x. A blank tag falls through to the next routing level. [Docs](../../../07.enterprise/04.scalability/worker-group/index.md#choose-tags-at-runtime)
+- **Expressions in `workerSelector` tags (EE)**: route a task, trigger, or flow from an input or an earlier output, as `workerGroup.key` allowed in 1.x. A blank tag falls through to the next routing level. Also in 2.0.11. [Docs](../../../07.enterprise/04.scalability/worker-group/index.md#choose-tags-at-runtime)
 - **Dedicated queue database**: run the JDBC queue in its own database. [Docs](../../../configuration/02.runtime-and-storage/index.md#dedicated-queue-database)
 - **PEM certificates for gRPC (EE)**: controller and worker mTLS can use PEM files directly, with hot reload. [Docs](../../../configuration/06.enterprise-and-advanced/index.md#pem-certificates)
 - **Executor loop intervals**: tune how often the executor checks SLA deadlines and delayed executions. [Docs](../../../configuration/04.plugins-and-execution/index.md)
