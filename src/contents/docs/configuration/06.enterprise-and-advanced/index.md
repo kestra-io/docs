@@ -1,7 +1,7 @@
 ---
 title: Enterprise & Advanced Configuration in Kestra
-h1: "Configure Enterprise Features: Kafka, Elasticsearch & AI Copilot"
-description: Configure Enterprise-only Kestra settings. Manage licenses, Elasticsearch, Kafka, indexer behavior, UI custom links, AI Copilot, and air-gapped deployments.
+h1: "Configure Enterprise and Advanced Settings: Kafka, Elasticsearch & AI Copilot"
+description: Configure Enterprise and advanced Kestra settings. Manage licenses, Elasticsearch, Kafka, indexer behavior, UI custom links, AI Copilot providers, and air-gapped deployments.
 sidebarTitle: Enterprise and Advanced
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
@@ -88,23 +88,6 @@ kestra:
 ```
 
 The old multi-tenancy and default-tenant configuration is no longer supported.
-
-## Tenant example seeding (kestra.ee.tenant-examples)
-
-When a tenant of a type that ships an example bundle (`INFRASTRUCTURE`) is created, Kestra seeds it with a namespace, flows, apps, a dashboard, and a bootstrap execution. This behavior is enabled by default and controlled with:
-
-```yaml
-kestra:
-  ee:
-    tenant-examples:
-      enabled: false   # set to false to disable example seeding globally
-```
-
-| Property | Default | Description |
-|---|---|---|
-| `kestra.ee.tenant-examples.enabled` | `true` | When `true`, creating a tenant of a seeded type provisions the example bundle. Set to `false` to skip seeding entirely. |
-
-The example bundle ships inside the JAR — no network access is required at tenant creation time.
 
 ## Asset TTL checks (kestra.assets.ttl-check)
 
@@ -410,7 +393,7 @@ kestra:
 
 ## Dedicated-storage workers
 
-Some deployments run workers with their own dedicated storage bucket: a separate region, a customer-managed account, or a different storage provider from the rest of the deployment. Three categories of data need explicit configuration to stay consistent across the deployment.
+Some deployments run workers with their own dedicated storage bucket: a separate region, a customer-managed account, or a different storage provider from the rest of the deployment. Four categories of data need explicit configuration to stay consistent across the deployment.
 
 **KV Store values.** KV metadata is always routed through the controller, but values are written directly to storage. On a worker with dedicated storage, a key set from a flow on that worker is listed in the UI but its value is unreachable from anywhere else. A key set from the UI is visible to the worker in listings but cannot be read.
 
@@ -424,7 +407,13 @@ Set `kestra.namespace-files.worker-access: CONTROLLER` on the worker to route al
 
 Set `kestra.plugins.management.worker-access: CONTROLLER` on the worker to pull plugin artifacts through the controller over gRPC instead.
 
-All three properties default to `STORAGE`, which keeps the existing behavior for workers that share internal storage with the webserver and Worker Controller.
+**Task inputs and outputs.** A worker reads and writes the files of its tasks, such as inputs, outputs, and cache, in internal storage with its own credentials. On a worker you don't want to give storage credentials to, such as one running outside your network, set `kestra.storage.worker-access: CONTROLLER`. For each file, the worker asks the controller for a presigned URL that expires after a short time, then reads or writes the file over HTTPS directly in the object store. File content never goes through the controller. Other operations, such as listing, checking, moving, or deleting files, go through the controller over gRPC.
+
+This mode needs an internal storage that can presign requests. With a storage that can't, every file operation on the worker fails with an error that names the tenant. The controller serves these requests only when `kestra.controller.storage-api.enabled` is `true`.
+
+<!-- TODO(eng): no storage plugin presigns yet on 2026-11-24: storage-gcs#237 (V4 signed URLs) and storage-s3#250 (SigV4) are open, and storage-azure has no PR. Name the supported storages once they merge. -->
+
+All four worker properties default to `STORAGE`, which keeps the existing behavior for workers that share internal storage with the webserver and Worker Controller.
 
 ```yaml
 # Worker configuration for a dedicated-storage deployment
@@ -438,6 +427,20 @@ kestra:
   plugins:
     management:
       worker-access: CONTROLLER        # default: STORAGE
+
+  storage:
+    worker-access: CONTROLLER          # default: STORAGE
+```
+
+The controller needs its storage API turned on to serve presigned URLs:
+
+```yaml
+# Worker Controller configuration
+kestra:
+  controller:
+    storage-api:
+      enabled: true                    # default: false
+      presigned-request-ttl: PT5M      # default: PT5M
 ```
 
 `CONTROLLER` mode requires the EE Worker Controller and is authorized against the worker's registration token. Only workers registered with this Kestra instance can use it.
@@ -447,6 +450,10 @@ kestra:
 | `kestra.kv.worker-access` | `STORAGE`, `CONTROLLER` | `STORAGE` | Where the worker reads and writes KV values. `CONTROLLER` routes all KV operations through the controller over gRPC. |
 | `kestra.namespace-files.worker-access` | `STORAGE`, `CONTROLLER` | `STORAGE` | Where the worker reads and writes namespace file content. `CONTROLLER` routes all file operations through the controller over gRPC. |
 | `kestra.plugins.management.worker-access` | `STORAGE`, `CONTROLLER` | `STORAGE` | How the worker fetches managed plugin artifacts. `CONTROLLER` pulls them through the controller over gRPC. |
+| `kestra.storage.worker-access` | `STORAGE`, `CONTROLLER` | `STORAGE` | How the worker reaches the files of its tasks in internal storage. `CONTROLLER` uses presigned URLs from the controller, so the worker holds no storage credentials. |
+| `kestra.controller.storage-api.enabled` | `true`, `false` | `false` | Set on the Worker Controller. Serves presigned URLs and file operations to workers with `kestra.storage.worker-access: CONTROLLER`. |
+| `kestra.controller.storage-api.presigned-request-ttl` | Duration | `PT5M` | Set on the Worker Controller. How long a presigned URL stays valid. |
+| `kestra.controller.storage-api.insecure-urls-allowed` | `true`, `false` | `false` | Set on the Worker Controller. Allows presigned URLs over plain HTTP. Use it only in development, for example with a local MinIO, since anyone who reads the URL on the network can use it. |
 
 Workers can also read secrets through the controller instead of holding credentials for the secrets manager. That setting, `kestra.secret.worker-access`, uses different values and needs the controller to opt in. See [Worker access to secrets](../../07.enterprise/02.governance/secrets-manager/index.md#worker-access-to-secrets).
 
@@ -1135,7 +1142,7 @@ AI Copilot configuration lives under `kestra.ai` and controls which LLM provider
 
 #### Providers
 
-Enterprise Edition lets you configure multiple providers in a single deployment. Each entry in `kestra.ai.providers` is an independent provider the UI can offer to users.
+You can configure several providers in a single deployment, in both the open-source and Enterprise editions. Each entry in `kestra.ai.providers` is an independent provider the UI can offer to users.
 
 ```yaml
 kestra:
@@ -1163,27 +1170,13 @@ kestra:
 |---|---|---|
 | `id` | ✅ | Unique identifier for this provider entry. |
 | `display-name` | ✅ | Label shown to users in the Copilot UI. |
-| `type` | ✅ | Provider type. One of: `openai`, `azure-openai`, `gemini`, `googlevertexai`, `anthropic`, `bedrock`, `deepseek`, `mistralai`, `ollama`, `open-router`. |
+| `type` | ✅ | Provider type. One of: `openai`, `azure-openai`, `gemini`, `googlevertexai`, `anthropic`, `bedrock`, `deepseek`, `mistralai`, `ollama`, `open-router`. Kestra logs and skips an entry with any other type. |
 | `is-default` | ❌ | When `true`, this provider is selected automatically when no explicit choice is made. |
 | `configuration` | ❌ | Provider-specific settings. See the property reference and provider sections below. |
 | `system-prompt` | ❌ | (EE only) Override the built-in system prompt per Copilot mode. A non-blank value for a mode fully replaces the built-in prompt for that mode. |
 | `system-prompt.ask` | ❌ | Custom system prompt for Ask mode. |
 | `system-prompt.plan` | ❌ | Custom system prompt for Plan mode. |
 | `system-prompt.edit` | ❌ | Custom system prompt for Edit mode. |
-
-
-For OSS users, only Gemini is currently available; you can provide your Gemini API key to use the AI Copilot.
-
-```yaml
-kestra:
-  ai:
-    - id: gemini
-      display-name: Gemini
-      type: gemini
-      configuration:
-        api-key: YOUR_GEMINI_API_KEY
-        model-name: gemini-3.5-flash-lite
-```
 
 #### Configuration property reference
 

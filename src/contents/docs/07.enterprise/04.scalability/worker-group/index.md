@@ -44,7 +44,7 @@ Add `workerSelector` to any task to route it to a matching Worker Queue. The `wo
 
 | Property | Description | Default |
 |---|---|---|
-| `tags` | List of RFC 1123 labels (max 20, each up to 64 characters) identifying the required Worker Queue | — |
+| `tags` | List of RFC 1123 labels (max 20, each up to 63 characters) identifying the required Worker Queue. Tags can be [Pebble expressions](#choose-tags-at-runtime) | — |
 | `match` | `ALL`: queue tags must include all selector tags. `ANY`: queue tags must include at least one selector tag | `ALL` |
 | `fallback` | Behavior when no worker is connected to any matching queue: `FAIL`, `WAIT`, `CANCEL`, or `IGNORE` | `FAIL` |
 
@@ -69,6 +69,40 @@ tasks:
 Kestra routes the task to a Worker Queue whose tag set includes all declared tags (or at least one, when `match: ANY`). Any Worker Group subscribed to that queue may execute the task.
 
 If no level declares a `workerSelector` with tags, the task routes to the default queue. An empty `tags` list counts as no selector, so resolution continues to the next level.
+
+### Choose tags at runtime
+
+`tags` on a task, trigger, or flow can hold Pebble expressions, so the target Worker Queue can depend on an input or on the output of an earlier task. Kestra renders the tags when it routes the task or trigger. The following flow routes `routed_task` to the Worker Queue named by `get_worker`, or to the default queue when `worker_key` is empty:
+
+```yaml
+id: dynamic_worker_selector_routing
+namespace: company.team
+
+inputs:
+  - id: worker_key
+    type: STRING
+    required: false
+
+tasks:
+  - id: get_worker
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      worker_key: "{{ inputs.worker_key ?? '' }}"
+
+  - id: routed_task
+    type: io.kestra.plugin.core.log.Log
+    message: "Routed with worker key '{{ outputs.get_worker.values.worker_key }}'"
+    workerSelector:
+      tags:
+        - "{{ outputs.get_worker.values.worker_key ?? null }}"
+      fallback: FAIL
+```
+
+- Each tag can be an expression, or the whole list can be one expression that renders to a list, such as `tags: "{{ inputs.tags }}"` with an `ARRAY` input.
+- A tag that renders to an empty value is dropped. When no tag is left, the level counts as unset, and resolution continues to the flow, namespace, or tenant default, then the default queue.
+- Each rendered tag must be an RFC 1123 label, with at most 20 tags. Otherwise, the task run fails with an error such as `The worker selector tag 'Bad_Tag' is not an RFC 1123 label.`
+- When you save a flow, Kestra warns about literal tags that match no Worker Queue. It can't check tags that hold an expression, so a rendered tag that matches no queue fails the task run.
+- Namespace and tenant `defaultWorkerSelector` tags are literal and are not rendered.
 
 ### When several queues match
 
@@ -97,7 +131,7 @@ More than one Worker Queue can match the same selector. Kestra ranks the matchin
 `fallback` only applies when a matching Worker Queue exists but has no connected worker right now. If no queue matches the tags at all, the task fails immediately regardless of the `fallback` value. That is a configuration error, not a capacity gap.
 :::
 
-Triggers that run on workers follow the same rules with one difference: when no queue matches, or the fallback is `FAIL` or `CANCEL`, Kestra skips that trigger evaluation and logs the reason instead of failing anything. With `WAIT`, the trigger evaluation is sent to the matched queue.
+Triggers that run on workers follow the same rules with one difference: when no queue matches, a tag can't be rendered, or the fallback is `FAIL` or `CANCEL`, Kestra skips that trigger evaluation and logs the reason instead of failing anything. With `WAIT`, the trigger evaluation is sent to the matched queue.
 
 ### Flow, namespace, and tenant-level routing defaults
 
@@ -178,7 +212,7 @@ Two ids are reserved and never created manually:
 - `default` — the global default queue; receives tasks with no `workerSelector`
 - `system` — the in-process system worker
 
-Worker Queue ids must follow RFC 1123 label format: lowercase alphanumerics and hyphens, starting and ending with an alphanumeric character, max 64 characters.
+Worker Queue ids must follow RFC 1123 label format: lowercase alphanumerics and hyphens, starting and ending with an alphanumeric character, max 63 characters.
 
 ### Creating Worker Queues
 
@@ -700,6 +734,7 @@ Published by the controller process — the server-side view of fleet capacity a
 | `controller.capacity.shared.used` | gauge | `worker_group` | Shared slots currently in use |
 | `controller.job.dispatched.total` | counter | `worker_group`, `worker_queue` | Total jobs dispatched to workers |
 | `controller.job.requeued.total` | counter | `worker_queue` | Jobs re-queued because no worker had capacity |
+| `controller.job.resubmitted.total` | counter | `worker_group`, `worker_queue` | Jobs resubmitted because the worker they were sent to never received them |
 | `controller.job.killed.total` | counter | `worker_queue` | Jobs short-circuited by the pre-dispatch kill check |
 | `controller.job.dispatch.failed.total` | counter | `worker_group`, `worker_queue` | Dispatch attempts that failed: a send error, a failure to save the running state, or a payload above the worker's message size limit |
 | `controller.worker.registered.total` | counter | `worker_group`, `worker_queue` | Worker-queue subscription registrations |
@@ -729,6 +764,7 @@ Published by each worker process — the worker-side view of capacity and throug
 | `worker.killed.count` | counter | Kill events received from the controller |
 | `worker.queue.enqueued` | counter | Total items put into a buffer |
 | `worker.queue.dequeued` | counter | Total items drained from a buffer |
+| `worker.stream.reconnect.count` | counter | New job streams opened to the controller after the previous one was lost, tagged by `reason` (`stream_error`, `stream_completed`, or `sync_unacknowledged`) |
 | `worker.trigger.running.count` | gauge | Trigger evaluations currently in progress |
 | `worker.trigger.started.count` | counter | Total trigger evaluations started |
 | `worker.trigger.ended.count` | counter | Total trigger evaluations completed |
@@ -752,6 +788,7 @@ In Kestra 2.0, the task-level routing property changed from targeting a group by
 | Before 2.0 | 2.0+ |
 |---|---|
 | `workerGroup.key: gpu` | `workerSelector.tags: [gpu]` |
+| `workerGroup.key: "{{ outputs.x.worker_key ?? null }}"` | `workerSelector.tags: ["{{ outputs.x.worker_key ?? null }}"]`, see [Choose tags at runtime](#choose-tags-at-runtime) |
 | Routes directly to a named group | Routes to a Worker Queue by tags; any subscribed group may serve the task |
 | `workerGroup.fallback` (defaults to `WAIT`) | `workerSelector.fallback` (defaults to `FAIL`) |
 | No `match` strategy | `workerSelector.match: ALL` or `ANY` |
@@ -759,6 +796,8 @@ In Kestra 2.0, the task-level routing property changed from targeting a group by
 | No worker authentication | Registration token-based authentication with rotating credentials |
 
 `workerGroup` is not recognized in 2.0. Flows using it will fail validation and cannot be saved. Update your flows to replace `workerGroup.key` with `workerSelector.tags`. The group name in the old property corresponds to a tag on a Worker Queue in the new model.
+
+A dynamic key such as `workerGroup.key: "{{ outputs.get_worker.values.worker_key ?? null }}"` becomes `workerSelector.tags: ["{{ outputs.get_worker.values.worker_key ?? null }}"]`. One difference: a blank key used to send the task straight to the default group, while a blank tag now falls through to the flow, namespace, and tenant defaults first. See [Choose tags at runtime](#choose-tags-at-runtime).
 
 :::alert{type="warning"}
 The fallback default changed from `WAIT` to `FAIL`. Tasks that previously waited for an unavailable worker will now fail immediately unless you explicitly set `workerSelector.fallback: WAIT`.

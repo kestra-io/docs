@@ -31,7 +31,7 @@ The **Previous** and **Next Execution** buttons step through past and scheduled 
 
 The **Overview** tab also supports [**Replay**](../../15.how-to-guides/replay/index.md) and **Pause**, and displays execution history for comparing previous runs.
 
-The Overview tab also embeds a **topology diagram** showing each task's state in the execution graph — green for `SUCCESS`, red for `FAILED`. Click any task node to access its logs, replay it, or change its status.
+The Overview tab also embeds a **topology diagram** showing each task's state in the execution graph: green for `SUCCESS`, red for `FAILED`. Select the information icon on a task node to open the task's details: its metrics, logs, outputs, and artifacts, with actions to replay the task, change its state, or view its source.
 
 ### Loop iterations in the topology
 
@@ -64,11 +64,15 @@ The chart at the top of the Executions page has two modes: **Counts**, which sho
 - **Bars**: each bar takes its color from the execution state, and running executions extend to the current time. When a row has too many executions to draw individually, bars are aggregated into buckets tinted by the most common state. Zoom in for execution-level detail.
 - **Bar details**: click a bar to see its namespace, flow, state, and dates, then **Open execution** or **Show only this flow**.
 - **Legend**: shows the count per state. Click a state to dim it.
-- **Time range**: zoom, pan, or jump to **Now** from the toolbar, or drag across the density bar to select a range. The default range is 24 hours, from 5 minutes up to 1 year.
+- **Time range**: the timeline follows the page's date filter, such as the default **Last 30 days**, or 24 hours when no date filter is set. Zoom, pan, or jump to **Now** from the toolbar, or drag across the density bar at the top to select a range from 5 minutes up to 1 year.
 
-The filters applied to the Executions page also apply to the timeline. The timeline loads at most 1,000 executions, newest first; narrow the time range or filters to see the rest.
+![Executions timeline over the last 30 days, with the density bar at the top, executions grouped by namespace, and run and failed counts per row](./executions-timeline.png)
 
-<!-- TODO: screenshot. kestra#19334 merged to develop 2026-10-30, not in the v2.1.x RC cut; confirm it ships in 2.1 GA. Not verified: which filters the density bar ignores. -->
+The filters applied to the Executions page also apply to the timeline. The density bar applies the namespace, flow, state, and label filters, but not the search box, the **Inputs & Outputs** filter, or the parent and trigger execution filters. The timeline loads at most 1,000 executions, newest first; narrow the time range or filters to see the rest.
+
+<div style="position: relative; padding-bottom: calc(56.4617% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/bQNIYqinlfOKXElhLDBw?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Explore Workflow Runs on the Timeline View" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+
+<!-- kestra#19334 live-verified 2026-11-19 on EE develop 3d69e8a. TODO: kestra#19334 merged to develop 2026-10-30, not in the v2.1.x RC cut; confirm it ships in 2.1 GA. The density bar's "does not apply these filters" note never shows: the chart preview returns an empty ignoredFilters list for the filters it drops. -->
 
 ## Gantt
 
@@ -131,6 +135,20 @@ The **Debug Expression** button evaluates [expressions](../../expressions/index.
 The **Metrics** tab shows every metric exposed by tasks after execution. For example, an HTTP Request task emits `request.bytes`, `response.bytes`, and `response.length` per request. A BigQuery load task might expose rows inserted and bytes processed. An AI plugin task might show token usage.
 
 ![Kestra User Interface Execution Metric](./execution-metrics-view.png)
+
+## Artifacts
+
+Some plugins add views to an execution that summarize what their tasks did, such as the SQL a JDBC task ran, the rows it affected, and the tables it read and wrote. These views are plugin artifacts. A task gets them from its plugin, or from the plugin of its task runner.
+
+When at least one task in the execution provides an artifact, the topology shows an artifact button under that task's node, and the execution gets an **Artifacts** tab. The button opens the task's details on its **Artifacts** tab.
+
+![Two JDBC task nodes in the execution topology, each with a 1 artifact button next to its duration](./execution-task-artifact-button.png)
+
+The **Artifacts** tab lists the artifacts by task, with each task's type and duration. Select one to show it next to the list, or open it in fullscreen. When a task provides several artifacts, switch between them above the view. For a task inside a [`Loop`](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop), pick the iteration to show.
+
+![The Artifacts tab of an execution showing the Execution details artifact of a JDBC Queries task: its SQL, rows affected, duration, and the tables it created and read](./execution-artifacts-tab.png)
+
+For the plugins that provide artifacts, see [Plugin artifacts and assets](../../06.concepts/plugin-artifacts-vs-assets/index.md).
 
 ## Dependencies
 

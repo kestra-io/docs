@@ -73,7 +73,7 @@ While Chef is a powerful and mature tool, several factors contribute to the sear
 
 ## How we evaluated these alternatives
 
-To provide a clear comparison, we evaluated each Chef alternative based on a core set of criteria relevant to modern DevOps and platform engineering teams. Understanding these criteria is key to solving common [orchestration problems and reducing complexity](https://kestra.io/resources/infrastructure/orchestration-problems-complexity).
+To provide a clear comparison, we evaluated each Chef alternative based on a core set of criteria relevant to modern DevOps and platform engineering teams. Understanding these criteria is key to solving common [orchestration problems and reducing complexity](https://kestra.io/resources/orchestration).
 
 - **Deployment Model:** We examined whether the tool is agentless or requires an agent on each managed node, as this significantly impacts operational overhead.
 - **Configuration Language:** We assessed the language used for defining automation (e.g., YAML, Ruby DSL, Python), considering its learning curve and readability.

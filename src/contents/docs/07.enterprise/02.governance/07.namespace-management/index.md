@@ -62,7 +62,7 @@ When building new flows in a Namespace, Namespace secrets are accessible from th
 
 ### Policies
 
-[Policies](../policies/index.md) can be defined at the Namespace level to inject, restrict, or validate configuration for all flows in the Namespace. Policies are managed from the **Policies** tab on the namespace page.
+[Policies](../policies/index.md) can be defined at the Namespace level to inject, restrict, or validate configuration for all flows in the Namespace. Policies are managed from the **Policies** tab on the namespace page. The tab lists the Policies that apply to the Namespace: its own, those of its parent Namespaces, and the tenant and instance Policies. Policies of other Namespaces are not listed, and the ones the Namespace inherits are tagged **Inherited from** the instance, the tenant, or the parent Namespace they belong to.
 
 Policies can reference secrets and variables defined in the same Namespace.
 
@@ -363,7 +363,18 @@ The setting covers:
 - KV store
 - secrets
 - assets
+- files in internal storage, referenced by `kestra://` URI
 
 A Flow trigger in a flow whose namespace isn't allowed doesn't receive the executions of the restricted namespace. When an execution would otherwise have fired the trigger, because it matches its `states`, `dependsOn`, and `when` conditions, Kestra logs a warning on the flow that owns the trigger. The warning names the namespace whose Allowed Namespaces blocks it, which can be a parent of the execution's namespace. Nothing is logged on the restricted namespace's execution.
+
+A task that reads, writes, lists, or deletes a file by its `kestra://` URI is checked against the namespace the file belongs to. A flow can always reach:
+
+- the execution outputs, cache, and state files of its own flow;
+- its namespace's files and state, and the files of other flows in its namespace or a parent namespace;
+- the files of the execution that started it through a Flow trigger or a `Subflow` task.
+
+For any other file, the task fails when the file's namespace, or one of its parents, restricts Allowed Namespaces and doesn't list the flow's namespace. A file passed down more than one subflow level, or relayed through a third flow, is checked against the namespace that produced it.
+
+<!-- TODO(live-test kestra-ee#10551): on an EE image built after 2026-11-19 10:53Z, confirm the error message and task state when access is denied, and whether remote workers (GrpcStorage) enforce the check. -->
 
 [System Flows](../../../06.concepts/system-flows/index.md), such as alerts, need the system flows namespace (`system` by default) in the list to react to the executions of this namespace.

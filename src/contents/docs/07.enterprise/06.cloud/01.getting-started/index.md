@@ -55,7 +55,7 @@ Hundreds more are available in the [blueprints library](https://kestra.io/bluepr
 
 Building with AI tools? The [Docs MCP Server](../../../develop-with-ai/02.kestra-mcp-resources/index.md) gives Claude, Cursor, and other tools live access to Kestra docs, plugins, and blueprints. Add [kestractl](../../../kestra-cli/kestractl/index.md#installation) to generate and deploy flows from the CLI.
 
-Prefer your editor? The [VS Code extension](../../../version-control-cicd/05.vscode/index.md) edits, validates, and runs flows locally with instance-aware autocomplete and a topology preview.
+Prefer your editor? The [VS Code extension](../../../ide-extensions/01.vscode/index.md) edits, validates, and runs flows locally with instance-aware autocomplete and a topology preview.
 
 ## Step 3: Namespaces
 

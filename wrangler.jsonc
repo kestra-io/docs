@@ -51,14 +51,6 @@
      * https://developers.cloudflare.com/workers/runtime-apis/bindings/
      */
     "kv_namespaces": [
-        {
-            "binding": "ICON_CACHE",
-            "id": "205cd288109e4728a1f0f85645cf3b98",
-        },
-        {
-            "binding": "docs-session",
-            "id": "7697469604b64c6899be1721cc799e02",
-        },
         // /api/github stats, shared by prod and every preview version.
         {
             "binding": "GITHUB_CACHE",
@@ -75,14 +67,6 @@
                 "NO_IMAGE_OPTIM": "true",
             },
             "kv_namespaces": [
-                {
-                    "binding": "ICON_CACHE",
-                    "id": "205cd288109e4728a1f0f85645cf3b98",
-                },
-                {
-                    "binding": "docs-session",
-                    "id": "7697469604b64c6899be1721cc799e02",
-                },
                 {
                     "binding": "GITHUB_CACHE",
                     "id": "e9fb516da12640bdb4a2f9531eb9578c",

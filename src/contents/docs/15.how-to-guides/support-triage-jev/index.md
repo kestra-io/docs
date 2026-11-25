@@ -342,7 +342,7 @@ Limiting the options also protects the agent from instructions hidden in a ticke
 
 The approval request shows Jev's choice, its confidence, and the probability of every option, so the reviewer sees how close the call was. In this example, Jev hesitated between asking for details and escalating:
 
-![Approval request for Pylon ticket 1007 on the Approvals page, showing that Jev chose request_info with confidence 0.50, and probabilities of 0.56 for request_info and 0.44 for escalate_incident](./support-triage-approval-request.png)
+![Approval request for Pylon ticket 1008 on the Approvals page, showing that Jev chose request_info with confidence 0.50, and probabilities of 0.55 for request_info and 0.44 for escalate_incident](./support-triage-approval-request.png)
 
 Click **Review** to decide. Leave **action** empty to run Jev's choice, or pick another action to override it:
 
@@ -354,7 +354,7 @@ The labels from `label_decision` make every decision searchable on the **Executi
 
 When several customers report the same outage, `open_incident` with `linkMatchingExecutions: true` opens one case and adds every later report to it, as long as the case is open. `created` is `false` for the later reports, so `link_ticket` links only the first ticket to the case.
 
-![Incident case with two linked triage_issue executions and Pylon ticket 1006 in the External ticket card](./support-triage-incident-case.png)
+![Incident case with two linked triage_issue executions and Pylon ticket 1008 in the External ticket card](./support-triage-incident-case.png)
 
 The flow also stores each affected ticket under a KV key that starts with `incident_<caseId>_`. The `incident_resolved` flow uses these keys to find everyone to notify.
 

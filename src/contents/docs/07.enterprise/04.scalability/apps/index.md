@@ -506,8 +506,6 @@ In the no-code editor, a `Grid` is added like any other block. Select it to edit
 
 Apps can also be built using the no-code editor. Every block, property, and configuration option available in YAML is fully supported visually. Changes made in the no-code editor are immediately reflected in the code view, and vice versa — teams can switch between approaches at any time without losing the underlying YAML definition.
 
-To create an app together with the flow it runs from a reusable template, see [App templates](../../02.governance/tenants/infrastructure/app-templates/index.md).
-
 ---
 
 ## App catalog
@@ -630,7 +628,7 @@ access:
     - Finance
 ```
 
-Group membership is checked at runtime on every request. Users who belong to at least one listed group are granted access; users outside those groups are denied even if they have `APP: EXECUTE` permission on the namespace. If `groups` is omitted, any authenticated user with `APP: EXECUTE` permission on the namespace can use the app.
+Group membership is checked at runtime on every request. Users who belong to at least one listed group are granted access; users outside those groups are denied even if they have `APP: EXECUTE` permission on the namespace. If `groups` is omitted, any authenticated user with `APP: EXECUTE` permission on the namespace can use the app. Instance Owners are never restricted by `groups`: they see the app in the catalog and can open it without belonging to a listed group.
 
 `APP: EXECUTE` is namespace-scoped. A user with `APP: EXECUTE` on `company.team` cannot dispatch an app in `company.other`, even if both apps appear in the same catalog view.
 
@@ -720,7 +718,7 @@ Expiration is evaluated against the server clock at the moment a user opens or s
 
 Add a thumbnail to give catalog users a visual indicator of what the app does. Upload an image file as a [namespace file](../../../06.concepts/02.namespace-files/index.md) to the same namespace as the app's connected flow. Supported formats include `.svg`, `.jpg`, and `.png`. The example below adds `kestra-icon.svg`.
 
-![Image Namespace File](./app-namespace-file.png)
+![Namespace Files tab of company.team with kestra-icon.svg open in the editor](./app-namespace-file.png)
 
 In your app code, add the `thumbnail` string property and point it toward the correct namespace file using `nsfiles:///<your-file>`. For example:
 
@@ -740,7 +738,7 @@ tags:
 
 Once added, open the **Apps Catalog** — a new thumbnail displays on the connected app:
 
-![App with thumbnail](./app-with-icon.png)
+![Apps Catalog with the Form to request and download data app showing its Kestra icon thumbnail](./app-with-icon.png)
 
 ---
 
@@ -792,6 +790,10 @@ The same app and execution on a 2560px wide screen, with `NARROW`, `AUTO` and `W
 Each app layout is a list of stage-specific blocks. Each block renders when the execution reaches the matching stage (`OPEN`, `RUNNING`, `SUCCESS`, `FAILURE`, `PAUSE`, `RESUME`). Combine blocks to guide users through the full lifecycle of a request — form on `OPEN`, progress indicator on `RUNNING`, download link and logs on `SUCCESS`.
 
 If a layout uses a block on a stage that isn't listed for it, saving the app fails with `Invalid layout. Block '<type>' is not supported for layout on '<stage>'.`
+
+:::alert{type="warning"}
+An `ERROR` stage only handles errors raised while the app processes a request. It does not catch a stage that fails to render, for example a Pebble expression in a block that cannot be evaluated. In that case the `ERROR` stage is not shown: the app preview reports which block failed (its type and its position in the stage), while the people using the app see a generic "This app is currently unavailable" message. Fix the block in the app definition to restore the stage.
+:::
 
 | Block type               | Available on                                                             | Properties                                                                                  | Example                                                                                                                                                                                                                               |
 |--------------------------|--------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

@@ -27,7 +27,7 @@ kestra:
       - admin.
 ```
 
-By default, System Labels (prefixed with `system.`) are hidden. To display them, remove `system.` from the list of hidden prefixes.
+By default, labels prefixed with `system.` and `internal.` are hidden. Setting `prefixes` replaces that list, so to display System Labels, list your prefixes without `system.`.
 
 ## System labels
 

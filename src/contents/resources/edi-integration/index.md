@@ -23,7 +23,7 @@ faq:
 
 > **TL;DR** — Electronic Data Interchange (EDI) integration is the automated, standardised exchange of business documents — purchase orders, invoices, shipping notices — between trading partners. It removes the manual re-keying that causes order errors and holds the audit trail compliance requires. The difficulty is rarely the format itself, but reconciling many partners each with their own dialect.
 
-For decades, Electronic Data Interchange (EDI) has been the backbone of B2B communication, enabling standardized, electronic exchange of critical business documents like purchase orders and invoices. Yet, managing EDI integrations can be a complex, error-prone task, often involving a mix of legacy systems, diverse formats, and stringent compliance requirements.
+For decades, Electronic Data Interchange (EDI) has been the backbone of B2B communication, enabling standardized, electronic exchange of critical business documents like purchase orders and invoices. Yet, managing [EDI integrations](/resources/business/edi-integration-software) can be a complex, error-prone task, often involving a mix of legacy systems, diverse formats, and stringent compliance requirements.
 
 This article explores EDI integration, its core mechanics, and the challenges organizations face in making it reliable and scalable. We'll then demonstrate how modern orchestration platforms like Kestra can unify EDI workflows with other data and API integrations, providing the visibility, control, and automation needed to simplify your entire business data exchange.
 

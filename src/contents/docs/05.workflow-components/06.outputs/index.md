@@ -210,13 +210,17 @@ Filters match the stored string exactly. Kestra normalizes each value before sto
 
 #### Find executions by searchable value
 
-Searchable inputs and searchable outputs share one filter. On the **Executions** page, add the **Inputs & Outputs** filter, enter the input or output ID as the key, and enter the value. The filter supports equals, not equals, in, and not in. Matching is exact and case-sensitive, and the filter combines with the namespace, flow, state, and date filters. The search box does not match searchable values.
+Searchable inputs and searchable outputs share one filter. On the **Executions** page, add the **Inputs & Outputs** filter, enter the input or output ID as the key, enter the value, and select **Add**. The comparator menu offers **Equals**, **Not Equals**, **In**, and **Not In**. Matching is exact and case-sensitive, and the filter combines with the namespace, flow, state, and date filters. The search box does not match searchable values.
 
-<!-- TODO(runtime, 2.1 RC): confirm the comparator labels shown in the filter UI and add a screenshot of the filter. -->
+<div style="position: relative; padding-bottom: calc(56.4617% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/lAnYKwgJxwELwigpb9fX?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Filter Executions by a Searchable Output Value" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-The execution's **Overview** tab shows up to 10 searchable values as `id: value`, followed by a count of the remaining values. The **Input/Output** tab marks searchable inputs and searchable flow outputs with a **Searchable** tag.
+The execution's **Overview** tab shows up to 10 searchable values as `id: value`, followed by a count of the remaining values, such as `+2`:
 
-<!-- TODO(runtime, 2.1 RC): screenshots of the Overview header values and the Searchable tag on an input and an output. -->
+![Execution Overview header with the searchable values customer, invoice_id, and order_id below the labels](./searchable-values-overview.png)
+
+The **Input/Output** tab marks searchable inputs and searchable flow outputs with a **Searchable** tag:
+
+![Input/Output tab with the Searchable tag on the customer and order_id inputs and the invoice_id output](./searchable-values-tag.png)
 
 Through the API, filter executions with the `searchableData` field. See [Filter on searchable values](../../api-reference/04.query-filters.md#filter-on-searchable-values):
 

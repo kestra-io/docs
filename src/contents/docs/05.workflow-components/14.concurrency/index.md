@@ -212,6 +212,8 @@ You can also set the count with the API. Send `PUT /api/v1/{tenant}/concurrency-
 
 Omit `flowId` to set a namespace counter, and omit both `namespace` and `flowId` to set the tenant counter. The API returns `404` when no counter exists for that scope.
 
+In Enterprise Edition, each counter change, from the UI or the API, writes an [audit log](../../07.enterprise/02.governance/06.audit-logs/index.md) entry with the resource type `CONCURRENCY_LIMIT`, the namespace and flow ID, and the new running count.
+
 Resetting the count doesn't start queued executions. They stay `QUEUED` until a running execution under the same limit ends, while new executions can take the freed slots first.
 
 ![Concurrency Limits counter reset dialog with a warning that changing the counter may allow executions to exceed the limit](./concurrency-limits-reset.png)

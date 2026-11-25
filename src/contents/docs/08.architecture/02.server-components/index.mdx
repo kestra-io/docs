@@ -1,0 +1,73 @@
+---
+title: Server Components in Kestra Architecture Explained
+h1: Executor, Worker, Scheduler, Webserver, and Indexer Roles
+description: Explore Kestra server components. Learn about the Executor, Worker, Scheduler, Webserver, and Indexer roles in the orchestration engine.
+sidebarTitle: Server components
+icon: /src/contents/docs/icons/architecture.svg
+---
+
+Kestra runs its work through a set of server components that can be deployed as a single process or as independent, separately scaled services.
+
+Most components communicate through the [Queue](../01.main-components/index.md#queue) and read shared state from the [Repository](../01.main-components/index.md#repository). Workers are the exception: they connect to a Worker Controller over gRPC (port `50051` by default) and never touch the queue or the database directly, so that port must be reachable from wherever Workers run. Workers are the components that run task code against your infrastructure. The Webserver is the only component that serves the API and UI, and it also reads and writes [Internal Storage](../data-components/index.md#internal-storage) for file uploads, downloads, and webhook bodies.
+
+Each section below summarizes one component and links to its page.
+
+## Executor
+
+The **Executor** drives every execution from start to finish. It decides which task runs next, sends runnable tasks to [Workers](#worker) through the [Worker Controller](#worker-controller), runs flowable tasks itself, and applies concurrency limits, retries, pauses, SLAs, and kills. It also coordinates subflows, loops, and [Flow triggers](../../05.workflow-components/07.triggers/02.flow-trigger/index.md), and runs the cluster-wide [liveness coordinator](#cluster-liveness-model).
+
+See [Executor](./01.executor/index.md) for how executions move forward and how to run the Executor in production.
+
+## Worker Controller
+
+The **Worker Controller** is the single point that Workers talk to. It dispatches jobs to connected Workers over gRPC, receives their results, logs, and metrics, and relays kill signals and metadata changes. It runs embedded in the [Webserver](#webserver) and the standalone server by default, or as its own `kestra server controller` process.
+
+See [Worker Controller](./02.worker-controller/index.md) for how Workers connect, how work is dispatched, and how to secure and scale the controller.
+
+## Worker
+
+The **Worker** runs [runnable tasks](../../05.workflow-components/01.tasks/01.runnable-tasks/index.md), [polling triggers](../../05.workflow-components/07.triggers/04.polling-trigger/index.md), and [realtime triggers](../../05.workflow-components/07.triggers/05.realtime-trigger/index.md). A dedicated Worker connects to a Worker Controller, and every Executor and standalone process also runs a system Worker for platform maintenance tasks.
+
+See [Worker](./03.worker/index.md) for how Workers receive and run work, shut down, and scale.
+
+:::alert{type="info"}
+Looking for runtime status? The **Instance – Services** view shows live health for each component. See [Instance – services](../../07.enterprise/05.instance/index.mdx#services).
+:::
+
+## Worker Group (EE)
+
+In the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md), [Worker Groups](../../07.enterprise/04.scalability/worker-group/index.md) route tasks and triggers to specific Workers. A task or trigger declares a `workerSelector`, Kestra resolves it to a Worker Queue, and only Workers in groups that subscribe to that queue run the work. Groups also reserve capacity per queue.
+
+See [Worker Group](./04.worker-group/index.md) for how routing, fallback, and capacity behave at runtime.
+
+## Scheduler
+
+The **Scheduler** evaluates Schedule, polling, and realtime [triggers](../../05.workflow-components/07.triggers/index.mdx) and starts executions when they fire. [Flow triggers](../../05.workflow-components/07.triggers/02.flow-trigger/index.md) are evaluated by the [Executor](#executor), and webhook triggers by the [Webserver](#webserver).
+
+See [Scheduler](./05.scheduler/index.md) for how triggers are evaluated, locked, and recovered, and how several Schedulers share the work.
+
+## Indexer
+
+The **Indexer** writes logs, metrics, and execution statistics from the queue to the repository, plus audit logs and asset lineage in the Enterprise Edition. It is required with every backend, and runs embedded in the [Webserver](#webserver) and the standalone server by default.
+
+See [Indexer](./06.indexer/index.md) for what the Indexer writes, what happens when it falls behind, and how to run it separately.
+
+## Webserver
+
+The **Webserver** is the entry point for external communication with Kestra. It serves the [User Interface (UI)](../../09.ui/index.mdx) and the [REST API](../../api-reference/index.mdx), streams live execution and log updates, and receives webhook calls. It sends execution actions to the Executor through the queue.
+
+See [Webserver](./07.webserver/index.md) for how requests are handled, how authentication works, and how to run the Webserver behind a load balancer.
+
+## Cluster liveness model
+
+Every running server registers itself as a service and sends heartbeats at a fixed interval: Workers through the Worker Controller, other servers to the repository. The Executor runs the cluster-wide liveness coordinator: on a scheduled tick it reviews every registered service instance, moves servers that miss heartbeats to `DISCONNECTED` and then `NOT_RUNNING`, and resubmits a lost Worker's jobs according to its restart strategy. Old service records are purged on a schedule to keep the registry bounded.
+
+The same registry coordinates [maintenance mode](../../07.enterprise/05.instance/maintenance-mode/index.md), which pauses the Executor and Scheduler and stops Workers from taking new jobs while the Webserver keeps serving.
+
+See [Server lifecycle](../../10.administrator-guide/server-lifecycle/index.md) for heartbeats, server states, and job resubmission, and [High Availability](../../10.administrator-guide/high-availability/index.md) for liveness thresholds and replica counts.
+
+## Component pages
+
+import ChildCard from "~/components/docs/ChildCard.astro"
+
+<ChildCard />

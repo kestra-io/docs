@@ -38,6 +38,16 @@ For `asset-card-footer`, Kestra picks the artifact from the type of the task tha
 
 To build an artifact, see [Develop Plugin Artifacts](../../plugin-developer-guide/10.plugin-ui/index.md).
 
+## Data plugins with artifacts
+
+These data plugins add an artifact to the **Artifacts** tab for each run of the listed tasks. To see where the tab appears, see [Artifacts](../../09.ui/02.executions/index.md#artifacts).
+
+| Plugin and tasks | Artifact | What it shows | Plugin version |
+|---|---|---|---|
+| JDBC `Query`, `Queries`, and `Batch` (all databases) | **Execution details** | The SQL that ran, the rows it affected or fetched, the size of stored results, its duration and warnings, and the tables it read, wrote, created, or dropped | 3.0.0 and later |
+| Airbyte `connections.Sync` and `connections.CheckStatus`, and Airbyte Cloud `jobs.Sync` and `jobs.Reset` | **Airbyte details** | The job's status, duration, attempts, and rows and bytes synced, the records emitted, committed, and rejected per stream, failure reasons, and the connection's source and destination, with a link to the job in Airbyte | 1.8.0 and later |
+| Fivetran `connectors.Sync` and `connectors.Status` | **Fivetran details** | The connector's sync state, schedule, and freshness, its last success and failure, its alerts, and a breakdown per table | 2.1.0 and later |
+
 ## How assets and artifacts work together
 
 The `asset-card-footer` slot connects the two. When a task runs, its plugin writes values to the asset's metadata, and the plugin's artifact displays those values below the asset's card. The metadata stays on the asset, so the card shows the asset's latest state across executions. You can check the health of every asset across your flows from the dependency graph, and open an execution only when something needs attention.

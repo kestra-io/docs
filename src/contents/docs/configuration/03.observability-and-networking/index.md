@@ -296,6 +296,17 @@ kestra:
 
 Platform emails for invitations and notifications use the Enterprise Edition [mail service](../06.enterprise-and-advanced/index.md#mail-service), configured under `kestra.ee.mail-service`.
 
+### Default time range for charts
+
+`kestra.ui.charts.default-duration` sets the time range the UI applies when you haven't selected one: on dashboards, on the flow and namespace overview charts, and on lists that filter by date. It takes an ISO 8601 duration and defaults to `PT24H`. For example, to show the last 7 days by default:
+
+```yaml
+kestra:
+  ui:
+    charts:
+      default-duration: P7D
+```
+
 ### Security response headers
 
 Kestra adds browser security response headers to every HTTP response, including error responses (401, 403) and static file responses.
@@ -313,7 +324,7 @@ Two additional headers are disabled by default:
 | Header | When emitted |
 |---|---|
 | `Content-Security-Policy` | When `content-security-policy` is set to a non-blank value |
-| `Strict-Transport-Security` | When `strict-transport-security` is set and the request arrives at Kestra over HTTPS directly |
+| `Strict-Transport-Security` | When `strict-transport-security` is set and the request is HTTPS (see [HSTS behind a reverse proxy](#hsts-behind-a-reverse-proxy)) |
 
 Each header is added only if not already present in the response.
 
@@ -327,7 +338,7 @@ Configuration reference:
 | `kestra.webserver.security-headers.referrer-policy` | string | `strict-origin-when-cross-origin` | Value for `Referrer-Policy`. Set to `""` to disable this header only. |
 | `kestra.webserver.security-headers.content-security-policy` | string | (absent) | Value for `Content-Security-Policy`. Not set unless configured. |
 | `kestra.webserver.security-headers.content-security-policy-report-only` | boolean | `false` | When `true`, the CSP value is sent under `Content-Security-Policy-Report-Only` instead of `Content-Security-Policy`. Use this to test a policy before enforcing it. |
-| `kestra.webserver.security-headers.strict-transport-security` | string | (absent) | Value for `Strict-Transport-Security`. Not set unless configured, and only emitted when Kestra is serving the request over HTTPS directly (see note below). |
+| `kestra.webserver.security-headers.strict-transport-security` | string | (absent) | Value for `Strict-Transport-Security`. Not set unless configured, and only emitted on HTTPS requests. |
 
 Enable CSP in report-only mode — report-only sends the policy without blocking any resources, so you can test that your CSP does not break any Kestra UI functionality before switching to enforcement:
 
@@ -359,9 +370,32 @@ kestra:
       enabled: false
 ```
 
-:::alert{type="warning"}
-**HSTS and reverse proxies**: `Strict-Transport-Security` is only emitted when Kestra itself receives the request over HTTPS (i.e., TLS is terminated on the Kestra server). In the common deployment pattern where a reverse proxy (nginx, Traefik, AWS ALB, Cloudflare) terminates TLS and forwards plain HTTP to Kestra, the request arrives at Kestra as plain HTTP and HSTS is never sent — even if `strict-transport-security` is configured. In this case, configure HSTS at the reverse proxy instead.
-:::
+#### HSTS behind a reverse proxy
+
+Kestra treats a request as HTTPS when it terminates TLS itself, or when the request carries `X-Forwarded-Proto: https` or a `Forwarded` header with `proto=https`. When a reverse proxy such as nginx, Traefik, AWS ALB, or Cloudflare terminates TLS and forwards plain HTTP, configure it to send one of these headers. Otherwise, Kestra does not send `Strict-Transport-Security`.
+
+The same check sets the `Secure` attribute on Kestra's cookies. See [Secure cookies](#secure-cookies).
+
+### Secure cookies
+
+Kestra sets the `Secure` attribute on the cookies it issues when the request is HTTPS, using the same check as [HSTS](#hsts-behind-a-reverse-proxy). This covers the basic authentication session cookies, the CSRF token cookie, and, in the Enterprise Edition, the JWT, refresh token, OIDC, and SAML logout cookies.
+
+Set `kestra.webserver.cookies.secure` to override the per-request check:
+
+| Value | Behavior |
+|---|---|
+| Unset (default) | `Secure` is set on HTTPS requests, including requests forwarded with `X-Forwarded-Proto: https` or `Forwarded: proto=https`. |
+| `true` | `Secure` is always set. Use this when your proxy terminates TLS but does not send a forwarded protocol header. |
+| `false` | `Secure` is never set. |
+
+```yaml
+kestra:
+  webserver:
+    cookies:
+      secure: true
+```
+
+Browsers do not send a cookie with `Secure` over plain HTTP, so set `true` only when users reach Kestra over HTTPS. This setting does not affect `Strict-Transport-Security`.
 
 ### Disabling the UI (API-only mode)
 
@@ -381,6 +415,66 @@ When the UI is disabled:
 
 The setting can also be provided through the `KESTRA_WEBSERVER_UI_ENABLED` environment variable.
 
+### Default flow template
+
+`kestra.flowTemplate` sets the YAML that opens in the editor when someone creates a flow from scratch. Use it to give every team the same starting point, such as standard labels or error handling. Kestra adds `id` and `namespace` when the template leaves them out, and keeps them when it sets them.
+
+```yaml
+kestra:
+  flowTemplate: |
+    labels:
+      team: data
+    tasks:
+      - id: hello
+        type: io.kestra.plugin.core.log.Log
+        message: Hello World!
+```
+
+The template doesn't apply to flows created from a blueprint. Users can replace it with their own template in the **Default Flow Template** preference, described on the [Settings](../../09.ui/06.settings/index.md#preferences) page. When neither template is set, the editor opens a built-in Hello World flow.
+
+### File preview rows
+
+`kestra.server.preview.initial-rows` sets how many rows a file preview shows when it opens, and defaults to `100`. `kestra.server.preview.max-rows` caps how many rows a user can request in the preview or through the API's `maxRows` parameter, and defaults to `5000`.
+
+```yaml
+kestra:
+  server:
+    preview:
+      initial-rows: 200
+      max-rows: 10000
+```
+
+### Hidden label prefixes
+
+`kestra.hidden-labels.prefixes` lists the label prefixes that the UI hides by default. The default list is `system.` and `internal.`. Setting the property replaces that list, so include both prefixes if you still want those labels hidden:
+
+```yaml
+kestra:
+  hidden-labels:
+    prefixes:
+      - system.
+      - internal.
+      - admin.
+```
+
+See [Hidden labels](../../06.concepts/system-labels/index.md#hidden-labels) for how hidden labels appear in the UI.
+
+### Query filter limits
+
+`kestra.webserver.query-filter.max-depth` and `kestra.webserver.query-filter.max-width` cap how deeply API filter groups can nest and how many filters or groups each one holds. They default to `3` and `20`, and lower values are raised to the defaults. To set different limits for one resource, add them under `resources`, keyed by the resource name in lowercase, such as `execution` or `flow`. This example allows 30 filters per group on every endpoint and 50 on execution endpoints:
+
+```yaml
+kestra:
+  webserver:
+    query-filter:
+      max-width: 30
+      resources:
+        execution:
+          max-width: 50
+```
+
+A request over the limit is rejected with an `invalid-query-filters` error. See [Query filters](../../api-reference/04.query-filters.md#limits).
+
 ## Typical use cases
 
 Use this section when you need to:
@@ -391,3 +485,4 @@ Use this section when you need to:
 - configure Prometheus-style metrics ingestion
 - change management endpoint behavior
 - configure security response headers (CSP, HSTS, framing)
+- set the `Secure` attribute on cookies behind a reverse proxy

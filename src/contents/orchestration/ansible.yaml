@@ -1,5 +1,5 @@
-title: "Orchestrate Ansible with Kestra: drift detection, rolling waves, dynamic inventory"
-description: "Drive ansible-playbook from cron and events, gate wave promotion, parse per-host results via the Kestra callback, and chain with Terraform and ServiceNow."
+title: "Ansible Orchestration with Kestra: Events, Approvals, Inventory and Rolling Updates"
+description: "Keep your Ansible playbooks and run them from schedules and events, with approval gates between waves, inventory from NetBox or Terraform, per-host results, and Terraform and ServiceNow in the same flow."
 
 tool:
   name: "Ansible"
@@ -9,7 +9,7 @@ tool:
 
 hero:
   title: "Add state, gates, and visibility to Ansible."
-  description: "Run ansible-playbook from cron, webhooks, or any HTTP signal. Add step-level retries, parsed per-host results via the Kestra callback, approval gates between waves, and chain Ansible with Terraform, NetBox, or ServiceNow in one execution history."
+  description: "Run your playbooks from schedules and events, with retries, per-host results and approvals, in one flow with Terraform, NetBox and ServiceNow."
   cta:
     label: "Book a Demo"
     href: "/demo"
@@ -17,33 +17,33 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Replace Ansible Tower / AAP with a workflow engine that listens to cron, webhooks, or alerts, handles drift detection and rolling waves with per-host verification, and chains ansible-playbook with <a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/netbox'>NetBox</a>, and <a href='/orchestration/servicenow'>ServiceNow</a>. Drop the AAP subscription; halt a wave at the first failed health probe."
+nutshell: "Keep your playbooks and replace the controller. Kestra listens to cron, webhooks and alerts, handles drift detection and rolling waves with per-host verification, halts a wave at the first failed health probe, and chains ansible-playbook with <a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/netbox'>NetBox</a> and <a href='/orchestration/servicenow'>ServiceNow</a>. Replacing AWX or Ansible Automation Platform? See <a href='/vs/ansible-automation-platform'>Kestra vs Ansible Automation Platform</a>."
 
 pillars:
-  title: "Around every playbook, every host, every wave."
-  subtitle: "What Kestra wraps around your Ansible runs: when playbooks fire, what comes back per host through the callback, who approves the next wave, and where the audit lives. Your playbooks, roles, inventory, and Vault stay where they are."
+  title: "What Kestra adds around your playbooks."
+  subtitle: "Triggers, per-host results, approvals and a full audit trail. Your playbooks, roles, inventory and Vault stay where they are."
   items:
     - icon: "mdi:lightning-bolt-outline"
-      title: "Schedule and event triggers wrapped around ansible-playbook"
-      description: "Native cron, fixed intervals, webhooks, S3 file arrivals, Kafka messages, and database row changes all fire <code>ansible-playbook</code> directly. The trigger payload reaches the flow as <code>trigger.body</code>, so the right host gets the right <code>--extra-vars</code> from a single execution. No AWX, no Tower, no EDA controller."
+      title: "Schedules and events"
+      description: "Cron, webhooks, S3 files, Kafka messages or database changes start your playbook, with the payload passed in as extra vars."
     - icon: "mdi:magnify-scan"
-      title: "Check mode + diff mode as drift detection"
-      description: "Run the playbook with <code>--check --diff</code> on a nightly schedule. The Kestra Ansible callback emits per-host changes, the flow surfaces only the hosts that drifted, and the diff lands in Slack. No enforcement, no surprises, the whole fleet audited overnight."
+      title: "Drift detection"
+      description: "A nightly check-mode run sends only the hosts that drifted to Slack."
     - icon: "mdi:transit-connection-variant"
-      title: "Inventory built at run time from Terraform, NetBox, or vCenter"
-      description: "A <code>terraform output</code>, a NetBox API call, or <code>vmware.vcenter.ListVms</code> writes the inventory at the start of the flow. The next task templates it into <code>inventory.ini</code>. No stale static inventory file, no manual sync between source of truth and what Ansible reads."
+      title: "Inventory at run time"
+      description: "Built from Terraform, NetBox or vCenter when the flow starts. No stale inventory files."
     - icon: "mdi:format-list-bulleted-square"
-      title: "Per-host results from the Kestra Ansible callback, iterable in YAML"
-      description: "The Kestra Ansible callback emits structured per-host outputs after each play. A <code>ForEach</code> task loops over the hosts and branches on <code>changed</code>, <code>failed</code>, or any fact. Route alerts by tag, hand failing hosts to a remediation flow, or upload the play recap to S3."
+      title: "Per-host results"
+      description: "Loop over every host's result and branch on changed, failed or any fact."
     - icon: "mdi:server-network"
-      title: "Rolling restarts with serial + health verification between batches"
-      description: "Set <code>serial: 1</code> (or <code>10%</code>) in the play. The playbook runs against one batch at a time. Between batches, a Kestra HTTP probe checks the service is healthy. A failed probe halts the flow before the next batch, preserving the rest of the fleet."
+      title: "Rolling restarts"
+      description: "One batch at a time, with a health check before the next batch starts."
     - icon: "mdi:history"
-      title: "Replay any host from any past execution"
-      description: "Every play, every host, every task output is stored per execution. Open last week's run, click into the failing host, replay that step against the same target. The original inventory, vars, and <code>ansible.cfg</code> are preserved with the run, so the replay matches the original conditions."
+      title: "Replay any host"
+      description: "Open a past run and rerun the failing host's step with the same inventory and vars."
 
 useCases:
-  title: "How platform teams use Ansible and Kestra"
+  title: "How platform and network teams use Ansible and Kestra"
   subtitle: "Patterns infrastructure teams run in production today. Each one shows the flow end to end, with the real plugin classes in play."
   items:
     - badge: "Drift detection"
@@ -156,6 +156,40 @@ useCases:
         - title: "Refresh per execution"
           description: "Every run sees the current state, not yesterday's snapshot."
           wide: true
+    - badge: "Network automation"
+      badgeIcon: "mdi:router-network"
+      title: "Network change with a dry run, an approval and a rollback"
+      description: "NetBox says which devices a change targets. The playbook runs in check mode and the diff goes to the approver. Once approved, the change runs, a post-check confirms the devices are healthy, and a failed check restores the last good configuration. The change record in ServiceNow gets the diff, the approver and the result."
+      flow:
+        - node: "NetBox"
+          label: "devices"
+          pluginClass: "io.kestra.plugin.ee.netbox.device.List"
+        - node: "ansible-playbook --check"
+          label: "diff mode"
+          pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        - node: "Pause"
+          label: "approval"
+          gate: true
+          pluginClass: "io.kestra.plugin.core.flow.Pause"
+        - node: "ansible-playbook"
+          pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        - node: "post-check"
+          pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        - node: "rollback"
+          label: "on failure"
+          pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        - node: "ServiceNow"
+          label: "change record"
+          pluginClass: "io.kestra.plugin.servicenow.Update"
+      items:
+        - title: "Source of truth stays in NetBox"
+          description: "The flow reads devices by site and role at run time."
+        - title: "The approver sees the diff"
+          description: "The check-mode output is attached to the approval step."
+        - title: "Post-check decides"
+          description: "A failed check triggers the rollback playbook before anything else changes."
+        - title: "One record per change"
+          description: "ServiceNow is updated with what changed, who approved and how it ended."
 
 quotes:
   - quote: "The orchestration of Ansible is very poor compared to what we can do with Kestra. I doubt that we can only use Terraform and Ansible to do all our complex orchestration."
@@ -219,7 +253,7 @@ comparison:
     - feature: "Wave gating between dev / staging / prod"
       kestra: "✓ Native Pause + resume, named reviewer logged"
       values:
-        - "Workflow approval (paid tiers)"
+        - "Approval nodes in workflow templates"
         - "Environment approvals (deploy only)"
         - "Pause-on-input step"
     - feature: "Event triggers (webhook, S3, Kafka, file)"
@@ -252,6 +286,12 @@ comparison:
         - "Ansible-centric"
         - "Possible, action-dependent"
         - "Possible, plugin-dependent"
+    - feature: "Branch on a job's result"
+      kestra: "✓ Native, outputs flow to the next task"
+      values:
+        - "Success, failure or always. Conditions need the paid orchestrator add-on"
+        - "Possible via expressions on step outputs"
+        - "Job step conditions"
 
 postCompareCta:
   eyebrow: "Deeper comparison"
@@ -266,7 +306,7 @@ faq:
     answer: "Run the playbook with <code>--check --diff</code> on a schedule. The Kestra Ansible callback (<code>stdout_callback = yaml</code> plus the Kestra-specific output) emits per-host JSON. A <code>ForEach</code> task iterates over the hosts and branches on <code>changed</code>. The flow only alerts when a host actually drifted, so clean enforcement nights stay quiet. The full diff and recap are stored as task artifacts on the execution."
   - question: "How does the approval gate work between dev, staging, and production waves?"
     answer: "Kestra's Pause task suspends the flow after a wave completes. The playbook output is surfaced in the Kestra UI. A named reviewer reads it, optionally adds a comment, and resumes. Only then does the next wave run. The reviewer identity and timestamp land in the execution history. Different reviewers can be wired to different namespaces or environments through RBAC."
-  - question: "Can I drive a rolling restart with <code>serial:</code> and verify between batches?"
+  - question: "Can I drive a rolling restart with serial: and verify between batches?"
     answer: "Yes. Set <code>serial: 1</code> (or <code>10%</code>) in the play. Ansible enforces the batching. After the playbook task returns, a Kestra <code>ForEach</code> loops over the per-host callback output and a <code>core.http.Request</code> probes each host's health endpoint with a retry policy. A failed probe halts the flow before the next wave, so the rest of the fleet stays on the old version."
   - question: "What's the difference between Kestra and Ansible Automation Platform (AAP / Tower / AWX)?"
     answer: "AAP is the Red Hat-owned operational layer for Ansible: a runner, a UI, surveys, RBAC, and the EDA controller for event triggers. Kestra is a general-purpose orchestrator. It schedules playbook runs, adds native pause-and-resume between waves, parses per-host results via the Kestra Ansible callback, and chains Ansible with Terraform, ServiceNow, NetBox, ArgoCD, and your own scripts in one flow. AAP is Ansible-centric by design. Kestra works alongside AAP if you already run it, or replaces it when you want one orchestrator across the full stack."

@@ -6,7 +6,7 @@ icon: /src/contents/docs/icons/admin.svg
 description: Best practices for hardening Kestra security, including network isolation, host-level controls, and plugin validation.
 ---
 
-Secure a Kestra deployment with credential setup, network and worker isolation, transport security, request filtering, and endpoint protection.
+Secure a Kestra deployment with credential setup, network and worker isolation, transport security, request filtering, response headers, and endpoint protection.
 
 ## Credential initialization
 
@@ -198,6 +198,14 @@ Configure plugin restrictions and worker isolation under [Worker Isolation](../0
 
 - Plugin configuration: use Kestra’s plugin architecture, including [Plugin Versioning](../07.enterprise/05.instance/versioned-plugins/index.md), to control which plugins are allowed and [which should be prohibited](../07.enterprise/02.governance/worker-isolation/index.md).
 - CI/CD validation: add a [Flow Validation step in your CI/CD pipeline](../version-control-cicd/cicd/index.md) to scan task definitions for disallowed patterns (e.g., `169.254.169.254`) and block merging if detected.
+
+## Security response headers
+
+Kestra adds browser security headers to every HTTP response the Webserver sends, including error responses. Three are on by default: `X-Frame-Options`, `X-Content-Type-Options`, and `Referrer-Policy`.
+
+`Content-Security-Policy` and `Strict-Transport-Security` (HSTS) are off until you set them under `kestra.webserver.security-headers`. Kestra sends HSTS only on HTTPS requests. Behind a TLS-terminating reverse proxy, configure the proxy to send `X-Forwarded-Proto: https` so Kestra recognizes the request as HTTPS and also marks its cookies `Secure`.
+
+See [Security response headers](../configuration/03.observability-and-networking/index.md#security-response-headers) for the configuration properties, a report-only CSP example, and how to disable headers. To force the `Secure` cookie attribute regardless of the request, see [Secure cookies](../configuration/03.observability-and-networking/index.md#secure-cookies).
 
 ## Management endpoint access
 

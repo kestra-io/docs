@@ -58,7 +58,7 @@ Here is the representation of a `metrics` object. It's a **list of dictionaries*
 "metrics": [
     {
         "name": "myMetric", // mandatory, the name of the metrics
-        "type": "counter", // mandatory, "counter" or "timer" metric type
+        "type": "counter", // mandatory, "counter", "gauge", or "timer" metric type
         "value": 42, // mandatory, Double or Integer value
         "tags": { // optional list of tags
           "readOnly": true,
@@ -72,11 +72,12 @@ Both outputs and metrics can optionally include a list of tags that expose inter
 
 The same `::{}::` syntax also accepts a `checkpoints` object, which saves progress so a retried task can resume where it stopped. See [Checkpoints](../10.checkpoints/index.md).
 
-### Metric types: `counter` and `timer`
+### Metric types: `counter`, `gauge`, and `timer`
 
-There are two metric types:
+There are three metric types:
 1. `counter`, expressed in **Integer** or **Double** data type, measures a countable number of rows/bytes/objects processed in a given task.
-2. `timer`, expressed in **Double** data type, measures the number of `seconds` to process specific computation in your flow.
+2. `gauge`, expressed in **Double** data type, records a value at a point in time, such as a queue size or the memory in use.
+3. `timer`, expressed in **Double** data type, measures the number of `seconds` to process specific computation in your flow.
 
 Below you can find examples of `outputs` and `metrics` definition for each language.
 
@@ -179,6 +180,63 @@ tasks:
       echo '::{"metrics":[{"name":"count","type":"counter","value":1,"tags":{"tag1":"i","tag2":"win"}}]}::'
       echo '::{"metrics":[{"name":"time","type":"timer","value":2.12,"tags":{"tag1":"i","tag2":"destroy"}}]}::'
 ```
+
+### Other languages
+
+The [kestra-io/libs](https://github.com/kestra-io/libs) repository has a Kestra library for R, PowerShell, Ruby, PHP, Perl, Groovy, Lua, Julia, Go, and C#. Each one prints the same `::{}::` lines, so you call functions instead of writing JSON. Every library can:
+
+- Send outputs, and `counter`, `gauge`, and `timer` metrics. A timer can also time a block of code and return its result.
+- Send log lines at a given level, such as a warning, with the language's usual logging style.
+- Declare the task's input and output assets, in the Enterprise Edition and Kestra Cloud. Kestra only records them when the task has `assets.enableAuto: true`. See [Emit assets from a script](../../07.enterprise/02.governance/01.assets/01.declare-assets/index.md#emit-assets-from-a-script).
+- Read the execution context when the task has `executionContext: true`. See [Execution context](../09.execution-context/index.md).
+
+The libraries aren't published to the language package registries, so a task downloads the library from GitHub before the script runs. The files are under `https://raw.githubusercontent.com/kestra-io/libs/main/`:
+
+| Language | Task type | Get the library | Load it in the script |
+|---|---|---|---|
+| R | `r.Script` | `Rscript -e 'install.packages("remotes"); remotes::install_github("kestra-io/libs", subdir = "r", ref = "main")'` in `beforeCommands` | `library(kestra)` |
+| PowerShell | `powershell.Script` | Download `powershell/Kestra/Kestra.psm1` with `Invoke-WebRequest` in `beforeCommands` | `Import-Module ./Kestra.psm1` |
+| Ruby | `ruby.Script` | Download `ruby/lib/kestra.rb` with `curl` in `beforeCommands` | `require_relative "kestra"` |
+| PHP | `php.Script` | Download `php/src/Kestra.php` with `curl` in `beforeCommands` | `require 'Kestra.php'; use Kestra\Kestra;` |
+| Perl | `perl.Script` | Download `perl/lib/Kestra.pm` with `curl` in `beforeCommands` | `use lib '.'; use Kestra;` |
+| Groovy | `groovy.Script` | Download `groovy/Kestra.groovy` with `curl` in `beforeCommands` | Nothing: `groovy` finds it in the working directory |
+| Lua | `lua.Script` | Download `lua/kestra.lua` with a `Download` task and pass it in `inputFiles`, since the default image has no `curl` | `local kestra = require('kestra')` |
+| Julia | `julia.Script` | Download `julia/Kestra.jl` with a `Download` task and pass it in `inputFiles` | `include("Kestra.jl")` |
+| Go | `go.Script` | `go mod init flow`, `go get github.com/kestra-io/libs/go@main`, and `go mod tidy` in `beforeCommands` | `import "github.com/kestra-io/libs/go/kestra"` |
+| C# | `csharp.Script` | Clone the repository and run `dotnet build` on `dotnet/Kestra` in `beforeCommands` | `#r` with the path of the built `Kestra.dll` |
+
+The task types are in the `io.kestra.plugin.scripts` package, for example `io.kestra.plugin.scripts.ruby.Script`.
+
+In production flows, replace `main` with a release tag so a change in the repository can't change what your flow runs. A task that installs the library downloads it on every execution, so for frequent flows, build an image with the library installed and set it as the task's `containerImage`.
+
+<!-- TODO(eng): libs v2.0.0 (2026-09-07) is the latest release and predates these libraries (libs#41-51, merged 2026-11-17 to 11-20). Confirm a release tag that includes them before 2.1 GA, since the docs tell users to pin one. -->
+
+This Ruby task sends outputs, a counter, a gauge, a timer, and a warning:
+
+```yaml
+id: import_orders
+namespace: company.team
+
+tasks:
+  - id: import
+    type: io.kestra.plugin.scripts.ruby.Script
+    beforeCommands:
+      - curl -fsSLo kestra.rb https://raw.githubusercontent.com/kestra-io/libs/main/ruby/lib/kestra.rb
+    script: |
+      require_relative "kestra"
+
+      orders = Kestra.timer("fetch") { (1..120).to_a }
+      Kestra.outputs(count: orders.size, status: "ok")
+      Kestra.counter("orders", orders.size, tags: { source: "shop" })
+      Kestra.gauge("queue_size", 3)
+      Kestra.logger.warn("2 orders had no customer")
+
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Imported {{ outputs.import.vars.count }} orders"
+```
+
+The function names follow each language's conventions, for example `Kestra$outputs()` in R, `Kestra::outputs()` in PHP, and `Send-KestraOutput` in PowerShell. Each language's folder in the [repository](https://github.com/kestra-io/libs) has a README with the full list of functions and a complete flow.
 
 ---
 

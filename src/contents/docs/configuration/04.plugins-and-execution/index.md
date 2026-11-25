@@ -287,7 +287,7 @@ For security guidance and matching behavior, see [HTTP task URL filtering](../..
 
 ### HTTP tasks behind a forward proxy
 
-:::badge{version=">=2.1.0" editions="OSS,EE"}
+:::badge{version=">=2.0.12" editions="OSS,EE"}
 :::
 
 By default, HTTP tasks and plugins built on Kestra's HTTP client ignore the JVM proxy settings and connect directly unless the task sets `options.proxy`. Set `use-system-proxy` to make them use the JVM proxy settings, the same ones plugin installation reads:

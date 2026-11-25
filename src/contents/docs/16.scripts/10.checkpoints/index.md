@@ -19,7 +19,9 @@ Kestra already recovers at the task level: a failed task is retried, a failed ex
 
 A checkpoint is a key-value pair that your script saves while it runs. When the same task runs again, Kestra passes the saved checkpoints back to the script, and the script uses them to skip the work it already finished.
 
-Checkpoints work on every script task, `Script` and `Commands` alike, in any language and with any task runner. You need two things:
+Checkpoints work on every script task, `Script` and `Commands` alike, in any language and with any task runner. CLI tasks from other plugins that run commands the same way support them too, such as [`AzCLI`](/plugins/plugin-azure/azure-cli/io.kestra.plugin.azure.cli.azcli) and the CloudQuery [`CloudQueryCLI`](/plugins/plugin-cloudquery/io.kestra.plugin.cloudquery.cloudquerycli) and [`Sync`](/plugins/plugin-cloudquery/io.kestra.plugin.cloudquery.sync) tasks. A task supports checkpoints when its plugin documentation lists a `durable` property.
+
+You need two things:
 
 - `durable: true` on the task, so Kestra passes saved checkpoints to the script.
 - A script that writes checkpoints as it progresses and reads them when it starts.

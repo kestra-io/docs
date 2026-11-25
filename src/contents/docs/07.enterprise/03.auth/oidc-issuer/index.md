@@ -1,15 +1,23 @@
 ---
-title: "Kestra as an OIDC Issuer: Keyless AWS and GCP Access"
-h1: Access AWS and Google Cloud Without Static Credentials
-description: Configure Kestra Enterprise as an OIDC identity provider so executions exchange short-lived tokens for AWS and Google Cloud credentials instead of stored keys.
+title: "Kestra as an OIDC Issuer: Keyless AWS, GCP, and JFrog Access"
+h1: Access AWS, Google Cloud, and JFrog Without Static Credentials
+description: Configure Kestra Enterprise as an OIDC issuer so flows exchange short-lived tokens for AWS, Google Cloud, or JFrog credentials instead of stored keys.
 sidebarTitle: OIDC Issuer
 icon: /src/contents/docs/icons/admin.svg
-editions: ["EE", "Cloud"]
+editions: ["EE"]
 version: ">= 2.1.0"
 docId: oidc-issuer
 ---
 
-Kestra Enterprise can act as an OpenID Connect (OIDC) identity provider, so your flows get temporary AWS and Google Cloud credentials without any access key or service account key stored in Kestra.
+Kestra Enterprise can act as an OpenID Connect (OIDC) identity provider, so your flows get temporary AWS, Google Cloud, and JFrog credentials without any access key or service account key stored in Kestra.
+
+This matters most when Kestra runs outside the cloud it needs to reach, for example on-premises or on another cloud provider. There is no instance role or workload identity to fall back on, so the usual alternative is a long-lived access key stored as a secret. When Kestra already runs on AWS or Google Cloud, the worker's own identity gives keyless access too, and the issuer adds a separate identity per tenant, namespace, or flow.
+
+The issuer identifies tenants, namespaces, and flows to other services. It doesn't sign users in to Kestra: for that, see [Single Sign-On](../sso/index.md).
+
+:::alert{type="info"}
+The OIDC issuer isn't available on Kestra Cloud yet. If you'd like to use it, contact your Kestra account team.
+:::
 
 ## How it works
 
@@ -25,15 +33,16 @@ The segments go from broad to narrow, so a trust policy can match one flow, or e
 
 ## Prerequisites
 
-- Kestra Enterprise reachable from the internet over HTTPS. AWS and Google Cloud download the discovery document and the public keys from Kestra's URL to verify each token, so the URL must have a certificate they trust.
-- An RSA private key in PEM format (PKCS#8 or PKCS#1) for Kestra to sign tokens with. For example, generate a 2048-bit key with `openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out kestra-oidc.pem`.
+:::alert{type="warning"}
+The issuer URL must be reachable from the public internet over HTTPS, with a certificate the service trusts. AWS, Google Cloud, and other services download the discovery document and the public keys from that URL, without credentials, to verify each token. An instance that is only reachable on a private network can't use the issuer.
+:::
+
+- An RSA private key in PEM format (PKCS#8 or PKCS#1) for each issuer you declare. For example, generate a 2048-bit key with `openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out kestra-oidc.pem`. Anyone who holds the key can create tokens that your cloud accounts trust, so store it like a secret and pass it to Kestra through an environment variable or your secret manager, never in a committed file.
 - For remote workers, [worker authentication](../../04.scalability/worker-group/index.md#worker-authentication) enabled on the controller and the workers.
 
 ## Configure the issuer
 
-<!-- VERIFY: on Kestra Cloud, who enables the issuer and what is the issuer URL (instance URL or a per-tenant dedicated issuer)? Cloud users can't edit the server configuration below. -->
-
-Enable the issuer and give it a signing key in the Kestra configuration:
+Enable the issuer and give it a signing key in the Kestra configuration. This example reads the key from the `OIDC_KEY_INSTANCE` environment variable:
 
 ```yaml
 kestra:
@@ -47,13 +56,10 @@ kestra:
         keys:
           - kid: 2026-11
             active: true
-            private-key: |
-              -----BEGIN PRIVATE KEY-----
-              ...
-              -----END PRIVATE KEY-----
+            private-key: ${OIDC_KEY_INSTANCE}
 ```
 
-Kestra checks the configuration at startup and doesn't start if there is no key, no active key or more than one, a duplicate `kid`, a malformed key, or a URL that isn't HTTPS. The issuer runs on the controller, webserver, and standalone servers only, so you don't need to give the private key to your workers. Workers request their tokens from the controller.
+Kestra checks the configuration at startup and doesn't start if there is no key, no active key or more than one, a duplicate `kid`, a malformed key, or a URL that isn't HTTPS. The error names the property at fault, for example `kestra.security.oidc.issuer.issuers[1].keys`. The issuer runs on the controller, webserver, and standalone servers only, so you don't need to give the private key to your workers. Workers request their tokens from the controller.
 
 Once Kestra restarts, it serves two public documents that the cloud provider reads, with no authentication:
 
@@ -68,11 +74,11 @@ The issuer accepts the following properties under `kestra.security.oidc.issuer`:
 
 | Property | Default | Description |
 |---|---|---|
-| `enabled` | `false` | Turn on the issuer. |
-| `url` | `kestra.url` | The issuer URL, used as the `iss` claim of every token. |
-| `allow-insecure-url` | `false` | Allow an `http` URL. Use it for local testing only, since AWS and Google Cloud require HTTPS. |
+| `enabled` | `false` | Turn on the issuer. Applies to every issuer. |
+| `url` | `kestra.url` | The issuer URL, used as the `iss` claim of the instance issuer's tokens. [Dedicated issuer](#dedicated-issuers-per-tenant-or-namespace) URLs are built from it. |
+| `allow-insecure-url` | `false` | Allow an `http` URL. Use it for local testing only, since AWS and Google Cloud require HTTPS. Applies to every issuer. |
 | `token-ttl` | `PT5M` | Lifetime of a token. A token only has to last until the cloud provider exchanges it, so keep it short. Kestra logs a warning above 15 minutes. |
-| `cache-max-age` | `PT10M` | How long the cloud provider may cache the discovery document and the public keys. |
+| `cache-max-age` | `PT10M` | How long the cloud provider may cache the discovery document and the public keys. Applies to every issuer. |
 | `allowed-audiences` | Any | The audiences tokens may be issued for. `oidcToken()` fails for any other audience. |
 | `keys` | | The signing keys, each with an optional `kid`, `active`, and `private-key`. Exactly one key is active. Without `kid`, Kestra uses the key's RFC 7638 thumbprint. |
 | `issuers` | | [Dedicated issuers](#dedicated-issuers-per-tenant-or-namespace) for a tenant or a namespace. |
@@ -201,12 +207,68 @@ Google Cloud exchanges the token through Workload Identity Federation. A flow th
 
 Set `projectId` explicitly: without a service account key, the task has nothing to read the project from. `workloadIdentityToken` requires `workloadIdentityAudience` and can't be combined with `serviceAccount`. If you set `allowed-audiences` on the issuer, add the provider's resource name to it.
 
+## Connect JFrog
+
+<!-- Live-tested 2026-11-23 against a JFrog trial (instance and tenant issuers, sub wildcard mapping, FORBIDDEN on mismatch). -->
+
+The JFrog Platform exchanges the token for a short-lived JFrog access token through its OIDC integration. Any service that accepts tokens from a generic OIDC provider works the same way: register the issuer URL, then exchange the token in your flow.
+
+1. In the JFrog Platform, go to **Administration > General Management > Manage Integrations**, open the **OpenID Connect** tab, and click **New Integration** to add an integration:
+    - **Provider Name**: `kestra`. The flow sends this name with each exchange.
+    - **Provider Type**: **Generic OpenID Connect**.
+    - **Provider URL**: the issuer URL, for example `https://kestra.acme.com`.
+    - **Audience**: `jfrog`. The flow passes the same value to `oidcToken()`.
+
+    Each issuer needs its own integration. To trust a [dedicated issuer](#dedicated-issuers-per-tenant-or-namespace), use its URL as the provider URL, for example `https://kestra.acme.com/oidc/tenants/prod`.
+
+2. Add an identity mapping to the integration. Its claims decide which tokens it accepts, and its token scope decides what the resulting access token can do. This mapping accepts every flow in the `team.data` namespace of the `prod` tenant:
+
+    ```json
+    {
+      "sub": "tenant:prod:namespace:team.data:*"
+    }
+    ```
+
+    Always set claims: without them, any token from the issuer gets the mapping's scope. For the token scope, pick a group that can read the repositories the flow needs, and keep the expiration short, for example 10 minutes.
+
+    To script this step and the previous one, use JFrog's REST API: `POST /access/api/v1/oidc` creates the integration, and `POST /access/api/v1/oidc/<provider-name>/identity_mappings` adds the mapping.
+
+3. In the flow, exchange the token and use the access token within the same task, so it never appears in the execution's outputs:
+
+    ```yaml
+    id: download_artifact
+    namespace: team.data
+
+    tasks:
+      - id: download
+        type: io.kestra.plugin.scripts.shell.Commands
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
+        env:
+          OIDC_TOKEN: "{{ oidcToken(audience='jfrog') }}"
+        outputFiles:
+          - app.tar.gz
+        commands:
+          - |
+            ACCESS_TOKEN=$(curl -sf -X POST https://acme.jfrog.io/access/api/v1/oidc/token \
+              -H "Content-Type: application/json" \
+              -d "{\"grant_type\": \"urn:ietf:params:oauth:grant-type:token-exchange\", \"subject_token_type\": \"urn:ietf:params:oauth:token-type:id_token\", \"subject_token\": \"$OIDC_TOKEN\", \"provider_name\": \"kestra\"}" \
+              | jq -r .access_token)
+            curl -sf -H "Authorization: Bearer $ACCESS_TOKEN" -o app.tar.gz \
+              https://acme.jfrog.io/artifactory/releases/app/1.0/app.tar.gz
+    ```
+
+    This example runs on the worker with the `Process` task runner, so the worker needs `curl` and `jq`. If you set `allowed-audiences` on the issuer, add `jfrog` to it.
+
 ## Dedicated issuers per tenant or namespace
 
-With a single instance issuer, the cloud provider trusts tokens from every tenant and relies on the subject condition alone to keep them apart. A dedicated issuer gives a tenant, or a namespace and its children, its own issuer URL and keys, so a provider registered for one tenant can't verify a token from another.
+With a single instance issuer, every token carries the same issuer URL and verifies against the same keys, whatever tenant it comes from. A cloud account that trusts the instance issuer trusts every tenant, and only the subject condition in its trust policy keeps the other tenants out.
+
+A dedicated issuer gives a tenant, or a namespace and its children, its own issuer URL and keys. A cloud account registered on a dedicated issuer can't verify a token from anywhere else, whatever its subject says. Use one when a cloud account must trust a single tenant or team, or when tenants must not share a signing key.
 
 ```yaml
 kestra:
+  url: https://kestra.acme.com
   security:
     oidc:
       issuer:
@@ -214,23 +276,54 @@ kestra:
         issuers:
           - tenant: prod
             keys:
-              - active: true
-                private-key: |
-                  -----BEGIN PRIVATE KEY-----
-                  ...
+              - kid: prod-2026-11
+                active: true
+                private-key: ${OIDC_KEY_PROD}
           - tenant: prod
             namespace: finance
             token-ttl: PT3M
             allowed-audiences:
               - sts.amazonaws.com
             keys:
-              - active: true
-                private-key: |
-                  -----BEGIN PRIVATE KEY-----
-                  ...
+              - kid: finance-2026-11
+                active: true
+                private-key: ${OIDC_KEY_FINANCE}
 ```
 
-Kestra signs each token with the closest issuer: the namespace's issuer, then the tenant's, then the instance issuer. A namespace issuer also covers its child namespaces, so the `finance` issuer above signs for `finance.payroll`. Each dedicated issuer can set its own `url`, `token-ttl`, and `allowed-audiences`, which replace the instance values, and needs its own keys.
+Each entry under `issuers` accepts the following properties:
+
+| Property | Default | Description |
+|---|---|---|
+| `tenant` | | The tenant the issuer signs for. Required. |
+| `namespace` | Every namespace of the tenant | Restrict the issuer to this namespace and its child namespaces. |
+| `url` | Built from the instance `url` | The issuer's `iss`. The discovery document and the public keys stay on their default paths, so a custom URL needs a proxy that maps it onto them. |
+| `token-ttl` | The instance `token-ttl` | Lifetime of the issuer's tokens. |
+| `allowed-audiences` | The instance `allowed-audiences` | Replaces the instance list for this issuer. |
+| `keys` | | The issuer's signing keys, with the same rules as the instance keys. A `kid` only has to be unique within one issuer. |
+
+Two issuers can't share a scope or an issuer URL: Kestra doesn't start if they do. A tenant with namespace issuers but no tenant issuer only logs a warning, and its other namespaces use the instance issuer.
+
+### Which issuer signs a token
+
+Kestra signs each token with the most specific issuer that covers the execution:
+
+1. The issuer of the namespace, or of its closest parent namespace that has one. The `finance` issuer covers `finance`, `finance.ap`, and `finance.ap.eu`.
+2. Otherwise, the tenant's issuer.
+3. Otherwise, the instance issuer, if it has keys.
+
+With the configuration above:
+
+| Execution | Issuer | `iss` |
+|---|---|---|
+| Tenant `prod`, namespace `finance.ap` | Namespace `finance` | `https://kestra.acme.com/oidc/tenants/prod/namespaces/finance` |
+| Tenant `prod`, namespace `sales` | Tenant `prod` | `https://kestra.acme.com/oidc/tenants/prod` |
+| Tenant `dev`, any namespace | Instance | `https://kestra.acme.com` |
+
+The `sub` claim is the same whichever issuer signs the token. Flows need no change either: `oidcToken()` picks the issuer from the execution's tenant and namespace.
+
+Instance `keys` are optional when you declare dedicated issuers. Without them, there is no instance issuer: `/.well-known/openid-configuration` and `/oidc/jwks.json` return 404, and `oidcToken()` fails in any namespace that no dedicated issuer covers. Leave them out when only some tenants use the issuer and no key should sign for all of them.
+
+### Dedicated issuer URLs
 
 Each dedicated issuer has its own URL and documents:
 
@@ -239,17 +332,53 @@ Each dedicated issuer has its own URL and documents:
 | Tenant | `<url>/oidc/tenants/<tenant>` | `<url>/oidc/tenants/<tenant>/jwks.json` |
 | Namespace | `<url>/oidc/tenants/<tenant>/namespaces/<namespace>` | `<url>/oidc/tenants/<tenant>/namespaces/<namespace>/jwks.json` |
 
-The discovery document is at the issuer URL followed by `/.well-known/openid-configuration`. Register that issuer URL with the cloud provider, for example `aws iam create-open-id-connect-provider --url https://kestra.acme.com/oidc/tenants/prod`. A child namespace has no documents of its own, and a scope with no dedicated issuer returns 404.
+The discovery document is at the issuer URL followed by `/.well-known/openid-configuration`. A child namespace has no documents of its own, because its tokens carry the parent issuer's URL. A scope with no dedicated issuer returns 404, whether the tenant exists or not.
 
-Instance `keys` are optional when you declare dedicated issuers. Without them, there is no instance issuer: `/.well-known/openid-configuration` returns 404, and `oidcToken()` fails in any namespace that no dedicated issuer covers.
+:::alert{type="warning"}
+Dedicated issuer URLs are built from the instance `url`, which defaults to `kestra.url`. Changing it changes the URL of every dedicated issuer and breaks their registrations with cloud providers. Set the issuer's `url` when its URL must survive such a change.
+:::
+
+### Register a dedicated issuer
+
+Register the dedicated issuer's URL wherever the examples above use `https://kestra.acme.com`.
+
+On AWS, the provider ARN and the condition keys of the trust policy include the URL's path:
+
+```bash
+aws iam create-open-id-connect-provider \
+  --url https://kestra.acme.com/oidc/tenants/prod \
+  --client-id-list sts.amazonaws.com
+```
+
+```json
+{
+  "Effect": "Allow",
+  "Principal": {
+    "Federated": "arn:aws:iam::123456789012:oidc-provider/kestra.acme.com/oidc/tenants/prod"
+  },
+  "Action": "sts:AssumeRoleWithWebIdentity",
+  "Condition": {
+    "StringEquals": {
+      "kestra.acme.com/oidc/tenants/prod:aud": "sts.amazonaws.com"
+    },
+    "StringLike": {
+      "kestra.acme.com/oidc/tenants/prod:sub": "tenant:prod:namespace:finance:*"
+    }
+  }
+}
+```
+
+AWS rejects tokens from other tenants before it evaluates any condition, because they carry another issuer URL and another signature. Keep the `sub` condition anyway: it limits the role to specific namespaces or flows within the tenant.
+
+On Google Cloud, pass the dedicated issuer's URL to `--issuer-uri` when you create the pool's provider. If the issuer sets `allowed-audiences`, add the provider's resource name to it.
 
 ## Rotate signing keys
 
-Kestra publishes every configured key, active or not, and signs only with the active one. To rotate a key without breaking token verification:
+Kestra publishes every configured key, active or not, and signs only with the active one. Each issuer rotates its keys separately, and only the services registered on that issuer are affected. To rotate a key without breaking token verification:
 
-1. Add the new key with `active: true`, set the old key's `active` to `false`, and restart Kestra.
-2. Wait at least `cache-max-age`, so the cloud provider picks up the new public key and tokens signed with the old key have expired.
-3. Remove the old key and restart Kestra.
+1. Add the new key to the issuer's `keys` with `active: false`, and restart Kestra. Kestra now publishes the new public key alongside the old one.
+2. Wait at least `cache-max-age`, so cloud providers pick up the new public key. Then set `active: true` on the new key and `active: false` on the old one, and restart Kestra.
+3. Once every token signed with the old key has expired, after `token-ttl`, remove the old key and restart Kestra.
 
 ## Troubleshooting
 
@@ -261,3 +390,6 @@ Kestra publishes every configured key, active or not, and signs only with the ac
 | `No OIDC issuer covers tenant '<tenant>' namespace '<namespace>' ...` | There are no instance keys and no dedicated issuer for this tenant or namespace. |
 | `OIDC tokens are only minted for authenticated workers ...` | A remote worker requested a token without [worker authentication](../../04.scalability/worker-group/index.md#worker-authentication). Enable it on the controller and its workers. |
 | `webIdentityToken is set but stsRoleArn is empty ...` | Set `stsRoleArn` to the role to assume with the token. |
+| AWS returns `InvalidIdentityToken` | The token's `iss` differs from the registered provider URL. Check which issuer covers the execution: a namespace issuer takes precedence over the tenant issuer. |
+| 404 on a dedicated issuer's discovery document | No issuer is configured for exactly that scope, for example because you requested a child namespace's URL. Register the parent namespace's issuer URL, or add an issuer for that scope. |
+| 404 on `/.well-known/openid-configuration` | There are no instance keys. This is expected when you only declare dedicated issuers: register a dedicated issuer's URL instead. |

@@ -44,6 +44,34 @@ const TARGETS = [
     { name: "Hybrid", angle: 225 },
     { name: "Air-gapped", angle: 315 },
 ]
+interface Button {
+    label: string
+    href: string
+    solid?: boolean
+    chevron?: boolean
+}
+
+interface Props {
+    headingId?: string
+    eyebrow?: string | null
+    title?: string
+    lead?: string
+    buttons?: Button[]
+    size?: "compact" | "standard" | "tall"
+}
+
+const {
+    headingId = "ee-hero-title",
+    eyebrow = "Kestra Enterprise",
+    title = "Scale orchestration across teams.",
+    lead = "Kestra Enterprise gives your teams the security, governance, and operational capabilities to automate workflows across your organization.",
+    buttons = [
+        { label: "Book a demo", href: "/demo", solid: true, chevron: true },
+        { label: "Compare editions", href: "/pricing#comparison-table" },
+    ],
+    size = "tall",
+} = Astro.props
+
 const beam = (angle: number, r: number) => {
     const rad = (angle * Math.PI) / 180
     return [(Math.sin(rad) * r).toFixed(1), (-Math.cos(rad) * r).toFixed(1)]
@@ -71,7 +99,7 @@ const DUST = [
 ]
 ---
 
-<section class="ee-hero" aria-labelledby="ee-hero-title">
+<section class="ee-hero" aria-labelledby={headingId}>
     <PixelEdges left="tall" right="wide" />
     <div class="frame surface-dark" data-header-dark data-ee-orbit>
         <div class="depth" aria-hidden="true">
@@ -94,37 +122,41 @@ const DUST = [
             ))}
         </div>
         <div class="container-xl">
-            <div class="stage">
+            <div class:list={["stage", size]}>
                 <div class="copy">
-                    <p class="eyebrow" data-edition>
-                        <span class="sheen" />
-                        <img
-                            class="kestra"
-                            src={kestraMark.src}
-                            alt=""
-                            width="16"
-                            height="16"
-                        />
-                        <span class="name">Kestra Enterprise</span>
-                    </p>
-                    <h1 id="ee-hero-title">
-                        Scale orchestration across teams.
-                    </h1>
-                    <p class="lead">
-                        Kestra Enterprise gives your teams the security,
-                        governance, and operational capabilities to automate
-                        workflows across your organization.
-                    </p>
+                    {eyebrow && (
+                        <p class="eyebrow" data-edition>
+                            <span class="sheen" />
+                            <img
+                                class="kestra"
+                                src={kestraMark.src}
+                                alt=""
+                                width="16"
+                                height="16"
+                            />
+                            <span class="name">{eyebrow}</span>
+                        </p>
+                    )}
+                    <h1 id={headingId}>{title}</h1>
+                    <p class="lead">{lead}</p>
                     <div class="buttons">
-                        <a href="/demo" class="btn-solid">
-                            Book a demo <Icon name="mdi:chevron-right" />
-                        </a>
-                        <a href="/pricing#comparison-table" class="btn-ghost">
-                            Compare editions
-                        </a>
+                        {buttons.map((button) => (
+                            <a
+                                href={button.href}
+                                class={button.solid ? "btn-solid" : "btn-ghost"}
+                            >
+                                {button.label}
+                                {button.chevron && <Icon name="mdi:chevron-right" />}
+                            </a>
+                        ))}
                     </div>
                 </div>
 
+                {Astro.slots.has("visual") ? (
+                    <div class="hero-slot">
+                        <slot name="visual" />
+                    </div>
+                ) : (
                 <div class="orbit" aria-hidden="true">
                     <div class="hub" data-hub>
                         <svg class="rings" viewBox="-480 -480 960 960">
@@ -183,7 +215,6 @@ const DUST = [
                                 </div>
                             ))}
                         </div>
-                        <span class="shade" />
                         <span class="core" data-core>
                             <span class="pips">
                                 {CARDS.map(() => (
@@ -199,6 +230,7 @@ const DUST = [
                         </span>
                     </div>
                 </div>
+                )}
             </div>
         </div>
     </div>
@@ -394,6 +426,8 @@ const DUST = [
 </script>
 
 <style lang="scss">
+    @use "/src/assets/styles/hero" as *;
+
     .ee-hero {
         position: relative;
         margin-top: -67px;
@@ -402,10 +436,11 @@ const DUST = [
 
     .frame {
         --success: #5ee3ae;
-        --running: #9d78ff;
+        --running: #b39aff;
         --warning: #f28c5c;
         --danger: #ff6b6b;
         --neutral: #b9b9c6;
+        --card: rgb(52, 44, 118);
 
         position: relative;
         overflow: hidden;
@@ -431,7 +466,7 @@ const DUST = [
                 rgba(70, 50, 210, 0.2),
                 transparent 68%
             ),
-            linear-gradient(165deg, #010103 0%, #05051a 52%, #010104 100%);
+            linear-gradient(165deg, #0c0a2a 0%, #151040 52%, #0c0a2a 100%);
         color: #ffffff;
 
         &::after {
@@ -457,15 +492,15 @@ const DUST = [
             background:
                 linear-gradient(
                     90deg,
-                    rgba(0, 0, 0, 0.72) 0%,
-                    rgba(0, 0, 0, 0.3) 34%,
+                    rgba(0, 0, 0, 0.15) 0%,
+                    rgba(0, 0, 0, 0.06) 34%,
                     transparent 58%
                 ),
                 radial-gradient(
                     62% 78% at 72% 52%,
                     transparent 40%,
-                    rgba(0, 0, 4, 0.6) 76%,
-                    #000000 100%
+                    rgba(0, 0, 4, 0.18) 76%,
+                    rgba(0, 0, 0, 0.3) 100%
                 );
             pointer-events: none;
 
@@ -473,8 +508,8 @@ const DUST = [
                 background: radial-gradient(
                     95% 52% at 50% 74%,
                     transparent 40%,
-                    rgba(0, 0, 4, 0.6) 78%,
-                    #000000 100%
+                    rgba(0, 0, 4, 0.18) 78%,
+                    rgba(0, 0, 0, 0.3) 100%
                 );
             }
         }
@@ -524,24 +559,6 @@ const DUST = [
         }
     }
 
-    .shade {
-        position: absolute;
-        top: calc(var(--drop) - var(--rc));
-        left: 0;
-        width: 9rem;
-        height: 9rem;
-        margin: -4.5rem;
-        border-radius: 50%;
-        background: radial-gradient(
-            closest-side,
-            rgba(0, 0, 0, 0.75),
-            rgba(0, 0, 0, 0.45) 45%,
-            transparent
-        );
-        transform: translateZ(-26px);
-        pointer-events: none;
-    }
-
     .core {
         --level: 0;
 
@@ -556,7 +573,7 @@ const DUST = [
         margin: -2.375rem;
         border: 2px solid rgba(255, 255, 255, calc(0.3 + var(--level) * 0.08));
         border-radius: 0.875rem;
-        background: #121118;
+        background: var(--card);
         box-shadow:
             0 0 calc(18px + var(--level) * 16px) calc(var(--level) * 2px)
                 rgba(124, 102, 255, calc(0.16 + var(--level) * 0.19)),
@@ -674,6 +691,13 @@ const DUST = [
         initial-value: 0deg;
     }
 
+    .hero-slot {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        place-items: center;
+    }
+
     .orbit {
         --rc: 13.5rem;
         --drop: var(--rc);
@@ -726,33 +750,18 @@ const DUST = [
             transform: rotateX(10deg) rotateY(-10deg) scale(0.7);
         }
 
-        &::before,
         &::after {
             content: "";
             position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        &::before {
-            inset: calc(var(--rc) * -1.15);
-            background: radial-gradient(
-                closest-side,
-                rgba(0, 0, 0, 0.85),
-                rgba(0, 0, 0, 0.4) 55%,
-                transparent
-            );
-            transform: translate3d(2rem, 3.5rem, -160px);
-        }
-
-        &::after {
             inset: calc(var(--rc) * -0.78);
+            border-radius: 50%;
             background: radial-gradient(
                 closest-side,
                 rgba(140, 120, 255, 0.34),
                 rgba(98, 78, 255, 0.12) 60%,
                 transparent
             );
+            pointer-events: none;
             transform: translateZ(-40px);
         }
     }
@@ -826,10 +835,8 @@ const DUST = [
             padding: 0.25rem 0.625rem;
             border-radius: 0.5rem;
             translate: -50% -50%;
-            background: rgb(16, 15, 38);
-            box-shadow:
-                inset 0 0 0 1px rgba(190, 180, 255, 0.3),
-                0 12px 24px -8px rgba(0, 0, 0, 0.8);
+            background: var(--card);
+            box-shadow: inset 0 0 0 1px rgba(214, 204, 255, 0.45);
             font-size: 0.8125rem;
             font-weight: 500;
             white-space: nowrap;
@@ -909,7 +916,7 @@ const DUST = [
                 24px
             )
             scale(calc(0.88 + 0.12 * var(--c)));
-        filter: brightness(calc(0.78 + 0.22 * var(--c)));
+        filter: brightness(calc(0.92 + 0.08 * var(--c)));
 
         &:global(.spent) {
             visibility: hidden;
@@ -951,6 +958,12 @@ const DUST = [
         align-items: center;
         gap: 2rem 3rem;
         padding: 7.5rem clamp(1.5rem, 4vw, 3.5rem) 4rem;
+
+        @each $size in compact, standard, tall {
+            &.#{$size} {
+                @include hero-size($size);
+            }
+        }
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);
@@ -1212,10 +1225,8 @@ const DUST = [
 
         border-radius: 0.75rem;
 
-        background-color: rgb(16, 15, 38);
-        box-shadow:
-            inset 0 0 0 1px rgba(190, 180, 255, 0.3),
-            0 18px 40px -12px rgba(0, 0, 0, 0.85);
+        background-color: var(--card);
+        box-shadow: inset 0 0 0 1px rgba(214, 204, 255, 0.45);
 
         &::before {
             content: "";
@@ -1240,7 +1251,7 @@ const DUST = [
             background-color: color-mix(
                 in srgb,
                 var(--tone) 14%,
-                rgb(16, 15, 38)
+                var(--card)
             );
             transition-duration: 0.15s;
         }

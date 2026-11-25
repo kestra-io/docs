@@ -55,7 +55,7 @@ New features available in the Enterprise Edition.
 Improvements to the tools and workflows used to build and manage flows.
 
 - **No-code Editor**: canvas-based flow editor alongside the YAML editor; Form and Source tabs per block; upstream output browser in the form panel; synced with the AI Copilot in real time. New `FORM` input type groups inputs into a multi-step wizard. [Docs](../../../09.ui/01.flows/index.md)
-- **VS Code namespace files**: Open namespace (VFS mount), Upload file, and Sync folder commands; `kestra.namespaceFiles.exclude` setting. [Docs](../../../version-control-cicd/05.vscode/index.md)
+- **VS Code namespace files**: Open namespace (VFS mount), Upload file, and Sync folder commands; `kestra.namespaceFiles.exclude` setting. [Docs](../../../ide-extensions/01.vscode/index.md)
 - **Plugin Artifacts**: plugins can ship Vue.js frontend components (Module Federation) that load into named slots in the execution topology view, task side drawer, or task detail modal without changes to the core application. [Docs](../../../plugin-developer-guide/10.plugin-ui/index.md)
 - **Plugin file renderers**: plugins can register format-specific renderers for inline output file preview. [Docs](../../../plugin-developer-guide/09.file-renderer/index.md)
 - **Dynamic Apps content blocks**: Apps support content blocks that update based on execution state. [Docs](../../../07.enterprise/04.scalability/apps/index.md)

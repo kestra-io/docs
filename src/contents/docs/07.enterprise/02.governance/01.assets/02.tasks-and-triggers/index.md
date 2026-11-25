@@ -261,7 +261,7 @@ The TTL check also notifies the asset's `owner` in the app, once per window:
 - **Expiring**: sent only when an `EXPIRING` trigger starts a flow for the asset.
 - **Expired**: sent when the TTL has passed, even if no flow reacts. This applies to every asset type, not only deployments.
 
-Clicking the notification opens the asset. In an Infrastructure tenant, a deployment opens on its Deployments page and any other asset opens in Inventory.
+Clicking the notification opens the asset.
 
 Kestra resolves `owner` to the users to notify:
 

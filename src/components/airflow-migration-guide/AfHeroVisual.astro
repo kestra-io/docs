@@ -1,0 +1,437 @@
+---
+import { Icon } from "astro-icon/components"
+import { fetchPluginIcon } from "~/utils/pluginIcon"
+import airflowMark from "~/components/versus/assets/airflow-monograme.svg"
+import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
+
+const ROWS = [
+    {
+        code: [[10, 'schedule=<s>"0 6 * * *"</s>,']],
+        kestra: { id: "daily", type: "core.trigger.Schedule", fallback: "mdi:clock-outline", time: "0.2s" },
+    },
+    {
+        code: [
+            [19, "stage = <c>SQLExecuteQueryOperator</c>("],
+            [20, '    task_id=<s>"stage_orders"</s>,'],
+        ],
+        kestra: { id: "stage_orders", type: "jdbc.postgresql.Queries", fallback: "mdi:database-outline", time: "3.2s" },
+    },
+    {
+        code: [
+            [25, "build = <c>BashOperator</c>("],
+            [26, '    task_id=<s>"dbt_build"</s>,'],
+        ],
+        kestra: { id: "dbt_build", type: "dbt.cli.DbtCLI", fallback: "mdi:database", time: "1m 12s" },
+    },
+]
+
+const paint = (line: string) =>
+    line
+        .replace(/<s>(.*?)<\/s>/g, '<span class="str">$1</span>')
+        .replace(/<c>(.*?)<\/c>/g, '<span class="cls">$1</span>')
+
+const icons = await Promise.all(
+    ROWS.map(async ({ kestra }) => {
+        try {
+            const svg = await fetchPluginIcon(`io.kestra.plugin.${kestra.type}`)
+            return `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`
+        } catch {
+            return null
+        }
+    }),
+)
+---
+
+<div class="hero-visual" aria-hidden="true">
+    <div class="panel">
+        <div class="heads">
+            <span class="head">
+                <img src={airflowMark.src} alt="" />
+                Airflow
+                <code>orders_daily.py</code>
+            </span>
+            <span />
+            <span class="head">
+                <span class="kmark">
+                    <img src={kestraMark.src} alt="" />
+                </span>
+                Kestra
+                <code>company.data.orders_daily</code>
+            </span>
+        </div>
+        <ol class="rows">
+            {ROWS.map((row, i) => (
+                <li style={`--i: ${i}`}>
+                    <span class="snippet">
+                        {row.code.map(([no, line]) => (
+                            <span class="ln">
+                                <i>{no}</i>
+                                <Fragment set:html={paint(String(line))} />
+                            </span>
+                        ))}
+                    </span>
+                    <span class="wire">
+                        <i />
+                    </span>
+                    <span class="ks-node">
+                        <span class="icon">
+                            {icons[i] ? (
+                                <img src={icons[i]} alt="" />
+                            ) : (
+                                <Icon name={row.kestra.fallback} />
+                            )}
+                        </span>
+                        <span class="text">
+                            <strong>{row.kestra.id}</strong>
+                            <small>{row.kestra.type}</small>
+                        </span>
+                        <span class="state">
+                            <Icon name="mdi:check-circle" />
+                            {row.kestra.time}
+                        </span>
+                        <span class="bar" />
+                    </span>
+                </li>
+            ))}
+        </ol>
+    </div>
+</div>
+
+<style lang="scss">
+    .hero-visual {
+        --cycle: 7s;
+        width: 100%;
+        text-align: left;
+    }
+
+    .panel {
+        display: grid;
+        gap: 1.25rem;
+        padding: 1.25rem;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 18px;
+        background:
+            radial-gradient(
+                120% 90% at 100% 0%,
+                rgba(132, 5, 255, 0.22),
+                transparent 60%
+            ),
+            linear-gradient(
+                180deg,
+                rgba(28, 24, 44, 0.82),
+                rgba(12, 10, 22, 0.92)
+            );
+        box-shadow:
+            0 40px 100px -40px rgba(0, 0, 0, 0.9),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(10px);
+    }
+
+    .heads,
+    .rows li {
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) 2.25rem minmax(0, 1fr);
+        align-items: center;
+    }
+
+    .head {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        min-width: 0;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: #ffffff;
+
+        img {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        code {
+            overflow: hidden;
+            padding: 0.0625rem 0.375rem;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            font-size: 0.6875rem;
+            font-weight: 400;
+            color: #adadbf;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    .kmark {
+        display: grid;
+        flex: none;
+        place-items: center;
+        width: 1.25rem;
+        height: 1.25rem;
+        border-radius: 5px;
+        background: #0d0d10;
+
+        img {
+            width: 0.75rem;
+            height: 0.75rem;
+        }
+    }
+
+    .rows {
+        display: grid;
+        gap: 0.875rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .snippet {
+        display: grid;
+        padding: 0.5rem 0.25rem 0.5rem 0;
+        border-radius: 8px;
+        font-family: $font-family-monospace;
+        font-size: 0.71875rem;
+        line-height: 1.7;
+        color: #d6d6e0;
+        white-space: pre;
+        overflow: hidden;
+        animation: lit var(--cycle) ease infinite;
+        animation-delay: calc(var(--i) * 1.1s);
+
+        .ln {
+            display: block;
+        }
+
+        i {
+            display: inline-block;
+            width: 1.25rem;
+            padding-right: 0.5rem;
+            font-style: normal;
+            text-align: right;
+            color: #5c5c68;
+        }
+
+        :global(.str) {
+            color: #80fac5;
+        }
+
+        :global(.cls) {
+            color: #cdb6fb;
+        }
+    }
+
+    @keyframes lit {
+        0%,
+        100% {
+            background: transparent;
+            box-shadow: none;
+        }
+
+        2%,
+        14% {
+            background: rgba(152, 105, 247, 0.12);
+            box-shadow: inset 2px 0 0 #9869f7;
+        }
+
+        30% {
+            background: transparent;
+            box-shadow: none;
+        }
+    }
+
+    .wire {
+        position: relative;
+        height: 2px;
+        margin: 0 0.375rem;
+        background: rgba(255, 255, 255, 0.14);
+
+        i {
+            position: absolute;
+            top: -3px;
+            left: 0;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #b48cff;
+            box-shadow: 0 0 12px #b48cff;
+            opacity: 0;
+            animation: travel var(--cycle) ease-in-out infinite;
+            animation-delay: calc(var(--i) * 1.1s);
+        }
+    }
+
+    .ks-node {
+        position: relative;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 0.625rem;
+        padding: 0.5rem 0.625rem 0.75rem;
+        overflow: hidden;
+        border: 1px solid #2e2e3c;
+        border-radius: 8px;
+        background: #1a1c22;
+        color: #ffffff;
+        animation: node var(--cycle) ease infinite;
+        animation-delay: calc(var(--i) * 1.1s);
+
+        .icon {
+            display: grid;
+            place-items: center;
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: 6px;
+            background: #ffffff;
+
+            img,
+            :global(svg) {
+                width: 1.25rem;
+                height: 1.25rem;
+                color: #1a1c22;
+            }
+        }
+
+        .text {
+            display: grid;
+            min-width: 0;
+            font-size: 0.8125rem;
+
+            strong {
+                font-weight: 600;
+            }
+
+            small {
+                overflow: hidden;
+                font-size: 0.6875rem;
+                color: #adadbf;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+
+        .state {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.125rem 0.375rem;
+            border-radius: 999px;
+            background: rgba(30, 135, 94, 0.18);
+            font-size: 0.6875rem;
+            color: #06f0b1;
+            opacity: 0;
+            animation: state var(--cycle) ease infinite;
+            animation-delay: calc(var(--i) * 1.1s);
+
+            :global(svg) {
+                width: 0.75rem;
+                height: 0.75rem;
+            }
+        }
+
+        .bar {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #9869f7, #06f0b1);
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: bar var(--cycle) ease infinite;
+            animation-delay: calc(var(--i) * 1.1s);
+        }
+    }
+
+    @keyframes travel {
+        0% {
+            left: 0;
+            opacity: 0;
+        }
+
+        3% {
+            opacity: 1;
+        }
+
+        13% {
+            left: calc(100% - 8px);
+            opacity: 1;
+        }
+
+        16%,
+        100% {
+            left: calc(100% - 8px);
+            opacity: 0;
+        }
+    }
+
+    @keyframes node {
+        0%,
+        12% {
+            border-color: #2e2e3c;
+        }
+
+        14%,
+        30% {
+            border-color: #9869f7;
+            box-shadow: 0 0 0 3px rgba(152, 105, 247, 0.16);
+        }
+
+        34%,
+        88% {
+            border-color: #1e875e;
+            box-shadow: none;
+        }
+
+        100% {
+            border-color: #2e2e3c;
+        }
+    }
+
+    @keyframes bar {
+        0%,
+        13% {
+            transform: scaleX(0);
+        }
+
+        32%,
+        88% {
+            transform: scaleX(1);
+        }
+
+        100% {
+            transform: scaleX(0);
+        }
+    }
+
+    @keyframes state {
+        0%,
+        32% {
+            opacity: 0;
+        }
+
+        36%,
+        88% {
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .wire i,
+        .ks-node,
+        .ks-node .state,
+        .ks-node .bar {
+            animation: none;
+        }
+
+        .ks-node .state {
+            opacity: 1;
+        }
+
+        .ks-node .bar {
+            transform: scaleX(1);
+        }
+    }
+</style>

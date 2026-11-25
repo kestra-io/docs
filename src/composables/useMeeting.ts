@@ -38,9 +38,13 @@ function americasMeetingUrl(territory: VisitorTerritory) {
     return undefined
 }
 
-export function getGeoMeetingUrl(territory: VisitorTerritory = visitorTerritory()) {
+function regionalMeetingUrl(territory: VisitorTerritory) {
     if (territory === "dach") return MARCUS_MEETING_LINK
-    return americasMeetingUrl(territory) ?? DAVID_MEETING_LINK
+    return americasMeetingUrl(territory)
+}
+
+export function getGeoMeetingUrl(territory: VisitorTerritory = visitorTerritory()) {
+    return regionalMeetingUrl(territory) ?? DAVID_MEETING_LINK
 }
 
 export function getMeetingUrl(
@@ -48,7 +52,7 @@ export function getMeetingUrl(
     { fallback = CONNOR_MEETING_LINK, territory }: MeetingOptions = {},
 ) {
     if (tier === "T1") return getGeoMeetingUrl(territory)
-    if (tier === "T2") return americasMeetingUrl(territory ?? visitorTerritory()) ?? fallback
+    if (tier === "T2") return regionalMeetingUrl(territory ?? visitorTerritory()) ?? fallback
     return fallback
 }
 

@@ -82,11 +82,12 @@ export default defineConfig({
     adapter: isDev
         ? node({ mode: "standalone" })
         : cloudflare({
-              sessionKVBindingName: "docs-session",
               prerenderEnvironment: "node",
               imageService: imageService(),
           }),
+    session: false,
     trailingSlash: "never",
+    compressHTML: true,
     integrations: [
         cloudflareAutoFormat,
         vue({
