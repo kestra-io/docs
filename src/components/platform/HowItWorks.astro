@@ -1255,13 +1255,16 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
             const firerBox = root.querySelector<HTMLElement>("[data-fire]")
             const noCodeBox = root.querySelector<HTMLElement>("[data-nocode]")
             const execBox = root.querySelector<HTMLElement>("[data-exec]")
+            const observers: { disconnect: () => void }[] = []
             if (firerBox) {
                 const canvas = firerBox.querySelector<HTMLElement>(".canvas")!
                 const width = canvas.offsetWidth
-                new ResizeObserver(([entry]) => {
+                const resize = new ResizeObserver(([entry]) => {
                     const scale = Math.min(1, entry.contentRect.width / width)
                     canvas.style.zoom = String(scale)
-                }).observe(firerBox)
+                })
+                resize.observe(firerBox)
+                observers.push(resize)
             }
             const players = [
                 typerBox && !still && makeTyper(typerBox),
@@ -1269,9 +1272,12 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
                 noCodeBox && makeNoCode(noCodeBox),
                 execBox && !still && makeExec(execBox),
             ].filter((player) => !!player)
+            type Player = (typeof players)[number]
+            const playing = new Set<Player>()
             let auto = !still
             let inView = false
             let started = false
+            let current = -1
             let waiting: number | null = null
             let timer: number | null = null
 
@@ -1279,9 +1285,33 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
                 if (timer !== null) clearTimeout(timer)
                 timer = null
             }
-            document.addEventListener("astro:before-swap", stop, {
-                once: true,
-            })
+
+            const sync = () => {
+                const live = inView && !document.hidden && !still
+                for (const player of players) {
+                    if (live && player.view === current) {
+                        if (playing.has(player)) continue
+                        playing.add(player)
+                        void player.run()
+                    } else if (playing.has(player)) {
+                        playing.delete(player)
+                        player.stop()
+                    }
+                }
+            }
+            document.addEventListener("visibilitychange", sync)
+
+            document.addEventListener(
+                "astro:before-swap",
+                () => {
+                    stop()
+                    document.removeEventListener("visibilitychange", sync)
+                    for (const player of playing) player.stop()
+                    playing.clear()
+                    for (const observer of observers) observer.disconnect()
+                },
+                { once: true },
+            )
 
             const open = (idx: number) => {
                 stop()
@@ -1300,10 +1330,12 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
                 body.classList.remove("enter")
                 void body.offsetWidth
                 body.classList.add("enter")
+                current = idx
                 for (const player of players) {
-                    if (idx === player.view && !still) player.run()
-                    else player.stop()
+                    playing.delete(player)
+                    player.stop()
                 }
+                sync()
                 if (auto)
                     timer = window.setTimeout(
                         () => {
@@ -1341,10 +1373,10 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
                 })
             })
 
-            new IntersectionObserver(
+            const seen = new IntersectionObserver(
                 ([entry]) => {
                     inView = entry.isIntersecting
-                    if (!inView) return
+                    if (!inView) return sync()
                     if (!started) {
                         started = true
                         open(0)
@@ -1352,10 +1384,12 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
                         const next = waiting
                         waiting = null
                         open(next)
-                    }
+                    } else sync()
                 },
                 { threshold: 0.35 },
-            ).observe(body)
+            )
+            seen.observe(body)
+            observers.push(seen)
         }
     }
 
