@@ -291,3 +291,29 @@ USER kestra
 ```
 
 Rebuild the image for every Kestra version you deploy.
+
+### Alternative: add the CA at container start (Docker and Docker Compose)
+
+The Kestra image is based on Eclipse Temurin, which ships a `/__cacert_entrypoint.sh` script that adds CA certificates to the JVM truststore when the container starts. The truststore is then built from the `cacerts` of the image you run, so there's nothing to rebuild when you upgrade, and you don't set `javax.net.ssl.trustStore` yourself.
+
+Mount the CA as a `.crt` file under `/certificates`, set `USE_SYSTEM_CA_CERTS`, and run the script before Kestra's own entrypoint:
+
+```yaml
+services:
+  kestra:
+    image: registry.kestra.io/docker/kestra:latest
+    entrypoint: ["/__cacert_entrypoint.sh", "docker-entrypoint.sh"]
+    volumes:
+      - ./ssl/internal-root-ca.pem:/certificates/internal-root-ca.crt:ro
+      # ...your existing volumes
+    environment:
+      USE_SYSTEM_CA_CERTS: "1"
+      # ...your existing environment variables
+```
+
+- `USE_SYSTEM_CA_CERTS` alone has no effect: the Kestra image starts with `docker-entrypoint.sh`, so the script runs only when you set the `entrypoint` as shown.
+- The script reads only files ending in `.crt` from `/certificates`.
+- As the default `kestra` user, the script writes a copy of the truststore to `/tmp` and passes it to the JVM through `JAVA_TOOL_OPTIONS`, so only the JVM trusts your CA. When the container runs as `root`, the script also adds the CA to the operating system's CA bundle, which commands run by the Process task runner use.
+- Don't also set `-Djavax.net.ssl.trustStore` in `JAVA_OPTS`: it takes precedence over the truststore the script creates, and the JVM no longer trusts your CA.
+- The Helm chart replaces the container command, so the image entrypoint doesn't run there. On Kubernetes, use the Secret-based setup above.
+- The script comes from the Eclipse Temurin base image, not from Kestra.
