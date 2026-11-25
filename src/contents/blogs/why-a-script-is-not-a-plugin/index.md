@@ -58,7 +58,7 @@ The AWS plugin runs on the official AWS SDK for Java, and other plugins use the 
 
 Every plugin repository runs a security scan on top of the Dependabot updates, so a CVE in a transitive dependency of a client library is ours to find and fix.
 
-## Plugins Can Start Flows, Scripts Can't
+## Plugin Triggers Handle Events for You
 
 A plugin can also ship **triggers**. A trigger watches an external system and starts an execution when something happens: a new file lands in an S3 bucket, a row appears in a Postgres table, a message arrives on Kafka or SQS. The flow runs only when there is something to process, and the trigger hands the event to the flow as data.
 
@@ -101,7 +101,7 @@ Kestra and its core plugins are open source. Kestra Enterprise adds:
 
 Some automation platforms build everything around scripts. A workflow is a chain of scripts, and integrations come from a hub of shared ones: you pick a script from the catalog, copy it into your workspace and edit it.
 
-A script copied into your workspace is your fork. If the upstream author fixes a bug or the API changes, your copy stays as it was, and nobody is on the hook to tell you. The same integration ends up in many versions across teams, none of them owned. The platform schedules them and reports their exit codes, and everything inside them is yours to maintain.
+A script copied into your workspace is your fork. If the upstream author fixes a bug or the API changes, your copy stays as it was until someone notices and syncs it by hand. The same integration ends up in many versions across teams, and each team owns its own copy. The platform schedules them and reports their exit codes, and everything inside them is yours to maintain.
 
 Kestra has one implementation per integration, maintained in one place and upgraded by changing a version number. Your flow references the task type:
 
@@ -126,6 +126,12 @@ tasks:
 ```
 
 The flow holds no connection logic and no SDK to pin. When the AWS plugin ships a fix, every flow that uses it gets the fix on the next version bump, without anyone editing a file.
+
+Three more things stay out of your flow:
+
+- Dependencies come packaged with the plugin. A script resolves its own on each run, which costs startup time and lets a transitive release change behavior between two runs.
+- Large data goes through internal storage. The output of the query above is a file, so a big export reaches S3 without passing through your code or a JSON payload.
+- Retries, timeouts and error handling are task properties in YAML, so you don't reimplement them in every script.
 
 ## Scripts and Plugins in the Same Flow
 
