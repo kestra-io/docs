@@ -451,22 +451,7 @@ const DUST = [
         overflow: hidden;
         background: #09090b;
         color: #ffffff;
-
-        &::after {
-            content: "";
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            height: 1px;
-            background: linear-gradient(
-                90deg,
-                transparent 10%,
-                rgba(118, 100, 255, 0.75) 50%,
-                transparent 90%
-            );
-            pointer-events: none;
-        }
+        border-bottom: 1px solid var(--ks-border-primary);
 
         > .container-xl {
             position: relative;
@@ -776,12 +761,12 @@ const DUST = [
         perspective: 1100px;
 
         @include media-breakpoint-up(lg) {
-            translate: -3rem 0;
+            translate: -3rem -2rem;
         }
 
         @include media-breakpoint-between(lg, xl) {
             height: 32rem;
-            translate: 0 0;
+            translate: 0 -1.5rem;
             scale: 0.76;
         }
 
