@@ -1251,6 +1251,7 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
             ]
             const body = root.querySelector<HTMLElement>(".body")!
             const still = matchMedia("(prefers-reduced-motion: reduce)").matches
+            const narrow = matchMedia("(max-width: 767.98px)").matches
             const typerBox = root.querySelector<HTMLElement>("[data-typer]")
             const firerBox = root.querySelector<HTMLElement>("[data-fire]")
             const noCodeBox = root.querySelector<HTMLElement>("[data-nocode]")
@@ -1267,7 +1268,7 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
                 observers.push(resize)
             }
             const players = [
-                typerBox && !still && makeTyper(typerBox),
+                typerBox && !still && !narrow && makeTyper(typerBox),
                 firerBox && !still && makeFirer(firerBox),
                 noCodeBox && makeNoCode(noCodeBox),
                 execBox && !still && makeExec(execBox),

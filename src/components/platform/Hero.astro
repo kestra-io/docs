@@ -164,7 +164,7 @@ const SPARKS = [
         const fields = EDITS.map((edit) => {
             const line = lines[edit.line - 1]
             const value = line.querySelector<HTMLElement>(".value")!
-            value.textContent = " "
+            value.textContent = "\u00a0"
             const text = document.createElement("span")
             text.className = "edit"
             text.textContent = edit.values[0]
@@ -438,6 +438,11 @@ const SPARKS = [
         :global(pre) {
             padding-block: 1.75rem 2rem;
             line-height: 1.85;
+
+            @include media-breakpoint-down(md) {
+                padding-block: 1rem 1.25rem;
+                line-height: 1.7;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
