@@ -135,7 +135,8 @@ const SPEND_MARKS: Record<string, [number, number]> = {
     <Rails dark>
         <div class="top">
             <SectionHead id="ai-h" align="start">
-                AI runs inside your workflows, <span>not around them.</span>
+                <em class="shine">AI runs</em> inside your workflows,
+                <span>not around them.</span>
                 <Fragment slot="lead">
                     Run models as steps in deterministic flows, let AI
                     assistants call your flows as tools, and pick the model
@@ -526,12 +527,10 @@ const SPEND_MARKS: Record<string, [number, number]> = {
         @include dark-band;
 
         position: relative;
-        border-block: 1px solid rgba(255, 255, 255, 0.11);
-
-        :global(html.dark) & {
-            border-block-color: var(--ks-border-primary);
-        }
+        border-block: 1px solid var(--band-line);
         color: #ffffff;
+
+        @include band-lines;
 
         :global(.section-head h2) {
             color: #ffffff;
@@ -546,6 +545,27 @@ const SPEND_MARKS: Record<string, [number, number]> = {
             color: rgba(255, 255, 255, 0.72);
         }
 
+        .shine {
+            font-style: normal;
+            background: linear-gradient(
+                90deg,
+                #ffffff 0%,
+                #cdb6fb 25%,
+                #9869f7 50%,
+                #cdb6fb 75%,
+                #ffffff 100%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shine 6s linear infinite;
+
+            @media (prefers-reduced-motion: reduce) {
+                animation: none;
+            }
+        }
+
         &#ai :global(.ks-tabs.on-dark > .tablist) {
             position: relative;
             display: grid;
@@ -554,7 +574,7 @@ const SPEND_MARKS: Record<string, [number, number]> = {
             width: fit-content;
             margin: 0 auto 1.5rem;
             padding: 0.25rem;
-            border: 1px solid #{$dark-band-line};
+            border: 1px solid var(--band-line);
             border-radius: 0.625rem;
         }
 
@@ -608,7 +628,7 @@ const SPEND_MARKS: Record<string, [number, number]> = {
     .cards {
         @include ruled-grid(
             3,
-            $dark-band-line,
+            var(--band-line),
             #ffffff,
             rgba(255, 255, 255, 0.04)
         );
@@ -830,6 +850,12 @@ const SPEND_MARKS: Record<string, [number, number]> = {
 
         > a {
             flex: none;
+        }
+    }
+
+    @keyframes shine {
+        to {
+            background-position: -200% 0;
         }
     }
 </style>

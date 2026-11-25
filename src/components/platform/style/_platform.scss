@@ -87,10 +87,31 @@
     }
 }
 
+@mixin band-lines {
+    --band-line: rgba(255, 255, 255, 0.11);
+
+    :global(html.dark) & {
+        --band-line: var(--ks-border-primary);
+    }
+}
+
 @mixin tinted {
-    background: color-mix(
-        in srgb,
-        var(--ks-content-link) 3%,
-        var(--ks-background-body)
-    );
+    --blue: #3b5bdb;
+
+    background:
+        radial-gradient(
+            60% 70% at 0% 0%,
+            color-mix(in srgb, var(--blue) 8%, transparent),
+            transparent 70%
+        ),
+        radial-gradient(
+            70% 80% at 100% 100%,
+            color-mix(in srgb, var(--blue) 14%, transparent),
+            transparent 70%
+        ),
+        color-mix(in srgb, var(--blue) 3%, var(--ks-background-body));
+
+    :global(html.dark) & {
+        background: var(--ks-background-body);
+    }
 }

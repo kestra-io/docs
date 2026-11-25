@@ -57,20 +57,20 @@ const OPTIONS = [
 </section>
 
 <style lang="scss">
+    @use "./style/platform" as *;
+
     .deploy {
-        --rule: 1px solid rgba(255, 255, 255, 0.11);
+        --rule: 1px solid var(--band-line);
         --muted: #9a9aa8;
         --bg: #0d0d10;
         --lift: #141419;
 
         position: relative;
         border-block: var(--rule);
-
-        :global(html.dark) & {
-            border-block-color: var(--ks-border-primary);
-        }
         background: linear-gradient(180deg, #000000 0, var(--bg) 18rem);
         color: #ffffff;
+
+        @include band-lines;
 
         :global(.section-head h2) {
             color: #ffffff;
@@ -84,12 +84,17 @@ const OPTIONS = [
         :global(.section-head .lead) {
             color: var(--muted);
         }
+
+        :global(.rails) {
+            padding-bottom: clamp(3rem, 6vw, 5rem);
+        }
     }
 
     .options {
+        position: relative;
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
-        margin: 0 calc(-1 * var(--inset)) clamp(3rem, 6vw, 5rem);
+        margin: 0 calc(-1 * var(--inset));
         padding: 0;
         border-block: var(--rule);
         list-style: none;
@@ -100,6 +105,29 @@ const OPTIONS = [
 
         @include media-breakpoint-down(sm) {
             grid-template-columns: minmax(0, 1fr);
+        }
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            left: -100vw;
+            right: -100vw;
+            height: 1px;
+            background: var(--band-line);
+            pointer-events: none;
+
+            @include media-breakpoint-down(xl) {
+                display: none;
+            }
+        }
+
+        &::before {
+            top: -1px;
+        }
+
+        &::after {
+            bottom: -1px;
         }
 
         > li {

@@ -3,6 +3,7 @@ import { Icon } from "astro-icon/components"
 import Rails from "./Rails.astro"
 import SectionHead from "~/components/home/SectionHead.astro"
 import CodeCard from "./CodeCard.astro"
+import RunStatus from "./RunStatus.astro"
 
 const FEATURES = [
     {
@@ -104,6 +105,7 @@ const MARKS: Record<string, [number, number]> = {
 
 <section class="production" id="production" aria-labelledby="prod-h">
     <Rails>
+        <RunStatus />
         <SectionHead id="prod-h" align="center">
             Failure handling, <span>declared in the flow.</span>
             <Fragment slot="lead">
@@ -247,6 +249,44 @@ const MARKS: Record<string, [number, number]> = {
         new ResizeObserver(layout).observe(box)
         wide.addEventListener("change", layout)
         void document.fonts.ready.then(layout)
+
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+        const order = [...new Set(lines.map((line) => line.dataset.k!))]
+        let step = 0
+        let timer = 0
+        let visible = false
+        let held = false
+        const stop = () => window.clearInterval(timer)
+        const play = () => {
+            stop()
+            if (!visible || held) return
+            light(order[step])
+            timer = window.setInterval(() => {
+                step = (step + 1) % order.length
+                light(order[step])
+            }, 2200)
+        }
+        const hold = () => {
+            held = true
+            stop()
+        }
+        const release = () => {
+            held = false
+            light()
+            play()
+        }
+        box.addEventListener("pointerenter", hold)
+        box.addEventListener("pointerleave", release)
+        box.addEventListener("focusin", hold)
+        box.addEventListener("focusout", release)
+        new IntersectionObserver(
+            ([entry]) => {
+                visible = entry.isIntersecting
+                if (visible) play()
+                else stop()
+            },
+            { threshold: 0.4 },
+        ).observe(box)
     }
 
     document.addEventListener("astro:page-load", wireProduction)

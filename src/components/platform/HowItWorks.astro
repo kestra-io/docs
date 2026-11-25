@@ -1374,6 +1374,7 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
         position: relative;
         border-left: var(--rule);
         border-right: var(--rule);
+        padding-bottom: clamp(2.5rem, 4vw, 3.5rem);
 
         @include media-breakpoint-down(xl) {
             border-inline: 0;
@@ -1545,7 +1546,33 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
         gap: 3rem;
         min-height: max(28rem, min(32rem, calc(100vh - 14rem)));
         padding: var(--inset);
-        background: var(--ks-background-body);
+        background:
+            radial-gradient(
+                80% 90% at 100% 0%,
+                color-mix(in srgb, var(--tint) 20%, transparent),
+                transparent 70%
+            ),
+            radial-gradient(
+                60% 70% at 0% 100%,
+                color-mix(in srgb, var(--tint) 10%, transparent),
+                transparent 70%
+            ),
+            color-mix(in srgb, var(--tint) 3%, var(--ks-background-body));
+
+        :global(html.dark) & {
+            background:
+                radial-gradient(
+                    80% 90% at 100% 0%,
+                    color-mix(in srgb, var(--tint) 12%, transparent),
+                    transparent 70%
+                ),
+                radial-gradient(
+                    60% 70% at 0% 100%,
+                    color-mix(in srgb, var(--tint) 6%, transparent),
+                    transparent 70%
+                ),
+                color-mix(in srgb, var(--tint) 3%, var(--ks-background-body));
+        }
 
         @include media-breakpoint-down(xl) {
             grid-template-columns: minmax(0, 1fr);
