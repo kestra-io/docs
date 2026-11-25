@@ -24,7 +24,12 @@ DRAFT NOTES (remove before publishing)
 
 Kestra 2.1 is about who gets to act on your flows, and how you keep control when they do. AI agents can now work with your instance through the Kestra MCP Server, with your permissions and in your audit log. And when a decision belongs to a person, the new Approval task waits for a real yes or no.
 
-In 2.1, additionally, you can see the SQL, tables, and sync stats behind a data task, find an execution by the order ID it processed, and pick up a long script where it left off after a failure. Here are the highlights, with the edition each one is in.
+In 2.1, additionally, you can see the SQL, tables, and sync stats behind a data task, find an execution by the order ID it processed, and pick up a long script where it left off after a failure.
+
+This release also follows Kestra Hacktober, and our community made October a month to remember. 471 people made their first contribution to Kestra, and together you got 3,091 pull requests merged. Thank you to everyone who spent their free time with us; we're proud to build Kestra alongside you. Here are the highlights, with the edition each one is in.
+
+<!-- VERIFY: Hacktober reported "nearly 500 new plugins", but the New Plugins section says 60 new plugin repositories since 2.0. Reconcile the two counts before using the plugin number anywhere in the post. -->
+
 
 | Feature | What it does | Edition |
 |---|---|---|
