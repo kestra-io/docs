@@ -121,10 +121,10 @@ Promote uses two distinct RBAC resources.
 | Action | Required permission |
 |---|---|
 | Promote a flow | `FLOW: PROMOTE` on the flow's namespace |
-| View available targets when promoting | `PROMOTION_TARGET: VIEW` |
+| See the available targets in the Promote tab and the editor promote button | `PROMOTION_TARGET: LIST` |
+| View a single target | `PROMOTION_TARGET: VIEW` |
 | Create or edit targets | `PROMOTION_TARGET: CREATE` / `UPDATE` |
 | Delete targets | `PROMOTION_TARGET: DELETE` |
-| List all targets | `PROMOTION_TARGET: LIST` |
 
 See [RBAC](../../03.auth/rbac/index.md) for how to assign permissions to roles and groups.
 
