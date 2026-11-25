@@ -16,7 +16,7 @@ authors:
 DRAFT NOTES (remove before publishing)
 - Sources: Release=2.1 + kind/highlight issues (project 15) and the docs/release-2-1 branch.
 - Kestra for Infrastructure is out of this post: its launch moved to mid-January 2027 (docs parked in docs#6444). Don't mention it, Infrastructure tenants, the Catalog home page, the Deployments or Inventory pages, inventory import, or app templates. Generic asset features (leases, relations, actions, the ASSET input) stay.
-- Data Orchestration Artifacts: the embargo was lifted by the CTO on 2026-11-24, so JDBC, Airbyte, and Fivetran artifacts are in the Execution Artifacts section. dbt stays out until plugin-dbt#350/#351/#362/#364 ship after core 2.1. The dbt asset types migration guide is still left out of the upgrade table.
+- Data Orchestration Artifacts: the embargo was lifted by the CTO on 2026-11-24, so JDBC, Airbyte, and Fivetran artifacts are in the Execution Artifacts section. dbt is in too, but plugin-dbt#350/#351/#362/#364 must ship after core 2.1 before publishing. The dbt asset types migration guide is still left out of the upgrade table.
 - Left out on purpose: Bring Your Own Worker, asset health (ee#11937 open), dataURL() (2.0.8), by-query flat-param rejection (2.0.7), Replay with modified inputs (2.0.0), auto-emitted Terraform/OpenTofu assets (ee#9222 not planned), plugin auto-install on EE (ee#11724 not planned), Failure Debug panel (closed as duplicate), Health Center/Diagnostics (open), Source Search (2.0), EmbeddedSubflow (ee#3501, no work done).
 - TODO markers: TODO(arcade, priority N) for interactive demos, TODO(screenshot) for static images, VERIFY for facts to confirm before publishing.
 -->
@@ -84,13 +84,16 @@ The 2.0 feature that turns your own flows into tools for agents is now called [M
 
 ## Execution Artifacts
 
-A green JDBC or Airbyte task tells you the query or the sync ran. Finding out which tables it touched, or how many rows each stream moved, meant reading through outputs and logs. Data plugins now attach an artifact to every run that lays this out for you. Open the new **Artifacts** tab of an execution, or click the artifact button under a task in the topology.
+A green JDBC or Airbyte task tells you the query or the sync ran. Finding out which tables it touched, or how many rows each stream moved, meant reading through outputs and logs. Data plugins now attach an artifact to every run that lays this out for you. You'll find them in two places. Every execution has a new **Artifacts** tab that lists the artifacts of all its tasks. And in the topology view, a task node shows an **Artifacts** button whenever it has artifacts, so you can open its details without leaving the graph.
 
 - **JDBC**, for every database the plugin supports: the SQL that ran, the rows it affected or fetched, its duration and warnings, and each table the statements read, wrote, or created.
 - **Airbyte**: the job's attempts and duration, the records each stream emitted and committed, the connection's source and destination, and why an attempt failed, with a link to the job in Airbyte.
 - **Fivetran**: the connector's sync state and freshness, its alerts, and a breakdown per table.
+- **dbt** (CLI and Cloud): a model graph colored by run status, and the compiled SQL of each model, which is off by default and turned on with `outputCompiledSql: true`. In the Enterprise Edition and Cloud, each dbt model, seed, snapshot, test, and exposure is recorded as its own asset type, and asset cards show the test status of a model.
 
-The artifacts ship in JDBC 3.0, Airbyte 1.8, and Fivetran 2.1 and later. In the Enterprise Edition and Cloud, JDBC tasks with `assets.enableAuto: true` also record the tables they read and write as assets, with the lineage between them. See [Artifacts](/docs/ui/executions#artifacts) and [Plugins that emit assets](/docs/enterprise/governance/assets/declare-assets#plugins-that-emit-assets).
+<!-- VERIFY: dbt needs plugin-dbt#350, #351, #362, and #364 (all open, kind/do-not-merge, need core 2.1 GA) released before publishing. #362 is breaking (dbt asset types replace Table), so add it to Upgrade and Migration with a migration guide, or drop the asset sentence. Add the dbt plugin version to the sentence below. -->
+
+To get them, update the plugins to JDBC 3.0, Airbyte 1.8, Fivetran 2.1, or the dbt release for Kestra 2.1, or any later version. In the Enterprise Edition and Cloud, JDBC tasks with `assets.enableAuto: true` also record the tables they read and write as assets, with the lineage between them. See [Artifacts](/docs/ui/executions#artifacts) and [Plugins that emit assets](/docs/enterprise/governance/assets/declare-assets#plugins-that-emit-assets).
 
 ![The Artifacts tab of an execution with two JDBC tasks, showing the SQL of a CREATE TABLE AS SELECT statement, the 14 rows it affected, and the table it created and the table it read](./execution-artifacts-jdbc.png)
 
