@@ -1,0 +1,90 @@
+---
+/**
+ * Renders the Kestra release support table, splitting releases into
+ * "supported" and "ended" from their dates at build time, so a row moves
+ * to end of life without anyone editing the page.
+ *
+ * Support rules (see the Releases & LTS Policy page):
+ * - LTS: supported for 1 year from its release date.
+ * - Feature: supported until the next release ships.
+ * A row can set `supportEnds` (YYYY-MM-DD) to override the computed date.
+ */
+export interface Release {
+    version: string
+    type: "LTS" | "Feature"
+    /** YYYY-MM-DD */
+    released: string
+    /** YYYY-MM-DD, overrides the computed end of support */
+    supportEnds?: string
+}
+
+interface Props {
+    releases: Release[]
+    show: "supported" | "ended"
+}
+
+const { releases, show } = Astro.props
+
+const byNewest = [...releases].sort((a, b) => b.released.localeCompare(a.released))
+const today = new Date().toISOString().slice(0, 10)
+
+function supportEnds(release: Release, index: number): string | undefined {
+    if (release.supportEnds) return release.supportEnds
+    if (release.type === "LTS") {
+        const [y, m, d] = release.released.split("-")
+        return `${Number(y) + 1}-${m}-${d}`
+    }
+    // Feature release: ends when the next (newer) release ships.
+    return byNewest[index - 1]?.released
+}
+
+const rows = byNewest.map((release, index) => {
+    const ends = supportEnds(release, index)
+    return { ...release, ends, supported: !ends || ends > today }
+})
+const latestSupported = rows.find((row) => row.supported)?.version
+const visible = rows.filter((row) => (show === "supported" ? row.supported : !row.supported))
+
+const month = (date?: string) => (date ? date.slice(0, 7) : "Until the next release")
+const notesUrl = (version: string) =>
+    `https://github.com/kestra-io/kestra/releases/tag/v${version}.0`
+---
+
+{
+    visible.length === 0 ? (
+        <p>{show === "supported" ? "No supported releases." : "No end-of-life releases."}</p>
+    ) : (
+        <table>
+            <thead>
+                <tr>
+                    <th>Version</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Released</th>
+                    <th>{show === "supported" ? "Support ends" : "Support ended"}</th>
+                    <th>Release notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {visible.map((row) => (
+                    <tr>
+                        <td>
+                            <strong>{row.version}</strong>
+                        </td>
+                        <td>{row.type}</td>
+                        <td>
+                            {row.supported
+                                ? `✅ Supported${row.version === latestSupported ? " (latest)" : ""}`
+                                : "⛔ End of life"}
+                        </td>
+                        <td>{row.released}</td>
+                        <td>{month(row.ends)}</td>
+                        <td>
+                            <a href={notesUrl(row.version)}>GitHub release</a>
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    )
+}
