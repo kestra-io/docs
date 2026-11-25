@@ -58,7 +58,7 @@ The following table summarizes the verified state of AWX and its related project
 
 ---
 
-## Why AWX releases are paused
+## Why AWX stopped shipping releases
 
 In July 2024, Red Hat engineering placed the AWX release cycle on hold. The maintainers added a prominent banner to the project repository: *"Releases of this project are now paused during a large scale refactoring."*
 
@@ -118,7 +118,7 @@ Platform engineers running AWX have five distinct operational paths. For a wider
 | Option | Operational Effort | Licensing / Cost | Support Model | Architecture & Portability |
 |---|---|---|---|---|
 | **1. Stay on AWX 24.6.1** | None initially; grows as base packages age | Free (Apache 2.0) | None (community forum only) | Frozen legacy deployment; unpatched CVEs |
-| **2. Wait for AWX releases to resume** | Unknown: no release planned | Free (Apache 2.0) | Community | Microservice-based; breaking deployment changes |
+| **2. Wait in case AWX releases return** | Unknown: no release planned | Free (Apache 2.0) | Community | Microservice-based; breaking deployment changes |
 | **3. Migrate to Ascender (CIQ)** | Low to moderate (direct AWX fork) | Free (Apache 2.0) or paid Pro | Community or commercial SLA from CIQ | AWX-compatible controller; regular upstream releases |
 | **4. Red Hat AAP** | Moderate (migration tooling provided) | Commercial (per managed node) | Enterprise SLA from Red Hat | Official commercial platform; automated installation |
 | **5. Decouple orchestration from playbooks** | Moderate (reconfigure jobs as workflows) | Open source or enterprise | Community or enterprise SLA | Standard `ansible-core` execution; multi-tool control plane |
@@ -127,7 +127,7 @@ Platform engineers running AWX have five distinct operational paths. For a wider
 
 For teams with isolated network boundaries, low change frequency, and strict change freezes, continuing to run AWX 24.6.1 is technically possible, as long as platform engineers accept that security vulnerabilities in the web interface and API will remain unpatched.
 
-### Option 2: Wait for AWX releases to resume
+### Option 2: Wait in case AWX releases return
 
 Teams with deep investments in AWX-specific workflows can wait in case packaged releases return. Since the release pipeline was removed in November 2026, nothing indicates when or whether that will happen. If a build is tagged again, expect a full redeployment of the control plane: playbook code will remain compatible, but existing Helm charts, operator manifests, and integration configurations will need to be rebuilt.
 

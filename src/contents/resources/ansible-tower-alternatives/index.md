@@ -170,13 +170,13 @@ AWX is the free, open-source upstream project for automation controller and long
 
 As of November 2026, AWX releases are no longer published: on November 16, the maintainers removed the release pipeline. The last official release was 24.6.1 in July 2024, and the team has refactored AWX into a service-oriented architecture, with the web UI moved to a separate project. No new release is planned, so running AWX today means staying on a version that is over two years old or tracking the unreleased `devel` branch.
 
-**Best for:** Teams and individuals who need Tower's features at no cost, are comfortable managing the infrastructure themselves, and accept running a July 2024 release until the refactored version ships. Explore more [AWX alternatives](/resources/infrastructure/awx-alternatives).
+**Best for:** Teams and individuals who need Tower's features at no cost, are comfortable managing the infrastructure themselves, and accept running a July 2024 release with no newer release planned. Explore more [AWX alternatives](/resources/infrastructure/awx-alternatives).
 
 ## 4. Ascender
 
 Ascender is a build of AWX maintained by CIQ. It is open-source (Apache 2.0) and aims to be what many AWX users want today: an AWX-based controller that keeps shipping releases. Because it tracks the AWX codebase, it offers a nearly identical user experience.
 
-The key difference is that CIQ keeps packaging releases ([25.6.3 shipped on October 28, 2026](https://github.com/ctrliq/ascender/releases)), which gives AWX users an upgrade path while upstream releases are paused. CIQ also sells a commercial offering, Ascender Pro. Its scope remains Ansible-centric, making it a direct controller replacement rather than a broader orchestration platform.
+The key difference is that CIQ keeps packaging releases ([25.6.3 shipped on October 28, 2026](https://github.com/ctrliq/ascender/releases)), which gives AWX users an upgrade path while upstream no longer publishes releases. CIQ also sells a commercial offering, Ascender Pro. Its scope remains Ansible-centric, making it a direct controller replacement rather than a broader orchestration platform.
 
 **Best for:** Existing AWX users looking for a like-for-like replacement that is actively maintained and released.
 
