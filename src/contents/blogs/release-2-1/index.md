@@ -1,6 +1,6 @@
 ---
 title: "Kestra 2.1: AI Agents in Kestra, Approvals, and Searchable Executions"
-description: "Kestra 2.1 lets AI agents work with your instance through the Kestra MCP Server, with your permissions and in your audit log, and gives flows a real yes or no with the new Approval task. The release also adds asset leases, an ASSET input, searchable executions, and script checkpoints."
+description: "Kestra 2.1 lets AI agents work with your instance through the Kestra MCP Server, with your permissions and in your audit log, and gives flows a real yes or no with the new Approval task. The release also adds execution artifacts for data tasks, asset leases, an ASSET input, searchable executions, and script checkpoints."
 date: 2026-12-01T10:00:00
 category: News & Product Updates
 authors:
@@ -16,7 +16,7 @@ authors:
 DRAFT NOTES (remove before publishing)
 - Sources: Release=2.1 + kind/highlight issues (project 15) and the docs/release-2-1 branch.
 - Kestra for Infrastructure is out of this post: its launch moved to mid-January 2027 (docs parked in docs#6444). Don't mention it, Infrastructure tenants, the Catalog home page, the Deployments or Inventory pages, inventory import, or app templates. Generic asset features (leases, relations, actions, the ASSET input) stay.
-- Embargoed: Data Orchestration Artifacts (dbt/Airbyte/Fivetran/JDBC artifacts) and the deep dbt integration stay out of this post (changelog only, kept for a later announcement). Plugin endpoints are described generically for that reason. The dbt asset types migration guide is left out of the upgrade table.
+- Data Orchestration Artifacts: the embargo was lifted by the CTO on 2026-11-24, so JDBC, Airbyte, and Fivetran artifacts are in the Execution Artifacts section. dbt stays out until plugin-dbt#350/#351/#362/#364 ship after core 2.1. The dbt asset types migration guide is still left out of the upgrade table.
 - Left out on purpose: Bring Your Own Worker, asset health (ee#11937 open), dataURL() (2.0.8), by-query flat-param rejection (2.0.7), Replay with modified inputs (2.0.0), auto-emitted Terraform/OpenTofu assets (ee#9222 not planned), plugin auto-install on EE (ee#11724 not planned), Failure Debug panel (closed as duplicate), Health Center/Diagnostics (open), Source Search (2.0), EmbeddedSubflow (ee#3501, no work done).
 - TODO markers: TODO(arcade, priority N) for interactive demos, TODO(screenshot) for static images, VERIFY for facts to confirm before publishing.
 -->
@@ -24,11 +24,12 @@ DRAFT NOTES (remove before publishing)
 
 Kestra 2.1 is about who gets to act on your flows, and how you keep control when they do. AI agents can now work with your instance through the Kestra MCP Server, with your permissions and in your audit log. And when a decision belongs to a person, the new Approval task waits for a real yes or no.
 
-In 2.1, additionally, you can now find an execution by the order ID it processed, and a long script can pick up where it left off after a failure. Here are the highlights, with the edition each one is in.
+In 2.1, additionally, you can see the SQL, tables, and sync stats behind a data task, find an execution by the order ID it processed, and pick up a long script where it left off after a failure. Here are the highlights, with the edition each one is in.
 
 | Feature | What it does | Edition |
 |---|---|---|
 | Kestra MCP Server | Let AI agents read and change flows, executions, and more, with your permissions | OSS, EE |
+| Execution artifacts | See the SQL, tables, and sync stats behind a data task | OSS, EE, Cloud |
 | Approval task | Pause a flow until someone approves or denies it | OSS, EE, Cloud |
 | Approvals page | Assign reviewers, follow every request, and chain sign-offs | EE, Cloud |
 | Asset leases and the ASSET input | Give every asset an owner and a lease, and let people pick assets in a form | EE, Cloud |
@@ -80,6 +81,20 @@ The AI Copilot in the Kestra UI got the same tools, so you can do the same work 
 The open-source edition now gets every Copilot provider the Enterprise Edition has: OpenAI, Anthropic, Google Gemini and Vertex AI, Azure OpenAI, Amazon Bedrock, Mistral, DeepSeek, OpenRouter, and models served by Ollama. You can register several and pick a default. And if you haven't set up a provider yet, Copilot runs on a free tier hosted by Kestra, so you can try it right away. See [Configure an LLM provider](/docs/develop-with-ai/ai-copilot#configure-an-llm-provider).
 
 The 2.0 feature that turns your own flows into tools for agents is now called [MCP Flows](/docs/ai-orchestration/mcp-server).
+
+## Execution Artifacts
+
+A green JDBC or Airbyte task tells you the query or the sync ran. Finding out which tables it touched, or how many rows each stream moved, meant reading through outputs and logs. Data plugins now attach an artifact to every run that lays this out for you. Open the new **Artifacts** tab of an execution, or click the artifact button under a task in the topology.
+
+- **JDBC**, for every database the plugin supports: the SQL that ran, the rows it affected or fetched, its duration and warnings, and each table the statements read, wrote, or created.
+- **Airbyte**: the job's attempts and duration, the records each stream emitted and committed, the connection's source and destination, and why an attempt failed, with a link to the job in Airbyte.
+- **Fivetran**: the connector's sync state and freshness, its alerts, and a breakdown per table.
+
+The artifacts ship in JDBC 3.0, Airbyte 1.8, and Fivetran 2.1 and later. In the Enterprise Edition and Cloud, JDBC tasks with `assets.enableAuto: true` also record the tables they read and write as assets, with the lineage between them. See [Artifacts](/docs/ui/executions#artifacts) and [Plugins that emit assets](/docs/enterprise/governance/assets/declare-assets#plugins-that-emit-assets).
+
+![The Artifacts tab of an execution with two JDBC tasks, showing the SQL of a CREATE TABLE AS SELECT statement, the 14 rows it affected, and the table it created and the table it read](./execution-artifacts-jdbc.png)
+
+![The Airbyte details artifact of a sync task: a succeeded job with one attempt and 1,100 rows synced, a table of three streams with the records each emitted and committed, and the connection's source and destination](./airbyte-details-artifact.png)
 
 ## Approvals
 
