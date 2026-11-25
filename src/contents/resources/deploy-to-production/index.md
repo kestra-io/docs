@@ -5,7 +5,7 @@ metaTitle: "Deploy to Production: Guide to Safe, Automated Releases"
 metaDescription: "How to deploy to production safely: deployment stages, deploy vs release, approval gates, rollbacks, and an automated pipeline example you can adapt."
 tag: "infrastructure"
 date: 2026-11-25
-slug: "deploy-to-prod"
+slug: "deploy-to-production"
 faq:
   - question: "What's the difference between deploy and release?"
     answer: "Deployment is the technical process of moving code to a server or environment, making it available for execution. Releasing is the act of making that deployed code accessible to end-users, often involving feature flags or gradual rollouts. A deployment can happen without a release, but a release requires a prior deployment."
