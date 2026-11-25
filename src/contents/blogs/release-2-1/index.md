@@ -272,31 +272,40 @@ Security teams can now work with their detection and response tools from a flow:
 
 ## New Plugins
 
-Since 2.0, 60 new plugin repositories have been released, which brings the catalog to over 2,900 plugins. Here is what's new, with the Enterprise Edition ones marked. The new security plugins are in the section above.
+Since 2.0, 60 new plugin repositories have been released, which brings the catalog to over 2,900 plugins. Here is what's new by category, with the Enterprise Edition ones marked. The new security plugins are in the section above.
 
-**Network automation** (EE): built-in plugins for the vendors behind most network estates, so you no longer need Ansible or raw HTTP calls. They share one contract: `GetConfig`, `DiffConfig`, `ApplyConfig`, `Check` (dry run), and pre and post checks, so a flow works the same across vendors.
+**AI**
+- [Cerebras](/plugins/plugin-cerebras) (LLM inference), [TypeSafe](/plugins/plugin-typesafe) (evaluate content with its Jev decision model), and [Sonilo](/plugins/plugin-sonilo) (generate music and sound effects).
+- Vector databases: [Qdrant](/plugins/plugin-qdrant), [Chroma](/plugins/plugin-chroma), [LanceDB](/plugins/plugin-lancedb), and [Milvus](/plugins/plugin-milvus).
+- Web data for agents: [Firecrawl](/plugins/plugin-firecrawl) and [Browser Use](/plugins/plugin-browseruse).
 
-- Switches and routers: Arista EOS and CloudVision, Cisco IOS-XE, IOS, and NX-OS.
-- Firewalls and access: Palo Alto PAN-OS and Panorama, Fortinet FortiGate and FortiManager, Aruba Central and AOS 10, Cisco ISE.
-- Sources of truth and monitoring: NetBox, Infoblox, IP Fabric, Tufin, AKIPS, Zabbix, and F5 APM.
-- A reachability check task for ICMP ping and TCP connect.
+**Business**
+- [Pylon](/plugins/plugin-pylon), [Figma](/plugins/plugin-figma), [Clay](/plugins/plugin-clay), [Box](/plugins/plugin-box), [Mailchimp](/plugins/plugin-mailchimp), [Ashby](/plugins/plugin-ashby), [Matrix](/plugins/plugin-matrix), and [Camunda](/plugins/plugin-camunda).
+- Finance and HR: [Deel](/plugins/plugin-deel), [Payfit](/plugins/plugin-payfit), [Pennylane](/plugins/plugin-pennylane), [Mercury](/plugins/plugin-mercury) (business banking), [QuickBooks](/plugins/plugin-quickbooks), and [SEC EDGAR](/plugins/plugin-edgar).
+- [Sent](/plugins/plugin-sent) (messaging and contacts).
+
+**Cloud**
+- [Alibaba Cloud](/plugins/plugin-alibaba).
+
+**Core**
+- [Playwright](/plugins/plugin-playwright) and [Selenium](/plugins/plugin-selenium) for browser automation, and [Apache PDFBox](/plugins/plugin-pdfbox) for PDF files.
+
+**Data**
+- Storage and streams: [Apache Iceberg](/plugins/plugin-iceberg), [Apache Hudi](/plugins/plugin-hudi), [ScyllaDB](/plugins/plugin-scylladb), [Quickwit](/plugins/plugin-quickwit), [Apache Iggy](/plugins/plugin-iggy), [S2](/plugins/plugin-s2), and [DataHub](/plugins/plugin-ee-datahub) (EE).
+- Pipelines: [Apache NiFi](/plugins/plugin-nifi).
+- BI and analytics: [Looker](/plugins/plugin-looker), [Apache Superset](/plugins/plugin-superset), [Metabase](/plugins/plugin-metabase), [GoodData](/plugins/plugin-gooddata), [Qlik Cloud](/plugins/plugin-qlikcloud), [Google Data Studio](/plugins/plugin-data-studio), and [PostHog](/plugins/plugin-posthog).
+
+**Infrastructure**
+- [Helm](/plugins/plugin-helm), [Tekton](/plugins/plugin-tekton), and [Datadog](/plugins/plugin-datadog).
+- **Network automation** (EE): built-in plugins for the vendors behind most network estates, so you no longer need Ansible or raw HTTP calls. They share one contract: `GetConfig`, `DiffConfig`, `ApplyConfig`, `Check` (dry run), and pre and post checks, so a flow works the same across vendors.
+  - Switches and routers: Arista EOS and CloudVision, Cisco IOS-XE, IOS, and NX-OS.
+  - Firewalls and access: Palo Alto PAN-OS and Panorama, Fortinet FortiGate and FortiManager, Aruba Central and AOS 10, Cisco ISE.
+  - Sources of truth and monitoring: NetBox, Infoblox, IP Fabric, Tufin, AKIPS, Zabbix, and F5 APM.
+  - A reachability check task for ICMP ping and TCP connect.
 
 <!-- VERIFY: ship status and plugin links per vendor. Arista 1.0.0 (2026-10-27, bundled in EE 2.0.8), Cisco 1.0.0 (2026-10-27, IOS-XE only), then 1.1.0 (2026-11-25). plugin-ee-paloalto, fortinet, aruba, akips, tufin, zabbix 1.0.0 shipped 2026-11-24, ipfabric 1.0.0 on 2026-11-25. Confirm NX-OS, IOS, ISE, F5 APM (ee-f5 1.2.0), Infoblox (ee-infoblox 1.3.0 and 1.4.0), and the reachability task are in those releases, and drop what is not. Also add GuardDuty and Okta if they ship. -->
 
-**Data and AI**
-- Vector databases: [Qdrant](/plugins/plugin-qdrant), [Chroma](/plugins/plugin-chroma), [LanceDB](/plugins/plugin-lancedb), and [Milvus](/plugins/plugin-milvus).
-- [Cerebras](/plugins/plugin-cerebras) for LLM inference, [TypeSafe](/plugins/plugin-typesafe) to evaluate content with its Jev decision model, and [Sonilo](/plugins/plugin-sonilo) to generate music and sound effects.
-- [Alibaba Cloud](/plugins/plugin-alibaba).
-- Lakehouse and storage: [Apache Iceberg](/plugins/plugin-iceberg), [Apache Hudi](/plugins/plugin-hudi), [ScyllaDB](/plugins/plugin-scylladb), [Quickwit](/plugins/plugin-quickwit), [Apache Iggy](/plugins/plugin-iggy), [S2](/plugins/plugin-s2) (stream storage), and [DataHub](/plugins/plugin-ee-datahub) (EE).
-- Web and documents: [Firecrawl](/plugins/plugin-firecrawl), [Playwright](/plugins/plugin-playwright), [Selenium](/plugins/plugin-selenium), [Browser Use](/plugins/plugin-browseruse), and [Apache PDFBox](/plugins/plugin-pdfbox).
-
-**BI and analytics**: [Looker](/plugins/plugin-looker), [Apache Superset](/plugins/plugin-superset), [Metabase](/plugins/plugin-metabase), [GoodData](/plugins/plugin-gooddata), [Qlik Cloud](/plugins/plugin-qlikcloud), [Google Data Studio](/plugins/plugin-data-studio), [PostHog](/plugins/plugin-posthog), and [Datadog](/plugins/plugin-datadog).
-
-**Business apps**: [Pylon](/plugins/plugin-pylon), [Figma](/plugins/plugin-figma), [Clay](/plugins/plugin-clay), [Box](/plugins/plugin-box), [Mailchimp](/plugins/plugin-mailchimp), [Ashby](/plugins/plugin-ashby), [Deel](/plugins/plugin-deel), [Payfit](/plugins/plugin-payfit), [Pennylane](/plugins/plugin-pennylane), [Mercury](/plugins/plugin-mercury) (business banking), [Sent](/plugins/plugin-sent) (messaging and contacts), [QuickBooks](/plugins/plugin-quickbooks), [Matrix](/plugins/plugin-matrix), and [SEC EDGAR](/plugins/plugin-edgar).
-
-**Delivery and workflows**: [Helm](/plugins/plugin-helm), [Tekton](/plugins/plugin-tekton), [Camunda](/plugins/plugin-camunda), and [Apache NiFi](/plugins/plugin-nifi).
-
-<!-- VERIFY: plugin pages are generated from the releases, so check each link resolves. -->
+<!-- VERIFY: plugin pages are generated from the releases, so check each link resolves. Category placement is a first pass. -->
 
 Existing plugins got improvements too:
 
