@@ -1301,11 +1301,26 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
             }
             document.addEventListener("visibilitychange", sync)
 
+            const hints = [...root.querySelectorAll<HTMLElement>(".hint")]
+            for (const hint of hints) {
+                const restore = () => delete hint.dataset.dismissed
+                hint.addEventListener("pointerleave", restore)
+                hint.addEventListener("blur", restore)
+            }
+            const dismiss = (event: KeyboardEvent) => {
+                if (event.key !== "Escape") return
+                for (const hint of hints)
+                    if (hint.matches(":hover, :focus-visible"))
+                        hint.dataset.dismissed = ""
+            }
+            document.addEventListener("keydown", dismiss)
+
             document.addEventListener(
                 "astro:before-swap",
                 () => {
                     stop()
                     document.removeEventListener("visibilitychange", sync)
+                    document.removeEventListener("keydown", dismiss)
                     for (const player of playing) player.stop()
                     playing.clear()
                     for (const observer of observers) observer.disconnect()
@@ -2142,6 +2157,15 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
             opacity 0.15s ease,
             transform 0.15s ease;
 
+        &::before {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            height: 10px;
+        }
+
         &::after {
             content: "";
             position: absolute;
@@ -2151,10 +2175,11 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
             border-top-color: #2b2b33;
         }
 
-        .hint:hover > &,
-        .hint:focus-visible > & {
+        .hint:not([data-dismissed]):hover > &,
+        .hint:not([data-dismissed]):focus-visible > & {
             opacity: 1;
             transform: none;
+            pointer-events: auto;
         }
     }
 
