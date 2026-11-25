@@ -1948,6 +1948,8 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
         display: grid;
         gap: var(--gap);
         width: 100%;
+        margin-bottom: -2.5rem;
+        padding-bottom: 2.5rem;
         mask-image: linear-gradient(
             90deg,
             transparent,
@@ -1964,8 +1966,8 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
 
     .row {
         overflow: hidden;
-        margin-block: -1rem;
-        padding-block: 1rem 1.75rem;
+        margin-block: -1rem -2rem;
+        padding-block: 1rem 2.75rem;
 
         &:nth-child(2) .track {
             animation-direction: reverse;
