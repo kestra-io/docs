@@ -16,7 +16,7 @@ Route and inspect Kestra’s outbound HTTP/S traffic through an MITM proxy. In s
 
 ### 1. Create a Java truststore with the MITM CA certificate
 
-Build a truststore from the Kestra image's default `cacerts` and add the MITM CA certificate, so the JVM trusts both intercepted connections and hosts that bypass the proxy. Starting from an empty truststore breaks every connection that doesn't go through the proxy, such as hosts listed in `http.nonProxyHosts`.
+Build a truststore from the Kestra image's default `cacerts` and add the MITM CA certificate, so the JVM trusts both intercepted connections and hosts that bypass the proxy. Starting from an empty truststore breaks every connection that doesn't go through the proxy, such as hosts listed in `http.nonProxyHosts` and HTTP tasks, which connect directly by default (see [HTTP tasks](#http-tasks)).
 
 ```bash
 KESTRA_IMAGE=registry.kestra.io/docker/kestra:latest  # replace with the tag you deploy
@@ -79,6 +79,10 @@ configurations:
 Before Kestra 1.3.47 on the 1.3 line and 2.0.10 on the 2.0 line, the Micronaut HTTP client ignores `http.nonProxyHosts`, so SSO login fails when the identity provider is only reachable without the proxy. As a workaround, leave `micronaut.http.client.proxy-*` unset. Community blueprints are then unavailable, while custom blueprints keep working.
 :::
 
+#### HTTP tasks
+
+By default, HTTP tasks (and plugins built on Kestra's HTTP client) ignore the proxy settings above and connect directly, unless the task sets `options.proxy`. The MITM proxy doesn't see their traffic. Starting with Kestra 2.0.12, set `kestra.tasks.http.use-system-proxy: true` to send them through the proxy; they then use the JVM proxy settings, including `http.nonProxyHosts`. See [HTTP tasks behind a forward proxy](../../configuration/04.plugins-and-execution/index.md#http-tasks-behind-a-forward-proxy).
+
 ### 2. Mount the truststore inside the container
 
 **Kubernetes (Helm `values.yaml`)**
@@ -138,7 +142,7 @@ services:
 ## Troubleshooting
 
 1. **TLS handshake errors**
-   Verify `truststore.p12` contains the MITM CA (`keytool -list -keystore truststore.p12 -storepass changeit -alias mitmproxy-ca`).
+   Verify `truststore.p12` contains the MITM CA (`keytool -list -keystore truststore.p12 -storepass changeit -alias mitmproxy-ca`) and the public CAs (`keytool -list -keystore truststore.p12 -storepass changeit | grep contains` reports more than 100 entries). If only connections that bypass the proxy fail with `PKIX path building failed`, the truststore is missing the public CAs.
 
 2. **Requests not reaching the proxy**
    Confirm `http.proxyHost` / `https.proxyHost` and `http.nonProxyHosts` are correct.
