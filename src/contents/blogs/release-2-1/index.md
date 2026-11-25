@@ -26,9 +26,7 @@ Kestra 2.1 is about who gets to act on your flows, and how you keep control when
 
 In 2.1, additionally, you can see the SQL, tables, and sync stats behind a data task, find an execution by the order ID it processed, and pick up a long script where it left off after a failure.
 
-This release also follows Kestra Hacktober, and our community made October a month to remember. 471 people made their first contribution to Kestra, and together you got 3,091 pull requests merged. Thank you to everyone who spent their free time with us; we're proud to build Kestra alongside you. Here are the highlights, with the edition each one is in.
-
-<!-- VERIFY: Hacktober reported "nearly 500 new plugins", but the New Plugins section says 60 new plugin repositories since 2.0. Reconcile the two counts before using the plugin number anywhere in the post. -->
+This release also follows Kestra Hacktober, and our community made October a month to remember. 471 people made their first contribution to Kestra, and together you got 3,091 pull requests merged, including nearly 500 new plugin tasks. Thank you to everyone who spent their free time with us; we're proud to build Kestra alongside you. Here are the highlights, with the edition each one is in.
 
 
 | Feature | What it does | Edition |
@@ -45,7 +43,7 @@ This release also follows Kestra Hacktober, and our community made October a mon
 | Dashboard charts from flow outputs | Chart a file that a flow returns | EE, Cloud |
 | Keyless cloud access with OIDC | Reach AWS, Google Cloud, and JFrog with short-lived OIDC tokens instead of stored keys | EE |
 | New queue backends | Google Cloud Pub/Sub, NATS JetStream, Amazon SQS/SNS, and Azure Event Hubs | EE |
-| JetBrains plugin, Agent Skills, and script libraries | Write flows in your JetBrains IDE, install Kestra skills in your coding agent, and send outputs from scripts in 10 more languages | OSS, EE, Cloud |
+| Ecosystem | Write flows in your JetBrains IDE, install Kestra skills in your coding agent, and send outputs from scripts in 10 more languages | OSS, EE, Cloud |
 | Security plugins | Aikido, Snyk, GitGuardian, Defender XDR, Sentinel, Proofpoint TAP, and Torq | OSS, EE |
 | New plugins | 60 new plugin repositories, including network automation for Arista, Cisco, Palo Alto, and Fortinet | OSS, EE |
 | Plugin screens merge | One Plugins page for browsing and, in the Enterprise Edition, managing plugin versions | OSS, EE |
