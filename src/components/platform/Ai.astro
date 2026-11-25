@@ -1,0 +1,1101 @@
+---
+import { Icon } from "astro-icon/components"
+import Rails from "./Rails.astro"
+import SectionHead from "~/components/home/SectionHead.astro"
+import TabGroup from "~/components/common/TabGroup.astro"
+import TabPanel from "~/components/common/TabPanel.astro"
+import PixelEdges from "~/components/about/PixelEdges.astro"
+import { kestraDark } from "@kestra-io/plumage"
+import CodeCard from "./CodeCard.astro"
+import ChatMock from "./ChatMock.astro"
+import TopologyNode from "~/components/home/TopologyNode.astro"
+import { fetchPluginIcon } from "~/utils/pluginIcon"
+
+const CARDS = [
+    {
+        title: "Leverage AI inside workflows",
+        text: "An AI agent is one step in a flow. It reasons over the input; the flow decides what happens next. A Pause task holds consequential actions until a person approves them.",
+    },
+    {
+        title: "Flows as AI tools",
+        text: "The MCP server exposes your flows as tools. An assistant calls a flow with typed inputs instead of getting shell access, and every call is an execution you can inspect.",
+    },
+    {
+        title: "Bring your own model",
+        text: "OpenAI, Anthropic, Gemini, or a self-hosted model through Ollama for air-gapped sites. Changing providers is one line; the flow stays the same.",
+    },
+]
+
+const TRIAGE = `tasks:
+  - id: classify
+    type: io.kestra.plugin.ai.agent.AIAgent
+    provider:
+      type: io.kestra.plugin.ai.provider.Anthropic   # or OpenAI, Gemini, Ollama
+    prompt: "Classify and summarize: {{ trigger.body }}"
+  - id: approve
+    type: io.kestra.plugin.core.flow.Pause                # a person decides
+  - id: create_issue
+    type: io.kestra.plugin.jira.issues.Create`
+
+const TRIAGE_MARKS: Record<string, [number, number]> = {
+    classify: [2, 6],
+    approve: [7, 8],
+    create_issue: [9, 10],
+}
+
+const TRIAGE_NODES = [
+    {
+        id: "classify",
+        type: "ai.agent.AIAgent",
+        fallback: "mdi:robot-outline",
+        duration: "2.4s",
+    },
+    {
+        id: "approve",
+        type: "core.flow.Pause",
+        fallback: "mdi:pause",
+        duration: "3m 40s",
+    },
+    {
+        id: "create_issue",
+        type: "jira.issues.Create",
+        fallback: "mdi:jira",
+        duration: "0.8s",
+    },
+]
+
+const triageIcons = await Promise.all(
+    TRIAGE_NODES.map((node) =>
+        fetchPluginIcon(`io.kestra.plugin.${node.type}`)
+            .then(
+                (svg) =>
+                    `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`,
+            )
+            .catch(() => null),
+    ),
+)
+
+const NODE_W = 260
+const NODE_H = 76
+const NODE_GAP = 56
+const TOPO_H =
+    TRIAGE_NODES.length * NODE_H + (TRIAGE_NODES.length - 1) * NODE_GAP
+const TOPO_EDGES = TRIAGE_NODES.slice(1).map((_, idx) => {
+    const y = idx * (NODE_H + NODE_GAP) + NODE_H
+    return `M40 ${y} V${y + NODE_GAP - 2}`
+})
+
+const SPEND = `id: do_spend_summary
+namespace: company.team
+tasks:
+  - id: fetch_insights
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://api.digitalocean.com/v2/customers/my/billing_history"
+    headers:
+      Authorization: "Bearer {{ secret('DIGITALOCEAN_TOKEN') }}"
+    contentType: application/json
+  - id: explain
+    type: io.kestra.plugin.ai.agent.AIAgent
+    provider:
+      type: io.kestra.plugin.ai.provider.GoogleGemini
+      modelName: gemini-3.5-flash
+      apiKey: "{{ secret(key='GEMINI_API_KEY') }}"
+    systemMessage: |
+      You analyze cloud spend. Identify what changed day over day,
+      which SKU or region drove it, and whether it looks like normal
+      variation or something worth investigating. Three sentences max.
+      If nothing changed meaningfully, say so plainly.
+    prompt: "{{ outputs.fetch_insights.body }}"
+outputs:
+  - id: droplet_id
+    type: STRING
+    value: "{{ outputs.explain.textOutput }}"
+triggers:
+  - id: mcp
+    type: io.kestra.plugin.core.trigger.McpToolTrigger
+    title: Evaluate DigitalOcean Bill
+    toolDescription: An analytical billing tool that parses DigitalOcean invoice data. It automatically detects spend variations, and provides actionable recommendations.
+    toolName: do_spend_summary
+    mcpServer: default`
+
+const SPEND_MARKS: Record<string, [number, number]> = {
+    fetch: [4, 9],
+    explain: [10, 21],
+    outputs: [22, 25],
+    trigger: [26, 32],
+}
+---
+
+<section
+    class="ai surface-dark"
+    id="ai"
+    aria-labelledby="ai-h"
+    data-header-dark
+>
+    <PixelEdges left="wide" right="cluster" />
+    <Rails dark>
+        <div class="top">
+            <div class="sky" aria-hidden="true">
+                <div class="planet">
+                    <span class="haze"></span>
+                    <span class="atmosphere"></span>
+                    <span class="rim"></span>
+                    <span class="limb"></span>
+                </div>
+                <span class="horizon"></span>
+            </div>
+            <SectionHead id="ai-h" align="start">
+                <em class="shine">AI runs</em> inside your workflows,
+                <span>not around them.</span>
+                <Fragment slot="lead">
+                    Run models as steps in deterministic flows, let AI
+                    assistants call your flows as tools, and pick the model
+                    yourself. Retries, approvals, and execution history apply to
+                    AI steps like everything else.
+                </Fragment>
+            </SectionHead>
+            <a class="btn-ghost" href="/docs/develop-with-ai">
+                Explore AI in Kestra
+            </a>
+        </div>
+
+        <ul class="cards">
+            {CARDS.map((card) => (
+                <li>
+                    <h3>{card.title}</h3>
+                    <p>{card.text}</p>
+                </li>
+            ))}
+        </ul>
+
+        <TabGroup
+            id="ai-examples"
+            label="AI examples"
+            surface="dark"
+            flush
+            tabs={[
+                { label: "AI inside a workflow" },
+                { label: "Flows as AI tools" },
+            ]}
+        >
+            <TabPanel group="ai-examples" index={1}>
+                <div class="mcp triage" data-triage>
+                    <CodeCard
+                        class="spend"
+                        file="support / ticket_triage.yml"
+                        code={TRIAGE}
+                        marks={TRIAGE_MARKS}
+                        dark
+                        editor
+                    >
+                        <span
+                            slot="status"
+                            class="run-status"
+                            data-status="success"
+                        >
+                            <span class="running">
+                                <Icon name="mdi:loading" class="spin" />
+                                Running
+                            </span>
+                            <span class="success">
+                                <Icon name="mdi:check-circle-outline" />
+                                Success
+                            </span>
+                        </span>
+                    </CodeCard>
+                    <figure
+                        class="topo-card"
+                        aria-label="Topology of the ticket_triage flow"
+                    >
+                        <figcaption>
+                            <span class="topo-tab">
+                                <Icon name="mdi:sitemap-outline" />
+                                Topology
+                            </span>
+                        </figcaption>
+                        <div class="topo-body">
+                            <div
+                                class="topo-canvas"
+                                style={`width: ${NODE_W}px; height: ${TOPO_H}px`}
+                            >
+                                <svg
+                                    class="topo-edges"
+                                    viewBox={`0 0 ${NODE_W} ${TOPO_H}`}
+                                    aria-hidden="true"
+                                >
+                                    <defs>
+                                        <marker
+                                            id="triage-dot"
+                                            viewBox="0 0 6 6"
+                                            refX="3"
+                                            refY="3"
+                                            markerWidth="5"
+                                            markerHeight="5"
+                                            markerUnits="userSpaceOnUse"
+                                        >
+                                            <circle
+                                                cx="3"
+                                                cy="3"
+                                                r="3"
+                                                class="tip"
+                                            />
+                                        </marker>
+                                        <marker
+                                            id="triage-arrow"
+                                            viewBox="0 0 10 10"
+                                            refX="9"
+                                            refY="5"
+                                            markerWidth="6"
+                                            markerHeight="6"
+                                            markerUnits="userSpaceOnUse"
+                                            orient="auto"
+                                        >
+                                            <path
+                                                d="M1 1.5 L9 5 L1 8.5 Q2.5 5 1 1.5 z"
+                                                class="tip"
+                                            />
+                                        </marker>
+                                    </defs>
+                                    {TOPO_EDGES.map((d) => (
+                                        <path class="topo-edge done" d={d} />
+                                    ))}
+                                </svg>
+                                {TRIAGE_NODES.map((node, idx) => (
+                                    <TopologyNode
+                                        id={node.id}
+                                        type={node.type}
+                                        icon={triageIcons[idx]}
+                                        fallback={node.fallback}
+                                        status="success"
+                                        duration={node.duration}
+                                        style={`position: absolute; left: 0; top: ${idx * (NODE_H + NODE_GAP)}px`}
+                                        data-node={idx}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    </figure>
+                </div>
+            </TabPanel>
+            <TabPanel group="ai-examples" index={2}>
+                <div class="mcp" data-mcp>
+                    <ChatMock />
+                    <CodeCard
+                        class="spend"
+                        file="company.team / do_spend_summary.yml"
+                        code={SPEND}
+                        marks={SPEND_MARKS}
+                        dark
+                        editor
+                    >
+                        <span
+                            slot="status"
+                            class="run-status"
+                            data-status="success"
+                        >
+                            <span class="running">
+                                <Icon name="mdi:loading" class="spin" />
+                                Running
+                            </span>
+                            <span class="success">
+                                <Icon name="mdi:check-circle-outline" />
+                                Success
+                            </span>
+                        </span>
+                    </CodeCard>
+                </div>
+            </TabPanel>
+        </TabGroup>
+    </Rails>
+</section>
+
+<script>
+    const wait = (ms: number) =>
+        new Promise((resolve) => setTimeout(resolve, ms))
+
+    function codeOf(box: HTMLElement) {
+        const card = box.querySelector<HTMLElement>(".spend")!
+        const pre = card.querySelector<HTMLElement>("pre")!
+        const lines = [...pre.querySelectorAll<HTMLElement>(".line")]
+        const status = card.querySelector<HTMLElement>("[data-status]")!
+        const light = (mark?: string) => {
+            for (const line of lines)
+                line.classList.toggle("on", !!mark && line.dataset.k === mark)
+            const first = lines.find((line) => line.dataset.k === mark)
+            const offset = first
+                ? first.getBoundingClientRect().top -
+                  pre.getBoundingClientRect().top +
+                  pre.scrollTop
+                : 0
+            pre.scrollTo({
+                top: Math.max(0, offset - pre.clientHeight / 3),
+                behavior: "smooth",
+            })
+        }
+        const state = (value: string) => (status.dataset.status = value)
+        return { light, state }
+    }
+
+    function whenShown(
+        box: HTMLElement,
+        player: { run: () => Promise<void>; stop: () => void },
+    ) {
+        const panel = box.closest<HTMLElement>("[role=tabpanel]")!
+        let inView = false
+        let playing = false
+        const update = () => {
+            const visible = inView && !panel.hidden
+            if (visible && !playing) {
+                playing = true
+                void player.run()
+            } else if (!visible && playing) {
+                playing = false
+                player.stop()
+            }
+        }
+        const seen = new IntersectionObserver(
+            ([entry]) => {
+                inView = entry.isIntersecting
+                update()
+            },
+            { threshold: 0.3 },
+        )
+        seen.observe(box)
+        const toggled = new MutationObserver(update)
+        toggled.observe(panel, {
+            attributes: true,
+            attributeFilter: ["hidden"],
+        })
+        document.addEventListener(
+            "astro:before-swap",
+            () => {
+                seen.disconnect()
+                toggled.disconnect()
+                if (!playing) return
+                playing = false
+                player.stop()
+            },
+            { once: true },
+        )
+    }
+
+    function chatPlayer(box: HTMLElement) {
+        const chat = box.querySelector<HTMLElement>("[data-chat]")!
+        const steps = [...chat.querySelectorAll<HTMLElement>("[data-step]")]
+        const step = (name: string) =>
+            steps.find((el) => el.dataset.step === name)!
+        const words = [...chat.querySelectorAll<HTMLElement>(".word")]
+        const typed = chat.querySelector<HTMLElement>("[data-typed]")!
+        const question = chat.dataset.question!
+        const { light, state } = codeOf(box)
+        let token = 0
+
+        const reset = () => {
+            chat.classList.remove("running", "thinking")
+            for (const el of [...steps, ...words]) el.classList.remove("shown")
+            typed.textContent = ""
+            state("idle")
+            light()
+        }
+
+        const run = async () => {
+            const id = ++token
+            chat.classList.add("playing")
+            while (id === token) {
+                reset()
+                await wait(700)
+                for (let c = 1; c <= question.length && id === token; c++) {
+                    typed.textContent = question.slice(0, c)
+                    await wait(32)
+                }
+                if (id !== token) return
+                await wait(500)
+                typed.textContent = ""
+                step("user").classList.add("shown")
+                chat.classList.add("thinking")
+                await wait(900)
+                if (id !== token) return
+                step("intro").classList.add("shown")
+                await wait(600)
+                if (id !== token) return
+                step("tool").classList.add("shown")
+                chat.classList.add("running")
+                state("running")
+                light("trigger")
+                for (const mark of ["fetch", "explain", "outputs"]) {
+                    await wait(1400)
+                    if (id !== token) return
+                    light(mark)
+                }
+                state("success")
+                chat.classList.remove("running")
+                await wait(600)
+                if (id !== token) return
+                chat.classList.remove("thinking")
+                step("answer").classList.add("shown")
+                for (const word of words) {
+                    if (id !== token) return
+                    word.classList.add("shown")
+                    await wait(45)
+                }
+                await wait(4000)
+            }
+        }
+
+        const stop = () => {
+            token++
+            reset()
+            chat.classList.remove("playing")
+            state("success")
+        }
+
+        return { run, stop }
+    }
+
+    function triagePlayer(box: HTMLElement) {
+        const nodes = [...box.querySelectorAll<HTMLElement>("[data-node]")]
+        const edges = [...box.querySelectorAll<SVGPathElement>(".topo-edge")]
+        const { light, state } = codeOf(box)
+        const STEPS = [
+            { mark: "classify", status: "running", ms: 1500 },
+            { mark: "approve", status: "paused", ms: 1900 },
+            { mark: "create_issue", status: "running", ms: 1300 },
+        ]
+        let token = 0
+
+        const set = (node: HTMLElement, status: string) => {
+            node.classList.remove(
+                "is-created",
+                "is-running",
+                "is-paused",
+                "is-success",
+            )
+            node.classList.add(`is-${status}`)
+        }
+
+        const reset = () => {
+            for (const node of nodes) set(node, "created")
+            for (const edge of edges) edge.classList.remove("active", "done")
+            state("idle")
+            light()
+        }
+
+        const run = async () => {
+            const id = ++token
+            while (id === token) {
+                reset()
+                await wait(700)
+                if (id !== token) return
+                state("running")
+                for (const [i, step] of STEPS.entries()) {
+                    if (i > 0) edges[i - 1].classList.replace("active", "done")
+                    set(nodes[i], step.status)
+                    light(step.mark)
+                    await wait(step.ms)
+                    if (id !== token) return
+                    set(nodes[i], "success")
+                    if (edges[i]) {
+                        edges[i].classList.add("active")
+                        await wait(500)
+                        if (id !== token) return
+                    }
+                }
+                state("success")
+                light()
+                await wait(3500)
+            }
+        }
+
+        const stop = () => {
+            token++
+            for (const node of nodes) set(node, "success")
+            for (const edge of edges) {
+                edge.classList.remove("active")
+                edge.classList.add("done")
+            }
+            state("success")
+            light()
+        }
+
+        return { run, stop }
+    }
+
+    function wireAi() {
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+        const mcp = document.querySelector<HTMLElement>(
+            "#ai [data-mcp]:not([data-wired])",
+        )
+        if (mcp) {
+            mcp.dataset.wired = "true"
+            whenShown(mcp, chatPlayer(mcp))
+        }
+        const triage = document.querySelector<HTMLElement>(
+            "#ai [data-triage]:not([data-wired])",
+        )
+        if (triage) {
+            triage.dataset.wired = "true"
+            whenShown(triage, triagePlayer(triage))
+        }
+    }
+
+    document.addEventListener("astro:page-load", wireAi)
+    wireAi()
+</script>
+
+<style lang="scss" define:vars={{ codePanel: kestraDark.editor.background }}>
+    @use "./style/platform" as *;
+
+    .ai {
+        background: #060609;
+
+        position: relative;
+        border-block: 1px solid var(--band-line);
+        color: #ffffff;
+
+        @include band-lines;
+
+        :global(.section-head h2) {
+            color: #ffffff;
+        }
+
+        :global(.section-head h2 span) {
+            display: block;
+            color: #a9a9b8;
+        }
+
+        :global(.section-head .lead) {
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        .shine {
+            font-style: normal;
+            background: linear-gradient(
+                90deg,
+                #ffffff 0%,
+                #cdb6fb 25%,
+                #9869f7 50%,
+                #cdb6fb 75%,
+                #ffffff 100%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shine 6s linear infinite;
+
+            @media (prefers-reduced-motion: reduce) {
+                animation: none;
+            }
+        }
+
+        &#ai :global(.ks-tabs.on-dark > .tablist) {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0;
+            width: fit-content;
+            margin: 0 auto 1.5rem;
+            padding: 0.25rem;
+            border: 1px solid var(--band-line);
+            border-radius: 0.625rem;
+        }
+
+        @include media-breakpoint-down(sm) {
+            &#ai :global(.ks-tabs.on-dark > .tablist > button) {
+                padding-inline: 0.75rem;
+                font-size: 0.8125rem;
+                white-space: nowrap;
+            }
+        }
+
+        &#ai :global(.ks-tabs.on-dark > .tablist)::before {
+            content: "";
+            position: absolute;
+            top: 0.25rem;
+            bottom: 0.25rem;
+            left: 0.25rem;
+            width: calc(50% - 0.25rem);
+            border-radius: 0.375rem;
+            background: rgba(255, 255, 255, 0.1);
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+
+            @media (prefers-reduced-motion: reduce) {
+                transition: none;
+            }
+        }
+
+        &#ai
+            :global(.tablist:has(> :last-child[aria-selected="true"]))::before {
+            transform: translateX(100%);
+        }
+
+        &#ai :global(.ks-tabs.on-dark > .tablist > [role="tab"]) {
+            position: relative;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1.125rem;
+            border: 0;
+            border-radius: 0.375rem;
+            text-align: center;
+            background: transparent;
+            box-shadow: none;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.55);
+            transition: color 0.2s ease;
+        }
+
+        &#ai :global(.ks-tabs.on-dark > .tablist > [role="tab"]:hover),
+        &#ai
+            :global(
+                .ks-tabs.on-dark > .tablist > [role="tab"][aria-selected="true"]
+            ) {
+            color: #ffffff;
+        }
+    }
+
+    .cards {
+        @include ruled-grid(
+            3,
+            var(--band-line),
+            #ffffff,
+            rgba(255, 255, 255, 0.04)
+        );
+
+        margin-bottom: 3.5rem;
+
+        li {
+            padding: 2.25rem var(--inset) 2.5rem;
+        }
+
+        h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        p {
+            margin: 0;
+            line-height: 1.55;
+            color: rgba(255, 255, 255, 0.68);
+        }
+    }
+
+    .mcp {
+        --pane-h: 30rem;
+
+        display: grid;
+        grid-template-columns: 0.85fr 1.15fr;
+        gap: 1.5rem;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: 1fr;
+        }
+
+        > :global(*) {
+            height: var(--pane-h);
+
+            @include media-breakpoint-down(lg) {
+                height: auto;
+            }
+        }
+    }
+
+    .triage {
+        grid-template-columns: 1.15fr 0.85fr;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .mcp :global(.spend) {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mcp :global(.spend pre) {
+        flex: 1;
+        min-height: 0;
+    }
+
+    .topo-card {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        overflow: hidden;
+        border: 1px solid #2e2e3c;
+        border-radius: 0.75rem;
+        background: var(--codePanel);
+        box-shadow: 0 30px 80px -24px rgba(0, 0, 0, 0.6);
+
+        figcaption {
+            display: flex;
+            align-items: flex-end;
+            height: 3rem;
+            padding: 0 1rem;
+            border-bottom: 1px solid #2e2e3c;
+            background: #1e1e26;
+        }
+    }
+
+    .topo-tab {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        height: 2.375rem;
+        margin-bottom: -1px;
+        padding: 0 0.75rem;
+        border: 1px solid #2e2e3c;
+        border-bottom: 0;
+        border-radius: 8px 8px 0 0;
+        background: var(--codePanel);
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #ffffff;
+
+        :global(svg) {
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    .topo-body {
+        display: grid;
+        flex: 1;
+        place-items: center;
+        min-height: 0;
+        padding: 1.5rem;
+    }
+
+    .topo-canvas {
+        position: relative;
+    }
+
+    .topo-edges {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+
+        .tip {
+            fill: #4a4a5a;
+        }
+    }
+
+    .topo-edge {
+        fill: none;
+        stroke: #4a4a5a;
+        stroke-width: 1.5;
+        stroke-dasharray: 4 4;
+        marker-start: url(#triage-dot);
+        marker-end: url(#triage-arrow);
+        transition: stroke 0.4s ease;
+
+        &:global(.active) {
+            stroke: #9869f7;
+            animation: topo-flow 1.2s linear infinite;
+        }
+
+        &:global(.done) {
+            stroke: #06f0b1;
+        }
+    }
+
+    @keyframes topo-flow {
+        to {
+            stroke-dashoffset: -16;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .topo-edge:global(.active) {
+            animation: none;
+        }
+    }
+
+    .run-status {
+        display: grid;
+        align-self: center;
+        margin-left: auto;
+        font-size: 13px;
+        font-weight: 500;
+
+        > span {
+            display: inline-flex;
+            grid-area: 1 / 1;
+            align-items: center;
+            justify-self: end;
+            gap: 0.375rem;
+            padding: 0.1875rem 0.625rem;
+            border-radius: 6px;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        :global(svg) {
+            width: 15px;
+            height: 15px;
+        }
+
+        :global(.spin) {
+            animation: run-spin 0.9s linear infinite;
+        }
+
+        .running {
+            background: rgba(152, 105, 247, 0.16);
+            color: #b9a6ff;
+        }
+
+        .success {
+            background: rgba(30, 135, 94, 0.18);
+            color: #06f0b1;
+        }
+
+        &[data-status="running"] .running,
+        &[data-status="success"] .success {
+            opacity: 1;
+        }
+    }
+
+    @keyframes run-spin {
+        to {
+            rotate: 360deg;
+        }
+    }
+
+    .top {
+        position: relative;
+        isolation: isolate;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1.5rem 3rem;
+
+        @include media-breakpoint-down(lg) {
+            flex-direction: column;
+            margin-bottom: 3rem;
+
+            :global(.section-head) {
+                margin-bottom: 0;
+            }
+        }
+
+        > a {
+            flex: none;
+        }
+    }
+
+    .sky {
+        position: absolute;
+        z-index: -1;
+        top: calc(-1 * var(--full));
+        bottom: 0;
+        left: 50%;
+        width: 100vw;
+        translate: -50% 0;
+        overflow: hidden;
+        pointer-events: none;
+
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
+
+    .planet {
+        --size: 84rem;
+        --rise: 13rem;
+        --night: #060609;
+
+        position: absolute;
+        bottom: calc(var(--rise) - var(--size));
+        left: 50%;
+        width: var(--size);
+        aspect-ratio: 1;
+        translate: -50% 0;
+        border-radius: 50%;
+        background:
+            linear-gradient(transparent 20%, var(--night) 48%),
+            radial-gradient(
+                ellipse 62% 26% at 50% 0%,
+                rgba(200, 200, 216, 0.24),
+                rgba(130, 130, 150, 0.1) 40%,
+                transparent 72%
+            ),
+            var(--night);
+
+        @include media-breakpoint-down(lg) {
+            --size: 60rem;
+            --rise: 10rem;
+        }
+    }
+
+    .limb {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: conic-gradient(
+            from -90deg,
+            transparent 0deg,
+            #3a26ff 22deg,
+            #5f4dff 52deg,
+            rgba(216, 214, 236, 0.45) 80deg,
+            rgba(255, 255, 255, 0.55) 90deg,
+            rgba(216, 214, 236, 0.45) 100deg,
+            #5f4dff 128deg,
+            #3a26ff 158deg,
+            transparent 180deg
+        );
+        mask:
+            radial-gradient(
+                farthest-side,
+                transparent calc(100% - 16px),
+                #000 100%
+            ),
+            linear-gradient(#000 15%, transparent 46%);
+        mask-composite: intersect;
+    }
+
+    .atmosphere {
+        position: absolute;
+        z-index: -1;
+        inset: -20rem;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle closest-side,
+            transparent calc(100% - 20rem),
+            rgba(80, 56, 255, 0.5) calc(100% - 20rem + 1px),
+            rgba(70, 44, 255, 0.22) calc(100% - 18rem),
+            rgba(60, 30, 240, 0.08) calc(100% - 14rem),
+            transparent calc(100% - 9rem)
+        );
+        mask:
+            conic-gradient(
+                from -90deg,
+                #000 0deg,
+                #000 45deg,
+                transparent 78deg,
+                transparent 102deg,
+                #000 135deg,
+                #000 360deg
+            ),
+            linear-gradient(#000 4%, transparent 46%);
+        mask-composite: intersect;
+    }
+
+    .rim {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle closest-side,
+            transparent 82%,
+            rgba(50, 28, 220, 0.16) 92%,
+            rgba(72, 48, 255, 0.5) 98.5%,
+            rgba(118, 100, 255, 0.7) 100%
+        );
+        mask:
+            conic-gradient(
+                from -90deg,
+                #000 0deg,
+                #000 40deg,
+                transparent 75deg,
+                transparent 105deg,
+                #000 140deg,
+                #000 360deg
+            ),
+            linear-gradient(#000 20%, transparent 48%);
+        mask-composite: intersect;
+    }
+
+    .haze {
+        position: absolute;
+        z-index: -1;
+        top: -7rem;
+        left: 50%;
+        width: 44rem;
+        height: 16rem;
+        translate: -50% 0;
+        background: radial-gradient(
+            closest-side,
+            rgba(230, 230, 242, 0.1),
+            rgba(200, 200, 220, 0.04) 55%,
+            transparent
+        );
+    }
+
+    .horizon {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 1px;
+        background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.08) 12%,
+            rgba(95, 77, 255, 0.55) 32%,
+            rgba(224, 220, 255, 0.95) 50%,
+            rgba(95, 77, 255, 0.55) 68%,
+            rgba(255, 255, 255, 0.08) 88%,
+            transparent 100%
+        );
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: 15%;
+            right: 15%;
+            bottom: 0;
+            height: 9rem;
+            background: radial-gradient(
+                ellipse 50% 100% at 50% 100%,
+                rgba(120, 100, 255, 0.4),
+                rgba(70, 44, 255, 0.14) 45%,
+                transparent 75%
+            );
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: -1px;
+            width: 22rem;
+            height: 3px;
+            translate: -50% 0;
+            border-radius: 50%;
+            background: radial-gradient(
+                closest-side,
+                #ffffff,
+                rgba(190, 180, 255, 0.6) 50%,
+                transparent
+            );
+            filter: blur(1.5px);
+            animation: horizon 6s ease-in-out infinite alternate;
+
+            @media (prefers-reduced-motion: reduce) {
+                animation: none;
+            }
+        }
+    }
+
+    @keyframes horizon {
+        from {
+            opacity: 0.7;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes shine {
+        to {
+            background-position: -200% 0;
+        }
+    }
+</style>
