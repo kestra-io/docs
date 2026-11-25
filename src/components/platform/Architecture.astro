@@ -231,16 +231,16 @@ const PARTS = [
         }
 
         @include media-breakpoint-down(lg) {
-            .head > .swap > [data-edition="ent"] {
+            :global(.swap > [data-edition="ent"]) {
                 display: none;
             }
 
             &:has(#edition-tab-2[aria-selected="true"]) {
-                .head > .swap > [data-edition="oss"] {
+                :global(.swap > [data-edition="oss"]) {
                     display: none;
                 }
 
-                .head > .swap > [data-edition="ent"] {
+                :global(.swap > [data-edition="ent"]) {
                     display: flex;
                 }
             }
