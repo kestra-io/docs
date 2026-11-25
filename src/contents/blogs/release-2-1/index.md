@@ -122,11 +122,13 @@ In the Enterprise Edition, you can assign a request to specific people or groups
 
 ![The Approvals page listing four deployment approval requests, two pending with Review buttons and two resolved, one approved and one denied, with their deadlines and assignees](./approvals-page.png)
 
-## Kestra in Your IDE and Coding Agent
+## Ecosystem: IDE, Coding Agents, and Script Libraries
 
 Flows are code, so it helps to write them where you write the rest of your code. The new [JetBrains plugin](/docs/ide-extensions/jetbrains) brings Kestra to IntelliJ IDEA, PyCharm, WebStorm, and the other JetBrains IDEs. It completes flow YAML from the plugins installed on your instance, checks it as you type, previews the flow's topology, and runs the flow from the editor with live logs.
 
 If a coding agent writes your flows, Kestra's [Agent Skills](/docs/develop-with-ai/agent-skills#install-as-a-plugin) now install as a plugin in Claude Code, Codex, and Cursor, with the Docs MCP server already connected. They help the agent write, harden, and migrate flows, then deploy and run them with `kestractl`.
+
+Scripts get the same treatment. Kestra's [script libraries](/docs/scripts/outputs-metrics#other-languages) now cover 10 more languages: R, PowerShell, Ruby, PHP, Perl, Groovy, Lua, Julia, Go, and C# or F#. Send outputs, metrics, logs, and assets with a function call instead of hand-written `::{}::` lines. Every library, Python and Node.js included, can also read the execution context, such as the flow's labels, when the task sets `executionContext: true`.
 
 ## Assets
 
@@ -286,7 +288,6 @@ A few plugin additions from this cycle:
 - [Invitations](/docs/enterprise/auth/invitations) (EE): invite up to 25 people at once with the same groups and roles.
 - [HTTPS behind a reverse proxy](/docs/configuration/observability-and-networking#secure-cookies): HSTS and secure cookies now work when Kestra sits behind a proxy that handles HTTPS.
 - [`PurgeMetrics`](/docs/administrator-guide/purge#purge-metrics): clean up execution metrics on their own, much faster than with a full execution purge.
-- [Script libraries in 10 more languages](/docs/scripts/outputs-metrics#other-languages): send outputs, metrics, and logs from R, PowerShell, Ruby, PHP, Perl, Groovy, Lua, Julia, Go, and C# scripts with a function call instead of hand-written `::{}::` lines.
 
 The [2.1 changelog](/docs/releases/changelog/v2.1.0) lists every other improvement in this release.
 
