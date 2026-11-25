@@ -200,8 +200,11 @@ const IMPORTED = [
     }
 
     .stage {
+        --lift: 5.5em;
+
         position: relative;
         min-height: 38.8em;
+        translate: 0 var(--lift);
         font-size: calc(100cqw / 50);
         line-height: 1.3;
         color: var(--text);
@@ -517,7 +520,7 @@ const IMPORTED = [
     .toast {
         position: absolute;
         right: 0;
-        bottom: 1.6em;
+        bottom: calc(1.6em + var(--lift));
         left: 0;
         display: flex;
         align-items: center;

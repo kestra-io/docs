@@ -20,6 +20,7 @@ interface Props {
     label?: string
     panels?: Panel[]
     align?: "center" | "start"
+    wash?: boolean
 }
 
 const DEFAULT_PANELS: Panel[] = [
@@ -74,6 +75,7 @@ const {
     label = "Enterprise features",
     panels: PANELS = DEFAULT_PANELS,
     align = "center",
+    wash = false,
 } = Astro.props
 
 const MOCKS: Record<string, string> = {}
@@ -83,7 +85,11 @@ for (const panel of PANELS) {
 }
 ---
 
-<section class="ee-showcase" aria-labelledby={id} data-showcase>
+<section
+    class:list={["ee-showcase", { wash }]}
+    aria-labelledby={id}
+    data-showcase
+>
     <div class="container-xl">
         <div class="grid">
             <header class:list={["head", align]}>
@@ -644,6 +650,63 @@ for (const panel of PANELS) {
             mask: var(--pixels) no-repeat center / contain;
             opacity: 0.3;
             pointer-events: none;
+        }
+    }
+
+    .wash {
+        .panel {
+            --tint: #8405ff;
+
+            background:
+                radial-gradient(
+                    80% 90% at 100% 0%,
+                    color-mix(in srgb, var(--tint) 20%, transparent),
+                    transparent 70%
+                ),
+                radial-gradient(
+                    60% 70% at 0% 100%,
+                    color-mix(in srgb, var(--tint) 10%, transparent),
+                    transparent 70%
+                ),
+                color-mix(in srgb, var(--tint) 3%, var(--ks-background-body));
+
+            :global(html.dark) & {
+                --tint: #9869f7;
+
+                background:
+                    radial-gradient(
+                        80% 90% at 100% 0%,
+                        color-mix(in srgb, var(--tint) 12%, transparent),
+                        transparent 70%
+                    ),
+                    radial-gradient(
+                        60% 70% at 0% 100%,
+                        color-mix(in srgb, var(--tint) 6%, transparent),
+                        transparent 70%
+                    ),
+                    color-mix(
+                        in srgb,
+                        var(--tint) 3%,
+                        var(--ks-background-body)
+                    );
+            }
+        }
+
+        .media.mock {
+            --tint: inherit;
+
+            border-left: 0;
+            background: none;
+
+            :global(html.dark) & {
+                --tint: inherit;
+
+                background: none;
+            }
+
+            @include media-breakpoint-down(lg) {
+                border: var(--rule);
+            }
         }
     }
 
