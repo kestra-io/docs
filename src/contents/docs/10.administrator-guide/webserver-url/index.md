@@ -6,12 +6,14 @@ icon: /src/contents/docs/icons/admin.svg
 description: Configure the Kestra webserver URL and proxy settings to ensure correct link generation and access behind reverse proxies.
 ---
 
-The `kestra.url` property sets the base URL for the Kestra webserver. Notification services use it to generate links in alert messages. The value must be a full URI with a trailing `/`, excluding `ui` or `api`.
+The `kestra.url` property sets the base URL for the Kestra webserver. Notification services use it to generate links in alert messages, and tasks that call the Kestra API from a worker (for example `io.kestra.plugin.git.NamespaceSync` or `io.kestra.plugin.kestra.*` tasks) use it as the default API address. The value must be a full URI with a trailing `/`, excluding `ui` or `api`.
 
 ```yaml
 kestra:
   url: https://www.my-host.com/kestra/
 ```
+
+Use the address users and workers actually reach: the HTTPS address when TLS is terminated by a reverse proxy or by Kestra itself. Set it on every Kestra component, including workers that run on separate hosts.
 
 ## Proxy configuration
 
@@ -52,7 +54,7 @@ To display executions in real-time when hosting Kestra behind a reverse proxy, e
 
 On some reverse proxies, such as Nginx, you need to disable buffering to enable real-time updates.
 
-Here is a working configuration:
+The following Nginx `location` block streams SSE without buffering and accepts uploads up to 16 MB:
 
 ```bash
 location / {
@@ -67,11 +69,16 @@ location / {
     proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
     proxy_set_header  X-Forwarded-Protocol $scheme;
 
+    # File inputs and uploads: Nginx rejects request bodies above 1 MB by default
+    client_max_body_size 16m;
+
     # Needed for SSE
     proxy_buffering off;
     proxy_cache off;
 }
 ```
+
+Raise `client_max_body_size` if users upload larger file inputs or namespace files. Kestra itself accepts request bodies up to `micronaut.server.max-request-size` (10 GB by default), see [Webserver](../../08.architecture/02.server-components/07.webserver/index.md).
 
 To access Kestra via a separate context path, add the following to your Kestra startup configuration (for example, to serve the UI at `mycompany.com/kestra`):
 
@@ -99,6 +106,8 @@ server {
         proxy_set_header  X-Real-IP        $remote_addr;
         proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
         proxy_set_header  X-Forwarded-Protocol $scheme;
+
+        client_max_body_size 16m;
 
         # Needed for SSE
         proxy_buffering off;
