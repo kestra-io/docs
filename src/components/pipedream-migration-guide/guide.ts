@@ -224,7 +224,7 @@ export function runEditions(cloudHref = "/cloud") {
             id: "cloud" as const,
             title: "Kestra Cloud",
             text: "SSO, RBAC, audit logs and a secret manager from the first day, and task runners in your own cloud. Priced by task runs and compute.",
-            cta: { label: "Start your Cloud trial", href: cloudHref },
+            cta: { label: "Request Kestra Cloud access", href: cloudHref },
             featured: true,
         },
         {
