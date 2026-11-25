@@ -1328,6 +1328,20 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
                 { once: true },
             )
 
+            const reveal = (tab: HTMLElement) => {
+                const strip = tab.parentElement!
+                if (!inView || strip.scrollWidth <= strip.clientWidth) return
+                const box = strip.getBoundingClientRect()
+                const rect = tab.getBoundingClientRect()
+                strip.scrollBy({
+                    left:
+                        rect.left -
+                        box.left -
+                        (strip.clientWidth - rect.width) / 2,
+                    behavior: still ? "auto" : "smooth",
+                })
+            }
+
             const open = (idx: number) => {
                 stop()
                 tabs.forEach((tab, i) => {
@@ -1351,6 +1365,7 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
                     player.stop()
                 }
                 sync()
+                reveal(tabs[idx])
                 if (auto)
                     timer = window.setTimeout(
                         () => {
