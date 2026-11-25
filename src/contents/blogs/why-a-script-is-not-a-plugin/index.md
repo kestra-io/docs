@@ -48,15 +48,51 @@ You never have to touch the Java. You write a task in YAML, as in the example be
 
 Every task property has a type, a default, a description and validation rules. Kestra generates a [JSON Schema](https://json-schema.org/) from the plugin, and the editor uses it to validate your flow before it runs. A typo in a property name gets a red underline while you type. A script takes whatever string you hand it, and the same typo becomes a failed execution.
 
-The reference docs, examples and property tables on the [plugin pages](/plugins) are generated from annotations in the code, so they can't drift apart. The [plugin developer guide](/docs/plugin-developer-guide/document) shows how.
+The reference docs, examples and property tables on the [plugin pages](/plugins) are generated from annotations in the code, so they can't drift apart. Outputs are documented the same way, with their types, so you know what `outputs.query.uri` holds before you reference it in the next task. The [plugin developer guide](/docs/plugin-developer-guide/document) shows how.
 
 Each plugin ships with unit tests built on the Kestra test framework, and many run against real services in containers. The checks run on every pull request. Each plugin's main branch is built on a schedule every weekday, so a break caused by an upstream change shows up even when nobody touched the code.
 
-Plugins are published as versioned artifacts, and the release and indexing process is itself a set of Kestra flows. We wrote about it in [How Kestra Ships 1300+ Plugins](/blogs/2026-04-27-how-kestra-ships-plugins). A weekly compatibility run builds the plugin library against the latest development branch of Kestra core, so we catch a breaking change in the engine before it reaches you.
+Plugins are published as versioned artifacts, and the release and indexing process is itself a set of Kestra flows. We wrote about how one team ships 1300+ plugins this way in [How Kestra Ships 1300+ Plugins](/blogs/2026-04-27-how-kestra-ships-plugins). A weekly compatibility run builds the plugin library against the latest development branch of Kestra core, so we catch a breaking change in the engine before it reaches you.
 
 The AWS plugin runs on the official AWS SDK for Java, and other plugins use the vendor's official Java SDK when one exists, so you get the vendor's own authentication, retry and API behavior. Dependabot bumps those dependencies, both for security fixes and to keep each plugin current with the service it talks to.
 
 Every plugin repository runs a security scan on top of the Dependabot updates, so a CVE in a transitive dependency of a client library is ours to find and fix.
+
+## Platforms Built on Copied Scripts
+
+Some automation platforms build everything around scripts. A workflow is a chain of scripts, and integrations come from a hub of shared ones: you pick a script from the catalog, copy it into your workspace and edit it.
+
+A script copied into your workspace is your fork. If the upstream author fixes a bug or the API changes, your copy stays as it was until someone notices and syncs it by hand. The same integration ends up in many versions across teams, and each team owns its own copy. The platform schedules them and reports their exit codes, and everything inside them is yours to maintain.
+
+Kestra has one implementation per integration, maintained in one place and upgraded by changing a version number. Your flow references the task type:
+
+```yaml
+id: nightly_export
+namespace: company.data
+
+tasks:
+  - id: query
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: jdbc:postgresql://db:5432/app
+    username: "{{ secret('PG_USER') }}"
+    password: "{{ secret('PG_PASSWORD') }}"
+    sql: SELECT * FROM orders WHERE created_at > current_date - 1
+    fetchType: STORE
+
+  - id: upload
+    type: io.kestra.plugin.aws.s3.Upload
+    from: "{{ outputs.query.uri }}"
+    bucket: company-exports
+    key: orders/{{ execution.startDate | date('yyyy-MM-dd') }}.ion
+```
+
+The flow holds no connection logic and no SDK to pin. When the AWS plugin ships a fix, every flow that uses it gets the fix on the next version bump, without anyone editing a file.
+
+Three more things stay out of your flow:
+
+- Dependencies come packaged with the plugin. A script resolves its own on each run, which costs startup time and lets a transitive release change behavior between two runs.
+- Large data goes through internal storage. The output of the query above is a file, so a big export reaches S3 without passing through your code or a JSON payload.
+- Retries, timeouts and error handling are task properties in YAML, so you don't reimplement them in every script.
 
 ## Plugin Triggers Handle Events for You
 
@@ -96,42 +132,6 @@ Kestra and its core plugins are open source. Kestra Enterprise adds:
 - [Versioned plugins](/docs/enterprise/instance/versioned-plugins), so you can run two versions of the same plugin side by side and promote the new one on your own schedule.
 - [Allowed and restricted plugins](/docs/enterprise/governance/allowed-plugins), so a platform team decides which integrations are available to which teams.
 - A support contract that covers the plugins as well as the engine underneath them.
-
-## Platforms Built on Copied Scripts
-
-Some automation platforms build everything around scripts. A workflow is a chain of scripts, and integrations come from a hub of shared ones: you pick a script from the catalog, copy it into your workspace and edit it.
-
-A script copied into your workspace is your fork. If the upstream author fixes a bug or the API changes, your copy stays as it was until someone notices and syncs it by hand. The same integration ends up in many versions across teams, and each team owns its own copy. The platform schedules them and reports their exit codes, and everything inside them is yours to maintain.
-
-Kestra has one implementation per integration, maintained in one place and upgraded by changing a version number. Your flow references the task type:
-
-```yaml
-id: nightly_export
-namespace: company.data
-
-tasks:
-  - id: query
-    type: io.kestra.plugin.jdbc.postgresql.Query
-    url: jdbc:postgresql://db:5432/app
-    username: "{{ secret('PG_USER') }}"
-    password: "{{ secret('PG_PASSWORD') }}"
-    sql: SELECT * FROM orders WHERE created_at > current_date - 1
-    fetchType: STORE
-
-  - id: upload
-    type: io.kestra.plugin.aws.s3.Upload
-    from: "{{ outputs.query.uri }}"
-    bucket: company-exports
-    key: orders/{{ execution.startDate | date('yyyy-MM-dd') }}.ion
-```
-
-The flow holds no connection logic and no SDK to pin. When the AWS plugin ships a fix, every flow that uses it gets the fix on the next version bump, without anyone editing a file.
-
-Three more things stay out of your flow:
-
-- Dependencies come packaged with the plugin. A script resolves its own on each run, which costs startup time and lets a transitive release change behavior between two runs.
-- Large data goes through internal storage. The output of the query above is a file, so a big export reaches S3 without passing through your code or a JSON payload.
-- Retries, timeouts and error handling are task properties in YAML, so you don't reimplement them in every script.
 
 ## Scripts and Plugins in the Same Flow
 
