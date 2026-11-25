@@ -7,14 +7,19 @@ interface Props {
     currentId: string
     tag: ResourceTag
     limit?: number
+    /** Resource ids picked by the page; when set, they replace the same-tag list. */
+    relatedIds?: string[]
 }
 
-const { currentId, tag, limit = 3 }: Props = Astro.props
+const { currentId, tag, limit = 3, relatedIds }: Props = Astro.props
 
 const { items } = await loadResources()
-const related: ResourceListItem[] = items
-    .filter((r) => r.tag === tag && r.id !== currentId)
-    .slice(0, limit)
+const related: ResourceListItem[] = relatedIds?.length
+    ? relatedIds
+          .map((id) => items.find((r) => r.id === id.toLowerCase()))
+          .filter((r): r is ResourceListItem => !!r && r.id !== currentId)
+          .slice(0, limit)
+    : items.filter((r) => r.tag === tag && r.id !== currentId).slice(0, limit)
 ---
 
 {

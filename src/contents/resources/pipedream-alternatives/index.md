@@ -6,6 +6,10 @@ metaDescription: "Comparing Pipedream alternatives? Pipedream Workflows shuts do
 tag: "infrastructure"
 date: 2026-10-20
 lastUpdated: 2026-11-25
+related:
+  - zapier-alternatives
+  - n8n-alternatives
+  - windmill-alternatives
 faq:
   - question: "Is Pipedream shutting down?"
     answer: "Pipedream Workflows and String are shutting down on March 31, 2027. Existing workflows keep running until then, but the product takes no new signups or subscriptions and ships no new features. All Workflows data, including connected-account credentials and OAuth tokens, is permanently deleted by April 30, 2027. Pipedream Connect, which covers the Connect API, MCP servers and the API proxy, is not affected."
