@@ -1,0 +1,708 @@
+---
+import { Icon } from "astro-icon/components"
+import airflowMark from "~/components/versus/assets/airflow-monograme.svg"
+import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
+
+export interface DagRow {
+    dag: string
+    schedule: string
+    last: string
+    paused?: boolean
+    at?: number
+}
+
+export interface HealthRow {
+    name: string
+    at?: number
+    after?: string
+}
+
+export interface FlowRow {
+    id: string
+    namespace: string
+    at?: number
+    note?: string
+}
+
+export interface TagRow {
+    dag: string
+    tag: string
+    tone?: "move" | "retire"
+    at: number
+}
+
+export type AirflowSide =
+    | { kind: "dags"; rows: DagRow[] }
+    | { kind: "health"; unpausedAt?: number; rows: HealthRow[] }
+
+export type KestraSide =
+    | { kind: "flows"; rows: FlowRow[] }
+    | { kind: "tags"; title: string; rows: TagRow[] }
+
+export interface Props {
+    label: string
+    airflow: AirflowSide
+    kestra: KestraSide
+    checks: string[]
+}
+
+const { label, airflow, kestra, checks } = Astro.props
+
+const AIRFLOW_PAGE = {
+    dags: "DAGs",
+    health: "Cluster Activity",
+}[airflow.kind]
+const KESTRA_PAGE = {
+    flows: "Flows",
+    tags: "KV Store",
+}[kestra.kind]
+---
+
+<figure class="af-step" aria-label={label} data-af-step>
+    <div class="screens" aria-hidden="true">
+        <div class="screen airflow">
+            <div class="af-bar">
+                <img src={airflowMark.src} alt="" />
+                <strong>Airflow</strong>
+                {["DAGs", "Cluster Activity", "Datasets", "Browse"].map(
+                    (item) => (
+                        <span class:list={{ on: item === AIRFLOW_PAGE }}>
+                            {item}
+                        </span>
+                    ),
+                )}
+            </div>
+            <div class="af-body">
+                {airflow.kind === "dags" && (
+                    <table class="dags">
+                        <thead>
+                            <tr>
+                                <th />
+                                <th>DAG</th>
+                                <th>Schedule</th>
+                                <th>Last Run</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {airflow.rows.map((row) => (
+                                <tr
+                                    data-at={row.at}
+                                    class:list={{ paused: row.paused }}
+                                >
+                                    <td>
+                                        <span class="toggle">
+                                            <i />
+                                        </span>
+                                    </td>
+                                    <td class="dag">{row.dag}</td>
+                                    <td>
+                                        <span class="chip">{row.schedule}</span>
+                                    </td>
+                                    <td class="last">{row.last}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
+                {airflow.kind === "health" && (
+                    <div class="health">
+                        <div class="tile" data-at={airflow.unpausedAt}>
+                            <small>Unpaused DAGs</small>
+                            <strong>
+                                <span class="before">3</span>
+                                <span class="after">0</span>
+                            </strong>
+                        </div>
+                        <ul>
+                            {airflow.rows.map((row) => (
+                                <li data-at={row.at}>
+                                    <span class="name">{row.name}</span>
+                                    <span class="state before">HEALTHY</span>
+                                    <span class="state after">
+                                        {row.after ?? "STOPPED"}
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+            </div>
+        </div>
+
+        <span class="arrow">
+            <Icon name="mdi:arrow-right" />
+        </span>
+
+        <div class="screen kestra">
+            <div class="ks-bar">
+                <span class="kmark">
+                    <img src={kestraMark.src} alt="" />
+                </span>
+                <span class="slash">/</span>
+                <strong>{KESTRA_PAGE}</strong>
+            </div>
+            <div class="ks-body">
+                {kestra.kind === "flows" && (
+                    <table class="flows">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Namespace</th>
+                                <th>Last execution status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {kestra.rows.map((row) => (
+                                <tr data-at={row.at}>
+                                    <td class="id">
+                                        {row.id}
+                                        {row.note && <small>{row.note}</small>}
+                                    </td>
+                                    <td class="ns">{row.namespace}</td>
+                                    <td>
+                                        <span class="status before">
+                                            Created
+                                        </span>
+                                        <span class="status after">
+                                            <Icon name="mdi:check-circle" />
+                                            Success
+                                        </span>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
+                {kestra.kind === "tags" && (
+                    <table class="flows tags">
+                        <thead>
+                            <tr>
+                                <th>{kestra.title}</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {kestra.rows.map((row) => (
+                                <tr
+                                    data-at={row.at}
+                                    data-tone={row.tone ?? "move"}
+                                >
+                                    <td class="id">{row.dag}</td>
+                                    <td>
+                                        <span class="status before">—</span>
+                                        <span class="status after tag">
+                                            {row.tag}
+                                        </span>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
+            </div>
+        </div>
+    </div>
+
+    <ol class="checks">
+        {checks.map((check) => (
+            <li data-check>
+                <span class="kmark">
+                    <Icon name="mdi:loading" class="spin" />
+                    <Icon name="mdi:check-circle" class="ok" />
+                </span>
+                {check}
+            </li>
+        ))}
+    </ol>
+</figure>
+
+<script>
+    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
+    function play(root: HTMLElement) {
+        const checks = [...root.querySelectorAll<HTMLElement>("[data-check]")]
+        const marked = [...root.querySelectorAll<HTMLElement>("[data-at]")]
+        const host = root.closest<HTMLElement>("[data-domain-visual]")
+        const stacked = matchMedia("(max-width: 991.98px)")
+        let visible = false
+        new IntersectionObserver(([entry]) => {
+            visible = entry.isIntersecting
+        }).observe(root)
+        const shown = () =>
+            visible &&
+            root.offsetParent !== null &&
+            (!host || stacked.matches || host.classList.contains("active"))
+        const report = (type: string, detail?: number) =>
+            root.dispatchEvent(new CustomEvent(type, { bubbles: true, detail }))
+
+        const loop = async () => {
+            for (;;) {
+                while (!shown()) {
+                    await sleep(200)
+                    if (!root.isConnected) return
+                }
+                checks.forEach((c) => c.classList.remove("running", "done"))
+                marked.forEach((m) => m.classList.remove("hit"))
+                await sleep(700)
+                let interrupted = false
+                for (const [k, check] of checks.entries()) {
+                    check.classList.add("running")
+                    await sleep(1100)
+                    check.classList.replace("running", "done")
+                    marked
+                        .filter((m) => Number(m.dataset.at) === k)
+                        .forEach((m) => m.classList.add("hit"))
+                    report("topology:progress", (k + 1) / checks.length)
+                    await sleep(700)
+                    if (!shown()) {
+                        interrupted = true
+                        break
+                    }
+                }
+                if (interrupted) continue
+                report("topology:done")
+                while (shown()) {
+                    await sleep(300)
+                    if (!root.isConnected) return
+                }
+            }
+        }
+        loop()
+    }
+
+    function wire() {
+        document
+            .querySelectorAll<HTMLElement>("[data-af-step]:not([data-wired])")
+            .forEach((root) => {
+                root.dataset.wired = ""
+                if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                    root.querySelectorAll("[data-check]").forEach((c) =>
+                        c.classList.add("done"),
+                    )
+                    root.querySelectorAll("[data-at]").forEach((m) =>
+                        m.classList.add("hit"),
+                    )
+                    return
+                }
+                play(root)
+            })
+    }
+
+    document.addEventListener("astro:page-load", wire)
+    wire()
+</script>
+
+<style lang="scss">
+    @use "/src/components/enterprise/mocks/tokens" as *;
+
+    .af-step {
+        @include tokens;
+
+        --bar: #f7f7fa;
+        --af-blue: #017cee;
+        --danger: #c53030;
+
+        :global(html.dark) & {
+            --bar: #1e1e26;
+            --af-blue: #5aa9ff;
+            --danger: #ff6b6b;
+        }
+
+        display: grid;
+        gap: 1rem;
+        width: 100%;
+        margin: 0;
+        text-align: left;
+    }
+
+    .screens {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        align-items: stretch;
+        gap: 0.75rem;
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    .screen {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        min-height: 15rem;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 0.75rem;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        color: var(--text);
+        font-size: 0.75rem;
+    }
+
+    .arrow {
+        display: grid;
+        place-items: center;
+        color: var(--muted);
+
+        @include media-breakpoint-down(md) {
+            transform: rotate(90deg);
+        }
+    }
+
+    .af-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        height: 2.75rem;
+        padding: 0 0.875rem;
+        border-bottom: 1px solid var(--line);
+        background: var(--bar);
+        white-space: nowrap;
+        overflow: hidden;
+
+        img {
+            width: 1.125rem;
+            height: 1.125rem;
+        }
+
+        strong {
+            font-weight: 500;
+            color: var(--soft);
+        }
+
+        span {
+            color: var(--soft);
+            font-weight: 500;
+
+            &.on {
+                color: var(--af-blue);
+            }
+        }
+    }
+
+    .af-body,
+    .ks-body {
+        flex: 1;
+        padding: 0.625rem 0.75rem;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th {
+            padding: 0.375rem 0.5rem;
+            background: var(--deep);
+            font-weight: 600;
+            text-align: left;
+            color: var(--soft);
+        }
+
+        td {
+            padding: 0.4375rem 0.5rem;
+            border-top: 1px solid var(--line);
+            vertical-align: middle;
+        }
+    }
+
+    .dag {
+        font-weight: 600;
+        color: var(--af-blue);
+    }
+
+    .chip {
+        padding: 0.0625rem 0.375rem;
+        border-radius: 3px;
+        background: var(--chip);
+        font-size: 0.6875rem;
+        font-weight: 600;
+        color: var(--soft);
+    }
+
+    .last {
+        color: var(--muted);
+        white-space: nowrap;
+    }
+
+    .toggle {
+        position: relative;
+        display: block;
+        width: 1.75rem;
+        height: 1rem;
+        border-radius: 999px;
+        background: var(--af-blue);
+        transition: background-color 0.3s ease;
+
+        i {
+            position: absolute;
+            top: 0.125rem;
+            left: 0.875rem;
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            background: #ffffff;
+            transition: left 0.3s ease;
+        }
+    }
+
+    tr.paused .toggle,
+    tr:global(.hit) .toggle {
+        background: var(--line);
+
+        i {
+            left: 0.125rem;
+        }
+    }
+
+    tr:global(.hit) td {
+        animation: flash 0.8s ease;
+    }
+
+    .health {
+        display: grid;
+        grid-template-columns: 7rem minmax(0, 1fr);
+        gap: 0.75rem;
+
+        .tile {
+            display: grid;
+            align-content: start;
+            gap: 0.25rem;
+            padding: 0.5rem;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            text-align: center;
+
+            strong {
+                font-size: 1.5rem;
+            }
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4375rem 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .name {
+            font-weight: 600;
+            color: var(--af-blue);
+        }
+    }
+
+    .state {
+        margin-left: auto;
+        padding: 0.0625rem 0.375rem;
+        border-radius: 3px;
+        font-size: 0.625rem;
+        font-weight: 700;
+
+        &.before {
+            background: var(--ok-bg);
+            color: var(--ok);
+        }
+
+        &.after {
+            background: var(--chip);
+            color: var(--soft);
+        }
+    }
+
+    .status.after,
+    .state.after,
+    .tile .after {
+        display: none;
+    }
+
+    :global(.hit) {
+        .status.before,
+        .state.before,
+        .tile .before {
+            display: none;
+        }
+
+        .status.after,
+        .state.after {
+            display: inline-flex;
+        }
+
+        &.tile .before {
+            display: none;
+        }
+
+        &.tile .after {
+            display: inline;
+        }
+    }
+
+    .ks-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        height: 2.75rem;
+        padding: 0 0.875rem;
+        border-bottom: 1px solid var(--line);
+        background: var(--bar);
+
+        .kmark {
+            display: grid;
+            place-items: center;
+            width: 1.375rem;
+            height: 1.375rem;
+            border-radius: 6px;
+            background: #0d0d10;
+
+            img {
+                width: 0.875rem;
+                height: 0.875rem;
+            }
+        }
+
+        .slash {
+            color: var(--muted);
+        }
+
+        strong {
+            font-weight: 600;
+        }
+    }
+
+    .flows {
+        th {
+            background: var(--deep);
+            font-weight: 500;
+            color: var(--muted);
+        }
+
+        .id {
+            font-weight: 600;
+
+            small {
+                display: block;
+                font-weight: 400;
+                color: var(--muted);
+            }
+        }
+
+        .ns {
+            color: var(--muted);
+        }
+    }
+
+    .status {
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.125rem 0.5rem;
+        border-radius: 999px;
+        font-size: 0.6875rem;
+        font-weight: 600;
+
+        &.before {
+            display: inline-flex;
+            background: var(--chip);
+            color: var(--muted);
+        }
+
+        &.after {
+            background: var(--ok-bg);
+            color: var(--ok);
+        }
+    }
+
+    .tags tr[data-tone="retire"] .tag {
+        background: var(--wait-bg);
+        color: var(--wait);
+    }
+
+    .checks {
+        display: grid;
+        grid-auto-columns: minmax(0, 1fr);
+        grid-auto-flow: column;
+        gap: 0.5rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-down(md) {
+            grid-auto-flow: row;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 0.75rem;
+            border: 1px solid var(--ks-border-primary);
+            border-radius: 8px;
+            background: var(--ks-background-body);
+            font-size: 0.8125rem;
+            line-height: 1.35;
+            color: var(--ks-content-tertiary);
+            transition:
+                color 0.3s ease,
+                border-color 0.3s ease;
+
+            &:global(.running) {
+                border-color: var(--run);
+                color: var(--ks-content-primary);
+            }
+
+            &:global(.done) {
+                color: var(--ks-content-primary);
+            }
+        }
+
+        .kmark {
+            display: grid;
+            flex: none;
+            width: 1rem;
+            height: 1rem;
+
+            :global(svg) {
+                grid-area: 1 / 1;
+                width: 1rem;
+                height: 1rem;
+                opacity: 0;
+            }
+
+            :global(.spin) {
+                color: var(--run);
+                animation: spin 0.9s linear infinite;
+            }
+
+            :global(.ok) {
+                color: var(--ok);
+            }
+        }
+
+        li:global(.running) :global(.spin),
+        li:global(.done) :global(.ok) {
+            opacity: 1;
+        }
+
+        li:not(:global(.running)):not(:global(.done)) .kmark {
+            border: 1.5px solid var(--ks-border-primary);
+            border-radius: 50%;
+        }
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes flash {
+        from {
+            background: rgba(132, 5, 255, 0.1);
+        }
+    }
+</style>
