@@ -29,6 +29,7 @@ The JVM truststore covers outbound connections made by the Kestra JVM. Other TLS
 | Browsers and API clients connecting to Kestra over HTTPS | `micronaut.server.ssl`. See [Configure SSL for Kestra](../ssl-configuration/index.md). |
 | Workers connecting to the controller over gRPC (Enterprise Edition) | `kestra.grpc.tls.trust-store`. See [Worker Groups transport security](../../07.enterprise/04.scalability/worker-group/index.md#transport-security-tls). |
 | Commands run by script tasks, such as Python or Shell scripts | A CA bundle passed to the script's runtime. See [Script tasks](#script-tasks). |
+| Connections opened by plugins that have their own CA or truststore property, for example AMQP `sslCaCertificate`, MQTT `crt`, or the Syslog log exporter's `trustStorePath` | The plugin property. When set, it applies only to that connection and is usually used instead of the JVM truststore, so it must contain every CA that connection needs. When unset, the JVM truststore applies. |
 
 ## How the JVM truststore works
 
