@@ -9,6 +9,7 @@ interface Props {
     dots?: boolean
     dark?: boolean
     editor?: boolean
+    guides?: boolean
     class?: string
 }
 
@@ -19,6 +20,7 @@ const {
     dots = false,
     dark = false,
     editor = false,
+    guides = false,
 } = Astro.props
 
 const escape = (text: string) =>
@@ -85,11 +87,25 @@ const markAt = (row: number) =>
         ([, [from, to]]) => row + 1 >= from && row + 1 <= to,
     )?.[0]
 
+const rows = code.split("\n")
+const depth = (text: string) => text.match(/^\s*/)?.[0].length ?? 0
+const opens = rows.map((text, row) => {
+    const next = rows.slice(row + 1).find((line) => line.trim() !== "")
+    return text.trim() !== "" && next !== undefined && depth(next) > depth(text)
+})
+const lead = (width: number) =>
+    guides
+        ? " ".repeat(Math.min(width, 2)) +
+          `<span class="guide">  </span>`.repeat(
+              Math.max(0, Math.floor(width / 2) - 1),
+          ) +
+          " ".repeat(width >= 2 ? width % 2 : 0)
+        : " ".repeat(width)
+
 let block = -1
-const HTML = code
-    .split("\n")
+const HTML = rows
     .map((text, row) => {
-        const indent = text.match(/^\s*/)?.[0].length ?? 0
+        const indent = depth(text)
         if (block >= 0 && text.trim() !== "" && indent <= block) block = -1
         const inBlock = block >= 0
         const match = inBlock ? null : text.match(/^(\s*)(- )?([\w.]+)(:)(.*)$/)
@@ -114,7 +130,10 @@ const HTML = code
         return [
             `<span class="line"${mark ? ` data-k="${mark}"` : ""}>`,
             `<span class="no">${row + 1}</span>`,
-            match ? match[1] : " ".repeat(indent),
+            guides
+                ? `<span class="fold${opens[row] ? " open" : ""}"></span>`
+                : "",
+            lead(match ? match[1].length : indent),
             match?.[2] ? `<span class="dash">- </span>` : "",
             match
                 ? `<span class="key">${match[3]}</span><span class="punct">:</span>`
@@ -128,7 +147,7 @@ const HTML = code
 ---
 
 <figure
-    class:list={["code-card", Astro.props.class, { dark }]}
+    class:list={["code-card", Astro.props.class, { dark, guides }]}
     aria-label={file}
 >
     <figcaption>
@@ -343,6 +362,33 @@ const HTML = code
         text-align: right;
         color: var(--code-line);
         user-select: none;
+    }
+
+    .guides pre :global(.no) {
+        padding-right: 0.375rem;
+    }
+
+    pre :global(.fold) {
+        display: inline-block;
+        width: 1.25rem;
+        user-select: none;
+
+        &:global(.open)::before {
+            content: "";
+            display: inline-block;
+            width: 0.3125rem;
+            height: 0.3125rem;
+            margin: 0 0 0.1875rem 0.25rem;
+            border-right: 1.5px solid var(--code-line);
+            border-bottom: 1.5px solid var(--code-line);
+            transform: rotate(45deg);
+            opacity: 0.8;
+        }
+    }
+
+    pre :global(.guide) {
+        box-shadow: inset 1px 0 0
+            color-mix(in srgb, var(--code-line) 35%, transparent);
     }
 
     pre :global(.key) {
