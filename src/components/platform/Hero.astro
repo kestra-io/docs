@@ -109,6 +109,42 @@ const SPARKS = [
     const wait = (ms: number) =>
         new Promise((resolve) => setTimeout(resolve, ms))
 
+    const PEBBLE = /(\{\{[\s\S]*?(?:\}\}|$))/
+    const TOKEN =
+        /('[^']*'?|"[^"]*"?)|(\d+(?:\.\d+)?)|([A-Za-z_][\w.]*)|(\|)|([\s\S])/g
+
+    const span = (cls: string, text: string) => {
+        const el = document.createElement("span")
+        el.className = cls
+        el.textContent = text
+        return el
+    }
+
+    function painted(source: string) {
+        const nodes: Node[] = []
+        source.split(PEBBLE).forEach((part, idx) => {
+            if (!(idx % 2)) {
+                if (part) nodes.push(document.createTextNode(part))
+                return
+            }
+            const closed = part.length >= 4 && part.endsWith("}}")
+            nodes.push(span("pb-delim", "{{"))
+            let afterPipe = false
+            for (const [, str, num, name, pipe, other] of part
+                .slice(2, closed ? -2 : undefined)
+                .matchAll(TOKEN)) {
+                if (str) nodes.push(span("pb-str", str))
+                else if (num) nodes.push(span("pb-num", num))
+                else if (name)
+                    nodes.push(span(afterPipe ? "pb-fn" : "pb-var", name))
+                else nodes.push(document.createTextNode(pipe ?? other))
+                if (name || pipe) afterPipe = !!pipe
+            }
+            if (closed) nodes.push(span("pb-delim", "}}"))
+        })
+        return nodes
+    }
+
     function wireHeroEdit() {
         const stage = document.querySelector<HTMLElement>(
             "[data-hero-edit]:not([data-wired])",
@@ -152,7 +188,11 @@ const SPARKS = [
             const selection = document.createElement("span")
             selection.className = "selected"
             selection.textContent = current.slice(same)
-            text.replaceChildren(current.slice(0, same), selection, caret)
+            text.replaceChildren(
+                ...painted(current.slice(0, same)),
+                selection,
+                caret,
+            )
             if (keys && key) key.classList.add("selected")
             await wait(650)
             if (id !== token) return
@@ -163,8 +203,10 @@ const SPARKS = [
             }
             field.value.classList.toggle("string", next.startsWith('"'))
             stage.classList.add("typing")
+            let typed = current.slice(0, same)
             for (const char of next.slice(same)) {
-                caret.before(char)
+                typed += char
+                text.replaceChildren(...painted(typed), caret)
                 await wait(55 + Math.random() * 60)
                 if (id !== token) return
             }
