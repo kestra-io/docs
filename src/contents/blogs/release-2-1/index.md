@@ -127,7 +127,7 @@ In the Enterprise Edition, you can assign a request to specific people or groups
 
 ![The Approvals page listing four deployment approval requests, two pending with Review buttons and two resolved, one approved and one denied, with their deadlines and assignees](./approvals-page.png)
 
-## Ecosystem: IDE, Coding Agents, and Script Libraries
+## Ecosystem: JetBrains Plugin, Agent Skills, and Script Libraries
 
 Flows are code, so it helps to write them where you write the rest of your code. The new [JetBrains plugin](/docs/ide-extensions/jetbrains) brings Kestra to IntelliJ IDEA, PyCharm, WebStorm, and the other JetBrains IDEs. It completes flow YAML from the plugins installed on your instance, checks it as you type, previews the flow's topology, and runs the flow from the editor with live logs.
 
