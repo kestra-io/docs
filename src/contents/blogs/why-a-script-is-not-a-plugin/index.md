@@ -10,7 +10,7 @@ author:
   twitter: "@fdelbrayelle"
   image: fdelbrayelle
   role: Lead Software Engineer
-  image: ./main.png
+image: ./main.webp
 ---
 
 "Your S3 plugin uploads a file. I can do that in ten lines of Python. Why would I use a plugin for that?"
