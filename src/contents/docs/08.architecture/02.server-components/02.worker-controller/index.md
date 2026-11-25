@@ -76,22 +76,13 @@ When a Worker leaves the cluster, the Worker Controller doesn't resend its unfin
 
 ### Jobs that never reach a Worker
 
-A task can stay in `RUNNING` without ever starting, or a trigger can stop firing, while its Worker still looks healthy. The job was lost on its way to the Worker, but the Worker keeps sending heartbeats, so Kestra doesn't treat the Worker as dead and doesn't resubmit the job.
+A task can stay in `RUNNING` without ever starting, or a trigger can stop firing, while its Worker still looks healthy. The job was lost on its way to the Worker, but the Worker keeps sending heartbeats, so Kestra doesn't treat the Worker as dead, and the recovery that applies to [a Worker that goes away](#when-a-worker-goes-away) doesn't start.
 
 This usually happens when a load balancer or proxy between the Workers and the Worker Controller terminates HTTP/2 connections and answers keep-alive pings itself: the connection looks open, but jobs no longer get through. It can also happen when the Worker Controller closes a connection right after sending a job.
 
-#### How Kestra recovers lost jobs
-
-Each Worker reports the jobs it holds to the Worker Controller when it connects and then at a regular interval, and the Worker Controller acknowledges each report. When a Worker doesn't report a job that the Worker Controller sent it on an earlier connection, the job never arrived, and the Worker Controller resubmits it:
-
-- A task goes back on its queue. A `WorkingDirectory` goes back as a whole, with all of its tasks.
-- A trigger goes back to the Scheduler, which evaluates it again against the current flow revision.
-
-The Worker Controller discards a task instead of resubmitting it when the task run already ended, when the execution is being killed, was killed or cancelled, or no longer exists, or when a [kill switch](../../../07.enterprise/05.instance/kill-switch/index.md) applies to it.
-
-A Worker notices that its connection stopped delivering jobs when its reports are no longer acknowledged. After `sync-timeout` without an acknowledgment, the Worker opens a new connection, and the Worker Controller resubmits the lost jobs as soon as it reconnects. With the default settings, Kestra recovers a lost job in about a minute. When the Worker Controller closes the connection itself, the Worker reconnects right away, and recovery takes seconds.
-
 #### Check whether jobs are lost
+
+Kestra resubmits lost jobs on its own. To see whether it happens in your deployment, look for these metrics and logs.
 
 On the Worker Controller:
 
@@ -105,6 +96,17 @@ On the Worker:
 - The Worker logs a `WARN` message that starts with `The controller has not acknowledged the jobs held by this worker`.
 
 An occasional resubmission is expected, for example during a network interruption or a Worker Controller restart. If these counters keep increasing, check the HTTP/2 and keep-alive settings of the load balancer or proxy between your Workers and the Worker Controller. Resubmission limits the impact, but each lost job is still delayed until Kestra recovers it.
+
+#### How Kestra recovers lost jobs
+
+Each Worker reports the jobs it holds to the Worker Controller when it connects and then at a regular interval, and the Worker Controller acknowledges each report. When a Worker doesn't report a job that the Worker Controller sent it on an earlier connection, the job never arrived, and the Worker Controller resubmits it:
+
+- A task goes back on its queue. A `WorkingDirectory` goes back as a whole, with all of its tasks.
+- A trigger goes back to the Scheduler, which evaluates it again against the current flow revision.
+
+Kestra doesn't resubmit a task whose task run already ended or whose execution was stopped.
+
+A Worker notices that its connection stopped delivering jobs when its reports are no longer acknowledged. After `sync-timeout` without an acknowledgment, the Worker opens a new connection, and the Worker Controller resubmits the lost jobs as soon as it reconnects. With the default settings, Kestra recovers a lost job in about a minute. When the Worker Controller closes the connection itself, the Worker reconnects right away, and recovery takes seconds.
 
 #### Tune the sync settings
 
