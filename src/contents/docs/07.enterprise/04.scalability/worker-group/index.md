@@ -44,7 +44,7 @@ Add `workerSelector` to any task to route it to a matching Worker Queue. The `wo
 
 | Property | Description | Default |
 |---|---|---|
-| `tags` | List of RFC 1123 labels (max 20, each up to 64 characters) identifying the required Worker Queue. A tag or the whole list can be an expression; see [Choose tags at runtime](#choose-tags-at-runtime) | — |
+| `tags` | List of RFC 1123 labels (max 20, each up to 63 characters) identifying the required Worker Queue. A tag or the whole list can be an expression; see [Choose tags at runtime](#choose-tags-at-runtime) | — |
 | `match` | `ALL`: queue tags must include all selector tags. `ANY`: queue tags must include at least one selector tag | `ALL` |
 | `fallback` | Behavior when no worker is connected to any matching queue: `FAIL`, `WAIT`, `CANCEL`, or `IGNORE` | `FAIL` |
 
@@ -211,7 +211,7 @@ Two ids are reserved and never created manually:
 - `default` — the global default queue; receives tasks with no `workerSelector`
 - `system` — the in-process system worker
 
-Worker Queue ids must follow RFC 1123 label format: lowercase alphanumerics and hyphens, starting and ending with an alphanumeric character, max 64 characters.
+Worker Queue ids must follow RFC 1123 label format: lowercase alphanumerics and hyphens, starting and ending with an alphanumeric character, max 63 characters.
 
 ### Creating Worker Queues
 
