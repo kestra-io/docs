@@ -61,8 +61,14 @@ const STATS = [
             <dl class="stats">
                 {STATS.map((stat) => (
                     <div>
-                        <Icon name={stat.icon} class="icon" />
-                        <dt>{stat.label}</dt>
+                        <dt>
+                            <Icon
+                                name={stat.icon}
+                                class="icon"
+                                aria-hidden="true"
+                            />
+                            {stat.label}
+                        </dt>
                         <dd>
                             <span class="arrow" aria-hidden="true">
                                 ↑
@@ -331,6 +337,10 @@ const STATS = [
         }
 
         dt {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.75rem;
             margin-bottom: -1rem;
             font-size: 1.0625rem;
             font-weight: 600;
