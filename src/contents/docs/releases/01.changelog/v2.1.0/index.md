@@ -33,9 +33,13 @@ Approvals, asset leases and the ASSET input, searchable execution values, custom
 - **`isLastDayOfMonth()`**: a Pebble function for month-end logic. [Docs](../../../expressions/04.functions/06.dates/index.mdx)
 - **Input `descriptionDisplayMode`**: show an input's description as a tooltip to keep long forms compact. [Docs](../../../05.workflow-components/05.inputs/index.md)
 - **Docker `tmpfs` mounts**: give a task container an in-memory scratch directory. [Docs](../../../task-runners/04.types/02.docker-task-runner/index.md#in-memory-mounts-tmpfs)
+- **Loop `parseValues`**: read the fields of JSON object values as `item.value.field` instead of parsing them with `fromJson`. [Docs](../../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#read-object-fields-with-parsevalues)
+- **Loop `breakWhen`**: stop a `Loop` from starting new iterations once a condition is true after an iteration ends. Also in 2.0.4. [Docs](../../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#stop-early-with-breakwhen)
+- **Concurrency `queueLimit`**: with `behavior: QUEUE`, cap how many executions wait in the queue. Incoming executions beyond the cap are `CANCELLED`. [Docs](../../../05.workflow-components/14.concurrency/index.md#behavior-property)
 
 ## UI
 
+- **Restarting a subflow execution**: the restart dialog warns that restarting an execution created by a parent leaves the parent `FAILED`, and links to the parent execution to restart from there. [Docs](../../../15.how-to-guides/subflow-executions/index.md)
 - **Execution artifacts**: an execution's **Artifacts** tab, and an artifact button on the task nodes that have one, show what data tasks did: the SQL a JDBC task ran and the tables it read and wrote, an Airbyte job's per-stream sync stats, or a Fivetran connector's freshness and per-table breakdown. [Docs](../../../09.ui/02.executions/index.md#artifacts)
 - **Execution timeline**: a time-axis view of executions grouped by namespace and flow. [Docs](../../../09.ui/02.executions/index.md#timeline)
 - **Loop iterations in the Gantt**: expand a `Loop` to its iterations in place and step between failures. [Docs](../../../09.ui/02.executions/index.md#loop-iterations)
@@ -74,6 +78,7 @@ Approvals, asset leases and the ASSET input, searchable execution values, custom
 
 ## Infrastructure
 
+- **`kestra.state` span attribute**: OpenTelemetry spans of the Executor and Worker carry the execution or task run state. Also in 2.0.7. [Docs](../../../10.administrator-guide/open-telemetry/index.md#span-attributes)
 - **New queue backends (EE)**: Google Cloud Pub/Sub, NATS JetStream, Amazon SQS/SNS, and Azure Event Hubs, configured under `kestra.queue.<type>`. [Docs](../../../configuration/06.enterprise-and-advanced/index.md#message-broker-queue-backends)
 - **Expressions in `workerSelector` tags (EE)**: route a task, trigger, or flow from an input or an earlier output, as `workerGroup.key` allowed in 1.x. A blank tag falls through to the next routing level. Also in 2.0.11. [Docs](../../../07.enterprise/04.scalability/worker-group/index.md#choose-tags-at-runtime)
 - **Dedicated queue database**: run the JDBC queue in its own database. [Docs](../../../configuration/02.runtime-and-storage/index.md#dedicated-queue-database)
@@ -90,6 +95,7 @@ Approvals, asset leases and the ASSET input, searchable execution values, custom
 - **Microsoft Defender XDR**: list, get, and update alerts and incidents, run advanced hunting queries, and trigger flows on new or updated alerts and incidents, in the Microsoft 365 plugin from version 1.11.0. [Docs](/plugins/plugin-microsoft365)
 - **Proofpoint TAP (EE)**: a new plugin that fetches URL clicks, threat messages, and the events that reached users from the TAP SIEM API, gets threat summaries and forensic evidence, lists Very Attacked People, and triggers flows on new SIEM events. [Docs](/plugins/plugin-ee-proofpoint)
 - **Torq (EE)**: a new plugin that runs Torq workflows through their webhook, lists and reads workflows and their executions, queries, reads, updates, and comments on cases, and triggers flows on new or updated cases. [Docs](/plugins/plugin-ee-torq)
+
 ## Behavior changes
 
 Smaller changes to existing behavior that don't need a migration guide.
@@ -105,6 +111,11 @@ Smaller changes to existing behavior that don't need a migration guide.
 - **HTTPS behind a reverse proxy**: Kestra treats a request forwarded with `X-Forwarded-Proto: https` or `Forwarded: proto=https` as HTTPS, so it marks its cookies `Secure` and sends a configured `Strict-Transport-Security` header behind a TLS-terminating proxy. The new `kestra.webserver.cookies.secure` setting forces the cookie attribute on or off. [Docs](../../../configuration/03.observability-and-networking/index.md#secure-cookies)
 - **Helm chart and autoscalers**: the chart no longer sets the replica count of a component whose `autoscaler` is enabled, so `helm upgrade` stops failing on a field conflict (Helm 4) or resetting the pod count (Helm 3). For KEDA or your own HPA, set the new `autoscaler.external`. With Helm 3, the upgrade that turns either setting on can drop the component to one pod once. [Docs](../../../10.administrator-guide/high-availability/index.md#autoscale-components)
 - **RFC 1123 labels (EE)**: worker selector tags, Worker Queue ids and tags, Worker Group ids, and policy ids accept at most 63 characters, the RFC 1123 limit, instead of 64. A 64-character value is rejected. [Docs](../../../07.enterprise/04.scalability/worker-group/index.md)
+- **`Dag` interrupts running tasks when one fails**: `onChildFailure` now defaults to `FAIL`, like `Parallel`. Set it to `CONTINUE` to let the other tasks finish. Also in 2.0.8. [Migration guide](../../../11.migration-guide/v2.0.0/parallel-dag-on-child-failure/index.md)
+- **`BOOL` inputs**: a value other than `true` or `false`, in any letter case, is rejected instead of being read as `false`. For example, `yes` and `1` are rejected. Also in 2.0.1. [Docs](../../../05.workflow-components/05.inputs/index.md)
+- **Killing an ended execution**: `DELETE /executions/{executionId}/actions/kill` returns `409` when the execution has ended and has no running task or subflow execution left, instead of `200` with nothing done.
+- **`system` label key reserved**: a label with the bare key `system` is refused like other system labels, with `System labels can only be set by Kestra itself`. Rename any such label before you save the flow again. [Docs](../../../06.concepts/system-labels/index.md#system-labels)
+- **Replay on another revision**: replaying from a task run on another flow revision is refused when a task before it, an input, or a variable changed, since Kestra would reuse results the original revision produced. [Docs](../../../15.how-to-guides/replay/index.md#replay-on-another-flow-revision)
 - **Versioned Plugins screen (EE)**: the Instance Owner menu no longer has a Versioned Plugins entry. Plugin versions are managed from the **Plugins** page, and links to the former screen redirect there.
 
 ## Breaking changes
@@ -125,3 +136,7 @@ Each breaking change has a dedicated migration guide. See the [2.1 migration gui
 | dbt asset types (EE) | [Guide](../../../11.migration-guide/v2.1.0/dbt-asset-types/index.md) |
 | Asset write timing (EE) | [Guide](../../../11.migration-guide/v2.1.0/asset-write-timing/index.md) |
 | Webhook responses without `wait` | [Guide](../../../11.migration-guide/v2.1.0/webhook-response-without-wait/index.md) |
+| Namespace IDs with an empty segment | [Guide](../../../11.migration-guide/v2.1.0/namespace-id-empty-segment/index.md) |
+| Helm worker group selector (EE) | [Guide](../../../11.migration-guide/v2.1.0/helm-worker-group-selector/index.md) |
+| Flow output types | [Guide](../../../11.migration-guide/v2.1.0/flow-output-types/index.md) |
+| Restart on another revision deprecated | [Guide](../../../11.migration-guide/v2.1.0/restart-revision-deprecated/index.md) |
