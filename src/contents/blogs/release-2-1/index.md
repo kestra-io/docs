@@ -256,11 +256,9 @@ For Basic Auth, passwords can now expire after a set time, with a heads-up befor
 
 If you run Kestra on a database, the queue can now live in its own database, even on a different engine, to spread the load across two servers. See [Dedicated queue database](/docs/configuration/runtime-and-storage#dedicated-queue-database).
 
-## Plugins
+## Security Plugins
 
-The Plugins page now lists each plugin once, as a card or a table row. In the Enterprise Edition, it also shows which versions are installed on your instance and which are available, and Instance Owners can install, update, and uninstall versions from the same page. See [Plugins page](/docs/enterprise/instance/versioned-plugins#from-the-ui).
-
-A few plugin additions from this cycle:
+Security teams can now work with their detection and response tools from a flow: pull alerts and incidents, triage and update them, and respond, without hand-written API calls. Most of these plugins also start a flow when something new shows up.
 
 - [Microsoft Defender XDR](/plugins/plugin-microsoft365): list and update alerts and incidents, run advanced hunting queries, and start flows on new alerts and incidents.
 - [Microsoft Sentinel](/plugins/plugin-azure): list, read, and update incidents, comment on them, run KQL queries, and start flows on new incidents.
@@ -268,13 +266,22 @@ A few plugin additions from this cycle:
 - [GitGuardian](/plugins/plugin-gitguardian): list and manage secret incidents (assign, resolve, ignore, add notes), scan content for leaked secrets, manage honeytokens, and start flows on new incidents.
 - [Proofpoint TAP](/plugins/plugin-ee-proofpoint) (EE): pull the clicks and messages that reached your users, look up a threat's summary and forensic evidence, list your Very Attacked People, and start flows on new SIEM events.
 - [Torq](/plugins/plugin-ee-torq) (EE): run a Torq workflow through its webhook, read workflows and their executions, query, update, and comment on cases, and start flows on new or updated cases.
+
+<!-- VERIFY: add GuardDuty and Okta (SOAR wave 2) once their plugin links are known. CrowdStrike and Aikido already shipped, add them if they belong in this release. -->
+
+## Plugins
+
+The Plugins page now lists each plugin once, as a card or a table row. In the Enterprise Edition, it also shows which versions are installed on your instance and which are available, and Instance Owners can install, update, and uninstall versions from the same page. See [Plugins page](/docs/enterprise/instance/versioned-plugins#from-the-ui).
+
+A few more plugin additions from this cycle:
+
 - **Network automation** (EE): built-in plugins for the vendors behind most network estates, so you no longer need Ansible or raw HTTP calls. They share one contract: `GetConfig`, `DiffConfig`, `ApplyConfig`, `Check` (dry run), and pre and post checks, so a flow works the same across vendors.
   - Switches and routers: Arista EOS and CloudVision, Cisco IOS-XE, IOS, and NX-OS.
   - Firewalls and access: Palo Alto PAN-OS and Panorama, Fortinet FortiGate and FortiManager, Aruba Central and AOS 10, Cisco ISE.
   - Sources of truth and monitoring: NetBox, Infoblox, IP Fabric, Tufin, AKIPS, Zabbix, and F5 APM.
   - A reachability check task for ICMP ping and TCP connect.
 
-<!-- VERIFY: ship status and plugin links per vendor. Arista 1.0.0 is in EE 2.0.8, Cisco 1.0.0 (IOS-XE only) shipped 2026-10-27. Confirm NX-OS, IOS, ISE, Palo Alto, Fortinet, Aruba, IP Fabric, Tufin, AKIPS, Zabbix, F5 APM, and the reachability task are in 2.1 GA, and drop any that are not. Also add GuardDuty and Okta (SOAR wave 2) next to the SOAR bullets. -->
+<!-- VERIFY: ship status and plugin links per vendor. Arista 1.0.0 is in EE 2.0.8, Cisco 1.0.0 (IOS-XE only) shipped 2026-10-27. Confirm NX-OS, IOS, ISE, Palo Alto, Fortinet, Aruba, IP Fabric, Tufin, AKIPS, Zabbix, F5 APM, and the reachability task are in 2.1 GA, and drop any that are not. -->
 - JDBC `Queries`: run several SQL statements in one task, with parameters, transactions, and an output for each statement.
 - [Task runner monitoring](/docs/task-runners/types/kubernetes-task-runner#monitoring) (EE): the Kubernetes, AWS, Azure, Google Cloud, and Huawei Cloud task runners can report CPU, memory, and network usage, and forward traces from the task.
 - [Private Service Connect for Cloud Run](/docs/task-runners/types/google-cloudrun-task-runner#private-service-connect-endpoints) (EE): the Cloud Run task runner and `cloudrun.Run` task can reach Google APIs through Private Service Connect endpoints, for Kestra running on-premises or in a locked-down network.
