@@ -58,8 +58,9 @@ const FEATURES = [
         code: `${TASK}    retry:
       type: exponential
       interval: PT30S
+      maxInterval: PT10M
       maxAttempts: 5`,
-        lines: [4, 7],
+        lines: [4, 8],
     },
     {
         key: "errors",
