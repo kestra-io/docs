@@ -93,7 +93,7 @@ Teams evaluate replacements for Tower and its successor, automation controller, 
 
 ### How much does Ansible Automation Platform cost?
 
-Red Hat doesn't publish list prices. Its [pricing page](https://www.redhat.com/en/technologies/management/ansible/pricing) says that pricing varies with sizing and subscription choices and asks buyers for a quote, with two support levels: Standard (9 AM to 5 PM) and Premium (24x7). Subscriptions are counted per managed node, and Red Hat [counts every endpoint the platform manages](https://access.redhat.com/articles/3331481).
+Red Hat doesn't publish list prices. Its <a href="https://www.redhat.com/en/technologies/management/ansible/pricing" target="_blank" rel="nofollow noopener noreferrer">pricing page</a> says that pricing varies with sizing and subscription choices and asks buyers for a quote, with two support levels: Standard (9 AM to 5 PM) and Premium (24x7). Subscriptions are counted per managed node, and Red Hat [counts every endpoint the platform manages](https://access.redhat.com/articles/3331481).
 
 The clearest public reference is Red Hat's own [listing on AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-xy6tb27e6rkjm): Ansible Automation Platform Premium costs $19,250 for a 12-month contract per pack of 100 managed nodes (November 2026), and larger estates add more 100-node packs. Because the price follows the number of managed nodes, it grows with the size of the estate, not with how often automation runs. Kestra Enterprise isn't priced per managed node; see [Kestra vs. Ansible Automation Platform](/vs/ansible-automation-platform) for the full comparison.
 
