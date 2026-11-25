@@ -3,6 +3,7 @@ import type { ImageMetadata } from "astro"
 import { getCollection } from "astro:content"
 import { entryCacheKey, layoutDigest } from "~/utils/incrementalCacheKey"
 import VsLayout from "~/components/versus/VsLayout.astro"
+import VsBody from "~/components/versus/VsBody.astro"
 import Intro from "~/components/versus/Intro.astro"
 import Philosophy from "~/components/versus/Philosophy.astro"
 import BusinessValue from "~/components/versus/BusinessValue.astro"
@@ -85,6 +86,14 @@ const {
     seeHowBody,
     secondaryCta,
     guideCta,
+    proof,
+    table,
+    architecture,
+    setup,
+    pairs,
+    compare,
+    choose,
+    faqTitle,
     logoFile,
     imgFile,
 } = replaceTotalPluginsPlaceholder(entry.data, totalPlugins)
@@ -107,45 +116,60 @@ const competitorImg = getImgSvg(imgFilename)
         }}
         secondaryCta={secondaryCta}
     />
-    {
-        guideCta && (
+    {table && compare && choose ? (
+        <VsBody
+            {competitorName}
+            monogram={competitorMonogram}
+            logo={competitorLogo}
+            {proof}
+            {table}
+            {architecture}
+            {setup}
+            {pairs}
+            {compare}
+            {choose}
+            guide={guideCta}
+            {faqTitle}
+            faq={commonQuestions}
+        />
+    ) : (
+        <Fragment>
+        {guideCta && (
             <section class="vs-guide-cta">
                 <div class="container">
                     <CalloutCard {...guideCta} />
                 </div>
             </section>
-        )
-    }
-    <Philosophy
-        {...philosophy}
-        competitor={{
-            ...philosophy.competitor,
-            logo: competitorLogo,
-        }}
-    />
-    <BusinessValue
-        {...businessValue}
-        competitor={{
-            ...businessValue.competitor,
-            logo: competitorLogo,
-        }}
-    />
-    <SetupSpeed
-        {...setupSpeed}
-        competitor={{
-            ...setupSpeed.competitor,
-            logo: competitorLogo,
-        }}
-    />
-    <EaseOfUse
-        {...easeOfUse}
-        competitor={{
-            ...easeOfUse.competitor,
-            logo: competitorLogo,
-        }}
-    />
-    {
-        cardSection && (
+        )}
+        <Philosophy
+            {...philosophy}
+            competitor={{
+                ...philosophy.competitor,
+                logo: competitorLogo,
+            }}
+        />
+        <BusinessValue
+            {...businessValue}
+            competitor={{
+                ...businessValue.competitor,
+                logo: competitorLogo,
+            }}
+        />
+        <SetupSpeed
+            {...setupSpeed}
+            competitor={{
+                ...setupSpeed.competitor,
+                logo: competitorLogo,
+            }}
+        />
+        <EaseOfUse
+            {...easeOfUse}
+            competitor={{
+                ...easeOfUse.competitor,
+                logo: competitorLogo,
+            }}
+        />
+        {cardSection && (
             <section class="vs-card-section">
                 <div class="container">
                     <h2 set:html={cardSection.title} />
@@ -162,46 +186,47 @@ const competitorImg = getImgSvg(imgFilename)
                     </div>
                 </div>
             </section>
-        )
-    }
-    <VisualPreview
-        {...visualPreview}
-        kestra={{
-            ...visualPreview.kestra,
-            linkImg: kestraImg,
-        }}
-        competitor={{
-            ...visualPreview.competitor,
-            logo: competitorLogo,
-            linkImg: competitorImg,
-        }}
-    />
-    <FeatureGrid
-        featureGrid={{
-            ...featureGrid,
-            competitorLogo,
-        }}
-    />
-    <VsTestimonial quotes={testimonials} />
-    <PlatformStrengths
-        {...platformStrengths}
-        features={platformStrengths.features?.map((f: any, i: number) => ({
-            ...f,
-            image: { src: [data1, data2, data3][i] },
-        }))}
-    />
-    <DecisionGuide
-        {...decisionGuide}
-        competitor={{
-            ...decisionGuide.competitor,
-            logo: competitorLogo,
-        }}
-    />
-    <Faq items={commonQuestions} client:visible />
-    <SeeHow>
-        <Fragment slot="title">{seeHowTitle}</Fragment>
-        {seeHowBody}
-    </SeeHow>
+        )}
+        <VisualPreview
+            {...visualPreview}
+            kestra={{
+                ...visualPreview.kestra,
+                linkImg: kestraImg,
+            }}
+            competitor={{
+                ...visualPreview.competitor,
+                logo: competitorLogo,
+                linkImg: competitorImg,
+            }}
+        />
+        <FeatureGrid
+            featureGrid={{
+                ...featureGrid,
+                competitorLogo,
+            }}
+        />
+        <VsTestimonial quotes={testimonials} />
+        <PlatformStrengths
+            {...platformStrengths}
+            features={platformStrengths.features?.map((f: any, i: number) => ({
+                ...f,
+                image: { src: [data1, data2, data3][i] },
+            }))}
+        />
+        <DecisionGuide
+            {...decisionGuide}
+            competitor={{
+                ...decisionGuide.competitor,
+                logo: competitorLogo,
+            }}
+        />
+        <Faq items={commonQuestions} client:visible />
+        <SeeHow>
+            <Fragment slot="title">{seeHowTitle}</Fragment>
+            {seeHowBody}
+        </SeeHow>
+        </Fragment>
+    )}
 </VsLayout>
 
 <style lang="scss">

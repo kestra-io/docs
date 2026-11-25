@@ -1,0 +1,126 @@
+---
+interface Column {
+    label: string
+    logo?: string
+    text: string
+}
+
+interface Props {
+    headingId: string
+    title: string
+    lead?: string
+    columns: Column[]
+    tone?: "default" | "muted"
+}
+
+const { headingId, title, lead, columns, tone = "default" } = Astro.props
+---
+
+<section class:list={["vs-pair", tone]} aria-labelledby={headingId}>
+    <div class="container-xl">
+        <div class="rails">
+            <header class="head">
+                <h2 id={headingId}>{title}</h2>
+                {lead && <p set:html={lead} />}
+            </header>
+            <div class="pair-cols">
+                {columns.map((column) => (
+                    <div class="pair-col">
+                        <h3>
+                            {column.logo && (
+                                <span
+                                    class="brand-icon"
+                                    set:html={column.logo}
+                                    aria-hidden="true"
+                                />
+                            )}
+                            {column.label}
+                        </h3>
+                        <p set:html={column.text} />
+                    </div>
+                ))}
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "/src/components/migration/migration" as *;
+
+    .vs-pair {
+        @include band;
+
+        &.muted,
+        &.muted .rails {
+            background: var(--ks-background-secondary);
+        }
+    }
+
+    .rails {
+        @include rails;
+        background: var(--ks-background-body);
+    }
+
+    .head {
+        @include head;
+    }
+
+    .pair-cols {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        border-top: var(--rule);
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    .pair-col {
+        display: grid;
+        align-content: start;
+        gap: 0.75rem;
+        padding: 2rem var(--inset) 2.5rem;
+
+        & + & {
+            border-left: var(--rule);
+
+            @include media-breakpoint-down(md) {
+                border-left: 0;
+                border-top: var(--rule);
+            }
+        }
+
+        h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            max-width: 34rem;
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--ks-content-secondary);
+
+            :global(a) {
+                color: var(--ks-content-link);
+            }
+        }
+    }
+
+    .brand-icon {
+        display: inline-flex;
+        width: 1.25rem;
+        height: 1.25rem;
+
+        :global(svg) {
+            width: 100%;
+            height: 100%;
+        }
+    }
+</style>

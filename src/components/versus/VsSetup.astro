@@ -1,0 +1,262 @@
+---
+import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
+import { source } from "~/components/migration/highlight"
+
+interface Side {
+    title: string
+    tag: string
+    text: string
+    code: string
+}
+
+interface Props {
+    headingId?: string
+    title: string
+    lead?: string
+    competitor: Side & { name: string; logo?: string }
+    kestra: Side
+}
+
+const {
+    headingId = "vs-setup-title",
+    title,
+    lead,
+    competitor,
+    kestra,
+} = Astro.props
+
+const lines = (code: string) =>
+    code
+        .replace(/\n$/, "")
+        .split("\n")
+        .map((line) => source(line, "sh"))
+---
+
+<section class="vs-setup surface-dark" aria-labelledby={headingId}>
+    <div class="container-xl">
+        <div class="rails">
+            <header class="head">
+                <h2 id={headingId}>{title}</h2>
+                {lead && <p>{lead}</p>}
+            </header>
+            <div class="stage">
+                <figure class="term-card theirs">
+                    <figcaption class="bar">
+                        {competitor.logo && (
+                            <span
+                                class="brand-icon"
+                                set:html={competitor.logo}
+                                aria-hidden="true"
+                            />
+                        )}
+                        <strong>{competitor.title}</strong>
+                        <span class="tag">{competitor.tag}</span>
+                    </figcaption>
+                    <pre class="term">{lines(competitor.code).map((line) => (
+                        <span class="ln"><i>$</i><Fragment set:html={line} /></span>
+                    ))}</pre>
+                    <p class="note" set:html={competitor.text} />
+                </figure>
+                <figure class="term-card ks">
+                    <figcaption class="bar">
+                        <img src={kestraMark.src} alt="" class="ks-logo" />
+                        <strong>{kestra.title}</strong>
+                        <span class="tag">{kestra.tag}</span>
+                    </figcaption>
+                    <pre class="term">{lines(kestra.code).map((line) => (
+                        <span class="ln"><i>$</i><Fragment set:html={line} /></span>
+                    ))}</pre>
+                    <p class="note" set:html={kestra.text} />
+                </figure>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "/src/components/migration/migration" as *;
+    @use "/src/components/about/style/section" as *;
+
+    .vs-setup {
+        @include band;
+        @include dark-band;
+        --ks-border-primary: #{$dark-band-line};
+        --ks-content-primary: #ffffff;
+        --ks-content-tertiary: #cfcdd9;
+    }
+
+    .rails {
+        @include rails;
+    }
+
+    .head {
+        @include head;
+    }
+
+    .stage {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.25rem;
+        padding: 0 var(--inset) 3.5rem;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        @include media-breakpoint-down(md) {
+            padding-bottom: 2.5rem;
+        }
+    }
+
+    .term-card {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        min-width: 0;
+        margin: 0;
+        overflow: hidden;
+        border-radius: 10px;
+        font-size: 0.8125rem;
+    }
+
+    .bar {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.625rem 1rem;
+
+        strong {
+            font-weight: 600;
+        }
+
+        .brand-icon {
+            display: inline-flex;
+            width: 1.25rem;
+            height: 1.25rem;
+
+            :global(svg) {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            margin-left: auto;
+            font-weight: 600;
+        }
+    }
+
+    .term {
+        margin: 0;
+        padding: 1rem 1rem 1.25rem 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        font-family: var(--font-family-jetbrains-mono);
+        font-size: 0.75rem;
+        line-height: 1.8;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+    }
+
+    .ln {
+        display: block;
+        padding-left: 2rem;
+        text-indent: -2rem;
+
+        i {
+            display: inline-block;
+            width: 2rem;
+            text-indent: 0;
+            padding-right: 0.625rem;
+            font-style: normal;
+            text-align: right;
+            opacity: 0.5;
+        }
+    }
+
+    .note {
+        margin: 0;
+
+        :global(a) {
+            color: var(--ks-content-link);
+        }
+
+        padding: 0.875rem 1rem 1rem;
+        font-size: 0.875rem;
+        line-height: 1.55;
+    }
+
+    .theirs {
+        border: 1px solid #2e2e3c;
+        background: #15151b;
+        color: #d6d6e0;
+
+        .bar {
+            border-bottom: 1px solid #2e2e3c;
+            background: #121216;
+            color: #ffffff;
+        }
+
+        .note {
+            border-top: 1px solid #2e2e3c;
+            color: #adadbf;
+        }
+
+        :global(.s) {
+            color: #ffc5b7;
+        }
+
+        :global(.k) {
+            color: #cdb6fb;
+        }
+    }
+
+    .ks .term {
+        color: #d6d6e0 !important;
+    }
+
+    .theirs .term {
+        color: inherit !important;
+    }
+
+    .ks {
+        border: 1px solid #2e2e3c;
+        background: #18181e;
+        color: #d6d6e0;
+        box-shadow: 0 16px 36px -18px rgba(43, 43, 51, 0.22);
+
+        .bar {
+            border-bottom: 1px solid #2e2e3c;
+            background: #121216;
+            color: #ffffff;
+        }
+
+        .tag {
+            color: #06f0b1;
+        }
+
+        .note {
+            border-top: 1px solid #2e2e3c;
+            color: #adadbf;
+        }
+
+        :global(.s) {
+            color: #ffc5b7;
+        }
+
+        :global(.k) {
+            color: #cdb6fb;
+        }
+    }
+
+    .ks-logo {
+        width: 1.5rem;
+        height: 1.5rem;
+        padding: 0.25rem;
+        border-radius: 6px;
+        background: #0d0d10;
+    }
+</style>
