@@ -74,7 +74,7 @@ architecture:
   lead: "Both run stateless servers and workers on top of a database. They differ in what a workflow step is."
   competitor:
     title: "Windmill: scripts first"
-    text: "Each script is a standalone unit with a main function, its own lockfile and an HTTP endpoint. Flows chain scripts and pass each step's result to the next through JavaScript input expressions."
+    text: "Each script is a standalone unit with a main function, its own lockfile and an HTTP endpoint. Flows chain scripts and pass each step's result to the next through JavaScript input expressions. Windmill orchestrates flows as DAGs built in a visual editor, with branches, for-loops, approval steps and schedules, and teams use them for ETL pipelines, automations and internal tools."
     list:
       - "Postgres holds all state, and servers and workers are stateless"
       - "Workers pull jobs from the queue in scheduled order"
