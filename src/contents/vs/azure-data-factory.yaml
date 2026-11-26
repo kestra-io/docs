@@ -10,7 +10,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Azure Data Factory"
-  description: "Azure Data Factory is Microsoft's managed data integration service, where pipelines of copy, transformation and control activities are built in Data Factory Studio and stored as JSON. Kestra is an open-source orchestrator that runs YAML flows on Azure, on other clouds or on your own servers."
+  description: "Azure Data Factory is Microsoft's managed data integration service, where pipelines of copy, transformation and control activities are built in Data Factory Studio and stored as JSON. Kestra is an open-source orchestration platform that runs YAML flows on Azure, on other clouds or on your own servers."
 
 choose:
   title: "Azure Data Factory or Kestra?"

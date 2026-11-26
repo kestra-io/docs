@@ -10,7 +10,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Zapier"
-  description: "Zapier is a hosted automation service where a Zap connects a trigger in one of 9,000+ apps to a series of actions, billed per task. Kestra is an open-source orchestrator that runs YAML flows, where scripts, data pipelines, infrastructure jobs and API calls are tasks."
+  description: "Zapier is a hosted automation service where a Zap connects a trigger in one of 9,000+ apps to a series of actions, billed per task. Kestra is an open-source orchestration platform that runs YAML flows, where scripts, data pipelines, infrastructure jobs and API calls are tasks."
 
 choose:
   title: "Zapier or Kestra?"

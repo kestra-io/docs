@@ -10,7 +10,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Make"
-  description: "Make is a hosted automation platform where you chain modules from 3,500+ apps into scenarios on a visual canvas, billed in credits. Kestra is an open-source orchestrator that runs YAML flows, where scripts, data pipelines, infrastructure jobs and API calls are tasks."
+  description: "Make is a hosted automation platform where you chain modules from 3,500+ apps into scenarios on a visual canvas, billed in credits. Kestra is an open-source orchestration platform that runs YAML flows, where scripts, data pipelines, infrastructure jobs and API calls are tasks."
 
 choose:
   title: "Make or Kestra?"

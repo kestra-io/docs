@@ -19,7 +19,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Apache Airflow"
-  description: "Airflow runs Python DAGs that data engineers write. Kestra runs YAML flows where Python, SQL, dbt and shell are tasks, so data, platform and ops teams can share one instance."
+  description: "Airflow runs Python DAGs that data engineers write. Kestra is a workflow orchestration platform for data pipelines and beyond, where Python, SQL, dbt and shell are tasks in YAML flows, so data, platform and ops teams can share one instance."
 
 choose:
   title: "Airflow or Kestra?"
@@ -229,7 +229,7 @@ commonQuestions:
   - question: "Can Airflow DAGs be converted to Kestra automatically?"
     answer: "Partly. The AI Copilot, or your own coding assistant through the Kestra MCP server, drafts a flow from a DAG file, and an engineer reviews it before it runs. The migration guide lists what maps one to one and what needs a decision."
   - question: "Should we upgrade Airflow or move to Kestra?"
-    answer: "Both take work. An Airflow upgrade means removing deprecated features, updating context variables and moving to new provider packages, and the DAGs stay Python. A move to Kestra means taking the business logic out of the DAG files and declaring the orchestration in YAML, while your Python, SQL and shell code runs unchanged. The <a href='/resources/airflow-2-eol-whitepaper'>Airflow whitepaper</a> compares both paths."
+    answer: "Airflow 2 reached end of life in April 2026, so teams still on it have to choose. Both take work. An Airflow upgrade means removing deprecated features, updating context variables and moving to new provider packages, and the DAGs stay Python. A move to Kestra means taking the business logic out of the DAG files and declaring the orchestration in YAML, while your Python, SQL and shell code runs unchanged. The <a href='/resources/airflow-2-eol-whitepaper'>Airflow 2 end-of-life whitepaper</a> compares both paths."
   - question: "Do I have to migrate all my DAGs at once?"
     answer: "No. Most teams run Airflow and Kestra side by side and move DAGs in waves, starting with new workflows and low-risk DAGs. While both run, a Kestra flow can call Airflow's REST API with an HTTP task. The <a href='/resources/migration/airflow'>Airflow migration guide</a> covers the concept mapping and the cutover plan."
   - question: "What happens to my Python code and custom operators?"

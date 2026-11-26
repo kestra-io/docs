@@ -10,7 +10,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Dagster"
-  description: "Dagster models pipelines as software-defined assets in Python and tracks the lineage between them. Kestra runs YAML flows where Python, SQL, dbt and shell are tasks, started by schedules or events."
+  description: "Dagster models data pipelines as software-defined assets in Python and tracks the lineage between them. Kestra is an open-source orchestration platform where Python, SQL, dbt and shell are tasks in YAML flows, started by schedules or events."
 
 choose:
   title: "Dagster or Kestra?"

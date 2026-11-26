@@ -16,7 +16,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Amazon MWAA"
-  description: "Amazon MWAA runs Apache Airflow for you inside your AWS account, reading DAG files from an S3 bucket. Kestra runs YAML flows on Docker, Kubernetes or Kestra Cloud, in any cloud or on-premises."
+  description: "Amazon MWAA runs Apache Airflow for you inside your AWS account, reading DAG files from an S3 bucket. Kestra, an open-source orchestration platform, runs YAML flows on Docker, Kubernetes or Kestra Cloud, in any cloud or on-premises."
 
 choose:
   title: "Amazon MWAA or Kestra?"

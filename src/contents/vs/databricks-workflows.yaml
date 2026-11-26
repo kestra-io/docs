@@ -9,7 +9,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Databricks Workflows"
-  description: "Databricks Workflows, now called Lakeflow Jobs, orchestrates notebooks, SQL, pipelines and other tasks on Databricks compute. Kestra is an open-source orchestrator that runs Databricks jobs as tasks in YAML flows, next to the systems that feed and consume them."
+  description: "Databricks Workflows, now called Lakeflow Jobs, orchestrates notebooks, SQL, pipelines and other tasks on Databricks compute. Kestra is an open-source orchestration platform that runs Databricks jobs as tasks in YAML flows, next to the systems that feed and consume them."
 
 choose:
   title: "Databricks Workflows or Kestra?"

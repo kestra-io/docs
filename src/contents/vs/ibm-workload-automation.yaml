@@ -9,7 +9,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. IBM Workload Automation"
-  description: "IBM Workload Automation schedules jobs and job streams from a master domain manager and runs them through agents on your hosts. Kestra is an open-source orchestrator that runs YAML flows on your own infrastructure or on Kestra Cloud."
+  description: "IBM Workload Automation, which includes IBM Workload Scheduler (formerly Tivoli Workload Scheduler), schedules jobs and job streams from a master domain manager and runs them through agents on your hosts. Kestra is an open-source orchestration platform that runs YAML flows on your own infrastructure or on Kestra Cloud."
 
 choose:
   title: "IBM Workload Automation or Kestra?"

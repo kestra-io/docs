@@ -9,7 +9,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Temporal"
-  description: "Temporal runs workflows written with its SDKs in Go, Java, Python, TypeScript and more, and replays their event history to survive failures. Kestra runs YAML workflows that call scripts, APIs and infrastructure tools as tasks."
+  description: "Temporal runs workflows written with its SDKs in Go, Java, Python, TypeScript and more, and replays their event history to survive failures. Kestra is a declarative orchestration platform that runs YAML workflows calling scripts, APIs and infrastructure tools as tasks."
 
 choose:
   title: "Temporal or Kestra?"

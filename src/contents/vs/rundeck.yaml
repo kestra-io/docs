@@ -10,7 +10,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Rundeck"
-  description: "Rundeck is an open-source runbook automation tool from PagerDuty that runs jobs on an inventory of nodes over SSH or WinRM. Kestra is an open-source orchestrator that runs YAML flows, where scripts, SSH commands, Ansible playbooks and API calls are tasks."
+  description: "Rundeck is an open-source runbook automation tool from PagerDuty that runs jobs on an inventory of nodes over SSH or WinRM. Kestra is an open-source orchestration platform that runs YAML flows, where scripts, SSH commands, Ansible playbooks and API calls are tasks."
 
 choose:
   title: "Rundeck or Kestra?"
@@ -219,8 +219,10 @@ pairs:
 faqTitle: "Questions from Rundeck teams"
 
 commonQuestions:
+  - question: "What is Rundeck used for?"
+    answer: "Rundeck runs operational jobs, such as scripts, commands and Ansible playbooks, on an inventory of nodes over SSH or WinRM, so operators can launch runbooks from a web UI or an API with access control. PagerDuty maintains it: Rundeck Community is open source, and Runbook Automation is the commercial edition. Kestra runs the same runbooks as tasks in YAML flows, and adds event triggers, data passed between tasks and workflows beyond operations."
   - question: "Is Rundeck still open source?"
-    answer: "Yes. Rundeck Community is on GitHub under the Apache 2.0 license and maintained by PagerDuty. PagerDuty's commercial edition, Runbook Automation, is a separate paid product built on it."
+    answer: "Yes. Rundeck Community, often called Rundeck OSS, is on GitHub under the Apache 2.0 license and maintained by PagerDuty. PagerDuty's commercial edition, Runbook Automation, is a separate paid product built on it."
   - question: "Can Kestra import Rundeck job definitions?"
     answer: "Not directly. Export your jobs as YAML with the rd CLI or the Rundeck API, then hand them to the AI Copilot, or to your own coding assistant through the Kestra MCP server, to draft flows that an engineer reviews before they run."
   - question: "How does Kestra handle a node inventory?"

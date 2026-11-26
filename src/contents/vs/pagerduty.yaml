@@ -9,7 +9,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. PagerDuty Process Automation"
-  description: "PagerDuty Process Automation, now sold as PagerDuty Runbook Automation, is the commercial edition of Rundeck, offered as a SaaS service or self-hosted. Kestra is an open-source orchestrator that runs YAML flows, from incident runbooks to infrastructure and data workflows."
+  description: "PagerDuty Process Automation, now sold as PagerDuty Runbook Automation, is the commercial edition of Rundeck, offered as a SaaS service or self-hosted. Kestra is an open-source orchestration platform that runs YAML flows, from incident runbooks to infrastructure and data workflows."
 
 choose:
   title: "PagerDuty Process Automation or Kestra?"

@@ -9,7 +9,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Snowflake Tasks"
-  description: "Snowflake Tasks runs SQL statements, stored procedures and Snowflake Scripting on a schedule inside a Snowflake account. Kestra is an open-source orchestrator that runs YAML flows across Snowflake and the systems around it."
+  description: "Snowflake Tasks runs SQL statements, stored procedures and Snowflake Scripting on a schedule inside a Snowflake account. Kestra is an open-source orchestration platform that runs YAML flows across Snowflake and the systems around it."
 
 choose:
   title: "Snowflake Tasks or Kestra?"

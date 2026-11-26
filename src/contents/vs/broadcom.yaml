@@ -9,7 +9,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Broadcom Dollar Universe"
-  description: "Dollar Universe Workload Automation is Broadcom's workload automation software, which schedules Uprocs and sessions across a peer-to-peer network of servers. Kestra is an open-source orchestrator that runs YAML flows on schedules and events, on Docker or Kubernetes."
+  description: "Dollar Universe Workload Automation is Broadcom's workload automation software, which schedules Uprocs and sessions across a peer-to-peer network of servers. Kestra is an open-source orchestration platform that runs YAML flows on schedules and events, on Docker or Kubernetes."
 
 choose:
   title: "Dollar Universe or Kestra?"

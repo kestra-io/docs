@@ -9,7 +9,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Windmill"
-  description: "Windmill turns scripts in more than 20 languages into endpoints, flows and internal apps, with a visual flow editor. Kestra declares workflows in YAML, with plugins for data, cloud and infrastructure tools and scripts as tasks."
+  description: "Windmill turns scripts in more than 20 languages into endpoints, flows and internal apps, with a visual flow editor. Kestra is a workflow orchestration platform that declares workflows in YAML, with plugins for data, cloud and infrastructure automation and scripts as tasks."
 
 choose:
   title: "Windmill or Kestra?"

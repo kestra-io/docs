@@ -10,7 +10,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Microsoft Fabric"
-  description: "Microsoft Fabric is a SaaS analytics platform whose Data Factory workload builds pipelines that copy data and run notebooks, dataflows and SQL on Fabric capacity. Kestra is an open-source orchestrator that runs YAML flows on any cloud, on-premises or on Kestra Cloud."
+  description: "Microsoft Fabric is a SaaS analytics platform whose Data Factory workload builds pipelines that copy data and run notebooks, dataflows and SQL on Fabric capacity. Kestra is an open-source orchestration platform that runs YAML flows on any cloud, on-premises or on Kestra Cloud."
 
 choose:
   title: "Microsoft Fabric or Kestra?"

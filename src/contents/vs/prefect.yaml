@@ -9,7 +9,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Prefect"
-  description: "Prefect turns Python functions into flows and tasks with decorators, and runs them from a served process or a worker. Kestra declares workflows in YAML and runs Python, SQL, shell and other languages as tasks."
+  description: "Prefect is a Python workflow orchestration framework that turns functions into flows and tasks with decorators, and runs them from a served process or a worker. Kestra is a declarative orchestration platform: workflows are YAML, and Python, SQL, shell and other languages run as tasks."
 
 choose:
   title: "Prefect or Kestra?"

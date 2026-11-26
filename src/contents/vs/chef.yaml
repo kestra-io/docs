@@ -9,7 +9,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Chef"
-  description: "Chef is Progress's configuration management suite, where Chef Infra Client brings each node to the state its Ruby recipes describe. Kestra is an open-source orchestrator that runs YAML flows, where scripts, SSH commands, Ansible playbooks and Terraform are tasks."
+  description: "Chef is Progress's configuration management suite, where Chef Infra Client brings each node to the state its Ruby recipes describe. Kestra is an open-source orchestration platform that runs YAML flows, where scripts, SSH commands, Ansible playbooks and Terraform are tasks."
 
 choose:
   title: "Chef or Kestra?"

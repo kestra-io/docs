@@ -10,7 +10,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Apache NiFi"
-  description: "Apache NiFi moves data between systems as a continuous stream of FlowFiles through processors that you connect on a visual canvas. Kestra is an open-source orchestrator that runs YAML flows of tasks on schedules and events, for data, infrastructure and business processes."
+  description: "Apache NiFi moves data between systems as a continuous stream of FlowFiles through processors that you connect on a visual canvas. Kestra is an open-source orchestration platform that runs YAML flows of tasks on schedules and events, for data, infrastructure and business processes."
 
 choose:
   title: "Apache NiFi or Kestra?"

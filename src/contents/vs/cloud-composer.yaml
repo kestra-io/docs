@@ -16,7 +16,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Cloud Composer"
-  description: "Cloud Composer, now called Managed Service for Apache Airflow, runs Airflow environments on Google Kubernetes Engine and reads DAGs from a Cloud Storage bucket. Kestra runs YAML flows on any cloud, on-premises or on Kestra Cloud."
+  description: "Cloud Composer, now called Managed Service for Apache Airflow, runs Airflow environments on Google Kubernetes Engine and reads DAGs from a Cloud Storage bucket. Kestra, an open-source orchestration platform, runs YAML flows on any cloud, on-premises or on Kestra Cloud."
 
 choose:
   title: "Cloud Composer or Kestra?"

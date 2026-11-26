@@ -9,7 +9,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. n8n"
-  description: "n8n is a workflow automation tool where you connect nodes on a canvas, with 2,000+ integrations and AI agent nodes, self-hosted or on n8n Cloud. Kestra is an open-source orchestrator that runs YAML flows, where scripts, data pipelines, infrastructure jobs and API calls are tasks."
+  description: "n8n is a workflow automation tool where you connect nodes on a canvas, with 2,000+ integrations and AI agent nodes, self-hosted or on n8n Cloud. Kestra is an open-source orchestration platform that runs YAML flows, where scripts, data pipelines, infrastructure jobs and API calls are tasks."
 
 choose:
   title: "n8n or Kestra?"

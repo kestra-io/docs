@@ -16,7 +16,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Pipedream"
-  description: "Pipedream Workflows shuts down on March 31, 2027. Kestra runs the same webhook triggers and code steps as YAML you keep in Git, on Kestra Cloud or your own servers."
+  description: "Pipedream Workflows shuts down on March 31, 2027. Kestra, an open-source orchestration platform, runs the same webhook triggers and code steps as YAML you keep in Git, on Kestra Cloud or your own servers."
 
 choose:
   title: "Pipedream or Kestra?"

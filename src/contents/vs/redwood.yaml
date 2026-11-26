@@ -9,7 +9,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Redwood RunMyJobs"
-  description: "RunMyJobs by Redwood is a SaaS workload automation service, endorsed by SAP, that runs process and chain definitions across SAP and other systems. Kestra is an open-source orchestrator that runs YAML flows on your own infrastructure or on Kestra Cloud."
+  description: "RunMyJobs by Redwood is a SaaS workload automation service, endorsed by SAP, that runs process and chain definitions across SAP and other systems. Kestra is an open-source orchestration platform that runs YAML flows on your own infrastructure or on Kestra Cloud."
 
 choose:
   title: "Redwood RunMyJobs or Kestra?"

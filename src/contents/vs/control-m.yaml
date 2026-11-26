@@ -9,7 +9,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Control-M"
-  description: "Control-M is BMC's workload automation platform, sold as SaaS or self-hosted, which runs jobs through agents installed on your hosts. Kestra is an open-source orchestrator that runs YAML flows on your own infrastructure or on Kestra Cloud."
+  description: "Control-M is BMC's workload automation platform, sold as SaaS or self-hosted, which runs jobs through agents installed on your hosts. Kestra is an open-source orchestration platform that runs YAML flows on your own infrastructure or on Kestra Cloud."
 
 choose:
   title: "Control-M or Kestra?"

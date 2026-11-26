@@ -9,7 +9,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Stonebranch Universal Automation Center"
-  description: "Stonebranch Universal Automation Center runs tasks, workflows and triggers from its Universal Controller through Universal Agents on your hosts, self-hosted or as SaaS. Kestra is an open-source orchestrator that runs YAML flows on your own infrastructure or on Kestra Cloud."
+  description: "Stonebranch Universal Automation Center (UAC) runs tasks, workflows and triggers from its Universal Controller through Universal Agents on your hosts, self-hosted or as SaaS. Kestra is an open-source orchestration platform that runs YAML flows on your own infrastructure or on Kestra Cloud."
 
 choose:
   title: "Stonebranch or Kestra?"

@@ -17,7 +17,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. VMware Aria Automation"
-  description: "VMware Aria Automation, now VCF Automation inside VMware Cloud Foundation, publishes VM blueprints in a self-service catalog and runs vRO workflows around each deployment. Kestra is an open-source orchestrator whose YAML flows call vSphere, Terraform, Ansible and ServiceNow as tasks."
+  description: "VMware Aria Automation, now VCF Automation inside VMware Cloud Foundation, publishes VM blueprints in a self-service provisioning catalog and runs vRO workflows around each deployment. Kestra is an open-source orchestration platform whose YAML flows call vSphere, Terraform, Ansible and ServiceNow as tasks."
 
 choose:
   title: "VMware Aria Automation or Kestra?"

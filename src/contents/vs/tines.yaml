@@ -9,7 +9,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Tines"
-  description: "Tines is a workflow platform where security, IT and other teams build automations and AI agents as stories on a visual storyboard. Kestra is an open-source orchestrator that runs YAML flows, so security workflows can share one platform with data pipelines and infrastructure automation."
+  description: "Tines is a workflow platform where security, IT and other teams build automations and AI agents as stories on a visual storyboard. Kestra is an open-source orchestration platform that runs YAML flows, so security orchestration can share one platform with data pipelines and infrastructure automation."
 
 choose:
   title: "Tines or Kestra?"

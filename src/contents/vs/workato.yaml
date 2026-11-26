@@ -10,7 +10,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Workato"
-  description: "Workato is an enterprise integration platform where teams build recipes, a trigger followed by actions, in a browser editor and run them in Workato's cloud. Kestra is an open-source orchestrator that runs YAML flows on your own infrastructure or on Kestra Cloud."
+  description: "Workato is an enterprise integration platform where teams build recipes, a trigger followed by actions, in a browser editor and run them in Workato's cloud. Kestra is an open-source orchestration platform that runs YAML flows on your own infrastructure or on Kestra Cloud."
 
 choose:
   title: "Workato or Kestra?"

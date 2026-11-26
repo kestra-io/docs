@@ -1,6 +1,6 @@
 title: "Kestra vs HP Operations Orchestration (OpenText)"
 description: "Kestra vs HP Operations Orchestration, now OpenText: CloudSlang flows vs open-source YAML flows. The same runbook in both, licensing and how to migrate."
-competitorName: "HP Operations Orchestrator"
+competitorName: "HP Operations Orchestration"
 category: Infrastructure Automation
 shortDescription: "CloudSlang flows deployed to OO Central in content packs vs. YAML flows that run scripts, SSH commands and API calls as tasks."
 
@@ -8,8 +8,8 @@ brandColor:
   color: "#0096d6"
 
 intro:
-  title: "Kestra vs. HP Operations Orchestrator"
-  description: "HP Operations Orchestration (OO) is now an OpenText product, and OpenText offers its capabilities as part of OpenText Automation Center. Kestra is an open-source orchestrator that runs YAML flows for infrastructure, operations and data workflows."
+  title: "Kestra vs. HP Operations Orchestration"
+  description: "HP Operations Orchestration (OO) is now an OpenText product, and OpenText offers its capabilities as part of OpenText Automation Center. Kestra is an open-source orchestration platform that runs YAML flows for infrastructure, operations and data workflows."
 
 choose:
   title: "HP Operations Orchestration or Kestra?"
@@ -22,7 +22,7 @@ choose:
   kestra:
     title: "Choose Kestra if"
     list:
-      - "You want an open-source orchestrator you can self-host with no per-node or per-workflow licensing."
+      - "You want an open-source orchestration platform you can self-host with no per-node or per-workflow licensing."
       - "Workflows start from schedules, webhooks, queue messages and file arrivals, and reach data and cloud tools as well as servers."
       - "Several teams share one instance in their own namespaces, with per-namespace secrets and permissions in Kestra Enterprise."
 

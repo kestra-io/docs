@@ -16,7 +16,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Astronomer"
-  description: "Astronomer runs Apache Airflow as a managed service called Astro on AWS, Google Cloud and Azure, with a private-cloud edition for your own environment. Kestra is an open-source orchestrator for YAML flows that you self-host or run on Kestra Cloud."
+  description: "Astronomer runs Apache Airflow as a managed service called Astro on AWS, Google Cloud and Azure, with a private-cloud edition for your own environment. Kestra is an open-source orchestration platform for YAML flows that you self-host or run on Kestra Cloud."
 
 choose:
   title: "Astronomer or Kestra?"

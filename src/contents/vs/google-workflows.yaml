@@ -10,7 +10,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Google Workflows"
-  description: "Google Workflows is a serverless Google Cloud service that runs steps written in YAML or JSON, calling Google Cloud APIs and HTTP endpoints in the order you define. Kestra is an open-source orchestrator whose YAML flows call those same services and also run Python, SQL and shell code, on Google Cloud, other clouds or your own servers."
+  description: "Google Workflows is a serverless Google Cloud service that runs steps written in YAML or JSON, calling Google Cloud APIs and HTTP endpoints in the order you define. Kestra is an open-source orchestration platform whose YAML flows call those same services and also run Python, SQL and shell code, on Google Cloud, other clouds or your own servers."
 
 choose:
   title: "Google Workflows or Kestra?"

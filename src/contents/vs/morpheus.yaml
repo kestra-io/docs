@@ -10,7 +10,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. HPE Morpheus"
-  description: "HPE Morpheus Software is a hybrid cloud platform that provisions and governs VMs, containers and clouds from one catalog, with tasks and workflows for automation. Kestra is an open-source orchestrator that runs YAML flows, where Terraform, Ansible, scripts and API calls are tasks."
+  description: "HPE Morpheus Software is a hybrid cloud platform that provisions and governs VMs, containers and clouds from one catalog, with tasks and workflows for automation. Kestra is an open-source orchestration platform that runs YAML flows, where Terraform, Ansible, scripts and API calls are tasks."
 
 choose:
   title: "HPE Morpheus or Kestra?"

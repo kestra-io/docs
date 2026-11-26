@@ -10,7 +10,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. AWS Step Functions"
-  description: "AWS Step Functions is a managed AWS service that runs state machines written in Amazon States Language, a JSON format. Kestra is an open-source orchestrator that runs YAML flows on AWS, on another cloud or on your own servers."
+  description: "AWS Step Functions is a managed AWS service that runs state machines written in Amazon States Language, a JSON format. Kestra is an open-source orchestration platform that runs YAML flows on AWS, on another cloud or on your own servers."
 
 choose:
   title: "AWS Step Functions or Kestra?"

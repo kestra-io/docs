@@ -9,7 +9,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Camunda"
-  description: "Camunda runs BPMN and DMN models on its Zeebe engine, with job workers and connectors doing the work of each service task. Kestra is an open-source orchestrator that runs YAML flows where plugins and scripts are the tasks."
+  description: "Camunda runs BPMN and DMN models on its Zeebe engine, with job workers and connectors doing the work of each service task. Kestra is an open-source orchestration platform that runs YAML flows where plugins and scripts are the tasks."
 
 choose:
   title: "Camunda or Kestra?"

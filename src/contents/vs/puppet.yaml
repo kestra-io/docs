@@ -9,7 +9,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Puppet"
-  description: "Puppet, from Perforce, keeps nodes in the state its manifests describe, with an agent that applies a catalog compiled by the primary server. Kestra is an open-source orchestrator that runs YAML flows, where scripts, SSH commands, Ansible playbooks and Terraform are tasks."
+  description: "Puppet, from Perforce, keeps nodes in the state its manifests describe, with an agent that applies a catalog compiled by the primary server. Kestra is an open-source orchestration platform that runs YAML flows, where scripts, SSH commands, Ansible playbooks and Terraform are tasks."
 
 choose:
   title: "Puppet or Kestra?"

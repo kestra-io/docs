@@ -9,7 +9,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. SimplyAsk"
-  description: "SimplyAsk is an AI App platform, formerly Symphona, that packages no-code Processes, AI Agents, service tickets and chat into Apps for operations teams. Kestra is an open-source orchestrator that runs YAML flows on your own infrastructure or on Kestra Cloud."
+  description: "SimplyAsk is an AI App platform, formerly Symphona, that packages no-code Processes, AI Agents, service tickets and chat into Apps for operations teams. Kestra is an open-source orchestration platform that runs YAML flows on your own infrastructure or on Kestra Cloud."
 
 choose:
   title: "SimplyAsk or Kestra?"

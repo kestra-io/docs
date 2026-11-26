@@ -10,7 +10,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Ansible Automation Platform"
-  description: "Ansible Automation Platform is Red Hat's subscription product for running Ansible playbooks as jobs, with an automation controller, an automation hub and Event-Driven Ansible. Kestra is an open-source orchestrator that runs playbooks as tasks in YAML flows, next to Terraform, scripts and API calls."
+  description: "Ansible Automation Platform is Red Hat's subscription product for running Ansible playbooks as jobs, with an automation controller, an automation hub and Event-Driven Ansible. Kestra is an open-source orchestration platform that runs playbooks as tasks in YAML flows, next to Terraform, scripts and API calls."
 
 choose:
   title: "Ansible Automation Platform or Kestra?"
@@ -23,7 +23,7 @@ choose:
   kestra:
     title: "Choose Kestra if"
     list:
-      - "Playbooks are one step in larger workflows that also run Terraform, scripts, SQL or ServiceNow calls."
+      - "You need Ansible orchestration across tools: playbooks are one step in larger workflows that also run Terraform, scripts, SQL or ServiceNow calls."
       - "You want workflows as YAML files in Git, with branching, loops and data passed between tasks."
       - "You want to self-host for free under Apache 2.0, with no count of managed nodes."
 

@@ -10,7 +10,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Tray.ai"
-  description: "Tray.ai is a hosted integration platform where teams build workflows on a visual canvas or from a coding assistant, alongside AI agents and MCP access. Kestra is an open-source orchestrator that runs YAML flows on your own infrastructure or on Kestra Cloud."
+  description: "Tray.ai is a hosted integration platform where teams build workflows on a visual canvas or from a coding assistant, alongside AI agents and MCP access. Kestra is an open-source orchestration platform that runs YAML flows on your own infrastructure or on Kestra Cloud."
 
 choose:
   title: "Tray.ai or Kestra?"
