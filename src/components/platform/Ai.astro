@@ -765,7 +765,9 @@ const SPEND_MARKS: Record<string, [number, number]> = {
     .mcp :global(.spend) {
         display: flex;
         flex-direction: column;
+    }
 
+    .mcp[data-mcp] :global(.spend) {
         @include media-breakpoint-down(md) {
             display: none;
         }

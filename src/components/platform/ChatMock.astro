@@ -267,11 +267,10 @@ const EYES = [
     .task {
         display: flex;
         gap: 0.625rem;
-        opacity: 0.45;
         transition: opacity 0.3s ease;
 
-        &[data-state] {
-            opacity: 1;
+        :global(.playing) &:not([data-state]) {
+            opacity: 0.45;
         }
 
         b {
@@ -285,18 +284,19 @@ const EYES = [
         font-style: normal;
 
         &::before {
+            content: "✓";
+            color: var(--ok);
+        }
+
+        :global(.playing) .task:not([data-state]) > &::before {
             content: "○";
+            color: inherit;
         }
 
         [data-state="running"] > &::before {
             content: "◐";
             color: var(--accent);
             animation: blink 1s steps(1) infinite;
-        }
-
-        [data-state="done"] > &::before {
-            content: "✓";
-            color: var(--ok);
         }
     }
 
