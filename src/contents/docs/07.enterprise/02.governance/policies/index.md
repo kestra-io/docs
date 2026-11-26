@@ -198,6 +198,8 @@ When injecting a nested object, keys from the flow and the policy are merged. If
 If an `Add` and a `Delete` rule both target the same property in the same scope chain, Kestra raises a conflict error at save time. Express delete-then-re-inject as a single `Add` with `override: true` instead.
 :::
 
+When you create, update, or delete a policy that changes a trigger's resolved configuration, such as adding a `timezone` to a `Schedule` trigger, Kestra applies the new configuration to the trigger right away. It recomputes the trigger's next evaluation date, and it stops a running realtime trigger so that it restarts with the new configuration. A trigger that is running a backfill keeps its current evaluation date.
+
 ### Validate rules
 
 Validate rules check flow or plugin properties at save time and before execution. Each validate rule has an `action` of `block` (default) or `warn`.
