@@ -10,18 +10,22 @@ author:
 image: ./claude-execute-flow.webp
 ---
 
-[Kestra 2.1](/blogs/release-2-1) adds two features that let AI agents do real work in Kestra while a person stays in control. The [Kestra MCP Server](/docs/develop-with-ai/kestra-mcp-server) lets Claude, Cursor, or any MCP client read flows, start and follow executions, and act on them, with the same tools as the AI Copilot. The [Approval](/docs/workflow-components/approvals) task gives a flow a real yes or no from a person. Together, an agent starts the work and a person makes the decision.
+Kestra has worked with AI agents since 2.0, when [MCP Flows](/blogs/2026-09-04-kestra-2-0-flows-as-agent-tools) turned any flow into a tool your agents can call. [Kestra 2.1](/blogs/release-2-1) opens up the rest of the platform. The [Kestra MCP Server](/docs/develop-with-ai/kestra-mcp-server) gives Claude Code, Codex, Cursor, or any MCP client Kestra's own operations as tools, and the [Approval](/docs/workflow-components/approvals) task gives a flow a real yes or no from a person. Together, an agent starts the work and a person makes the decision.
 
 This post covers what each feature does, then shows them in one run: Claude Code gets a Proxmox VE sandbox to test an app, a manager approves it in Slack, and the sandbox is deleted with a usage report. The flow is a [blueprint](/blueprints/proxmox-app-sandbox-with-approval) you can import.
 
+![Coding agents such as Claude Code or Codex send tool calls to the MCP Server inside Kestra, which starts a flow. The flow waits for an approver, creates a sandbox through Kestra plugins on any system, such as Proxmox, VMware, Nutanix, AWS, Kubernetes, or Ansible, deploys and tests the app, then reports and deletes it, and the URL, test results, and usage go back to Claude Code](./mcp-server-architecture.webp)
+
 ## What the Kestra MCP Server gives an agent
 
-The MCP server exposes Kestra's own operations as tools. From a chat, an agent can:
+MCP Flows let an agent call the flows you chose to expose. The MCP Server goes further and exposes Kestra itself, with the same tools as the AI Copilot in the Kestra UI. From a chat, an agent can:
 
 - read and edit flows, and draft a new flow for you to review before anything is saved
 - start, restart, replay, pause, resume, or kill executions
 - read execution details, outputs, and logs, and search logs across executions
 - manage namespace files and KV entries
+
+In the Enterprise Edition, agents can also work with apps, test suites, groups, and announcement banners, for 78 tools in all. The AI Copilot uses the same tools from inside Kestra, and in its Edit and Plan modes it asks you to confirm before it changes anything.
 
 The tools carry hints that tell the client whether a call only reads, makes changes, or deletes or starts something, so your client can ask before acting. The server is off until you turn it on, every request is authenticated, and you can limit it to some tenants and choose the sign-in methods it accepts, OAuth included.
 
