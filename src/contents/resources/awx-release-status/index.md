@@ -15,10 +15,10 @@ faq:
     answer: "None is planned. The refactor was merged into the devel branch in January 2026, but Red Hat never announced a release date. In August 2026, a member of the Ansible Steering Committee replied on the forum that they were not involved in AWX and did not know of any plans or ETAs. On November 16, 2026, the AWX maintainers removed the release staging and publishing workflows, stating that AWX releases are no longer published."
   - question: "Is AWX still maintained?"
     answer: "AWX receives commits on its devel branch, including dependency updates, but it is not maintained through stable releases or backported bug fixes. Teams running AWX 24.6.1 do not receive security patches unless they build custom container images directly from untagged development commits."
-  - question: "Is there a fork of AWX?"
-    answer: "Yes. Ascender, maintained by CIQ, is an open-source downstream project derived from AWX under the Apache 2.0 license. Ascender ships regular packaged releases (such as version 25.6.3 in late October 2026) and offers commercial enterprise support through Ascender Pro."
-  - question: "What is the difference between AWX and Ansible Automation Platform?"
-    answer: "AWX is the free, community-driven upstream project, whereas Red Hat Ansible Automation Platform (AAP) is a commercial enterprise product. AAP includes enterprise support, certified content collections, commercial automation controller builds, and role-based governance licensed on a per-managed-node subscription model."
+  - question: "How do I move AWX job templates to Kestra?"
+    answer: "Each job template becomes a Kestra flow with an AnsibleCLI task that runs the same playbook. Surveys become flow inputs, schedules become Schedule triggers, credentials become secrets and approval nodes become Pause tasks. Your playbooks, roles and inventories do not change."
+  - question: "Does Kestra still ship security fixes?"
+    answer: "Yes. Kestra publishes patch releases every week: eight 2.0 patch releases came out between October 13 and November 24, 2026, and the 1.3 line is still maintained. Every release is listed on <a href='https://github.com/kestra-io/kestra/releases'>GitHub</a>."
   - question: "Can I keep my playbooks if I move off AWX?"
     answer: "Yes. Ansible playbooks are defined independently of AWX using standard YAML syntax executed by ansible-core. Moving to an alternative control plane requires migrating credentials, schedules, inventories, and survey prompts, but existing tasks and playbooks execute without code changes."
   - question: "What does AWX stand for?"
@@ -43,7 +43,7 @@ This guide summarizes the current project status, documents the refactoring time
 
 ## AWX status at a glance
 
-The following table summarizes the verified state of AWX and its related projects as of November 2026.
+The following table summarizes the verified state of AWX as of November 2026.
 
 | Component / Initiative | Current Status (November 2026) | Primary Source |
 |---|---|---|
@@ -53,8 +53,6 @@ The following table summarizes the verified state of AWX and its related project
 | **Next release timeline** | None planned: release pipeline removed on November 16, 2026 | [Pull request `ansible/awx#16803`](https://github.com/ansible/awx/pull/16803) |
 | **Web interface** | Removed from AWX during the refactor; development resumed in `ansible/ansible-ui` | [Ansible Forum Announcement (April 2026)](https://forum.ansible.com/t/awx-modernization-ansible-ui/45757) |
 | **Jewel proxy layer** | Source code and dev container available; no releases planned | [Ansible Forum Announcement (May 2026)](https://forum.ansible.com/t/awx-modernization-ansible-jewel/45775) |
-| **Red Hat AAP** | Actively developed and supported commercially | [Red Hat Documentation](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.7) |
-| **Ascender (CIQ fork)** | Regular releases, latest version 25.6.3 (October 28, 2026) | [GitHub Releases (`ctrliq/ascender`)](https://github.com/ctrliq/ascender/releases) |
 
 ---
 
@@ -113,15 +111,13 @@ Either way, staying on AWX means owning a control plane that no longer ships rel
 
 ## Your options
 
-Platform engineers running AWX have five distinct operational paths. For a wider comparison of tools, see our guides to [AWX alternatives](/resources/infrastructure/awx-alternatives) and [Ansible Tower alternatives](/resources/infrastructure/ansible-tower-alternatives).
+You have three paths. The first two keep AWX as it is. The third keeps your playbooks and replaces the controller around them.
 
-| Option | Operational Effort | Licensing / Cost | Support Model | Architecture & Portability |
-|---|---|---|---|---|
-| **1. Stay on AWX 24.6.1** | None initially; grows as base packages age | Free (Apache 2.0) | None (community forum only) | Frozen legacy deployment; unpatched CVEs |
-| **2. Wait in case AWX releases return** | Unknown: no release planned | Free (Apache 2.0) | Community | Microservice-based; breaking deployment changes |
-| **3. Migrate to Ascender (CIQ)** | Low to moderate (direct AWX fork) | Free (Apache 2.0) or paid Pro | Community or commercial SLA from CIQ | AWX-compatible controller; regular upstream releases |
-| **4. Red Hat AAP** | Moderate (migration tooling provided) | Commercial (per managed node) | Enterprise SLA from Red Hat | Official commercial platform; automated installation |
-| **5. Decouple orchestration from playbooks** | Moderate (reconfigure jobs as workflows) | Open source or enterprise | Community or enterprise SLA | Standard `ansible-core` execution; multi-tool control plane |
+| Option | What you keep | What you give up | Releases and security fixes |
+|---|---|---|---|
+| **1. Stay on AWX 24.6.1** | Your whole AWX setup | Security fixes and new features | None since July 2024 |
+| **2. Wait in case AWX releases return** | Your AWX setup, for now | A date to plan around: no release is announced | None planned since the release pipeline was removed in November 2026 |
+| **3. Run your playbooks in Kestra** | Playbooks, roles, inventories and Git repositories | The AWX controller | Patch releases every week ([Kestra on GitHub](https://github.com/kestra-io/kestra/releases)) |
 
 ### Option 1: Stay on AWX 24.6.1
 
@@ -131,28 +127,82 @@ For teams with isolated network boundaries, low change frequency, and strict cha
 
 Teams with deep investments in AWX-specific workflows can wait in case packaged releases return. Since the release pipeline was removed in November 2026, nothing indicates when or whether that will happen. If a build is tagged again, expect a full redeployment of the control plane: playbook code will remain compatible, but existing Helm charts, operator manifests, and integration configurations will need to be rebuilt.
 
-### Option 3: Ascender by CIQ
+### Option 3: Keep your playbooks, replace the controller with Kestra
 
-Ascender is an open-source project maintained by CIQ that derives directly from upstream AWX. It maintains an Apache 2.0 codebase while continuing to ship regular packaged releases, including version 25.6.3 in late October 2026. 
+Kestra is an open-source orchestrator (Apache 2.0) that runs your existing playbooks with its [Ansible plugin](/plugins/plugin-ansible). Each playbook runs unchanged with `ansible-core` in a container. Kestra handles what AWX did around it: schedules, inputs, approvals, retries and a log of every run.
 
-Ascender provides an attractive bridge for organizations that require an actively maintained web console and REST API that mirrors AWX conventions. For regulated environments, CIQ offers commercial support under the Ascender Pro subscription.
+Unlike AWX, Kestra still ships. It published eight 2.0 patch releases between October 13 and November 24, 2026, and still maintains its 1.3 line.
 
-### Option 4: Red Hat Ansible Automation Platform
+#### Where each AWX object goes
 
-Organizations seeking an enterprise-backed product can migrate to Red Hat Ansible Automation Platform (AAP). AAP includes the commercial automation controller (the enterprise successor to Ansible Tower), Event-Driven Ansible, private automation hubs, and Red Hat technical support. AAP is licensed via annual commercial subscriptions based on the number of managed nodes in your inventory.
+| In AWX | In Kestra |
+|---|---|
+| **Job template** | A flow with an AnsibleCLI task |
+| **Survey** | Flow inputs, or a Kestra App (Enterprise) |
+| **Schedule** | Schedule trigger |
+| **Credentials** | Secrets |
+| **Inventory** | A file in Git or Namespace Files, or built at run time from NetBox or a Terraform output |
+| **Workflow template** | A flow, with subflows, If and Switch |
+| **Approval node** | Pause task |
+| **Instance group** | Worker group (Enterprise) |
 
-### Option 5: Decouple orchestration from playbooks
+#### Run one of your playbooks in a few minutes
 
-A growing number of platform teams choose to separate the scheduling and orchestration layer from raw playbook execution. Because Ansible playbooks execute independently via `ansible-core`, teams do not need a dedicated Ansible-specific server to run their automation.
+1. Start Kestra on any machine with Docker:
 
-Modern declarative orchestrators coordinate `ansible-playbook` CLI executions inside isolated containers, while extending the workflow to include adjacent infrastructure systems. For example, declarative workflow engines like Kestra [orchestrate Ansible](/orchestration/ansible) with the [Ansible plugin](/plugins/plugin-ansible), running playbooks natively alongside Terraform scripts, database updates, HTTP webhooks, and manual approval gates.
+```bash
+docker run --pull=always --rm -it -p 8080:8080 --user=root \
+  --name kestra \
+  -v kestra_data:/app/storage \
+  -v kestra_db:/app/data \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /tmp:/tmp \
+  kestra/kestra:latest-slim server local
+```
 
-This architectural pattern offers several practical benefits:
+2. Open `http://localhost:8080`, create a flow and paste this one. Replace the inline playbook with one of yours; `dry_run` keeps it in check mode until you turn it off.
 
-* **No playbook rewrites**: Playbooks run without modification inside containerized task runners.
-* **Unified control plane**: Teams coordinate end-to-end operational pipelines that combine Ansible configuration with cloud provisioning, incident alerting, and container deployments across their [infrastructure automation resources](/resources/infrastructure).
-* **Predictable maintenance**: Unlike specialized tools with stalled release cycles, general-purpose workflow engines adhere to [scheduled release cadences and LTS policies](/docs/releases).
-* **Self-service workflows**: Teams can expose automated runbooks with parameter forms, access control, and audit logs without managing a dedicated Django application stack through a [unified infrastructure orchestration control plane](/infra-automation).
+```yaml
+id: run_my_playbook
+namespace: company.team
+
+inputs:
+  - id: dry_run
+    type: BOOL
+    defaults: true
+
+tasks:
+  - id: playbook
+    type: io.kestra.plugin.ansible.cli.AnsibleCLI
+    checkMode: "{{ inputs.dry_run }}"
+    inputFiles:
+      inventory.ini: |
+        localhost ansible_connection=local
+      playbook.yml: |
+        ---
+        - hosts: localhost
+          gather_facts: false
+          tasks:
+            - name: Your playbook, unchanged
+              ansible.builtin.debug:
+                msg: "Run by Kestra, logged per host"
+    commands:
+      - ansible-playbook -i inventory.ini playbook.yml
+```
+
+3. Execute the flow and read the result for each host in the logs. To run playbooks from your own repository, start from the [Git playbook blueprint](/blueprints/ansible-playbook-from-git).
+
+#### For network teams
+
+Build the inventory at run time from your source of truth, run in check mode, pause for approval, then apply. Start from the blueprints that [run Ansible by NetBox role and site](/blueprints/netbox-ansible-by-role-site) and [build a dynamic inventory from NetBox](/blueprints/ansible-netbox-dynamic-inventory).
+
+#### Open source and Enterprise
+
+AWX gives each user their own login and permissions for free. Kestra's open-source edition has one shared login. Teams that need SSO, role-based access, audit logs or worker groups in isolated networks use [Kestra Enterprise](/enterprise).
+
+CAGIP, the IT production arm of Crédit Agricole, [transformed its infrastructure operations](/stories/credit-agricole) and scaled data workflows across more than 100 clusters with Kestra.
+
+Comparing other controllers? Our [AWX alternatives guide](/resources/infrastructure/awx-alternatives) covers them, and [orchestrating Ansible with Kestra](/orchestration/ansible) shows the patterns teams use next.
 
 ---
 
@@ -179,5 +229,5 @@ The factual assertions in this guide are drawn directly from the following publi
 * **Jewel Service Proxy Overview (May 2026)**: [https://forum.ansible.com/t/awx-modernization-ansible-jewel/45775](https://forum.ansible.com/t/awx-modernization-ansible-jewel/45775)
 * **Release Pipeline Removal (November 2026)**: [https://github.com/ansible/awx/pull/16803](https://github.com/ansible/awx/pull/16803)
 * **Release Timeline Discussion (August 2026)**: [https://forum.ansible.com/t/is-there-an-estimated-timeline-for-the-next-awx-release/46156](https://forum.ansible.com/t/is-there-an-estimated-timeline-for-the-next-awx-release/46156)
-* **Ascender Releases (CIQ)**: [https://github.com/ctrliq/ascender/releases](https://github.com/ctrliq/ascender/releases)
+* **Kestra Releases (GitHub)**: [https://github.com/kestra-io/kestra/releases](https://github.com/kestra-io/kestra/releases)
 * **Ansible Galaxy Collection Record (`awx.awx`)**: [https://galaxy.ansible.com/ui/repo/published/awx/awx/](https://galaxy.ansible.com/ui/repo/published/awx/awx/)
