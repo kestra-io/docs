@@ -110,14 +110,15 @@ const opens = rows.map((text, row) => {
     const next = rows.slice(row + 1).find((line) => line.trim() !== "")
     return text.trim() !== "" && next !== undefined && depth(next) > depth(text)
 })
+const SPACE = "\u00a0"
 const lead = (width: number) =>
     guides
-        ? " ".repeat(Math.min(width, 2)) +
-          `<span class="guide">  </span>`.repeat(
+        ? SPACE.repeat(Math.min(width, 2)) +
+          `<span class="guide">${SPACE}${SPACE}</span>`.repeat(
               Math.max(0, Math.floor(width / 2) - 1),
           ) +
-          " ".repeat(width >= 2 ? width % 2 : 0)
-        : " ".repeat(width)
+          SPACE.repeat(width >= 2 ? width % 2 : 0)
+        : SPACE.repeat(width)
 
 let block = -1
 const HTML = rows
@@ -144,18 +145,21 @@ const HTML = rows
                     ? " literal"
                     : ""
         const mark = markAt(row)
+        const hang = match
+            ? match[1].length + (match[2] ? 2 : 0) + match[3].length + 2
+            : indent + (text.slice(indent).startsWith("- ") ? 2 : 0)
         return [
-            `<span class="line"${mark ? ` data-k="${mark}"` : ""}>`,
+            `<span class="line" style="--hang: ${hang}ch"${mark ? ` data-k="${mark}"` : ""}>`,
             `<span class="no">${row + 1}</span>`,
             guides
                 ? `<span class="fold${opens[row] ? " open" : ""}"></span>`
                 : "",
             lead(match ? match[1].length : indent),
-            match?.[2] ? `<span class="dash">- </span>` : "",
+            match?.[2] ? `<span class="dash">-${SPACE}</span>` : "",
             match
                 ? `<span class="key">${match[3]}</span><span class="punct">:</span>`
                 : "",
-            `<span class="value${kind}">${highlight(value)}</span>`,
+            `<span class="value${kind}">${highlight(value.replace(/^ /, SPACE))}</span>`,
             comment ? `<span class="comment">${escape(comment)}</span>` : "",
             "\n</span>",
         ].join("")
@@ -420,6 +424,55 @@ const HTML = rows
     pre :global(.guide) {
         box-shadow: inset 1px 0 0
             color-mix(in srgb, var(--code-line) 35%, transparent);
+    }
+
+    @include media-breakpoint-down(md) {
+        pre {
+            --gutter: 2rem;
+
+            padding-block: 0.75rem;
+            font-size: 0.75rem;
+            line-height: 1.6;
+        }
+
+        .guides pre {
+            --gutter: 3rem;
+        }
+
+        code {
+            min-width: 0;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        pre :global(.line) {
+            --indent: min(var(--hang), 14ch);
+
+            position: relative;
+            padding: 0 0.75rem 0 calc(var(--gutter) + var(--indent));
+            text-indent: calc(-1 * var(--indent));
+
+            > :global(*) {
+                text-indent: 0;
+            }
+        }
+
+        pre :global(.no) {
+            position: absolute;
+            left: 0;
+            width: 2rem;
+            padding-right: 0.625rem;
+        }
+
+        .guides pre :global(.no) {
+            padding-right: 0.25rem;
+        }
+
+        pre :global(.fold) {
+            position: absolute;
+            left: 2rem;
+            width: 1rem;
+        }
     }
 
     pre :global(.key) {
