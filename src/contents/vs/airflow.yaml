@@ -1,5 +1,5 @@
-title: "Kestra vs Airflow: An Open-Source Airflow Alternative"
-description: "Compare Kestra and Apache Airflow: how each is built, the same daily dbt pipeline in both, setup, migration and licensing. Kestra runs Python, SQL, dbt and shell as tasks in YAML flows."
+title: "Airflow Alternative: Kestra vs Apache Airflow"
+description: "Compare Kestra and Apache Airflow: how each is built, the same dbt pipeline in both, setup, migration and licensing, with Python, SQL and dbt as YAML tasks."
 competitorName: Airflow
 category: Data Orchestration
 shortDescription: "Python DAGs for one data team vs. YAML flows that any team can own, in any language."
@@ -82,7 +82,7 @@ table:
       kestra: "{totalPlugins}+ plugins, versioned apart from the core"
     - label: "Hosting"
       competitor: "Self-hosted, or managed by Astronomer, MWAA or Cloud Composer"
-      kestra: "Self-hosted, air-gapped, or Kestra Cloud"
+      kestra: "Self-hosted, air-gapped (Kestra Enterprise), or Kestra Cloud"
     - label: "License"
       competitor: "Apache 2.0"
       kestra: "Apache 2.0"
@@ -240,3 +240,11 @@ commonQuestions:
     answer: "Every save creates a revision you can diff, roll back or audit. Flows also sync with Git, and the Terraform provider and CI/CD tools such as GitHub Actions deploy them from a repository."
   - question: "How far does Kestra scale?"
     answer: "In Kestra's <a href='/docs/performance/benchmark'>benchmark</a>, the open-source edition on Postgres sustains 4,000 executions a minute with each execution finishing in under a second, and Kestra Enterprise reaches 7,000 a minute. Workers scale horizontally, and Leroy Merlin runs more than 5,000 flows on Kestra."
+
+related:
+  alternatives: airflow-alternatives
+  comparisons:
+    - amazon-mwaa
+    - astronomer
+    - cloud-composer
+    - dagster

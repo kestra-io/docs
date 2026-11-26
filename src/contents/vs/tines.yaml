@@ -1,239 +1,213 @@
-title: "Kestra vs. Tines: Universal Orchestration vs. Security Automation"
-description: "Compare Kestra vs Tines: Open-source workflow orchestration for engineering teams vs. no-code security and IT automation. See features, deployment options, and use cases."
+title: "Tines Alternative: Kestra vs Tines"
+description: "Compare Kestra and Tines: stories on a storyboard vs YAML flows in Git. The same alert triage in both, plus code steps, hosting, migration and pricing."
 competitorName: Tines
 category: Business Automation
-shortDescription: "No-code security and IT automation vs. open-source YAML orchestration for engineering teams at scale."
-seeHowTitle: "Getting Started with Declarative Orchestration"
-seeHowBody: "See how Kestra can simplify your security workflows—and scale beyond SOC automation."
+shortDescription: "Automations built as stories on a storyboard vs. open-source YAML flows for security, data and infrastructure work."
 
 brandColor:
   color: "#6B4FBB"
 
 intro:
-  title: "Kestra vs. Tines: Universal Orchestration vs. Security Automation"
-  description: "Tines is a no-code workflow platform built for security and IT operations teams. It excels at SOC automation, incident response, and alert triage. Kestra is a general-purpose orchestration platform for engineering teams that need data pipelines, infrastructure automation, and business processes at production scale."
+  title: "Kestra vs. Tines"
+  description: "Tines is a workflow platform where security, IT and other teams build automations and AI agents as stories on a visual storyboard. Kestra is an open-source orchestrator that runs YAML flows, so security workflows can share one platform with data pipelines and infrastructure automation."
 
-philosophy:
-  mainTitle: Two Platforms, Two Audiences
-  kestra:
-    title: "Engineering-Grade Orchestration for Any Workflow"
-    description: "Declarative YAML orchestration platform for engineering teams. Define data pipelines, infrastructure automation, and business workflows in version-controlled YAML. Any language, self-hosted or on Kestra Cloud, with GitOps and full audit trails."
-    subCardText: '"How do I build production workflows my engineering team can version, deploy, and operate?"'
+choose:
+  title: "Tines or Kestra?"
   competitor:
-    title: Security and IT Workflow Automation
-    description: "No-code visual workflow platform purpose-built for security operations and IT teams. Drag-and-drop story builder lets analysts automate threat response, alert triage, and IT incident handling without writing code."
-    shadowColor: "#EDE9F5"
-    subCardBg: "var(--ks-background-purple-light)"
-    subCardText: '"How do I automate our SOC playbooks without needing an engineer?"'
-
-businessValue:
-  mainTitle: "Playbook Automation Protects Teams.<br />Workflow Orchestration Runs Your Business."
-  kestra:
-    title: Production-Grade Workflow Orchestration
+    title: "Tines is the better fit if"
     list:
-      - Automate data pipelines, infrastructure, and business processes in one platform
-      - Self-hosted or cloud, with full data residency control
-      - GitOps-native version control, CI/CD, and Terraform for all workflows
-      - RBAC, audit logs, and multi-tenancy for enterprise compliance
-      - Handles 100,000+ concurrent tasks across any language or tool
-  competitor:
-    title: Security and IT Playbook Automation
+      - "Your security analysts build and change their own workflows on a storyboard, with drafts and approvals before a change goes live."
+      - "You want to start from a library of pre-built stories for security and IT operations tools."
+      - "Your team wants to start free, with unlimited users on a few live workflows, in a vendor-run cloud."
+  kestra:
+    title: "Choose Kestra if"
     list:
-      - No-code visual builder for security analysts and IT operators
-      - 1,000+ pre-built security and IT integrations
-      - Community tier limited to 3 workflows and 1,000 story runs per month
-      - Cloud-first SaaS (self-hosting requires vendor coordination)
-      - $125M Series C raised in 2025, unicorn valuation
-    shadowColor: "#EDE9F5"
-    bulletColor: "#5E4D9A"
-  footerText: "For security and IT teams automating SOC playbooks and incident response without writing code, Tines is the right tool. When you need data pipelines, infrastructure provisioning, cross-functional business workflows, or engineering-grade GitOps, Kestra is built for that scope."
+      - "Your alerts feed data work too, such as enrichment at volume, dbt models and warehouse queries."
+      - "You want workflows as YAML, reviewed in Git and promoted like code."
+      - "You want to self-host for free under an open-source license, on your own servers or air-gapped."
 
-setupSpeed:
-  title: Time to First Workflow
-  subtitle: "Tines offers both a managed cloud service and a self-hosted deployment. This comparison uses their cloud onboarding path—sign up at tines.com and build in the visual editor—which is their recommended getting-started experience."
-  kestra:
-    title:
-      one: "~5"
-      two: Minutes
-    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Blueprint, run it. No vendor coordination, no infrastructure prerequisites beyond Docker."
-    command: |
-      curl -o docker-compose.yml \
-      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
-      docker compose up
+table:
+  title: "How do Tines and Kestra compare, feature by feature?"
+  rows:
+    - label: "Workflow definition"
+      competitor: "Stories built on a storyboard, exported as JSON"
+      kestra: "YAML flows, written as code or in the no-code editor"
+    - label: "Building blocks"
+      competitor: "Eight action types, such as HTTP Request, Condition and AI Agent, plus tools such as Run Script"
+      kestra: "{totalPlugins}+ plugins, script tasks and flow-control tasks"
+    - label: "Triggers"
+      competitor: "Webhooks, inbound email, schedules on any action, and calls from other stories"
+      kestra: "Schedules, webhooks, flow triggers, polling and realtime triggers"
+    - label: "Custom code"
+      competitor: "Python in Run Script, with a 10-second default timeout and 110 seconds at most in the cloud"
+      kestra: "Python, Node.js, shell, Go, R and more, with dependencies per task"
+    - label: "Retries"
+      competitor: "HTTP Request retries on the status codes you list, 25 times by default with exponential backoff"
+      kestra: "Retry policy per task or flow, with errors and finally blocks"
+    - label: "Change management"
+      competitor: "Change control with drafts, review and approval"
+      kestra: "A revision on every save, Git sync and a Terraform provider"
+    - label: "Hosting"
+      competitor: "Tines cloud, or self-hosted on Business and Enterprise editions"
+      kestra: "Any cloud, on-premises, air-gapped (Kestra Enterprise), or Kestra Cloud"
+    - label: "Pricing"
+      competitor: "Free edition with 3 live workflows; paid editions quote only"
+      kestra: "Free open source; Kestra Cloud billed on usage"
+    - label: "License"
+      competitor: "Proprietary"
+      kestra: "Apache 2.0"
 
-      # Open localhost:8080
-      # Pick a Blueprint, run it. Done.
-    lang: sh
+proof:
+  title: "Which security teams run their automation on Kestra?"
+  stories:
+    - story: orchestrating-cybersecurity-for-100-users-and-billions-of-rows
+      industry: "Banking"
+      stat: "4,000+"
+      label: "API pulls a week feed threat intelligence to more than 100 cybersecurity users at JPMorgan Chase."
+    - story: government-soc-team
+      industry: "Government"
+      stat: "100+"
+      label: "SOC workflows replaced Palo Alto XSOAR, self-hosted with no cloud dependencies."
+
+architecture:
+  title: "How are Tines and Kestra built?"
   competitor:
-    title:
-      one: "~30"
-      two: Minutes
-    description: "Sign up for Tines Cloud and build your first story in the visual editor. Self-hosting requires a Linux server with Docker, PostgreSQL 14+, Redis 7.x, 8 GB RAM, and access granted by your Tines account team."
-    shadowColor: "#EDE9F5"
-    command: |
-      # Cloud: sign up at tines.com, build visually
-      # Self-hosted: coordinate with Tines account team,
-      # then provision infrastructure:
-
-      # Requirements: Linux, Docker, PostgreSQL 14+, Redis 7.x
-      # Minimum: 8 GB RAM, 60 GB HDD, 2 CPUs
-      docker pull tines/rails:latest
-      docker pull tines/worker:latest
-    lang: sh
-
-easeOfUse:
-  title: Built for Engineers vs. Built for Analysts
+    title: "Tines: actions linked into stories"
+    text: "A story is a set of actions linked on a storyboard. Each action receives events, does one job and emits new events to the actions linked after it."
+    list:
+      - "Webhook and Receive Email actions start a story"
+      - "Condition actions send events down up to 10 paths"
+      - "Event Transformation explodes, deduplicates or delays events"
+      - "Send to Story actions hand events to another story"
   kestra:
-    title: "Kestra: Readable by your whole team"
-    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. No special training required."
-    code: |
-      id: daily_report
-      namespace: analytics
+    title: "Kestra: declarative flows"
+    text: "A flow is a YAML file of tasks. Kestra validates it against each plugin's schema when you save it, and workers run each task with its inputs and outputs recorded in the execution."
+    list:
+      - "If and Switch tasks route an execution"
+      - "Loop runs tasks once per item, concurrently if you choose"
+      - "Subflows call another flow with typed inputs"
+      - "Script tasks run in containers with their own dependencies"
 
-      triggers:
-        - id: daily
-          type: io.kestra.plugin.core.trigger.Schedule
-          cron: "0 8 * * *"
-
-      tasks:
-        - id: run_dbt
-          type: io.kestra.plugin.dbt.cli.DbtCLI
-          commands:
-            - dbt run --select reporting
-
-        - id: notify
-          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-          url: "{{ secret('SLACK_WEBHOOK') }}"
-          messageText: "Daily report ready"
-    lang: yaml
+compare:
+  title: "What does the same alert triage look like in each?"
+  lead: "The same workflow in both: a webhook that receives an alert, a check that keeps high-severity alerts, a VirusTotal lookup with retries and a Slack message."
+  cta:
+    label: "Get started with Kestra"
+    href: "/get-started"
   competitor:
-    title: "Tines: Visual stories, no code required"
-    description: "Tines workflows (called Stories) are built by dragging actions onto a canvas. No code required for most integrations. Complex logic uses inline expressions and templates. Exported stories are JSON."
-    shadowColor: "#EDE9F5"
+    label: "Tines story export (excerpt)"
+    file: "alert_triage.json"
+    lang: json
     code: |
       {
-        "name": "Daily Report",
+        "name": "Alert triage",
         "agents": [
           {
+            "type": "Agents::WebhookAgent",
+            "name": "Receive alert",
+            "options": { "path": "4f2b9c1e7a6d3e8f", "secret": "9d3a7e1c5b2f8a4d", "verbs": "post" }
+          },
+          {
             "type": "Agents::TriggerAgent",
-            "name": "Daily Schedule",
-            "schedule": [{"cron": "0 8 * * *", "timezone": "UTC"}]
+            "name": "Severity is high",
+            "options": { "rules": [{ "type": "field==value", "value": "high", "path": "<<receive_alert.severity>>" }] }
           },
           {
             "type": "Agents::HTTPRequestAgent",
-            "name": "Run dbt via API",
+            "name": "Look up IP",
             "options": {
-              "url": "{{.CREDENTIAL.dbt_api_url}}",
-              "method": "POST",
-              "headers": {
-                "Authorization": "Bearer {{.CREDENTIAL.dbt_token}}"
-              }
+              "url": "https://www.virustotal.com/api/v3/ip_addresses/<<receive_alert.source_ip>>",
+              "method": "get",
+              "headers": { "x-apikey": "<<CREDENTIAL.virustotal>>" },
+              "retry_on_status": ["429", "500-599"],
+              "retries": 5
             }
           },
           {
-            "type": "Agents::SlackAgent",
-            "name": "Notify",
-            "options": { "message": "Daily report ready" }
+            "type": "Agents::HTTPRequestAgent",
+            "name": "Post to Slack",
+            "options": {
+              "url": "https://slack.com/api/chat.postMessage",
+              "method": "post",
+              "content_type": "json",
+              "headers": { "Authorization": "Bearer <<CREDENTIAL.slack>>" },
+              "payload": { "channel": "#soc-alerts", "text": "High alert from <<receive_alert.source_ip>>, malicious votes: <<look_up_ip.body.data.attributes.last_analysis_stats.malicious>>" }
+            }
           }
-        ]
+        ],
+        "links": [{ "source": 0, "receiver": 1 }, { "source": 1, "receiver": 2 }, { "source": 2, "receiver": 3 }]
       }
-    lang: json
-
-visualPreview:
-  mainTitle: One Platform for Your Entire Technology Stack
   kestra:
-    description: "Orchestrate data pipelines, infrastructure provisioning, business processes, and event-driven automations in one platform. Self-host with full control or use Kestra Cloud."
-  competitor:
-    description: "Purpose-built for security operations and IT automation. Excellent at SOC playbooks, incident response, and alert triage. Not designed for data pipelines, infrastructure provisioning, or engineering-team workflows."
-    shadowColor: "#EDE9F5"
+    code: |
+      id: alert_triage
+      namespace: security.soc
 
-featureGrid:
-  title: Kestra vs Tines at a Glance
-  tableData:
-    - feature: Primary use case
-      kestra: Universal workflow orchestration
-      competitor: Security and IT operations automation
-    - feature: Workflow definition
-      kestra: Declarative YAML
-      competitor: Visual no-code story builder
-    - feature: Target user
-      kestra: "Engineers, data teams, platform teams"
-      competitor: Security analysts and IT operators
-    - feature: Languages supported
-      kestra: "Agnostic (Python, R, Bash, Node.js, SQL & more)"
-      competitor: No-code (inline expressions for logic)
-    - feature: Data pipeline support
-      kestra: "✓ Native support (ETL, dbt, Spark, Airbyte)"
-      competitor: Not designed for data workloads
-    - feature: Infrastructure automation
-      kestra: "✓ Native support"
-      competitor: Not designed for this
-    - feature: GitOps and CI/CD
-      kestra: "✓ Native Git sync, Terraform provider"
-      competitor: Story export/import (no GitOps)
-    - feature: Self-service for non-engineers
-      kestra: "✓ Kestra Apps"
-      competitor: "✓ Visual builder for analysts"
-    - feature: Multi-tenancy and RBAC
-      kestra: "✓ Enterprise namespace isolation"
-      competitor: Enterprise plan only
-    - feature: Open source
-      kestra: "✓ Open source (Apache 2.0)"
-      competitor: Closed source SaaS
+      triggers:
+        - id: receive_alert
+          type: io.kestra.plugin.core.trigger.Webhook
+          key: "{{ secret('ALERT_WEBHOOK_KEY') }}"
 
-testimonials:
-  - quote: "We replaced Rundeck after it dropped jobs in HA mode and gave us no visibility. Kestra handles our entire incident automation pipeline—from PagerDuty alert to ITSM closure—with full audit trails and approval gates."
-    author: "SRE Lead @ Private Healthcare"
-    kpis:
-      - value: "100%"
-        name: Audit coverage for incident workflows
-      - value: "0"
-        name: Dropped jobs since migration
-      - value: "3x"
-        name: Faster mean time to resolution
-    storyLink: "/stories/jpmorgan-chase"
+      tasks:
+        - id: severity_is_high
+          type: io.kestra.plugin.core.flow.If
+          condition: "{{ trigger.body.severity == 'high' }}"
+          then:
+            - id: look_up_ip
+              type: io.kestra.plugin.core.http.Request
+              uri: "https://www.virustotal.com/api/v3/ip_addresses/{{ trigger.body.source_ip }}"
+              headers:
+                x-apikey: "{{ secret('VIRUSTOTAL_API_KEY') }}"
+              retry:
+                type: exponential
+                interval: PT5S
+                maxInterval: PT10M
+                maxAttempts: 6
 
-platformStrengths:
-  title: Kestra Is Built for Engineering Teams, Not Just Operations
-  features:
-    - title: Code as infrastructure, not just automation
-      description: "Kestra workflows live in Git, deploy via Terraform, and go through the same CI/CD pipeline as application code. Every change is tracked, reviewed, and auditable. No manual canvas exports, no copy-paste to move a workflow between environments."
-    - title: Data pipelines and infrastructure in one platform
-      description: "dbt models, Spark jobs, Kubernetes deployments, and custom scripts all run from the same declarative YAML. Kestra handles compute-intensive workloads that run for minutes or hours, across data pipelines, infrastructure automation, and business processes in one platform."
-    - title: Language-agnostic execution at scale
-      description: "Run tasks in Python, SQL, R, Bash, or any language in isolated containers. No wrappers, no decorators, no framework-specific syntax. Bring your existing scripts and orchestrate them without rewriting anything."
+            - id: post_to_slack
+              type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+              url: "{{ secret('SLACK_WEBHOOK') }}"
+              messageText: "High alert from {{ trigger.body.source_ip }}, malicious votes: {{ fromJson(outputs.look_up_ip.body).data.attributes.last_analysis_stats.malicious }}"
 
-decisionGuide:
-  mainTitle: The Right Tool for the Right Job
-  kestra:
-    title: Choose Kestra When
-    list:
-      - "Your team needs data pipelines, ETL, or infrastructure automation alongside event-driven workflows."
-      - "Workflows should live in version control and deploy through CI/CD like any other infrastructure."
-      - "Your engineers write the workflows. You want YAML and Git, not a visual canvas."
-      - "You need self-hosting that doesn't require vendor coordination or a dedicated account team."
-      - "Non-engineers need to trigger and monitor workflows through Kestra Apps, not build them."
-  competitor:
-    title: Choose Tines When
-    list:
-      - "Your primary use case is SOC automation: alert triage, incident response, threat enrichment."
-      - "Your team is security analysts or IT operators who need to build workflows without engineering support."
-      - "You want pre-built playbook templates for SIEM, EDR, and threat intelligence tools."
-      - "No-code matters more than GitOps. Your team won't write or review YAML."
-      - "You're already invested in the Tines ecosystem and security-specific integrations."
-    shadowColor: "#EDE9F5"
-    bulletColor: "#5E4D9A"
+pairs:
+  - title: "How hard is it to move from Tines to Kestra?"
+    columns:
+      - label: "Leaving Tines"
+        brand: competitor
+        text: "A story exports as a JSON file with its actions, their options and the links between them. Credentials, resources and the events a story generated stay behind, and the JSON is Tines' own format, so each story is rebuilt in the target tool."
+      - label: "Moving to Kestra"
+        brand: kestra
+        text: "HTTP Request actions become HTTP or plugin tasks, Condition actions become If or Switch tasks, Event Transformation in explode mode becomes a Loop, and Send to Story becomes a Subflow. Run Script code moves into a Python script task. Senders such as a SIEM are pointed at a Kestra webhook one story at a time."
+  - title: "What do licensing, pricing and self-hosting look like?"
+    columns:
+      - label: "Tines"
+        brand: competitor
+        text: "A proprietary platform. The free edition allows 3 live workflows with unlimited users. Paid editions have no published prices and are quoted by sales, and the Business and Enterprise editions can be self-hosted with Docker Compose or Kubernetes, set up through Tines' account team."
+      - label: "Kestra"
+        brand: kestra
+        text: "Apache 2.0 and free to self-host, with no limits on flows or executions. Kestra Cloud is billed on usage, and Kestra Enterprise is licensed per instance. Both are on the <a href='/pricing'>pricing page</a>."
+
+faqTitle: "Questions from Tines teams"
 
 commonQuestions:
-  - question: How do I migrate from Tines to Kestra?
-    answer: "Tines Stories are built visually and exported as JSON. In Kestra, you replicate the same flow in declarative YAML, replacing each Tines action with the equivalent Kestra plugin (HTTP requests, script execution, Slack notifications, and more). The API calls, data transforms, and notification steps map directly to Kestra plugins. Most teams migrate incrementally, running Kestra for new workflows while keeping Tines for existing security playbooks during the transition."
-  - question: Can Kestra handle security workflows like Tines does?
-    answer: "Yes. Kestra handles webhook-triggered incident response, API enrichment, alert routing, and Slack or PagerDuty notifications natively. The difference is that Kestra workflows are defined in YAML and require an engineer to build them. There's no visual drag-and-drop builder for security analysts. If your security team needs to build and modify workflows independently without engineering involvement, Tines is better suited for that workflow."
-  - question: Does Kestra integrate with security tools like SIEMs and EDRs?
-    answer: "Kestra's HTTP plugin can call any REST API, and Script tasks run Python or Bash against any SDK or CLI tool. So integrations with tools like Splunk, CrowdStrike, Okta, and PagerDuty are possible, but you write the integration logic rather than selecting a pre-built connector. Tines ships with 1,000+ security-specific connectors out of the box. If your primary need is rapid connection to security tooling without custom code, that library gives Tines an edge."
-  - question: What's the difference between Tines Stories and Kestra Flows?
-    answer: "Tines Stories are built in a visual canvas, stored as JSON, and designed for operators who don't write code. Kestra Flows are written in YAML, stored in Git, and designed for engineers who want their workflows to follow software development practices. Both support triggers, conditional logic, and external API calls. Tines optimizes for speed of building; Kestra optimizes for maintainability and auditability over time."
-  - question: Can Kestra and Tines run in parallel?
-    answer: "Yes. Many teams use both: Tines for security playbooks built by analysts, Kestra for data pipelines and infrastructure workflows built by engineers. The two tools don't overlap functionally enough to cause conflicts. You can run them in parallel indefinitely, or use Kestra as the central orchestrator that calls Tines via webhook when a security workflow needs to be triggered."
-  - question: How does Kestra handle event-driven triggers like Tines does?
-    answer: "Kestra is event-driven at its core. It supports webhook triggers, scheduled triggers, file arrival triggers (S3, GCS, SFTP), Kafka and Pulsar message queue triggers, database change triggers, and API polling. These are all native capabilities defined in YAML alongside the rest of the workflow. Tines' trigger model is similar but designed around the security operations use case, with tighter integration into SIEM and EDR event streams."
+  - question: "Can Kestra call the security tools our stories use?"
+    answer: "Yes. An HTTP task calls any REST API, such as VirusTotal, MISP or your EDR, with credentials kept in Kestra secrets, and plugins cover tools such as Elasticsearch, Slack and the major clouds. A Python script task handles anything that needs an SDK. Check the actions your stories rely on before you plan the move."
+  - question: "Can Kestra and Tines run side by side?"
+    answer: "Yes. A Tines Webhook action can receive a call from a Kestra HTTP task, and a Tines HTTP Request action can call a Kestra Webhook trigger. Move one story at a time and keep the rest in Tines until they're replaced."
+  - question: "How do approvals work, for example before locking an account?"
+    answer: "A Pause task stops the execution until someone resumes it from the UI or the API, and it can collect inputs from the approver, such as a reason, that later tasks read. Apps (Kestra Enterprise) give the approver a screen with the alert details and approve or reject buttons."
+  - question: "How does Kestra track incidents from failed workflows?"
+    answer: "Cases (Kestra Enterprise) open an incident from a flow's errors block or from any task, next to the executions that caused it. With deduplication turned on, repeated failures of the same flow and task attach to the case that is already open."
+  - question: "Can analysts build workflows without writing YAML?"
+    answer: "Yes. The no-code editor builds flows on a visual canvas and stays in sync with the YAML, and the AI Copilot drafts or edits a flow from a plain-language request. Engineers can review the same flow as YAML in Git before it reaches production."
+  - question: "Can Kestra run AI agents in a security workflow?"
+    answer: "Yes. The AIAgent task gives a model a goal and only the tools you list, such as specific flows, web search or an MCP server, for example to summarize an alert before it reaches the on-call channel. Each agent run is recorded in the execution with its inputs and outputs."
+  - question: "How far does Kestra scale?"
+    answer: "In Kestra's <a href='/docs/performance/benchmark'>benchmark</a>, the open-source edition on Postgres sustains 4,000 executions a minute and Kestra Enterprise reaches 7,000, with workers that scale horizontally. Leroy Merlin runs more than 5,000 flows on Kestra."
+
+related:
+  alternatives: tines-alternatives
+  comparisons:
+    - camunda
+    - simplyask
+    - n8n
+    - workato

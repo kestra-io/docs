@@ -11,6 +11,7 @@ import kestraLogo from "~/assets/logo-black.svg?raw"
 import VsCompare from "./VsCompare.astro"
 import VsSetup from "./VsSetup.astro"
 import VsPair from "./VsPair.astro"
+import VsRelated from "./VsRelated.astro"
 import kestraMonogram from "./assets/ks-icon.svg?raw"
 
 interface Pair {
@@ -37,6 +38,10 @@ interface SetupSide {
 }
 
 interface Props {
+    related?: {
+        comparisons: { href: string; name: string; monogram?: string }[]
+        alternatives?: { href: string; label: string }
+    }
     pairs?: Pair[]
     architecture?: {
         title: string
@@ -64,7 +69,7 @@ interface Props {
         lead?: string
         rows: { label: string; competitor: string; kestra: string }[]
     }
-    compare: {
+    compare?: {
         title: string
         lead: string
         cta?: { label: string; href: string }
@@ -92,6 +97,7 @@ interface Props {
 }
 
 const {
+    related,
     pairs = [],
     architecture,
     setup,
@@ -240,18 +246,20 @@ const groups = [
                 )}
             </ReplaceLegacy>
         )}
-        <VsCompare
-            headingId="vs-compare-title"
-            title={compare.title}
-            lead={compare.lead}
-            cta={compare.cta}
-            competitor={{
-                ...compare.competitor,
-                name: competitorName,
-                logo: monogram,
-            }}
-            kestra={compare.kestra}
-        />
+        {compare && (
+            <VsCompare
+                headingId="vs-compare-title"
+                title={compare.title}
+                lead={compare.lead}
+                cta={compare.cta}
+                competitor={{
+                    ...compare.competitor,
+                    name: competitorName,
+                    logo: monogram,
+                }}
+                kestra={compare.kestra}
+            />
+        )}
         {setup && (
             <VsSetup
                 title={setup.title}
@@ -284,6 +292,13 @@ const groups = [
             title={faqTitle ?? `Questions about ${competitorName} and Kestra`}
             items={faq}
         />
+    {related && related.comparisons.length > 0 && (
+        <VsRelated
+            {competitorName}
+            comparisons={related.comparisons}
+            alternatives={related.alternatives}
+        />
+    )}
     </div>
 </PageShell>
 

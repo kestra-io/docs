@@ -1,243 +1,137 @@
-title: "Kestra vs. Workato: Universal Orchestration vs. Enterprise iPaaS"
-description: "Compare Kestra vs Workato: Open-source workflow orchestration for engineering teams vs. enterprise integration platform for business automation. See features, deployment options, and use cases."
+title: "Workato Alternative: Kestra vs Workato"
+description: "Compare Kestra and Workato: recipes in Workato's cloud vs YAML flows you can run anywhere. Triggers, error handling, code steps, migration and pricing."
 competitorName: Workato
 category: Business Automation
-shortDescription: "Low-code enterprise SaaS integration vs. engineering-grade orchestration for data pipelines, infrastructure, and self-hosting."
-seeHowTitle: "Getting Started with Declarative Orchestration"
-seeHowBody: "See how Kestra can simplify your workflows—and scale beyond enterprise iPaaS."
+shortDescription: "Enterprise iPaaS recipes in Workato's cloud vs. open-source YAML flows that run on your servers or on Kestra Cloud."
 
 brandColor:
   color: "#0055B3"
   gradient: "linear-gradient(90deg, #0055B3, #00A3FF, #0078D4)"
 
 intro:
-  title: "Kestra vs. Workato: Universal Orchestration vs. Enterprise iPaaS"
-  description: "Workato is an enterprise integration platform built for connecting SaaS applications and automating business processes like order-to-cash and employee onboarding. Kestra is a workflow orchestration platform for engineering and data teams that need data pipelines, infrastructure automation, and business workflows running at production scale, with full version control and the option to self-host."
+  title: "Kestra vs. Workato"
+  description: "Workato is an enterprise integration platform where teams build recipes, a trigger followed by actions, in a browser editor and run them in Workato's cloud. Kestra is an open-source orchestrator that runs YAML flows on your own infrastructure or on Kestra Cloud."
 
-philosophy:
-  mainTitle: Two Platforms, Two Approaches to Automation
-  kestra:
-    title: "Engineering-Grade Orchestration for Any Workflow"
-    description: "Declarative YAML orchestration platform for engineering and data teams. Define data pipelines, infrastructure automation, and business workflows in version-controlled YAML. Any event, any language, self-hosted or on Kestra Cloud, with GitOps and full audit trails."
-    subCardText: '"How do I build production workflows my engineering team can version, test, and deploy like code?"'
+choose:
+  title: "Workato or Kestra?"
   competitor:
-    title: Enterprise Integration and Business Process Automation
-    description: "Low-code iPaaS built for enterprise teams connecting SaaS apps and automating business processes. Visual recipe builder lets business and IT teams automate without writing code. Cloud-only, with thousands of pre-built connectors for Salesforce, Workday, ServiceNow, SAP, and more."
-    shadowColor: "#D1E9FF"
-    subCardBg: "var(--ks-background-blue-light)"
-    subCardText: '"How do I connect our enterprise apps and automate business processes without writing code?"'
-
-businessValue:
-  mainTitle: "Business Process Automation.<br />Engineering-Grade Orchestration."
-  kestra:
-    title: Production-Grade Workflow Orchestration
+    title: "Workato is the better fit if"
     list:
-      - Automate data pipelines, infrastructure, and business processes in one platform
-      - Self-hosted or cloud, with full data residency control
-      - "GitOps-native: version control, CI/CD, and Terraform for all workflows"
-      - RBAC, audit logs, and multi-tenancy for enterprise compliance
-      - Handles 100,000+ concurrent tasks with no per-recipe pricing ceiling
-  competitor:
-    title: Enterprise Integration Platform (iPaaS)
+      - "Business and IT teams build their own integrations in a browser, using pre-built connectors for the SaaS apps and ERPs they already run."
+      - "You want integrations, API management and AI agents from one vendor that also runs the platform."
+  kestra:
+    title: "Choose Kestra if"
     list:
-      - Thousands of pre-built connectors for Salesforce, Workday, ServiceNow, SAP, and more
-      - Low-code visual recipe builder for business and IT teams
-      - Cloud-only, multi-region deployment (US, EU, APAC)
-      - Quote-based pricing tied to recipe volume and connector usage
-      - Consistent Gartner Magic Quadrant Leader for iPaaS
-    shadowColor: "#D1E9FF"
-    bulletColor: "#0055B3"
-  footerText: "For enterprise teams connecting SaaS applications and automating business processes like order-to-cash or employee onboarding, Workato's connector library and visual builder are hard to match. When you need data pipelines, self-hosting for compliance, engineering-grade GitOps, or cost predictability at scale, Kestra is built for that scope."
+      - "You want workflows as YAML, reviewed in Git and promoted with CI/CD."
+      - "Your steps run Python, shell or containers with their own libraries and long runtimes."
+      - "You need to run the orchestrator yourself, on any cloud, on-premises or air-gapped."
 
-setupSpeed:
-  title: Time to First Workflow
-  subtitle: "Workato is cloud-only SaaS, so there is no infrastructure to provision. But workflows live exclusively in Workato's cloud, pricing scales with recipe volume, and migrating away means re-exporting everything manually. Kestra gives you the same fast start in two commands, with full portability."
-  kestra:
-    title:
-      one: "~5"
-      two: Minutes
-    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Blueprint, run it. No cloud account required, no per-recipe billing, no vendor lock-in."
-    command: |
-      curl -o docker-compose.yml \
-      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
-      docker compose up
+table:
+  title: "How do Workato and Kestra compare, feature by feature?"
+  rows:
+    - label: "Workflow definition"
+      competitor: "Recipes built in Workato's browser editor"
+      kestra: "YAML flows, written as code or in the no-code editor"
+    - label: "Triggers"
+      competitor: "App events, polling, webhooks and schedules, with polling and schedules every 5 minutes at most"
+      kestra: "Schedules, webhooks, flow triggers, polling and realtime triggers"
+    - label: "Custom code"
+      competitor: "Python steps limited to 90 seconds and 256 MB, with no extra libraries"
+      kestra: "Python, Node.js, shell, Go, R and more, with dependencies per task"
+    - label: "Error handling"
+      competitor: "Handle errors blocks that retry a group of steps"
+      kestra: "Retries per task or flow, with errors and finally blocks"
+    - label: "Version control"
+      competitor: "Packages exported to Git as snapshots, edited only in Workato"
+      kestra: "A revision on every save, Git sync and a Terraform provider"
+    - label: "Integrations"
+      competitor: "Pre-built connectors for thousands of SaaS apps, databases and ERPs"
+      kestra: "{totalPlugins}+ plugins and an HTTP task for any REST API"
+    - label: "Hosting"
+      competitor: "Workato Cloud in nine regions, a dedicated AWS environment, or Private Workato in your own AWS"
+      kestra: "Any cloud, on-premises, air-gapped (Kestra Enterprise), or Kestra Cloud"
+    - label: "Pricing"
+      competitor: "Quote only, by edition"
+      kestra: "Free open source; Kestra Cloud billed on usage"
+    - label: "License"
+      competitor: "Proprietary"
+      kestra: "Apache 2.0"
 
-      # Open localhost:8080
-      # Pick a Blueprint, run it. Done.
-    lang: sh
+proof:
+  title: "Which integration teams moved to Kestra?"
+  stories:
+    - story: modernizing-mission-critical-e-commerce-integrations-with-kestra
+      industry: "E-commerce"
+      stat: "90%"
+      label: "lower integration costs after moving an iPaaS and AWS Lambdas to Kestra, with around 600 workflows in production."
+    - story: cleverconnect-enhances-hr-integration-platform-with-kestra
+      industry: "HR software"
+      stat: "10x"
+      label: "faster connector development, with hundreds of connectors built on Kestra."
+    - story: modernizing-mission-critical-workflows-in-a-highly-regulated-environment
+      industry: "Healthcare"
+      stat: "400+"
+      label: "pharmacies rely on Kestra workflows that replaced a 30-year-old integration platform."
+
+architecture:
+  title: "How are Workato and Kestra built?"
   competitor:
-    title:
-      one: "~20"
-      two: Minutes
-    description: "Sign up at workato.com, connect your first app via OAuth, and build your first recipe in the visual editor. No infrastructure to manage, but all workflows run in Workato's cloud and pricing scales with the number of recipes and recipe runs."
-    shadowColor: "#D1E9FF"
-    command: |
-      # Sign up at workato.com
-      # Connect an app via OAuth
-      # Build a recipe in the visual editor:
-
-      Trigger: Scheduler (daily at 8:00 AM)
-
-      Step 1: HTTP action
-        URL: your-dbt-cloud-endpoint
-        Method: POST
-
-      Step 2: Slack - Send message
-        Channel: #data-team
-        Text: "Daily report ready"
-
-      # Recipes are stored in Workato's cloud.
-      # Version control requires manual JSON export.
-    lang: yaml
-
-easeOfUse:
-  title: Version-Controlled Workflows vs. Visual Recipe Builder
-  kestra:
-    title: "Kestra: Readable by Your Whole Team"
-    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Workflows live in Git and deploy through your existing CI/CD pipeline."
-    code: |
-      id: daily_report
-      namespace: analytics
-
-      triggers:
-        - id: daily
-          type: io.kestra.plugin.core.trigger.Schedule
-          cron: "0 8 * * *"
-
-      tasks:
-        - id: run_dbt
-          type: io.kestra.plugin.dbt.cli.DbtCLI
-          commands:
-            - dbt run --select reporting
-
-        - id: notify
-          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-          url: "{{ secret('SLACK_WEBHOOK') }}"
-          messageText: "Daily report ready"
-    lang: yaml
-  competitor:
-    title: "Workato: Visual Recipes for Business Teams"
-    description: "Workato recipes are built visually in the browser using a drag-and-drop editor. Recipe Copilot uses AI to generate automations from natural language descriptions. No code required for standard integrations. Complex logic uses Workato's proprietary formula language."
-    shadowColor: "#D1E9FF"
-    code: |
-      # Workato recipe (built visually in-browser)
-      # Conceptual structure:
-
-      Trigger: Scheduler
-        schedule: daily at 8:00 AM
-
-      Action 1: HTTP request
-        url: "#{dbt_cloud_endpoint}"
-        method: POST
-        headers:
-          Authorization: "Bearer #{dbt_token}"
-
-      Action 2: Slack - Post message
-        channel: "#data-team"
-        message: "Daily report ready"
-
-      # To version-control: export recipe as JSON manually.
-      # No native Git integration on standard plans.
-    lang: yaml
-
-visualPreview:
-  mainTitle: One Platform for Your Entire Technology Stack
-  kestra:
-    description: "Orchestrate data pipelines, infrastructure provisioning, business processes, and event-driven automations in one platform. Self-host with full control or use Kestra Cloud."
-  competitor:
-    description: "Connect enterprise SaaS apps and automate business processes with thousands of pre-built connectors and a visual builder. Excellent for IT and business teams automating Salesforce-to-Workday flows. Not designed for data pipeline execution or engineering-team workflows."
-    shadowColor: "#D1E9FF"
-
-featureGrid:
-  title: Kestra vs Workato at a Glance
-  tableData:
-    - feature: Primary use case
-      kestra: Universal workflow orchestration
-      competitor: Enterprise app integration and business process automation
-    - feature: Workflow definition
-      kestra: Declarative YAML (version-controlled)
-      competitor: Visual recipe builder (low-code, cloud-stored)
-    - feature: Deployment model
-      kestra: Self-hosted or Kestra Cloud
-      competitor: Cloud-only (no self-hosting)
-    - feature: Languages supported
-      kestra: "Agnostic (Python, R, Bash, Node.js, SQL & more)"
-      competitor: "Proprietary formula language for custom logic; no general-purpose code execution"
-    - feature: Data pipeline support
-      kestra: "✓ Native support (ETL, dbt, Spark, Airbyte)"
-      competitor: Data pipeline recipes available but not built for compute-heavy workloads
-    - feature: Infrastructure automation
-      kestra: "✓ Native support"
-      competitor: Not designed for this
-    - feature: Self-service for non-engineers
-      kestra: "✓ Kestra Apps"
-      competitor: "✓ Visual recipe builder for business teams"
-    - feature: GitOps and version control
-      kestra: "✓ Native Git sync, Terraform provider"
-      competitor: Manual recipe export; Git integration on higher plans
-    - feature: Multi-tenancy and RBAC
-      kestra: "✓ Enterprise namespace isolation"
-      competitor: "✓ Enterprise workspaces and role-based access"
-    - feature: Pricing model
-      kestra: Infrastructure cost (no per-recipe billing)
-      competitor: "Quote-based, scales with recipe volume and connector usage"
-    - feature: Open source
-      kestra: "✓ Open source (Apache 2.0)"
-      competitor: Closed source SaaS
-
-testimonials:
-  - quote: "With Kestra, orchestration stopped being a fragile point in the architecture and became a stable foundation for the business."
-    author: "Rafael Bartalotti, Engineering Manager @ Víssimo"
-    kpis:
-      - value: "90%"
-        name: Reduction in integration costs
-      - value: "40%"
-        name: Reduction in BI and ETL costs
-      - value: "0"
-        name: Black Friday 2025 incidents
-    storyLink: /stories/vissimo-group
-
-platformStrengths:
-  title: Kestra Is Built for Engineering Teams
-  features:
-    - title: Workflows in Git, deployed like code
-      description: "Every Kestra flow is a YAML file stored in a repository, reviewed in a pull request, and deployed through CI/CD. Changes are tracked in commit history, rollbacks are a git revert, and every deployment is auditable by anyone with repo access. Automation gets the same engineering rigor as any other production system."
-    - title: Data pipelines alongside business workflows
-      description: "{totalPlugins}+ native plugins cover dbt, Airbyte, Spark, Snowflake, BigQuery, Databricks, and every major data warehouse and cloud provider. Engineers define ETL pipelines in the same declarative YAML they use for business process automation, with DAG visualization and retry semantics for data-specific failures built in. A Salesforce sync, an overnight dbt run, and a nightly report delivery all run in one platform with one operational model."
-    - title: Cost tied to infrastructure, not workflow count
-      description: "Kestra runs on your infrastructure with no per-execution billing. Costs grow with compute and storage, not with the number of automations you build or how often they run. Teams that have migrated from usage-based automation platforms to Kestra have reported integration cost reductions of 90% or more."
-
-decisionGuide:
-  mainTitle: The Right Tool for the Right Job
-  kestra:
-    title: Choose Kestra When
+    title: "Workato: recipes on a hosted platform"
+    text: "A recipe is a trigger followed by steps, configured in Workato's editor. Each trigger event becomes a job that runs the steps in Workato's cloud, and an on-prem agent opens an outbound connection to reach systems behind your firewall."
     list:
-      - "Your team needs data pipelines, ETL, or infrastructure automation alongside business workflows."
-      - "Workflows must live in version control, pass code review, and deploy through CI/CD."
-      - "Self-hosting is required for data residency, compliance, or cost predictability."
-      - "You want cost to scale with infrastructure, not with the number of recipes you build."
-      - "Non-engineers need to trigger and monitor workflows, not build them from scratch."
-  competitor:
-    title: Choose Workato When
+      - "Triggers poll an app, listen for its events or run on a schedule"
+      - "IF, Repeat for each and Repeat while steps shape the logic"
+      - "Call recipe function steps reuse other recipes"
+      - "Recipe lifecycle management moves packages between environments"
+  kestra:
+    title: "Kestra: declarative flows"
+    text: "A flow is a YAML file. Kestra validates it against each plugin's schema when you save it, and workers run its tasks on Kestra Cloud or on your own servers."
     list:
-      - "Your primary use case is connecting enterprise SaaS apps: Salesforce, Workday, ServiceNow, SAP."
-      - "Business and IT teams need to build and maintain automations without engineering involvement."
-      - "You need a large pre-built connector library with minimal custom integration work."
-      - "Workflow governance is handled through Workato's platform rather than Git and CI/CD."
-      - "You want a recognized enterprise iPaaS with Gartner Magic Quadrant validation and dedicated enterprise support."
-    shadowColor: "#D1E9FF"
-    bulletColor: "#0055B3"
+      - "If, Loop, Parallel and Pause tasks shape the logic"
+      - "Subflows reuse other flows with typed inputs"
+      - "Script tasks run in containers with their own dependencies"
+      - "Outputs and files are stored once and passed by reference"
+
+pairs:
+  - title: "How hard is it to move from Workato to Kestra?"
+    columns:
+      - label: "Leaving Workato"
+        brand: competitor
+        text: "Recipe lifecycle management exports recipes as packages with their dependencies, such as connections, lookup tables and message templates. Workato treats the exported files as snapshots for re-import and advises against editing them outside Workato, so each recipe is rebuilt in the target tool."
+      - label: "Moving to Kestra"
+        brand: kestra
+        text: "Each trigger becomes a Kestra trigger, each connector action a plugin task or an HTTP request, and each Handle errors block a retry policy with an errors block. Python steps move into script tasks with their libraries. Recipes move one at a time while Workato keeps running the rest."
+  - title: "What do licensing, pricing and self-hosting look like?"
+    columns:
+      - label: "Workato"
+        brand: competitor
+        text: "A proprietary platform sold in four editions: Standard, Business MCP, Enterprise MCP and Workato ONE. Prices aren't published, so each edition is quoted by sales. Workspaces and users are unlimited, and usage is tracked per capability."
+      - label: "Kestra"
+        brand: kestra
+        text: "Apache 2.0 and free to self-host, with no limits on flows or executions. Kestra Cloud is billed on usage, and Kestra Enterprise is licensed per instance. Both are on the <a href='/pricing'>pricing page</a>."
+
+faqTitle: "Questions from Workato teams"
 
 commonQuestions:
-  - question: How do I migrate from Workato to Kestra?
-    answer: "Export your Workato recipes and map each trigger and action to the equivalent Kestra plugin. Scheduled triggers, webhooks, and HTTP actions translate directly. For Workato's pre-built SaaS connectors, Kestra's {totalPlugins}+ plugin library covers the most common targets including Salesforce, Slack, databases, and cloud storage. For connectors without a native Kestra plugin, the HTTP plugin handles any REST API. Most teams migrate incrementally, starting with data and infrastructure workflows while keeping Workato for complex SaaS-to-SaaS integrations."
-  - question: Can Kestra automate business processes the way Workato does?
-    answer: "Yes. Kestra handles business process automation through event triggers (webhooks, message queues, file arrivals), conditional logic, parallel branches, and human-in-the-loop steps via Kestra Apps. Kestra workflows are built in YAML by engineers, not visually by business users. If your business teams need to build and modify automations independently without writing YAML, Workato's visual builder gives them more direct control. If your engineering team owns the automation layer and business users only need to trigger and monitor, Kestra lets engineers apply the same review, test, and deploy practices to automation as to any other code."
-  - question: Does Kestra have the enterprise connectors Workato has?
-    answer: "Kestra's {totalPlugins}+ plugins cover the most common enterprise integration targets: AWS, GCP, Azure, Salesforce, Slack, databases, data warehouses, dbt, Airbyte, and more. For systems without a native plugin, the HTTP plugin handles any REST API and Script tasks can call any SDK or CLI tool. Workato's connector library is broader for niche SaaS applications, particularly in HR, finance, and ERP. For teams depending on deep Workday or SAP pre-built actions, Workato reduces integration time. For teams whose critical integrations involve common platforms, Kestra's plugin coverage is sufficient."
-  - question: How does version control work in Workato vs Kestra?
-    answer: "Kestra workflows are YAML files stored in Git. Every change is a commit, deployments are tracked, and rollbacks work like any other code change. Workato recipes are stored in Workato's cloud and can be exported as JSON for manual version control, with Git integration available on higher-tier plans. For teams with strict change management requirements or engineering workflows that go through code review, Kestra's Git-native approach removes the manual export step and keeps automation in the same workflow as application code."
-  - question: How does pricing compare between Kestra and Workato?
-    answer: "Kestra's open-source version is free to self-host; Kestra Cloud pricing is based on execution usage. Workato uses quote-based pricing tied to recipe volume and connector usage, which becomes difficult to predict as automation scales. Teams that have replaced iPaaS platforms with Kestra have reported integration cost reductions exceeding 90%. The trade-off is that Kestra requires infrastructure to operate, while Workato is fully managed with enterprise support included."
-  - question: Can non-technical users use Kestra the way they use Workato?
-    answer: "Kestra Apps let non-technical users trigger, monitor, and interact with workflows through a no-code interface without touching YAML or accessing the engineering UI. Business users in Kestra consume workflows built by engineers; they don't build them independently. Workato's visual recipe builder lets business teams create and modify automations without any engineering involvement. If self-service workflow creation for non-technical users is a primary requirement, Workato's model gives them more autonomy. If the engineering team owns the automation layer, Kestra Apps give those users a no-code interface to trigger and monitor without crossing into the engineering layer."
+  - question: "Can Kestra call the SaaS apps my recipes use?"
+    answer: "Kestra has {totalPlugins}+ plugins for databases, cloud services, messaging and SaaS tools. For an app without a plugin, an HTTP task calls its REST API, with the credentials kept in Kestra secrets. Workato has pre-built connectors for thousands of apps, so check each one your recipes depend on against Kestra's plugins before you plan the move."
+  - question: "Can Kestra and Workato run side by side?"
+    answer: "Yes. A Workato recipe can start from an HTTP webhook, so a Kestra HTTP task can call it, and a recipe can call a Kestra Webhook trigger the same way. Move recipes one at a time and keep the rest in Workato until they're replaced."
+  - question: "Can business users build and run flows without writing YAML?"
+    answer: "Yes. The no-code editor builds flows on a visual canvas and stays in sync with the YAML, and the AI Copilot drafts a flow from a plain-language request. Flows with inputs can be run from the UI by people who never open the editor, and Apps (Kestra Enterprise) put a form or an approval button in front of a flow."
+  - question: "How does Kestra handle approvals in the middle of a process?"
+    answer: "A Pause task stops the execution until someone resumes it, from the UI or through the API, and the flow carries on with the next task. Apps (Kestra Enterprise) give the approver a screen that shows the request and the buttons to approve or reject it."
+  - question: "Does Kestra run AI agents?"
+    answer: "Yes. The AIAgent task gives a model a goal and the tools to reach it, including other flows and external MCP servers. A flow can also be exposed as an MCP tool, so Claude, Cursor or another agent can call it. Each agent run is an execution with its logs and outputs, next to the rest of your flows."
+  - question: "Can Kestra reach systems behind our firewall?"
+    answer: "Yes. When you self-host Kestra, its workers run inside your network and connect to databases, file shares and internal APIs directly. With worker groups (Kestra Enterprise), you choose which workers run which tasks, so a task that needs a private network runs only where that network is."
+  - question: "How far does Kestra scale?"
+    answer: "In Kestra's <a href='/docs/performance/benchmark'>benchmark</a>, the open-source edition on Postgres sustains 4,000 executions a minute and Kestra Enterprise reaches 7,000, with workers that scale horizontally. Fila runs 2.5 million executions a month across more than 2,000 workflows."
+
+related:
+  alternatives: workato-alternatives
+  comparisons:
+    - pipedream
+    - n8n
+    - make
+    - zapier

@@ -1,5 +1,5 @@
-title: "Kestra vs. Pipedream: Where to Move Before the Workflows Shutdown"
-description: "Pipedream Workflows shuts down on March 31, 2027. Compare Kestra vs Pipedream and see how code steps, triggers, data stores and connected apps move to declarative YAML flows you own."
+title: "Pipedream Alternative: Kestra vs Pipedream"
+description: "Pipedream Workflows shuts down on March 31, 2027. Compare Kestra and Pipedream: code steps, triggers, data stores and apps moved to YAML flows you own."
 competitorName: Pipedream
 guideCta:
   title: "Moving off Pipedream?"
@@ -19,7 +19,7 @@ intro:
   description: "Pipedream Workflows shuts down on March 31, 2027. Kestra runs the same webhook triggers and code steps as YAML you keep in Git, on Kestra Cloud or your own servers."
 
 choose:
-  title: "The short answer"
+  title: "Pipedream or Kestra?"
   kestra:
     title: "Choose Kestra if"
     list:
@@ -33,14 +33,14 @@ choose:
       - "You rely on a pre-built action for a niche SaaS app that has no Kestra plugin, and an HTTP call won't replace it."
 
 table:
-  title: "Kestra vs. Pipedream at a glance"
+  title: "How do Pipedream and Kestra compare, feature by feature?"
   rows:
     - label: "Status"
       competitor: "Maintenance mode, shuts down March 31, 2027"
       kestra: "Actively developed, open source under Apache 2.0"
     - label: "Hosting"
       competitor: "Pipedream cloud only"
-      kestra: "Kestra Cloud, self-hosted or air-gapped"
+      kestra: "Kestra Cloud, self-hosted or air-gapped (Kestra Enterprise)"
     - label: "Workflow format"
       competitor: "Built in the browser, JSON export"
       kestra: "YAML in Git, no-code editor, AI Copilot"
@@ -63,9 +63,31 @@ table:
       competitor: "1 credit per 30 seconds of compute"
       kestra: "Free open source; Kestra Cloud bills task runs"
 
+architecture:
+  title: "How are Pipedream and Kestra built?"
+  competitor:
+    title: "Pipedream: hosted steps"
+    text: "A workflow is a trigger followed by steps in Pipedream's builder. Each step runs on Pipedream's serverless runtime and exports its return value to the steps after it."
+    list:
+      - "HTTP, schedule and app-event triggers"
+      - "Code steps in Node.js, Python, Go or Bash"
+      - "Pre-built actions for SaaS apps"
+      - "Compute billed in credits, one per 30 seconds"
+  kestra:
+    title: "Kestra: declarative flows"
+    text: "A flow is a YAML file. Kestra validates it against each plugin's schema when you save it and shows the topology before anything runs."
+    list:
+      - "Webhook, schedule, event and flow triggers"
+      - "Script tasks for Node.js, Python, Go, Bash and more"
+      - "Outputs and files stored once and passed by reference"
+      - "Workers run on Kestra Cloud or your own servers"
+
 compare:
-  title: "A Pipedream workflow rebuilt in Kestra"
-  lead: "A webhook pulls the staff list and updates each account. Pipedream loops inside a code step. Kestra uses a Loop task, and the errors block alerts the owners if any call fails."
+  title: "What does the same workflow look like in each?"
+  lead: "The same workflow in both: a webhook, a call that fetches the staff list, an update per person and a Slack alert when a task fails."
+  cta:
+    label: "Get started with Kestra"
+    href: "/get-started"
   competitor:
     label: "Pipedream code step"
     file: "upsert_accounts.mjs"
@@ -118,7 +140,7 @@ compare:
           messageText: "Staff sync failed: {{ execution.id }}"
 
 proof:
-  title: "Teams that moved their integrations to Kestra"
+  title: "Which integration teams moved to Kestra?"
   stories:
     - story: modernizing-mission-critical-e-commerce-integrations-with-kestra
       industry: "E-commerce"
@@ -134,6 +156,24 @@ proof:
       stat: "2.5 million"
       label: "executions a month across more than 2,000 workflows."
 
+pairs:
+  - title: "How hard is it to move from Pipedream to Kestra?"
+    columns:
+      - label: "Leaving Pipedream"
+        brand: competitor
+        text: "The export holds each workflow's latest deployed version as JSON. Credentials, OAuth tokens, environment variables, secret props and data store contents stay behind, and every *.m.pipedream.net webhook URL stops working at shutdown."
+      - label: "Moving to Kestra"
+        brand: kestra
+        text: "Code steps move into script tasks in the same language. Triggers become Kestra triggers, pre-built actions become plugin tasks or HTTP requests, and data stores become KV Store entries. The <a href='/resources/migration/pipedream'>migration guide</a> plans the move in four stages."
+  - title: "What do licensing, pricing and self-hosting look like?"
+    columns:
+      - label: "Pipedream"
+        brand: competitor
+        text: "A hosted service with no self-hosted option. Workflows is billed in credits, one per 30 seconds of compute, and shuts down on March 31, 2027."
+      - label: "Kestra"
+        brand: kestra
+        text: "Apache 2.0 and free to self-host, with no limits on flows or executions. Kestra Cloud is billed on usage, and Kestra Enterprise is licensed per instance. Both are on the <a href='/pricing'>pricing page</a>."
+
 faqTitle: "Questions from Pipedream teams"
 
 commonQuestions:
@@ -144,8 +184,16 @@ commonQuestions:
   - question: "How do I migrate from Pipedream to Kestra?"
     answer: "Start on Kestra Cloud, or self-host Kestra Open Source or Enterprise. Export each project, triage the workflows (retire, merge, convert), then convert them one wave at a time. Each Pipedream trigger becomes a Kestra trigger, each code step a script task in the same language, each pre-built action a plugin task or an HTTP request, and each data store a KV Store namespace. The AI Copilot, or your own assistant through the Kestra MCP server, can draft a flow from an exported workflow for an engineer to review. Run old and new side by side, then repoint webhooks and retire the Pipedream version. The <a href='/resources/migration/pipedream'>Pipedream migration guide</a> covers each stage, and <a href='/resources/infrastructure/pipedream-alternatives'>Pipedream alternatives compared</a> sets Kestra against the other options."
   - question: "Can Kestra run my Pipedream Go and Python code steps?"
-    answer: "Yes. Kestra has script tasks for Node.js, Python, Go, Bash and other languages. The code from a Pipedream step runs with its dependencies, reading inputs from flow variables instead of the steps object and returning outputs instead of exporting them. Long or memory-heavy steps can run on a task runner in your own cloud account, where there is no shared execution time limit. The migration guide walks through a <a href='/resources/migration/pipedream#pd-compare-title'>full worked conversion</a>."
+    answer: "Yes. Kestra has script tasks for Node.js, Python, Go, Bash and other languages. The code from a Pipedream step runs with its dependencies, reading its inputs from flow variables and returning outputs to the flow. Long or memory-heavy steps can run on a task runner in your own cloud account, where there is no shared execution time limit. The migration guide walks through a <a href='/resources/migration/pipedream#pd-compare-title'>full worked conversion</a>."
   - question: "What happens to my Pipedream webhook URLs?"
     answer: "Every *.m.pipedream.net endpoint stops working when Workflows shuts down, so each sender, such as Stripe, GitHub or an internal system, has to be pointed at a new URL. In Kestra, a Webhook trigger exposes a URL per flow with a secret key. Plan the cutover per sender: run the Kestra flow in parallel, switch the URL in the sender, confirm executions arrive, then disable the Pipedream workflow. The <a href='/resources/migration/pipedream#pd-steps-title'>cutover plan</a> in the migration guide covers testing and promotion."
   - question: "How does Kestra pricing compare with Pipedream credits?"
-    answer: "Pipedream bills credits: one per 30 seconds of compute, and more when a workflow runs with extra memory. Kestra Open Source is free to self-host. Kestra Cloud bills task runs, and loops, conditions and triggers aren't counted. See <a href='/pricing'>pricing</a> for the editions."
+    answer: "Pipedream bills credits: one per 30 seconds of compute, and more when a workflow runs with extra memory. Kestra Open Source is free to self-host. Kestra Cloud bills task runs, and loops, conditions and triggers aren't counted. The <a href='/pricing'>pricing page</a> lists the editions."
+
+related:
+  alternatives: pipedream-alternatives
+  comparisons:
+    - n8n
+    - make
+    - zapier
+    - workato

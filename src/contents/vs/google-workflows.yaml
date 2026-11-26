@@ -1,249 +1,221 @@
-title: "Kestra vs. Google Workflows: Full Orchestration vs. GCP Service Coordination"
-description: "Compare Kestra vs Google Workflows: multi-cloud workflow orchestration with {totalPlugins}+ plugins vs Google Cloud's serverless HTTP-based service orchestration. See features, setup time, and use cases."
+title: "Google Workflows Alternative: Kestra Compared"
+description: "Compare Kestra and Google Cloud Workflows: steps that call APIs vs flows that also run code, the same BigQuery pipeline in both, limits, pricing and hosting."
 competitorName: Google Workflows
 category: Data Orchestration
-shortDescription: "GCP serverless HTTP service coordination vs. multi-cloud orchestration with {totalPlugins}+ plugins."
-seeHowTitle: "Orchestrate Beyond GCP Service Coordination"
-seeHowBody: "See how Kestra runs code directly, connects to {totalPlugins}+ plugins, and works across every cloud — without Cloud Functions."
+shortDescription: "Serverless step orchestration of Google Cloud APIs vs. YAML flows that call services and run code, on any cloud."
 
 brandColor:
   color: "#4285f4"
   gradient: "linear-gradient(90deg, #4285f4, #669df6, #aecbfa)"
 
 intro:
-  title: "Kestra vs. Google Workflows: Full Orchestration vs. GCP Service Coordination"
-  description: "Google Workflows is a clean, serverless way to coordinate Google Cloud services through HTTP calls. Kestra is what teams reach for when they need to run code directly, orchestrate across clouds, or build data pipelines that go beyond chaining API requests."
+  title: "Kestra vs. Google Workflows"
+  description: "Google Workflows is a serverless Google Cloud service that runs steps written in YAML or JSON, calling Google Cloud APIs and HTTP endpoints in the order you define. Kestra is an open-source orchestrator whose YAML flows call those same services and also run Python, SQL and shell code, on Google Cloud, other clouds or your own servers."
 
-philosophy:
-  mainTitle: Two Tools, Two Definitions of "Workflow"
-  kestra:
-    title: "Universal Orchestration: Code, Data, and Events"
-    description: "Open-source platform that runs code directly in isolated containers, orchestrates data pipelines, and reacts to events from any source. Define workflows in declarative YAML, bring scripts in any language, and connect to {totalPlugins}+ plugins across every major cloud and data tool."
-    subCardText: '"How do I orchestrate my data pipelines and infrastructure without locking into a single cloud?"'
+choose:
+  title: "Google Workflows or Kestra?"
   competitor:
-    title: GCP Service Coordination via HTTP
-    description: "Serverless Google Cloud service for orchestrating HTTP endpoints and GCP APIs. Workflows chains calls to Cloud Functions, Cloud Run services, and GCP APIs using a proprietary YAML/JSON syntax. Code runs in the services being called, not in Workflows itself."
-    shadowColor: "#E8F0FE"
-    subCardBg: "var(--ks-background-blue-light)"
-    subCardText: '"How do I coordinate my Cloud Functions and GCP services without managing infrastructure?"'
-
-businessValue:
-  mainTitle: "GCP Coordination Connects Your Cloud Services.<br />Workflow Orchestration Automates Your Business."
-  kestra:
-    title: Business-critical Workflows
+    title: "Google Workflows is the better fit if"
     list:
-      - Run Python, SQL, Bash, and R directly without wrapping in Cloud Functions
-      - Orchestrate across AWS, Azure, GCP, and on-premises in one platform
-      - "{totalPlugins}+ plugins covering databases, data warehouses, messaging, and more"
-      - Developer self-service with namespace isolation and RBAC
-      - Event-driven triggers from APIs, message queues, file arrivals, and webhooks
-  competitor:
-    title: GCP Service Orchestration
+      - "Your logic already lives in Cloud Run services and Google Cloud APIs, and you only need to call them in order."
+      - "You want nothing to operate and a bill counted in steps, with 5,000 internal and 2,000 external steps free each month."
+      - "Your workflows start from Eventarc events or Pub/Sub messages inside Google Cloud."
+  kestra:
+    title: "Choose Kestra if"
     list:
-      - Chain HTTP calls to Cloud Functions and Cloud Run services
-      - GCP-native scope only
-      - Proprietary Workflows DSL requires its own learning curve
-      - No direct code execution (logic must live in external services)
-      - Pricing per workflow step execution
-    shadowColor: "#E8F0FE"
-    bulletColor: "#4285F4"
-  footerText: "Google Workflows is the right choice if you're already running everything on GCP, your logic lives in Cloud Functions or Cloud Run, and you need lightweight HTTP-based coordination without managing any infrastructure. For teams that run code directly, work across clouds, or need a data pipeline tool with a rich plugin ecosystem, Kestra covers more ground without the GCP dependency."
+      - "You want to run Python, SQL, dbt or shell code as a step, with no service to deploy for each piece of logic."
+      - "Your steps hand each other files or result sets larger than a workflow's 512 KB of variable memory."
+      - "You orchestrate Google Cloud, other clouds and on-premises systems from one place."
 
-setupSpeed:
-  title: Time to First Workflow
-  subtitle: "Google Workflows requires a GCP project with billing enabled, enabling the Workflows API, creating a service account with appropriate IAM roles, and deploying the Cloud Functions or Cloud Run services your workflow will call before the workflow itself can do meaningful work."
-  kestra:
-    title:
-      one: "~5"
-      two: Minutes
-    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Blueprint, run it. No cloud account required, no IAM to configure."
-    command: |
-      curl -o docker-compose.yml \
-      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
-      docker compose up
+table:
+  title: "How do Google Workflows and Kestra compare, feature by feature?"
+  rows:
+    - label: "Workflow definition"
+      competitor: "YAML or JSON steps, up to 128 KB of source"
+      kestra: "YAML flows, checked against plugin schemas on save"
+    - label: "Running code"
+      competitor: "None in the workflow; logic runs in the services it calls"
+      kestra: "Python, SQL, dbt, shell, Node.js and more as tasks"
+    - label: "Integrations"
+      competitor: "Connectors for Google Cloud APIs, plus HTTP calls to any endpoint"
+      kestra: "{totalPlugins}+ plugins, including BigQuery, GCS, Pub/Sub, Dataproc and Vertex AI, plus HTTP"
+    - label: "Data between steps"
+      competitor: "512 KB for all variables; HTTP responses up to 2 MB"
+      kestra: "Task outputs, with files kept in internal storage and passed by URI"
+    - label: "Triggers"
+      competitor: "Cloud Scheduler, Eventarc events, Pub/Sub messages and API calls"
+      kestra: "Schedules with backfills, webhooks, flow triggers, and GCS or Pub/Sub triggers"
+    - label: "Parallelism"
+      competitor: "Up to 10 branches per parallel step and 20 concurrent branches or iterations per execution"
+      kestra: "Parallel and Loop tasks, spread across workers"
+    - label: "Operations"
+      competitor: "Serverless, with no charge while idle"
+      kestra: "Self-hosted on Docker or Kubernetes, or managed on Kestra Cloud"
+    - label: "Execution history"
+      competitor: "Kept for 90 days after an execution completes"
+      kestra: "Kept in your database until a purge task removes it"
+    - label: "Pricing"
+      competitor: "Billed per internal and external step after a monthly free tier"
+      kestra: "No per-step fees in open source; Kestra Cloud billed on usage"
+    - label: "License"
+      competitor: "Proprietary Google Cloud service"
+      kestra: "Apache 2.0"
 
-      # Open localhost:8080
-      # Pick a Blueprint, run it. Done.
-    lang: sh
+proof:
+  title: "Which teams run Google Cloud pipelines on Kestra?"
+  stories:
+    - story: datamesh-at-scale-increased-its-data-production-by-900percent
+      industry: "Retail"
+      stat: "+900%"
+      label: "data production at Leroy Merlin on Google Cloud, after Cloud Composer and self-hosted Airflow both fell short."
+    - story: gorgias-using-declarative-data-engineering-orchestration-with-kestra
+      industry: "SaaS"
+      stat: "20,000+"
+      label: "executions a month across more than 70 workflows, running dbt on BigQuery and syncing the results."
+    - story: boosted-productivity-slashed-costs-and-accelerated-delivery
+      industry: "Advertising"
+      stat: ">90%"
+      label: "lower toolchain costs on Kestra Cloud on Google Cloud, leaving almost entirely BigQuery compute."
+
+architecture:
+  title: "How are Google Workflows and Kestra built?"
+  lead: "Google Workflows orchestrates services that already exist. Kestra calls services too, and runs code on its own workers."
   competitor:
-    title:
-      one: "~30"
-      two: Minutes
-    description: "Requires a GCP project with billing, enabling the Workflows API, creating a service account with IAM bindings, and deploying the Cloud Functions or Cloud Run services your workflow will invoke."
-    shadowColor: "#E8F0FE"
-    command: |
-      # 1. Enable Workflows API
-      gcloud services enable workflows.googleapis.com
-
-      # 2. Create service account and grant IAM roles
-      gcloud iam service-accounts create workflows-sa
-      gcloud projects add-iam-policy-binding $PROJECT_ID \
-        --member="serviceAccount:workflows-sa@$PROJECT_ID.iam.gserviceaccount.com" \
-        --role="roles/workflows.invoker"
-
-      # 3. Deploy your logic as a Cloud Function or Cloud Run service
-      # 4. Write the workflow YAML and deploy
-      gcloud workflows deploy my-workflow \
-        --source=workflow.yaml \
-        --service-account=workflows-sa@$PROJECT_ID.iam.gserviceaccount.com
-    lang: sh
-
-easeOfUse:
-  title: Workflows Your Whole Team Can Read
+    title: "Google Workflows: steps that call services"
+    text: "A workflow is a list of steps that assign variables, branch, loop and call HTTP endpoints or connectors. Workflows keeps each execution's state while it waits on a call, a callback or a sleep, for up to a year."
+    list:
+      - "Connectors wrap Google Cloud APIs and wait on long-running operations"
+      - "try, retry and except blocks handle errors per step"
+      - "Subworkflows split a definition into reusable parts"
+      - "Callbacks pause an execution until an HTTP request arrives"
   kestra:
-    title: "Kestra: Run Code Directly, No Wrappers Required"
-    description: "Write Python, SQL, or Bash inline in your YAML. The <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> generates workflows from a prompt, or start from our library of Blueprints. No Cloud Functions to deploy, no service accounts to wire up per task."
-    code: |
-      id: daily_etl
-      namespace: analytics
+    title: "Kestra: flows that call services and run code"
+    text: "A flow is a YAML file of tasks. Workers run plugin tasks against APIs and run scripts in containers, and the executor stores the state and outputs of every task run."
+    list:
+      - "Python, SQL and shell scripts run with their own dependencies"
+      - "Task runners send heavy jobs to Cloud Run, Google Batch or Kubernetes"
+      - "Namespaces hold each team's flows, files and secrets"
+      - "Subflows reuse one flow inside another"
 
-      triggers:
-        - id: daily
-          type: io.kestra.plugin.core.trigger.Schedule
-          cron: "0 6 * * *"
-
-      tasks:
-        - id: run_etl
-          type: io.kestra.plugin.scripts.python.Script
-          script: |
-            import pandas as pd
-            from google.cloud import bigquery
-            client = bigquery.Client()
-            df = client.query("SELECT * FROM dataset.orders").to_dataframe()
-            df.to_csv("/tmp/daily_report.csv")
-
-        - id: notify
-          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-          url: "{{ secret('SLACK_WEBHOOK') }}"
-          messageText: "Daily ETL complete"
+compare:
+  title: "What does the same BigQuery pipeline look like in each?"
+  lead: "The same pipeline in both: a BigQuery insert, a call to a Cloud Run service with retries, and an alert if either step fails."
+  cta:
+    label: "Get started with Kestra"
+    href: "/get-started"
+  competitor:
+    label: "Google Workflows definition"
+    file: "orders_daily.yaml"
     lang: yaml
-  competitor:
-    title: "Google Workflows: HTTP Calls to Services That Hold Your Logic"
-    description: "Google Workflows does not run code. Each task calls an HTTP endpoint (Cloud Function or Cloud Run service) that you deploy and maintain separately. The orchestration YAML wires together those calls; the business logic lives elsewhere."
-    shadowColor: "#E8F0FE"
     code: |
       main:
         steps:
-          - run_etl:
-              call: http.post
-              args:
-                url: https://us-central1-myproject.cloudfunctions.net/run-etl
-                auth:
-                  type: OIDC
-              result: etl_result
-          - check_etl:
-              switch:
-                - condition: ${etl_result.code == 200}
-                  next: notify
-                - condition: true
-                  next: fail_step
-          - notify:
-              call: http.post
-              args:
-                url: https://us-central1-myproject.cloudfunctions.net/notify-slack
-                auth:
-                  type: OIDC
-                body:
-                  message: "Daily ETL complete"
-              result: notify_result
-          - fail_step:
-              raise: ${etl_result}
-    lang: yaml
-
-visualPreview:
-  mainTitle: One Platform for Your Entire Technology Stack
+          - run_pipeline:
+              try:
+                steps:
+                  - build_daily_orders:
+                      call: googleapis.bigquery.v2.jobs.insert
+                      args:
+                        projectId: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+                        body:
+                          configuration:
+                            query:
+                              query: INSERT INTO shop.daily_orders SELECT * FROM shop.orders WHERE order_date = CURRENT_DATE()
+                              useLegacySql: false
+                      result: query_job
+                  - refresh_service:
+                      try:
+                        call: http.post
+                        args:
+                          url: https://orders-sync-abc123-uc.a.run.app/refresh
+                          auth:
+                            type: OIDC
+                          body:
+                            job_id: ${query_job.jobReference.jobId}
+                      retry: ${http.default_retry}
+              except:
+                as: e
+                steps:
+                  - post_alert:
+                      call: http.post
+                      args:
+                        url: https://alerts.example.com/hooks/orders
+                        body:
+                          text: orders_daily failed
+                  - fail:
+                      raise: ${e}
   kestra:
-    description: "Orchestrate data pipelines, infrastructure operations, business processes, and event-driven workflows across any cloud. Every execution is logged, traceable, and replayable with full visibility into inputs, outputs, and task-level logs."
-  competitor:
-    description: "Designed for chaining GCP services and HTTP endpoints. Works well for lightweight GCP-native automation where logic already lives in Cloud Functions or Cloud Run. Not built for data pipelines, cross-cloud workflows, or executing code outside the GCP HTTP model."
-    shadowColor: "#E8F0FE"
+    code: |
+      id: orders_daily
+      namespace: company.analytics
 
-featureGrid:
-  title: Kestra vs Google Workflows at a Glance
-  tableData:
-    - feature: Primary use case
-      kestra: Universal workflow orchestration
-      competitor: GCP service and HTTP endpoint coordination
-    - feature: Code execution
-      kestra: Direct (Python, SQL, Bash, R in containers)
-      competitor: Via HTTP calls to Cloud Functions or Cloud Run only
-    - feature: Workflow definition
-      kestra: Declarative YAML (Git-native)
-      competitor: Proprietary Workflows DSL (YAML/JSON)
-    - feature: Plugin ecosystem
-      kestra: "{totalPlugins}+ plugins (databases, warehouses, messaging & more)"
-      competitor: GCP APIs and HTTP endpoints only
-    - feature: Cloud support
-      kestra: "Multi-cloud (AWS, Azure, GCP, on-premises)"
-      competitor: Google Cloud only
-    - feature: Data pipeline support
-      kestra: "✓ Native support"
-      competitor: Not designed for this
-    - feature: Self-service for non-engineers
-      kestra: "✓ Kestra Apps"
-      competitor: Not designed for this
-    - feature: Infrastructure automation
-      kestra: "✓ Native support"
-      competitor: GCP infrastructure only (via API calls)
-    - feature: Open source
-      kestra: "✓ Apache 2.0"
-      competitor: Proprietary Google Cloud service
-    - feature: Deployment options
-      kestra: "Self-hosted, Kestra Cloud, or air-gapped"
-      competitor: Google Cloud managed only
+      tasks:
+        - id: build_daily_orders
+          type: io.kestra.plugin.gcp.bigquery.Query
+          sql: |
+            INSERT INTO shop.daily_orders
+            SELECT * FROM shop.orders WHERE order_date = CURRENT_DATE()
 
-testimonials:
-  - quote: "Kestra is the unifying layer for our data and workflows. You can start small, but then there is no limit to the possibilities and scalability of such an open architecture."
-    author: "Julien Henrion, Head of Data Engineering @ Leroy Merlin"
-    kpis:
-      - value: "+900%"
-        name: "In data production"
-      - value: "+250"
-        name: "Active users"
-      - value: "+5,000"
-        name: "Workflows created"
-    storyLink: "/stories/leroy-merlin-france"
+        - id: refresh_service
+          type: io.kestra.plugin.gcp.function.HttpFunction
+          httpMethod: POST
+          url: https://orders-sync-abc123-uc.a.run.app/refresh
+          httpBody:
+            job_id: "{{ outputs.build_daily_orders.jobId }}"
+          retry:
+            type: exponential
+            interval: PT1S
+            maxInterval: PT1M
+            delayFactor: 1.25
+            maxAttempts: 6
 
-platformStrengths:
-  title: Kestra Is Built for What Engineering Teams Actually Orchestrate
-  features:
-    - title: Code runs here, not somewhere else
-      description: "Kestra executes Python, SQL, Bash, and R directly in isolated containers. No Cloud Functions to deploy, no Cloud Run services to maintain. Write logic inline in your YAML or reference external scripts; Kestra handles the execution environment."
-    - title: "{totalPlugins}+ plugins, not just HTTP"
-      description: "Connect to BigQuery, Snowflake, dbt, Airbyte, Kafka, S3, PostgreSQL, and {totalPlugins}+ other tools with purpose-built plugins. Each plugin handles authentication, error handling, and output parsing. An HTTP call can reach any API, but a plugin understands the API."
-    - title: Not tied to one cloud
-      description: "Run workflows across AWS, Azure, GCP, and on-premises in a single platform. Deploy Kestra on GCP if that is your primary cloud, and still orchestrate workloads in your data center or another provider. Google Workflows cannot leave GCP."
+      errors:
+        - id: post_alert
+          type: io.kestra.plugin.core.http.Request
+          method: POST
+          uri: "{{ secret('ALERT_WEBHOOK_URL') }}"
+          body: '{"text": "orders_daily failed: {{ execution.id }}"}'
 
-decisionGuide:
-  mainTitle: The Right Tool for the Right Job
-  kestra:
-    title: Choose Kestra When
-    list:
-      - "You need to run code directly (Python scripts, SQL queries, Bash jobs) without deploying and maintaining Cloud Functions for each task."
-      - "Your workflows span more than one cloud, or include on-premises systems that Google Workflows cannot reach."
-      - "You're building data pipelines that need native connections to databases, data warehouses, or tools in the modern data stack."
-      - "Non-engineers need to trigger and monitor workflows without writing Workflows DSL or managing GCP IAM."
-      - "Open source and self-hosted deployment matter for compliance or cost reasons."
-  competitor:
-    title: Choose Google Workflows When
-    list:
-      - "Everything you orchestrate is already on GCP and lives in Cloud Functions or Cloud Run services."
-      - "You need zero infrastructure to manage and are comfortable with per-step GCP pricing."
-      - "Your use case is lightweight HTTP-based coordination between GCP services, not data pipeline orchestration."
-      - "Deep GCP-native integrations (Cloud Tasks, Pub/Sub, Eventarc) are central to how your system is designed."
-    shadowColor: "#E8F0FE"
-    bulletColor: "#4285F4"
+pairs:
+  - title: "How hard is it to move from Google Workflows to Kestra?"
+    columns:
+      - label: "Leaving Google Workflows"
+        brand: competitor
+        text: "The workflow definition is often short, because the logic sits in the Cloud Run services and functions it calls, each with its own deployment, service account and IAM bindings. Expressions use the Workflows syntax and standard library, so each one is rewritten."
+      - label: "Moving to Kestra"
+        brand: kestra
+        text: "Each call step becomes an HTTP, Cloud Run or plugin task, connectors such as BigQuery map to Kestra's GCP plugins, and try, retry and except become task retries and an errors block. Code from small single-purpose functions can move into script tasks, and services other systems depend on stay where they are."
+  - title: "What do licensing, pricing and self-hosting look like?"
+    columns:
+      - label: "Google Workflows"
+        brand: competitor
+        text: "A proprietary Google Cloud service with no self-hosted version. Each month, 5,000 internal steps and 2,000 external HTTP steps are free. After that, internal and external steps are billed separately, and every retry attempt counts as a step. The Cloud Run services and APIs a workflow calls are billed on their own."
+      - label: "Kestra"
+        brand: kestra
+        text: "Apache 2.0 and free to self-host, with no limits on flows or executions. Kestra Cloud is billed on usage, and Kestra Enterprise is licensed per instance. Both are on the <a href='/pricing'>pricing page</a>."
+
+faqTitle: "Questions from Google Workflows teams"
 
 commonQuestions:
-  - question: How do I migrate from Google Workflows to Kestra?
-    answer: "Translate each Workflows step to a Kestra task. HTTP call steps that invoke Cloud Functions can often become Script tasks in Kestra, moving the logic directly into the workflow definition and eliminating the Cloud Function entirely. Steps that call GCP APIs can use Kestra's GCP plugins instead of raw HTTP. Run both platforms in parallel during transition: existing Workflows handle current jobs while new ones go to Kestra."
-  - question: Can Kestra still use Google Cloud services?
-    answer: "Yes. Kestra has native plugins for BigQuery, Cloud Storage, Pub/Sub, Cloud SQL, Dataflow, and other GCP services. You can also deploy Kestra on GCP using GKE or Cloud Run for the server, and Cloud SQL (PostgreSQL) for state. The difference is that Kestra is not limited to GCP: a single workflow can query BigQuery, write to S3, and trigger a job in Azure without leaving the platform."
-  - question: Does Kestra run without a GCP account?
-    answer: "Yes. Kestra runs on any infrastructure with Docker or Kubernetes. Two commands and you have a working local instance. For production, deploy to any cloud, your own data center, or Kestra Cloud. If GCP is your primary platform, Kestra deploys there just as easily on GKE or Cloud Run, using Cloud SQL as the state backend."
-  - question: How does Kestra handle the equivalent of Google Workflows' error handling and retries?
-    answer: "Kestra supports task-level retry policies (fixed, exponential backoff, configurable attempt count), error handlers that run on task failure, and flow-level error tasks for cleanup and alerting. You define these inline in the YAML alongside the task they protect. Google Workflows handles retries through try/except blocks in its DSL syntax; Kestra's approach keeps retry logic declarative and colocated with the task."
-  - question: What about Google Workflows' pricing model?
-    answer: "Google Workflows charges per workflow step execution: $0.01 per 1,000 steps for internal steps and $0.025 per 1,000 steps for external HTTP calls. For workflows with many steps running frequently, costs accumulate. Kestra open source is free to self-host with no per-step fees. Kestra Enterprise and Kestra Cloud use a subscription model. Calculate your expected step volume against the per-step rate before choosing."
-  - question: Can Kestra handle the same lightweight service coordination use cases as Google Workflows?
-    answer: "Yes. Kestra's HTTP task calls any external endpoint with configurable auth, headers, body, and retry logic. If your current Google Workflows definition is primarily chaining HTTP calls, the equivalent Kestra flow is straightforward to write. You can also run those HTTP calls alongside direct code execution, database queries, and file operations in the same workflow, without deploying separate Cloud Functions for each piece of logic."
+  - question: "Does Kestra run on Google Cloud?"
+    answer: "Yes. Kestra runs on GKE or a Compute Engine VM, with Cloud SQL for PostgreSQL as its database and Cloud Storage as internal storage. Plugins cover BigQuery, Cloud Storage, Pub/Sub, Dataproc, Firestore and Vertex AI."
+  - question: "Can we keep our Cloud Run services?"
+    answer: "Yes. A flow calls them with an HTTP task, or with the GCP HttpFunction task, which authenticates with a Google service account. Functions that only exist to wrap a short script can become script tasks instead."
+  - question: "Which costs less, per-step pricing or Kestra?"
+    answer: "For a few small workflows, the Workflows free tier and per-step price cost very little. Kestra open source has no per-step or per-execution fee, so the cost is the infrastructure it runs on, while Kestra Cloud is billed on usage. In both cases the services each step calls are billed separately."
+  - question: "Can a Kestra flow wait for a person or an outside system?"
+    answer: "Yes. The Pause task holds an execution until someone resumes it from the UI or the API, and a Webhook trigger starts a flow when another system calls its URL. Google Workflows covers the same need with callbacks."
+  - question: "How does Kestra authenticate to Google Cloud?"
+    answer: "GCP tasks use a service account key stored as a Kestra secret, impersonate another service account, or use the default credentials of the worker. Kestra Enterprise can also read secrets from Google Secret Manager."
+  - question: "Can Kestra translate our existing workflow definitions?"
+    answer: "Partly. Give a workflow's YAML to the AI Copilot, or to your own coding assistant through the Kestra MCP server, and review the flow it drafts before you run it. While you migrate, a Kestra flow can run an existing workflow and wait for its result with gcloud workflows run in the gcloud CLI task."
+  - question: "How much load can Kestra take?"
+    answer: "Kestra's <a href='/docs/performance/benchmark'>benchmark</a> puts the open-source edition on Postgres at 4,000 executions a minute and Kestra Enterprise at 7,000. Workers scale horizontally, and Leroy Merlin runs more than 5,000 flows on Kestra."
+
+related:
+  alternatives: google-workflows-alternatives
+  comparisons:
+    - aws-step-functions
+    - azure-data-factory
+    - databricks-workflows
+    - snowflake-tasks

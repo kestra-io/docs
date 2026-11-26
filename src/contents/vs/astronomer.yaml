@@ -1,238 +1,245 @@
-title: "Kestra vs. Astronomer: Orchestrate Beyond Python Pipelines"
-description: "Compare Kestra vs Astronomer (Astro): YAML-first universal orchestration vs managed Apache Airflow. See features, workflow scope, and what changes when you drop the Python-first constraint."
+title: "Astronomer Alternative: Kestra vs Astronomer"
+description: "Compare Kestra and Astronomer's Astro: managed Airflow billed per deployment and worker vs YAML flows you run anywhere. Architecture, setup, code and migration."
 competitorName: Astronomer
 category: Data Orchestration
-shortDescription: "Managed Apache Airflow for Python data pipelines vs. universal YAML orchestration in any language."
-seeHowTitle: "Getting Started with Declarative Orchestration"
-seeHowBody: "See how Kestra can simplify your data pipelines—and scale beyond Python-first orchestration."
+shortDescription: "Airflow as a managed service on Astro vs. YAML flows you self-host or run on Kestra Cloud."
+
+guideCta:
+  title: "Moving off Astronomer?"
+  description: "Your DAGs are Airflow DAGs. The Airflow migration guide maps DAGs, operators and schedules to Kestra and plans the move in waves."
+  cta:
+    label: "Read the Airflow migration guide"
+    href: "/resources/migration/airflow"
 
 brandColor:
   color: "#59418D"
 
 intro:
-  title: "Kestra vs. Astronomer: Orchestrate Beyond Python Pipelines"
-  description: "Astronomer makes Airflow easier to run. Kestra makes orchestration easier to use. Astro removes the infrastructure burden of Apache Airflow. Kestra removes the Python-only constraint entirely, and extends orchestration beyond data pipelines to infrastructure, business processes, and AI workflows."
+  title: "Kestra vs. Astronomer"
+  description: "Astronomer runs Apache Airflow as a managed service called Astro on AWS, Google Cloud and Azure, with a private-cloud edition for your own environment. Kestra is an open-source orchestrator for YAML flows that you self-host or run on Kestra Cloud."
 
-philosophy:
-  mainTitle: Two Approaches to Managed Orchestration
-  kestra:
-    title: "Universal Orchestration: Any Language, Any Workflow"
-    description: "Declarative YAML orchestration layer that runs workflows in any language without wrapping your code in framework-specific abstractions. Data pipelines, infrastructure automation, and business processes run from one control plane. The workflow definition is configuration, not code."
-    subCardText: '"How do we orchestrate data, infrastructure, and business workflows without locking our team into Python?"'
+choose:
+  title: "Astronomer or Kestra?"
   competitor:
-    title: Managed Apache Airflow
-    description: "A fully managed SaaS platform built on top of Apache Airflow. Astro removes the operational overhead of running Airflow yourself: no infrastructure to manage, enterprise RBAC and SSO included, cloud-native scaling. Workflows are still Python DAGs, and the Python-first constraint comes with them."
-    shadowColor: "#C8D6FF"
-    subCardBg: "var(--ks-background-blue-light)"
-    subCardText: '"How do we run Airflow at scale without managing the infrastructure ourselves?"'
-
-businessValue:
-  mainTitle: "Managed Airflow vs. Universal Workflow Orchestration"
-  kestra:
-    title: Universal Workflows
+    title: "Astronomer is the better fit if"
     list:
-      - "Data pipelines, infrastructure automation, business processes, AI workflows"
-      - "Multi-language: Python, SQL, Bash, Go, Node.js, R"
-      - "Event-driven at core: respond to real events, not just schedules"
-      - "Self-service for non-engineers via Kestra Apps"
-      - "Open source core with no SaaS dependency"
-  competitor:
-    title: Managed Data Pipelines
+      - "You want to keep writing Airflow DAGs and hand Airflow's operations to a vendor, on AWS, Google Cloud or Azure."
+      - "You rely on Airflow tooling around the core, such as the Astro CLI for local runs and Cosmos for dbt projects."
+      - "Tasks must run in your own network while the vendor runs scheduling, which Astro offers as Remote Execution on dedicated clusters."
+  kestra:
+    title: "Choose Kestra if"
     list:
-      - "Apache Airflow, fully managed on Astronomer's cloud"
-      - "Python DAGs: the Airflow mental model, managed for you"
-      - "Data engineering scope"
-      - "Enterprise RBAC, SSO, SOC2, HIPAA"
-      - "Premium SaaS pricing"
-    shadowColor: "#C8D6FF"
-    bulletColor: "#5B74F7"
-  footerText: "Astronomer is a strong choice if your team is deeply invested in Airflow, you want managed infrastructure, and your workloads are Python-based data pipelines. Kestra is the right choice if you need multi-language teams contributing in YAML rather than Python, or orchestration that spans data, infrastructure, and business workflows without a SaaS dependency."
+      - "Several teams need workflows, and you don't want each of them to learn Airflow and its Python APIs first."
+      - "You want to self-host without a commercial contract, with no limit on flows or executions."
+      - "Your workflows include infrastructure jobs and business processes alongside data pipelines."
 
-setupSpeed:
-  title: Time to First Workflow
-  subtitle: "Astronomer offers both a managed cloud service (Astro) and a self-hosted option. This comparison uses their recommended cloud path—install the Astro CLI, create an account, initialize a project, and deploy to the Astro platform."
-  kestra:
-    title:
-      one: "~5"
-      two: Minutes
-    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Blueprint, run it. No cloud account, no CLI to install, no Python environment to configure."
-    command: |
-      curl -o docker-compose.yml \
-      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
-      docker compose up
+table:
+  title: "How do Astronomer and Kestra compare, feature by feature?"
+  rows:
+    - label: "Workflow definition"
+      competitor: "Python DAGs, often with the TaskFlow API; YAML through the open-source DAG Factory"
+      kestra: "YAML flows, with a no-code editor and AI Copilot"
+    - label: "Product"
+      competitor: "Managed Airflow as Astro, or Astro Private Cloud in your environment"
+      kestra: "Open-source orchestrator, self-hosted or Enterprise, or Kestra Cloud"
+    - label: "Pricing"
+      competitor: "Billed per Deployment hour and worker hour; quoted on request"
+      kestra: "Open source at no cost; Kestra Cloud by usage; Enterprise licensed per instance"
+    - label: "Unit of isolation"
+      competitor: "One Deployment per Airflow environment, grouped in Workspaces"
+      kestra: "Namespaces in one instance, with RBAC and tenants"
+    - label: "Where tasks run"
+      competitor: "Astro, Celery or Kubernetes executor"
+      kestra: "Workers, plus task runners for Kubernetes, AWS Batch, Google Batch and Azure Batch"
+    - label: "Shipping code"
+      competitor: "astro deploy builds an image; astro deploy --dags ships DAG files only"
+      kestra: "Save flows through the UI, API, Git sync or Terraform"
+    - label: "Local development"
+      competitor: "Astro CLI starts Postgres, scheduler, webserver and triggerer containers"
+      kestra: "One Docker Compose file starts Kestra and Postgres"
+    - label: "dbt"
+      competitor: "Cosmos renders a dbt project as Airflow tasks and task groups"
+      kestra: "dbt CLI and dbt Cloud tasks run a project or a selection"
+    - label: "License"
+      competitor: "Astro is commercial; Airflow, Cosmos and DAG Factory are Apache 2.0"
+      kestra: "Apache 2.0"
 
-      # Open localhost:8080
-      # Pick a Blueprint, run it. Done.
-    lang: sh
+proof:
+  title: "Which data teams chose Kestra over Airflow and Astronomer?"
+  stories:
+    - story: riverside-orchestrates-dbt-cloud-analytics-stack-with-kestra
+      industry: "Media tech"
+      stat: "4"
+      label: "orchestrators evaluated, Astronomer among them, before Riverside's analytics team picked Kestra Cloud."
+    - story: apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra
+      industry: "Technology"
+      stat: "200"
+      label: "ML engineers run App Store and Apple Music ETL on Kestra after their team retired Airflow over its operational overhead."
+
+architecture:
+  title: "How are Astronomer and Kestra built?"
+  lead: "Astro gives each Airflow environment its own Deployment on a cluster that Astronomer runs. Kestra puts every team's flows in namespaces on one instance."
   competitor:
-    title:
-      one: "~20"
-      two: Minutes
-    description: "Install the Astro CLI, create an Astronomer account, initialize a project with a template, and start local Airflow. Production workflows require deploying to the Astro cloud platform. Still Python DAGs once you're running."
-    shadowColor: "#C8D6FF"
-    command: |
-      brew install astro
-      astro dev init --from-template learning-airflow
-      astro dev start
-
-      # Now write your DAGs in Python...
-      # Production: deploy to Astro cloud (account required)
-    lang: sh
-
-easeOfUse:
-  title: Workflows Your Whole Team Can Read
+    title: "Astronomer: Airflow Deployments on Astro"
+    text: "An Astro Deployment is one Airflow environment in its own namespace on an Astro cluster, either standard and multi-tenant or dedicated. You push code to each Deployment with the Astro CLI, by hand or from CI/CD."
+    list:
+      - "Each Deployment runs one version of Astro Runtime, Astronomer's Airflow distribution"
+      - "Workspaces group Deployments and set who can reach them"
+      - "Workers scale to zero when idle and are metered while tasks run"
+      - "Remote Execution keeps task code, data and secrets in your network"
   kestra:
-    title: "Kestra: Readable by your whole team"
-    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. No Python knowledge required to understand or modify a workflow."
+    title: "Kestra: namespaces on one instance"
+    text: "Flows are YAML documents grouped in namespaces, on an instance you host or on Kestra Cloud. Adding a flow adds no DAG parsing, because Kestra reads the YAML and runs no user code to load it."
+    list:
+      - "Namespaces hold their own files, KV pairs and secrets"
+      - "Executors and workers scale out as separate services"
+      - "Worker groups route tasks to specific machines"
+      - "Every change to a flow is kept as a revision"
+
+compare:
+  title: "What does the same API load look like in each?"
+  lead: "The same pipeline in both: pull exchange rates from an API in Python, load them into Postgres, retry each task twice, and run once a day."
+  cta:
+    label: "Get started with Kestra"
+    href: "/get-started"
+  competitor:
+    label: "Astro project DAG"
+    file: "dags/exchange_rates.py"
+    lang: python
     code: |
-      id: daily_etl
-      namespace: data.production
+      import requests
+      from pendulum import datetime
+
+      from airflow.providers.postgres.hooks.postgres import PostgresHook
+      from airflow.sdk import dag, task
+
+
+      @dag(
+          start_date=datetime(2026, 1, 1),
+          schedule="@daily",
+          catchup=False,
+          default_args={"retries": 2},
+      )
+      def exchange_rates():
+          @task
+          def extract():
+              response = requests.get("https://api.example.com/rates", timeout=30)
+              response.raise_for_status()
+              return response.json()["rates"]
+
+          @task
+          def load(rates: dict):
+              hook = PostgresHook(postgres_conn_id="warehouse")
+              hook.insert_rows(
+                  table="raw.exchange_rates",
+                  rows=list(rates.items()),
+                  target_fields=["currency", "rate"],
+              )
+
+          load(extract())
+
+
+      exchange_rates()
+  kestra:
+    code: |
+      id: exchange_rates
+      namespace: company.finance
+
+      retry:
+        type: constant
+        interval: PT5M
+        maxAttempts: 3
 
       tasks:
         - id: extract
           type: io.kestra.plugin.scripts.python.Script
+          dependencies:
+            - requests
+          outputFiles:
+            - rates.csv
           script: |
-            # Paste your existing extraction logic here
-            result = {"records": 1000}
+            import csv
+            import requests
 
-        - id: transform
-          type: io.kestra.plugin.dbt.cli.DbtCLI
-          commands:
-            - dbt run --select staging
+            response = requests.get("https://api.example.com/rates", timeout=30)
+            response.raise_for_status()
+            with open("rates.csv", "w", newline="") as f:
+                csv.writer(f).writerows(response.json()["rates"].items())
 
-        - id: notify
-          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-          url: "{{ secret('SLACK_WEBHOOK') }}"
-          messageText: "ETL complete: {{ outputs.extract.vars.result.records }} records processed"
+        - id: load
+          type: io.kestra.plugin.jdbc.postgresql.CopyIn
+          url: "{{ secret('POSTGRES_JDBC_URL') }}"
+          username: "{{ secret('POSTGRES_USER') }}"
+          password: "{{ secret('POSTGRES_PASSWORD') }}"
+          from: "{{ outputs.extract.outputFiles['rates.csv'] }}"
+          table: raw.exchange_rates
+          format: CSV
 
       triggers:
         - id: daily
           type: io.kestra.plugin.core.trigger.Schedule
-          cron: "0 0 * * *"
-    lang: yaml
+          cron: "@daily"
+
+setup:
+  title: "What does it take to get running?"
+  lead: "Both start on a laptop with containers."
   competitor:
-    title: "Astronomer: Airflow DAGs, professionally managed"
-    description: "Astro provides a managed environment, AI-assisted debugging, and pipeline observability on top of Airflow. The authoring experience is still Python DAGs. Modifying orchestration logic requires Python, and non-Python contributors can view but not author or edit workflows."
-    shadowColor: "#C8D6FF"
+    title: "Astronomer"
+    tag: "Local Airflow"
+    text: "The <a href='https://www.astronomer.io/docs/astro/cli/get-started-cli'>Astro CLI quickstart</a> starts four containers for development: Postgres, the scheduler, the webserver and the triggerer. Production runs on Astro or on Astro Private Cloud."
     code: |
-      from airflow import DAG
-      from airflow.operators.python import PythonOperator
-      from airflow.operators.bash import BashOperator
-      from airflow.providers.slack.operators.slack_webhook import SlackWebhookOperator
-      from datetime import datetime
-
-      def extract_data(**context):
-          # extraction logic
-          return {"records": 1000}
-
-      with DAG('daily_etl', start_date=datetime(2024, 1, 1), schedule='@daily') as dag:
-          extract = PythonOperator(
-              task_id='extract',
-              python_callable=extract_data,
-          )
-          transform = BashOperator(
-              task_id='transform',
-              bash_command='dbt run --select staging',
-          )
-          notify = SlackWebhookOperator(
-              task_id='notify',
-              slack_webhook_conn_id='slack_default',
-              message='ETL complete',
-          )
-          extract >> transform >> notify
-    lang: python
-
-visualPreview:
-  mainTitle: One Platform for Your Entire Technology Stack
+      brew install astro
+      astro dev init --from-template learning-airflow
+      astro dev start
   kestra:
-    description: "Orchestrate across data pipelines, infrastructure operations, business processes, and AI workflows in one unified platform. Event-driven at its core, with native triggers for S3, webhooks, Kafka, and message queues."
-  competitor:
-    description: "A managed Airflow platform with enterprise-grade infrastructure. Excellent for Python-based data pipelines with observability and SLA tracking. Infrastructure automation and business process workflows are possible via Python operators but are not first-class use cases."
-    shadowColor: "#C8D6FF"
+    title: "Kestra"
+    tag: "Database included"
+    text: "One Compose file starts Kestra and its Postgres database. Open localhost:8080, pick a blueprint and run it. Production runs the same image on Kubernetes with the <a href='/docs/installation/kubernetes'>Kestra Helm chart</a>."
+    code: |
+      curl -o docker-compose.yml https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
 
-featureGrid:
-  title: Kestra vs. Astronomer at a Glance
-  tableData:
-    - feature: Workflow definition
-      kestra: Declarative YAML
-      competitor: Python DAGs (managed Airflow)
-    - feature: Languages supported
-      kestra: "Any (Python, SQL, R, Bash, Go, Node.js)"
-      competitor: "Python-first (Bash/SQL via operators)"
-    - feature: Infrastructure management
-      kestra: "Self-hosted or Kestra Cloud"
-      competitor: "Fully managed on Astronomer's cloud"
-    - feature: Architecture
-      kestra: Event-driven at core
-      competitor: "Schedule-first (Airflow 3 Asset Watchers added event triggers)"
-    - feature: Primary use case
-      kestra: Universal workflow orchestration
-      competitor: Data pipeline orchestration
-    - feature: Open source
-      kestra: "✓ Full open-source core, self-hostable"
-      competitor: "Apache Airflow is OSS; Astro platform is SaaS"
-    - feature: Multi-tenancy
-      kestra: "Namespace isolation + RBAC out-of-box"
-      competitor: "RBAC and SSO via Astro enterprise"
-    - feature: Self-service for non-engineers
-      kestra: "✓ Kestra Apps"
-      competitor: "Observability UI only, no self-service authoring"
-    - feature: Infrastructure automation
-      kestra: "✓ Native support"
-      competitor: "Possible via Python operators, not a primary use case"
+pairs:
+  - title: "How hard is it to move from Astronomer to Kestra?"
+    columns:
+      - label: "Leaving Astronomer"
+        brand: competitor
+        text: "An Astro project is standard Airflow on Astro Runtime, so DAGs, operators and TaskFlow functions are as tied to Airflow as they are anywhere else. Astro-specific pieces to replace include Deployment environment variables, connections, CI/CD jobs that call astro deploy, and dbt projects rendered by Cosmos."
+      - label: "Moving to Kestra"
+        brand: kestra
+        text: "TaskFlow function bodies run in Python script tasks with their own dependencies, and values passed through XCom become task outputs. While DAGs move in waves, a Kestra flow can start the ones still on Astro through the Airflow REST API with a Deployment API token. The <a href='/resources/migration/airflow'>Airflow migration guide</a> covers the mapping and the cutover."
+  - title: "What do licensing, pricing and self-hosting look like?"
+    lead: "Astro is a commercial service on top of open-source Airflow. Kestra's core is open source, with paid Cloud and Enterprise editions."
+    columns:
+      - label: "Astronomer"
+        brand: competitor
+        text: "Astro is sold directly and through the AWS, Azure, Google Cloud and Snowflake marketplaces. Deployments are billed while they run and workers while tasks run. Pricing is quoted on request, including Astro Private Cloud, the self-hosted edition."
+      - label: "Kestra"
+        brand: kestra
+        text: "Apache 2.0 and free to self-host, with no limits on flows or executions. Kestra Cloud is billed on usage, and Kestra Enterprise is licensed per instance. Both are on the <a href='/pricing'>pricing page</a>."
 
-testimonials:
-  - quote: "We switched from Airflow because we want engineers solving problems, not coding orchestration. Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML."
-    author: "Senior Engineering Manager @ Apple (ML team)"
-    kpis:
-      - value: "200"
-        name: Engineers onboarded
-      - value: "2x"
-        name: Faster workflow creation
-      - value: "0"
-        name: Pipeline failures
-    storyLink: "/stories/apple"
-
-platformStrengths:
-  title: Kestra Is Built for Teams Who Ship More Than Data Pipelines
-  features:
-    - title: No Python lock-in
-      description: "Bring your Python scripts, SQL queries, Shell commands, and R notebooks. Kestra orchestrates all of them in YAML without wrapping anything in decorators or operators. Engineers write code in the language that fits the task, not the language the orchestrator demands."
-    - title: Event-driven from the start
-      description: "Native triggers for S3 file arrivals, Kafka messages, webhooks, database changes, and API callbacks. Kestra was built event-driven from day one, and unlimited event-driven workflows are available in the open-source version without additional configuration."
-    - title: Orchestrate beyond data pipelines
-      description: "Data pipelines, infrastructure provisioning, and business process automation run from one control plane. When your data team needs to trigger an infrastructure job or a business process after a pipeline completes, it's a native YAML trigger, not a workaround."
-
-decisionGuide:
-  mainTitle: The Right Tool for the Right Job
-  kestra:
-    title: Choose Kestra When
-    list:
-      - "Your team writes Python, SQL, Bash, and dbt, and you want orchestration that doesn't force everyone into Python."
-      - "You need event-driven workflows that respond to real-time events, not just cron schedules."
-      - "You want to orchestrate data, infrastructure, and business processes from one platform without adding more tools."
-      - "Non-engineers need to trigger or monitor workflows without writing code."
-      - "You want an open-source core you can run on your own infrastructure without a SaaS dependency."
-  competitor:
-    title: Choose Astronomer When
-    list:
-      - "Your team is deeply invested in Apache Airflow: custom operators, trained staff, and existing DAG libraries."
-      - "You want managed Airflow infrastructure without running it yourself, and you're willing to pay the SaaS premium."
-      - "Python-native data pipeline authoring is the right model for your data engineering team."
-      - "Enterprise compliance requirements (SOC2, HIPAA, SSO) are non-negotiable and you need them out-of-the-box."
-    shadowColor: "#C8D6FF"
-    bulletColor: "#5B74F7"
+faqTitle: "Questions from Astronomer teams"
 
 commonQuestions:
-  - question: How do I migrate from Astronomer/Airflow to Kestra?
-    answer: "Kestra doesn't require you to refactor your business logic. Extract your Python logic from Airflow DAG files and run it directly as a Script task in Kestra. Your SQL queries, Shell scripts, and Python code work as-is. Define orchestration flow in YAML. Most teams migrate incrementally, running both platforms in parallel using Kestra's HTTP trigger to bridge them during transition. For a detailed breakdown of both upgrade and migration paths, see our <a href='/resources/airflow-2-eol-whitepaper'>Airflow 2 EOL guide</a>."
-  - question: Does Kestra offer the same enterprise features as Astronomer?
-    answer: "Yes. Kestra Enterprise includes RBAC with namespace isolation, SSO/SAML, audit logs for every execution, secrets management integrations (AWS Secrets Manager, HashiCorp Vault, Azure Key Vault), and SOC2 Type II compliance. The difference is that Kestra runs on your own infrastructure (your cloud or on-prem), rather than requiring Astronomer's SaaS platform."
-  - question: Astronomer manages Airflow infrastructure for me. What does Kestra offer?
-    answer: "Kestra Cloud is a fully managed version of Kestra for teams who want the same hands-off infrastructure experience. For teams that prefer self-hosted, the open-source version runs on Docker Compose or Kubernetes in under 5 minutes. You're not dependent on a SaaS vendor for production uptime."
-  - question: Does Kestra support the same data pipeline use cases as Airflow on Astronomer?
-    answer: "Yes. Kestra orchestrates ETL and ELT pipelines, dbt models, data quality checks, warehouse operations, and file transfers. With {totalPlugins}+ plugins, it covers the same AWS, GCP, Azure, Snowflake, BigQuery, Databricks, Kafka, and data tool integrations as Airflow's provider ecosystem, defined in declarative YAML instead of Python operator classes."
-  - question: What about Astronomer's observability and lineage features?
-    answer: "Kestra provides built-in execution logs, real-time metrics, Gantt charts, and distributed tracing for every workflow. For data lineage, Kestra integrates with OpenLineage and your existing data catalog. Astronomer's pipeline lineage and SLA monitoring are purpose-built Airflow features; Kestra's observability is workflow-level and spans all task types, not just data pipelines."
-  - question: Can Kestra and Astronomer run in parallel during migration?
-    answer: "Yes. Teams commonly run both platforms during transition. Kestra can trigger Airflow DAGs via Astronomer's REST API, letting you migrate incrementally without a hard cutover. Start new workflows in Kestra, migrate existing pipelines on your timeline, and keep Astronomer running until you're confident in the switch."
+  - question: "Can Kestra run alongside Astro during a migration?"
+    answer: "Yes. The Kestra Airflow plugin's TriggerDagRun task starts a DAG on an Astro Deployment through the Airflow REST API, using an API token in the request headers, and can wait for the run to finish. New workflows go to Kestra first, and existing DAGs follow in batches."
+  - question: "Is there a managed Kestra, like Astro is for Airflow?"
+    answer: "Yes. Kestra Cloud runs Kestra for you and is billed on usage. Teams that need to keep everything in their own environment run the open-source edition or Kestra Enterprise on Kubernetes, VMs or air-gapped servers."
+  - question: "Can tasks run in our own network, as with Astro Remote Execution?"
+    answer: "Yes. Kestra workers connect to the worker controller over gRPC, so they can run in a separate network or cloud account as long as they can reach it. In Kestra Enterprise, worker groups route specific tasks or triggers to those workers."
+  - question: "We use Cosmos for dbt. How does dbt run in Kestra?"
+    answer: "The dbt plugin runs dbt commands such as dbt build in a container, with the project read from namespace files or cloned from Git, and a dbt Cloud task triggers jobs in dbt Cloud. A dbt run is one task in the flow, so the project's model graph stays in dbt."
+  - question: "How do teams share one Kestra instance?"
+    answer: "On Astro, separation usually means one Deployment per team or environment, each billed and upgraded on its own. In Kestra, teams share an instance and own their namespaces, with RBAC, secrets and variables scoped to each one. Kestra Enterprise adds SSO, audit logs and tenants for stronger separation."
+  - question: "Does Kestra have an AI assistant?"
+    answer: "Yes. The AI Copilot writes and edits flows in the editor, and the Kestra MCP server lets your own coding assistant draft flows, for example from an existing DAG file. An engineer reviews the result before it runs."
+  - question: "How far does Kestra scale?"
+    answer: "In the <a href='/docs/performance/benchmark'>Kestra benchmark</a>, the open-source edition on Postgres handles 4,000 executions a minute and Kestra Enterprise handles 7,000. Apple's ML team runs ETL for 200 engineers on Kestra."
+
+related:
+  alternatives: astronomer-alternatives
+  comparisons:
+    - airflow
+    - amazon-mwaa
+    - cloud-composer
+    - dagster
