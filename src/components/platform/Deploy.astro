@@ -139,12 +139,12 @@ const OPTIONS = [
                 --card: var(--lift);
             }
 
-            & + li {
+            &:not(:first-child) {
                 border-left: var(--rule);
             }
 
             @include media-breakpoint-down(lg) {
-                &:nth-child(3) {
+                &:nth-child(odd) {
                     border-left: 0;
                 }
 
