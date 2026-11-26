@@ -22,6 +22,12 @@ faq:
     answer: "Kestra is not a direct replacement for Ansible's host-level configuration management. Rather, Kestra acts as a universal orchestration control plane that can invoke Ansible playbooks as part of broader, multi-step workflows spanning data pipelines, cloud APIs, and AI agents. Teams use Kestra alongside Ansible to coordinate when and how playbooks run within a larger automated system."
   - question: "What are the alternatives to Ansible Automation Platform?"
     answer: "If you want to keep your playbooks, the main options are AWX (free, no release since July 2024), Ascender (a maintained build of AWX), Semaphore UI, and orchestrators such as Kestra that run your playbooks and replace the controller. Our guide to <a href='/resources/infrastructure/ansible-tower-alternatives'>Ansible Tower and automation controller alternatives</a> compares them, and <a href='/vs/ansible-automation-platform'>Kestra vs Ansible Automation Platform</a> goes deeper on Kestra."
+resourceCtaOverride:
+  href: /get-started
+  label: Get Started
+  action: get_started
+  tagline: "Running Ansible next to Terraform and scripts? Orchestrate them in one workflow."
+  taglineEnd: "Ansible, Terraform and your scripts, orchestrated from one place."
 ---
 
 Ansible has long been a cornerstone of IT automation, lauded for its simplicity, agentless architecture, and human-readable playbooks. Yet, as DevOps evolves towards cloud-native, GitOps-driven, and polyglot environments, many organizations find themselves seeking alternatives. The imperative, Python-centric nature of Ansible, while powerful, can introduce friction when orchestrating complex, cross-domain workflows involving data, AI, and diverse infrastructure components.
@@ -29,6 +35,8 @@ Ansible has long been a cornerstone of IT automation, lauded for its simplicity,
 This article explores 13 top alternatives to Ansible for modern DevOps. We'll delve into tools that address the evolving needs of platform engineers, offering more declarative, event-driven, or specialized approaches to infrastructure as code, configuration management, and end-to-end workflow orchestration. By understanding their core strengths and trade-offs, you can identify the best fit for your team's unique automation challenges.
 
 Before you compare, decide what you are actually replacing. If the pain is host configuration itself, Terraform, Puppet, Chef, and Salt below are the candidates. If your playbooks work and what hurts is everything around them (scheduling, approvals, run history, chaining a playbook with the Terraform plan before it and the ticket after it), you don't need to rewrite anything: [Kestra orchestrates the playbooks you already have](#1-kestra-the-declarative-orchestration-control-plane), and our guides to [AWX alternatives](/resources/infrastructure/awx-alternatives) and [Ansible Tower and automation controller alternatives](/resources/infrastructure/ansible-tower-alternatives) compare the control planes built for that job.
+
+::resource-cta
 
 ## Understanding the Need for Ansible Alternatives
 
@@ -148,7 +156,7 @@ AWX is the open-source upstream project for Red Hat's Ansible Automation Platfor
 
 - **Strengths:** AWX offers centralized management, job scheduling, RBAC, and a graphical inventory for your Ansible playbooks. It makes Ansible more accessible to teams and easier to integrate into broader CI/CD pipelines. It is free and community-supported. AWX hasn't shipped a release since 24.6.1 (July 2, 2024), and in November 2026 its maintainers removed the release pipeline ([AWX release status](/resources/infrastructure/awx-release-status)).
 - **Weaknesses:** As an upstream project, AWX lacks the enterprise support, hardening, and some of the advanced features (like analytics and certified content collections) found in the commercial Red Hat product.
-- **Best for:** Teams that want a free web UI and API for Ansible and can live with the release pause. Teams planning beyond it should see [AWX alternatives](/resources/infrastructure/awx-alternatives).
+- **Best for:** Teams that want a free web UI and API for Ansible and can live without new releases. Teams planning beyond it should see [AWX alternatives](/resources/infrastructure/awx-alternatives).
 
 For an enterprise perspective, see our comparison of [Ansible Automation Platform vs Kestra](/vs/ansible-automation-platform). If you already run AWX and are hitting its limits, our guide to [AWX alternatives](/resources/infrastructure/awx-alternatives) compares the options in detail. If you run Ansible Tower or the automation controller in Red Hat Ansible Automation Platform, see our guide to [Ansible Tower and automation controller alternatives](/resources/infrastructure/ansible-tower-alternatives).
 

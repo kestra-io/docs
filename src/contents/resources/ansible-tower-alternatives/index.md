@@ -19,6 +19,12 @@ faq:
     answer: "Yes. Every alternative in this guide calls ansible-core, so roles, collections and playbooks keep working from the same Git repositories. What changes is the controller configuration around them: job templates, surveys, schedules, credentials and inventories have to be recreated in the new tool, which is where most of the migration effort goes."
   - question: "Can Kestra replace Ansible Tower?"
     answer: "Kestra replaces the controller layer, not Ansible. It runs existing playbooks with its Ansible plugin, triggers them from schedules, webhooks or events, and adds approvals, retries and execution history. Tower job templates become flows and surveys become inputs. Kestra Enterprise tracks the hosts your playbooks run against as assets, and the inventory file lives in Git or is built inside the flow."
+resourceCtaOverride:
+  href: /blueprints/ansible-playbook-from-git
+  label: See your playbook run in Kestra
+  action: playbook
+  tagline: "Running Tower or the automation controller? Your playbooks run unchanged in Kestra."
+  taglineEnd: "Keep your playbooks. Replace the controller."
 ---
 
 > **TL;DR:** Ansible Tower is now the automation controller inside Red Hat Ansible Automation Platform, and AWX [hasn't shipped a release since July 2024](/resources/infrastructure/awx-release-status). Because every alternative runs ansible-core, playbooks move unchanged: the choice is which control plane schedules, secures and audits them, from AAP and Ascender to Semaphore UI, Rundeck, Spacelift and Kestra.
@@ -28,6 +34,8 @@ If you still run Ansible Tower, you are running a product Red Hat no longer sell
 The good news is that playbooks are portable. Every tool in this guide calls `ansible-core` underneath, so the automation a team has built and tested over years keeps working. What changes is the control plane that schedules it, secures credentials, enforces access, and keeps the audit trail.
 
 **The leading Ansible Tower alternatives in 2026 are Kestra, Red Hat Ansible Automation Platform, AWX, Ascender, Semaphore UI, Rundeck, and Spacelift, from like-for-like controllers to orchestrators that run playbooks alongside Terraform, ITSM tickets, and event triggers.**
+
+::resource-cta
 
 This guide covers what happened to Tower, the criteria for choosing a replacement, and seven alternatives with a "best for" for each.
 
@@ -160,15 +168,15 @@ Its main strengths are vendor support and certified content collections that Red
 
 AWX is the free, open-source upstream project for automation controller and long the default for teams that wanted Tower's features without a subscription: web UI, RBAC, job scheduling and a REST API.
 
-As of November 2026, releases are paused. The last official release was 24.6.1 in July 2024, and the team is refactoring AWX into a service-oriented architecture, with the web UI moved to a separate project. There is no release date for the new version, so running AWX today means staying on a version that is over two years old or tracking the unreleased `devel` branch.
+As of November 2026, AWX releases are no longer published: on November 16, the maintainers removed the release pipeline. The last official release was 24.6.1 in July 2024, and the team has refactored AWX into a service-oriented architecture, with the web UI moved to a separate project. No new release is planned, so running AWX today means staying on a version that is over two years old or tracking the unreleased `devel` branch.
 
-**Best for:** Teams and individuals who need Tower's features at no cost, are comfortable managing the infrastructure themselves, and accept running a July 2024 release until the refactored version ships. Explore more [AWX alternatives](/resources/infrastructure/awx-alternatives).
+**Best for:** Teams and individuals who need Tower's features at no cost, are comfortable managing the infrastructure themselves, and accept running a July 2024 release with no newer release planned. Explore more [AWX alternatives](/resources/infrastructure/awx-alternatives).
 
 ## 4. Ascender
 
 Ascender is a build of AWX maintained by CIQ. It is open-source (Apache 2.0) and aims to be what many AWX users want today: an AWX-based controller that keeps shipping releases. Because it tracks the AWX codebase, it offers a nearly identical user experience.
 
-The key difference is that CIQ keeps packaging releases ([25.6.3 shipped on October 28, 2026](https://github.com/ctrliq/ascender/releases)), which gives AWX users an upgrade path while upstream releases are paused. CIQ also sells a commercial offering, Ascender Pro. Its scope remains Ansible-centric, making it a direct controller replacement rather than a broader orchestration platform.
+The key difference is that CIQ keeps packaging releases ([25.6.3 shipped on October 28, 2026](https://github.com/ctrliq/ascender/releases)), which gives AWX users an upgrade path while upstream no longer publishes releases. CIQ also sells a commercial offering, Ascender Pro. Its scope remains Ansible-centric, making it a direct controller replacement rather than a broader orchestration platform.
 
 **Best for:** Existing AWX users looking for a like-for-like replacement that is actively maintained and released.
 
@@ -202,7 +210,7 @@ Spacelift is organized around "stacks," which typically map to one repository pa
 |---|---|---|---|---|---|---|
 | **Kestra** | Open-Source (Apache 2.0) + Enterprise | Docker, K8s, VM, Air-gapped | Yes | Yes (event triggers, approvals, plugins for other tools) | Active | Free OSS; Enterprise not priced per managed node |
 | **AAP** | Commercial | VM, OpenShift, Air-gapped, managed service on AWS | Yes | Partly (EDA; Automation Orchestrator announced) | Active | Per managed node |
-| **AWX** | Open-Source (Apache 2.0) | K8s | Yes | No | Paused (since July 2024) | Free |
+| **AWX** | Open-Source (Apache 2.0) | K8s | Yes | No | No longer released (last in July 2024) | Free |
 | **Ascender** | Open-Source (Apache 2.0) + Commercial | K8s | Yes | No | Active | Free + Commercial Support |
 | **Semaphore UI** | Open-Source (MIT) + Commercial | Docker, K8s | Yes | Yes (Terraform, Scripts) | Active | Free + paid plans |
 | **Rundeck** | Open-Source (Apache 2.0) + Commercial | Docker, K8s, VM | Yes | Yes (Scripts, Commands) | Active | Free + Commercial |
@@ -213,7 +221,7 @@ Spacelift is organized around "stacks," which typically map to one repository pa
 The best choice depends on your team's primary goal: are you replacing a controller or adopting a broader automation strategy?
 
 *   If you are standardized on Red Hat and need **vendor support and certified content**, the clear path is to upgrade to **Ansible Automation Platform**.
-*   If you want a **free, like-for-like controller** to run your playbooks, **Ascender** or **Semaphore UI** are the most stable choices. AWX is an option only if you can accept the current release pause.
+*   If you want a **free, like-for-like controller** to run your playbooks, **Ascender** or **Semaphore UI** are the most stable choices. AWX is an option only if you can run without new releases.
 *   If you are a platform or infrastructure team that needs to orchestrate playbooks **alongside Terraform, ITSM, events, and manual approvals**, an orchestration platform like **Kestra** is a better fit. See how it handles [infrastructure automation with Kestra](/infra-automation).
 *   If you are already on GitHub Enterprise, **GitHub Actions** can run playbooks directly from your repositories in response to Git events, but it lacks the operational focus, launch forms, and centralized job view of a dedicated controller.
 
