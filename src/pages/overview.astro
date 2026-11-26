@@ -106,3 +106,9 @@ const FAQ = [
     document.addEventListener("astro:page-load", watchDarkSections)
     watchDarkSections()
 </script>
+
+<style lang="scss">
+    :global(section.enterprise) {
+        border-top: 1px solid var(--ks-border-primary);
+    }
+</style>
