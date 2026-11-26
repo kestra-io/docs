@@ -10,7 +10,7 @@ author:
 image: ./claude-execute-flow.webp
 ---
 
-Kestra has worked with AI agents since 2.0, when [MCP Flows](/blogs/2026-09-04-kestra-2-0-flows-as-agent-tools) turned any flow into a tool your agents can call. [Kestra 2.1](/blogs/release-2-1) opens up the rest of the platform. The [Kestra MCP Server](/docs/develop-with-ai/kestra-mcp-server) gives Claude Code, Codex, Cursor, or any MCP client Kestra's own operations as tools, and the [Approval](/docs/workflow-components/approvals) task gives a flow a real yes or no from a person. Together, an agent starts the work and a person makes the decision.
+AI agents have been part of Kestra since the beginning, and each release gives them more to work with, from AI Agent tasks inside flows to [MCP Flows](/blogs/2026-09-04-kestra-2-0-flows-as-agent-tools) that turn any flow into a tool. [Kestra 2.1](/blogs/release-2-1) builds the [Kestra MCP Server](/docs/develop-with-ai/kestra-mcp-server) into Kestra itself: Claude Code, Codex, Cursor, or any MCP client gets Kestra's own operations as tools, and the [Approval](/docs/workflow-components/approvals) task gives a flow a real yes or no from a person. Together, an agent starts the work and a person makes the decision.
 
 This post covers what each feature does, then shows them in one run: Claude Code gets a Proxmox VE sandbox to test an app, a manager approves it in Slack, and the sandbox is deleted with a usage report. The flow is a [blueprint](/blueprints/proxmox-app-sandbox-with-approval) you can import.
 
