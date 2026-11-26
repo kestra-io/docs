@@ -96,6 +96,7 @@ A green run every morning is a dated, auditable statement that no flow in the te
 
 ### Going further
 
+- **Use the GitGuardian plugin.** The new [GitGuardian plugin](https://kestra.io/plugins/plugin-gitguardian) calls the GitGuardian API straight from Kestra: `scan.Scan` checks files for hardcoded secrets without a Docker container, `scan.CreateIncidents` records them on a custom source, and triggers react to new incidents, honeytoken events, and audit log entries. It is a Business plugin.
 - **Open incidents in GitGuardian.** On the Business and Enterprise plans, add `--source-uuid <your custom source>` to the ggshield command and each finding becomes a dashboard incident with an owner, a severity, and the usual remediation workflow. In the blueprint, this is the `create_incidents` input.
 - **Richer alerts.** Send a Block Kit payload through the same webhook to get a header with the counts, one line per flow with the detectors found, and buttons to the report, the execution, and your GitGuardian incidents.
 - **Gate deploys instead of auditing nightly.** Swap the Schedule trigger for a Webhook trigger and call it from the CI job that deploys your flows.
