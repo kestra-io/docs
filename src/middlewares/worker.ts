@@ -119,14 +119,15 @@ const EDGE_CACHE_SWR = 60 * 60 * 24
 // Their HTML is public and request-independent (any content that varies —
 // `?version=` on plugins, `?q=` on pattern pages — is part of the URL and
 // therefore part of the cache key), so it is safe to serve from Cloudflare's
-// edge cache. The search popup's plugin index is built from the same API
-// data, and would otherwise re-read it on every popup open. Other
+// edge cache. The search popup's plugin and blueprint indexes are built from
+// the same API data, and would otherwise re-read it on every popup open. Other
 // `prerender = false` routes (/api/*, /t/*, careers apply, cloud-early-access,
 // hubspot-submit, …) are intentionally excluded.
 function isEdgeCacheablePage(url: URL): boolean {
     const path = url.pathname
     return (
         path === "/api/plugins-search" ||
+        path === "/api/blueprints-search" ||
         path === "/plugins" ||
         path.startsWith("/plugins/") ||
         path === "/blueprints" ||

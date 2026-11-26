@@ -12,14 +12,12 @@
 </template>
 
 <script setup lang="ts">
-    import { defineComponent, getCurrentInstance, h, nextTick, onBeforeUnmount, onMounted, provide, ref } from "vue"
-    import { createI18n } from "vue-i18n"
+    import { nextTick, onBeforeUnmount, onMounted, ref } from "vue"
     import { Topology } from "@kestra-io/topology"
     import "@kestra-io/topology/standalone.css"
     import "@kestra-io/topology/style.css"
-    import { TASK_ICON_INJECTION_KEY } from "@kestra-io/design-system"
     import { useVueFlow } from "@vue-flow/core"
-    import TaskIcon from "~/components/common/TaskIcon.vue"
+    import { useTopologyIsland } from "~/composables/useTopologyIsland"
 
     const props = defineProps<{
         flowGraph: any
@@ -27,17 +25,7 @@
         id: string | number
     }>()
 
-    /** The graph passes the whole task-icon contract (icons, loadIcon...); the docs icon only
-     *  needs the class, so the rest is dropped instead of landing on the DOM. */
-    const GraphTaskIcon = defineComponent({
-        inheritAttrs: false,
-        props: { cls: { type: String, default: "" }, onlyIcon: { type: Boolean, default: false } },
-        setup: (iconProps) => () => h(TaskIcon, { cls: iconProps.cls, onlyIcon: iconProps.onlyIcon }),
-    })
-    provide(TASK_ICON_INJECTION_KEY, GraphTaskIcon)
-
-    // The graph translates its labels; only this island needs vue-i18n.
-    getCurrentInstance()?.appContext.app.use(createI18n({ legacy: false, locale: "en", messages: {} }))
+    useTopologyIsland()
 
     const rootRef = ref<HTMLDivElement | null>(null)
     const { fitView } = useVueFlow(String(props.id))

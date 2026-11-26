@@ -189,6 +189,62 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div
+                                            v-else-if="result.blueprint"
+                                            class="result blueprint-result"
+                                        >
+                                            <div class="result-text">
+                                                <h5>{{ result.title }}</h5>
+                                                <p
+                                                    v-if="
+                                                        result.blueprint
+                                                            .description
+                                                    "
+                                                    class="result-description"
+                                                >
+                                                    {{
+                                                        result.blueprint
+                                                            .description
+                                                    }}
+                                                </p>
+                                                <div class="blueprint-meta">
+                                                    <span
+                                                        v-for="icon in result.blueprint.icons.slice(
+                                                            0,
+                                                            ROW_ICONS,
+                                                        )"
+                                                        :key="icon"
+                                                        class="blueprint-icon"
+                                                        ><img
+                                                            :src="icon"
+                                                            alt=""
+                                                            width="18"
+                                                            height="18"
+                                                            loading="lazy"
+                                                    /></span>
+                                                    <span
+                                                        v-if="
+                                                            result.blueprint
+                                                                .icons.length >
+                                                            ROW_ICONS
+                                                        "
+                                                        class="blueprint-more"
+                                                        >+{{
+                                                            result.blueprint
+                                                                .icons.length -
+                                                            ROW_ICONS
+                                                        }}</span
+                                                    >
+                                                    <span
+                                                        v-for="tag in result
+                                                            .blueprint.tags"
+                                                        :key="tag"
+                                                        class="category-tag"
+                                                        >{{ tag }}</span
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div v-else class="result">
                                             <div class="w-100">
                                                 <span class="type">{{
@@ -351,6 +407,43 @@
                                     </section>
                                 </div>
                                 <div
+                                    class="rounded-3 w-100 plugin-detail blueprint-detail"
+                                    v-else-if="selectedItem?.blueprint"
+                                >
+                                    <h5>{{ selectedItem.title }}</h5>
+                                    <div class="plugin-categories">
+                                        <span
+                                            v-for="tag in selectedItem.blueprint
+                                                .tags"
+                                            :key="tag"
+                                            class="category-tag"
+                                            >{{ tag }}</span
+                                        >
+                                    </div>
+                                    <p class="plugin-detail-description">
+                                        {{ selectedItem.blueprint.description }}
+                                    </p>
+                                    <div class="topology-slot">
+                                        <TopologyPreview
+                                            :key="selectedItem.blueprint.id"
+                                            :id="selectedItem.blueprint.id"
+                                            :icons="
+                                                selectedItem.blueprint.icons
+                                            "
+                                            :focus="
+                                                selectedItem.blueprint
+                                                    .focusTasks
+                                            "
+                                        />
+                                    </div>
+                                    <a
+                                        :href="resultHref(selectedItem)"
+                                        class="btn btn-sm btn-primary align-self-start"
+                                        @click="close"
+                                        >Open blueprint</a
+                                    >
+                                </div>
+                                <div
                                     class="rounded-3 w-100"
                                     v-else-if="selectedItem"
                                 >
@@ -428,7 +521,11 @@
     import AiChatDialog from "~/components/ai/AiChatDialog.vue"
     import KSAIImg from "../docs/assets/ks-ai.svg"
     import { defineAsyncComponent } from "vue"
+    import { ROW_ICONS } from "~/utils/search/blueprints"
 
+    const TopologyPreview = defineAsyncComponent(
+        () => import("~/components/layout/search/TopologyPreview.vue"),
+    )
 </script>
 
 <script>
@@ -442,6 +539,10 @@
     import { prepareSearchResults } from "~/utils/searchResults"
     import { markRaw } from "vue"
     import {
+        blueprintsSearchResults,
+        loadBlueprintsIndex,
+    } from "~/utils/search/blueprints"
+    import {
         loadPluginsIndex,
         pluginsSearchResults,
     } from "~/utils/search/plugins"
@@ -454,6 +555,15 @@
             load: loadPluginsIndex,
             search: (indexes, query) =>
                 pluginsSearchResults(indexes.PLUGINS, query),
+        },
+        BLUEPRINTS: {
+            load: loadBlueprintsIndex,
+            search: (indexes, query) =>
+                blueprintsSearchResults(
+                    indexes.BLUEPRINTS,
+                    indexes.PLUGINS ?? [],
+                    query,
+                ),
         },
     }
 
@@ -1138,6 +1248,78 @@
             padding: 0.1rem 0.5rem;
             font-weight: 600;
             white-space: nowrap;
+        }
+        .blueprint-detail {
+            > * {
+                flex-shrink: 0;
+            }
+
+            h5 {
+                line-height: 1.25rem;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+            }
+
+            .plugin-categories {
+                height: 1.5rem;
+                overflow: hidden;
+            }
+
+            .plugin-detail-description {
+                line-height: 1.3125rem;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+            }
+
+            .topology-slot {
+                height: 460px;
+            }
+        }
+        // Undoes the modal's 16px `.icon-wrapper` size: the topology's task icons fill their node.
+        .topology-preview .icon-wrapper {
+            width: 100%;
+            height: 100%;
+            margin-right: 0;
+        }
+        .blueprint-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.35rem;
+
+            .blueprint-icon {
+                width: 26px;
+                height: 26px;
+                border: $block-border;
+                border-radius: 6px;
+                background: $white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                img {
+                    object-fit: contain;
+                }
+            }
+
+            .blueprint-more {
+                font-size: $font-size-xs;
+                color: var(--ks-content-secondary);
+            }
+
+            .category-tag {
+                background: var(--ks-background-tag-category);
+                color: var(--ks-content-tag-category);
+                padding: 0.125rem 0.5rem;
+                border-radius: 40px;
+                font-size: $font-size-xs;
+                font-weight: 600;
+                white-space: nowrap;
+            }
         }
         .result-description {
             color: var(--ks-content-secondary);
