@@ -1,7 +1,7 @@
 ---
 title: 2.1.0
 h1: What Changed in Kestra 2.1.0 and How to Migrate
-description: Migration guide for upgrading from Kestra 2.0 to 2.1.0, covering the concurrency limit API, removed settings and impersonate permissions, deprecated server CLI commands, queue configuration keys, asset relations, asset write timing, namespace binding scope, dbt asset types, webhook responses, flow output types, and restarting on another revision.
+description: Migration guide for upgrading from Kestra 2.0 to 2.1.0, covering the concurrency limit API, removed settings and impersonate permissions, deprecated server CLI commands, queue configuration keys, asset relations, asset write timing, namespace binding scope, dbt asset types, webhook responses, flow output types, restarting on another revision, and the audit log history endpoint.
 sidebarTitle: 2.1.0
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 2.1.0
@@ -35,6 +35,7 @@ If you upgrade from a 2.0 version earlier than 2.0.8, also check the [2.0.0 migr
 | [Asset write timing](./asset-write-timing) (EE) | Tasks or flows that write the same declared asset concurrently, status filters on `active`, and API clients reading `assetEmits` | Expect `WARNING` on the task that finds the asset locked, include `pending` and `updating` in status filters, and read lineage from the relations API. |
 | [dbt asset types](./dbt-asset-types) (EE) | Asset triggers, `AssetShipper` mappings, and declared inputs that match dbt assets on the `Table` type | Match on `DbtModel`, `DbtSeed`, or `DbtSnapshot` instead. Existing dbt assets are retyped on their next run. |
 | [Webhook responses without `wait`](./webhook-response-without-wait) | Webhook triggers that set `responseCode` without `wait: true` | The immediate response now uses `responseCode`. If it reads `outputs`, set `wait: true` or remove it: otherwise the webhook responds with `500`. |
+| [Audit log history endpoint](./auditlog-history-endpoint) (EE) | API clients and scripts that call `GET /api/v1/{tenant}/auditlogs/history/{detailId}` | Call `GET /api/v1/{tenant}/auditlogs/history` with filters on the resource type, ID, and namespace, and read the paged `results`. The old endpoint is removed. |
 | [Restart on another revision deprecated](./restart-revision-deprecated) | API clients, scripts, and `kestractl` commands that restart executions on another revision | Replay the execution on the revision you want. The deprecated parameters will be removed in 2.2. |
 | [Flow output types](./flow-output-types) | Flow outputs typed `SELECT`, `MULTISELECT`, `EMAIL`, `FORM`, or `REUSABLE_INPUTS` | Change the type to `STRING`, or `ARRAY` for a list. Existing flows still run, but saving them fails until you do. |
 

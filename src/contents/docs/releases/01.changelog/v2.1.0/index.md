@@ -140,3 +140,4 @@ Each breaking change has a dedicated migration guide. See the [2.1 migration gui
 | Helm worker group selector (EE) | [Guide](../../../11.migration-guide/v2.1.0/helm-worker-group-selector/index.md) |
 | Flow output types | [Guide](../../../11.migration-guide/v2.1.0/flow-output-types/index.md) |
 | Restart on another revision deprecated | [Guide](../../../11.migration-guide/v2.1.0/restart-revision-deprecated/index.md) |
+| Audit log history endpoint replaced (EE) | [Guide](../../../11.migration-guide/v2.1.0/auditlog-history-endpoint/index.md) |
