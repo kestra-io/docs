@@ -4,6 +4,9 @@
 /api/docs-search
   Content-Type: application/json
 
+/api/blogs-search
+  Content-Type: application/json
+
 /.well-known/mcp.json
   Content-Type: application/json
 

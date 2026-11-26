@@ -1,4 +1,5 @@
 import type { SearchResult } from "~/utils/searchResults"
+import { withFullTextMatches } from "~/utils/search/fullText"
 import { fetchJson, loadOnce } from "~/utils/search/loaders"
 import { includesAll, MAX_RESULTS, searchTokens } from "~/utils/search/matching"
 
@@ -145,12 +146,21 @@ function docsHome(docs: DocsIndex) {
     )
 }
 
-export function docsSearchResults(docs: DocsIndex, query: string) {
+export function docsSearchResults(
+    docs: DocsIndex,
+    query: string,
+    fullTextUrls: string[] = [],
+) {
     const tokens = searchTokens(query)
     if (!tokens.length) {
         return { total: docs.pages.length, results: docsHome(docs) }
     }
-    const pages = rankDocs(docs, tokens)
+    const pages = withFullTextMatches(
+        rankDocs(docs, tokens),
+        docs.pages,
+        fullTextUrls,
+        "docs/",
+    )
     return {
         total: pages.length,
         results: groupBySection(docs, pages.slice(0, MAX_RESULTS)),

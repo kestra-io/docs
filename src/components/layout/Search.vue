@@ -262,6 +262,44 @@
                                             </div>
                                         </div>
                                         <div
+                                            v-else-if="result.blog"
+                                            class="result blog-result"
+                                        >
+                                            <img
+                                                v-if="result.blog.thumb"
+                                                class="blog-thumb"
+                                                :src="result.blog.thumb"
+                                                alt=""
+                                                loading="lazy"
+                                            />
+                                            <div class="blog-text">
+                                                <div class="blog-meta">
+                                                    {{ result.blog.category }} •
+                                                    {{ result.blog.date }}
+                                                </div>
+                                                <h5>{{ result.title }}</h5>
+                                                <div
+                                                    v-if="result.blog.author"
+                                                    class="blog-author"
+                                                >
+                                                    <img
+                                                        v-if="
+                                                            result.blog.author
+                                                                .avatar
+                                                        "
+                                                        :src="
+                                                            result.blog.author
+                                                                .avatar
+                                                        "
+                                                        alt=""
+                                                    />
+                                                    {{
+                                                        result.blog.authorNames
+                                                    }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
                                             v-else-if="result.doc"
                                             class="result doc-result"
                                         >
@@ -513,6 +551,81 @@
                                     />
                                 </div>
                                 <div
+                                    class="rounded-3 w-100 doc-detail blog-detail"
+                                    v-else-if="selectedItem?.blog"
+                                >
+                                    <div class="doc-detail-bar">
+                                        <div class="doc-crumb">
+                                            Blog ›
+                                            <strong>{{
+                                                selectedItem.blog.category
+                                            }}</strong>
+                                        </div>
+                                        <a
+                                            :href="resultHref(selectedItem)"
+                                            class="btn btn-sm btn-primary"
+                                            @click="close"
+                                            >Read post</a
+                                        >
+                                    </div>
+                                    <div>
+                                        <img
+                                            v-if="selectedItem.blog.cover"
+                                            class="blog-cover"
+                                            :src="selectedItem.blog.cover"
+                                            alt=""
+                                        />
+                                        <h1 class="blog-title">
+                                            {{ selectedItem.title }}
+                                        </h1>
+                                        <div class="blog-byline">
+                                            <img
+                                                v-if="
+                                                    selectedItem.blog.author
+                                                        ?.avatar
+                                                "
+                                                :src="
+                                                    selectedItem.blog.author
+                                                        .avatar
+                                                "
+                                                alt=""
+                                            />
+                                            <div
+                                                v-if="selectedItem.blog.author"
+                                            >
+                                                <strong>{{
+                                                    selectedItem.blog
+                                                        .authorNames
+                                                }}</strong>
+                                                <span
+                                                    v-if="
+                                                        selectedItem.blog
+                                                            .authors.length ===
+                                                        1
+                                                    "
+                                                    >{{
+                                                        selectedItem.blog.author
+                                                            .role
+                                                    }}</span
+                                                >
+                                            </div>
+                                            <div class="blog-when">
+                                                {{ selectedItem.blog.date
+                                                }}<br />{{
+                                                    selectedItem.blog.minutes
+                                                }}
+                                                min read
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ContentPreview
+                                        :key="selectedItem.blog.id"
+                                        section="blogs"
+                                        :id="selectedItem.blog.id"
+                                        :show-title="false"
+                                    />
+                                </div>
+                                <div
                                     class="rounded-3 w-100"
                                     v-else-if="selectedItem"
                                 >
@@ -610,11 +723,13 @@
     import { $fetchApi } from "~/utils/fetch"
     import { prepareSearchResults } from "~/utils/searchResults"
     import { markRaw } from "vue"
+    import { blogsSearchResults, loadBlogsIndex } from "~/utils/search/blogs"
     import {
         blueprintsSearchResults,
         loadBlueprintsIndex,
     } from "~/utils/search/blueprints"
     import { docsSearchResults, loadDocsIndex } from "~/utils/search/docs"
+    import { fullTextUrls } from "~/utils/search/fullText"
     import {
         loadPluginsIndex,
         pluginsSearchResults,
@@ -640,9 +755,18 @@
         },
         DOCS: {
             load: loadDocsIndex,
-            search: (indexes, query) => docsSearchResults(indexes.DOCS, query),
+            search: (indexes, query, urls) =>
+                docsSearchResults(indexes.DOCS, query, urls),
+        },
+        BLOGS: {
+            load: loadBlogsIndex,
+            search: (indexes, query, urls) =>
+                blogsSearchResults(indexes.BLOGS, query, urls),
         },
     }
+
+    // Tabs that also list the pages only the server's full-text search finds.
+    const FULL_TEXT_TABS = ["DOCS", "BLOGS"]
 
     export default {
         props: {
@@ -671,6 +795,8 @@
                 indexes: {},
                 failedIndexes: [],
                 localResults: {},
+                fullText: {},
+                facetsQuery: undefined,
                 // Version whose segment the current results' docs hits need
                 // back; unset for docs-latest hits and for latest fallbacks.
                 hrefVersion: undefined,
@@ -810,8 +936,29 @@
 
                         if (response?.facets) {
                             this.searchFacets = this.sortFacet(response.facets)
+                            this.facetsQuery = value
                         }
 
+                        const found = response?.results ?? []
+                        for (const type of FULL_TEXT_TABS) {
+                            if (
+                                this.selectedFacet === undefined ||
+                                this.selectedFacet === type
+                            ) {
+                                this.fullText = {
+                                    ...this.fullText,
+                                    [type]: {
+                                        query: value,
+                                        urls: fullTextUrls(found, type),
+                                        // The server stops at 100 results: a longer list is partial.
+                                        complete:
+                                            found.length >=
+                                            (response?.total ?? 0),
+                                    },
+                                }
+                            }
+                        }
+                        this.updateLocalResults(value, true)
 
                         posthog.capture("search", {
                             text: value,
@@ -874,7 +1021,9 @@
                 const localResults = {}
                 for (const [type, tab] of Object.entries(LOCAL_TABS)) {
                     if (!(type in this.indexes)) continue
-                    localResults[type] = tab.search(this.indexes, value)
+                    const fullText = this.fullText[type]
+                    const urls = fullText?.query === value ? fullText.urls : []
+                    localResults[type] = tab.search(this.indexes, value, urls)
                 }
                 this.localResults = localResults
                 if (!this.usesLocalResults()) {
@@ -898,10 +1047,20 @@
             },
             tabCount(key) {
                 if (this.waitsForLocalResults(key)) return undefined
-                if (!this.usesLocalResults(key)) {
-                    return Number(this.searchFacets[key]) || 0
+                const serverCount = Number(this.searchFacets[key]) || 0
+                if (!this.usesLocalResults(key)) return serverCount
+                const localCount = this.localResults[key]?.total ?? 0
+                const fullText = this.fullText[key]
+                const typed = Boolean(this.searchValue?.trim())
+                const complete =
+                    fullText?.query === this.searchValue && fullText.complete
+                if (!typed || !FULL_TEXT_TABS.includes(key) || complete) {
+                    return localCount
                 }
-                return this.localResults[key]?.total ?? 0
+                // Until this query's full-text answer arrives, the server count is the floor.
+                return this.facetsQuery === this.searchValue
+                    ? Math.max(localCount, serverCount)
+                    : localCount
             },
             fetchSearch(params, version, signal) {
                 const path = version
@@ -1368,8 +1527,100 @@
                 margin: 0.15rem 0 0;
             }
         }
-        .search-result .active .doc-result {
+        .search-result .active .doc-result,
+        .search-result .active .blog-result {
             box-shadow: inset 3px 0 0 var(--ks-border-active);
+        }
+        .search-result .blog-result {
+            align-items: center;
+            gap: 1rem;
+
+            > .blog-thumb {
+                flex: 0 0 112px;
+                height: 63px;
+                border-radius: 8px;
+                object-fit: cover;
+                border: 1px solid var(--ks-border-primary);
+            }
+
+            h5 {
+                margin: 0;
+                line-height: 1.3;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            .blog-meta,
+            .blog-author {
+                font-size: $font-size-xs;
+                color: var(--ks-content-secondary);
+            }
+
+            .blog-meta {
+                margin-bottom: 0.2rem;
+            }
+
+            .blog-author {
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+                margin-top: 0.35rem;
+
+                img {
+                    width: 18px;
+                    height: 18px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+            }
+        }
+        .blog-detail {
+            .blog-cover {
+                display: block;
+                width: 100%;
+                aspect-ratio: 16 / 9;
+                object-fit: cover;
+                border-radius: 12px;
+                border: 1px solid var(--ks-border-primary);
+                margin: 4px 0 20px;
+            }
+
+            .blog-title {
+                font-size: 26px;
+                line-height: 32px;
+                letter-spacing: -0.01em;
+                margin: 0 0 12px;
+                text-wrap: balance;
+            }
+
+            .blog-byline {
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+                font-size: 13px;
+                color: var(--ks-content-secondary);
+
+                img {
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+
+                strong {
+                    display: block;
+                    font-size: 14px;
+                    line-height: 18px;
+                    color: var(--ks-content-primary);
+                }
+
+                .blog-when {
+                    margin-left: auto;
+                    text-align: right;
+                }
+            }
         }
         .doc-detail {
             display: flex;

@@ -44,8 +44,8 @@ const docs: DocsIndex = {
     ],
 }
 
-const rows = (query: string) =>
-    docsSearchResults(docs, query).results.map((r) => [
+const rows = (query: string, fullTextUrls?: string[]) =>
+    docsSearchResults(docs, query, fullTextUrls).results.map((r) => [
         r.doc.id,
         r.doc.groupStart,
         r.doc.groupCount,
@@ -58,6 +58,19 @@ describe("docsSearchResults", () => {
             ["concepts/kv-store", false, 2],
             ["how-to-guides/kubernetes-secrets", true, 1],
             ["terraform/resources/namespace_secret", true, 1],
+        ])
+    })
+
+    it("adds the pages only the full-text search found after the others", () => {
+        const { total, results } = docsSearchResults(docs, "secr", [
+            "docs/concepts/namespace-files",
+            "docs/concepts/secret",
+        ])
+        expect(total).toBe(5)
+        expect(results.map((r) => r.doc.id).slice(0, 3)).toEqual([
+            "concepts/secret",
+            "concepts/kv-store",
+            "concepts/namespace-files",
         ])
     })
 

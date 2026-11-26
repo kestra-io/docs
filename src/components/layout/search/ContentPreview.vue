@@ -1,7 +1,7 @@
 <template>
     <div class="content-preview">
         <template v-if="page">
-            <h1 class="content-preview-title">
+            <h1 v-if="showTitle" class="content-preview-title">
                 {{ page.title }}
             </h1>
             <div class="bd-content" v-html="page.html" />
@@ -23,7 +23,14 @@
         type PreviewSection,
     } from "~/utils/search/contentPreview"
 
-    const props = defineProps<{ section: PreviewSection; id: string }>()
+    const props = withDefaults(
+        defineProps<{
+            section: PreviewSection
+            id: string
+            showTitle?: boolean
+        }>(),
+        { showTitle: true },
+    )
 
     const { value: page, failed } = useDeferredLoad(
         () => loadContentPreview(props.section, props.id),

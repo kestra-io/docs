@@ -1,6 +1,6 @@
 import { cachedLoader } from "~/utils/search/loaders"
 
-export type PreviewSection = "docs"
+export type PreviewSection = "docs" | "blogs"
 
 export type ContentPreviewPage = { title: string; html: string }
 

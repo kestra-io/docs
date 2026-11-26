@@ -19,6 +19,7 @@ Disallow: /blueprints?*
 Disallow: /*?tags=
 # Page fragments the search popup fetches for its previews.
 Disallow: /docs-preview/
+Disallow: /blogs-preview/
 # Build assets — CSS, JS, fonts accessible for robots rendering
 Allow: /_astro/
 Disallow: /_nuxt/
