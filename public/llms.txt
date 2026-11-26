@@ -239,7 +239,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Administrator Guide: Operate and Secure Your Cluster](https://kestra.io/docs/administrator-guide.md)
 - [Backup and Restore Kestra: Flows, Secrets, and Executions](https://kestra.io/docs/administrator-guide/backup-and-restore.md)
 - [Fix Basic Authentication Issues in Kestra](https://kestra.io/docs/administrator-guide/basic-auth-troubleshooting.md)
-- [Adding a Self-Signed Certificate to Kestra on Kubernetes](https://kestra.io/docs/administrator-guide/custom-ca-kubernetes.md)
+- [Trust a Custom CA in Kestra: Docker and Kubernetes](https://kestra.io/docs/administrator-guide/custom-ca.md)
 - [Docker-in-Docker Behind a Proxy: Kestra on Kubernetes](https://kestra.io/docs/administrator-guide/dind-behind-proxy.md)
 - [High Availability in Kestra: Scale Workers and Webservers](https://kestra.io/docs/administrator-guide/high-availability.md)
 - [JVM CPU Limits for Kestra on Kubernetes](https://kestra.io/docs/administrator-guide/jvm-cpu-limits.md)

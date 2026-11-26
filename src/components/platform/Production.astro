@@ -1,0 +1,498 @@
+---
+import { Icon } from "astro-icon/components"
+import Rails from "./Rails.astro"
+import SectionHead from "~/components/home/SectionHead.astro"
+import CodeCard from "./CodeCard.astro"
+
+const HEAD = `id: nightly_ledger
+namespace: finance
+`
+
+const TASK = `tasks:
+  - id: extract
+    type: io.kestra.plugin.jdbc.postgresql.Query
+`
+
+const FEATURES = [
+    {
+        key: "concurrency",
+        title: "Concurrency limits",
+        text: "Cap concurrent executions per flow, and choose whether extra runs queue, cancel, or fail.",
+        code: `${HEAD}concurrency:
+  limit: 1
+  behavior: QUEUE`,
+        lines: [3, 5],
+    },
+    {
+        key: "sla",
+        title: "SLAs",
+        text: "Declare a maximum duration or an assertion on each execution. A breach fails the run, cancels it, or adds a label your alerts can act on.",
+        code: `${HEAD}sla:
+  - id: max_runtime
+    type: MAX_DURATION
+    duration: PT2H
+    behavior: FAIL`,
+        lines: [3, 7],
+    },
+    {
+        key: "triggers",
+        title: "Backfills",
+        text: "Rerun a schedule over a past date range.",
+        code: `${HEAD}triggers:
+  - id: nightly          # backfill from the UI or API
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 2 * * *"`,
+        lines: [3, 6],
+    },
+    {
+        key: "timeout",
+        title: "Timeouts",
+        text: "Set a maximum duration on any task.",
+        code: `${TASK}    timeout: PT30M`,
+        lines: [4, 4],
+    },
+    {
+        key: "retry",
+        title: "Retries",
+        text: "Backoff per task, capped by attempts or time.",
+        code: `${TASK}    retry:
+      type: exponential
+      interval: PT30S
+      maxInterval: PT10M
+      maxAttempts: 5`,
+        lines: [4, 8],
+    },
+    {
+        key: "errors",
+        title: "Error handlers",
+        text: "Run alerting, cleanup, or compensation tasks when a flow fails.",
+        code: `${TASK}errors:
+  - id: page_oncall
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook`,
+        lines: [4, 6],
+    },
+] satisfies {
+    key: string
+    title: string
+    text: string
+    code: string
+    lines: [number, number]
+}[]
+
+const RUNTIME = [
+    {
+        icon: "mdi:restart",
+        title: "Restart and replay",
+        text: "Restart a failed execution from the task that failed, not from the beginning.",
+    },
+    {
+        icon: "mdi:history",
+        title: "Every attempt recorded",
+        text: "Each attempt keeps its own logs, outputs, and duration, so the post-incident question “what happened?” has an answer.",
+    },
+]
+---
+
+<section class="production" id="production" aria-labelledby="prod-h">
+    <Rails>
+        <div class="split" data-prod>
+            <div class="intro">
+                <SectionHead id="prod-h" align="start">
+                    Failure handling, <span>declared in the flow.</span>
+                    <Fragment slot="lead">
+                        Every workflow fails eventually. In Kestra, what happens
+                        next is written in the same YAML as the work itself, so
+                        it’s reviewed in Git, versioned with the flow, and
+                        behaves the same on every run.
+                    </Fragment>
+                </SectionHead>
+
+                <div
+                    class="features"
+                    role="tablist"
+                    aria-label="Failure handling"
+                >
+                    {FEATURES.map((feature, idx) => (
+                        <button
+                            type="button"
+                            role="tab"
+                            class:list={["feature", { active: idx === 0 }]}
+                            id={`prod-tab-${feature.key}`}
+                            aria-selected={idx === 0 ? "true" : "false"}
+                            aria-controls={`prod-panel-${feature.key}`}
+                            tabindex={idx === 0 ? 0 : -1}
+                        >
+                            <span class="name">{feature.title}</span>
+                            <code class="key">{feature.key}</code>
+                            <span class="bar" aria-hidden="true" />
+                        </button>
+                    ))}
+                </div>
+
+                <ul class="runtime">
+                    {RUNTIME.map((item) => (
+                        <li>
+                            <Icon name={item.icon} />
+                            <p>
+                                <b>{item.title}.</b> {item.text}
+                            </p>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            <div class="stage">
+                {FEATURES.map((feature, idx) => (
+                    <div
+                        class:list={["panel", { active: idx === 0 }]}
+                        id={`prod-panel-${feature.key}`}
+                        role="tabpanel"
+                        aria-labelledby={`prod-tab-${feature.key}`}
+                    >
+                        <CodeCard
+                            file="finance / nightly_ledger.yml"
+                            code={feature.code}
+                            marks={{ [feature.key]: feature.lines }}
+                            editor
+                        />
+                        <p>{feature.text}</p>
+                    </div>
+                ))}
+            </div>
+
+            <ol class="stacked">
+                {FEATURES.map((feature) => (
+                    <li>
+                        <h3>
+                            {feature.title}
+                            <code class="key">{feature.key}</code>
+                        </h3>
+                        <p>{feature.text}</p>
+                        <CodeCard
+                            file="finance / nightly_ledger.yml"
+                            code={feature.code}
+                            marks={{ [feature.key]: feature.lines }}
+                            editor
+                        />
+                    </li>
+                ))}
+            </ol>
+        </div>
+    </Rails>
+</section>
+
+<script>
+    function wireProduction() {
+        const box = document.querySelector<HTMLElement>(
+            "[data-prod]:not([data-wired])",
+        )
+        if (!box) return
+        box.dataset.wired = "true"
+        const tabs = [...box.querySelectorAll<HTMLButtonElement>(".feature")]
+        const panels = [...box.querySelectorAll<HTMLElement>(".panel")]
+        for (const line of box.querySelectorAll(".line[data-k]"))
+            line.classList.add("on")
+
+        const select = (index: number) => {
+            tabs.forEach((tab, idx) => {
+                const on = idx === index
+                tab.classList.toggle("active", on)
+                tab.setAttribute("aria-selected", String(on))
+                tab.tabIndex = on ? 0 : -1
+                panels[idx].classList.toggle("active", on)
+            })
+        }
+
+        tabs.forEach((tab, idx) => {
+            tab.addEventListener("click", () => select(idx))
+            tab.querySelector(".bar")!.addEventListener("animationend", () =>
+                select((idx + 1) % tabs.length),
+            )
+            tab.addEventListener("keydown", (event) => {
+                const step =
+                    event.key === "ArrowDown" || event.key === "ArrowRight"
+                        ? 1
+                        : event.key === "ArrowUp" || event.key === "ArrowLeft"
+                          ? -1
+                          : 0
+                if (!step) return
+                event.preventDefault()
+                const next = (idx + step + tabs.length) % tabs.length
+                select(next)
+                tabs[next].focus()
+            })
+        })
+    }
+
+    document.addEventListener("astro:page-load", wireProduction)
+    wireProduction()
+</script>
+
+<style lang="scss">
+    @use "./style/platform" as *;
+
+    .production {
+        border-top: 1px solid var(--ks-border-primary);
+
+        @include tinted;
+
+        :global(.section-head h2 span) {
+            display: block;
+            color: var(--ks-content-tertiary);
+        }
+
+        :global(.section-head) {
+            margin-bottom: 2.5rem;
+        }
+    }
+
+    .split {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+        align-items: center;
+        gap: 4.5rem;
+
+        @include media-breakpoint-down(xl) {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 2rem;
+
+            .intro {
+                display: contents;
+            }
+
+            .stage {
+                order: 1;
+            }
+
+            .runtime {
+                order: 2;
+                margin-top: 0;
+            }
+
+            :global(.section-head) {
+                margin-bottom: 0;
+            }
+
+            .panel:not(.active) {
+                display: none;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            .features,
+            .stage {
+                display: none;
+            }
+
+            .stacked {
+                display: flex;
+                order: 1;
+            }
+        }
+    }
+
+    .features {
+        display: flex;
+        flex-direction: column;
+        margin-inline: -1rem;
+        border-bottom: 1px solid var(--ks-border-primary);
+    }
+
+    .feature {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.875rem 1rem;
+        border: 0;
+        border-top: 1px solid var(--ks-border-primary);
+        background: none;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+        transition: background-color 0.25s ease;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 3px;
+            background: var(--ks-content-link);
+            transform: scaleY(0);
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        &.active {
+            background: var(--ks-background-body);
+            box-shadow: 0 8px 24px -16px rgba(43, 43, 51, 0.35);
+
+            &::before {
+                transform: none;
+            }
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: 2px;
+        }
+
+        .name {
+            font-size: 1.0625rem;
+            font-weight: 600;
+            color: var(--ks-content-tertiary);
+            transition: color 0.25s ease;
+        }
+
+        &:hover .name,
+        &.active .name {
+            color: var(--ks-content-primary);
+        }
+
+        &.active .key {
+            background: var(--ks-content-link);
+            color: var(--ks-background-body);
+        }
+    }
+
+    .key {
+        padding: 0 0.3125rem;
+        border-radius: var(--ks-border-radius);
+        background-color: var(--ks-background-function);
+        font-family: $font-family-monospace;
+        font-size: 0.8125rem;
+        color: var(--ks-content-secondary);
+        transition:
+            background-color 0.25s ease,
+            color 0.25s ease;
+    }
+
+    .bar {
+        position: absolute;
+        top: -1px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--ks-content-link);
+        transform: scaleX(0);
+        transform-origin: left;
+
+        .active & {
+            animation: fill 5s linear forwards;
+        }
+
+        .split:hover &,
+        .split:focus-within & {
+            animation-play-state: paused;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .active & {
+                animation: none;
+                transform: none;
+            }
+        }
+    }
+
+    .stage {
+        display: grid;
+    }
+
+    .panel {
+        grid-area: 1 / 1;
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(0.5rem);
+        transition:
+            opacity 0.35s ease,
+            transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+            visibility 0s linear 0.35s;
+
+        &.active {
+            visibility: visible;
+            opacity: 1;
+            transform: none;
+            transition:
+                opacity 0.35s ease,
+                transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        p {
+            max-width: 32rem;
+            margin: 1.25rem 0 0;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--ks-content-secondary);
+        }
+    }
+
+    .stacked {
+        display: none;
+        flex-direction: column;
+        gap: 2.5rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        h3 {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin: 0 0 0.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            margin: 0 0 1rem;
+            font-size: $font-size-md;
+            line-height: 1.55;
+            color: var(--ks-content-secondary);
+        }
+    }
+
+    @keyframes fill {
+        to {
+            transform: none;
+        }
+    }
+
+    .runtime {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin: 1.75rem 0 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        :global(svg) {
+            flex: none;
+            width: 1.125rem;
+            height: 1.125rem;
+            margin-top: 0.125rem;
+            color: var(--ks-content-tertiary);
+        }
+
+        p {
+            margin: 0;
+            font-size: $font-size-sm;
+            line-height: 1.55;
+            color: var(--ks-content-secondary);
+        }
+
+        b {
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+    }
+</style>

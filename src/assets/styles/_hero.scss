@@ -3,7 +3,7 @@
 $hero-sizes: (
     compact: 32.5rem,
     standard: 40.625rem,
-    tall: 50.625rem,
+    tall: calc(min(80vh, 800px) + 67px),
 );
 
 @mixin hero-size($size: standard) {
