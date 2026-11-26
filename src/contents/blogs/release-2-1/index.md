@@ -336,6 +336,12 @@ Existing plugins got improvements too:
 - [DigitalOcean](/plugins/plugin-digitalocean): new tasks for reserved IPs, CDN, security scans, monitoring alert policies, snapshots, and billing.
 - [Redis](/plugins/plugin-redis) streams: consumer groups with `ReadGroup`, `Ack`, and `Claim`, plus a trigger.
 - [Power BI](/plugins/plugin-microsoft-fabric) dataset refreshes, [Cloudflare AI](/plugins/plugin-cloudflare), and [Langdock](/plugins/plugin-ai) as an LLM provider.
+- [ServiceNow](/plugins/plugin-servicenow): create incidents and changes, transition a change, upsert configuration items, load import sets, and wait for an approval.
+- [Anthropic](/plugins/plugin-anthropic): run Claude Code CLI, open managed agent sessions, count tokens, and submit message batches.
+- [AI](/plugins/plugin-ai): new Cohere, ONNX, and fallback providers (fail over to another model), plus a token budget guard and Firecrawl web search as an agent tool.
+- [Jenkins](/plugins/plugin-jenkins) `ListBuilds` and a trigger, and [Argo CD](/plugins/plugin-argocd) application `Create`, `Patch`, and `Delete`.
+- Messaging and data: [AMQP 1.0](/plugins/plugin-amqp) consume, publish, and trigger, [Neo4j](/plugins/plugin-neo4j) transactions and a trigger, JSON Schema validation against a schema registry in [Serdes](/plugins/plugin-serdes), [Soda](/plugins/plugin-soda) `VerifyContract`, and Kafka `ConnectorStop`.
+- Git (EE): `PushDashboards` and `SyncDashboards` version your dashboards in Git. The AWS task runner also gets a Lambda MicroVM mode (EE).
 - [Slack](/plugins/plugin-slack) app views (`Open` for modals, `Publish` for the App Home tab), [Jira](/plugins/plugin-jira) `comments.Get` and `issues.Get`, and [Twilio](/plugins/plugin-twilio) RCS messages.
 - Smaller additions: DynamoDB `BatchWriteItem`, S3 and Azure Blob `CopyList`, SQS `Purge`, BigQuery `CreateSnapshot`, Vertex AI `Embeddings`, and GitHub `DownloadArchive`.
 - [Task runner monitoring](/docs/task-runners/types/kubernetes-task-runner#monitoring) (EE): the Kubernetes, AWS, Azure, Google Cloud, and Huawei Cloud task runners can report CPU, memory, and network usage, and forward traces from the task.
