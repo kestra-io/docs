@@ -18,6 +18,8 @@ const FEATURES = [
         key: "concurrency",
         title: "Concurrency limits",
         text: "Cap concurrent executions per flow, and choose whether extra runs queue, cancel, or fail.",
+        outcome: "Extra executions wait in the QUEUED state, and the Concurrency Limits page shows how many are waiting.",
+        href: "/docs/workflow-components/concurrency",
         code: `${HEAD}concurrency:
   limit: 1
   behavior: QUEUE`,
@@ -27,6 +29,8 @@ const FEATURES = [
         key: "sla",
         title: "SLAs",
         text: "Declare a maximum duration or an assertion on each execution. A breach fails the run, cancels it, or adds a label your alerts can act on.",
+        outcome: "Kestra checks the SLA while the execution runs, so a stuck run is caught at the deadline, not when someone notices.",
+        href: "/docs/workflow-components/sla",
         code: `${HEAD}sla:
   - id: max_runtime
     type: MAX_DURATION
@@ -38,6 +42,8 @@ const FEATURES = [
         key: "triggers",
         title: "Backfills",
         text: "Rerun a schedule over a past date range.",
+        outcome: "Pick a start and end date on the trigger, and Kestra creates one execution for each missed schedule, with its own trigger date.",
+        href: "/docs/workflow-components/triggers/schedule-trigger",
         code: `${HEAD}triggers:
   - id: nightly          # backfill from the UI or API
     type: io.kestra.plugin.core.trigger.Schedule
@@ -48,6 +54,8 @@ const FEATURES = [
         key: "timeout",
         title: "Timeouts",
         text: "Set a maximum duration on any task.",
+        outcome: "When the duration passes, Kestra stops the task, and its retries or the flow's error handlers take over.",
+        href: "/docs/workflow-components/timeout",
         code: `${TASK}    timeout: PT30M`,
         lines: [4, 4],
     },
@@ -55,6 +63,8 @@ const FEATURES = [
         key: "retry",
         title: "Retries",
         text: "Backoff per task, capped by attempts or time.",
+        outcome: "Each attempt shows up in the Gantt view with its own logs, and the task only fails once the attempts run out.",
+        href: "/docs/workflow-components/retries",
         code: `${TASK}    retry:
       type: exponential
       interval: PT30S
@@ -66,15 +76,37 @@ const FEATURES = [
         key: "errors",
         title: "Error handlers",
         text: "Run alerting, cleanup, or compensation tasks when a flow fails.",
+        outcome: "Error tasks run in the same execution, so they can read the failed task's outputs and logs.",
+        href: "/docs/workflow-components/errors",
         code: `${TASK}errors:
   - id: page_oncall
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook`,
+    type: io.kestra.plugin.slack.SlackIncomingWebhook`,
         lines: [4, 6],
+    },
+    {
+        key: "flow",
+        title: "Failure triggers",
+        text: "Start a flow when other flows fail, so alerting and cleanup live in one place instead of in every flow.",
+        outcome: "The triggered flow gets the failed execution's ID, namespace, and state, and can match flows by namespace, label, or any expression.",
+        href: "/docs/workflow-components/triggers/flow-trigger",
+        file: "system / alert_on_failure.yml",
+        code: `id: alert_on_failure
+namespace: system
+triggers:
+  - id: on_failure
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - states: [FAILED, WARNING]
+        when: "{{ flow.namespace | startsWith('finance') }}"`,
+        lines: [3, 8],
     },
 ] satisfies {
     key: string
     title: string
     text: string
+    outcome: string
+    href: string
+    file?: string
     code: string
     lines: [number, number]
 }[]
@@ -83,7 +115,7 @@ const RUNTIME = [
     {
         icon: "mdi:restart",
         title: "Restart and replay",
-        text: "Restart a failed execution from the task that failed, not from the beginning.",
+        text: "Restart a failed execution from the task that failed, not from the beginning. Replay creates a new execution from any task, with new inputs if you need them, and keeps the original for comparison.",
     },
     {
         icon: "mdi:history",
@@ -150,12 +182,17 @@ const RUNTIME = [
                         aria-labelledby={`prod-tab-${feature.key}`}
                     >
                         <CodeCard
-                            file="finance / nightly_ledger.yml"
+                            file={feature.file ?? "finance / nightly_ledger.yml"}
                             code={feature.code}
                             marks={{ [feature.key]: feature.lines }}
                             editor
                         />
                         <p>{feature.text}</p>
+                        <p class="outcome">{feature.outcome}</p>
+                        <a class="docs" href={feature.href}>
+                            Read the docs
+                            <span class="arrow" aria-hidden="true">→</span>
+                        </a>
                     </div>
                 ))}
             </div>
@@ -168,8 +205,9 @@ const RUNTIME = [
                             <code class="key">{feature.key}</code>
                         </h3>
                         <p>{feature.text}</p>
+                        <p class="outcome">{feature.outcome}</p>
                         <CodeCard
-                            file="finance / nightly_ledger.yml"
+                            file={feature.file ?? "finance / nightly_ledger.yml"}
                             code={feature.code}
                             marks={{ [feature.key]: feature.lines }}
                             editor
@@ -425,6 +463,37 @@ const RUNTIME = [
             font-size: 1rem;
             line-height: 1.6;
             color: var(--ks-content-secondary);
+        }
+
+        .outcome {
+            margin-top: 0.75rem;
+            padding-left: 0.875rem;
+            border-left: 2px solid var(--ks-border-primary);
+            font-size: 0.9375rem;
+            color: var(--ks-content-tertiary);
+        }
+
+        .docs {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            margin-top: 1.25rem;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+            text-decoration: none;
+
+            &:hover {
+                color: var(--ks-content-link);
+            }
+
+            .arrow {
+                transition: translate 0.2s ease;
+            }
+
+            &:hover .arrow {
+                translate: 0.2em 0;
+            }
         }
     }
 
