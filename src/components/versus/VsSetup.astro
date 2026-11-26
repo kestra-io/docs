@@ -94,13 +94,17 @@ const lines = (code: string) =>
 
     .head {
         @include head;
+        justify-items: center;
+        text-align: center;
     }
 
     .stage {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 1.25rem;
-        padding: 0 var(--inset) 3.5rem;
+        max-width: calc(64rem + 2 * var(--inset));
+        margin-inline: auto;
+        padding: 0 var(--inset) 5rem;
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);
