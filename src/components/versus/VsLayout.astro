@@ -23,3 +23,10 @@ const { commonQuestions = [], ...layoutProps } = Astro.props
     <SchemaFAQ items={commonQuestions} slot="head" />
     <slot />
 </Layout>
+
+<script>
+    import { watchDarkSections } from "~/utils/headerDarkSections"
+
+    document.addEventListener("astro:page-load", watchDarkSections)
+    watchDarkSections()
+</script>
