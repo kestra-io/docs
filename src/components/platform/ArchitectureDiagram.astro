@@ -162,29 +162,37 @@ const WORKER_ICON = "mdi:account-cog-outline"
         </p>
     </div>
 
-    <div class="stores">
-        {STORES.map((store) => (
-            <div
-                class="zone queue"
-                data-zone="queue"
-                data-anchor="queue"
-                data-edition={store.edition}
-            >
-                <div class="zone-head">
-                    <span class="label">{store.label}</span>
-                </div>
-                <ul class="backends">
-                    {store.backends.map((backend) => (
-                        <li>
-                            {logos[backend] ? (
-                                <span class="logo" set:html={logos[backend]} />
-                            ) : (
-                                <Icon name="mdi:database-outline" />
-                            )}
-                            {backend}
-                        </li>
-                    ))}
-                </ul>
+    <div class="stores swap">
+        {(["oss", "ent"] as const).map((edition) => (
+            <div class="set" data-edition={edition}>
+                {STORES.filter((store) => store.edition === edition).map(
+                    (store) => (
+                        <div
+                            class="zone queue"
+                            data-zone="queue"
+                            data-anchor="queue"
+                        >
+                            <div class="zone-head">
+                                <span class="label">{store.label}</span>
+                            </div>
+                            <ul class="backends">
+                                {store.backends.map((backend) => (
+                                    <li>
+                                        {logos[backend] ? (
+                                            <span
+                                                class="logo"
+                                                set:html={logos[backend]}
+                                            />
+                                        ) : (
+                                            <Icon name="mdi:database-outline" />
+                                        )}
+                                        {backend}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ),
+                )}
             </div>
         ))}
     </div>
@@ -303,6 +311,7 @@ const WORKER_ICON = "mdi:account-cog-outline"
             path.setAttribute("d", d)
             path.setAttribute("class", cls)
             layer.appendChild(path)
+            return path
         }
 
         const web = rect(at("web"), origin)
@@ -326,12 +335,14 @@ const WORKER_ICON = "mdi:account-cog-outline"
                     : queue.cy - 2 * R > control.b + 4 || top >= inner
                       ? null
                       : (top + inner) / 2
-            add(
+            const edge = add(
                 y === null
                     ? `M${queue.l - 4} ${queue.cy} H${control.cx + R} Q${control.cx} ${queue.cy} ${control.cx} ${queue.cy - R} V${control.b + 4}`
                     : `M${queue.l - 4} ${y} H${control.r + 4}`,
                 "edge both",
             )
+            edge.dataset.edition =
+                store.closest<HTMLElement>("[data-edition]")!.dataset.edition
         }
 
         const ctrl = rect(at("controller"), origin)
@@ -432,7 +443,7 @@ const WORKER_ICON = "mdi:account-cog-outline"
         grid-template-columns:
             12.5rem minmax(0, 1fr) minmax(12rem, 0.7fr)
             minmax(0, 1fr);
-        grid-template-rows: auto auto;
+        grid-template-rows: auto auto 1fr;
         column-gap: 2.5rem;
         row-gap: 1.25rem;
         font-family: $font-family-sans-serif;
@@ -471,6 +482,7 @@ const WORKER_ICON = "mdi:account-cog-outline"
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);
+            grid-template-rows: none;
             row-gap: 1.5rem;
         }
     }
@@ -780,18 +792,24 @@ const WORKER_ICON = "mdi:account-cog-outline"
 
     .stores {
         grid-column: 3;
-        grid-row: 1 / span 2;
+        grid-row: 1 / span 3;
         align-self: start;
-        display: flex;
-        flex-direction: column;
-        gap: 1.25rem;
+        display: grid;
         margin-top: 11rem;
 
         @include media-breakpoint-down(lg) {
             grid-column: 1;
             grid-row: auto;
-            gap: 0.75rem;
             margin-top: 0;
+        }
+    }
+
+    .set {
+        flex-direction: column;
+        gap: 1.25rem;
+
+        @include media-breakpoint-down(lg) {
+            gap: 0.75rem;
         }
     }
 
@@ -879,7 +897,6 @@ const WORKER_ICON = "mdi:account-cog-outline"
     .data {
         grid-column: 4;
         grid-row: 1 / span 2;
-        align-self: start;
         border-color: var(--d-border);
         background: var(--d-zone);
 
