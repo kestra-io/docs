@@ -18,29 +18,45 @@ const SERVICES = [
     { id: "scheduler", icon: "mdi:clock-outline", name: "Scheduler" },
 ]
 
-const BACKENDS = {
-    oss: [
-        { name: "PostgreSQL", group: "io.kestra.plugin.jdbc.postgresql" },
-        { name: "MySQL", group: "io.kestra.plugin.jdbc.mysql" },
-        { name: "JDBC", group: null },
-    ],
-    ent: [
-        { name: "Redis", group: "io.kestra.plugin.redis" },
-        { name: "AMQP", group: "io.kestra.plugin.amqp" },
-        { name: "Kafka", group: "io.kestra.plugin.kafka" },
-        { name: "Elasticsearch", group: "io.kestra.plugin.elasticsearch" },
-        { name: "JDBC", group: null },
-    ],
+const PLUGINS = {
+    PostgreSQL: "io.kestra.plugin.jdbc.postgresql",
+    MySQL: "io.kestra.plugin.jdbc.mysql",
+    Elasticsearch: "io.kestra.plugin.elasticsearch",
+    Redis: "io.kestra.plugin.redis",
+    AMQP: "io.kestra.plugin.amqp",
+    Kafka: "io.kestra.plugin.kafka",
 }
 
-const logos = Object.fromEntries(
+type Backend = keyof typeof PLUGINS
+
+const STORES: {
+    edition: "oss" | "ent"
+    label: string
+    backends: Backend[]
+}[] = [
+    {
+        edition: "oss",
+        label: "Queue & database",
+        backends: ["PostgreSQL", "MySQL"],
+    },
+    {
+        edition: "ent",
+        label: "Database",
+        backends: ["PostgreSQL", "MySQL", "Elasticsearch"],
+    },
+    {
+        edition: "ent",
+        label: "Queue",
+        backends: ["Redis", "AMQP", "Kafka", "PostgreSQL", "MySQL"],
+    },
+]
+
+const logos: Record<string, string | null> = Object.fromEntries(
     await Promise.all(
-        [...BACKENDS.oss, ...BACKENDS.ent]
-            .filter((backend) => backend.group)
-            .map(async (backend) => [
-                backend.name,
-                await fetchPluginIcon(backend.group!).catch(() => null),
-            ]),
+        Object.entries(PLUGINS).map(async ([name, group]) => [
+            name,
+            await fetchPluginIcon(group).catch(() => null),
+        ]),
     ),
 )
 
@@ -146,29 +162,31 @@ const WORKER_ICON = "mdi:account-cog-outline"
         </p>
     </div>
 
-    <div class="zone queue" data-zone="queue" data-anchor="queue">
-        <div class="zone-head">
-            <span class="label">Queue / database</span>
-        </div>
-        <div class="swap">
-            {(["oss", "ent"] as const).map((edition) => (
-                <ul class="backends" data-edition={edition}>
-                    {BACKENDS[edition].map((backend) => (
+    <div class="stores">
+        {STORES.map((store) => (
+            <div
+                class="zone queue"
+                data-zone="queue"
+                data-anchor="queue"
+                data-edition={store.edition}
+            >
+                <div class="zone-head">
+                    <span class="label">{store.label}</span>
+                </div>
+                <ul class="backends">
+                    {store.backends.map((backend) => (
                         <li>
-                            {logos[backend.name] ? (
-                                <span
-                                    class="logo"
-                                    set:html={logos[backend.name]}
-                                />
+                            {logos[backend] ? (
+                                <span class="logo" set:html={logos[backend]} />
                             ) : (
                                 <Icon name="mdi:database-outline" />
                             )}
-                            {backend.name}
+                            {backend}
                         </li>
                     ))}
                 </ul>
-            ))}
-        </div>
+            </div>
+        ))}
     </div>
 
     <p class="wire" data-wire>
@@ -296,13 +314,16 @@ const WORKER_ICON = "mdi:account-cog-outline"
             add(join(e.r + 4, e.cy, bus, web.cy), "edge join")
         add(`M${bus + R} ${web.cy} H${web.l - 4}`, "edge main")
 
-        const queue = rect(at("queue"), origin)
-        add(
-            queue.cy - R > control.b + 4
-                ? `M${queue.l - 4} ${queue.cy} H${control.cx + R} Q${control.cx} ${queue.cy} ${control.cx} ${queue.cy - R} V${control.b + 4}`
-                : `M${queue.l - 4} ${queue.cy} H${control.r + 4}`,
-            "edge both",
-        )
+        for (const store of diagram.querySelectorAll('[data-anchor="queue"]')) {
+            if (!store.getClientRects().length) continue
+            const queue = rect(store, origin)
+            add(
+                queue.cy - R > control.b + 4
+                    ? `M${queue.l - 4} ${queue.cy} H${control.cx + R} Q${control.cx} ${queue.cy} ${control.cx} ${queue.cy - R} V${control.b + 4}`
+                    : `M${queue.l - 4} ${queue.cy} H${control.r + 4}`,
+                "edge both",
+            )
+        }
 
         const ctrl = rect(at("controller"), origin)
         const data = rect(at("data"), origin)
@@ -748,18 +769,25 @@ const WORKER_ICON = "mdi:account-cog-outline"
         color: var(--k);
     }
 
-    .queue {
+    .stores {
         grid-column: 3;
         grid-row: 1 / span 2;
         align-self: start;
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
         margin-top: 11rem;
-        background: var(--q-zone);
 
         @include media-breakpoint-down(lg) {
             grid-column: 1;
             grid-row: auto;
+            gap: 0.75rem;
             margin-top: 0;
         }
+    }
+
+    .queue {
+        background: var(--q-zone);
 
         .label {
             background: var(--q);
@@ -1018,7 +1046,7 @@ const WORKER_ICON = "mdi:account-cog-outline"
             border-top-color: var(--k);
         }
 
-        .queue,
+        .stores,
         .wire {
             margin-left: 2.25rem;
         }
