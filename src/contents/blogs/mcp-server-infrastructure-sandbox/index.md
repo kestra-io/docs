@@ -14,18 +14,18 @@ Kestra has worked with AI agents since 2.0, when [MCP Flows](/blogs/2026-09-04-k
 
 This post covers what each feature does, then shows them in one run: Claude Code gets a Proxmox VE sandbox to test an app, a manager approves it in Slack, and the sandbox is deleted with a usage report. The flow is a [blueprint](/blueprints/proxmox-app-sandbox-with-approval) you can import.
 
-![Coding agents such as Claude Code or Codex send tool calls to the MCP Server inside Kestra, which starts a flow. The flow waits for an approver, creates a sandbox through Kestra plugins on any system, such as Proxmox, VMware, Nutanix, AWS, Kubernetes, or Ansible, deploys and tests the app, then reports and deletes it, and the URL, test results, and usage go back to Claude Code](./mcp-server-architecture.webp)
+![Coding agents such as Claude Code, Codex, or Cursor send tool calls to the MCP Server inside Kestra, which starts a flow. The flow waits for an approver, creates a sandbox through Kestra plugins on any system, such as Proxmox, VMware, Nutanix, AWS, Kubernetes, or Ansible, deploys and tests the app, then reports and deletes it, and the URL, test results, and usage go back to Claude Code](./mcp-server-architecture.webp)
 
 ## What the Kestra MCP Server gives an agent
 
-MCP Flows let an agent call the flows you chose to expose. The MCP Server goes further and exposes Kestra itself, with the same tools as the AI Copilot in the Kestra UI. From a chat, an agent can:
+MCP Flows let an agent call the flows you chose to expose. The MCP Server goes further and exposes Kestra itself. From a chat, an agent can:
 
 - read and edit flows, and draft a new flow for you to review before anything is saved
 - start, restart, replay, pause, resume, or kill executions
 - read execution details, outputs, and logs, and search logs across executions
 - manage namespace files and KV entries
 
-In the Enterprise Edition, agents can also work with apps, test suites, groups, and announcement banners, for 78 tools in all. The AI Copilot uses the same tools from inside Kestra, and in its Edit and Plan modes it asks you to confirm before it changes anything.
+In the Enterprise Edition, agents can also work with apps, test suites, and user groups, for 78 tools in all.
 
 The tools carry hints that tell the client whether a call only reads, makes changes, or deletes or starts something, so your client can ask before acting. The server is off until you turn it on, every request is authenticated, and you can limit it to some tenants and choose the sign-in methods it accepts, OAuth included.
 
