@@ -6,9 +6,9 @@ import Rails from "./Rails.astro"
 
 const OPTIONS = [
     {
-        figure: "laptop" as const,
-        title: "Your laptop",
-        text: "One Docker command",
+        figure: "vm" as const,
+        title: "Bare metal or VM",
+        text: "Any Linux or Windows server",
     },
     {
         figure: "cluster" as const,
@@ -40,7 +40,7 @@ const OPTIONS = [
             Deploy and govern <span>anywhere.</span>
             <Fragment slot="lead">
                 Kestra has flexible deployment options, supporting everything
-                from your laptop to an air-gapped environment.
+                from a single VM to an air-gapped environment.
             </Fragment>
         </SectionHead>
 
@@ -139,12 +139,12 @@ const OPTIONS = [
                 --card: var(--lift);
             }
 
-            & + li {
+            &:not(:first-child) {
                 border-left: var(--rule);
             }
 
             @include media-breakpoint-down(lg) {
-                &:nth-child(3) {
+                &:nth-child(odd) {
                     border-left: 0;
                 }
 

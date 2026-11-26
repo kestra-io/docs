@@ -118,6 +118,11 @@ triggers:
     toolName: do_spend_summary
     mcpServer: default`
 
+const SPEND_TASKS = [
+    { id: "fetch_insights", type: "core.http.Request", mark: "fetch" },
+    { id: "explain", type: "ai.agent.AIAgent", mark: "explain" },
+]
+
 const SPEND_MARKS: Record<string, [number, number]> = {
     fetch: [4, 9],
     explain: [10, 21],
@@ -179,6 +184,7 @@ const SPEND_MARKS: Record<string, [number, number]> = {
             ]}
         >
             <TabPanel group="ai-examples" index={1}>
+                <p class="pitch">{CARDS[0].text}</p>
                 <div class="mcp triage" data-triage>
                     <CodeCard
                         class="spend"
@@ -278,8 +284,9 @@ const SPEND_MARKS: Record<string, [number, number]> = {
                 </div>
             </TabPanel>
             <TabPanel group="ai-examples" index={2}>
+                <p class="pitch">{CARDS[1].text}</p>
                 <div class="mcp" data-mcp>
-                    <ChatMock />
+                    <ChatMock tasks={SPEND_TASKS} />
                     <CodeCard
                         class="spend"
                         file="company.team / do_spend_summary.yml"
@@ -388,6 +395,17 @@ const SPEND_MARKS: Record<string, [number, number]> = {
         const typed = chat.querySelector<HTMLElement>("[data-typed]")!
         const question = chat.dataset.question!
         const { light, state } = codeOf(box)
+        const tasks = [...chat.querySelectorAll<HTMLElement>("[data-task]")]
+        const order = ["fetch", "explain", "outputs"]
+        const track = (mark?: string) => {
+            const at =
+                mark === "done" ? order.length : order.indexOf(mark ?? "")
+            for (const task of tasks) {
+                const idx = order.indexOf(task.dataset.task!)
+                if (at < 0 || idx > at) delete task.dataset.state
+                else task.dataset.state = idx < at ? "done" : "running"
+            }
+        }
         let token = 0
 
         const reset = () => {
@@ -396,6 +414,7 @@ const SPEND_MARKS: Record<string, [number, number]> = {
             typed.textContent = ""
             state("idle")
             light()
+            track()
         }
 
         const run = async () => {
@@ -426,8 +445,10 @@ const SPEND_MARKS: Record<string, [number, number]> = {
                     await wait(1400)
                     if (id !== token) return
                     light(mark)
+                    track(mark)
                 }
                 state("success")
+                track("done")
                 chat.classList.remove("running")
                 await wait(600)
                 if (id !== token) return
@@ -447,6 +468,7 @@ const SPEND_MARKS: Record<string, [number, number]> = {
             reset()
             chat.classList.remove("playing")
             state("success")
+            track("done")
         }
 
         return { run, stop }
@@ -683,6 +705,35 @@ const SPEND_MARKS: Record<string, [number, number]> = {
         }
     }
 
+    .pitch {
+        display: none;
+    }
+
+    @include media-breakpoint-down(md) {
+        .ai :global(.rails) {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 0;
+        }
+
+        .cards {
+            order: 1;
+            margin: 3.5rem calc(-1 * var(--inset)) 0;
+            border-bottom: 0;
+
+            li:not(:last-child) {
+                display: none;
+            }
+        }
+
+        .pitch {
+            display: block;
+            margin: 0 0 1.5rem;
+            line-height: 1.55;
+            color: rgba(255, 255, 255, 0.68);
+        }
+    }
+
     .mcp {
         --pane-h: 30rem;
 
@@ -714,6 +765,12 @@ const SPEND_MARKS: Record<string, [number, number]> = {
     .mcp :global(.spend) {
         display: flex;
         flex-direction: column;
+    }
+
+    .mcp[data-mcp] :global(.spend) {
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
     }
 
     .mcp :global(.spend pre) {

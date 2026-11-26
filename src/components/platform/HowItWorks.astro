@@ -29,9 +29,9 @@ const STEPS = [
     },
     {
         tab: "Triggers",
-        title: "Triggers start flows",
+        title: "Events start flows",
         dur: 12000,
-        text: "Start a flow on a schedule, a webhook, another flow’s result, or a poll.",
+        text: "Kestra is event-driven. Start a flow the moment something happens, such as a message on a queue, a file landing in storage, a webhook call, or another flow finishing, or on a schedule.",
         link: {
             href: "/docs/workflow-components/triggers",
             label: "Learn more about triggers",
@@ -1251,6 +1251,7 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
             ]
             const body = root.querySelector<HTMLElement>(".body")!
             const still = matchMedia("(prefers-reduced-motion: reduce)").matches
+            const narrow = matchMedia("(max-width: 767.98px)").matches
             const typerBox = root.querySelector<HTMLElement>("[data-typer]")
             const firerBox = root.querySelector<HTMLElement>("[data-fire]")
             const noCodeBox = root.querySelector<HTMLElement>("[data-nocode]")
@@ -1267,7 +1268,7 @@ const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
                 observers.push(resize)
             }
             const players = [
-                typerBox && !still && makeTyper(typerBox),
+                typerBox && !still && !narrow && makeTyper(typerBox),
                 firerBox && !still && makeFirer(firerBox),
                 noCodeBox && makeNoCode(noCodeBox),
                 execBox && !still && makeExec(execBox),

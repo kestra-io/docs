@@ -8,17 +8,17 @@ const PARTS = [
     {
         zone: "control",
         title: "Control plane",
-        text: "Decides what runs and when. Serves the UI, API, and MCP endpoint, fires triggers, and tracks every execution. It never runs your code.",
+        text: "Decides what runs and when. Serves the UI, API, and MCP endpoint, fires triggers, and tracks every execution. It never runs your code. In Enterprise, SSO and RBAC control who can see and change what, and tenants keep teams apart on one instance.",
     },
     {
         zone: "data",
         title: "Data plane",
-        text: "Runs your code where your data lives: in the cloud, on-premises, or both. Workers connect back over gRPC, with mTLS configurable.",
+        text: "Runs your code where your data lives: in the cloud, on-premises, or both. Workers connect back over gRPC, secured with mTLS in Enterprise, where worker groups send each task to the workers you choose by team, site, or hardware.",
     },
     {
         zone: "queue",
         title: "Queue and database",
-        text: "Holds state and passes work between the two planes. JDBC (Postgres, MySQL) in open source; Redis, AMQP, Kafka, or Elasticsearch in Enterprise.",
+        text: "Holds state and passes messages between control plane services. Workers never touch it. Open source runs both on PostgreSQL or MySQL. Enterprise adds Elasticsearch for the database and seven message brokers for the queue: Kafka, Redis, AMQP, Google Cloud Pub/Sub, NATS JetStream, Amazon SQS/SNS, and Azure Event Hubs.",
     },
 ]
 ---
@@ -561,6 +561,7 @@ const PARTS = [
         @include media-breakpoint-down(xl) {
             margin: 0;
             padding-inline: 0;
+            border-bottom: 0;
         }
 
         p {
