@@ -1,4 +1,4 @@
-title: "Ansible Orchestration with Kestra: Events, Approvals, Inventory and Rolling Updates"
+title: "Ansible Orchestration with Kestra: Events, Approvals, Rollouts"
 description: "Keep your Ansible playbooks and run them from schedules and events, with approval gates between waves, inventory from NetBox or Terraform, per-host results, and Terraform and ServiceNow in the same flow."
 
 tool:

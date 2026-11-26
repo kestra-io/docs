@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components"
 import Rails from "./Rails.astro"
 import PixelEdges from "~/components/about/PixelEdges.astro"
 import CodeCard from "./CodeCard.astro"
@@ -63,7 +64,7 @@ const SPARKS = [
                 </p>
                 <div class="buttons">
                     <a href="/get-started" class="btn-solid">
-                        Get started
+                        Get started <Icon name="mdi:chevron-right" />
                     </a>
                     <a href="/demo" class="btn-ghost">
                         Book a demo
@@ -163,7 +164,7 @@ const SPARKS = [
         const fields = EDITS.map((edit) => {
             const line = lines[edit.line - 1]
             const value = line.querySelector<HTMLElement>(".value")!
-            value.textContent = " "
+            value.textContent = "\u00a0"
             const text = document.createElement("span")
             text.className = "edit"
             text.textContent = edit.values[0]
@@ -177,6 +178,46 @@ const SPARKS = [
                 index: 0,
             }
         })
+
+        const pre = stage.querySelector<HTMLElement>("pre")!
+        const reserve = () => {
+            pre.style.minHeight = ""
+            const saved = fields.map((field) => ({
+                nodes: [...field.text.childNodes],
+                key: field.key?.textContent ?? null,
+            }))
+            for (const field of fields) {
+                const line = field.value.parentElement!
+                let tallest = -1
+                let pick = 0
+                field.values.forEach((value, i) => {
+                    field.text.textContent = value
+                    if (field.keys && field.key)
+                        field.key.textContent = field.keys[i]
+                    const height = line.getBoundingClientRect().height
+                    if (height > tallest) {
+                        tallest = height
+                        pick = i
+                    }
+                })
+                field.text.textContent = field.values[pick]
+                if (field.keys && field.key)
+                    field.key.textContent = field.keys[pick]
+            }
+            pre.style.minHeight = `${pre.getBoundingClientRect().height}px`
+            fields.forEach((field, i) => {
+                const { nodes, key } = saved[i]
+                field.text.replaceChildren(...nodes)
+                if (field.key && key !== null) field.key.textContent = key
+            })
+        }
+        let width = 0
+        new ResizeObserver(([entry]) => {
+            if (entry.contentRect.width === width) return
+            width = entry.contentRect.width
+            requestAnimationFrame(reserve)
+        }).observe(pre)
+        void document.fonts.ready.then(reserve)
 
         const caret = document.createElement("i")
         caret.className = "caret"
@@ -437,6 +478,11 @@ const SPARKS = [
         :global(pre) {
             padding-block: 1.75rem 2rem;
             line-height: 1.85;
+
+            @include media-breakpoint-down(md) {
+                padding-block: 1rem 1.25rem;
+                line-height: 1.7;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {

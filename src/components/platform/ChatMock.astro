@@ -1,4 +1,10 @@
 ---
+interface Props {
+    tasks?: { id: string; type: string; mark: string }[]
+}
+
+const { tasks = [] } = Astro.props
+
 const QUESTION = "Why did our DigitalOcean bill jump this week?"
 const ANSWER =
     "Spend rose day over day, driven by new droplets in one region. That looks like a deployment change, not normal variation, so it’s worth confirming with the team that launched them."
@@ -69,6 +75,17 @@ const EYES = [
                         ⎿&nbsp; Done · execution 4f2a… · SUCCESS
                     </span>
                 </span>
+                {tasks.length > 0 && (
+                    <span class="tasks">
+                        {tasks.map((task) => (
+                            <span class="task" data-task={task.mark}>
+                                <i class="state" aria-hidden="true" />
+                                <b>{task.id}</b>
+                                {task.type}
+                            </span>
+                        ))}
+                    </span>
+                )}
             </span>
         </div>
 
@@ -91,7 +108,6 @@ const EYES = [
         <span class="caret-sign">&gt;</span>
         <span class="typed" data-typed></span>
     </div>
-    <p class="hint">? for shortcuts</p>
 </figure>
 
 <style lang="scss">
@@ -237,6 +253,53 @@ const EYES = [
         }
     }
 
+    .tasks {
+        display: none;
+
+        @include media-breakpoint-down(md) {
+            display: grid;
+            gap: 0.125rem;
+            margin-top: 0.375rem;
+            padding-left: 1.25rem;
+        }
+    }
+
+    .task {
+        display: flex;
+        gap: 0.625rem;
+        transition: opacity 0.3s ease;
+
+        :global(.playing) &:not([data-state]) {
+            opacity: 0.45;
+        }
+
+        b {
+            font-weight: 500;
+        }
+    }
+
+    .state {
+        flex: none;
+        width: 0.75rem;
+        font-style: normal;
+
+        &::before {
+            content: "✓";
+            color: var(--ok);
+        }
+
+        :global(.playing) .task:not([data-state]) > &::before {
+            content: "○";
+            color: inherit;
+        }
+
+        [data-state="running"] > &::before {
+            content: "◐";
+            color: var(--accent);
+            animation: blink 1s steps(1) infinite;
+        }
+    }
+
     .result {
         display: grid;
 
@@ -287,7 +350,7 @@ const EYES = [
     .composer {
         display: flex;
         gap: 0.625rem;
-        margin: 0.5rem 1.125rem 0;
+        margin: 0.5rem 1.125rem 1.125rem;
         padding: 0.5rem 0.75rem;
         border: 1px solid var(--line);
         border-radius: 0.5rem;
@@ -312,12 +375,6 @@ const EYES = [
             opacity: 0.75;
             animation: blink 1s steps(1) infinite;
         }
-    }
-
-    .hint {
-        margin: 0.375rem 1.125rem 1rem;
-        font-size: 0.6875rem;
-        color: var(--muted);
     }
 
     @keyframes blink {
