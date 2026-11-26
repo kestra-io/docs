@@ -58,6 +58,12 @@ Before 2.1, asking a person for a decision meant a `Pause` task, and the only wa
 
 The MCP server has no tool to approve a request, and `resume_execution` refuses an execution that waits on an Approval task. An agent can start a flow that needs approval, but it cannot approve it.
 
+## Why a flow instead of a skill
+
+Many teams write an agent skill for operations like a Kubernetes cluster upgrade: the rules, the prechecks, the postchecks. On a normal day it works. On a bad day, nothing enforces it, because a skill tells the agent what it should do, not what it can do. Hand that skill to a junior engineer and the risk grows.
+
+With the MCP Server, the agent calls a predefined flow instead. It still decides when the work runs, but it can only run the steps the flow defines, with the prechecks, approvals, and rollback built in. Every run is recorded, so you can audit it, improve it, and show how reliable it is.
+
 ## One run, end to end
 
 The app is Shortly, a FastAPI link shortener built with Claude and pushed to GitHub. In the repository folder, the prompt was:
