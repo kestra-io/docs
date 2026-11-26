@@ -64,29 +64,47 @@
                             @click="() => selectFacet(undefined)"
                         >
                             <span>All</span>
-                            <span>({{ allSum }})</span>
+                            <span v-if="allSum !== undefined"
+                                >({{ allSum }})</span
+                            >
                         </button>
                         <button
                             class="facet"
-                            v-for="(result, key, index) in searchFacets"
+                            v-for="key in tabKeys"
                             @click="() => selectFacet(key)"
                             :class="{ 'facet-active': selectedFacet === key }"
                             role="tab"
-                            :key="index"
+                            :key="key"
                         >
                             <span>{{
                                 key.charAt(0).toUpperCase() +
                                 key.slice(1).toLowerCase()
                             }}</span>
-                            <span>({{ result }})</span>
+                            <span v-if="tabCount(key) !== undefined"
+                                >({{ tabCount(key) }})</span
+                            >
                         </button>
                     </div>
                     <div :class="{ loading: loading }">
                         <div
-                            class="d-flex justify-content-center mt-5 mb-5"
                             v-if="initialLoad === false"
+                            class="row search-results"
+                            role="status"
+                            aria-label="Loading results"
                         >
-                            <div class="spinner-border" role="status"></div>
+                            <div class="search-loading col-12 col-md-6">
+                                <div
+                                    v-for="n in 6"
+                                    :key="n"
+                                    class="search-loading-row"
+                                >
+                                    <span class="search-loading-icon"></span>
+                                    <span class="search-loading-text">
+                                        <span></span>
+                                        <span></span>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
 
                         <div
@@ -123,7 +141,55 @@
                                         }"
                                         @click="close"
                                     >
-                                        <div class="result">
+                                        <div
+                                            v-if="result.plugin"
+                                            class="result plugin-result"
+                                        >
+                                            <div class="plugin-icon">
+                                                <img
+                                                    :src="result.plugin.icon"
+                                                    alt=""
+                                                    width="30"
+                                                    height="30"
+                                                    loading="lazy"
+                                                />
+                                            </div>
+                                            <div class="result-text">
+                                                <div class="plugin-title-row">
+                                                    <h5>{{ result.title }}</h5>
+                                                    <span
+                                                        v-if="
+                                                            result.plugin
+                                                                .isEnterprise
+                                                        "
+                                                        class="enterprise-badge"
+                                                        >Enterprise</span
+                                                    >
+                                                </div>
+                                                <p
+                                                    v-if="
+                                                        result.plugin
+                                                            .description
+                                                    "
+                                                    class="result-description"
+                                                >
+                                                    {{
+                                                        result.plugin
+                                                            .description
+                                                    }}
+                                                </p>
+                                                <div class="plugin-categories">
+                                                    <span
+                                                        v-for="category in result
+                                                            .plugin.categories"
+                                                        :key="category"
+                                                        class="category-tag"
+                                                        >{{ category }}</span
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div v-else class="result">
                                             <div class="w-100">
                                                 <span class="type">{{
                                                     result.type
@@ -166,8 +232,127 @@
                                 class="search-detail p-3 col-6 d-none d-md-flex"
                             >
                                 <div
+                                    class="rounded-3 w-100 plugin-detail"
+                                    v-if="selectedItem?.plugin"
+                                >
+                                    <div class="plugin-detail-header">
+                                        <div class="plugin-icon large">
+                                            <img
+                                                :src="selectedItem.plugin.icon"
+                                                alt=""
+                                                width="45"
+                                                height="45"
+                                            />
+                                        </div>
+                                        <div>
+                                            <div class="plugin-title-row">
+                                                <h5>
+                                                    {{ selectedItem.title }}
+                                                </h5>
+                                                <span
+                                                    v-if="
+                                                        selectedItem.plugin
+                                                            .isEnterprise
+                                                    "
+                                                    class="enterprise-badge"
+                                                    >Enterprise</span
+                                                >
+                                            </div>
+                                            <div class="slug">
+                                                <span
+                                                    v-for="item in breadcrumb(
+                                                        selectedItem.url,
+                                                    )"
+                                                    :key="item"
+                                                    >{{ item }}</span
+                                                >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="plugin-categories">
+                                        <span
+                                            v-for="category in selectedItem
+                                                .plugin.categories"
+                                            :key="category"
+                                            class="category-tag"
+                                            >{{ category }}</span
+                                        >
+                                    </div>
+                                    <p class="plugin-detail-description">
+                                        {{ selectedItem.plugin.description }}
+                                    </p>
+                                    <p class="plugin-stats">
+                                        <span
+                                            v-if="
+                                                selectedItem.plugin
+                                                    .elementCounts
+                                            "
+                                            ><strong>{{
+                                                selectedItem.plugin
+                                                    .elementCounts
+                                            }}</strong>
+                                            tasks</span
+                                        >
+                                        <span
+                                            v-if="
+                                                selectedItem.plugin.blueprints
+                                            "
+                                            ><strong>{{
+                                                selectedItem.plugin.blueprints
+                                            }}</strong>
+                                            blueprints</span
+                                        >
+                                    </p>
+                                    <section
+                                        v-for="group in selectedItem.plugin
+                                            .elements"
+                                        :key="group.type"
+                                        class="plugin-elements"
+                                    >
+                                        <h6>
+                                            {{ group.type }} ({{ group.total }})
+                                        </h6>
+                                        <a
+                                            v-for="element in group.items"
+                                            :key="element.cls"
+                                            :href="
+                                                element.href ??
+                                                resultHref(selectedItem)
+                                            "
+                                            class="plugin-element"
+                                            @click="close"
+                                        >
+                                            <img
+                                                :src="`/icons/${element.cls}.svg`"
+                                                alt=""
+                                                width="22"
+                                                height="22"
+                                                loading="lazy"
+                                            />
+                                            <div>
+                                                <strong>{{
+                                                    element.name
+                                                }}</strong>
+                                                <span v-if="element.title">{{
+                                                    element.title
+                                                }}</span>
+                                            </div>
+                                        </a>
+                                        <a
+                                            v-if="
+                                                group.total > group.items.length
+                                            "
+                                            :href="resultHref(selectedItem)"
+                                            class="plugin-elements-more"
+                                            @click="close"
+                                            >See all {{ group.total }}
+                                            {{ group.type.toLowerCase() }}</a
+                                        >
+                                    </section>
+                                </div>
+                                <div
                                     class="rounded-3 w-100"
-                                    v-if="selectedItem"
+                                    v-else-if="selectedItem"
                                 >
                                     <div>
                                         <span class="type">{{
@@ -242,6 +427,8 @@
     import MagnifyExpand from "vue-material-design-icons/MagnifyExpand.vue"
     import AiChatDialog from "~/components/ai/AiChatDialog.vue"
     import KSAIImg from "../docs/assets/ks-ai.svg"
+    import { defineAsyncComponent } from "vue"
+
 </script>
 
 <script>
@@ -253,8 +440,22 @@
     import posthog from "posthog-js"
     import { $fetchApi } from "~/utils/fetch"
     import { prepareSearchResults } from "~/utils/searchResults"
+    import { markRaw } from "vue"
+    import {
+        loadPluginsIndex,
+        pluginsSearchResults,
+    } from "~/utils/search/plugins"
     import { searchResultHref, searchScope } from "~/utils/versionedDocs"
     import { isEventInModal, openModal } from "~/utils/modal"
+
+    // Tabs searched in the browser, from indexes the popup loads when it opens.
+    const LOCAL_TABS = {
+        PLUGINS: {
+            load: loadPluginsIndex,
+            search: (indexes, query) =>
+                pluginsSearchResults(indexes.PLUGINS, query),
+        },
+    }
 
     export default {
         props: {
@@ -280,6 +481,9 @@
                 showAiDialog: false,
                 initialLoad: false,
                 abortController: undefined,
+                indexes: {},
+                failedIndexes: [],
+                localResults: {},
                 // Version whose segment the current results' docs hits need
                 // back; unset for docs-latest hits and for latest fallbacks.
                 hrefVersion: undefined,
@@ -287,21 +491,45 @@
         },
         mounted() {
             window.addEventListener("keydown", this.handleKeyboard)
+            document.addEventListener("pointerover", this.preloadIndexes)
+            document.addEventListener("focusin", this.preloadIndexes)
         },
         unmounted() {
             window.removeEventListener("keydown", this.handleKeyboard)
+            document.removeEventListener("pointerover", this.preloadIndexes)
+            document.removeEventListener("focusin", this.preloadIndexes)
         },
         computed: {
+            tabKeys() {
+                return [
+                    ...new Set([
+                        ...Object.keys(LOCAL_TABS),
+                        ...Object.keys(this.searchFacets),
+                    ]),
+                ]
+            },
             allSum() {
-                return Object.values(this.searchFacets).reduce(
-                    (accumulator, currentValue) => {
-                        return accumulator + currentValue
-                    },
-                    0,
-                )
+                const counts = this.tabKeys.map((key) => this.tabCount(key))
+                if (counts.includes(undefined)) return undefined
+                return counts.reduce((sum, count) => sum + count, 0)
             },
         },
         methods: {
+            // Starts downloading when a search button is hovered or focused, ahead of the click.
+            preloadIndexes(event) {
+                if (
+                    !event.target.closest?.(
+                        '[data-modal-target="#search-modal"]',
+                    )
+                ) {
+                    return
+                }
+                for (const tab of Object.values(LOCAL_TABS)) {
+                    tab.load().catch(() => {})
+                }
+                document.removeEventListener("pointerover", this.preloadIndexes)
+                document.removeEventListener("focusin", this.preloadIndexes)
+            },
             focusSearch() {
                 document.querySelector("#search-input").value = ""
                 document.querySelector("#search-input").focus()
@@ -311,6 +539,12 @@
                     this.selectedFacet = undefined
                 }
                 this.search()
+                for (const [type, tab] of Object.entries(LOCAL_TABS)) {
+                    tab.load().then(
+                        (index) => this.settleIndex(type, index),
+                        () => this.settleIndex(type),
+                    )
+                }
             },
             onHiddenSearch() {
                 this.selectedIndex = null
@@ -334,6 +568,7 @@
                 this.loading = true
 
                 this.searchValue = value
+                this.updateLocalResults(value)
                 const params = new URLSearchParams()
                 params.append("q", value)
                 if (this.selectedFacet) {
@@ -367,39 +602,110 @@
                     })
                     .then((response) => {
                         if (isStale()) return
-                        this.initialLoad = true
-                        const results = prepareSearchResults(
-                            response?.results,
-                            value,
-                        )
-                        if (results.length) {
-                            this.searchResults = results
+                        // Server rows would flash before the local results replace them.
+                        const waiting = this.waitsForLocalResults()
+                        if (!waiting) this.initialLoad = true
+                        if (!this.usesLocalResults() && !waiting) {
+                            const results = prepareSearchResults(
+                                response?.results,
+                                value,
+                            )
+                            if (results.length) {
+                                this.searchResults = results
 
-                            this.selectedIndex = 0
-                            this.selectedItem = this.searchResults[0]
-                            this.loading = false
-                        } else {
-                            this.resetData()
+                                this.selectedIndex = 0
+                                this.selectedItem = this.searchResults[0]
+                                this.loading = false
+                            } else {
+                                this.resetData()
+                            }
                         }
 
                         if (response?.facets) {
                             this.searchFacets = this.sortFacet(response.facets)
                         }
 
+
                         posthog.capture("search", {
                             text: value,
                             type: this.selectedFacet,
-                            resultsCount: response?.results?.length || 0,
+                            resultsCount: this.usesLocalResults()
+                                ? this.tabCount(this.selectedFacet)
+                                : response?.results?.length || 0,
                         })
                     })
                     .catch(() => {
-                        if (!isStale()) this.resetData()
+                        if (!isStale() && !this.usesLocalResults()) {
+                            this.resetData()
+                        }
                     })
                     .finally(() => {
                         if (isStale()) return
                         this.abortController = undefined
                         this.loading = false
                     })
+            },
+            usesLocalResults(type = this.selectedFacet) {
+                if (type === undefined) return false
+                return type in this.indexes
+            },
+            settleIndex(type, index) {
+                const waited = this.waitsForLocalResults()
+                if (index) {
+                    this.indexes = { ...this.indexes, [type]: markRaw(index) }
+                } else {
+                    this.failedIndexes = [...this.failedIndexes, type]
+                }
+                this.updateLocalResults(this.searchValue ?? "", true)
+                // Nothing local to show: fetch the server answer the popup held back.
+                if (
+                    waited &&
+                    !this.waitsForLocalResults() &&
+                    !this.usesLocalResults()
+                ) {
+                    this.search(this.searchValue ?? "")
+                }
+            },
+            waitsForLocalResults(type = this.selectedFacet) {
+                if (type === undefined) return false
+                if (!(type in LOCAL_TABS)) return false
+                return (
+                    !(type in this.indexes) &&
+                    !this.failedIndexes.includes(type)
+                )
+            },
+            updateLocalResults(value, keepSelection = false) {
+                const localResults = {}
+                for (const [type, tab] of Object.entries(LOCAL_TABS)) {
+                    if (!(type in this.indexes)) continue
+                    localResults[type] = tab.search(this.indexes, value)
+                }
+                this.localResults = localResults
+                if (!this.usesLocalResults()) {
+                    if (this.waitsForLocalResults()) this.initialLoad = false
+                    return
+                }
+
+                this.showResults(localResults[this.selectedFacet].results, keepSelection)
+            },
+            showResults(results, keepSelection = false) {
+                const kept = keepSelection
+                    ? results.findIndex(
+                          (result) => result.url === this.selectedItem?.url,
+                      )
+                    : -1
+                this.searchResults = results
+                this.selectedIndex = Math.max(kept, 0)
+                this.selectedItem = results[this.selectedIndex] ?? null
+                this.initialLoad = true
+                this.loading = false
+            },
+            tabCount(key) {
+                if (this.waitsForLocalResults(key)) return undefined
+                if (!this.usesLocalResults(key)) {
+                    return Number(this.searchFacets[key]) || 0
+                }
+                return this.localResults[key]?.total ?? 0
             },
             fetchSearch(params, version, signal) {
                 const path = version
@@ -425,8 +731,8 @@
             sortFacetIndex(value) {
                 const index = [
                     "PLUGINS",
-                    "DOCS",
                     "BLUEPRINTS",
+                    "DOCS",
                     "BLOGS",
                     "JOBS",
                 ].indexOf(value)
@@ -776,8 +1082,206 @@
                 }
             }
         }
+        .plugin-icon {
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+            background: $white;
+            border-radius: 8px;
+            border: $block-border;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                width: 30px;
+                height: 30px;
+                object-fit: contain;
+            }
+
+            &.large {
+                width: 60px;
+                height: 60px;
+
+                img {
+                    width: 45px;
+                    height: 45px;
+                }
+            }
+        }
+        .search-result .plugin-result {
+            gap: 1rem;
+            align-items: flex-start;
+
+            > .plugin-icon {
+                flex: 0 0 44px;
+            }
+        }
+        .result-text {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+        .plugin-title-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            h5 {
+                margin: 0;
+            }
+        }
+        .enterprise-badge {
+            border-radius: 40px;
+            font-size: $font-size-xs;
+            background: var(--ks-background-tag-EE);
+            color: var(--ks-content-tag-EE);
+            padding: 0.1rem 0.5rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .result-description {
+            color: var(--ks-content-secondary);
+            font-size: $font-size-xs;
+            margin: 0.25rem 0 0.5rem;
+            overflow: hidden;
+            display: -webkit-box;
+            line-clamp: 1;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+        }
+        .plugin-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+
+            .category-tag {
+                background: var(--ks-background-tag-category);
+                color: var(--ks-content-tag-category);
+                padding: 0.125rem 0.5rem;
+                border-radius: 40px;
+                font-size: $font-size-xs;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+        }
+        .plugin-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+            .plugin-detail-header {
+                display: flex;
+                gap: 1rem;
+                align-items: center;
+            }
+
+            .plugin-detail-description {
+                margin: 0;
+                color: var(--ks-content-primary);
+                font-size: $font-size-sm;
+            }
+
+            .plugin-stats {
+                margin: 0;
+                display: flex;
+                gap: 1rem;
+                font-size: $font-size-xs;
+                color: var(--ks-content-primary);
+            }
+
+            .plugin-elements {
+                display: flex;
+                flex-direction: column;
+                gap: 0.4rem;
+
+                h6 {
+                    margin: 0;
+                    font-size: $font-size-xs;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
+                    color: var(--ks-content-secondary);
+                }
+            }
+
+            .plugin-element {
+                display: flex;
+                gap: 0.75rem;
+                align-items: flex-start;
+                padding: 0.5rem 0.6rem;
+                border: 1px solid var(--ks-border-primary);
+                border-radius: 8px;
+                background: var(--ks-background-primary);
+                color: var(--ks-content-primary);
+                text-decoration: none;
+
+                &:hover {
+                    border-color: var(--ks-border-active);
+                }
+
+                img {
+                    flex-shrink: 0;
+                    margin-top: 2px;
+                    object-fit: contain;
+                }
+
+                strong {
+                    display: block;
+                    font-size: $font-size-sm;
+                }
+
+                span {
+                    font-size: $font-size-xs;
+                    color: var(--ks-content-secondary);
+                }
+            }
+
+            .plugin-elements-more {
+                font-size: $font-size-xs;
+                color: var(--ks-content-link);
+                text-decoration: none;
+            }
+        }
         .loading {
             opacity: 0.6;
+        }
+        .search-loading-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem 1rem;
+            border-bottom: 1px solid var(--ks-border-primary);
+        }
+        .search-loading-icon,
+        .search-loading-text span {
+            background: var(--ks-background-secondary);
+            animation: search-loading 1.2s ease-in-out infinite alternate;
+
+            @media (prefers-reduced-motion: reduce) {
+                animation: none;
+            }
+        }
+        .search-loading-icon {
+            flex: 0 0 44px;
+            height: 44px;
+            border-radius: 8px;
+        }
+        .search-loading-text {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+
+            span {
+                height: 0.75rem;
+                width: 85%;
+                border-radius: 4px;
+
+                &:first-child {
+                    height: 0.9rem;
+                    width: 45%;
+                }
+            }
         }
         .search-results {
             border-top: 1px solid var(--ks-border-primary);
@@ -788,6 +1292,12 @@
             font-weight: 700;
             padding: 0;
             margin: 0;
+        }
+    }
+
+    @keyframes search-loading {
+        to {
+            opacity: 0.45;
         }
     }
 </style>

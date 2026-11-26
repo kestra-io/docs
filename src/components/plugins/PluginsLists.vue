@@ -92,6 +92,10 @@
     import { useWindowScroll, watchDebounced } from "@vueuse/core"
     import { formatCategoryName } from "~/utils/plugins/pluginUtils"
     import type { CardPlugin } from "~/utils/plugins/pruneForClient"
+    import {
+        filterPluginsBySearch,
+        sortPlugins,
+    } from "~/utils/plugins/searchPlugins"
 
     import KSAIImg from "../docs/assets/ks-ai.svg"
     import Close from "vue-material-design-icons/Close.vue"
@@ -124,74 +128,8 @@
         props.categories.map((c) => ({ id: c, label: formatCategoryName(c) })),
     )
 
-    const SEARCHABLE_FIELDS: (keyof CardPlugin)[] = [
-        "title",
-        "description",
-        "name",
-        "classes",
-    ]
-
-    const sortPlugins = (
-        plugins: CardPlugin[],
-        sort: string,
-        query: string,
-    ) => {
-        const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean)
-        const matchesAll = (value: string | undefined) =>
-            tokens.length > 0 &&
-            tokens.every((t) => value?.toLowerCase().includes(t))
-
-        return [...plugins].sort((a, b) => {
-            if (query) {
-                const aStrong = matchesAll(a.name) || matchesAll(a.title)
-                const bStrong = matchesAll(b.name) || matchesAll(b.title)
-                if (aStrong !== bStrong) return aStrong ? -1 : 1
-            }
-
-            if (sort === "newest") {
-                const aDate = a.lastReleasedAt
-                    ? new Date(a.lastReleasedAt).getTime()
-                    : 0
-                const bDate = b.lastReleasedAt
-                    ? new Date(b.lastReleasedAt).getTime()
-                    : 0
-                if (aDate !== bDate) return bDate - aDate
-            } else if (sort === "most-used") {
-                const bCmp = (b.usageCount ?? 0) - (a.usageCount ?? 0)
-                if (bCmp !== 0) return bCmp
-            } else {
-                const aCore = a.group === "io.kestra.plugin.core" && !a.subGroup
-                const bCore = b.group === "io.kestra.plugin.core" && !b.subGroup
-                if (aCore !== bCore) return aCore ? -1 : 1
-            }
-
-            const comparison = a.title
-                .toLowerCase()
-                .localeCompare(b.title.toLowerCase())
-            return sort === "Z-A" ? -comparison : comparison
-        })
-    }
-
-    const filterBySearch = (plugins: CardPlugin[], query: string) => {
-        if (!query) return plugins
-        const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean)
-        const matchesAll = (value: string | undefined) =>
-            tokens.every((t) => value?.toLowerCase().includes(t))
-
-        return plugins
-            .filter((p) =>
-                SEARCHABLE_FIELDS.some((f) => matchesAll(p[f] as string)),
-            )
-            .sort((a, b) => {
-                const aStrong = matchesAll(a.name) || matchesAll(a.title)
-                const bStrong = matchesAll(b.name) || matchesAll(b.title)
-                if (aStrong !== bStrong) return aStrong ? -1 : 1
-                return 0
-            })
-    }
-
     const searchFilteredPlugins = computed(() =>
-        filterBySearch(props.plugins ?? [], searchQuery.value),
+        filterPluginsBySearch(props.plugins ?? [], searchQuery.value),
     )
 
     const categoryFilteredPlugins = computed(() =>
