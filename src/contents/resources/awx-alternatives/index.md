@@ -8,7 +8,7 @@ date: 2026-07-02
 slug: "awx-alternatives"
 faq:
   - question: "Is AWX still being actively developed?"
-    answer: "Development continues, but AWX has not shipped a release since version 24.6.1 on July 2, 2024. Red Hat paused releases to refactor AWX into a pluggable, service-oriented architecture. The refactor was merged on the devel branch in January 2026, but no release date or supported install path has been announced, which is why many teams now evaluate alternatives."
+    answer: "Development continues, but AWX has not shipped a release since version 24.6.1 on July 2, 2024. Red Hat stopped releases to refactor AWX into a pluggable, service-oriented architecture, and the refactor was merged on the devel branch in January 2026. On November 16, 2026, the maintainers removed the release pipeline, noting that AWX releases are no longer published, which is why many teams now evaluate alternatives."
   - question: "What is the difference between AWX and Ansible Semaphore?"
     answer: "AWX is the upstream open-source project for Red Hat Ansible Automation Platform, providing a comprehensive web UI, RBAC, and job scheduling. Semaphore UI is a lighter, simpler open-source web UI that runs Ansible playbooks as well as Terraform, OpenTofu, Bash, PowerShell and Python tasks, often favored for smaller teams and less complex environments."
   - question: "What does AWX stand for?"
@@ -19,6 +19,12 @@ faq:
     answer: "AWX hasn't shipped a release since 24.6.1 (July 2, 2024), and in November 2026 its maintainers removed the release pipeline, so no release is planned (<a href='/resources/infrastructure/awx-release-status'>AWX release status</a>). Teams also look beyond it when their automation needs to run Terraform, scripts and approvals alongside Ansible, or when running AWX on Kubernetes becomes a job of its own."
   - question: "Is Kestra a suitable alternative to AWX for infrastructure automation?"
     answer: "Yes. Kestra runs your existing playbooks and replaces what AWX held around them: job templates, surveys, schedules and workflow templates become YAML flows that can also run Terraform, scripts and approvals. Kestra Enterprise tracks the hosts your playbooks run against as assets, and the inventory file lives in Git or is built inside the flow."
+resourceCtaOverride:
+  href: /blueprints/ansible-playbook-from-git
+  label: See your playbook run in Kestra
+  action: playbook
+  tagline: "Still on AWX? Run the playbooks you already have in Kestra."
+  taglineEnd: "Keep your playbooks. Replace the controller."
 ---
 
 The landscape of IT automation is constantly evolving, with teams seeking automation that reaches beyond a single tool. While AWX has served as a reliable open-source web interface for Ansible automation, its architectural limitations have led many organizations to explore alternatives. The challenge for platform engineers and DevOps teams is finding a platform that not only manages Ansible playbooks but also orchestrates a broader array of tools and workflows across diverse environments.
@@ -26,6 +32,8 @@ The landscape of IT automation is constantly evolving, with teams seeking automa
 This article dives into the top alternatives to AWX in 2026, helping you navigate the options available. The leading alternatives to AWX include Kestra, Ansible [Semaphore](/resources/infrastructure/semaphore-ui-alternatives), Rundeck, and Red Hat's own Ansible Automation Platform, each suited to different infrastructure and operational needs. We'll examine why teams are moving beyond AWX, the key criteria for evaluating new platforms, and provide a detailed comparison of open-source and commercial solutions.
 
 > **Short answer:** AWX alternatives fall into two groups. Web UIs that replace the AWX controller one for one: Semaphore UI, Ascender and Red Hat Ansible Automation Platform. And orchestrators that run your playbooks next to Terraform, tickets and events: Kestra, Rundeck and CI tools. All of them call `ansible-core`, so your playbooks don't change. AWX itself [has not shipped a release since 24.6.1 on July 2, 2024](/resources/infrastructure/awx-release-status). In November 2026, its maintainers removed the release pipeline, noting that AWX releases are no longer published.
+
+::resource-cta
 
 ## The Evolving Need for AWX Alternatives in Modern IT
 

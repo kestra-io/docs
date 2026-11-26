@@ -18,29 +18,59 @@ const SERVICES = [
     { id: "scheduler", icon: "mdi:clock-outline", name: "Scheduler" },
 ]
 
-const BACKENDS = {
-    oss: [
-        { name: "PostgreSQL", group: "io.kestra.plugin.jdbc.postgresql" },
-        { name: "MySQL", group: "io.kestra.plugin.jdbc.mysql" },
-        { name: "JDBC", group: null },
-    ],
-    ent: [
-        { name: "Redis", group: "io.kestra.plugin.redis" },
-        { name: "AMQP", group: "io.kestra.plugin.amqp" },
-        { name: "Kafka", group: "io.kestra.plugin.kafka" },
-        { name: "Elasticsearch", group: "io.kestra.plugin.elasticsearch" },
-        { name: "JDBC", group: null },
-    ],
+const PLUGINS = {
+    PostgreSQL: "io.kestra.plugin.jdbc.postgresql",
+    MySQL: "io.kestra.plugin.jdbc.mysql",
+    Elasticsearch: "io.kestra.plugin.elasticsearch",
+    Redis: "io.kestra.plugin.redis",
+    AMQP: "io.kestra.plugin.amqp",
+    Kafka: "io.kestra.plugin.kafka",
+    "Pub/Sub": "io.kestra.plugin.gcp.pubsub",
+    NATS: "io.kestra.plugin.nats",
+    SQS: "io.kestra.plugin.aws.sqs",
+    "Event Hubs": "io.kestra.plugin.azure.eventhubs",
 }
 
-const logos = Object.fromEntries(
+type Backend = keyof typeof PLUGINS
+
+const STORES: {
+    edition: "oss" | "ent"
+    label: string
+    backends: Backend[]
+}[] = [
+    {
+        edition: "oss",
+        label: "Queue & database",
+        backends: ["PostgreSQL", "MySQL"],
+    },
+    {
+        edition: "ent",
+        label: "Database",
+        backends: ["PostgreSQL", "MySQL", "Elasticsearch"],
+    },
+    {
+        edition: "ent",
+        label: "Queue",
+        backends: [
+            "Kafka",
+            "Redis",
+            "AMQP",
+            "Pub/Sub",
+            "NATS",
+            "SQS",
+            "Event Hubs",
+            "PostgreSQL",
+            "MySQL",
+        ],
+    },
+]
+
+const logos: Record<string, string | null> = Object.fromEntries(
     await Promise.all(
-        [...BACKENDS.oss, ...BACKENDS.ent]
-            .filter((backend) => backend.group)
-            .map(async (backend) => [
-                backend.name,
-                await fetchPluginIcon(backend.group!).catch(() => null),
-            ]),
+        Object.entries(PLUGINS).map(async ([name, group]) => [
+            name,
+            await fetchPluginIcon(group).catch(() => null),
+        ]),
     ),
 )
 
@@ -59,6 +89,8 @@ const TARGETS = [
 const totalPlugins = await fetchTotalPluginsCount()
 
 const WORKER_ICON = "mdi:account-cog-outline"
+
+const WORKER_GROUPS = ["on-prem", "gpu", "eu-west"]
 ---
 
 <div class="arch-diagram" role="img" aria-label="Kestra architecture">
@@ -144,36 +176,51 @@ const WORKER_ICON = "mdi:account-cog-outline"
             <Icon name="mdi:puzzle-outline" />
             {totalPlugins}+ plugins
         </p>
+        <p class="plugins gov" data-edition="ent">
+            <Icon name="mdi:shield-account-outline" />
+            SSO · RBAC · Tenants
+        </p>
     </div>
 
-    <div class="zone queue" data-zone="queue" data-anchor="queue">
-        <div class="zone-head">
-            <span class="label">Queue / database</span>
-        </div>
-        <div class="swap">
-            {(["oss", "ent"] as const).map((edition) => (
-                <ul class="backends" data-edition={edition}>
-                    {BACKENDS[edition].map((backend) => (
-                        <li>
-                            {logos[backend.name] ? (
-                                <span
-                                    class="logo"
-                                    set:html={logos[backend.name]}
-                                />
-                            ) : (
-                                <Icon name="mdi:database-outline" />
-                            )}
-                            {backend.name}
-                        </li>
-                    ))}
-                </ul>
-            ))}
-        </div>
+    <div class="stores swap">
+        {(["oss", "ent"] as const).map((edition) => (
+            <div class="set" data-edition={edition}>
+                {STORES.filter((store) => store.edition === edition).map(
+                    (store) => (
+                        <div
+                            class="zone queue"
+                            data-zone="queue"
+                            data-anchor="queue"
+                        >
+                            <div class="zone-head">
+                                <span class="label">{store.label}</span>
+                            </div>
+                            <ul class="backends">
+                                {store.backends.map((backend) => (
+                                    <li>
+                                        {logos[backend] ? (
+                                            <span
+                                                class="logo"
+                                                set:html={logos[backend]}
+                                            />
+                                        ) : (
+                                            <Icon name="mdi:database-outline" />
+                                        )}
+                                        {backend}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ),
+                )}
+            </div>
+        ))}
     </div>
 
     <p class="wire" data-wire>
         <strong>Worker communication</strong>
-        <span>gRPC · mTLS configurable</span>
+        <span data-edition="oss">gRPC</span>
+        <span data-edition="ent">gRPC · mTLS</span>
     </p>
 
     <div class="zone data" data-zone="data" data-anchor="data">
@@ -203,17 +250,15 @@ const WORKER_ICON = "mdi:account-cog-outline"
                 <strong>Worker</strong>
             </div>
             <div class="group link" data-edition="ent" data-anchor="worker">
-                <strong>Worker group</strong>
-                <span class="sub">
-                    Subscribes to queues · reserves capacity
-                </span>
+                <strong>Worker groups</strong>
+                <span class="sub">By team, site, or hardware</span>
                 <ul class="tiles">
-                    {Array.from({ length: 3 }, () => (
+                    {WORKER_GROUPS.map((group) => (
                         <li class="node tile">
                             <span class="icon">
                                 <Icon name={WORKER_ICON} />
                             </span>
-                            <strong>Worker</strong>
+                            <strong>{group}</strong>
                         </li>
                     ))}
                 </ul>
@@ -284,6 +329,7 @@ const WORKER_ICON = "mdi:account-cog-outline"
             path.setAttribute("d", d)
             path.setAttribute("class", cls)
             layer.appendChild(path)
+            return path
         }
 
         const web = rect(at("web"), origin)
@@ -296,13 +342,26 @@ const WORKER_ICON = "mdi:account-cog-outline"
             add(join(e.r + 4, e.cy, bus, web.cy), "edge join")
         add(`M${bus + R} ${web.cy} H${web.l - 4}`, "edge main")
 
-        const queue = rect(at("queue"), origin)
-        add(
-            queue.cy - R > control.b + 4
-                ? `M${queue.l - 4} ${queue.cy} H${control.cx + R} Q${control.cx} ${queue.cy} ${control.cx} ${queue.cy - R} V${control.b + 4}`
-                : `M${queue.l - 4} ${queue.cy} H${control.r + 4}`,
-            "edge both",
-        )
+        for (const store of diagram.querySelectorAll('[data-anchor="queue"]')) {
+            if (!store.getClientRects().length) continue
+            const queue = rect(store, origin)
+            const inner = control.b - 2 * R
+            const top = Math.max(queue.t, control.t)
+            const y =
+                queue.cy <= inner
+                    ? queue.cy
+                    : queue.cy - 2 * R > control.b + 4 || top >= inner
+                      ? null
+                      : (top + inner) / 2
+            const edge = add(
+                y === null
+                    ? `M${queue.l - 4} ${queue.cy} H${control.cx + R} Q${control.cx} ${queue.cy} ${control.cx} ${queue.cy - R} V${control.b + 4}`
+                    : `M${queue.l - 4} ${y} H${control.r + 4}`,
+                "edge both",
+            )
+            edge.dataset.edition =
+                store.closest<HTMLElement>("[data-edition]")!.dataset.edition
+        }
 
         const ctrl = rect(at("controller"), origin)
         const data = rect(at("data"), origin)
@@ -402,7 +461,7 @@ const WORKER_ICON = "mdi:account-cog-outline"
         grid-template-columns:
             12.5rem minmax(0, 1fr) minmax(12rem, 0.7fr)
             minmax(0, 1fr);
-        grid-template-rows: auto auto;
+        grid-template-rows: auto auto 1fr;
         column-gap: 2.5rem;
         row-gap: 1.25rem;
         font-family: $font-family-sans-serif;
@@ -441,6 +500,7 @@ const WORKER_ICON = "mdi:account-cog-outline"
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);
+            grid-template-rows: none;
             row-gap: 1.5rem;
         }
     }
@@ -748,18 +808,36 @@ const WORKER_ICON = "mdi:account-cog-outline"
         color: var(--k);
     }
 
-    .queue {
+    .plugins.gov {
+        margin-top: 0.5rem;
+        border-style: solid;
+    }
+
+    .stores {
         grid-column: 3;
-        grid-row: 1 / span 2;
+        grid-row: 1 / span 3;
         align-self: start;
+        display: grid;
         margin-top: 11rem;
-        background: var(--q-zone);
 
         @include media-breakpoint-down(lg) {
             grid-column: 1;
             grid-row: auto;
             margin-top: 0;
         }
+    }
+
+    .set {
+        flex-direction: column;
+        gap: 1.25rem;
+
+        @include media-breakpoint-down(lg) {
+            gap: 0.75rem;
+        }
+    }
+
+    .queue {
+        background: var(--q-zone);
 
         .label {
             background: var(--q);
@@ -800,6 +878,7 @@ const WORKER_ICON = "mdi:account-cog-outline"
                 padding: 0.125rem;
                 border-radius: 0.25rem;
                 background: #ffffff;
+                color: #2b2b33;
             }
 
             :global(svg) {
@@ -1018,7 +1097,7 @@ const WORKER_ICON = "mdi:account-cog-outline"
             border-top-color: var(--k);
         }
 
-        .queue,
+        .stores,
         .wire {
             margin-left: 2.25rem;
         }
