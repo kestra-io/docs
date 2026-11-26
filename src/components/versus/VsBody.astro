@@ -1,0 +1,356 @@
+---
+import { getCollection } from "astro:content"
+import PageShell from "~/components/home/PageShell.astro"
+import ReplaceLegacy from "~/components/home/ReplaceLegacy.astro"
+import VsChoose from "./VsChoose.astro"
+import RunKestra from "~/components/home/RunKestra.astro"
+import Customers, { type Story } from "~/components/home/Customers.astro"
+import { flat } from "~/components/home/flatLogo"
+import BuyerQuestions from "~/components/enterprise/BuyerQuestions.astro"
+import MigrationTable from "~/components/migration/MigrationTable.astro"
+import kestraLogo from "~/assets/logo-black.svg?raw"
+import VsCompare from "./VsCompare.astro"
+import VsSetup from "./VsSetup.astro"
+import VsPair from "./VsPair.astro"
+import VsRelated from "./VsRelated.astro"
+import VsTitle from "./VsTitle.astro"
+import kestraMonogram from "./assets/ks-icon.svg?raw"
+
+interface Pair {
+    title: string
+    lead?: string
+    columns: {
+        label: string
+        brand?: "competitor" | "kestra"
+        text: string
+    }[]
+}
+
+interface Side {
+    title: string
+    text: string
+    list: string[]
+}
+
+interface SetupSide {
+    title: string
+    tag: string
+    text: string
+    code: string
+}
+
+interface Props {
+    related?: {
+        comparisons: { href: string; name: string; monogram?: string }[]
+        alternatives?: { href: string; label: string }
+    }
+    pairs?: Pair[]
+    architecture?: {
+        title: string
+        lead?: string
+        competitor: Side
+        kestra: Side
+    }
+    setup?: {
+        title: string
+        lead?: string
+        competitor: SetupSide
+        kestra: SetupSide
+    }
+    competitorName: string
+    monogram?: string
+    logo?: string
+    choose: {
+        title: string
+        lead?: string
+        kestra: { title: string; list: string[] }
+        competitor: { title: string; list: string[] }
+    }
+    table: {
+        title: string
+        lead?: string
+        rows: { label: string; competitor: string; kestra: string }[]
+    }
+    compare?: {
+        title: string
+        lead: string
+        cta?: { label: string; href: string }
+        competitor: { label: string; file: string; lang: string; code: string }
+        kestra: { code: string }
+    }
+    proof?: {
+        title: string
+        stories: {
+            story: string
+            industry: string
+            stat: string
+            label: string
+            quote?: string
+            author?: string
+        }[]
+    }
+    guide?: {
+        title: string
+        description: string
+        cta: { label: string; href: string }
+    }
+    faqTitle?: string
+    faq: { question: string; answer: string }[]
+}
+
+const {
+    related,
+    pairs = [],
+    architecture,
+    setup,
+    competitorName,
+    monogram,
+    logo,
+    choose,
+    table,
+    compare,
+    proof,
+    guide,
+    faqTitle,
+    faq,
+} = Astro.props
+
+const storyLogos = import.meta.glob<string>(
+    "/src/contents/customer-stories/*/logo.svg",
+    { query: "?raw", import: "default", eager: true },
+)
+const withViewBox = (svg: string) => {
+    const tag = svg.match(/<svg\b[^>]*>/)?.[0] ?? ""
+    if (/viewBox=/i.test(tag)) return svg
+    const width = tag.match(/\bwidth="([\d.]+)/)?.[1]
+    const height = tag.match(/\bheight="([\d.]+)/)?.[1]
+    if (!width || !height) return svg
+    return svg.replace(/<svg\b/, `<svg viewBox="0 0 ${width} ${height}"`)
+}
+const entries = await getCollection("customerStories")
+const stories: Story[] = (proof?.stories ?? []).flatMap((pick) => {
+    const entry = entries.find((item) => item.id === pick.story)
+    if (!entry) return []
+    const svg =
+        storyLogos[`/src/contents/customer-stories/${pick.story}/logo.svg`]
+    const person = [entry.data.quotePerson, entry.data.quotePersonTitle]
+        .filter(Boolean)
+        .join(", ")
+    return [
+        {
+            company: entry.data.companyName,
+            story: entry.data.companyName,
+            photo: entry.data.heroImage,
+            logo: svg ? flat(withViewBox(svg)) : undefined,
+            height: 26,
+            industry: pick.industry,
+            stat: pick.stat,
+            label: pick.label,
+            quote: pick.quote ?? entry.data.quote,
+            author: pick.author ?? person,
+        },
+    ]
+})
+
+const KESTRA_LOGO = kestraLogo.replaceAll(
+    'fill="#26282d"',
+    'fill="currentColor"',
+)
+const columns = [
+    "",
+    logo ? { label: competitorName, logo } : competitorName,
+    { label: "Kestra", logo: KESTRA_LOGO },
+]
+const brandLogo = (brand?: "competitor" | "kestra") =>
+    brand === "kestra"
+        ? kestraMonogram
+        : brand === "competitor"
+          ? monogram
+          : undefined
+const pairColumns = (pair: Pair) =>
+    pair.columns.map((column) => ({
+        label: column.label,
+        logo: brandLogo(column.brand),
+        brand: column.brand,
+        text: column.text,
+    }))
+const slug = (text: string) =>
+    `vs-${text
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "")}`
+const groups = [
+    {
+        title: "",
+        icon: "",
+        rows: table.rows.map((row) => ({
+            cells: [row.label, row.competitor, row.kestra],
+        })),
+    },
+]
+---
+
+<PageShell>
+    <div class="vs-body">
+        <VsChoose
+            title={choose.title}
+            lead={choose.lead}
+            competitor={choose.competitor}
+            kestra={choose.kestra}
+        />
+        <MigrationTable
+            id="vs-table-title"
+            title={table.title}
+            lead={table.lead}
+            {columns}
+            widths={["20%", "40%"]}
+            {groups}
+        >
+            <VsTitle slot="title" text={table.title} />
+        </MigrationTable>
+        {stories.length > 0 && (
+            <Customers stories={stories} foot={false} placeholder={false}>
+                <Fragment slot="title">{proof?.title}</Fragment>
+            </Customers>
+        )}
+        {architecture && (
+            <ReplaceLegacy
+                id="vs-architecture-title"
+                ctas={[]}
+                items={[
+                    {
+                        icon: "mdi:cog-outline",
+                        title: architecture.competitor.title,
+                        text: architecture.competitor.text,
+                        list: architecture.competitor.list,
+                    },
+                    {
+                        icon: "mdi:sitemap-outline",
+                        title: architecture.kestra.title,
+                        text: architecture.kestra.text,
+                        list: architecture.kestra.list,
+                    },
+                ]}
+            >
+                <Fragment slot="title">{architecture.title}</Fragment>
+                {architecture.lead && (
+                    <Fragment slot="lead">{architecture.lead}</Fragment>
+                )}
+            </ReplaceLegacy>
+        )}
+        {compare && (
+            <VsCompare
+                headingId="vs-compare-title"
+                title={compare.title}
+                lead={compare.lead}
+                cta={compare.cta}
+                competitor={{
+                    ...compare.competitor,
+                    name: competitorName,
+                    logo: monogram,
+                }}
+                kestra={compare.kestra}
+            />
+        )}
+        {setup && (
+            <VsSetup
+                title={setup.title}
+                lead={setup.lead}
+                competitor={{
+                    ...setup.competitor,
+                    name: competitorName,
+                    logo: monogram,
+                }}
+                kestra={setup.kestra}
+            />
+        )}
+        {pairs.map((pair) => (
+            <VsPair
+                headingId={slug(pair.title)}
+                title={pair.title}
+                lead={pair.lead}
+                columns={pairColumns(pair)}
+            />
+        ))}
+        {guide ? (
+            <RunKestra
+                lead={`${guide.title} ${guide.description}`}
+                compare={{ label: guide.cta.label, href: guide.cta.href }}
+            />
+        ) : (
+            <RunKestra />
+        )}
+        <BuyerQuestions
+            title={faqTitle ?? `Questions about ${competitorName} and Kestra`}
+            items={faq}
+        >
+            {faqTitle && <VsTitle slot="title" text={faqTitle} />}
+        </BuyerQuestions>
+        {related && related.comparisons.length > 0 && (
+            <VsRelated
+                comparisons={related.comparisons}
+                alternatives={related.alternatives}
+            />
+        )}
+    </div>
+</PageShell>
+
+<style lang="scss">
+    .vs-body {
+        :global(
+            section[aria-labelledby="vs-architecture-title"] .problems li > p
+        ) {
+            max-width: 36rem;
+            margin-bottom: 1rem;
+        }
+
+        :global(.mig-table tbody td) {
+            color: var(--ks-content-primary);
+        }
+
+        @include media-breakpoint-up(md) {
+            :global(.mig-table thead th:nth-child(3)),
+            :global(.mig-table tbody td:nth-child(3)) {
+                background: var(--ks-background-purple-light);
+            }
+
+            :global(.mig-table tbody tr:hover > td:nth-child(3)) {
+                background: color-mix(
+                    in srgb,
+                    var(--ks-border-active) 12%,
+                    var(--ks-background-purple-light)
+                );
+            }
+        }
+
+        :global(section[aria-labelledby="vs-architecture-title"] .head) {
+            padding-block: 7rem 3.5rem;
+
+            @include media-breakpoint-down(md) {
+                padding-block: 4.5rem 2.5rem;
+            }
+        }
+
+        :global(
+            section[aria-labelledby="vs-architecture-title"] .problems > li
+        ) {
+            padding-block: 2.5rem 2.75rem;
+
+            @include media-breakpoint-down(lg) {
+                padding-block: 1.75rem 2rem;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            :global(.mig-table tbody tr td.main) {
+                font-weight: inherit;
+            }
+
+            :global(.mig-table tbody tr td.main::before) {
+                content: attr(data-label) " · ";
+                font-weight: 600;
+                color: var(--ks-content-secondary);
+            }
+        }
+    }
+</style>

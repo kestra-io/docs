@@ -1,0 +1,165 @@
+---
+import PixelEdges from "~/components/about/PixelEdges.astro"
+
+interface Side {
+    title: string
+    list: string[]
+}
+
+interface Props {
+    id?: string
+    title: string
+    lead?: string
+    competitor: Side
+    kestra: Side
+}
+
+const { id = "vs-choose-title", title, lead, competitor, kestra } = Astro.props
+const cards = [
+    { ...competitor, tone: "grey" },
+    { ...kestra, tone: "purple" },
+]
+---
+
+<section class="choose" aria-labelledby={id}>
+    <PixelEdges left="tall" right="wide" />
+    <div class="container-xl">
+        <div class="rails">
+            <header>
+                <h2 {id}>{title}</h2>
+                {lead && <p class="lead">{lead}</p>}
+            </header>
+            <div class="cards">
+                {cards.map((card) => (
+                    <article class:list={["card", card.tone]}>
+                        <h3>{card.title}</h3>
+                        <ul>
+                            {card.list.map((entry) => (
+                                <li>{entry}</li>
+                            ))}
+                        </ul>
+                    </article>
+                ))}
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "/src/components/about/style/section" as *;
+
+    .choose {
+        position: relative;
+        background: var(--ks-background-body);
+        border-bottom: 1px solid var(--ks-border-primary);
+    }
+
+    .rails {
+        --rule: 1px solid var(--ks-border-primary);
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+
+        position: relative;
+        border-inline: var(--rule);
+        background: var(--ks-background-body);
+
+        @include media-breakpoint-down(xl) {
+            border-inline: 0;
+        }
+    }
+
+    header {
+        max-width: calc(46rem + 2 * var(--inset));
+        margin: 0 auto;
+        padding: 7rem var(--inset) 3.5rem;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem 2.5rem;
+        }
+    }
+
+    h2 {
+        @include title;
+        color: var(--ks-content-primary);
+    }
+
+    .lead {
+        @include lead;
+    }
+
+    .cards {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+        padding: var(--inset);
+        border-top: var(--rule);
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: -100vw;
+            right: -100vw;
+            height: 1px;
+            background: var(--ks-border-primary);
+            pointer-events: none;
+        }
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    .card {
+        padding: 2rem 2rem 2.5rem;
+        border-radius: 8px;
+
+        &.grey {
+            background: var(--ks-background-secondary);
+        }
+
+        &.purple {
+            background: var(--ks-background-purple-light);
+        }
+
+        @include media-breakpoint-down(md) {
+            padding: 1.5rem 1.25rem 1.75rem;
+        }
+    }
+
+    h3 {
+        margin: 0 0 1.5rem;
+        font-size: $font-size-xl;
+        font-weight: 600;
+        color: var(--ks-content-primary);
+    }
+
+    ul {
+        display: grid;
+        gap: 1rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    li {
+        position: relative;
+        padding-left: 1.75rem;
+        font-size: 1.0625rem;
+        line-height: 1.55;
+        color: var(--ks-content-secondary);
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0.35em;
+            left: 0;
+            width: 1rem;
+            height: 0.5rem;
+            border-left: 2px solid var(--ks-content-link);
+            border-bottom: 2px solid var(--ks-content-link);
+            transform: rotate(-45deg);
+        }
+    }
+</style>

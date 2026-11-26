@@ -61,3 +61,55 @@ export const yamlLine = (line: string) => {
     const comment = hash >= 0 ? rest.slice(hash) : ""
     return `${ind}${dash}<span class="k">${key}${colon}</span><span class="v">${escapeHtml(value)}</span>${comment ? `<span class="c">${escapeHtml(comment)}</span>` : ""}`
 }
+
+const SOURCE_KEYWORDS: Record<string, readonly string[]> = {
+    javascript: ["export", "default", "async", "await", "const", "let", "var", "return", "for", "of", "in", "if", "else", "function", "import", "from", "new", "throw", "try", "catch"],
+    python: ["def", "return", "import", "from", "with", "as", "None", "True", "False", "for", "in", "if", "elif", "else", "class", "async", "await", "try", "except", "raise"],
+    go: ["package", "import", "func", "return", "for", "range", "if", "else", "var", "nil", "defer", "go", "type", "struct"],
+    java: ["public", "private", "class", "static", "void", "return", "new", "if", "else", "for", "import", "package", "final", "throws"],
+    ruby: ["def", "end", "do", "if", "else", "return", "require", "class", "module", "nil"],
+    sh: ["if", "then", "fi", "for", "do", "done", "export", "echo"],
+}
+
+const LINE_COMMENT: Record<string, string> = {
+    javascript: "//",
+    go: "//",
+    java: "//",
+    python: "#",
+    ruby: "#",
+    sh: "#",
+}
+
+const commentAt = (line: string, marker?: string) => {
+    if (!marker) return -1
+    let quote = ""
+    for (let i = 0; i < line.length; i++) {
+        const char = line[i]
+        if (quote) {
+            if (char === quote) quote = ""
+        } else if (char === '"' || char === "'" || char === "`") quote = char
+        else if (line.startsWith(marker, i)) return i
+    }
+    return -1
+}
+
+export const source = (line: string, lang: string) => {
+    const words = SOURCE_KEYWORDS[lang] ?? []
+    const at = commentAt(line, LINE_COMMENT[lang])
+    const body = at >= 0 ? line.slice(0, at) : line
+    const comment = at >= 0 ? line.slice(at) : ""
+    const pattern = new RegExp(
+        `("[^"]*"|'[^']*'|\`[^\`]*\`)${words.length ? `|\\b(${words.join("|")})\\b` : ""}|(\\b[A-Za-z_]\\w*)(?=\\()`,
+        "g",
+    )
+    const html = escapeHtml(body).replace(pattern, (match, str, kw, fn) =>
+        str
+            ? `<span class="s">${match}</span>`
+            : kw
+              ? `<span class="k">${match}</span>`
+              : fn
+                ? `<span class="f">${match}</span>`
+                : match,
+    )
+    return comment ? `${html}<span class="c">${escapeHtml(comment)}</span>` : html
+}

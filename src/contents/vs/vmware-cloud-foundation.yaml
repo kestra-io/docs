@@ -1,5 +1,5 @@
-title: "VMware Aria Automation vs Kestra for Cloud Infrastructure Automation"
-description: "Compare Kestra vs VMware Aria Automation (vRA/vRO): declarative YAML orchestration across any cloud vs. proprietary JavaScript vRO workflows tightly coupled to vSphere. See why enterprises replace vRA with Kestra."
+title: "Kestra vs VMware Aria Automation (vRA and vRO)"
+description: "Compare Kestra and VMware Aria Automation (vRA and vRO): how each is built, the same VM request in both, migration and licensing inside VMware Cloud Foundation."
 competitorName: "VMware Aria Automation"
 guideCta:
   eyebrow: "Migration guide"
@@ -9,247 +9,228 @@ guideCta:
     label: "Read the guide"
     href: "/resources/migration/vra"
 category: Infrastructure Automation
-shortDescription: "vSphere-coupled JavaScript vRO workflows vs. cloud-agnostic declarative YAML orchestration."
-seeHowTitle: "Getting Started with Modern Infrastructure Orchestration"
-seeHowBody: "See how Kestra replaces VMware Aria Automation with declarative YAML workflows across any cloud."
+shortDescription: "A vSphere catalog with vRO workflows inside VMware Cloud Foundation vs. open-source YAML flows that run on any infrastructure."
+
 brandColor:
   color: "#87B74B"
   gradient: "linear-gradient(90deg, #87B74B, #F6C43F, #686465)"
 
 intro:
-  title: "Kestra vs. VMware Aria Automation: Beyond the vSphere Portal"
-  description: "VMware Aria Automation (formerly vRA/vRO) is the go-to portal for catalog-driven VM provisioning in vSphere environments. But as infrastructure expands to AWS, Azure, GCP, and Kubernetes—and as teams demand Git-native workflows, clear error messages, and modern developer experience—the proprietary JavaScript vRO model breaks down. Kestra replaces vRA/vRO with declarative YAML workflows that work across every cloud, on-prem, and air-gapped environments."
+  title: "Kestra vs. VMware Aria Automation"
+  description: "VMware Aria Automation (formerly vRealize Automation), now VCF Automation inside VMware Cloud Foundation, publishes VM blueprints in a self-service provisioning catalog and runs vRO workflows around each deployment. Kestra is an open-source orchestration platform whose YAML flows call vSphere, Terraform, Ansible and ServiceNow as tasks."
 
-philosophy:
-  mainTitle: "Cloud-Agnostic Orchestration vs. vSphere-First Portal"
-  kestra:
-    title: "Multi-Cloud Infrastructure Orchestration"
-    description: "Define every provisioning workflow in YAML. Orchestrate Terraform, Ansible, vSphere, AWS, Azure, and GCP in one flow. Keep your catalog in your existing portal, such as ServiceNow, and call Kestra behind each item, or move it to self-service Apps with dynamic forms and approval gates. Every workflow is Git-native, reviewable, and deployable through CI/CD—no JavaScript, no proprietary APIs, no hidden state."
-    subCardText: '"How do I provision infrastructure across VMware, AWS, and Azure with one declarative workflow and a clear audit trail?"'
+choose:
+  title: "VMware Aria Automation or Kestra?"
   competitor:
-    title: "VMware-Centric Catalog Portal"
-    description: "VMware Aria Automation provides a polished portal for catalog-driven VM provisioning tightly integrated with vSphere. But orchestration logic lives in vRO—JavaScript with proprietary APIs, ambiguous error messages, and no native Git integration. Expanding beyond VMware infrastructure adds friction."
-    shadowColor: "#00B135"
-    subCardBg: "var(--ks-background-blue-light)"
-    subCardText: '"Why does debugging a failed vRO workflow take hours? And why can''t I version-control these JavaScript workflows properly?"'
-
-businessValue:
-  mainTitle: "Replace vRA/vRO<br />with Modern Infrastructure Automation"
-  kestra:
-    title: "Unified Infrastructure Automation"
+    title: "VMware Aria Automation is the better fit if"
     list:
-      - "Provision VMs, run Terraform, and configure with Ansible in one YAML workflow"
-      - "Self-service Apps with dynamic forms, approvals, and RBAC per namespace"
-      - "Full audit trail and evidence logging for compliance"
-      - "Git-native—every workflow is code, reviewed, and versioned"
-      - "Multi-cloud: vSphere, AWS, Azure, GCP, Kubernetes from one platform"
-  competitor:
-    title: "Legacy VMware Portal"
+      - "Your estate is vSphere, you renew VMware Cloud Foundation for the hypervisor anyway, and VCF Automation comes with it."
+      - "Users order machines from the catalog, and its blueprints, cloud zones and day-2 actions already cover what they need."
+      - "Your team maintains a large vRO library, and no renewal date is forcing a decision."
+  kestra:
+    title: "Choose Kestra if"
     list:
-      - "vRO workflows in JavaScript with proprietary APIs—poor DX, hard to debug"
-      - "Ambiguous error messages make troubleshooting time-consuming"
-      - "No native Git integration—workflows live in the UI"
-      - "Deep vSphere coupling creates friction when expanding to multi-cloud"
-      - "High licensing costs, now priced per core inside VMware Cloud Foundation, with ongoing Broadcom pricing risk"
-    shadowColor: "#00B135"
-    bulletColor: "#10B981"
-  footerText: "<a href='/stories/fortune-500-company'>A Fortune 500 manufacturer</a> replaced VMware Aria Automation (vRA/vRO) with Kestra, citing licensing cost, ambiguous logs, and a cyber requirement that no control plane span its OT domains. Kestra provides vSphere-native VM lifecycle management, with Terraform, Ansible, and multi-cloud support added, in a Git-native platform that works in air-gapped, hybrid, and multi-cloud environments."
+      - "Your automation has to keep working if workloads move from vSphere to Nutanix, Proxmox or a public cloud."
+      - "Your workflows already call Terraform, Ansible, ServiceNow and Python, and you want them in one YAML flow reviewed in Git."
+      - "Security rules require a separate control plane per network zone, or installs with no internet access."
 
-setupSpeed:
-  title: "Time to First Infrastructure Automation Workflow"
-  subtitle: "Kestra starts in minutes with Docker Compose. VMware Aria Automation requires an existing vSphere environment, enterprise licensing, and a multi-step installation wizard that typically takes days and professional services."
-  kestra:
-    title:
-      one: "~5"
-      two: Minutes
-    description: "Download the Docker Compose file, run it, open the UI, and pick an infrastructure automation Blueprint. Your first provisioning workflow includes a dynamic approval form, Terraform apply, and Ansible configuration—all in readable YAML ready for Git."
-    command: |
-      curl -o docker-compose.yml \
-      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
-      docker compose up
+table:
+  title: "How do VMware Aria Automation and Kestra compare, feature by feature?"
+  rows:
+    - label: "Workflow definition"
+      competitor: "YAML blueprints, plus vRO workflows drawn in a schema editor"
+      kestra: "YAML flows, validated against each plugin's schema on save"
+    - label: "Scripting"
+      competitor: "JavaScript on the Rhino engine, plus Python, Node.js and PowerShell runtimes"
+      kestra: "Python, Shell, PowerShell, Node.js, Go and more, each task with its own dependencies"
+    - label: "vSphere placement"
+      competitor: "Cloud zones, flavors and image mappings place each machine"
+      kestra: "vSphere plugin for VMs, snapshots and templates (Kestra Enterprise), or Terraform"
+    - label: "Self-service"
+      competitor: "Catalog items with request forms, built from blueprints"
+      kestra: "Flow inputs render as forms; Apps serve users outside the UI (Kestra Enterprise)"
+    - label: "Triggers"
+      competitor: "Catalog requests, event subscriptions, vRO schedules and policies"
+      kestra: "Schedules, webhooks, flow triggers, polling and realtime triggers"
+    - label: "Integrations"
+      competitor: "vRO plug-ins, plus Ansible, Puppet and Git integrations"
+      kestra: "{totalPlugins}+ plugins, including Terraform, Ansible and ServiceNow"
+    - label: "Version control"
+      competitor: "Blueprints and action scripts sync with Git; vRO keeps a version history per object"
+      kestra: "Every save is a revision; flows sync with Git and deploy with the Terraform provider"
+    - label: "Failure recovery"
+      competitor: "vRO checkpoints every workflow step in its database"
+      kestra: "Retries per task, an errors block, and replay from any task"
+    - label: "Where it runs"
+      competitor: "Inside a VMware Cloud Foundation fleet, managed from VCF Operations"
+      kestra: "Docker, Kubernetes, air-gapped servers (Kestra Enterprise) or Kestra Cloud"
+    - label: "License"
+      competitor: "Part of VMware Cloud Foundation, a per-core subscription"
+      kestra: "Apache 2.0; Kestra Enterprise is licensed per instance"
 
-      # Open localhost:8080
-      # Pick an Infrastructure Automation Blueprint, run it. Done.
-    lang: sh
+proof:
+  title: "Which infrastructure teams replaced vRA with Kestra?"
+  stories:
+    - story: securing-hybrid-cloud-automation-across-it-and-ot-with-kestra
+      industry: "Heavy industry"
+      stat: "90%"
+      label: "lower licensing cost than Aria Automation, after vRA and vRO were replaced by five isolated Kestra control planes across IT and OT."
+    - story: building-a-government-grade-orchestration-control-plane-with-kestra
+      industry: "Public sector"
+      stat: "3 weeks"
+      label: "to validate compliance for a self-hosted control plane that provisions VMs through a private cloud portal."
+    - story: scaling-secure-infrastructure-at-credit-agricole-with-kestra
+      industry: "Banking"
+      stat: "100+"
+      label: "managed clusters automated with Kestra flows that replaced Ansible scripts chained by Jenkins."
+
+architecture:
+  title: "How are VMware Aria Automation and Kestra built?"
+  lead: "Aria Automation starts from a blueprint that a user requests from the catalog. Kestra starts from a flow that any trigger, form or API call can run."
   competitor:
-    title:
-      one: Days
-      two: to weeks
-    description: "VMware Aria Automation requires an existing vSphere environment, enterprise licensing, and a multi-step installation wizard. A typical deployment takes days of infrastructure preparation and often requires Broadcom professional services before the first workflow runs."
-    shadowColor: "#00B135"
-    command: |
-      # VMware Aria Automation
-      # Prerequisites:
-      # - Existing vSphere/vCenter infrastructure
-      # - Broadcom enterprise license
-      # - Aria Automation appliance deployment
-      # - vRO configuration and endpoint registration
-      # - Service catalog setup
-      # Typical time: 2-5 days + professional services
-    lang: sh
-
-easeOfUse:
-  title: "Declarative YAML vs. JavaScript + Proprietary vRO APIs"
+    title: "Aria Automation: a catalog over vRO"
+    text: "A blueprint is YAML that declares machines, networks and their inputs, and users request it from the catalog. Events from each deployment start vRO workflows through subscriptions, and vRO runs them as a graph of scriptable tasks and actions."
+    list:
+      - "Blueprints place machines through cloud zones and mappings"
+      - "vRO plug-ins add the objects and actions for vCenter and other systems"
+      - "Ansible job templates run as a resource inside a blueprint"
+      - "Part of a VCF fleet, upgraded through VCF Operations"
   kestra:
-    title: "Kestra: Readable, reviewable, deployable"
-    description: "YAML workflows read like documentation. The <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes them for you. Every workflow goes through Git and CI/CD—no hidden state in a UI. Approvals, secrets, retries, and ITSM integration are first-class YAML constructs."
+    title: "Kestra: declarative flows"
+    text: "A flow is a YAML file of tasks. The executor tracks each execution in Kestra's database and hands tasks to workers, which run Terraform, Ansible, scripts and API calls."
+    list:
+      - "Each plugin task is checked against its schema on save"
+      - "Inputs come from the UI form, the API or your ITSM"
+      - "Worker groups run tasks inside the network zone that needs them (Kestra Enterprise)"
+      - "Script tasks run in containers, with dependencies per task"
+
+compare:
+  title: "What does the same VM request look like in each?"
+  lead: "The same request in both: a hostname and a size as inputs, a vSphere VM on an existing network, and an Ansible baseline run on the new machine."
+  cta:
+    label: "Get started with Kestra"
+    href: "/get-started"
+  competitor:
+    label: "Aria Automation blueprint"
+    file: "blueprint.yaml"
+    lang: yaml
     code: |
-      id: vm_provision_with_approval
-      namespace: infra.ops
+      name: linux-web-vm
+      version: 1
+      formatVersion: 1
+      inputs:
+        hostname:
+          type: string
+          title: Hostname
+        size:
+          type: string
+          enum:
+            - small
+            - medium
+          default: small
+      resources:
+        web_vm:
+          type: Cloud.vSphere.Machine
+          properties:
+            name: ${input.hostname}
+            image: rhel9
+            flavor: ${input.size}
+            networks:
+              - network: ${resource.app_net.id}
+        app_net:
+          type: Cloud.vSphere.Network
+          properties:
+            name: app-network
+        baseline:
+          type: Cloud.Ansible.Tower
+          properties:
+            host: ${resource.web_vm.*}
+            account: aap-prod
+            hostName: ${input.hostname}
+            templates:
+              provision:
+                - name: linux-baseline
+                  type: job
+  kestra:
+    code: |
+      id: provision_linux_vm
+      namespace: infra.vsphere
 
       inputs:
-        - id: vm_name
+        - id: hostname
           type: STRING
-        - id: environment
+        - id: size
           type: SELECT
-          values: [dev, staging, prod]
+          values: [small, medium]
+          defaults: small
 
       tasks:
-        - id: request_approval
-          type: io.kestra.plugin.core.flow.Pause
-          onResume:
-            form:
-              fields:
-                - id: approved
-                  type: SELECT
-                  values: [yes, no]
-
         - id: provision
           type: io.kestra.plugin.terraform.cli.TerraformCLI
+          namespaceFiles:
+            enabled: true
+          env:
+            TF_VAR_hostname: "{{ inputs.hostname }}"
+            TF_VAR_size: "{{ inputs.size }}"
+            VSPHERE_USER: "{{ secret('VSPHERE_USER') }}"
+            VSPHERE_PASSWORD: "{{ secret('VSPHERE_PASSWORD') }}"
+          beforeCommands:
+            - terraform init
           commands:
             - terraform apply -auto-approve
-          env:
-            TF_VAR_vm_name: "{{ inputs.vm_name }}"
+            - terraform output -raw ip > inventory.ini
+          outputFiles:
+            - inventory.ini
 
         - id: configure
           type: io.kestra.plugin.ansible.cli.AnsibleCLI
+          namespaceFiles:
+            enabled: true
+          inputFiles:
+            inventory.ini: "{{ read(outputs.provision.outputFiles['inventory.ini']) }}"
           commands:
-            - ansible-playbook configure.yml
+            - ansible-playbook -i inventory.ini linux-baseline.yml
 
-        - id: close_ticket
-          type: io.kestra.plugin.servicenow.table.Update
-          table: incident
-          id: "{{ trigger.body.sys_id }}"
-          data:
-            state: resolved
-    lang: yaml
-  competitor:
-    title: "vRO: JavaScript, proprietary APIs, poor DX"
-    description: "VMware vRO workflows are written in JavaScript with proprietary vRO APIs that wrap vSphere objects. They're difficult to version, test, or debug. Error messages are often ambiguous and require vCenter-level access to diagnose. There is no native Git integration—workflows live in the vRO server."
-    shadowColor: "#00B135"
-    code: |
-      // VMware vRO workflow (JavaScript + proprietary APIs)
-      // No native Git, hard to test, ambiguous errors
-      System.log("Starting VM provisioning...");
-      var vcPlugin = Server.findForType("VC:SdkConnection")[0];
-      var datacenter = vcPlugin.getAllDatacenters()[0];
-      var folder = VcPlugin.getAllVirtualMachineFolder(datacenter)[0];
-      var resPool = VcPlugin.getAllResourcePool(datacenter)[0];
-      var spec = new VcVirtualMachineConfigSpec();
-      spec.name = System.getContext().getParameter("vmName");
-      // ... dozens more lines of proprietary JS ...
-      // Error messages: "Cannot complete login due to an
-      // incorrect user name or password" (even when it's
-      // a network timeout, not an auth issue)
-    lang: javascript
+pairs:
+  - title: "How hard is it to move from VMware Aria Automation to Kestra?"
+    columns:
+      - label: "Leaving VMware Aria Automation"
+        brand: competitor
+        text: "vRO exports its workflows, actions and configuration elements as packages, and blueprints can live in Git as YAML. Most of the logic sits in JavaScript scriptable tasks that call vRO plug-in objects, so it has to be read and rewritten before it moves."
+      - label: "Moving to Kestra"
+        brand: kestra
+        text: "Each vRO workflow becomes a flow, actions become subflows or tasks, configuration elements become KV Store entries and SecureStrings become secrets. Blueprints that differ only in size or region fold into one flow with inputs. The <a href='/resources/migration/vra'>migration guide</a> plans the move in four stages, with vRA running until each wave is verified."
+  - title: "How do VMware Aria Automation and Kestra compare on licensing, pricing and self-hosting?"
+    columns:
+      - label: "VMware Aria Automation"
+        brand: competitor
+        text: "Aria Automation now ships as VCF Automation, a component of VMware Cloud Foundation. VCF is a subscription licensed per core, with a minimum of 16 cores per CPU, and VCF Automation may only be used to manage VCF cores."
+      - label: "Kestra"
+        brand: kestra
+        text: "Apache 2.0 and free to self-host, with no limits on flows or executions. Kestra Cloud is billed on usage, and Kestra Enterprise is licensed per instance. Both are on the <a href='/pricing'>pricing page</a>."
 
-visualPreview:
-  mainTitle: "Modern Orchestration vs. Legacy vSphere Portal"
-  kestra:
-    description: "One platform for VM provisioning, Terraform IaC, Ansible configuration, incident response, and ITSM integration. Self-service Apps with dynamic forms, approvals, and full audit trails. Works on-prem, in Kubernetes, and in air-gapped environments."
-  competitor:
-    description: "VMware Aria Automation provides a polished portal for catalog-driven VM and service provisioning with deep vSphere integration. Orchestration logic lives in vRO—JavaScript with proprietary APIs, difficult debugging, and no native Git integration. Expanding beyond VMware infrastructure adds significant friction."
-    shadowColor: "#00B135"
-
-featureGrid:
-  title: "Kestra vs. VMware Aria Automation at a Glance"
-  tableData:
-    - feature: Primary use case
-      kestra: Full infrastructure lifecycle (provision, configure, remediate, decommission)
-      competitor: Catalog-driven VM provisioning tightly coupled to vSphere
-    - feature: Workflow definition
-      kestra: Declarative YAML (code-first, Git-native)
-      competitor: JavaScript + proprietary vRO APIs (GUI-first, no native Git)
-    - feature: Multi-cloud support
-      kestra: "Cloud-agnostic: AWS, Azure, GCP, vSphere, Kubernetes"
-      competitor: vSphere-first; multi-cloud requires Aria Multi-Cloud add-ons
-    - feature: Developer experience
-      kestra: YAML workflows, clear error messages, full execution logs
-      competitor: Ambiguous error messages, proprietary APIs, difficult debugging
-    - feature: IaC integration
-      kestra: Native Terraform, Ansible, PowerShell, Python, Pulumi support
-      competitor: vRO plugins (limited); Terraform requires extra configuration
-    - feature: Self-service Apps
-      kestra: Built-in dynamic forms, approvals, and RBAC per namespace
-      competitor: vRA service catalog (VMware-centric, limited extensibility)
-    - feature: Air-gapped deployment
-      kestra: "✓ Fully supported (on-prem, Kubernetes)"
-      competitor: Requires vSphere infrastructure; limited true air-gap support
-    - feature: Version control
-      kestra: Native (Git, CI/CD, Terraform provider)
-      competitor: No native Git—workflows live in vRO server
-    - feature: Observability
-      kestra: Full execution logs, artifact storage, clear error messages
-      competitor: Ambiguous vRO logs; requires vCenter access to diagnose failures
-    - feature: Event-driven triggers
-      kestra: Webhooks, schedules, file detection, message queues, flow triggers
-      competitor: Catalog requests and basic event subscriptions
-    - feature: Licensing model
-      kestra: Flat instance + worker-based pricing
-      competitor: Per core, sold inside VMware Cloud Foundation; costs increasing post-acquisition
-
-testimonials:
-  - quote: "We eliminated the high cost and risk of VMware vRA. What used to take 6 months now takes 6 days with Kestra!"
-    author: "Principal Hosting @ Fortune 500 Manufacturer"
-    kpis:
-      - value: "30×"
-        name: "Faster time to deliver"
-      - value: "90%"
-        name: "Lower licensing cost vs Aria Automation"
-      - value: "1"
-        name: "Platform, with a separate control plane per security zone (4 OT + 1 IT)"
-    storyLink: "/stories/fortune-500-company"
-
-platformStrengths:
-  title: "Kestra Is Built for the Full Infrastructure Lifecycle"
-  features:
-    - title: "Replace vRA/vRO With Better DX"
-      description: "Kestra runs VM provisioning with vSphere integration and approval gates, and calls Terraform, Ansible, and your ITSM in the same flow. Your catalog can stay in your existing portal or move to <a href='/docs/enterprise/scalability/apps'>Apps</a>. One set of logs either way, with no JavaScript and no proprietary APIs."
-    - title: "Git-Native from Day One"
-      description: "Every workflow is YAML you can commit, review in a pull request, and deploy through CI/CD. Fortune 500 platform teams manage all their infrastructure provisioning logic as code—versioned, testable, and auditable. No hidden state in a portal, no manual change tracking."
-    - title: "Works Anywhere: Cloud, On-Prem, Air-Gapped"
-      description: "Deploy Kestra on Kubernetes, Docker, or bare metal. Run remote workers close to vSphere targets for hybrid environments. Air-gap deployments supported for regulated industries—no external connectivity required. ITZBund and the Austrian Ministry of Defense run Kestra fully disconnected."
-
-decisionGuide:
-  mainTitle: "When to Choose Kestra vs. VMware Aria Automation"
-  kestra:
-    title: "Choose Kestra When"
-    list:
-      - "You need to replace vRA/vRO or extend your VMware automation to multi-cloud."
-      - "Your workflows span Terraform, Ansible, PowerShell, and cloud APIs in a single flow."
-      - "Audit trails, compliance logging, and air-gapped deployment are requirements."
-      - "You want Git-native workflows instead of JavaScript in a proprietary vRO server."
-      - "Broadcom's post-acquisition pricing changes make vRA/vRO increasingly expensive."
-  competitor:
-    title: "Consider VMware Aria When"
-    list:
-      - "Your infrastructure is exclusively VMware vSphere with no plans to expand."
-      - "You need deep vSphere NSX/ALB policy guardrails that vRA provides out of the box."
-      - "Your team has significant existing investment in vRO workflows and migration isn't feasible now."
-      - "You require specific Aria suite integrations (Aria Operations, Aria Log Insight) in one vendor bundle."
-    shadowColor: "#00B135"
-    bulletColor: "#10B981"
+faqTitle: "Questions from VMware Aria Automation teams"
 
 commonQuestions:
-  - question: "How does Kestra compare to VMware Aria Automation (vRA/vRO)?"
-    answer: "VMware Aria Automation focuses on catalog-driven VM and service provisioning tightly coupled to vSphere infrastructure. Workflows in vRO are JavaScript-based with proprietary APIs, difficult to version, and prone to ambiguous error messages. Kestra replaces vRA/vRO with declarative YAML workflows that work across VMware, AWS, Azure, GCP, and Kubernetes—with proper Git integration, clear logs, and self-service Apps that don't require a proprietary portal. <a href='/stories/fortune-500-company'>A Fortune 500 manufacturer</a> replaced vRA/vRO with Kestra for better developer experience, clearer logs, and a separate control plane per security zone."
-  - question: "Does Kestra support VMware vSphere integrations?"
-    answer: "Yes. Kestra has native vSphere plugin support for VM lifecycle management—provisioning, snapshotting, resizing, and decommissioning. Combined with Terraform, Ansible, and PowerShell tasks in the same workflow, Kestra covers the vSphere operations teams script in vRO and extends them to the rest of your stack. You keep deep vSphere integration while gaining multi-cloud flexibility and a modern developer experience."
-  - question: "How does Kestra handle self-service provisioning forms?"
-    answer: "Kestra Apps provide dynamic, data-backed forms for self-service provisioning. Forms can be populated from APIs, CMDBs, or vCenter data—giving users dropdowns with live infrastructure data (available datastores, network segments, resource pools) rather than static values. Approval gates are inline YAML tasks that pause the workflow for human review before resources are created. Teams use <a href='/docs/enterprise/scalability/apps'>Apps</a> as their catalog, or keep the catalog in their existing portal, such as ServiceNow, and call a Kestra flow behind each item."
-  - question: "What happens to existing vRO workflows when migrating to Kestra?"
-    answer: "The Kestra Migration Assistant for vRA converts the structure of a vRO package (folder hierarchy to namespaces, configuration elements to the KV Store, SecureStrings to secrets) and rewrites the JavaScript as Kestra tasks, which an engineer then reviews and tests. Complex workflows are rewritten by hand. Kestra runs the conversion with your team wave by wave, and for very large estates a systems integrator can do the conversion work. <a href='/stories/fortune-500-company'>A Fortune 500 manufacturer</a> completed its migration roughly twelve months after the proof of concept began, running vRA and Kestra in parallel until each wave was verified. The <a href='/resources/migration/vra'>vRA to Kestra migration guide</a> covers the full method, and <a href='/blogs/leaving-vra-without-the-big-rewrite'>Leaving vRA without the big rewrite</a> walks through a sample migration brief."
-  - question: "How does Kestra address the Broadcom/VMware pricing concern?"
-    answer: "Since Broadcom's acquisition of VMware, many organizations have seen significant licensing cost increases. Kestra Enterprise is licensed by instance, so adding workflows does not change what you pay. Your automation also stops depending on your hypervisor vendor: workflows are YAML files in Git that run on any infrastructure, so you can move workloads to Nutanix, Proxmox, or a public cloud without rebuilding them. Your infrastructure vendor should not own your automation."
-  - question: "Is Kestra suitable for air-gapped and regulated environments?"
-    answer: "Yes. Kestra was designed for compliance-first deployments. It runs fully on-prem with no external dependencies, supports internal Postgres and S3-compatible storage, integrates with AD/OIDC for SSO, and works with enterprise secrets managers like CyberArk and HashiCorp Vault. Government customers like ITZBund and the Austrian Ministry of Defense chose Kestra specifically for its air-gap readiness and audit capabilities."
+  - question: "Does Kestra work with vSphere?"
+    answer: "Yes. The <a href='/plugins/plugin-ee-vmware'>VMware plugin</a> in Kestra Enterprise manages VM lifecycle, snapshots and templates across vCenter and ESXi, and can start flows on vCenter events such as a VM being created or powered off. In every edition, flows can also provision vSphere through Terraform and configure machines with Ansible."
+  - question: "Can we keep ServiceNow as our catalog?"
+    answer: "Yes. Many teams keep the catalog, approvals and CMDB in ServiceNow or BMC Helix, and the ITSM calls a Kestra flow where it used to call vRA. The ServiceNow plugin then updates the request or the CMDB record from inside the flow. Kestra Enterprise also offers Apps, which turn a flow into a self-service form for teams without an ITSM portal."
+  - question: "Is there a tool that converts vRO workflows?"
+    answer: "The Kestra Migration Assistant for vRA reads an exported vRO package on your own machine. Its <a href='/resources/migration/vra/assistant'>assessment</a> is free and open source, and lists what each workflow does, what starts it, the plugins that cover its integrations and a plan in waves. The conversion is run with your team, and an engineer reviews every converted flow before it replaces the vRO version."
+  - question: "When do the licence savings start?"
+    answer: "They start at the renewal date. Term licences don't refund mid-contract, so the wave plan is built backwards from that date. If VCF Automation comes inside a VCF subscription you keep for the hypervisor, check with procurement whether removing it changes the invoice. The <a href='/resources/migration/vra/payback'>payback calculator</a> works out both sides from your own numbers."
+  - question: "How long does a vRA migration take?"
+    answer: "It depends on how many workflows survive the inventory, since many are unused or near-duplicates. The Fortune 500 manufacturer in the <a href='/stories/fortune-500-company'>customer story</a> finished about twelve months after its proof of concept began, with vRA and Kestra running side by side until each wave was verified."
+  - question: "Can Kestra run in segmented or air-gapped networks?"
+    answer: "Yes. Kestra runs fully on-premises with no outbound connection. Worker groups in Kestra Enterprise place execution inside the network zone that requires it, and teams whose security rules forbid a shared control plane run one Kestra deployment per zone, as the Fortune 500 manufacturer did across four OT sites and IT."
+  - question: "Where do credentials live?"
+    answer: "Tasks read credentials with the secret() function. The open-source edition reads secrets from environment variables, and Kestra Enterprise reads them from the manager you already run, such as HashiCorp Vault, CyberArk or Delinea, so the SecureStrings kept in vRO can be retired."
+
+related:
+  alternatives: vmware-aria-automation-alternatives
+  comparisons:
+    - ansible-automation-platform
+    - chef
+    - puppet
+    - morpheus

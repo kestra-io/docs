@@ -1,246 +1,249 @@
-title: "Prefect vs Kestra for Python Workflow Orchestration"
-description: "Compare Kestra vs. Prefect: Universal workflow orchestration in any language with declarative YAML versus Python-only orchestration. See features, setup time, and use cases."
+title: "Kestra vs Prefect: Python Workflow Orchestration"
+description: "Compare Kestra and Prefect: Python flows and work pools vs. YAML flows, the same daily API-to-S3 job in both, setup, migration and pricing."
 competitorName: Prefect
 category: Data Orchestration
-shortDescription: "Python-only workflow orchestration vs. universal declarative orchestration in any language with YAML."
-seeHowTitle: "Getting Started with Declarative Orchestration"
-seeHowBody: "See how Kestra can simplify your data pipelines—and scale beyond them."
+shortDescription: "Decorated Python functions run by your workers vs. YAML flows that run scripts in any language."
 
 brandColor:
   color: "#2d6df6"
 
 intro:
-  title: "Kestra vs. Prefect: Orchestrate Everything, Not Just Python"
-  description: "Prefect orchestrates Python workflows for data engineering teams. Kestra orchestrates workflows across your entire stack, in any language. One serves Python-native teams. The other orchestrates data pipelines, infrastructure, and business processes across languages and teams."
+  title: "Kestra vs. Prefect"
+  description: "Prefect is a Python workflow orchestration framework that turns functions into flows and tasks with decorators, and runs them from a served process or a worker. Kestra is a declarative orchestration platform: workflows are YAML, and Python, SQL, shell and other languages run as tasks."
 
-philosophy:
-  mainTitle: Two Approaches to Workflow Orchestration
-  kestra:
-    title: "Universal Orchestration: Any Language, Any Team"
-    description: "Universal orchestration platform built on declarative YAML and an API-first architecture. Orchestrate data pipelines, ETL jobs, and complex workflows in Python, SQL, Bash, R, or any language without forcing everyone into a single framework."
-    subCardText: '"How do I get workflows running without rewriting everything in Python?"'
+choose:
+  title: "Prefect or Kestra?"
   competitor:
-    title: Python-First Data Orchestration
-    description: "Python-native orchestration platform where workflows are defined as @flow-decorated functions. Add decorators to existing Python code and deploy to managed or self-hosted workers."
-    shadowColor: "#FFB3E3"
-    subCardBg: "#2d1a28"
-    subCardText: '"How do I orchestrate my Python scripts with minimal refactoring?"'
-
-businessValue:
-  mainTitle: "Python-Only Leaves Half Your Stack Unorchestrated"
-  kestra:
-    title: Business-critical Workflows
+    title: "Prefect is the better fit if"
     list:
-      - "Data pipelines, infrastructure automation, and business processes in one platform"
-      - "Cross-functional: data + platform + DevOps + business teams"
-      - "Any language: Python, SQL, Bash, R, Go"
-      - "Unlimited event-driven workflows in open source"
-      - Serves the entire engineering organization
-  competitor:
-    title: Python Data Pipelines
+      - "Your workflows are Python and you want ordinary if statements, loops and function calls to drive them."
+      - "Your engineers would rather add a decorator to existing code than write workflow definitions."
+      - "You want Prefect Cloud to run flows on push or managed work pools, with no worker of your own."
+  kestra:
+    title: "Choose Kestra if"
     list:
-      - Orchestrate Python functions and scripts
-      - Data engineering scope
-      - Efficiency gains for Python teams
-      - Cost center optimization
-      - Serves Python developers
-    shadowColor: "#FFB3E3"
-    bulletColor: "#FF4BBD"
-  footerText: "Prefect is a good fit if your team is Python-native and your orchestration scope stops at data pipelines. If you need to orchestrate infrastructure, business processes, or workflows in SQL and Bash alongside Python, or if you want unlimited event-driven automation in open source, Kestra covers the full scope without the Python constraint."
+      - "Workflows belong to several teams, and some of those people don't write Python."
+      - "You want the schedule, triggers, retries and error handling declared in one file you review in Git."
+      - "You need RBAC, SSO and audit logs on infrastructure you run yourself."
 
-setupSpeed:
-  title: Time to First Workflow
-  subtitle: "Prefect offers a quick path with flow.serve(), but production deployments need a running server, a work pool, and worker processes. Kestra's single Docker Compose command stands up everything, including the database and UI, in a format that's already production-shaped."
-  kestra:
-    title:
-      one: "~5"
-      two: Minutes
-    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Blueprint, run it. No Python environment, no workers to configure."
-    command: |
-      curl -o docker-compose.yml \
-      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
-      docker compose up
+table:
+  title: "How do Prefect and Kestra compare, feature by feature?"
+  rows:
+    - label: "Workflow definition"
+      competitor: "Python functions decorated with @flow and @task"
+      kestra: "YAML flows holding tasks, triggers and retries in one file"
+    - label: "Control flow"
+      competitor: "Native Python: if, for and function calls"
+      kestra: "If, Switch, Loop, Parallel and Subflow tasks"
+    - label: "Languages"
+      competitor: "Python"
+      kestra: "Python plus SQL, Node.js, Go, R, shell and others, each as a task"
+    - label: "Schedules and events"
+      competitor: "Cron, interval and RRule schedules, plus automations that react to events"
+      kestra: "Schedules, webhooks, flow triggers, polling and realtime triggers"
+    - label: "Where runs execute"
+      competitor: "A process started with serve(), or workers polling a work pool"
+      kestra: "Kestra workers, with task runners for containers"
+    - label: "Integrations"
+      competitor: "Python packages such as prefect-aws, prefect-dbt and prefect-snowflake"
+      kestra: "{totalPlugins}+ plugins, versioned apart from the core"
+    - label: "Access control"
+      competitor: "RBAC, SSO and audit logs in Prefect Cloud"
+      kestra: "RBAC, SSO and audit logs in Kestra Enterprise, which you can self-host"
+    - label: "Hosting"
+      competitor: "Self-hosted server, or Prefect Cloud with hybrid, push or managed work pools"
+      kestra: "Self-hosted, air-gapped (Kestra Enterprise), or Kestra Cloud"
+    - label: "License"
+      competitor: "Apache 2.0"
+      kestra: "Apache 2.0"
+    - label: "GitHub stars"
+      competitor: "24k+"
+      kestra: "30k+"
 
-      # Open localhost:8080
-      # Pick a Blueprint, run it. Done.
-    lang: sh
+proof:
+  title: "Which data teams picked Kestra over Prefect?"
+  stories:
+    - story: boosted-productivity-slashed-costs-and-accelerated-delivery
+      industry: "Advertising"
+      stat: ">90%"
+      label: "lower toolchain costs after replacing SuperMetrics, Prefect and dbt Cloud with Kestra."
+    - story: apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra
+      industry: "Technology"
+      stat: "200"
+      label: "ML engineers run ETL on Kestra, picked over Prefect and Dagster when the team left Airflow."
+
+architecture:
+  title: "How are Prefect and Kestra built?"
+  lead: "Prefect orchestrates Python code that you deploy and run. Kestra reads a YAML definition and runs each task on its own workers."
   competitor:
-    title:
-      one: "~15"
-      two: Minutes
-    description: "A basic flow runs quickly with flow.serve(), but production scheduling requires a Prefect server, a work pool, and a worker process. Moving from prototype to production means configuring additional infrastructure."
-    shadowColor: "#FFB3E3"
-    command: |
-      pip install prefect
-
-      # Quick path: flow.serve() runs a single flow
-      # Production path: server + work pool + worker
-      prefect server start &
-      prefect work-pool create my-pool --type process
-      prefect worker start --pool my-pool
-
-      # Now deploy and run your flow...
-    lang: sh
-
-easeOfUse:
-  title: Declarative YAML vs. Python Decorators
+    title: "Prefect: decorated Python"
+    text: "A flow is a Python function with the @flow decorator, and it calls tasks that can retry, cache and run concurrently. A deployment tells the server when to run the flow and where its code lives."
+    list:
+      - "serve() starts a long-running process that watches the server for runs"
+      - "Workers poll work pools and start runs on your infrastructure"
+      - "Push and managed work pools run flows without a worker"
+      - "The server keeps state in SQLite by default, or PostgreSQL"
   kestra:
-    title: "Kestra: Readable by Your Whole Team"
-    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. No Python environment required."
+    title: "Kestra: YAML flows"
+    text: "A flow lists its tasks, inputs, triggers and error handlers in one YAML file. The executor tracks each execution's state and dispatches tasks, and workers run them."
+    list:
+      - "Flows are validated against plugin schemas when saved"
+      - "Triggers are declared in the flow, next to the tasks"
+      - "Script tasks install their dependencies at run time"
+      - "Every save creates a revision you can diff and roll back"
+
+compare:
+  title: "What does the same job look like in each?"
+  lead: "The same job in both: an API call retried twice, a Python step that writes a CSV, an upload to S3, a daily schedule and a Slack alert when the run fails."
+  cta:
+    label: "Get started with Kestra"
+    href: "/get-started"
+  competitor:
+    label: "Prefect flow"
+    file: "exchange_rates.py"
+    lang: python
     code: |
-      id: daily_etl
-      namespace: analytics
+      import csv
+      from datetime import date
+
+      import boto3
+      import httpx
+      from prefect import flow, task
+      from prefect.blocks.notifications import SlackWebhook
+
+      @task(retries=2, retry_delay_seconds=60)
+      def fetch_rates() -> dict:
+          response = httpx.get("https://api.example.com/rates")
+          response.raise_for_status()
+          return response.json()["rates"]
+
+      @task
+      def to_csv(rates: dict) -> str:
+          with open("rates.csv", "w", newline="") as f:
+              writer = csv.writer(f)
+              writer.writerow(["currency", "rate"])
+              writer.writerows(rates.items())
+          return "rates.csv"
+
+      @task
+      def upload(path: str) -> None:
+          boto3.client("s3").upload_file(path, "finance-data", f"rates/{date.today()}.csv")
+
+      def notify(flow, flow_run, state):
+          SlackWebhook.load("data-alerts").notify(f"{flow_run.name} failed")
+
+      @flow(on_failure=[notify])
+      def exchange_rates():
+          upload(to_csv(fetch_rates()))
+
+      if __name__ == "__main__":
+          exchange_rates.serve(name="daily", cron="0 7 * * *")
+  kestra:
+    code: |
+      id: exchange_rates
+      namespace: company.finance
+
+      tasks:
+        - id: fetch_rates
+          type: io.kestra.plugin.core.http.Request
+          uri: https://api.example.com/rates
+          retry:
+            type: constant
+            interval: PT1M
+            maxAttempts: 3
+
+        - id: to_csv
+          type: io.kestra.plugin.scripts.python.Script
+          inputFiles:
+            rates.json: "{{ outputs.fetch_rates.body }}"
+          outputFiles:
+            - rates.csv
+          script: |
+            import csv, json
+            rates = json.load(open("rates.json"))["rates"]
+            with open("rates.csv", "w", newline="") as f:
+                writer = csv.writer(f)
+                writer.writerow(["currency", "rate"])
+                writer.writerows(rates.items())
+
+        - id: upload
+          type: io.kestra.plugin.aws.s3.Upload
+          from: "{{ outputs.to_csv.outputFiles['rates.csv'] }}"
+          bucket: finance-data
+          key: "rates/{{ execution.startDate | date('yyyy-MM-dd') }}.csv"
+          region: eu-west-1
+
+      errors:
+        - id: slack_alert
+          type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "exchange_rates failed: {{ execution.id }}"
 
       triggers:
         - id: daily
           type: io.kestra.plugin.core.trigger.Schedule
-          cron: "0 6 * * *"
+          cron: "0 7 * * *"
 
-      tasks:
-        - id: ingest
-          type: io.kestra.plugin.airbyte.connections.Sync
-          connectionId: "{{ secret('AIRBYTE_CONN_ID') }}"
-
-        - id: transform
-          type: io.kestra.plugin.dbt.cli.DbtCLI
-          commands:
-            - dbt run --select staging+
-
-        - id: notify
-          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-          url: "{{ secret('SLACK_WEBHOOK') }}"
-          messageText: "Daily ETL complete"
-    lang: yaml
+setup:
+  title: "What does it take to get Prefect and Kestra running?"
+  lead: "Both projects publish a Docker image for a first local run."
   competitor:
-    title: "Prefect: Python Functions as Workflows"
-    description: "Requires a Python environment and @flow/@task decorators. Readable for Python developers. SQL analysts and ops engineers can interact with outputs but need Python to modify workflows."
-    shadowColor: "#FFB3E3"
+    title: "Prefect"
+    tag: "Server plus runner"
+    text: "Prefect's <a href='https://docs.prefect.io/v3/get-started/quickstart'>quickstart</a> starts the API and UI on localhost:4200 with one Docker command. Scheduled runs also need a process running serve(), or a worker polling a work pool. The server uses SQLite by default, and Prefect recommends PostgreSQL for production."
     code: |
-      from prefect import flow, task
-      import subprocess, requests, os
-
-      @task
-      def ingest():
-          requests.post(
-              os.environ["AIRBYTE_URL"] + "/connections/sync",
-              json={"connectionId": os.environ["AIRBYTE_CONN_ID"]}
-          )
-
-      @task
-      def transform():
-          subprocess.run(["dbt", "run", "--select", "staging+"], check=True)
-
-      @task
-      def notify():
-          requests.post(os.environ["SLACK_WEBHOOK"],
-                        json={"text": "Daily ETL complete"})
-
-      @flow
-      def daily_etl():
-          ingest()
-          transform()
-          notify()
-
-      # Requires separate deployment YAML + running worker pool
-    lang: python
-
-visualPreview:
-  mainTitle: Universal Orchestration vs. Python-Only Pipelines
+      docker run -p 4200:4200 -d --rm prefecthq/prefect:3-python3.12 prefect server start --host 0.0.0.0
+      prefect config set PREFECT_API_URL=http://127.0.0.1:4200/api
+      python exchange_rates.py
   kestra:
-    description: "Orchestrate across data pipelines, infrastructure operations, business processes, and customer workflows in one unified platform. Event-driven at its core, with no limits on event-driven automations even in open source."
-  competitor:
-    description: "Focused on Python data engineering workflows. Supports shell tasks for non-Python work, but the orchestration layer is Python. Event-driven automations are capped on Prefect Cloud's free tier."
-    shadowColor: "#FFB3E3"
+    title: "Kestra"
+    tag: "Database included"
+    text: "One Compose file starts Kestra and its Postgres database. Open localhost:8080, pick a blueprint and run it. Production runs the same image on Kubernetes with the <a href='/docs/installation/kubernetes'>Kestra Helm chart</a>."
+    code: |
+      curl -o docker-compose.yml https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
 
-featureGrid:
-  title: Kestra vs. Prefect at a Glance
-  tableData:
-    - feature: Primary use case
-      kestra: Universal workflow orchestration
-      competitor: Python workflow orchestration
-    - feature: Workflow definition
-      kestra: Declarative YAML
-      competitor: Python @flow/@task decorators
-    - feature: Languages supported
-      kestra: "Agnostic (Python, R, Bash, Node.js, SQL & more)"
-      competitor: "Python-first (shell tasks available for Bash/R)"
-    - feature: Event-driven workflows (OSS)
-      kestra: "✓ Unlimited in open source"
-      competitor: "Limited (10 automations on free tier)"
-    - feature: Infrastructure to start
-      kestra: Single Docker Compose command
-      competitor: "flow.serve() for basics; server + work pool + worker(s) for production"
-    - feature: Visual workflow editor
-      kestra: "✓ Live DAG topology, updates as you type"
-      competitor: Observability UI only (no editor)
-    - feature: Self-service for non-engineers
-      kestra: "✓ Kestra Apps"
-      competitor: Not designed for this
-    - feature: Infrastructure automation
-      kestra: "✓ Native support"
-      competitor: Possible via Python, not first-class
-    - feature: Business process automation
-      kestra: "✓ Native support"
-      competitor: "Possible via Python, not a primary use case"
+pairs:
+  - title: "How hard is it to move from Prefect to Kestra?"
+    columns:
+      - label: "Leaving Prefect"
+        brand: competitor
+        text: "Prefect code is plain Python with decorators on top, so the task bodies come out cleanly. The work sits in what the decorators and deployments carry: retries, caching, blocks for credentials, schedules and the work pool each deployment targets."
+      - label: "Moving to Kestra"
+        brand: kestra
+        text: "Each task body runs in a Python script task, or is replaced by a plugin task when one exists. Retries move to the task's retry block, blocks to secrets, deployments and schedules to triggers, and on_failure hooks to the errors block. Prefect and Kestra can run in parallel during the move."
+  - title: "How do Prefect and Kestra compare on licensing, pricing and self-hosting?"
+    lead: "Both projects are open source under Apache 2.0, and both can run on your own servers."
+    columns:
+      - label: "Prefect"
+        brand: competitor
+        text: "Apache 2.0 and free to self-host, though the open-source server has no RBAC, SSO or audit logs. Prefect Cloud has a free Hobby plan for 2 users and 5 deployments; paid plans are quoted on request."
+      - label: "Kestra"
+        brand: kestra
+        text: "Apache 2.0 and free to self-host, with no limits on flows or executions. Kestra Cloud is billed on usage, and Kestra Enterprise is licensed per instance. Both are on the <a href='/pricing'>pricing page</a>."
 
-testimonials:
-  - quote: "Kestra has streamlined our data processes, reduced costs, and significantly enhanced our scalability and efficiency. It has truly been a critical asset in our digital transformation journey."
-    author: "Julien Henrion, CDO @ Leroy Merlin"
-    kpis:
-      - value: "9x"
-        name: "Reduction in data production costs"
-      - value: "+250"
-        name: "Active users"
-      - value: "+5000"
-        name: "Workflows created"
-    storyLink: "/stories/leroy-merlin-france"
-
-platformStrengths:
-  title: Kestra Is Built for How Engineering Teams Work
-  features:
-    - title: Language-agnostic execution
-      description: "Run Python, SQL, Bash, R, and Node.js in isolated containers. No framework wrappers, no language lock-in. Teams write in the language that fits the task, not the language the orchestrator requires."
-    - title: Unlimited event-driven workflows in open source
-      description: "Prefect Cloud's free tier caps event-driven automations at 10 per workspace, each configured through the UI. Kestra ships unlimited event-driven triggers in open source, all defined in YAML: webhooks, Kafka, file arrivals, database changes, API callbacks."
-    - title: One file for everything
-      description: "Tasks, triggers, schedules, and retry logic live in a single YAML file. No separate deployment YAML, no decorator layer, no worker pool configuration before you run your first workflow."
-
-decisionGuide:
-  mainTitle: The Right Tool for the Right Job
-  kestra:
-    title: Choose Kestra When
-    list:
-      - "Your team works across languages. Python, SQL, Bash, R all need orchestration without everyone converting to Python."
-      - "Event-driven automation is core to your workflows, not a paid add-on."
-      - "You want a workflow running in 5 minutes without configuring workers, pools, or deployment pipelines first."
-      - "Non-engineers need to participate. Business users trigger and monitor workflows without writing code."
-      - "You're orchestrating beyond data pipelines: infrastructure provisioning, business processes, or cross-team automation."
-  competitor:
-    title: Choose Prefect When
-    list:
-      - "Your team is Python-native and all workflows are Python functions."
-      - "Minimal code change is the priority: adding @flow and @task decorators to existing Python code with no other changes."
-      - "Your orchestration scope is data engineering and you don't need cross-team self-service tools."
-      - "You prefer hybrid execution where your compute stays entirely in your own infrastructure."
-    shadowColor: "#FFB3E3"
-    bulletColor: "#FF4BBD"
+faqTitle: "Questions from Prefect teams"
 
 commonQuestions:
-  - question: How do I migrate from Prefect to Kestra?
-    answer: "Extract your Python logic from Prefect's @flow and @task decorators and run it directly as a Script task in Kestra. Your SQL, Shell, and Python code works as-is; define orchestration in YAML for triggers, scheduling, and task dependencies. Most teams run both platforms in parallel and migrate incrementally."
-  - question: Does Kestra work with Python?
-    answer: "Yes. Write inline Python in your YAML or reference external .py files with any pip packages. The optional Kestra Python library lets you pass outputs back to the orchestrator, but it's not required. Your existing scripts run without modification."
-  - question: Can Kestra handle the same data pipeline use cases as Prefect?
-    answer: "Yes. Kestra orchestrates ETL/ELT pipelines, dbt models, Airbyte syncs, data quality checks, and warehouse operations, with {totalPlugins}+ plugins covering the same integrations. Orchestration is declarative YAML while transformation logic runs in any language, not Python only."
-  - question: How does Kestra's setup compare to Prefect's?
-    answer: "Kestra is simpler for production-ready setups. A single docker compose up stands up the full platform including the embedded database and UI. Prefect's flow.serve() gets a basic flow running quickly, but production scheduling requires a running server, a configured work pool, and at least one worker."
-  - question: Can I run Kestra in my own infrastructure like Prefect's hybrid model?
-    answer: "Yes. Kestra deploys to Docker, Kubernetes, or any cloud provider, with the full platform running in your environment. Kestra Cloud is also available as a managed option. Air-gapped deployments are supported for environments with strict network controls."
-  - question: How does Kestra integrate with Git and existing CI/CD pipelines?
-    answer: "Kestra workflows are YAML files that live in Git like any other code. The Kestra Terraform provider and native GitHub Actions integration let you push workflow changes through your existing CI/CD pipeline without manual steps. Prefect supports Git-based deployment and Docker image packaging. The Docker path bakes flow code into images, which can slow feedback loops as workflow counts grow. Kestra's YAML files deploy without a build step."
-  - question: How does Kestra handle event-driven workflows compared to Prefect?
-    answer: "Kestra ships unlimited event-driven triggers in open source: webhooks, Kafka, Pulsar, RabbitMQ, file arrivals, database changes, and API callbacks, all configured in a single YAML file. Prefect caps event-driven automations at 10 on the free tier, and configuring them requires multiple UI steps."
-  - question: Can Kestra handle enterprise-scale workloads?
-    answer: "Yes. Kestra handles 100,000+ concurrent tasks with distributed execution and horizontal scaling. The platform is built for high availability with automatic failover and exactly-once execution guarantees. Prefect scales well for Python workloads, but its execution model requires managing Python environments and dependencies across workers as workflow counts grow."
-  - question: How does Kestra handle access control and multi-tenancy?
-    answer: "Kestra provides namespace isolation with RBAC, SSO/SAML, audit logs for every execution, and native secrets management integration with AWS Secrets Manager, HashiCorp Vault, and Azure Key Vault. Prefect's advanced governance features require Prefect Cloud Enterprise. Kestra's full governance model is available on both self-hosted and Kestra Cloud deployments."
+  - question: "Can my Prefect tasks run in Kestra without changes?"
+    answer: "The code inside them can. Remove the decorators, read inputs from files or flow variables, and the function body runs in a Python script task with its own dependencies. Prefect-specific calls, such as loading blocks or using task caching, need a Kestra equivalent like secrets or the KV Store."
+  - question: "What replaces Prefect blocks?"
+    answer: "Credentials go into Kestra secrets, read with the secret() function in any task property. Shared configuration that isn't secret, such as bucket names or API endpoints, fits in the KV Store and is read with the kv() function."
+  - question: "How does Kestra handle dynamic workflows that Prefect writes as Python loops?"
+    answer: "A Loop task runs its child tasks once per item in a list that an earlier task produced, sequentially or in parallel. A Subflow task starts another flow per item when the work is larger, and If and Switch tasks pick a branch at run time."
+  - question: "Do I need workers and work pools in Kestra?"
+    answer: "Kestra ships its own workers, so a single docker compose up runs flows without any extra process. To send heavy scripts elsewhere, a task runner starts the task in a container, or in Kubernetes and cloud batch services with Kestra Enterprise."
+  - question: "How does Kestra react to events compared to Prefect automations?"
+    answer: "In Kestra the trigger lives in the flow file. Webhook triggers expose a URL per flow, polling triggers watch S3, databases and file systems, and realtime triggers start an execution for each message on Kafka, SQS, Pub/Sub, AMQP or MQTT. Flow triggers start one flow when another finishes."
+  - question: "How does Kestra fit into Git and CI/CD?"
+    answer: "Flows are YAML files, so they are reviewed in pull requests like any other code. Git sync keeps a namespace in step with a repository, and the Terraform provider and GitHub Actions deploy flows from CI. Every change in the UI is saved as a revision."
+  - question: "How far does Kestra scale?"
+    answer: "In Kestra's <a href='/docs/performance/benchmark'>benchmark</a>, the open-source edition on Postgres handles 4,000 executions a minute and Kestra Enterprise 7,000. Foundation Data runs more than 50 production workflows on Kestra with one engineer."
+
+related:
+  alternatives: prefect-alternatives
+  comparisons:
+    - dagster
+    - luigi
+    - windmill
+    - temporal
