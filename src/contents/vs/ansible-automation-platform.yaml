@@ -1,5 +1,5 @@
-title: "Ansible Automation Platform Alternative: Kestra"
-description: "Compare Kestra and Red Hat Ansible Automation Platform: how each runs playbooks, the same patching workflow in both, setup, migration and licensing."
+title: "Kestra vs Ansible Automation Platform (AAP)"
+description: "Kestra vs Red Hat AAP: keep your playbooks and run them next to Terraform, scripts and API calls. Compare the automation orchestrator, setup and licensing."
 competitorName: "Ansible AAP"
 category: Infrastructure Automation
 shortDescription: "Red Hat's controller for Ansible jobs vs. YAML flows that run playbooks next to Terraform, scripts and API calls."

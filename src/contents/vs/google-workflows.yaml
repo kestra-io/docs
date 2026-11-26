@@ -1,5 +1,5 @@
-title: "Google Workflows Alternative: Kestra Compared"
-description: "Compare Kestra and Google Cloud Workflows: steps that call APIs vs flows that also run code, the same BigQuery pipeline in both, limits, pricing and hosting."
+title: "Kestra vs Google Cloud Workflows (GCP Workflows)"
+description: "Kestra vs Google Cloud Workflows: steps that call APIs vs flows that also run Python, SQL and dbt. The same BigQuery pipeline in both, limits and pricing."
 competitorName: Google Workflows
 category: Data Orchestration
 shortDescription: "Serverless step orchestration of Google Cloud APIs vs. YAML flows that call services and run code, on any cloud."

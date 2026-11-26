@@ -1,5 +1,5 @@
-title: "Databricks Workflows Alternative: Kestra Compared"
-description: "Compare Kestra and Databricks Workflows, now Lakeflow Jobs: job YAML vs Kestra flows, the same notebook and SQL pipeline in both, pricing and hosting."
+title: "Kestra vs Databricks Workflows (Lakeflow Jobs)"
+description: "Kestra vs Databricks Workflows, now Lakeflow Jobs: run Databricks jobs alongside SaaS APIs, other warehouses and infra tasks. The same pipeline in both."
 competitorName: Databricks Workflows
 category: Data Orchestration
 shortDescription: "Job orchestration inside the Databricks platform vs. YAML flows that run Databricks jobs alongside the rest of your stack."

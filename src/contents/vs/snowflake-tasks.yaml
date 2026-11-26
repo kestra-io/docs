@@ -1,4 +1,4 @@
-title: "Snowflake Tasks Alternative: Kestra vs Snowflake"
+title: "Kestra vs Snowflake Tasks: Beyond the Warehouse"
 description: "Compare Kestra and Snowflake Tasks: SQL task graphs vs YAML flows, the same load-and-transform pipeline in both, pricing, migration and running side by side."
 competitorName: Snowflake Tasks
 category: Data Orchestration

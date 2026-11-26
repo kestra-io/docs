@@ -1,4 +1,4 @@
-title: "VMware Aria Automation Alternative: Kestra vs vRA"
+title: "Kestra vs VMware Aria Automation (vRA and vRO)"
 description: "Compare Kestra and VMware Aria Automation (vRA and vRO): how each is built, the same VM request in both, migration and licensing inside VMware Cloud Foundation."
 competitorName: "VMware Aria Automation"
 guideCta:

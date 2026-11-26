@@ -1,4 +1,4 @@
-title: "Dagster Alternative: Kestra vs Dagster"
+title: "Kestra vs Dagster: Data Orchestration Compared"
 description: "Compare Kestra and Dagster side by side. See how each defines and schedules work, the same DuckDB pipeline in both, setup, migration and licensing."
 competitorName: Dagster
 category: Data Orchestration

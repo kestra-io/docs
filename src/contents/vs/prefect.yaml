@@ -1,4 +1,4 @@
-title: "Prefect Alternative: Kestra vs Prefect"
+title: "Kestra vs Prefect: Python Workflow Orchestration"
 description: "Compare Kestra and Prefect: Python flows and work pools vs. YAML flows, the same daily API-to-S3 job in both, setup, migration and pricing."
 competitorName: Prefect
 category: Data Orchestration

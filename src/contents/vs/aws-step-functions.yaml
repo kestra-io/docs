@@ -1,5 +1,5 @@
-title: "AWS Step Functions Alternative: Kestra Compared"
-description: "Compare Kestra and AWS Step Functions: Amazon States Language vs YAML flows, the same Glue and Athena pipeline in both, pricing, hosting and migration."
+title: "Kestra vs AWS Step Functions: Open Source Option"
+description: "Kestra vs AWS Step Functions: Amazon States Language vs open-source YAML flows that run on any cloud. The same Glue and Athena pipeline in both, plus pricing."
 competitorName: AWS Step Functions
 category: Data Orchestration
 shortDescription: "AWS state machines written in Amazon States Language vs. YAML flows that run on any cloud or on-premises."

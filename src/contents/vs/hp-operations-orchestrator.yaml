@@ -1,5 +1,5 @@
-title: "HP Operations Orchestrator Alternative: Kestra"
-description: "Compare Kestra and HP Operations Orchestration, now part of OpenText Automation Center: CloudSlang flows vs YAML flows, the same runbook in both, licensing."
+title: "Kestra vs HP Operations Orchestration (OpenText)"
+description: "Kestra vs HP Operations Orchestration, now OpenText: CloudSlang flows vs open-source YAML flows. The same runbook in both, licensing and how to migrate."
 competitorName: "HP Operations Orchestrator"
 category: Infrastructure Automation
 shortDescription: "CloudSlang flows deployed to OO Central in content packs vs. YAML flows that run scripts, SSH commands and API calls as tasks."

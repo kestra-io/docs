@@ -1,4 +1,4 @@
-title: "Temporal Alternative: Kestra vs Temporal"
+title: "Kestra vs Temporal: Workflow Orchestration Compared"
 description: "Compare Kestra and Temporal: durable execution in SDK code vs. declarative YAML workflows, the same approval process in both, hosting and pricing."
 competitorName: Temporal
 category: Infrastructure Automation

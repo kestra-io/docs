@@ -1,4 +1,4 @@
-title: "Amazon MWAA Alternative: Kestra vs MWAA"
+title: "Kestra vs Amazon MWAA: Managed Airflow Compared"
 description: "Compare Kestra and Amazon MWAA: managed Airflow inside AWS vs YAML flows on any cloud. Architecture, pricing, the same S3 pipeline in both, and migration."
 competitorName: Amazon MWAA
 category: Data Orchestration

@@ -1,4 +1,4 @@
-title: "Chef Alternative: Kestra vs Chef"
+title: "Kestra vs Chef: Orchestration vs Configuration"
 description: "Compare Kestra and Progress Chef: Ruby cookbooks and Courier jobs vs YAML flows, the same rolling restart in both, migration and licensing."
 competitorName: Chef
 category: Infrastructure Automation

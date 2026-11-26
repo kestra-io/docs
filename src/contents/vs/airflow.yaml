@@ -1,4 +1,4 @@
-title: "Airflow Alternative: Kestra vs Apache Airflow"
+title: "Kestra vs Apache Airflow: Workflow Orchestration"
 description: "Compare Kestra and Apache Airflow: how each is built, the same dbt pipeline in both, setup, migration and licensing, with Python, SQL and dbt as YAML tasks."
 competitorName: Airflow
 category: Data Orchestration

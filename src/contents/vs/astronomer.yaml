@@ -1,4 +1,4 @@
-title: "Astronomer Alternative: Kestra vs Astronomer"
+title: "Kestra vs Astronomer Astro: Beyond Managed Airflow"
 description: "Compare Kestra and Astronomer's Astro: managed Airflow billed per deployment and worker vs YAML flows you run anywhere. Architecture, setup, code and migration."
 competitorName: Astronomer
 category: Data Orchestration

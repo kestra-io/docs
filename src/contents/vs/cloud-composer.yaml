@@ -1,4 +1,4 @@
-title: "Cloud Composer Alternative: Kestra vs Composer"
+title: "Kestra vs Cloud Composer: Beyond Managed Airflow"
 description: "Compare Kestra and Google Cloud Composer, now Managed Service for Apache Airflow: architecture, the same BigQuery export in both, pricing and migration."
 competitorName: Cloud Composer
 category: Data Orchestration

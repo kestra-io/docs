@@ -1,4 +1,4 @@
-title: "Camunda Alternative: Kestra vs Camunda"
+title: "Kestra vs Camunda: Orchestration Without BPMN"
 description: "Compare Kestra and Camunda: BPMN processes with job workers vs YAML flows with built-in tasks, plus licensing, setup, migration and running both side by side."
 competitorName: Camunda
 category: Business Automation

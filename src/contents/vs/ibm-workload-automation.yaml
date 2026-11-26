@@ -1,5 +1,5 @@
-title: "IBM Workload Automation Alternative: Kestra"
-description: "Compare Kestra and IBM Workload Automation: job streams and run cycles vs YAML flows, how each is built, pricing, hosting and how to migrate job streams."
+title: "Kestra vs IBM Workload Automation: Job Scheduling"
+description: "Kestra vs IBM Workload Automation: job streams and run cycles vs open-source YAML flows. Architecture, pricing, hosting and how to migrate job streams."
 competitorName: IBM Workload Automation
 category: Infrastructure Automation
 shortDescription: "IBM's agent-based job scheduler vs. open-source YAML flows that run on your infrastructure or Kestra Cloud."

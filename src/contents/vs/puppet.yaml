@@ -1,4 +1,4 @@
-title: "Puppet Alternative: Kestra vs Puppet"
+title: "Kestra vs Puppet: Orchestration vs Configuration"
 description: "Compare Kestra and Puppet: manifests enforced by agents and Bolt plans vs YAML flows, the same service restart in both, setup, migration and licensing."
 competitorName: Puppet
 category: Infrastructure Automation

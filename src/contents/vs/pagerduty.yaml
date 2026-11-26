@@ -1,5 +1,5 @@
-title: "PagerDuty Process Automation Alternative: Kestra"
-description: "Compare Kestra and PagerDuty Process Automation, now Runbook Automation: how each runs runbooks, the same remediation job in both, licensing and migration."
+title: "Kestra vs PagerDuty Runbook Automation"
+description: "Kestra vs PagerDuty Process Automation, now Runbook Automation: commercial Rundeck jobs vs open-source YAML flows started by incidents, schedules and events."
 competitorName: "PagerDuty PA"
 category: Infrastructure Automation
 shortDescription: "Commercial Rundeck jobs started from PagerDuty incidents vs. open-source YAML flows started by incidents, schedules and events."

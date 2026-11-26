@@ -1,4 +1,4 @@
-title: "Apache NiFi Alternative: Kestra vs NiFi"
+title: "Kestra vs Apache NiFi: Data Flow vs Orchestration"
 description: "Compare Kestra and Apache NiFi: a visual data-flow canvas vs YAML flows of tasks, how each one runs work, setup, migration and running both side by side."
 competitorName: Apache NiFi
 category: Data Orchestration

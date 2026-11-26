@@ -1,4 +1,4 @@
-title: "Microsoft Fabric Alternative: Kestra vs Fabric"
+title: "Kestra vs Microsoft Fabric Data Factory"
 description: "Compare Kestra and Microsoft Fabric Data Factory: JSON pipelines on Fabric capacity vs YAML flows on any cloud, the same notebook pipeline in both, and pricing."
 competitorName: Microsoft Fabric
 category: Data Orchestration

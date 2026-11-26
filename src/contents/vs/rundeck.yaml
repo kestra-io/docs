@@ -1,4 +1,4 @@
-title: "Rundeck Alternative: Kestra vs Rundeck"
+title: "Kestra vs Rundeck: Open Source Runbook Automation"
 description: "Compare Kestra and Rundeck: jobs dispatched to nodes vs YAML flows, the same service restart runbook in both, setup, migration and licensing."
 competitorName: "Rundeck"
 category: Infrastructure Automation

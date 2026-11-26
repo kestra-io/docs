@@ -1,4 +1,4 @@
-title: "Control-M Alternative: Kestra vs Control-M"
+title: "Kestra vs Control-M: Open Source Job Scheduling"
 description: "Compare Kestra and BMC Control-M: Jobs-as-Code JSON vs YAML flows, the same file transfer and database job flow in both, pricing, hosting and migration."
 competitorName: Control-M
 category: Infrastructure Automation

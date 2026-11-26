@@ -1,4 +1,4 @@
-title: "Luigi Alternative: Kestra vs Luigi"
+title: "Kestra vs Spotify Luigi: Beyond Python Batch Jobs"
 description: "Compare Kestra and Spotify's Luigi: Python task classes run from cron vs YAML flows with built-in schedules and triggers. Architecture, code, setup, migration."
 competitorName: Luigi
 category: "Data Orchestration"
