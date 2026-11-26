@@ -126,7 +126,7 @@ resource "kestra_tenant" "stage" {
 
 ### Deleting a tenant
 
-Deleting a tenant removes its flows, namespaces, apps, dashboards, roles, groups, role bindings, security integrations, and every user's and service account's access to the tenant.
+Deleting a tenant removes its flows, namespaces, apps, dashboards, assets and their relations, roles, groups, role bindings, security integrations, and every user's and service account's access to the tenant.
 
 Kestra keeps the following, which you can purge separately with the corresponding [Purge tasks](../../../10.administrator-guide/purge/index.md) if needed:
 
