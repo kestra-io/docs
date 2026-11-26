@@ -3,6 +3,7 @@ import { getCollection } from "astro:content"
 import ChevronRightIcon from "vue-material-design-icons/ChevronRight.vue"
 import MarkdownRenderer from "~/components/MarkdownRenderer.astro"
 import generateId from "~/utils/generateId"
+import { currentDocPath } from "~/utils/currentDocPath"
 
 interface Props {
     title?: string
@@ -16,11 +17,7 @@ interface Props {
 
 const { title, directory, reverse = false, items } = Astro.props
 
-const currentPage =
-    directory ??
-    (Astro.url.pathname.endsWith("/")
-        ? Astro.url.pathname.slice(0, -1)
-        : Astro.url.pathname)
+const currentPage = directory ?? currentDocPath(Astro)
 
 const contentPath = currentPage.replace("/docs/", "")
 

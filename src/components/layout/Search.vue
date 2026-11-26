@@ -134,6 +134,22 @@
                                         () => onItemMouseOver(result, index)
                                     "
                                 >
+                                    <div
+                                        v-if="result.doc?.groupStart"
+                                        class="doc-group"
+                                    >
+                                        <img
+                                            v-if="result.doc.sectionIcon"
+                                            :src="result.doc.sectionIcon"
+                                            alt=""
+                                            width="16"
+                                            height="16"
+                                        />
+                                        {{ result.doc.sectionTitle }}
+                                        <span
+                                            >({{ result.doc.groupCount }})</span
+                                        >
+                                    </div>
                                     <a
                                         :href="resultHref(result)"
                                         :class="{
@@ -243,6 +259,22 @@
                                                         >{{ tag }}</span
                                                     >
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            v-else-if="result.doc"
+                                            class="result doc-result"
+                                        >
+                                            <div class="result-text">
+                                                <h5>{{ result.title }}</h5>
+                                                <p
+                                                    v-if="
+                                                        result.doc.description
+                                                    "
+                                                    class="result-description"
+                                                >
+                                                    {{ result.doc.description }}
+                                                </p>
                                             </div>
                                         </div>
                                         <div v-else class="result">
@@ -444,6 +476,43 @@
                                     >
                                 </div>
                                 <div
+                                    class="rounded-3 w-100 doc-detail"
+                                    v-else-if="selectedItem?.doc"
+                                >
+                                    <div class="doc-detail-bar">
+                                        <div class="doc-crumb">
+                                            Docs<template
+                                                v-if="
+                                                    selectedItem.doc.section &&
+                                                    selectedItem.doc.section !==
+                                                        selectedItem.doc.id
+                                                "
+                                            >
+                                                ›
+                                                {{
+                                                    selectedItem.doc
+                                                        .sectionTitle
+                                                }}</template
+                                            >
+                                            ›
+                                            <strong>{{
+                                                selectedItem.title
+                                            }}</strong>
+                                        </div>
+                                        <a
+                                            :href="resultHref(selectedItem)"
+                                            class="btn btn-sm btn-primary"
+                                            @click="close"
+                                            >Open page</a
+                                        >
+                                    </div>
+                                    <ContentPreview
+                                        :key="selectedItem.doc.id"
+                                        section="docs"
+                                        :id="selectedItem.doc.id"
+                                    />
+                                </div>
+                                <div
                                     class="rounded-3 w-100"
                                     v-else-if="selectedItem"
                                 >
@@ -526,6 +595,9 @@
     const TopologyPreview = defineAsyncComponent(
         () => import("~/components/layout/search/TopologyPreview.vue"),
     )
+    const ContentPreview = defineAsyncComponent(
+        () => import("~/components/layout/search/ContentPreview.vue"),
+    )
 </script>
 
 <script>
@@ -542,6 +614,7 @@
         blueprintsSearchResults,
         loadBlueprintsIndex,
     } from "~/utils/search/blueprints"
+    import { docsSearchResults, loadDocsIndex } from "~/utils/search/docs"
     import {
         loadPluginsIndex,
         pluginsSearchResults,
@@ -564,6 +637,10 @@
                     indexes.PLUGINS ?? [],
                     query,
                 ),
+        },
+        DOCS: {
+            load: loadDocsIndex,
+            search: (indexes, query) => docsSearchResults(indexes.DOCS, query),
         },
     }
 
@@ -755,8 +832,16 @@
                         this.loading = false
                     })
             },
+            onArchivedDocs() {
+                return Boolean(
+                    searchScope(window.location.pathname, this.docsLatest)
+                        .hrefVersion,
+                )
+            },
             usesLocalResults(type = this.selectedFacet) {
                 if (type === undefined) return false
+                // Archived docs pages search their own version, which only the server indexes.
+                if (type === "DOCS" && this.onArchivedDocs()) return false
                 return type in this.indexes
             },
             settleIndex(type, index) {
@@ -779,6 +864,7 @@
             waitsForLocalResults(type = this.selectedFacet) {
                 if (type === undefined) return false
                 if (!(type in LOCAL_TABS)) return false
+                if (type === "DOCS" && this.onArchivedDocs()) return false
                 return (
                     !(type in this.indexes) &&
                     !this.failedIndexes.includes(type)
@@ -1248,6 +1334,78 @@
             padding: 0.1rem 0.5rem;
             font-weight: 600;
             white-space: nowrap;
+        }
+        .doc-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.55rem 1rem 0.4rem;
+            font-size: $font-size-xs;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--ks-content-secondary);
+            background: var(--ks-background-secondary);
+            border-bottom: 1px solid var(--ks-border-primary);
+
+            img {
+                object-fit: contain;
+            }
+
+            span {
+                font-weight: 500;
+            }
+        }
+        .search-result .doc-result {
+            padding: 0.65rem 1rem 0.65rem 2.4rem;
+
+            h5 {
+                margin: 0;
+                font-size: $font-size-sm;
+            }
+
+            .result-description {
+                margin: 0.15rem 0 0;
+            }
+        }
+        .search-result .active .doc-result {
+            box-shadow: inset 3px 0 0 var(--ks-border-active);
+        }
+        .doc-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+            .doc-detail-bar {
+                position: sticky;
+                top: -1rem;
+                z-index: 1;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1rem;
+                margin: -1rem -1rem 0;
+                padding: 0.5rem 1rem;
+                background: var(--ks-background-body);
+                border-bottom: 1px solid var(--ks-border-primary);
+
+                .btn {
+                    flex-shrink: 0;
+                    padding: 0.25rem 0.75rem;
+                    font-size: 13px;
+                    line-height: 20px;
+                }
+            }
+
+            .doc-crumb {
+                font-size: 13px;
+                line-height: 20px;
+                color: var(--ks-content-secondary);
+
+                strong {
+                    color: var(--ks-content-primary);
+                }
+            }
         }
         .blueprint-detail {
             > * {

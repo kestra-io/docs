@@ -2,10 +2,11 @@
 import { getCollection } from "astro:content"
 import { getNavigationTree } from "~/utils/getNavigationTree"
 import type { NavigationItem } from "~/utils/getNavigationTree"
+import { currentDocPath } from "~/utils/currentDocPath"
 
 const { pageUrl, max } = Astro.props
 
-let currentPage = pageUrl || Astro.url.pathname
+let currentPage = pageUrl || currentDocPath(Astro)
 currentPage = currentPage.endsWith("/") ? currentPage.slice(0, -1) : currentPage
 
 const contentPath = currentPage.replace("/docs/", "")
