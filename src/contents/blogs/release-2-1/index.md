@@ -329,6 +329,13 @@ Since 2.0, 60 new plugin repositories have been released, which brings the catal
 Existing plugins got improvements too:
 
 - JDBC `Queries`: run several SQL statements in one task, with parameters, transactions, and an output for each statement.
+- Cloud cost and billing: new `billing` packages in the [AWS](/plugins/plugin-aws) (cost and usage, forecasts, budgets, anomalies), [Azure](/plugins/plugin-azure) (cost queries, forecasts, budgets), and [Google Cloud](/plugins/plugin-gcp) (billing export queries, budgets, billing accounts) plugins, with triggers on budget thresholds and anomalies.
+- CI/CD pipelines: run, cancel, and retry pipelines from [GitLab](/plugins/plugin-gitlab), [Azure DevOps](/plugins/plugin-azure), and [GitHub Actions](/plugins/plugin-github) runs, with triggers on new pipelines or runs.
+- [Azure Machine Learning](/plugins/plugin-azure): submit command and pipeline jobs, create data assets, and start, stop, or scale compute.
+- [Databricks](/plugins/plugin-databricks): manage Unity Catalog catalogs, schemas, tables, volumes, and grants, query Lakebase, and ask questions with Genie.
+- [DigitalOcean](/plugins/plugin-digitalocean): new tasks for reserved IPs, CDN, security scans, monitoring alert policies, snapshots, and billing.
+- [Redis](/plugins/plugin-redis) streams: consumer groups with `ReadGroup`, `Ack`, and `Claim`, plus a trigger.
+- [Power BI](/plugins/plugin-microsoft-fabric) dataset refreshes, [Cloudflare AI](/plugins/plugin-cloudflare), and [Langdock](/plugins/plugin-ai) as an LLM provider.
 - [Task runner monitoring](/docs/task-runners/types/kubernetes-task-runner#monitoring) (EE): the Kubernetes, AWS, Azure, Google Cloud, and Huawei Cloud task runners can report CPU, memory, and network usage, and forward traces from the task.
 - [Private Service Connect for Cloud Run](/docs/task-runners/types/google-cloudrun-task-runner#private-service-connect-endpoints) (EE): the Cloud Run task runner and `cloudrun.Run` task can reach Google APIs through Private Service Connect endpoints, for Kestra running on-premises or in a locked-down network.
 
