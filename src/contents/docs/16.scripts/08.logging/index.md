@@ -82,6 +82,10 @@ logger.debug("Hello World from logs!");
 logger.info("Hello World!");
 ```
 
+## Other languages
+
+R, Go, Ruby, C#, F#, PowerShell, Groovy, Julia, Lua, Perl and PHP have the same logger in their own Kestra library. See [Kestra libraries for script tasks](../00.languages/index.md#kestra-libraries-for-script-tasks).
+
 ## Shell
 
 To log from a Shell task, wrap the JSON payload with double colons `'::{"logs": [{"level":"DEBUG","message":"Hello World!"}]}::'` as shown in the following examples:

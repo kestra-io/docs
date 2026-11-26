@@ -94,6 +94,8 @@ You can read more about the Commands type in the [Plugin documentation](/plugins
 
 ## Handling Outputs
 
+The examples below print `::{}::` lines directly. The [Kestra library for PowerShell](../../16.scripts/00.languages/index.md#kestra-libraries-for-script-tasks) wraps the same lines in functions that check their input.
+
 If you want to get a variable or file from your PowerShell script, you can use an [output](../../05.workflow-components/06.outputs/index.md).
 
 ### Variable Output

@@ -114,7 +114,7 @@ Reading a key that is not there raises an `AttributeError` listing what is avail
 
 ## Read the context from another language
 
-The context is a plain JSON file, so any language can read it without a Kestra client:
+Every [Kestra library](../00.languages/index.md#kestra-libraries-for-script-tasks) reads the context for you. The context is also a plain JSON file, so any language can read it without a library:
 
 ```javascript
 const fs = require('fs');

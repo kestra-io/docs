@@ -85,6 +85,27 @@ Use these guides for complete examples, outputs, metrics, and dependency managem
 - [Run PowerShell inside your flows](../../15.how-to-guides/powershell/index.md)
 - [Run C# inside your flows](../../15.how-to-guides/dotnet/index.md)
 
+## Kestra libraries for script tasks
+
+Each language below has a small Kestra library that sends outputs, metrics, logs and assets, and reads the [execution context](../09.execution-context/index.md). Every call prints one `::{}::` line to standard output, which Kestra parses, so you can also print these lines yourself as shown in [Outputs and metrics](../06.outputs-metrics/index.md).
+
+| Language | Install | Reference |
+| --- | --- | --- |
+| Python | `pip install kestra` | [README](https://github.com/kestra-io/libs/tree/main/python) |
+| Node.js | `npm i @kestra-io/libs` | [README](https://github.com/kestra-io/libs/tree/main/javascript) |
+| R | `install.packages("kestra")` | [README](https://github.com/kestra-io/libs/tree/main/r) |
+| Go | `go get github.com/kestra-io/libs/go/v2` | [README](https://github.com/kestra-io/libs/tree/main/go) |
+| Ruby | `gem install kestra` | [README](https://github.com/kestra-io/libs/tree/main/ruby) |
+| C# and F# | `#r "nuget: Kestra"` | [README](https://github.com/kestra-io/libs/tree/main/dotnet) |
+| PowerShell | `Install-Module Kestra` | [README](https://github.com/kestra-io/libs/tree/main/powershell) |
+| Groovy | `@Grab('io.kestra:libs-groovy:2.1.0')` | [README](https://github.com/kestra-io/libs/tree/main/groovy) |
+| Julia | `julia -e 'using Pkg; Pkg.add("Kestra")'` | [README](https://github.com/kestra-io/libs/tree/main/julia) |
+| Lua | `luarocks install kestra` | [README](https://github.com/kestra-io/libs/tree/main/lua) |
+| Perl | `cpanm Kestra` | [README](https://github.com/kestra-io/libs/tree/main/perl) |
+| PHP | `composer require kestra-io/libs` | [README](https://github.com/kestra-io/libs/tree/main/php) |
+
+Install the library in `beforeCommands` or bake it into a [custom Docker image](../04.custom-docker-image/index.md). Pin a version in production flows, so a new release cannot change what runs.
+
 ## Run other languages with the Shell plugin
 
 Use [io.kestra.plugin.scripts.shell.Commands](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.commands) when your language does not have a dedicated plugin or when you want to compile and run code in a container.
