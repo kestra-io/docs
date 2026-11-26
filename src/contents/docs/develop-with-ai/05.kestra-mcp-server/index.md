@@ -67,7 +67,7 @@ Every request must be authenticated. The server can't be made public.
 
 ## Tools
 
-The server exposes up to 49 tools in the open-source edition and up to 78 in the Enterprise Edition. Each tool has an MCP annotation: **Read-only** tools change nothing, **Write** tools create or change resources, and **Destructive** tools delete data, overwrite state, or start executions with their side effects.
+The server exposes up to 50 tools in the open-source edition and up to 79 in the Enterprise Edition. Each tool has an MCP annotation: **Read-only** tools change nothing, **Write** tools create or change resources, and **Destructive** tools delete data, overwrite state, or start executions with their side effects.
 
 ### Flows
 
@@ -81,6 +81,7 @@ The server exposes up to 49 tools in the open-source edition and up to 78 in the
 | `list_namespace_dependencies` | Read-only | Lists the flows that depend on a namespace's flows, child namespaces included. |
 | `list_flow_triggers` | Read-only | Lists flow triggers with their runtime state. |
 | `author_flow` | Read-only | Drafts a flow, or a revision of one, from a description. Nothing is saved. |
+| `validate_flow` | Read-only | Validates a flow's YAML source without saving or executing it, and returns its errors, warnings, and deprecated properties. |
 | `create_flow` | Write | Creates a flow from its YAML source. |
 | `update_flow` | Write | Replaces a flow's source and saves it as a new revision. |
 | `enable_flow` | Write | Enables a disabled flow. |
@@ -189,8 +190,6 @@ The server exposes up to 49 tools in the open-source edition and up to 78 in the
 
 The `author_*` tools use the AI provider configured for the [AI Copilot](../01.ai-copilot/index.md). They return the generated YAML for review without saving it. To save a draft, the agent calls the matching `create_*` or `update_*` tool.
 
-<!-- TODO(eng): ValidateFlowTool implements McpPlatformTool on develop, but `validate_flow` isn't in the live tool list (EE develop image 2026-11-23). Possibly shadowed by the docs MCP tool of the same name in ToolCatalog. Confirm whether it should be exposed. -->
-
 MCP clients can use the annotations in their approval prompts. Kestra doesn't ask for confirmation itself, even for tools that the in-app Copilot asks you to confirm.
 
 ## Tenants and permissions
@@ -199,4 +198,4 @@ Every tool takes an optional `tenant` argument. When the caller can act on a sin
 
 In the Enterprise Edition, each call runs as the caller in the requested tenant, so their [RBAC](../../07.enterprise/03.auth/rbac/index.md) permissions apply to both the tool and the namespace. A caller only sees the tools they can use in at least one of the tenants they can act on. Calling a tool that isn't in their list returns a `Tool not found` error. When a listed tool is denied for a namespace, the call returns an error result instead, for example `Execution not found`. Changes made through the server are recorded in the [audit log](../../07.enterprise/02.governance/06.audit-logs/index.md) under the caller, like changes made in the UI.
 
-<!-- TODO(runtime test): live-verified on 2026-11-11 with raw JSON-RPC requests, and on 2026-11-24 with Claude Code (78 tools listed; list/read tools, create_kv_entry, and restart_execution called; audit log entries checked). OAuth is still untested (no identity provider on the test instance). -->
+<!-- TODO(runtime test): live-verified on 2026-11-11 with raw JSON-RPC requests, and on 2026-11-24 with Claude Code (78 tools listed, before kestra#23044 restored `validate_flow`; re-check that 79 are listed; list/read tools, create_kv_entry, and restart_execution called; audit log entries checked). OAuth is still untested (no identity provider on the test instance). -->
