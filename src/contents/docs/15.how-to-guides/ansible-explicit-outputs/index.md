@@ -288,14 +288,14 @@ tasks:
       [defaults]
       callback_plugins  = ./callback_plugins
       callbacks_enabled = kestra_logger
-      stdout_callback   = ansible.builtin.null
+      stdout_callback   = null
       library           = ./library
     commands:
       - ansible-playbook -i hosts playbook.yml
 ```
 
 :::alert{type="warning"}
-`kestra_logger` is an aggregate callback and must be listed under `callbacks_enabled`, not `stdout_callback`. Setting `stdout_callback = ansible.builtin.null` suppresses the default per-host output renderer, which would otherwise produce output that `outputsMode: EXPLICIT` cannot redact.
+`kestra_logger` is an aggregate callback and must be listed under `callbacks_enabled`, not `stdout_callback`. Setting `stdout_callback = null` selects the `null` callback that ships with the plugin in `./callback_plugins` and suppresses the default per-host output renderer, which would otherwise produce output that `outputsMode: EXPLICIT` cannot redact.
 :::
 
 ## Upgrading from plugin-ansible v1.x
