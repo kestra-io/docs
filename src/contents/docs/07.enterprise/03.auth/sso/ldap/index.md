@@ -108,7 +108,7 @@ Key points for Windows Active Directory:
 - **Login format**: the `userPrincipalName` filter requires users to log in with their full UPN, e.g. `john@domain.local`. If your users expect to log in with just their short username (e.g. `john`), change the filter to `(sAMAccountName={0})` and update the `email` attribute mapping accordingly.
 - **Search base**: setting `search.base` and `groups.base` to the root domain (`DC=domain,DC=local`) covers users and groups across all OUs. Narrow these to a specific OU (e.g. `OU=Engineering,DC=domain,DC=local`) to restrict access to a subset of your directory.
 - **Group filter attribute**: AD `member` attributes store full DNs, so `filter-attribute: dn` is required. Without it, Micronaut defaults to `cn` and group membership lookups will silently return no results.
-- **TLS**: use `ldaps://` on port 636 in production. Plain `ldap://` on port 389 sends credentials in cleartext. If your AD uses a self-signed certificate, you must add it to the JVM truststore or configure certificate trust in your Kestra deployment.
+- **TLS**: use `ldaps://` on port 636 in production. Plain `ldap://` on port 389 sends credentials in cleartext. If your AD certificate is signed by an internal or self-signed CA, add that root CA to the JVM truststore. See [Trust an internal CA for outbound HTTPS connections](../../../../10.administrator-guide/custom-ca/index.md).
 
 #### Finding Windows Active Directory values
 

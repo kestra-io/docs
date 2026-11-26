@@ -280,13 +280,6 @@ tasks:
 
 ### Production
 
-For production, import the CA certificate into the JVM trust store on the Kestra worker. Once imported, the worker trusts any endpoint signed by that CA and tasks connect without disabling verification.
+For production, add your internal root CA to the JVM truststore on the Kestra worker. The worker then trusts any endpoint signed by that CA, and tasks connect without disabling verification.
 
-- **Kubernetes**: see [Trusting a custom CA for outbound connections on Kubernetes](../../10.administrator-guide/custom-ca-kubernetes/index.md) for keytool steps and Helm configuration.
-- **Standalone or Docker**: set `JAVA_OPTS` in your Kestra environment:
-
-```bash
-JAVA_OPTS="-Djavax.net.ssl.trustStore=/path/to/truststore.p12 \
-           -Djavax.net.ssl.trustStorePassword=changeit \
-           -Djavax.net.ssl.trustStoreType=PKCS12"
-```
+Build the truststore from the Kestra image's default `cacerts` plus your CA: a truststore that holds only your CA stops Kestra from trusting public endpoints. See [Trust an internal CA for outbound HTTPS connections](../../10.administrator-guide/custom-ca/index.md) for the Docker, Docker Compose, and Kubernetes steps.
