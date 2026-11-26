@@ -100,8 +100,13 @@ const DUST = [
 ---
 
 <section class="ee-hero" aria-labelledby={headingId}>
-    <PixelEdges left="tall" right="wide" />
     <div class="frame surface-dark" data-header-dark data-ee-orbit>
+        <div class="mesh" aria-hidden="true">
+            <span class="light violet"></span>
+            <span class="light lavender"></span>
+            <span class="light graphite"></span>
+        </div>
+        <PixelEdges left="tall" right="wide" />
         <div class="depth" aria-hidden="true">
             {DUST.map((layer) => (
                 <svg
@@ -124,20 +129,21 @@ const DUST = [
         <div class="container-xl">
             <div class:list={["stage", size]}>
                 <div class="copy">
-                    {eyebrow && (
-                        <p class="eyebrow" data-edition>
-                            <span class="sheen" />
-                            <img
-                                class="kestra"
-                                src={kestraMark.src}
-                                alt=""
-                                width="16"
-                                height="16"
-                            />
-                            <span class="name">{eyebrow}</span>
-                        </p>
-                    )}
-                    <h1 id={headingId}>{title}</h1>
+                    <h1 id={headingId}>
+                        {eyebrow ? (
+                            <>
+                                <span class="product">
+                                    {eyebrow}
+                                    <span class="visually-hidden">:</span>
+                                </span>
+                                <span class="claim">
+                                    {title.replace(/\.$/, "")}<span class="brand-dot" aria-hidden="true" /><span class="visually-hidden">.</span>
+                                </span>
+                            </>
+                        ) : (
+                            title
+                        )}
+                    </h1>
                     <p class="lead">{lead}</p>
                     <div class="buttons">
                         {buttons.map((button) => (
@@ -263,7 +269,6 @@ const DUST = [
             step: 0,
             spentAt: -1,
         }))
-        const edition = frame.querySelector<HTMLElement>("[data-edition]")
         const flash = (el: HTMLElement, name: string, ms: number) => {
             el.classList.add(name)
             window.setTimeout(() => el.classList.remove(name), ms)
@@ -321,7 +326,6 @@ const DUST = [
                 if (level < pips.length) return
                 holding = true
                 hub.classList.add("firing")
-                if (edition) flash(edition, "ping", 1600)
                 window.setTimeout(() => {
                     level = 0
                     setLevel(0)
@@ -443,30 +447,9 @@ const DUST = [
         --card: rgb(52, 44, 118);
 
         position: relative;
+        isolation: isolate;
         overflow: hidden;
-        background:
-            radial-gradient(
-                34% 48% at 72% 52%,
-                rgba(112, 88, 255, 0.62),
-                rgba(70, 58, 235, 0.26) 48%,
-                transparent 74%
-            ),
-            radial-gradient(
-                46% 60% at 100% 0%,
-                rgba(40, 110, 255, 0.3),
-                transparent 62%
-            ),
-            radial-gradient(
-                40% 55% at 58% 118%,
-                rgba(96, 70, 240, 0.42),
-                transparent 70%
-            ),
-            radial-gradient(
-                36% 50% at 0% 100%,
-                rgba(70, 50, 210, 0.2),
-                transparent 68%
-            ),
-            linear-gradient(165deg, #0c0a2a 0%, #151040 52%, #0c0a2a 100%);
+        background: #09090b;
         color: #ffffff;
 
         &::after {
@@ -485,38 +468,124 @@ const DUST = [
             pointer-events: none;
         }
 
-        &::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(
-                    90deg,
-                    rgba(0, 0, 0, 0.15) 0%,
-                    rgba(0, 0, 0, 0.06) 34%,
-                    transparent 58%
-                ),
-                radial-gradient(
-                    62% 78% at 72% 52%,
-                    transparent 40%,
-                    rgba(0, 0, 4, 0.18) 76%,
-                    rgba(0, 0, 0, 0.3) 100%
-                );
-            pointer-events: none;
-
-            @include media-breakpoint-down(lg) {
-                background: radial-gradient(
-                    95% 52% at 50% 74%,
-                    transparent 40%,
-                    rgba(0, 0, 4, 0.18) 78%,
-                    rgba(0, 0, 0, 0.3) 100%
-                );
-            }
-        }
-
         > .container-xl {
             position: relative;
             z-index: 1;
+        }
+    }
+
+    .frame :global(.pixel-edges .edge) {
+        background: rgba(190, 176, 255, 0.16);
+    }
+
+    .mesh {
+        position: absolute;
+        z-index: -1;
+        inset: 0;
+        pointer-events: none;
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.55'/></svg>");
+            opacity: 0.22;
+            mix-blend-mode: overlay;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            z-index: 1;
+            inset: 0;
+            background: radial-gradient(
+                    circle,
+                    rgba(255, 255, 255, 0.5) 0.6px,
+                    transparent 1px
+                )
+                0 0 / 4px 4px;
+            opacity: 0.12;
+            mask: radial-gradient(
+                ellipse 70% 80% at 50% 50%,
+                rgba(0, 0, 0, 0.25),
+                #000
+            );
+            mix-blend-mode: overlay;
+        }
+    }
+
+    .light {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(40px);
+        animation: glow-drift 28s ease-in-out infinite alternate;
+
+        &.violet {
+            top: -30%;
+            right: -14%;
+            width: 78%;
+            height: 135%;
+            background: radial-gradient(
+                closest-side,
+                rgba(84, 66, 255, 0.44),
+                rgba(72, 84, 255, 0.12) 55%,
+                transparent
+            );
+
+            @include media-breakpoint-down(lg) {
+                top: 28%;
+                right: -20%;
+                width: 140%;
+                height: 85%;
+            }
+        }
+
+        &.lavender {
+            top: -25%;
+            left: -5%;
+            width: 55%;
+            height: 80%;
+            background: radial-gradient(
+                closest-side,
+                rgba(205, 182, 251, 0.09),
+                rgba(205, 182, 251, 0.02) 55%,
+                transparent
+            );
+            animation-duration: 34s;
+            animation-delay: -12s;
+        }
+
+        &.graphite {
+            left: -20%;
+            bottom: -45%;
+            width: 75%;
+            height: 115%;
+            background: radial-gradient(
+                closest-side,
+                rgba(120, 118, 135, 0.16),
+                rgba(120, 118, 135, 0.04) 55%,
+                transparent
+            );
+            animation-duration: 40s;
+            animation-delay: -20s;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            animation: none;
+        }
+    }
+
+    @keyframes glow-drift {
+        0% {
+            transform: translate(0, 0) scale(1);
+        }
+
+        50% {
+            transform: translate(5%, 4%) scale(1.06);
+        }
+
+        100% {
+            transform: translate(-3%, 6%) scale(0.96);
         }
     }
 
@@ -703,7 +772,7 @@ const DUST = [
         --drop: var(--rc);
 
         position: relative;
-        height: 39rem;
+        height: clamp(31.5rem, calc(min(80vh, 800px) - 8rem), 39rem);
         perspective: 1100px;
 
         @include media-breakpoint-up(lg) {
@@ -957,7 +1026,7 @@ const DUST = [
         grid-template-columns: minmax(0, 1fr) minmax(0, 38rem);
         align-items: center;
         gap: 2rem 3rem;
-        padding: 7.5rem clamp(1.5rem, 4vw, 3.5rem) 4rem;
+        padding: calc(67px + 4rem) clamp(1.5rem, 4vw, 3.5rem) 4rem;
 
         @each $size in compact, standard, tall {
             &.#{$size} {
@@ -1017,98 +1086,56 @@ const DUST = [
         }
     }
 
-    .eyebrow {
-        position: relative;
-        isolation: isolate;
-        display: inline-flex;
-        align-items: center;
-        margin: 0 0 1.5rem;
-        gap: 0.4375rem;
-        padding: 0.3125rem 0.75rem 0.3125rem 0.5625rem;
-        border-radius: 999px;
-        overflow: hidden;
-        background:
-            radial-gradient(
-                120% 140% at 0% 0%,
-                rgba(255, 255, 255, 0.08),
-                transparent 55%
-            ),
-            linear-gradient(
-                160deg,
-                rgba(130, 115, 190, 0.12),
-                rgba(22, 21, 30, 0.5)
-            );
-        box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.14),
-            inset 0 -8px 14px -10px rgba(143, 91, 255, 0.14),
-            0 10px 30px -12px rgba(0, 0, 0, 0.8);
-        backdrop-filter: blur(14px) saturate(1.5);
-        font-size: 0.8125rem;
+    .product {
+        display: block;
+        width: fit-content;
+        background: linear-gradient(
+                90deg,
+                #ffffff 0%,
+                #e4dcff 25%,
+                #a996ff 50%,
+                #e4dcff 75%,
+                #ffffff 100%
+            )
+            0 0 / 200% 100% repeat-x;
+        background-clip: text;
+        text-transform: uppercase;
+        color: transparent;
+
+        @include media-breakpoint-down(lg) {
+            margin-inline: auto;
+        }
+    }
+
+    .claim {
+        display: block;
+        margin-top: 0.4em;
+        font-size: 0.5em;
         font-weight: 500;
-        letter-spacing: 0.01em;
-        color: #ffffff;
-        transition: box-shadow 0.9s ease;
+        letter-spacing: -0.01em;
 
-        &::before,
-        &::after {
-            content: "";
-            position: absolute;
-            z-index: 1;
-            inset: 0;
-            padding: 1.5px;
-            border-radius: inherit;
-            mask:
-                linear-gradient(#000 0 0) content-box exclude,
-                linear-gradient(#000 0 0);
-            pointer-events: none;
+        @include media-breakpoint-down(md) {
+            font-size: 0.62em;
         }
+    }
 
-        &::before {
-            background: linear-gradient(
-                150deg,
-                rgba(255, 255, 255, 0.45),
-                rgba(190, 170, 255, 0.2) 40%,
-                rgba(255, 255, 255, 0.08) 60%,
-                rgba(180, 150, 255, 0.3)
-            );
+    .brand-dot {
+        display: inline-block;
+        width: 0.15em;
+        height: 0.15em;
+        margin-left: 0.05em;
+        background: #fe0071;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .product {
+            animation: hero-sheen 8s linear infinite;
         }
+    }
 
-        &::after {
-            background: conic-gradient(
-                from var(--holo),
-                transparent 0deg,
-                rgba(91, 107, 255, 0.5) 70deg,
-                #8f7bff 120deg,
-                #d9ceff 150deg,
-                transparent 170deg,
-                transparent 360deg
-            );
-            opacity: 0;
-            transition: opacity 0.9s ease;
-        }
-
-        .kestra {
-            position: relative;
-            width: 1rem;
-            height: 1rem;
-        }
-
-        .name {
-            position: relative;
-        }
-
-        &:global(.ping) {
-            box-shadow:
-                inset 0 1px 0 rgba(255, 255, 255, 0.14),
-                inset 0 -8px 14px -10px rgba(143, 91, 255, 0.14),
-                0 0 16px -8px rgba(110, 120, 255, 0.4);
-            transition-duration: 0.25s;
-
-            &::after {
-                opacity: 1;
-                transition-duration: 0.2s;
-                animation: holo 1.6s linear;
-            }
+    @keyframes hero-sheen {
+        to {
+            background-position-x: 200%;
         }
     }
 
@@ -1159,38 +1186,6 @@ const DUST = [
     @keyframes holo {
         to {
             --holo: 360deg;
-        }
-    }
-
-    .sheen {
-        position: absolute;
-        top: -50%;
-        bottom: -50%;
-        left: 0;
-        width: 45%;
-        background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, 0.22),
-            transparent
-        );
-        opacity: 0;
-        transform: translateX(-140%) rotate(18deg);
-
-        :global(.ping) & {
-            animation: sheen 1.1s ease-out;
-        }
-    }
-
-    @keyframes sheen {
-        0% {
-            opacity: 1;
-            transform: translateX(-140%) rotate(18deg);
-        }
-
-        100% {
-            opacity: 0;
-            transform: translateX(320%) rotate(18deg);
         }
     }
 
@@ -1322,10 +1317,6 @@ const DUST = [
         .glimpse {
             transition: none;
             animation: none;
-        }
-
-        .sheen {
-            animation: none !important;
         }
     }
 </style>

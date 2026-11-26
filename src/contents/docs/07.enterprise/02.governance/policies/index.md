@@ -500,6 +500,8 @@ When saving a flow violates an `ACTIVE` Policy, Kestra rejects the save and show
 
 When a flow is open in the editor, the Policies panel shows a **Mutation preview** toggle that surfaces injected values from `Add` rules, `override: true` replacements, and `Delete` removals, each annotated with the source policy that supplied them.
 
+While you edit a task, the **Inputs** panel of the task editor also has a **Policies** section, next to the namespace KV pairs and secrets. It lists every Policy that governs the flow and, under each one, the values it sets on the flow and on each task, labeled with the task id, such as the database user an `Add` rule injects. You can read what a task will receive without turning on the **Mutation preview**. Selecting a Policy opens its definition in a new tab, so the flow stays open in the editor.
+
 ## Policy scope and inheritance
 
 Policies apply along a scope chain, from outermost to innermost:
