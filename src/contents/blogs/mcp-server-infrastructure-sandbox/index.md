@@ -25,7 +25,7 @@ MCP Flows let an agent call the flows you chose to expose. The MCP Server goes f
 - read execution details, outputs, and logs, and search logs across executions
 - manage namespace files and KV entries
 
-In the Enterprise Edition, agents can also work with apps, test suites, and user groups, for 78 tools in all.
+In Kestra Enterprise, agents can also work with apps, test suites, and user groups, for 78 tools in all.
 
 The tools carry hints that tell the client whether a call only reads, makes changes, or deletes or starts something, so your client can ask before acting. The server is off until you turn it on, every request is authenticated, and you can limit it to some tenants and choose the sign-in methods it accepts, OAuth included.
 
@@ -116,9 +116,9 @@ Proxmox keeps the full life of the sandbox in its task log, every step run by th
 
 The flow is available as the [Approved Proxmox VE Sandbox for AI Agents with Usage Report](/blueprints/proxmox-app-sandbox-with-approval) blueprint. It includes the Approval task with the Slack request, the Proxmox clone and teardown, the Ansible playbook inline, the smoke tests, and the usage report. Set six secrets for Proxmox, SSH, and Slack, adjust the template ID and network, and point your agent at it.
 
-## With the Enterprise Edition
+## With Kestra Enterprise
 
-The open-source edition runs everything shown above. The Enterprise Edition adds what a team needs before agents touch shared infrastructure.
+Kestra open source runs everything shown above. Kestra Enterprise adds what a team needs before agents touch shared infrastructure.
 
 ### Agents act as the person behind them
 
