@@ -336,6 +336,8 @@ Existing plugins got improvements too:
 - [DigitalOcean](/plugins/plugin-digitalocean): new tasks for reserved IPs, CDN, security scans, monitoring alert policies, snapshots, and billing.
 - [Redis](/plugins/plugin-redis) streams: consumer groups with `ReadGroup`, `Ack`, and `Claim`, plus a trigger.
 - [Power BI](/plugins/plugin-microsoft-fabric) dataset refreshes, [Cloudflare AI](/plugins/plugin-cloudflare), and [Langdock](/plugins/plugin-ai) as an LLM provider.
+- [Slack](/plugins/plugin-slack) app views (`Open` for modals, `Publish` for the App Home tab), [Jira](/plugins/plugin-jira) `comments.Get` and `issues.Get`, and [Twilio](/plugins/plugin-twilio) RCS messages.
+- Smaller additions: DynamoDB `BatchWriteItem`, S3 and Azure Blob `CopyList`, SQS `Purge`, BigQuery `CreateSnapshot`, Vertex AI `Embeddings`, and GitHub `DownloadArchive`.
 - [Task runner monitoring](/docs/task-runners/types/kubernetes-task-runner#monitoring) (EE): the Kubernetes, AWS, Azure, Google Cloud, and Huawei Cloud task runners can report CPU, memory, and network usage, and forward traces from the task.
 - [Private Service Connect for Cloud Run](/docs/task-runners/types/google-cloudrun-task-runner#private-service-connect-endpoints) (EE): the Cloud Run task runner and `cloudrun.Run` task can reach Google APIs through Private Service Connect endpoints, for Kestra running on-premises or in a locked-down network.
 
