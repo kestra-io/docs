@@ -3,6 +3,7 @@ import { Icon } from "astro-icon/components"
 import Rails from "./Rails.astro"
 import SectionHead from "~/components/home/SectionHead.astro"
 import CodeCard from "./CodeCard.astro"
+import PixelGrid from "~/components/common/PixelGrid.astro"
 
 const HEAD = `id: nightly_ledger
 namespace: finance
@@ -118,6 +119,9 @@ triggers:
     lines: [number, number]
 }[]
 
+const TEXTURE_MASK =
+    "radial-gradient(ellipse 100% 100% at 100% 100%, #000 35%, transparent 90%)"
+
 const RUNTIME = [
     {
         icon: "mdi:restart",
@@ -135,6 +139,9 @@ const RUNTIME = [
 <section class="production" id="production" aria-labelledby="prod-h">
     <Rails>
         <div class="split" data-prod>
+            <div class="texture">
+                <PixelGrid rows={30} mask={TEXTURE_MASK} />
+            </div>
             <div class="intro">
                 <SectionHead id="prod-h" align="start">
                     Failure handling, <span>declared in the flow.</span>
@@ -543,6 +550,20 @@ const RUNTIME = [
             &:hover .arrow {
                 translate: 0.2em 0;
             }
+        }
+    }
+
+    .texture {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 50%;
+        height: 30rem;
+        overflow: hidden;
+        pointer-events: none;
+
+        @include media-breakpoint-down(xl) {
+            display: none;
         }
     }
 
