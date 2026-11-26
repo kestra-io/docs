@@ -32,7 +32,9 @@ jobs:
 
       # request.cf (Cloudflare's per-request geo/runtime properties) only
       # type-checks via this generated file — it's never committed, so it
-      # must be regenerated here before `astro check` runs.
+      # must be regenerated here before `astro check` runs. Locally,
+      # `npm run check` does both. It stays a separate step here so a typegen
+      # failure fails the job instead of being swallowed by `set +e` below.
       - name: Generate Cloudflare Worker types
         run: npm run cf-typegen
 
