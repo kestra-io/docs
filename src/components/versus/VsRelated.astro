@@ -8,12 +8,11 @@ interface Comparison {
 }
 
 interface Props {
-    competitorName: string
     comparisons: Comparison[]
     alternatives?: { href: string; label: string }
 }
 
-const { competitorName, comparisons, alternatives } = Astro.props
+const { comparisons, alternatives } = Astro.props
 ---
 
 <section class="vs-related" aria-labelledby="vs-related-title">

@@ -292,13 +292,12 @@ const groups = [
             title={faqTitle ?? `Questions about ${competitorName} and Kestra`}
             items={faq}
         />
-    {related && related.comparisons.length > 0 && (
-        <VsRelated
-            {competitorName}
-            comparisons={related.comparisons}
-            alternatives={related.alternatives}
-        />
-    )}
+        {related && related.comparisons.length > 0 && (
+            <VsRelated
+                comparisons={related.comparisons}
+                alternatives={related.alternatives}
+            />
+        )}
     </div>
 </PageShell>
 
