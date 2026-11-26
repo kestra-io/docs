@@ -1,6 +1,6 @@
 ---
 title: "AWX Release Status: Is AWX Still Maintained in 2026?"
-description: "AWX releases have been paused since July 2024 for a major refactor. Here is a factual overview of the project's current status, what it means for users, and available options."
+description: "AWX hasn't shipped a release since July 2024, and in November 2026 its maintainers removed the release pipeline. Here is a factual overview of the project's current status, what it means for users, and available options."
 metaTitle: "Is AWX Dead? AWX Release Status and Latest Version (2026)"
 metaDescription: "AWX hasn't shipped a release since 24.6.1 in July 2024. Here's where the refactor stands, what's next, and your options if you run AWX today."
 tag: "infrastructure"
@@ -23,9 +23,17 @@ faq:
     answer: "Yes. Ansible playbooks are defined independently of AWX using standard YAML syntax executed by ansible-core. Moving to an alternative control plane requires migrating credentials, schedules, inventories, and survey prompts, but existing tasks and playbooks execute without code changes."
   - question: "What does AWX stand for?"
     answer: "AWX is a recursive acronym standing for 'AWX Is Not X'. It was introduced in 2017 when Red Hat open-sourced the web management and API layer originally developed for the proprietary Ansible Tower product."
+resourceCtaOverride:
+  href: /blueprints/ansible-playbook-from-git
+  label: See your playbook run in Kestra
+  action: playbook
+  tagline: "Still on AWX? Run the playbooks you already have in Kestra."
+  taglineEnd: "Keep your playbooks. Replace the controller."
 ---
 
 > **TL;DR** — AWX is still developed, but it no longer ships releases. The last one is 24.6.1, from July 2, 2024. Red Hat paused releases to refactor AWX into a service-oriented architecture, and the refactor is merged into the `devel` branch. On November 16, 2026, the maintainers removed the release pipeline from the repository, noting that AWX releases are no longer published. As of November 2026 there is no release date and no supported install path for the new version.
+
+::resource-cta
 
 Engineers and platform administrators managing Ansible environments frequently ask whether AWX is still viable for production operations. While commits continue to land in source control, the absence of packaged builds for over two years has forced infrastructure teams to evaluate their ongoing operational posture.
 
@@ -50,7 +58,7 @@ The following table summarizes the verified state of AWX and its related project
 
 ---
 
-## Why AWX releases are paused
+## Why AWX stopped shipping releases
 
 In July 2024, Red Hat engineering placed the AWX release cycle on hold. The maintainers added a prominent banner to the project repository: *"Releases of this project are now paused during a large scale refactoring."*
 
@@ -110,7 +118,7 @@ Platform engineers running AWX have five distinct operational paths. For a wider
 | Option | Operational Effort | Licensing / Cost | Support Model | Architecture & Portability |
 |---|---|---|---|---|
 | **1. Stay on AWX 24.6.1** | None initially; grows as base packages age | Free (Apache 2.0) | None (community forum only) | Frozen legacy deployment; unpatched CVEs |
-| **2. Wait for AWX releases to resume** | Unknown: no release planned | Free (Apache 2.0) | Community | Microservice-based; breaking deployment changes |
+| **2. Wait in case AWX releases return** | Unknown: no release planned | Free (Apache 2.0) | Community | Microservice-based; breaking deployment changes |
 | **3. Migrate to Ascender (CIQ)** | Low to moderate (direct AWX fork) | Free (Apache 2.0) or paid Pro | Community or commercial SLA from CIQ | AWX-compatible controller; regular upstream releases |
 | **4. Red Hat AAP** | Moderate (migration tooling provided) | Commercial (per managed node) | Enterprise SLA from Red Hat | Official commercial platform; automated installation |
 | **5. Decouple orchestration from playbooks** | Moderate (reconfigure jobs as workflows) | Open source or enterprise | Community or enterprise SLA | Standard `ansible-core` execution; multi-tool control plane |
@@ -119,7 +127,7 @@ Platform engineers running AWX have five distinct operational paths. For a wider
 
 For teams with isolated network boundaries, low change frequency, and strict change freezes, continuing to run AWX 24.6.1 is technically possible, as long as platform engineers accept that security vulnerabilities in the web interface and API will remain unpatched.
 
-### Option 2: Wait for AWX releases to resume
+### Option 2: Wait in case AWX releases return
 
 Teams with deep investments in AWX-specific workflows can wait in case packaged releases return. Since the release pipeline was removed in November 2026, nothing indicates when or whether that will happen. If a build is tagged again, expect a full redeployment of the control plane: playbook code will remain compatible, but existing Helm charts, operator manifests, and integration configurations will need to be rebuilt.
 

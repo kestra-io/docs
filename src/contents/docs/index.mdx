@@ -8,7 +8,7 @@ description: The official documentation for Kestra, an open-source orchestration
 import HomePageButtons from "~/components/content/HomePageButtons.astro"
 import WhatsNew from "~/components/common/WhatsNew.astro"
 import SupportLinks from "~/components/content/SupportLinks.astro"
-import PluginCount from "~/components/content/PluginCount.vue"
+import PluginCount from "~/components/content/PluginCount.astro"
 import ChildCard from "~/components/docs/ChildCard.astro"
 
 What is Kestra?
@@ -16,7 +16,7 @@ What is Kestra?
 Kestra is an open-source, infinitely-scalable **orchestration platform** that enables all engineers
 to manage **business-critical workflows** declaratively in code.
 
-Thanks to <PluginCount client:idle /> plugins and an embedded code editor with Git and Terraform integrations, Kestra makes scheduled and event-driven workflows easy.
+Thanks to <PluginCount /> plugins and an embedded code editor with Git and Terraform integrations, Kestra makes scheduled and event-driven workflows easy.
 
 <HomePageButtons
     buttons={[
@@ -31,13 +31,7 @@ Thanks to <PluginCount client:idle /> plugins and an embedded code editor with G
 
 <div style="height: 50px;"></div>
 <div class="video-container">
-    <iframe
-        src="https://www.youtube.com/embed/xnGYiWFM2uk"
-        title="YouTube video player"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin"
-        allowfullscreen
-    ></iframe>
+    <iframe src="https://www.youtube.com/embed/9NZyPh5C_zs?si=JEBBXvwlZupQW2QB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 <WhatsNew title="What's New in Kestra" />

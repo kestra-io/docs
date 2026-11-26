@@ -4,7 +4,7 @@ info:
   license:
     name: Apache 2.0
     url: https://raw.githubusercontent.com/kestra-io/kestra/master/LICENSE
-  version: 2.0.11
+  version: 2.0.13
 tags:
 - name: Flows
   description: Flows API
@@ -1709,6 +1709,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ServiceInstance'
+        '401':
+          description: Authentication required
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '403':
+          description: Access denied
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+  /api/v1/{tenant}/concurrency-limit:
+    put:
+      tags:
+      - Flows
+      summary: Update a flow, namespace or tenant concurrency limit
+      description: Leave the namespace and the flow empty to target the tenant limit, and the flow empty to target a namespace limit.
+      operationId: updateScopedConcurrencyLimit
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConcurrencyLimitController.ConcurrencyLimitUpdateRequest'
+        required: true
+      responses:
+        '200':
+          description: updateScopedConcurrencyLimit 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConcurrencyLimit'
         '401':
           description: Authentication required
           content:
@@ -11534,7 +11578,7 @@ components:
         namespace:
           maxLength: 150
           minLength: 1
-          pattern: ^[a-z0-9][a-z0-9._-]*
+          pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
           type: string
         revision:
           minimum: 1
@@ -12240,7 +12284,7 @@ components:
         namespace:
           maxLength: 150
           minLength: 1
-          pattern: ^[a-z0-9][a-z0-9._-]*
+          pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
           type: string
         id:
           maxLength: 150
@@ -12547,6 +12591,21 @@ components:
           type: string
         flowId:
           type: string
+        running:
+          minimum: 0
+          type: integer
+          format: int32
+    ConcurrencyLimitController.ConcurrencyLimitUpdateRequest:
+      required:
+      - running
+      type: object
+      properties:
+        namespace:
+          type: string
+          nullable: true
+        flowId:
+          type: string
+          nullable: true
         running:
           minimum: 0
           type: integer
@@ -13215,7 +13274,7 @@ components:
           namespace:
             maxLength: 150
             minLength: 1
-            pattern: ^[a-z0-9][a-z0-9._-]*
+            pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
             type: string
           revision:
             minimum: 1
@@ -13342,7 +13401,7 @@ components:
           namespace:
             maxLength: 150
             minLength: 1
-            pattern: ^[a-z0-9][a-z0-9._-]*
+            pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
             type: string
           revision:
             minimum: 1
@@ -13721,7 +13780,7 @@ components:
           namespace:
             maxLength: 150
             minLength: 1
-            pattern: ^[a-z0-9][a-z0-9._-]*
+            pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
             type: string
           revision:
             minimum: 1
@@ -14289,7 +14348,7 @@ components:
       type: object
       properties:
         id:
-          pattern: ^[a-z0-9][a-z0-9._-]*
+          pattern: ^[a-z0-9][a-z0-9_-]*(\.[a-z0-9_-]+)*
           type: string
     Output:
       required:

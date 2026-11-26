@@ -101,14 +101,14 @@ const CARDS = [
                     <h3 set:html={card.title} />
                     <p>{card.description}</p>
 
-                    <div class="cards-row">
+                    <dl class="cards-row">
                         {card.features.map((feature) => (
                             <div class="feature-card">
-                                <h2 class="color">{feature.value}</h2>
-                                <p class="color">{feature.label}</p>
+                                <dt class="value color">{feature.value}</dt>
+                                <dd class="label color">{feature.label}</dd>
                             </div>
                         ))}
-                    </div>
+                    </dl>
 
                     <Link href={card.cta.href} class="card-link">
                         {card.cta.text}
@@ -356,6 +356,7 @@ const CARDS = [
                     display: flex;
                     flex-direction: column;
                     gap: 1rem;
+                    margin: 0;
 
                     @include media-breakpoint-up(md) {
                         flex-direction: row;
@@ -379,6 +380,25 @@ const CARDS = [
 
                         @include media-breakpoint-up(xxl) {
                             padding: 1rem 2rem;
+                        }
+
+                        .value {
+                            margin: 0 0 0.5rem;
+                            font-size: calc(1.3375rem + 1.05vw);
+                            font-weight: 600;
+                            line-height: 1.2;
+
+                            @include media-breakpoint-down(lg) {
+                                font-size: $h3-font-size;
+                            }
+
+                            @include media-breakpoint-up(xl) {
+                                font-size: $h2-font-size;
+                            }
+                        }
+
+                        .label {
+                            margin: 0 0 1rem;
                         }
                     }
                 }

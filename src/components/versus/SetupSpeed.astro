@@ -55,7 +55,7 @@ const { title, subtitle, kestra, competitor } = Astro.props as Props
                     }
                 </div>
                 <Snippets code={kestra?.command ?? ""} />
-                <p class="mb-0">{kestra?.description}</p>
+                <p class="mb-0" set:html={kestra?.description} />
             </Card>
 
             <Card
@@ -81,7 +81,7 @@ const { title, subtitle, kestra, competitor } = Astro.props as Props
                     code={competitor?.command ?? ""}
                     lang={competitor?.lang}
                 />
-                <p class="mb-0">{competitor?.description}</p>
+                <p class="mb-0" set:html={competitor?.description} />
             </Card>
         </div>
     </div>

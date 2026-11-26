@@ -100,8 +100,18 @@ export async function resolveTotalPluginsPlaceholder<T>(value: T): Promise<T> {
         : value;
 }
 
+const PLUGIN_COUNT_COMPONENT = "<PluginCount";
+
+function usesPluginCount(value: unknown): boolean {
+    return (
+        usesTotalPluginsPlaceholder(value) ||
+        (typeof value === "string" && value.includes(PLUGIN_COUNT_COMPONENT))
+    );
+}
+
 // Incremental-build cache scope for a page that renders authored copy: the live
-// count is one of its build-time inputs only when the copy uses the placeholder.
+// count is one of its build-time inputs only when the copy uses the placeholder
+// or the <PluginCount /> component (MDX, where the placeholder can't be used).
 export function pluginCountScope(totalPlugins: string, ...copy: unknown[]): string[] {
-    return copy.some((value) => usesTotalPluginsPlaceholder(value)) ? [`p${totalPlugins}`] : [];
+    return copy.some(usesPluginCount) ? [`p${totalPlugins}`] : [];
 }

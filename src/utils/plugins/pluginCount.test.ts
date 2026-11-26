@@ -316,6 +316,10 @@ describe("pluginCountScope", () => {
         expect(pluginCountScope("1,900", "No count here", faq)).toEqual(["p1,900"])
     })
 
+    it("keys an MDX page on the count when it renders the <PluginCount /> component", () => {
+        expect(pluginCountScope("1,900", "Thanks to <PluginCount /> plugins")).toEqual(["p1,900"])
+    })
+
     it("adds nothing when none of it does", () => {
         expect(pluginCountScope("1,900", "No count here", [{ answer: "none" }])).toEqual([])
         expect(pluginCountScope("1,900", undefined)).toEqual([])
