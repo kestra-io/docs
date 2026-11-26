@@ -1,5 +1,5 @@
 ---
-title: "Kestra 2.1: Let Claude Run Your Workflows Through the MCP Server, With Approvals Built In"
+title: "Kestra MCP Server: Let Any Coding Assistant Run Your Workflows, With Approvals Built In"
 description: "Kestra 2.1 adds the Kestra MCP Server and the Approval task. In this run, Claude Code starts a flow through the MCP server, a manager approves it in Slack, and Kestra creates, tests, and deletes a Proxmox sandbox."
 date: 2026-12-03T10:00:00
 category: Solutions
