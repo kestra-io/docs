@@ -9,6 +9,7 @@ interface Props {
         | "opensource"
         | "replace"
         | "cloud"
+        | "vm"
         | "cluster"
     // Draws the figure in its dark palette on this ground colour, whatever
     // the page's theme: for figures that sit on a dark tile.
@@ -36,6 +37,7 @@ const { name, dark } = Astro.props
     import replace from "./illustrations/replace.js"
     import cloud from "./illustrations/cloud.js"
     import cluster from "./illustrations/cluster.js"
+    import vm from "./illustrations/vm.js"
 
     const FIGURES = {
         deploy,
@@ -47,6 +49,7 @@ const { name, dark } = Astro.props
         replace,
         cloud,
         cluster,
+        vm,
     }
 
     function mountAll() {
