@@ -318,10 +318,18 @@ const WORKER_ICON = "mdi:account-cog-outline"
         for (const store of diagram.querySelectorAll('[data-anchor="queue"]')) {
             if (!store.getClientRects().length) continue
             const queue = rect(store, origin)
+            const inner = control.b - 2 * R
+            const top = Math.max(queue.t, control.t)
+            const y =
+                queue.cy <= inner
+                    ? queue.cy
+                    : queue.cy - 2 * R > control.b + 4 || top >= inner
+                      ? null
+                      : (top + inner) / 2
             add(
-                queue.cy - R > control.b + 4
+                y === null
                     ? `M${queue.l - 4} ${queue.cy} H${control.cx + R} Q${control.cx} ${queue.cy} ${control.cx} ${queue.cy - R} V${control.b + 4}`
-                    : `M${queue.l - 4} ${queue.cy} H${control.r + 4}`,
+                    : `M${queue.l - 4} ${y} H${control.r + 4}`,
                 "edge both",
             )
         }
