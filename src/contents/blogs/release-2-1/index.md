@@ -207,7 +207,13 @@ The Executions page has a new **Timeline** view next to the table. Each executio
 
 <div style="position: relative; padding-bottom: calc(56.4617% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/bQNIYqinlfOKXElhLDBw?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Explore Workflow Runs on the Timeline View" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-Each `Loop` iteration runs as its own execution, which used to mean opening them one by one to find the one that failed. The **Gantt** tab now shows how many iterations a Loop ran and how many failed. Expand it to see them in place, and step from one failure to the next without leaving the page. See [Loop iterations](/docs/ui/executions#loop-iterations).
+The execution topology is redesigned too. Each task node shows the task's type, its state, and its duration, with a bar scaled to the longest task so you can compare them at a glance. A flowable task such as `Parallel` is now drawn once, as a lane around its child tasks. Select the information icon on a node to open the task's metrics, logs, outputs, and artifacts in a popup, where you can also replay it, change its state, or interrupt it while it runs. In the flow editor, the **Topology** view now lets you add, edit, and delete tasks in place, with undo. See [Overview](/docs/ui/executions#overview).
+
+![The execution topology of a flow with a Parallel task drawn as a lane around two child tasks, each task node showing its type, an information icon, a duration bar, and a state and duration chip such as 4.02s](./execution-topology.png)
+
+Each `Loop` iteration runs as its own execution, which used to mean opening them one by one to find the one that failed. The **Gantt** tab now shows how many iterations a Loop ran and how many failed. Expand it to see them in place, and step from one failure to the next without leaving the page. You can also find the iteration that processed a given value, such as an order ID, by filtering on its item value. See [Loop iterations](/docs/ui/executions#loop-iterations).
+
+`Loop` also has a new `parseValues` property. When `values` is a list of JSON objects, it turns each one into a map, so `{{ item.value.id }}` works without `fromJson`. See [Read object fields with `parseValues`](/docs/workflow-components/tasks/flowable-tasks#read-object-fields-with-parsevalues).
 
 ![The Gantt tab with a Loop of eight iterations, two of them failed, one failed iteration expanded to its task runs, and the side panel open on the failed task with its error and buttons to move to the previous or next iteration](./gantt-loop-iterations.png)
 
@@ -340,6 +346,11 @@ The Plugins page now lists each plugin once, as a card or a table row. In the En
 - [Invitations](/docs/enterprise/auth/invitations) (EE): invite up to 25 people at once with the same groups and roles.
 - [HTTPS behind a reverse proxy](/docs/configuration/observability-and-networking#secure-cookies): HSTS and secure cookies now work when Kestra sits behind a proxy that handles HTTPS.
 - [`PurgeMetrics`](/docs/administrator-guide/purge#purge-metrics): clean up execution metrics on their own, much faster than with a full execution purge.
+- Interrupt a task run: stop one running task and set it to `FAILED` or `CANCELLED`, while the rest of the execution carries on.
+- [Change your password](/docs/administrator-guide/basic-auth-troubleshooting#change-password): open-source users can change their Basic Auth password from the user menu.
+- [Unit test revisions](/docs/enterprise/governance/unit-tests) (EE): every save of a unit test creates a revision that you can browse, restore, or delete, as with flows.
+- [`Pause` resume inputs](/docs/workflow-components/tasks/flowable-tasks#pause): the descriptions and defaults of `onResume` inputs can use expressions, such as an earlier task's output.
+- Logs chart: drag across the chart on the **Logs** page to show only the logs from that time range.
 
 The [2.1 changelog](/docs/releases/changelog/v2.1.0) lists every other improvement in this release.
 
@@ -354,8 +365,9 @@ Most flows need no changes when you upgrade from 2.0. A few things are worth a l
 - A namespace ID can no longer end with a dot or contain two dots in a row, such as `team.`. Move the flows of any such namespace before you upgrade.
 - In the Enterprise Edition, a task that reads another namespace's file by its `kestra://` URI now needs that namespace to allow it, if the namespace restricts Allowed Namespaces.
 - If you deploy the Enterprise Edition with Helm and use `workerGroups`, delete the worker group Deployments before `helm upgrade`, since each one gets its own pod selector.
+- In the Enterprise Edition, `GET /api/v1/{tenant}/auditlogs/history/{detailId}` is removed. Request a resource's audit log history with filters on its type, ID, and namespace instead.
 
-The [v2.1.0 migration guide](/docs/migration-guide/v2.1.0) walks through each of these, plus a few smaller changes to webhook responses, flow output types, queue configuration keys, server CLI commands, and the `assets()` function.
+The [v2.1.0 migration guide](/docs/migration-guide/v2.1.0) walks through each of these, plus a few smaller changes to webhook responses, flow output types, queue configuration keys, server CLI commands, the `assets()` function, and restarting an execution on another revision.
 
 ## Get Started
 
