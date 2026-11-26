@@ -310,7 +310,7 @@ Since 2.0, 60 new plugin repositories have been released, which brings the catal
 - [Alibaba Cloud](/plugins/plugin-alibaba).
 
 **Data**
-- Storage and streams: [Apache Iceberg](/plugins/plugin-iceberg), [Apache Hudi](/plugins/plugin-hudi), [ScyllaDB](/plugins/plugin-scylladb), [Quickwit](/plugins/plugin-quickwit), [Apache Iggy](/plugins/plugin-iggy), [S2](/plugins/plugin-s2), and [DataHub](/plugins/plugin-ee-datahub) (EE).
+- Storage and streams: [Apache Iceberg](/plugins/plugin-iceberg), [Apache Hudi](/plugins/plugin-hudi), [ScyllaDB](/plugins/plugin-scylladb), [Quickwit](/plugins/plugin-quickwit), [Apache Iggy](/plugins/plugin-iggy), [S2](/plugins/plugin-s2), and DataHub (EE).
 - Pipelines and documents: [Apache NiFi](/plugins/plugin-nifi) and [Apache PDFBox](/plugins/plugin-pdfbox) for PDF files.
 - BI and analytics: [Looker](/plugins/plugin-looker), [Apache Superset](/plugins/plugin-superset), [Metabase](/plugins/plugin-metabase), [GoodData](/plugins/plugin-gooddata), [Qlik Cloud](/plugins/plugin-qlikcloud), [Google Data Studio](/plugins/plugin-data-studio), and [PostHog](/plugins/plugin-posthog).
 
