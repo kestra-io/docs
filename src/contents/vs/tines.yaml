@@ -177,7 +177,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "HTTP Request actions become HTTP or plugin tasks, Condition actions become If or Switch tasks, Event Transformation in explode mode becomes a Loop, and Send to Story becomes a Subflow. Run Script code moves into a Python script task. Senders such as a SIEM are pointed at a Kestra webhook one story at a time."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Tines and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "Tines"
         brand: competitor

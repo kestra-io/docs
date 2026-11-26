@@ -181,7 +181,7 @@ compare:
           cron: "@daily"
 
 setup:
-  title: "What does it take to get running?"
+  title: "What does it take to get Astronomer and Kestra running?"
   lead: "Both start on a laptop with containers."
   competitor:
     title: "Astronomer"
@@ -208,7 +208,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "TaskFlow function bodies run in Python script tasks with their own dependencies, and values passed through XCom become task outputs. While DAGs move in waves, a Kestra flow can start the ones still on Astro through the Airflow REST API with a Deployment API token. The <a href='/resources/migration/airflow'>Airflow migration guide</a> covers the mapping and the cutover."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Astronomer and Kestra compare on licensing, pricing and self-hosting?"
     lead: "Astro is a commercial service on top of open-source Airflow. Kestra's core is open source, with paid Cloud and Enterprise editions."
     columns:
       - label: "Astronomer"

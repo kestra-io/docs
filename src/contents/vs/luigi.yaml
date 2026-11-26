@@ -172,7 +172,7 @@ compare:
           cron: "@daily"
 
 setup:
-  title: "What does it take to get running?"
+  title: "What does it take to get Luigi and Kestra running?"
   lead: "Luigi installs with pip. Kestra starts with Docker Compose."
   competitor:
     title: "Luigi"
@@ -199,7 +199,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "run() bodies become Python script tasks, requires() chains become task order, and DateParameter values come from the trigger date. Cron entries become Schedule triggers, and the gaps RangeDaily used to fill become backfills. Luigi's output-based skipping has no direct equivalent, so decide per pipeline whether a rerun overwrites its output or checks for it first."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Luigi and Kestra compare on licensing, pricing and self-hosting?"
     lead: "Both projects are open source under Apache 2.0 and run on your own machines."
     columns:
       - label: "Luigi"

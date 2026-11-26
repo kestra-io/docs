@@ -189,7 +189,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Job steps become SSH, shell, PowerShell or Ansible tasks, options become inputs, and conditional steps become If or Switch tasks. A PagerDuty webhook subscription can start a flow through a Webhook trigger, so incidents keep starting automation while jobs move one at a time."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do PagerDuty Process Automation and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "PagerDuty Process Automation"
         brand: competitor

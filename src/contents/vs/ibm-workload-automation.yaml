@@ -99,7 +99,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Scripts run unchanged in shell, Python or PowerShell tasks. Each job stream becomes a flow, each job a task, each run cycle a Schedule trigger, each follows dependency a task order or flow trigger, and each recovery option a retry policy or errors block. IBM Workload Automation keeps running until the last job stream moves."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do IBM Workload Automation and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "IBM Workload Automation"
         brand: competitor

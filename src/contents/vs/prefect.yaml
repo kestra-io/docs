@@ -185,7 +185,7 @@ compare:
           cron: "0 7 * * *"
 
 setup:
-  title: "What does it take to get running?"
+  title: "What does it take to get Prefect and Kestra running?"
   lead: "Both projects publish a Docker image for a first local run."
   competitor:
     title: "Prefect"
@@ -212,7 +212,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Each task body runs in a Python script task, or is replaced by a plugin task when one exists. Retries move to the task's retry block, blocks to secrets, deployments and schedules to triggers, and on_failure hooks to the errors block. Prefect and Kestra can run in parallel during the move."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Prefect and Kestra compare on licensing, pricing and self-hosting?"
     lead: "Both projects are open source under Apache 2.0, and both can run on your own servers."
     columns:
       - label: "Prefect"

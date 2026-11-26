@@ -184,7 +184,7 @@ compare:
             - ansible-playbook -i inventory.ini rollback.yml
 
 setup:
-  title: "What does it take to get running?"
+  title: "What does it take to get Ansible Automation Platform and Kestra running?"
   lead: "Both run on your own infrastructure. Ansible Automation Platform installs on RHEL with Red Hat's installer, and Kestra starts from one Compose file."
   competitor:
     title: "Ansible Automation Platform"
@@ -211,7 +211,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Each job template becomes an Ansible task, each survey becomes flow inputs, each workflow graph becomes a flow with an errors block, and each schedule becomes a trigger. While templates move in waves, a Kestra HTTP task can launch an existing job template through the controller's REST API."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Ansible Automation Platform and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "Ansible Automation Platform"
         brand: competitor

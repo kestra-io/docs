@@ -95,7 +95,7 @@ architecture:
       - "Every save creates a revision you can diff and roll back"
 
 setup:
-  title: "What does it take to get running?"
+  title: "What does it take to get Camunda and Kestra running?"
   lead: "Both projects ship a Docker Compose file for a first run."
   competitor:
     title: "Camunda"
@@ -123,7 +123,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Service tasks that call an API, a database or a script become plugin or script tasks, and the business logic in worker code moves into a script task. User tasks become Pause tasks with inputs. During the move, Kestra's Camunda trigger acts as a job worker, so a flow can implement a service task in a process that still runs on Camunda."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Camunda and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "Camunda"
         brand: competitor

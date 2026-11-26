@@ -179,7 +179,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Each Task state becomes a plugin task or a script task, Choice becomes If or Switch, Map becomes Loop, and Retry and Catch become a retry policy and an errors block. Lambda code can move into script tasks, or stay in Lambda and be called with the Lambda Invoke task. State machines keep running until their replacement flows are live."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do AWS Step Functions and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "AWS Step Functions"
         brand: competitor

@@ -200,7 +200,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Each vRO workflow becomes a flow, actions become subflows or tasks, configuration elements become KV Store entries and SecureStrings become secrets. Blueprints that differ only in size or region fold into one flow with inputs. The <a href='/resources/migration/vra'>migration guide</a> plans the move in four stages, with vRA running until each wave is verified."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do VMware Aria Automation and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "VMware Aria Automation"
         brand: competitor

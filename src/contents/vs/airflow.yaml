@@ -182,7 +182,7 @@ compare:
           cron: "0 6 * * *"
 
 setup:
-  title: "What does it take to get running?"
+  title: "What does it take to get Airflow and Kestra running?"
   lead: "Both projects ship a Docker Compose file for a first run."
   competitor:
     title: "Airflow"
@@ -211,7 +211,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Python, SQL, dbt and shell code moves into script tasks unchanged. You rewrite the DAG wiring: each operator becomes a task, each schedule a trigger and each XCom an output. Airflow keeps running until the last DAG moves, and the <a href='/resources/migration/airflow'>migration guide</a> maps every concept."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Airflow and Kestra compare on licensing, pricing and self-hosting?"
     lead: "Both projects are open source under Apache 2.0, and both run on your own infrastructure."
     columns:
       - label: "Airflow"

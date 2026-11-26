@@ -185,7 +185,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Each call step becomes an HTTP, Cloud Run or plugin task, connectors such as BigQuery map to Kestra's GCP plugins, and try, retry and except become task retries and an errors block. Code from small single-purpose functions can move into script tasks, and services other systems depend on stay where they are."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Google Workflows and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "Google Workflows"
         brand: competitor

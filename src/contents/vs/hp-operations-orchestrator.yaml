@@ -179,7 +179,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "SSH, HTTP, email and PowerShell operations map to Kestra plugin tasks, Python inside operations moves into script tasks, and on_failure becomes an errors block. OO keeps running flows until their replacements are live, and a Kestra HTTP task can call OO Central's REST API in the meantime."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do HP Operations Orchestration and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "HP Operations Orchestration"
         brand: competitor

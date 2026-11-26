@@ -179,7 +179,7 @@ compare:
             maxAttempts: 2
 
 setup:
-  title: "What does it take to get running?"
+  title: "What does it take to get HPE Morpheus and Kestra running?"
   lead: "Both run on your own servers. Morpheus installs as an appliance package, and Kestra starts from one Compose file."
   competitor:
     title: "HPE Morpheus"
@@ -206,7 +206,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Each operational workflow becomes a flow, each task becomes a script, Ansible or HTTP task, and task results become outputs. Scheduled jobs become Schedule triggers. Morpheus can keep provisioning while Kestra runs the steps around it, with an HTTP task calling the Morpheus API."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do HPE Morpheus and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "HPE Morpheus"
         brand: competitor

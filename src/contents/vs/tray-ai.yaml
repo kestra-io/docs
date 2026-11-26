@@ -104,7 +104,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Each trigger becomes a Kestra trigger, each connector step a plugin task or an HTTP request, and each script step a script task in the same language. Data storage values move to the KV Store. Projects move one at a time while Tray runs the rest."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Tray.ai and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "Tray.ai"
         brand: competitor

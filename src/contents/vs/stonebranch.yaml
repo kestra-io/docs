@@ -102,7 +102,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Scripts run unchanged in shell, Python or PowerShell tasks. Each workflow becomes a flow, each task a Kestra task, each cron or time trigger a Schedule trigger and each file monitor a file trigger. Stonebranch keeps running until the last workflow moves."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Stonebranch and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "Stonebranch"
         brand: competitor

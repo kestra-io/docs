@@ -104,7 +104,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "REST and SOAP steps become HTTP tasks, SQL, SSH and SFTP steps become plugin tasks, Conditional Branch and Loop become If and Loop tasks, and Trigger Process becomes a Subflow. Await steps become a Pause task, and Fallout Tickets become an errors block or Cases (Kestra Enterprise)."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do SimplyAsk and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "SimplyAsk"
         brand: competitor

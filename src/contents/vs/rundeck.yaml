@@ -180,7 +180,7 @@ compare:
           subject: "restart_web_service failed: {{ execution.id }}"
 
 setup:
-  title: "What does it take to get running?"
+  title: "What does it take to get Rundeck and Kestra running?"
   lead: "Both projects start from a Docker image for a first run."
   competitor:
     title: "Rundeck"
@@ -206,7 +206,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Command and script steps become shell, SSH or PowerShell tasks, options become inputs, job references become subflows and Ansible steps become Ansible tasks. While jobs move in waves, a Kestra HTTP task can start an existing job through Rundeck's API."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Rundeck and Kestra compare on licensing, pricing and self-hosting?"
     lead: "Both projects have an Apache 2.0 open-source edition you can run on your own infrastructure."
     columns:
       - label: "Rundeck"

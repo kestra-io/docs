@@ -181,7 +181,7 @@ compare:
             maxAttempts: 3
 
 setup:
-  title: "What does it take to get running?"
+  title: "What does it take to get Temporal and Kestra running?"
   lead: "Both start locally with a couple of commands. Production is where they differ."
   competitor:
     title: "Temporal"
@@ -207,7 +207,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Each activity becomes a script or HTTP task, each signal wait a Pause task, each timer a pause duration, and each Temporal schedule a trigger. Application workflows that depend on replay can stay on Temporal and be started from a Kestra flow."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Temporal and Kestra compare on licensing, pricing and self-hosting?"
     lead: "Both are open source and free to self-host, under MIT and Apache 2.0."
     columns:
       - label: "Temporal"

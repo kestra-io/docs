@@ -178,7 +178,7 @@ compare:
           messageText: "Order sync failed: {{ execution.id }}"
 
 setup:
-  title: "What does it take to get running?"
+  title: "What does it take to get n8n and Kestra running?"
   lead: "Both projects start from a Docker Compose setup for a first run."
   competitor:
     title: "n8n"
@@ -203,7 +203,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Trigger nodes become Kestra triggers, HTTP Request nodes become HTTP tasks, app nodes become plugin tasks and Code nodes become Node.js or Python script tasks. While workflows move in waves, a Kestra HTTP task can call an n8n webhook, so both run side by side."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do n8n and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "n8n"
         brand: competitor

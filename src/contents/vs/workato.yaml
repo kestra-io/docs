@@ -101,7 +101,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Each trigger becomes a Kestra trigger, each connector action a plugin task or an HTTP request, and each Handle errors block a retry policy with an errors block. Python steps move into script tasks with their libraries. Recipes move one at a time while Workato keeps running the rest."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Workato and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "Workato"
         brand: competitor

@@ -99,7 +99,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Scripts move into shell, Python or PowerShell tasks. Each chain becomes a flow, each step a task and each schedule a trigger. During the move, the RunMyJobs task (Kestra Enterprise) submits existing process definitions from a flow and can wait for them to finish, so SAP chains can stay in RunMyJobs while the rest moves."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Redwood RunMyJobs and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "Redwood RunMyJobs"
         brand: competitor

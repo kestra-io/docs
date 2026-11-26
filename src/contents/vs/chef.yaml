@@ -183,7 +183,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Shell and PowerShell steps run unchanged in script or SSH tasks, node lists become flow inputs or a CMDB lookup, and InSpec runs in a script task. A flow can also run chef-client --once on a node over SSH, so cookbooks keep converging while the steps around them move."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Chef and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "Chef"
         brand: competitor

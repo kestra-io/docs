@@ -158,7 +158,7 @@ compare:
           message: "{{ inputs.service }} restarted on all hosts"
 
 setup:
-  title: "What does it take to get running?"
+  title: "What does it take to get Puppet and Kestra running?"
   lead: "Both run on your own servers. Puppet Enterprise installs from a tarball, and Kestra starts from one Compose file."
   competitor:
     title: "Puppet Enterprise"
@@ -186,7 +186,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Bolt commands and scripts become shell, SSH or PowerShell tasks, plan parameters become inputs, and loops over targets become Loop tasks. A flow can also start an agent run on a node over SSH with puppet agent -t, so Puppet keeps enforcing state while the workflow around it moves."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Puppet and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "Puppet"
         brand: competitor

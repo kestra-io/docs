@@ -180,7 +180,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Each task's statement runs unchanged in a Snowflake Query task. The root schedule becomes a Schedule trigger, AFTER becomes task order, a finalizer becomes a finally or afterExecution block, and a stream condition becomes a Snowflake trigger that polls a query. Suspend each root task once its flow is live."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Snowflake Tasks and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "Snowflake Tasks"
         brand: competitor

@@ -97,7 +97,7 @@ architecture:
       - "Every save creates a revision you can diff and roll back"
 
 setup:
-  title: "What does it take to get running?"
+  title: "What does it take to get Apache NiFi and Kestra running?"
   lead: "Both projects publish a Docker image for a first run."
   competitor:
     title: "Apache NiFi"
@@ -127,7 +127,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Batch and event-driven work moves first. A scheduled fetch, a file pickup or a database load becomes a flow with a trigger and plugin tasks. Kestra's NiFi tasks start, stop and check process groups, so NiFi can keep the streaming parts while Kestra runs the jobs around them."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Apache NiFi and Kestra compare on licensing, pricing and self-hosting?"
     lead: "Both projects are open source under Apache 2.0, and both run on your own infrastructure."
     columns:
       - label: "Apache NiFi"

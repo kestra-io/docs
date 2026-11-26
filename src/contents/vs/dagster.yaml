@@ -176,7 +176,7 @@ compare:
           cron: "0 6 * * *"
 
 setup:
-  title: "What does it take to get running?"
+  title: "What does it take to get Dagster and Kestra running?"
   lead: "Both run on a laptop after a few commands."
   competitor:
     title: "Dagster"
@@ -204,7 +204,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Python, SQL and dbt code runs in script tasks unchanged. Each asset becomes a task, each schedule or sensor a trigger, and each dependency a position in the flow. Dagster keeps running while flows move over one at a time."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Dagster and Kestra compare on licensing, pricing and self-hosting?"
     lead: "Both are Apache 2.0 projects you can run on your own servers."
     columns:
       - label: "Dagster"

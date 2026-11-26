@@ -184,7 +184,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "BigQuery, Cloud Storage, Pub/Sub and Dataproc calls become tasks from Kestra's GCP plugin, and Python callables run in script tasks. While DAGs move in waves, a Kestra flow can start the ones still on Composer through the Airflow REST API. The <a href='/resources/migration/airflow'>Airflow migration guide</a> lists what maps one to one and what needs a decision."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Cloud Composer and Kestra compare on licensing, pricing and self-hosting?"
     lead: "Composer is a Google Cloud service metered on provisioned resources. Kestra's open-source edition costs nothing to run on your own infrastructure."
     columns:
       - label: "Cloud Composer"

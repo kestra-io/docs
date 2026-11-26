@@ -190,7 +190,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Glue, Athena, S3 and Lambda calls become tasks from the Kestra AWS plugin, and Python callables run in script tasks. During the move, a Kestra flow can start the DAGs still on MWAA through the Airflow REST API. The <a href='/resources/migration/airflow'>Airflow migration guide</a> maps each Airflow concept to its Kestra equivalent."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Amazon MWAA and Kestra compare on licensing, pricing and self-hosting?"
     lead: "MWAA is an AWS service billed by the hour. Kestra is open source and runs wherever you deploy it."
     columns:
       - label: "Amazon MWAA"

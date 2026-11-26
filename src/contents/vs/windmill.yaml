@@ -165,7 +165,7 @@ compare:
           key: "{{ secret('SIGNUP_WEBHOOK_KEY') }}"
 
 setup:
-  title: "What does it take to get running?"
+  title: "What does it take to get Windmill and Kestra running?"
   lead: "Both ship a Docker Compose file that includes the database."
   competitor:
     title: "Windmill"
@@ -193,7 +193,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Each script becomes a script task in the same language, or a plugin task where one covers the call. Step results become outputs, failure modules an errors block, and schedules and webhooks triggers in the flow file. Windmill's webhooks let both run in parallel until each flow is switched over."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Windmill and Kestra compare on licensing, pricing and self-hosting?"
     lead: "Both are free to self-host, under different licenses."
     columns:
       - label: "Windmill"

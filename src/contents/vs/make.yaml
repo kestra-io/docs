@@ -105,7 +105,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Trigger modules become Kestra triggers, app modules become plugin tasks or HTTP requests, routers become If or Switch tasks and iterators become Loop tasks. Data stores become KV Store entries. While scenarios move, a Kestra HTTP task can call a scenario's webhook, so both run side by side."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Make and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "Make"
         brand: competitor

@@ -195,7 +195,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Notebook, pipeline and Spark job activities become Fabric tasks that keep the same IDs. Dependency conditions become task order and errors blocks, and schedules become triggers. A flow can also run an existing Fabric pipeline with the RunPipeline task, so pipelines move one at a time."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Microsoft Fabric and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "Microsoft Fabric"
         brand: competitor

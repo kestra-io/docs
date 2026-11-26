@@ -188,7 +188,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Scripts and commands run unchanged in shell, Python or PowerShell tasks. Each folder becomes a flow, each Flow sequence a task order, each When rule a Schedule trigger and each If action an errors block or a task. Control-M keeps running until the last folder moves."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Control-M and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "Control-M"
         brand: competitor

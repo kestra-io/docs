@@ -172,7 +172,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "Each notebook or Python task becomes a Databricks SubmitRun task, SQL tasks become Databricks SQL queries, and a job you want to keep whole runs through a Run Job setting. Steps that need no Spark, such as API calls or file transfers, move to Kestra tasks on your own workers."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Databricks Workflows and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "Databricks Workflows"
         brand: competitor

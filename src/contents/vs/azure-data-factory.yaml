@@ -191,7 +191,7 @@ pairs:
       - label: "Moving to Kestra"
         brand: kestra
         text: "A Copy activity becomes a query or download task followed by an upload, a stored procedure becomes a SQL task, and dependency conditions become task order and an errors block. Pipeline parameters become flow inputs. While you migrate, a flow can start existing ADF pipelines with the Data Factory CreateRun task."
-  - title: "What do licensing, pricing and self-hosting look like?"
+  - title: "How do Azure Data Factory and Kestra compare on licensing, pricing and self-hosting?"
     columns:
       - label: "Azure Data Factory"
         brand: competitor
