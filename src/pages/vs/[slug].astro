@@ -39,6 +39,8 @@ const {
     title,
     description,
     competitorName,
+    brandColor,
+    shortDescription,
     intro,
     commonQuestions,
     secondaryCta,
@@ -86,8 +88,10 @@ const alternatives = alternativesEntry
 <VsLayout {title} {description} {commonQuestions}>
     <Intro
         {...intro}
+        claim={shortDescription}
         competitor={{
             name: competitorName,
+            color: brandColor.color,
             monogram: competitorMonogram,
         }}
         secondaryCta={secondaryCta}

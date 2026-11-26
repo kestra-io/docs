@@ -19,7 +19,7 @@ interface Props {
 const { commonQuestions = [], ...layoutProps } = Astro.props
 ---
 
-<Layout {...layoutProps}>
+<Layout {...layoutProps} headerClean headerClear headerOverDark>
     <SchemaFAQ items={commonQuestions} slot="head" />
     <slot />
 </Layout>
