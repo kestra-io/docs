@@ -401,6 +401,43 @@
         }
     }
 
+    // Stats (`:::stats` directive): a row of headline numbers
+    .doc-stats {
+        margin: 1.5rem 0;
+        padding: 1.25rem 1rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 0.5rem;
+        background-color: var(--ks-background-secondary);
+
+        ul {
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: 1fr;
+            gap: 1rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        li {
+            margin: 0;
+            text-align: center;
+            color: var(--ks-content-secondary);
+
+            &::before {
+                content: none;
+            }
+        }
+
+        strong {
+            display: block;
+            font-size: clamp(1.75rem, 6vw, 2.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--ks-content-color-highlight);
+        }
+    }
+
     // Collapse
     .doc-collapse {
         summary {

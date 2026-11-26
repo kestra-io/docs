@@ -26,7 +26,15 @@ Kestra 2.1 is about who gets to act on your flows, and how you keep control when
 
 In 2.1, additionally, you can see the SQL, tables, and sync stats behind a data task, find an execution by the order ID it processed, and pick up a long script where it left off after a failure.
 
-This release also follows Kestra Hacktober, and our community made October a month to remember. 471 people made their first contribution to Kestra, and together you got 3,091 pull requests merged, including nearly 500 new plugin tasks. Thank you to everyone who spent their free time with us; we're proud to build Kestra alongside you. Here are the highlights, with the edition each one is in.
+This release also follows Kestra Hacktober, and our community made October a month to remember.
+
+:::stats
+- **471** first-time contributors
+- **3,091** pull requests merged
+- **~500** new plugin tasks
+:::
+
+Thank you to everyone who spent their free time with us; we're proud to build Kestra alongside you. Here are the highlights, with the edition each one is in.
 
 
 | Feature | What it does | Edition |
