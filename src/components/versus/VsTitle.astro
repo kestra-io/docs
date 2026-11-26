@@ -1,0 +1,37 @@
+---
+interface Props {
+    text: string
+}
+
+const { text } = Astro.props
+
+const SPLITS = [
+    /^(What does the same .+?) (look like in each\?)$/,
+    /^(What does it take) (to get running\?)$/,
+    /^(How do .+ and Kestra compare,) (feature by feature\?)$/,
+    /^(How hard is it to move) (from .+ to Kestra\?)$/,
+    /^(What do licensing, pricing) (and self-hosting look like\?)$/,
+    /^(Questions) (from .+ teams)$/,
+]
+
+const match = SPLITS.map((pattern) => text.match(pattern)).find(Boolean)
+---
+
+{match ? (
+    <>
+        {match[1]} <span class="tone">{match[2]}</span>
+    </>
+) : (
+    text
+)}
+
+<style lang="scss">
+    .tone {
+        display: block;
+        color: var(--ks-content-tertiary);
+
+        :global(.surface-dark) & {
+            color: rgba(255, 255, 255, 0.5);
+        }
+    }
+</style>

@@ -1,7 +1,9 @@
 ---
+import VsTitle from "./VsTitle.astro"
 interface Column {
     label: string
     logo?: string
+    brand?: "competitor" | "kestra"
     text: string
 }
 
@@ -20,12 +22,19 @@ const { headingId, title, lead, columns, tone = "default" } = Astro.props
     <div class="container-xl">
         <div class="rails">
             <header class="head">
-                <h2 id={headingId}>{title}</h2>
+                <h2 id={headingId}>
+                    <VsTitle text={title} />
+                </h2>
                 {lead && <p set:html={lead} />}
             </header>
             <div class="pair-cols">
                 {columns.map((column) => (
-                    <div class="pair-col">
+                    <div
+                        class:list={[
+                            "pair-col",
+                            { kestra: column.brand === "kestra" },
+                        ]}
+                    >
                         <h3>
                             {column.logo && (
                                 <span
@@ -63,11 +72,19 @@ const { headingId, title, lead, columns, tone = "default" } = Astro.props
 
     .head {
         @include head;
+        padding-top: 5rem;
+
+        @include media-breakpoint-down(md) {
+            padding-top: 3.5rem;
+        }
     }
 
     .pair-cols {
+        position: relative;
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+        padding: var(--inset);
         border-top: var(--rule);
 
         @include media-breakpoint-down(md) {
@@ -79,15 +96,16 @@ const { headingId, title, lead, columns, tone = "default" } = Astro.props
         display: grid;
         align-content: start;
         gap: 0.75rem;
-        padding: 2rem var(--inset) 2.5rem;
+        padding: 2rem 2rem 2.5rem;
+        border-radius: 8px;
+        background: var(--ks-background-secondary);
 
-        & + & {
-            border-left: var(--rule);
+        &.kestra {
+            background: var(--ks-background-purple-light);
+        }
 
-            @include media-breakpoint-down(md) {
-                border-left: 0;
-                border-top: var(--rule);
-            }
+        @include media-breakpoint-down(md) {
+            padding: 1.5rem 1.25rem 1.75rem;
         }
 
         h3 {
@@ -95,15 +113,14 @@ const { headingId, title, lead, columns, tone = "default" } = Astro.props
             align-items: center;
             gap: 0.5rem;
             margin: 0;
-            font-size: 1.125rem;
+            font-size: $font-size-xl;
             font-weight: 600;
             color: var(--ks-content-primary);
         }
 
         p {
-            max-width: 34rem;
             margin: 0;
-            font-size: 1rem;
+            font-size: 1.0625rem;
             line-height: 1.6;
             color: var(--ks-content-secondary);
 

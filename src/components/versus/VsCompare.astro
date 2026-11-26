@@ -1,4 +1,5 @@
 ---
+import VsTitle from "./VsTitle.astro"
 import { Icon } from "astro-icon/components"
 import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
 import { parse } from "yaml"
@@ -54,7 +55,9 @@ const id = (parse(flow) as { id?: string }).id ?? ""
     <div class="container-xl">
         <div class="rails">
             <header class="head">
-                <h2 id={headingId}>{title}</h2>
+                <h2 id={headingId}>
+                    <VsTitle text={title} />
+                </h2>
                 <p>{lead}</p>
                 {cta && (
                     <a href={cta.href} class="btn-solid">
@@ -94,9 +97,6 @@ const id = (parse(flow) as { id?: string }).id ?? ""
                         <span class="slash">/</span>
                         <strong>{id}</strong>
                     </figcaption>
-                    <div class="ks-ptab">
-                        <Icon name="mdi:code-tags" /> Flow Code
-                    </div>
                     <pre class="ks-code">{ourLines.map((line, i) => (
                         <span class="ln"><i>{i + 1}</i><Fragment set:html={line.html} /></span>
                     ))}</pre>
@@ -119,6 +119,21 @@ const id = (parse(flow) as { id?: string }).id ?? ""
 
     .head {
         @include head;
+
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: minmax(0, 1fr) auto;
+            column-gap: 3rem;
+
+            > :not(.btn-solid) {
+                grid-column: 1;
+            }
+
+            .btn-solid {
+                grid-column: 2;
+                grid-row: 1 / span 2;
+                align-self: end;
+            }
+        }
     }
 
     .stage {
@@ -306,17 +321,6 @@ const id = (parse(flow) as { id?: string }).id ?? ""
         padding: 0.25rem;
         border-radius: 6px;
         background: #0d0d10;
-    }
-
-    .ks-ptab {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.375rem;
-        margin: 0.75rem 0.75rem 0;
-        padding: 0.3125rem 0.625rem;
-        border-radius: 6px;
-        background: #26262f;
-        color: #ffffff;
     }
 
     .ks-code {

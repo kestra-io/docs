@@ -21,9 +21,10 @@ const { comparisons, alternatives } = Astro.props
             <header class="head">
                 <h2 id="vs-related-title">Compare Kestra with similar tools</h2>
                 {alternatives && (
-                    <p>
-                        <a href={alternatives.href}>{alternatives.label}</a>
-                    </p>
+                    <a href={alternatives.href} class="btn-ghost">
+                        {alternatives.label}
+                        <Icon name="mdi:arrow-right" />
+                    </a>
                 )}
             </header>
             <ul class="links">
@@ -60,17 +61,25 @@ const { comparisons, alternatives } = Astro.props
 
     .head {
         @include head;
+        padding-top: 5rem;
 
-        p a {
-            color: var(--ks-content-link);
+        @include media-breakpoint-down(md) {
+            padding-top: 3.5rem;
+        }
+
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: end;
+            column-gap: 3rem;
         }
     }
 
     .links {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
         margin: 0;
-        padding: 0;
+        padding: var(--inset);
         border-top: var(--rule);
         list-style: none;
 
@@ -82,26 +91,32 @@ const { comparisons, alternatives } = Astro.props
             grid-template-columns: minmax(0, 1fr);
         }
 
-        li + li {
-            border-left: var(--rule);
-
-            @include media-breakpoint-down(sm) {
-                border-left: 0;
-                border-top: var(--rule);
-            }
-        }
-
         a {
-            display: flex;
-            align-items: center;
-            gap: 0.625rem;
-            padding: 1.5rem var(--inset);
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: end;
+            gap: 2rem 0.75rem;
+            height: 100%;
+            padding: 1.5rem;
+            border-radius: 8px;
+            background: var(--ks-background-secondary);
+            font-size: 1.0625rem;
             font-weight: 600;
             color: var(--ks-content-primary);
             text-decoration: none;
+            transition: background-color 0.2s ease;
 
-            &:hover .arrow {
-                transform: translateX(0.25rem);
+            &:hover {
+                background: color-mix(
+                    in srgb,
+                    var(--ks-content-primary) 6%,
+                    var(--ks-background-secondary)
+                );
+
+                .arrow {
+                    transform: translateX(0.25rem);
+                    color: var(--ks-content-primary);
+                }
             }
         }
     }
@@ -109,8 +124,9 @@ const { comparisons, alternatives } = Astro.props
     .brand-icon {
         display: inline-flex;
         flex-shrink: 0;
-        width: 1.25rem;
-        height: 1.25rem;
+        grid-column: 1 / -1;
+        width: 2rem;
+        height: 2rem;
 
         :global(svg) {
             width: 100%;

@@ -1,4 +1,5 @@
 ---
+import VsTitle from "./VsTitle.astro"
 import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
 import { source } from "~/components/migration/highlight"
 
@@ -36,7 +37,9 @@ const lines = (code: string) =>
     <div class="container-xl">
         <div class="rails">
             <header class="head">
-                <h2 id={headingId}>{title}</h2>
+                <h2 id={headingId}>
+                    <VsTitle text={title} />
+                </h2>
                 {lead && <p>{lead}</p>}
             </header>
             <div class="stage">
@@ -181,7 +184,18 @@ const lines = (code: string) =>
         margin: 0;
 
         :global(a) {
-            color: var(--ks-content-link);
+            color: #ffffff;
+            text-decoration: underline;
+            text-decoration-color: rgba(255, 255, 255, 0.35);
+            text-underline-offset: 0.2em;
+            transition:
+                color 0.2s ease,
+                text-decoration-color 0.2s ease;
+
+            &:hover {
+                color: #cdb6fb;
+                text-decoration-color: #cdb6fb;
+            }
         }
 
         padding: 0.875rem 1rem 1rem;

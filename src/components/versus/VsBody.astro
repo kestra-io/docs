@@ -13,6 +13,7 @@ import VsCompare from "./VsCompare.astro"
 import VsSetup from "./VsSetup.astro"
 import VsPair from "./VsPair.astro"
 import VsRelated from "./VsRelated.astro"
+import VsTitle from "./VsTitle.astro"
 import kestraMonogram from "./assets/ks-icon.svg?raw"
 
 interface Pair {
@@ -170,6 +171,7 @@ const pairColumns = (pair: Pair) =>
     pair.columns.map((column) => ({
         label: column.label,
         logo: brandLogo(column.brand),
+        brand: column.brand,
         text: column.text,
     }))
 const slug = (text: string) =>
@@ -203,7 +205,9 @@ const groups = [
             {columns}
             widths={["20%", "40%"]}
             {groups}
-        />
+        >
+            <VsTitle slot="title" text={table.title} />
+        </MigrationTable>
         {stories.length > 0 && (
             <Customers stories={stories} foot={false} placeholder={false}>
                 <Fragment slot="title">{proof?.title}</Fragment>
@@ -279,7 +283,9 @@ const groups = [
         <BuyerQuestions
             title={faqTitle ?? `Questions about ${competitorName} and Kestra`}
             items={faq}
-        />
+        >
+            {faqTitle && <VsTitle slot="title" text={faqTitle} />}
+        </BuyerQuestions>
         {related && related.comparisons.length > 0 && (
             <VsRelated
                 comparisons={related.comparisons}
