@@ -626,6 +626,14 @@ const migrationSteps = [
 <script>
     import "../../scripts/lp-infra-tracking.ts"
 
+    if (document.documentElement.dataset.lpVariant === "awx") {
+        document
+            .querySelectorAll<HTMLAnchorElement>('a[href="#contact-sales"]')
+            .forEach((link) =>
+                link.setAttribute("href", "#job-template-session"),
+            )
+    }
+
     /* Copy buttons of the G_AWX runnable section. */
     document
         .querySelectorAll<HTMLButtonElement>("[data-copy]")
