@@ -135,6 +135,25 @@
                                     "
                                 >
                                     <div
+                                        v-if="result.section"
+                                        class="all-section"
+                                    >
+                                        {{ result.section.label }}
+                                        <span
+                                            >({{
+                                                tabCount(result.section.type)
+                                            }})</span
+                                        >
+                                        <button
+                                            type="button"
+                                            @click="
+                                                selectFacet(result.section.type)
+                                            "
+                                        >
+                                            See all →
+                                        </button>
+                                    </div>
+                                    <div
                                         v-if="result.doc?.groupStart"
                                         class="doc-group"
                                     >
@@ -723,6 +742,7 @@
     import { $fetchApi } from "~/utils/fetch"
     import { prepareSearchResults } from "~/utils/searchResults"
     import { markRaw } from "vue"
+    import { allSections } from "~/utils/search/all"
     import { blogsSearchResults, loadBlogsIndex } from "~/utils/search/blogs"
     import {
         blueprintsSearchResults,
@@ -740,11 +760,13 @@
     // Tabs searched in the browser, from indexes the popup loads when it opens.
     const LOCAL_TABS = {
         PLUGINS: {
+            label: "Plugins",
             load: loadPluginsIndex,
             search: (indexes, query) =>
                 pluginsSearchResults(indexes.PLUGINS, query),
         },
         BLUEPRINTS: {
+            label: "Blueprints",
             load: loadBlueprintsIndex,
             search: (indexes, query) =>
                 blueprintsSearchResults(
@@ -754,11 +776,13 @@
                 ),
         },
         DOCS: {
+            label: "Docs",
             load: loadDocsIndex,
             search: (indexes, query, urls) =>
                 docsSearchResults(indexes.DOCS, query, urls),
         },
         BLOGS: {
+            label: "Blog posts",
             load: loadBlogsIndex,
             search: (indexes, query, urls) =>
                 blogsSearchResults(indexes.BLOGS, query, urls),
@@ -963,9 +987,11 @@
                         posthog.capture("search", {
                             text: value,
                             type: this.selectedFacet,
-                            resultsCount: this.usesLocalResults()
-                                ? this.tabCount(this.selectedFacet)
-                                : response?.results?.length || 0,
+                            resultsCount: !this.usesLocalResults()
+                                ? response?.results?.length || 0
+                                : this.selectedFacet
+                                  ? this.tabCount(this.selectedFacet)
+                                  : this.allSum,
                         })
                     })
                     .catch(() => {
@@ -986,7 +1012,11 @@
                 )
             },
             usesLocalResults(type = this.selectedFacet) {
-                if (type === undefined) return false
+                if (type === undefined) {
+                    return Object.keys(LOCAL_TABS).every((key) =>
+                        this.usesLocalResults(key),
+                    )
+                }
                 // Archived docs pages search their own version, which only the server indexes.
                 if (type === "DOCS" && this.onArchivedDocs()) return false
                 return type in this.indexes
@@ -1009,7 +1039,11 @@
                 }
             },
             waitsForLocalResults(type = this.selectedFacet) {
-                if (type === undefined) return false
+                if (type === undefined) {
+                    return Object.keys(LOCAL_TABS).some((key) =>
+                        this.waitsForLocalResults(key),
+                    )
+                }
                 if (!(type in LOCAL_TABS)) return false
                 if (type === "DOCS" && this.onArchivedDocs()) return false
                 return (
@@ -1031,7 +1065,16 @@
                     return
                 }
 
-                this.showResults(localResults[this.selectedFacet].results, keepSelection)
+                const results = this.selectedFacet
+                    ? localResults[this.selectedFacet].results
+                    : allSections(
+                          Object.entries(LOCAL_TABS).map(([type, tab]) => ({
+                              type,
+                              label: tab.label,
+                              results: localResults[type].results,
+                          })),
+                      )
+                this.showResults(results, keepSelection)
             },
             showResults(results, keepSelection = false) {
                 const kept = keepSelection
@@ -1148,6 +1191,7 @@
 
                 if (
                     e.key === "Enter" &&
+                    e.target?.id === "search-input" &&
                     this.searchResults &&
                     this.searchResults[this.selectedIndex]
                 ) {
@@ -1493,6 +1537,36 @@
             padding: 0.1rem 0.5rem;
             font-weight: 600;
             white-space: nowrap;
+        }
+        .all-section {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1rem;
+            font-size: $font-size-xs;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--ks-content-primary);
+            background: var(--ks-background-secondary);
+            border-bottom: 1px solid var(--ks-border-primary);
+
+            span {
+                font-weight: 500;
+                color: var(--ks-content-secondary);
+            }
+
+            button {
+                margin-left: auto;
+                padding: 0;
+                border: 0;
+                background: none;
+                font-size: $font-size-xs;
+                font-weight: 600;
+                letter-spacing: 0;
+                text-transform: none;
+                color: var(--ks-content-link);
+            }
         }
         .doc-group {
             display: flex;
