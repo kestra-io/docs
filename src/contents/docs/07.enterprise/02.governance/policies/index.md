@@ -458,7 +458,7 @@ The flow editor helps you attach, create, and edit reference policies without le
 
 **Create a reference from a task.** The completion list on a task ends with **Create a policy reference for `<task>`…**. A **Move credentials to a policy reference** action also appears above any task that holds a plain-text credential, detected through the plugin schema's secret properties or the property name (`password`, `token`, `apiKey`, and similar). Both open a dialog prefilled from the task:
 
-- **Id** and **Namespace**: the policy id is suggested from the plugin, and the namespace is the flow's namespace or one of its parents.
+- **Id** and **Namespace**: the policy id is suggested from the plugin, and the namespace is the flow's namespace or one of its parents. When the flow has no `namespace` yet, choose one of the namespaces you can access, and Kestra adds it to the flow.
 - **Applies to**: the exact task type by default. Choose a plugin prefix such as `io.kestra.plugin.jdbc.oracle` to cover every task of that plugin.
 - **Values the policy provides**: the literal values of the task. Credentials are selected by default and saved as namespace secrets, and the policy references them with `{{ secret('KEY') }}`.
 
