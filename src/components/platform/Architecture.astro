@@ -18,7 +18,7 @@ const PARTS = [
     {
         zone: "queue",
         title: "Queue and database",
-        text: "Holds state and passes work between the two planes. PostgreSQL or MySQL in open source. Enterprise adds Redis, AMQP, or Kafka for the queue and Elasticsearch for the database.",
+        text: "Holds state and passes messages between control plane services. Workers never touch it. PostgreSQL or MySQL in open source. Enterprise adds Redis, AMQP, or Kafka for the queue and Elasticsearch for the database.",
     },
 ]
 ---
@@ -47,20 +47,20 @@ const PARTS = [
                 <div class="head">
                     <div class="swap">
                         <div class="copy" data-edition="oss">
-                            <h3>One engine, one database</h3>
+                            <h3>Trusted by thousands of customers worldwide</h3>
                             <p>
-                                The scheduler, executor, and workers share a
-                                PostgreSQL or MySQL backend and scale
-                                independently.
+                                Full-featured orchestration, free to self-host,
+                                and built in the open.
                             </p>
                         </div>
                         <div class="copy" data-edition="ent">
-                            <h3>Secured and isolated for every team</h3>
+                            <h3>
+                                Scalability and performance enterprises demand
+                            </h3>
                             <p>
-                                SSO and RBAC control who runs what, mTLS secures
-                                worker traffic, worker groups isolate workloads,
-                                and Kafka and Elasticsearch handle high
-                                volumes.{" "}
+                                Worker groups isolate and scale workloads. Kafka
+                                and Elasticsearch backends handle enterprise
+                                throughput.{" "}
                                 <a href="/enterprise">
                                     Learn more about Enterprise Edition.
                                 </a>
