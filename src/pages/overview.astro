@@ -12,11 +12,35 @@ import DeveloperFit from "~/components/platform/DeveloperFit.astro"
 import Ai from "~/components/platform/Ai.astro"
 import OpenSource from "~/components/platform/OpenSource.astro"
 import RunKestra from "~/components/home/RunKestra.astro"
+import Enterprise from "~/components/home/Enterprise.astro"
 import BuyerQuestions from "~/components/enterprise/BuyerQuestions.astro"
 
 const title = "Kestra Platform"
 const description =
     "Schedule, trigger, observe, and govern every workflow. Use any language, orchestrate any system, deploy anywhere."
+
+const ENTERPRISE = [
+    {
+        id: "access" as const,
+        title: "Give every team its own space.",
+        text: "Namespaces, SSO, and RBAC keep each team's flows, secrets, and executions apart on one shared instance.",
+    },
+    {
+        id: "reliability" as const,
+        title: "Run work where it belongs.",
+        text: "Worker groups pin tasks to dedicated workers, on-premises or in another cloud, and keep running through outages and upgrades.",
+    },
+    {
+        id: "governance" as const,
+        title: "Answer every audit question.",
+        text: "Audit logs, policies, and approval gates record who ran each workflow, with which permissions and whose approval.",
+    },
+    {
+        id: "scale" as const,
+        title: "Grow without re-architecting.",
+        text: "Move the queue to Kafka and the database to Elasticsearch as volumes grow, and accept only workers that present an mTLS certificate.",
+    },
+]
 
 const FAQ = [
     {
@@ -65,6 +89,7 @@ const FAQ = [
         <Deploy />
         <HowItWorks />
         <Production />
+        <Enterprise headingId="overview-enterprise" features={ENTERPRISE} />
         <DeveloperFit />
         <Ai />
         <OpenSource />

@@ -13,12 +13,12 @@ const PARTS = [
     {
         zone: "data",
         title: "Data plane",
-        text: "Runs your code where your data lives: in the cloud, on-premises, or both. Workers connect back over gRPC, with mTLS configurable.",
+        text: "Runs your code where your data lives: in the cloud, on-premises, or both. Workers connect back over gRPC, secured with mTLS in Enterprise.",
     },
     {
         zone: "queue",
         title: "Queue and database",
-        text: "Holds state and passes work between the two planes. JDBC (Postgres, MySQL) in open source; Redis, AMQP, Kafka, or Elasticsearch in Enterprise.",
+        text: "Holds state and passes work between the two planes. PostgreSQL or MySQL in open source. Enterprise adds Redis, AMQP, or Kafka for the queue and Elasticsearch for the database.",
     },
 ]
 ---
@@ -47,20 +47,20 @@ const PARTS = [
                 <div class="head">
                     <div class="swap">
                         <div class="copy" data-edition="oss">
-                            <h3>Trusted by thousands of customers worldwide</h3>
+                            <h3>One engine, one database</h3>
                             <p>
-                                Full-featured orchestration, free to self-host,
-                                and built in the open.
+                                The scheduler, executor, and workers share a
+                                PostgreSQL or MySQL backend and scale
+                                independently.
                             </p>
                         </div>
                         <div class="copy" data-edition="ent">
-                            <h3>
-                                Scalability and performance enterprises demand
-                            </h3>
+                            <h3>Secured and isolated for every team</h3>
                             <p>
-                                Worker groups isolate and scale workloads. Kafka
-                                and Elasticsearch backends handle enterprise
-                                throughput.{" "}
+                                SSO and RBAC control who runs what, mTLS secures
+                                worker traffic, worker groups isolate workloads,
+                                and Kafka and Elasticsearch handle high
+                                volumes.{" "}
                                 <a href="/enterprise">
                                     Learn more about Enterprise Edition.
                                 </a>
