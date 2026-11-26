@@ -149,7 +149,7 @@ Kestra.timer('timer2', 2.12, {tag1: 'from', tag2: 'kestra'});
 
 ### Other languages
 
-R, Go, Ruby, C#, F#, PowerShell, Groovy, Julia, Lua, Perl and PHP have the same methods in their own Kestra library. See [Kestra libraries for script tasks](../00.languages/index.md#kestra-libraries-for-script-tasks) for the install line and a link to a full example for each.
+R, Go, Ruby, C#, F#, PowerShell, Groovy, Julia, Lua, Perl and PHP have the same methods in their own Kestra library. See [Kestra libraries for script tasks](../00.languages/index.md#kestra-libraries-for-script-tasks) for the install line and a full example for each.
 
 ### Shell
 

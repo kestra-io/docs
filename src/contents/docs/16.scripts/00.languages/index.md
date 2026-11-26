@@ -106,6 +106,288 @@ Each language below has a small Kestra library that sends outputs, metrics, logs
 
 Install the library in `beforeCommands` or bake it into a [custom Docker image](../04.custom-docker-image/index.md). Pin a version in production flows, so a new release cannot change what runs.
 
+### Examples
+
+Each flow sends outputs, a counter, a gauge, a timer and a warning log, then reads the output in a downstream task. Python and Node.js examples are in [Outputs and metrics](../06.outputs-metrics/index.md).
+
+:::collapse{title="R"}
+```yaml
+id: train_model
+namespace: company.team
+
+tasks:
+  - id: train
+    type: io.kestra.plugin.scripts.r.Script
+    beforeCommands:
+      - Rscript -e 'install.packages("remotes"); remotes::install_github("kestra-io/libs", subdir = "r", ref = "main")'
+    script: |
+      library(kestra)
+
+      Kestra$outputs(list(accuracy = 0.91, model = "glm"))
+      Kestra$counter("rows", 15000, list(source = "s3"))
+      Kestra$gauge("queue_size", 3)
+      model <- Kestra$timer("fit", function() lm(dist ~ speed, cars))
+      Kestra$logger()$warn("3 rows had missing values")
+
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Accuracy: {{ outputs.train.vars.accuracy }}"
+```
+:::
+
+:::collapse{title="Go"}
+```yaml
+id: import_orders
+namespace: company.team
+
+tasks:
+  - id: import
+    type: io.kestra.plugin.scripts.go.Script
+    beforeCommands:
+      - go mod init flow 2>&1
+      - go get github.com/kestra-io/libs/go/v2@main 2>&1
+      - go mod tidy 2>&1
+    script: |
+      package main
+
+      import (
+          "time"
+
+          "github.com/kestra-io/libs/go/v2/kestra"
+      )
+
+      func main() {
+          start := time.Now()
+          orders := 120
+          kestra.Timer("fetch", time.Since(start), nil)
+          kestra.Outputs(map[string]any{"count": orders, "status": "ok"})
+          kestra.Counter("orders", float64(orders), map[string]string{"source": "shop"})
+          kestra.Logger().Warn("orders had no customer", "count", 2)
+      }
+
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Imported {{ outputs.import.vars.count }} orders"
+```
+:::
+
+:::collapse{title="Ruby"}
+```yaml
+id: import_orders
+namespace: company.team
+
+tasks:
+  - id: import
+    type: io.kestra.plugin.scripts.ruby.Script
+    beforeCommands:
+      - curl -fsSLo kestra.rb https://raw.githubusercontent.com/kestra-io/libs/main/ruby/lib/kestra.rb
+    script: |
+      require_relative "kestra"
+
+      orders = Kestra.timer("fetch") { (1..120).to_a }
+      Kestra.outputs(count: orders.size, status: "ok")
+      Kestra.counter("orders", orders.size, tags: { source: "shop" })
+      Kestra.gauge("queue_size", 3)
+      Kestra.logger.warn("2 orders had no customer")
+
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Imported {{ outputs.import.vars.count }} orders"
+```
+:::
+
+:::collapse{title="C#"}
+```yaml
+id: import_orders
+namespace: company.team
+
+tasks:
+  - id: import
+    type: io.kestra.plugin.scripts.csharp.Script
+    beforeCommands:
+      - git clone --depth 1 https://github.com/kestra-io/libs /tmp/libs
+      - dotnet build /tmp/libs/dotnet/Kestra -c Release -o /tmp/kestra
+    script: |
+      #r "/tmp/kestra/Kestra.dll"
+
+      var orders = Kestra.Timer("fetch", () => Enumerable.Range(1, 120).ToList());
+      Kestra.Outputs(new { count = orders.Count, status = "ok" });
+      Kestra.Counter("orders", orders.Count, new { source = "shop" });
+      Kestra.Gauge("queue_size", 3);
+      Kestra.Logger.Warning("{Count} orders had no customer", 2);
+
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Imported {{ outputs.import.vars.count }} orders"
+```
+:::
+
+:::collapse{title="PowerShell"}
+```yaml
+id: disable_stale_accounts
+namespace: company.ops
+
+tasks:
+  - id: cleanup
+    type: io.kestra.plugin.scripts.powershell.Script
+    beforeCommands:
+      - Invoke-WebRequest https://raw.githubusercontent.com/kestra-io/libs/main/powershell/Kestra/Kestra.psm1 -OutFile Kestra.psm1 -UseBasicParsing
+    script: |
+      Import-Module ./Kestra.psm1
+
+      $accounts = Send-KestraTimer fetch -ScriptBlock { 1..42 }
+      Send-KestraOutput @{ disabled = $accounts.Count; status = 'ok' }
+      Send-KestraCounter disabled_accounts $accounts.Count @{ domain = 'corp' }
+      Write-KestraLog Warn '3 accounts could not be disabled'
+
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Disabled {{ outputs.cleanup.vars.disabled }} accounts"
+```
+:::
+
+:::collapse{title="Groovy"}
+```yaml
+id: import_orders
+namespace: company.team
+
+tasks:
+  - id: import
+    type: io.kestra.plugin.scripts.groovy.Script
+    beforeCommands:
+      - curl -fsSLo Kestra.groovy https://raw.githubusercontent.com/kestra-io/libs/main/groovy/Kestra.groovy
+    script: |
+      def orders = Kestra.timer('fetch') { (1..120).toList() }
+      Kestra.outputs(count: orders.size(), status: 'ok')
+      Kestra.counter('orders', orders.size(), [source: 'shop'])
+      Kestra.gauge('queue_size', 3)
+      Kestra.logger.warn('{} orders had no customer', 2)
+
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Imported {{ outputs.import.vars.count }} orders"
+```
+:::
+
+:::collapse{title="Julia"}
+```yaml
+id: import_orders
+namespace: company.team
+
+tasks:
+  - id: kestra_jl
+    type: io.kestra.plugin.core.http.Download
+    uri: https://raw.githubusercontent.com/kestra-io/libs/main/julia/src/Kestra.jl
+
+  - id: import
+    type: io.kestra.plugin.scripts.julia.Script
+    inputFiles:
+      Kestra.jl: "{{ outputs.kestra_jl.uri }}"
+    script: |
+      include("Kestra.jl")
+      using Logging
+      global_logger(Kestra.logger())
+
+      orders = Kestra.timer("fetch") do
+          collect(1:120)
+      end
+      Kestra.outputs(count = length(orders), status = "ok")
+      Kestra.counter("orders", length(orders), (source = "shop",))
+      Kestra.gauge("queue_size", 3)
+      @warn "orders had no customer" count = 2
+
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Imported {{ outputs.import.vars.count }} orders"
+```
+:::
+
+:::collapse{title="Lua"}
+```yaml
+id: import_orders
+namespace: company.team
+
+tasks:
+  - id: kestra_lua
+    type: io.kestra.plugin.core.http.Download
+    uri: https://raw.githubusercontent.com/kestra-io/libs/main/lua/kestra.lua
+
+  - id: import
+    type: io.kestra.plugin.scripts.lua.Script
+    inputFiles:
+      kestra.lua: "{{ outputs.kestra_lua.uri }}"
+    script: |
+      local kestra = require('kestra')
+
+      local orders = kestra.timer('fetch', function()
+        local rows = {}
+        for i = 1, 120 do rows[i] = i end
+        return rows
+      end)
+      kestra.outputs({ count = #orders, status = 'ok' })
+      kestra.counter('orders', #orders, { source = 'shop' })
+      kestra.gauge('queue_size', 3)
+      kestra.logger:warn('%d orders had no customer', 2)
+
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Imported {{ outputs.import.vars.count }} orders"
+```
+:::
+
+:::collapse{title="Perl"}
+```yaml
+id: import_orders
+namespace: company.team
+
+tasks:
+  - id: import
+    type: io.kestra.plugin.scripts.perl.Script
+    beforeCommands:
+      - curl -fsSLo Kestra.pm https://raw.githubusercontent.com/kestra-io/libs/main/perl/lib/Kestra.pm
+    script: |
+      use lib '.';
+      use Kestra;
+
+      my @orders = Kestra->timer('fetch', sub { (1 .. 120) });
+      Kestra->outputs({ count => scalar @orders, status => 'ok' });
+      Kestra->counter('orders', scalar @orders, { source => 'shop' });
+      Kestra->gauge('queue_size', 3);
+      Kestra->logger->warn('2 orders had no customer');
+
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Imported {{ outputs.import.vars.count }} orders"
+```
+:::
+
+:::collapse{title="PHP"}
+```yaml
+id: import_orders
+namespace: company.team
+
+tasks:
+  - id: import
+    type: io.kestra.plugin.scripts.php.Script
+    beforeCommands:
+      - curl -fsSLo Kestra.php https://raw.githubusercontent.com/kestra-io/libs/main/php/src/Kestra.php
+    script: |
+      <?php
+      require 'Kestra.php';
+      use Kestra\Kestra;
+
+      $orders = Kestra::timer('fetch', fn () => range(1, 120));
+      Kestra::outputs(['count' => count($orders), 'status' => 'ok']);
+      Kestra::counter('orders', count($orders), ['source' => 'shop']);
+      Kestra::gauge('queue_size', 3);
+      Kestra::logger()->warning('{count} orders had no customer', ['count' => 2]);
+
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Imported {{ outputs.import.vars.count }} orders"
+```
+:::
+
 ## Run other languages with the Shell plugin
 
 Use [io.kestra.plugin.scripts.shell.Commands](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.commands) when your language does not have a dedicated plugin or when you want to compile and run code in a container.
