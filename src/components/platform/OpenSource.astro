@@ -1,0 +1,387 @@
+---
+import Rails from "./Rails.astro"
+import { Icon } from "astro-icon/components"
+import SectionHead from "~/components/home/SectionHead.astro"
+import PixelGrid from "~/components/common/PixelGrid.astro"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
+
+const CARDS = [
+    {
+        icon: "mdi:scale-balance",
+        title: "Apache 2.0",
+        text: "A permissive license for the engine. Use it, extend it, and run it in production without a license key.",
+    },
+    {
+        icon: "mdi:github",
+        title: "Developed in public",
+        text: "Source, issues, and pull requests live on GitHub.",
+        href: "https://github.com/kestra-io/kestra",
+    },
+    {
+        icon: "mdi:calendar-check-outline",
+        title: "Predictable releases",
+        text: "Release notes for every version on a published cadence, so you can plan upgrades like any other platform.",
+        href: "/docs/releases",
+    },
+]
+
+const MASK =
+    "radial-gradient(ellipse 32% 42% at 50% 50%, rgba(0, 0, 0, 0.35) 30%, #000 100%)"
+
+const STATS = [
+    {
+        icon: "mdi:star-outline",
+        value: "30,000",
+        label: "GitHub stars",
+        live: "github-stars",
+    },
+    { icon: "mdi:puzzle-outline", value: totalPlugins, label: "Plugins" },
+]
+---
+
+<section
+    class="open-source surface-dark"
+    id="open"
+    aria-labelledby="open-h"
+    data-header-dark
+>
+    <PixelGrid rows={56} cell={16} gap={5} mask={MASK} />
+    <Rails dark>
+        <SectionHead id="open-h" align="start">
+            Built in the open.
+            <Fragment slot="lead">
+                The engine is licensed under Apache 2.0 and developed in public
+                on GitHub.
+            </Fragment>
+        </SectionHead>
+
+        <div class="open-grid">
+            <dl class="stats">
+                {STATS.map((stat) => (
+                    <div>
+                        <dt>
+                            <Icon
+                                name={stat.icon}
+                                class="icon"
+                                aria-hidden="true"
+                            />
+                            {stat.label}
+                        </dt>
+                        <dd>
+                            <span class="arrow" aria-hidden="true">
+                                ↑
+                            </span>
+                            <span
+                                class="value"
+                                data-count={stat.value}
+                                data-live={stat.live}
+                            >
+                                {stat.value}
+                            </span>
+                            <span class="suffix">+</span>
+                        </dd>
+                    </div>
+                ))}
+            </dl>
+            <ul class="cards">
+                {CARDS.map((card) => (
+                    <li>
+                        <Icon name={card.icon} class="icon" />
+                        <div>
+                            <h3>
+                                {card.href ? (
+                                    <a href={card.href}>{card.title}</a>
+                                ) : (
+                                    card.title
+                                )}
+                            </h3>
+                            <p>{card.text}</p>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    </Rails>
+</section>
+
+<script>
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches
+    const format = new Intl.NumberFormat("en-US")
+    const io = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return
+                io.unobserve(entry.target)
+                const el = entry.target as HTMLElement
+                const start = performance.now()
+                const step = (now: number) => {
+                    const final = el.dataset.count!
+                    const end = Number(final.replace(/\D/g, ""))
+                    const t = Math.min(1, Math.max(0, (now - start) / 1400))
+                    const eased = 1 - Math.pow(1 - t, 3)
+                    el.textContent = format.format(Math.round(end * eased))
+                    if (t < 1) requestAnimationFrame(step)
+                    else {
+                        el.textContent = final
+                        el.dataset.counted = "true"
+                    }
+                }
+                requestAnimationFrame(step)
+            })
+        },
+        { threshold: 0.6 },
+    )
+
+    async function loadGithubStars() {
+        const stars = document.querySelectorAll<HTMLElement>(
+            '.open-source [data-live="github-stars"]',
+        )
+        if (!stars.length) return
+        try {
+            const response = await fetch("/api/github")
+            if (!response.ok) return
+            const { stargazers } = (await response.json()) as {
+                stargazers?: number
+            }
+            if (!stargazers) return
+            const value = format.format(Math.floor(stargazers / 100) * 100)
+            stars.forEach((el) => {
+                el.dataset.count = value
+                if (reduced || el.dataset.counted) el.textContent = value
+            })
+        } catch {}
+    }
+
+    function init() {
+        document
+            .querySelectorAll<HTMLElement>(
+                ".open-source [data-count]:not([data-ready])",
+            )
+            .forEach((el) => {
+                el.dataset.ready = "true"
+                if (!reduced) io.observe(el)
+            })
+        loadGithubStars()
+    }
+
+    document.addEventListener("astro:page-load", init)
+    init()
+</script>
+
+<style lang="scss">
+    @use "./style/platform" as *;
+
+    .open-source {
+        --ks-content-primary: #ffffff;
+        --ks-content-secondary: #adadbf;
+        --ks-content-tertiary: #8c8ca0;
+        --ks-content-link: #b9a6ff;
+        --ks-background-secondary: rgba(255, 255, 255, 0.04);
+
+        position: relative;
+        overflow: hidden;
+        border-block: 1px solid var(--band-line);
+        background: #111114;
+
+        @include band-lines;
+
+        > :global(.container-xl) {
+            position: relative;
+        }
+    }
+
+    .open-grid {
+        --rule: 1px solid var(--band-line);
+
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        margin: 0 calc(-1 * var(--inset));
+        border-block: var(--rule);
+        background: #111114;
+
+        @include media-breakpoint-down(xl) {
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            margin: 0;
+            border: var(--rule);
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            margin-inline: calc(-1 * var(--inset));
+            border-inline: 0;
+            border-radius: 0;
+        }
+    }
+
+    .stats,
+    .cards {
+        display: contents;
+    }
+
+    .stats > div,
+    .cards > li {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 1.75rem;
+        padding: 1.75rem 1.75rem 2rem;
+        transition: background-color 0.3s ease;
+
+        & + * {
+            border-left: var(--rule);
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--ks-content-primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        &:hover {
+            background: var(--ks-background-secondary);
+
+            &::before {
+                transform: none;
+            }
+        }
+    }
+
+    .cards > li:first-child {
+        border-left: var(--rule);
+    }
+
+    @include media-breakpoint-down(xl) {
+        .stats > div {
+            grid-column: span 3;
+        }
+
+        .cards > li {
+            grid-column: span 2;
+            border-top: var(--rule);
+
+            &:first-child {
+                border-left: 0;
+            }
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        .stats > div {
+            grid-column: auto;
+            padding: 1.5rem 1.25rem 1.75rem;
+        }
+
+        .cards > li,
+        .cards > li + li {
+            grid-column: 1 / -1;
+            border-left: 0;
+        }
+        .open-grid .stats .value {
+            font-size: 2.25rem;
+        }
+    }
+
+    .open-grid :global(.icon) {
+        flex: none;
+        width: 1.5rem;
+        height: 1.5rem;
+        color: var(--ks-content-tertiary);
+        transition: color 0.3s ease;
+    }
+
+    .stats {
+        dd {
+            display: flex;
+            align-items: flex-start;
+            margin: 0;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+            color: var(--ks-content-primary);
+        }
+
+        .arrow {
+            margin: 0.3em 0.15em 0 0;
+            font-size: 1.25rem;
+            line-height: 1;
+            color: var(--ks-content-tertiary);
+            transition: color 0.3s ease;
+
+            div:hover & {
+                color: var(--ks-content-link);
+            }
+        }
+
+        .value {
+            font-size: clamp(2.5rem, 3.6vw, 3.5rem);
+            font-weight: 500;
+            letter-spacing: -0.05em;
+            line-height: 0.9;
+        }
+
+        .suffix {
+            align-self: flex-end;
+            margin-left: 0.15em;
+            font-size: 1.5rem;
+            font-weight: 500;
+            line-height: 1;
+            color: var(--ks-content-secondary);
+        }
+
+        dt {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.75rem;
+            margin-bottom: -1rem;
+            font-size: 1.0625rem;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        div:hover :global(.icon) {
+            color: var(--ks-content-link);
+        }
+    }
+
+    .cards {
+        li:hover :global(.icon) {
+            color: var(--ks-content-link);
+        }
+
+        h3 {
+            margin: 0 0 0.375rem;
+            font-size: 1.0625rem;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            margin: 0;
+            font-size: $font-size-sm;
+            line-height: 1.55;
+            color: var(--ks-content-secondary);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+
+            &::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+            }
+        }
+    }
+</style>
