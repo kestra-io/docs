@@ -23,12 +23,12 @@ const ENTERPRISE = [
     {
         id: "access" as const,
         title: "Give every team its own space.",
-        text: "Namespaces, SSO, and RBAC keep each team's flows, secrets, and executions apart on one shared instance.",
+        text: "SSO, RBAC, tenants, and secrets from your own vault keep each team's flows, credentials, and executions apart on one shared instance.",
     },
     {
         id: "reliability" as const,
-        title: "Run work where it belongs.",
-        text: "Worker groups pin tasks to dedicated workers, on-premises or in another cloud, and keep running through outages and upgrades.",
+        title: "Send each task to the right workers.",
+        text: "Worker groups route a task to the workers you choose, by team, site, or hardware: servers next to an on-premises database, a GPU pool, or a private network the cloud can't reach.",
     },
     {
         id: "governance" as const,
@@ -89,7 +89,18 @@ const FAQ = [
         <Deploy />
         <HowItWorks />
         <Production />
-        <Enterprise headingId="overview-enterprise" features={ENTERPRISE} />
+        <Enterprise headingId="overview-enterprise" features={ENTERPRISE}>
+            <Fragment slot="title">
+                <span>SSO, RBAC, and secrets with</span>{" "}
+                <em>Kestra Enterprise.</em>
+            </Fragment>
+            <Fragment slot="lead">
+                Enterprise adds single sign-on, role-based access control,
+                your own secrets manager, and audit logs on top of the Apache
+                2.0 core, with SLA-backed support. Run it self-hosted, in your
+                cloud, or air-gapped.
+            </Fragment>
+        </Enterprise>
         <DeveloperFit />
         <Ai />
         <OpenSource />
