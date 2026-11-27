@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest"
-import { fullTextUrls, withFullTextMatches } from "~/utils/search/fullText"
+import {
+    fullTextMatches,
+    fullTextSnippets,
+    snippetParts,
+    withFullTextMatches,
+} from "~/utils/search/fullText"
 
 const all = [
     { id: "airflow-eol" },
@@ -33,12 +38,57 @@ describe("withFullTextMatches", () => {
     })
 })
 
-describe("fullTextUrls", () => {
-    it("keeps the server results of one type", () => {
+describe("fullTextMatches", () => {
+    it("keeps the server results of one type with their excerpts", () => {
         const results = [
-            { url: "docs/a", type: "DOCS" },
-            { url: "blogs/b", type: "BLOGS" },
+            { url: "docs/a", type: "DOCS", highlights: ["a"] },
+            { url: "blogs/b", type: "BLOGS", highlights: ["<mark>b</mark>"] },
         ]
-        expect(fullTextUrls(results, "BLOGS")).toEqual(["blogs/b"])
+        expect(fullTextMatches(results, "BLOGS")).toEqual([
+            { url: "blogs/b", highlights: ["<mark>b</mark>"] },
+        ])
+    })
+})
+
+describe("snippetParts", () => {
+    it("turns a server excerpt into plain text with the matches marked", () => {
+        expect(
+            snippetParts(
+                '/inputs-2-0.png)\n<br />:::alert{type="info"}\n<br />The plural form `<mark>defaults</mark>` is used instead of `<mark>default</mark>`.',
+            ),
+        ).toEqual([
+            { text: "The plural form ", mark: false },
+            { text: "defaults", mark: true },
+            { text: " is used instead of ", mark: false },
+            { text: "default", mark: true },
+            { text: ".", mark: false },
+        ])
+    })
+
+    it("never keeps markup other than the marks", () => {
+        const text = snippetParts(
+            '<img src=x onerror="alert(1)"><mark>a</mark>',
+        )
+            .map((part) => part.text)
+            .join("")
+        expect(text).not.toContain("<")
+    })
+})
+
+describe("fullTextSnippets", () => {
+    it("keeps the first excerpt with a match for each page", () => {
+        const snippets = fullTextSnippets(
+            [
+                {
+                    url: "docs/tutorial/inputs",
+                    highlights: ["no match", "set <mark>defaults</mark>"],
+                },
+            ],
+            "docs/",
+        )
+        expect(snippets.get("tutorial/inputs")).toEqual([
+            { text: "set ", mark: false },
+            { text: "defaults", mark: true },
+        ])
     })
 })

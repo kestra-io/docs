@@ -1,5 +1,10 @@
 import type { SearchResult } from "~/utils/searchResults"
-import { withFullTextMatches } from "~/utils/search/fullText"
+import {
+    fullTextSnippets,
+    withFullTextMatches,
+    type FullTextMatch,
+    type SnippetPart,
+} from "~/utils/search/fullText"
 import { $fetch } from "~/utils/fetch"
 import { loadOnce } from "~/utils/search/loaders"
 import { includesAll, MAX_RESULTS, searchTokens } from "~/utils/search/matching"
@@ -23,6 +28,7 @@ export interface BlogSearchResult extends SearchResult {
     blog: Omit<BlogEntry, "title" | "headings"> & {
         author?: BlogAuthor
         authorNames: string
+        snippet?: SnippetPart[]
     }
 }
 
@@ -60,12 +66,10 @@ const dateLabel = (iso: string) =>
         timeZone: "UTC",
     })
 
-const toResult = ({
-    title,
-    headings: _,
-    date,
-    ...post
-}: BlogEntry): BlogSearchResult => ({
+const toResult = (
+    { title, headings: _, date, ...post }: BlogEntry,
+    snippet?: SnippetPart[],
+): BlogSearchResult => ({
     url: `blogs/${post.id}`,
     type: "BLOGS",
     title,
@@ -74,25 +78,41 @@ const toResult = ({
         date: dateLabel(date),
         author: post.authors[0],
         authorNames: post.authors.map((author) => author.name).join(", "),
+        snippet,
     },
 })
 
 export function blogsSearchResults(
     posts: BlogEntry[],
     query: string,
-    fullTextUrls: string[] = [],
+    fullText: FullTextMatch[] = [],
 ) {
     const tokens = searchTokens(query)
-    const matches = tokens.length
-        ? withFullTextMatches(
-              rankBlogs(posts, tokens),
-              posts,
-              fullTextUrls,
-              "blogs/",
-          )
-        : [...posts].sort(newestFirst)
+    if (!tokens.length) {
+        const newest = [...posts].sort(newestFirst)
+        return {
+            total: newest.length,
+            results: newest.slice(0, MAX_RESULTS).map((post) => toResult(post)),
+        }
+    }
+    const ranked = rankBlogs(posts, tokens)
+    const local = new Set(ranked.map((post) => post.id))
+    const snippets = fullTextSnippets(fullText, "blogs/")
+    const matches = withFullTextMatches(
+        ranked,
+        posts,
+        fullText.map((match) => match.url),
+        "blogs/",
+    )
     return {
         total: matches.length,
-        results: matches.slice(0, MAX_RESULTS).map(toResult),
+        results: matches
+            .slice(0, MAX_RESULTS)
+            .map((post) =>
+                toResult(
+                    post,
+                    local.has(post.id) ? undefined : snippets.get(post.id),
+                ),
+            ),
     }
 }

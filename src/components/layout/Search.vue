@@ -294,8 +294,30 @@
                                                     {{ result.blog.date }}
                                                 </div>
                                                 <h5>{{ result.title }}</h5>
+                                                <p
+                                                    v-if="result.blog.snippet"
+                                                    class="result-snippet"
+                                                >
+                                                    <template
+                                                        v-for="(
+                                                            part, partIndex
+                                                        ) in result.blog
+                                                            .snippet"
+                                                        :key="partIndex"
+                                                        ><mark
+                                                            v-if="part.mark"
+                                                            >{{
+                                                                part.text
+                                                            }}</mark
+                                                        ><template v-else>{{
+                                                            part.text
+                                                        }}</template></template
+                                                    >
+                                                </p>
                                                 <div
-                                                    v-if="result.blog.author"
+                                                    v-else-if="
+                                                        result.blog.author
+                                                    "
                                                     class="blog-author"
                                                 >
                                                     <img
@@ -344,7 +366,26 @@
                                                 </div>
                                                 <h5>{{ result.title }}</h5>
                                                 <p
-                                                    v-if="
+                                                    v-if="result.doc.snippet"
+                                                    class="result-snippet"
+                                                >
+                                                    <template
+                                                        v-for="(
+                                                            part, partIndex
+                                                        ) in result.doc.snippet"
+                                                        :key="partIndex"
+                                                        ><mark
+                                                            v-if="part.mark"
+                                                            >{{
+                                                                part.text
+                                                            }}</mark
+                                                        ><template v-else>{{
+                                                            part.text
+                                                        }}</template></template
+                                                    >
+                                                </p>
+                                                <p
+                                                    v-else-if="
                                                         result.doc.description
                                                     "
                                                     class="result-description"
@@ -582,6 +623,26 @@
                                             >Open page</a
                                         >
                                     </div>
+                                    <div
+                                        v-if="selectedItem.doc.snippet"
+                                        class="preview-match"
+                                    >
+                                        <span>Matched in this page</span>
+                                        <p>
+                                            <template
+                                                v-for="(
+                                                    part, partIndex
+                                                ) in selectedItem.doc.snippet"
+                                                :key="partIndex"
+                                                ><mark v-if="part.mark">{{
+                                                    part.text
+                                                }}</mark
+                                                ><template v-else>{{
+                                                    part.text
+                                                }}</template></template
+                                            >
+                                        </p>
+                                    </div>
                                     <ContentPreview
                                         :key="selectedItem.doc.id"
                                         section="docs"
@@ -768,7 +829,7 @@
         loadBlueprintsIndex,
     } from "~/utils/search/blueprints"
     import { docsSearchResults, loadDocsIndex } from "~/utils/search/docs"
-    import { fullTextUrls } from "~/utils/search/fullText"
+    import { fullTextMatches } from "~/utils/search/fullText"
     import {
         loadPluginsIndex,
         pluginsSearchResults,
@@ -797,14 +858,14 @@
         DOCS: {
             kind: "Docs",
             load: loadDocsIndex,
-            search: (indexes, query, urls) =>
-                docsSearchResults(indexes.DOCS, query, urls),
+            search: (indexes, query, fullText) =>
+                docsSearchResults(indexes.DOCS, query, fullText),
         },
         BLOGS: {
             kind: "Blog post",
             load: loadBlogsIndex,
-            search: (indexes, query, urls) =>
-                blogsSearchResults(indexes.BLOGS, query, urls),
+            search: (indexes, query, fullText) =>
+                blogsSearchResults(indexes.BLOGS, query, fullText),
         },
     }
 
@@ -992,7 +1053,7 @@
                                     ...this.fullText,
                                     [type]: {
                                         query: value,
-                                        urls: fullTextUrls(found, type),
+                                        matches: fullTextMatches(found, type),
                                         // The server stops at 100 results: a longer list is partial.
                                         complete:
                                             found.length >=
@@ -1075,8 +1136,13 @@
                 for (const [type, tab] of Object.entries(LOCAL_TABS)) {
                     if (!(type in this.indexes)) continue
                     const fullText = this.fullText[type]
-                    const urls = fullText?.query === value ? fullText.urls : []
-                    localResults[type] = tab.search(this.indexes, value, urls)
+                    const matches =
+                        fullText?.query === value ? fullText.matches : []
+                    localResults[type] = tab.search(
+                        this.indexes,
+                        value,
+                        matches,
+                    )
                 }
                 this.localResults = localResults
                 if (!this.usesLocalResults()) {
@@ -1561,6 +1627,49 @@
             margin-bottom: 0.2rem;
             font-size: $font-size-xs;
             color: var(--ks-content-secondary);
+        }
+        .result-snippet {
+            color: var(--ks-content-secondary);
+            font-size: $font-size-xs;
+            margin: 0.25rem 0 0;
+            overflow: hidden;
+            display: -webkit-box;
+            line-clamp: 2;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+
+            mark {
+                padding: 0;
+                color: var(--ks-content-primary);
+                background: var(--ks-background-tag-category);
+            }
+        }
+        .preview-match {
+            margin-bottom: 1rem;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--ks-border-primary);
+            border-radius: 8px;
+            background: var(--ks-background-secondary);
+            font-size: $font-size-sm;
+
+            span {
+                display: block;
+                margin-bottom: 0.25rem;
+                font-size: $font-size-xs;
+                font-weight: 600;
+                color: var(--ks-content-secondary);
+            }
+
+            p {
+                margin: 0;
+                color: var(--ks-content-primary);
+            }
+
+            mark {
+                padding: 0;
+                color: inherit;
+                background: var(--ks-background-tag-category);
+            }
         }
         .doc-group {
             display: flex;

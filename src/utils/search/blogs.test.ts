@@ -49,8 +49,12 @@ const posts = [
     }),
 ]
 
-const ids = (query: string, fullTextUrls?: string[]) =>
-    blogsSearchResults(posts, query, fullTextUrls).results.map((r) => r.blog.id)
+const ids = (query: string, fullTextUrls: string[] = []) =>
+    blogsSearchResults(
+        posts,
+        query,
+        fullTextUrls.map((url) => ({ url })),
+    ).results.map((r) => r.blog.id)
 
 describe("blogsSearchResults", () => {
     it("ranks title matches, then description, then headings, newest first in each", () => {

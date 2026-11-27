@@ -115,13 +115,26 @@ describe("docsSearchResults", () => {
         ])
     })
 
-    it("adds the pages only the full-text search found after the others", () => {
+    it("adds the pages only the full-text search found after the others, with the server's excerpt", () => {
         const { total, results } = docsSearchResults(docs, "secr", [
-            "docs/concepts/namespace-files",
-            "docs/concepts/secret",
+            {
+                url: "docs/concepts/namespace-files",
+                highlights: ["Store <mark>secrets</mark> elsewhere"],
+            },
+            {
+                url: "docs/concepts/secret",
+                highlights: ["<mark>Secrets</mark>"],
+            },
         ])
         expect(total).toBe(5)
-        expect(results.at(-1)?.doc.id).toBe("concepts/namespace-files")
+        const last = results.at(-1)
+        expect(last?.doc.id).toBe("concepts/namespace-files")
+        expect(last?.doc.snippet).toEqual([
+            { text: "Store ", mark: false },
+            { text: "secrets", mark: true },
+            { text: " elsewhere", mark: false },
+        ])
+        expect(results[0].doc.snippet).toBeUndefined()
     })
 
     it("builds rows linking to the page, titled with its sidebar name", () => {

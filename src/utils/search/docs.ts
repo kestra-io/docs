@@ -1,5 +1,10 @@
 import type { SearchResult } from "~/utils/searchResults"
-import { withFullTextMatches } from "~/utils/search/fullText"
+import {
+    fullTextSnippets,
+    withFullTextMatches,
+    type FullTextMatch,
+    type SnippetPart,
+} from "~/utils/search/fullText"
 import { $fetch } from "~/utils/fetch"
 import { loadOnce } from "~/utils/search/loaders"
 import {
@@ -43,6 +48,7 @@ export interface DocsSearchResult extends SearchResult {
         sectionIcon?: string
         groupStart: boolean
         groupCount: number
+        snippet?: SnippetPart[]
     }
 }
 
@@ -92,11 +98,11 @@ function rankDocs(docs: DocsIndex, query: string, tokens: string[]) {
         )
 }
 
-type Ranked = { page: DocsPage }
+type Ranked = { page: DocsPage; snippet?: SnippetPart[] }
 
 const toResult = (
     docs: DocsIndex,
-    { page }: Ranked,
+    { page, snippet }: Ranked,
     group: {
         section: string
         title: string
@@ -119,6 +125,7 @@ const toResult = (
         sectionIcon: group.icon,
         groupStart: group.start,
         groupCount: group.count,
+        snippet,
     },
 })
 
@@ -173,23 +180,29 @@ function docsHome(docs: DocsIndex) {
 export function docsSearchResults(
     docs: DocsIndex,
     query: string,
-    fullTextUrls: string[] = [],
+    fullText: FullTextMatch[] = [],
 ) {
     const tokens = searchTokens(query)
     if (!tokens.length) {
         return { total: docs.pages.length, results: docsHome(docs) }
     }
+    const ranked = rankDocs(docs, query, tokens)
+    const local = new Set(ranked.map(({ page }) => page.id))
+    const snippets = fullTextSnippets(fullText, "docs/")
     const pages = withFullTextMatches(
-        rankDocs(docs, query, tokens).map(({ page }) => page),
+        ranked.map(({ page }) => page),
         docs.pages,
-        fullTextUrls,
+        fullText.map((match) => match.url),
         "docs/",
     )
     return {
         total: pages.length,
         results: groupRuns(
             docs,
-            pages.slice(0, MAX_RESULTS).map((page) => ({ page })),
+            pages.slice(0, MAX_RESULTS).map((page) => ({
+                page,
+                snippet: local.has(page.id) ? undefined : snippets.get(page.id),
+            })),
         ),
     }
 }
