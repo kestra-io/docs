@@ -42,8 +42,7 @@ kestra:
         The flow waits for a human approval before it creates anything; you
         cannot approve it yourself. Report the app URL, the smoke test results
         and the sandbox usage to the user. To end a sandbox early, resume the
-        paused execution so the flow deletes it. Never kill the execution: a
-        kill skips the cleanup and leaves the sandbox running.
+        paused execution so the flow reports its usage and deletes it.
 ```
 
 Connecting Claude Code is one command:
@@ -98,7 +97,7 @@ Claude read the outputs, checked the public URL itself, and reported back. The s
 
 ## What the sandbox consumed
 
-When asked to tear down, Claude called `resume_execution`, which ends the pause and runs the flow's `finally` block. Killing the execution would skip that block and leave the container running, which is why the instructions above forbid it.
+When asked to tear down, Claude called `resume_execution`, which ends the pause and runs the flow's `finally` block: measure the sandbox, stop it, delete it, and report.
 
 ![Claude Code calling resume_execution and read_execution_outputs on the Kestra MCP Server, with the usage block in the outputs](./claude-resume-and-outputs.webp)
 
@@ -118,9 +117,25 @@ Proxmox keeps the full life of the sandbox in its task log, every step run by th
 
 ![Proxmox VE after teardown with only the app-template container left and the task log showing clone, start, stop and destroy, all by kestra@pve](./proxmox-after-teardown.webp)
 
+## Cleanup that holds however the run ends
+
+I thought I would just give the cleanup to the prompt, with instructions telling the agent to end a sandbox by resuming the run, never by killing it. But a flow is deterministic by design and a prompt is not, so the flow should own the cleanup. A person can kill the execution from the UI, a task can fail, or an agent can call a different tool. Kill stops an execution on the spot, which is what a stop button is for, so the teardown also lives in a second flow, `sandbox_cleanup`.
+
+It has two triggers. A Flow trigger fires when `test_app_in_sandbox` ends in `KILLED` or `FAILED` and deletes the container that run created. A schedule runs every 15 minutes and deletes any sandbox past its expiry. Each sandbox carries its execution ID and an expiry in its Proxmox notes, so the cleanup flow finds it without anything from the original run.
+
+To test it, I killed a run while its sandbox was up. The cleanup flow started on its own, linked to the killed execution, and stopped and destroyed `sandbox-100` in six seconds.
+
+![The sandbox_cleanup execution triggered by run_ended_early, with the killed run as parent execution, a find_sandboxes Python task, a loop over container 100 running stop_sandbox and destroy_sandbox, and a Slack notify task](./kestra-sandbox-cleanup.webp)
+
+Both paths report to the same Slack channel. The second message comes from the scheduled sweep, which removed a container I had left past its expiry.
+
+![Slack messages from Kestra: the sandbox request, then Sandbox cleanup sandbox-100 deleted (run ended early) and Sandbox cleanup sandbox-104 deleted (expired)](./slack-sandbox-cleanup.webp)
+
+Nothing in the cleanup depends on the agent following its instructions.
+
 ## The blueprint
 
-The flow is available as the [Approved Proxmox VE Sandbox for AI Agents with Usage Report](/blueprints/proxmox-app-sandbox-with-approval) blueprint. It includes the Approval task with the Slack request, the Proxmox clone and teardown, the Ansible playbook inline, the smoke tests, and the usage report. Set six secrets for Proxmox, SSH, and Slack, adjust the template ID and network, and point your agent at it.
+The flow is available as the [Approved Proxmox VE Sandbox for AI Agents with Usage Report](/blueprints/proxmox-app-sandbox-with-approval) blueprint. It includes the Approval task with the Slack request, the Proxmox clone and teardown, the Ansible playbook inline, the smoke tests, and the usage report. Set six secrets for Proxmox, SSH, and Slack, adjust the template ID and network, and point your agent at it. The cleanup flow is the [Proxmox VE sandbox cleanup](/blueprints/proxmox-sandbox-cleanup) blueprint; import it in the same namespace.
 
 ## With Kestra Enterprise
 
