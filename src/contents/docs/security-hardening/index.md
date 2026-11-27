@@ -154,7 +154,9 @@ Host matching is exact by default. The scheme and port must also match when spec
 - `http://10.0.0.0/8` blocks HTTP requests to any RFC-1918 `10.x.x.x` address.
 - A CIDR entry matches only IP literals, never hostnames.
 
-**IP canonicalization**: all textual representations of the same address match the same entry. `2852039166`, `169.254.43518`, and `169.254.169.254` are equivalent. No DNS lookup is performed during matching.
+**IP canonicalization**: all textual representations of the same address match the same entry. `2852039166`, `169.254.43518`, and `169.254.169.254` are equivalent. Matching an entry never performs a DNS lookup.
+
+**Resolved addresses**: when an HTTP task connects to a hostname, Kestra checks every address the name resolves to against the IP and CIDR entries of the denied list, and connects only to the addresses it checked. A hostname that resolves to `169.254.169.254` is blocked by a `169.254.0.0/16` entry, even though the hostname itself matches no entry.
 
 **Underscore hostnames**: hosts containing underscores (e.g. `kestra_internal_db`) are matched correctly.
 
