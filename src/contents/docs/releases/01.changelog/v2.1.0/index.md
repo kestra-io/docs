@@ -37,6 +37,7 @@ Approvals, asset leases and the ASSET input, searchable execution values, custom
 - **Loop `breakWhen`**: stop a `Loop` from starting new iterations once a condition is true after an iteration ends. Also in 2.0.4. [Docs](../../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#stop-early-with-breakwhen)
 - **Concurrency `queueLimit`**: with `behavior: QUEUE`, cap how many executions wait in the queue. Incoming executions beyond the cap are `CANCELLED`. [Docs](../../../05.workflow-components/14.concurrency/index.md#behavior-property)
 - **HTTP/2 for HTTP tasks**: set `options.httpVersion` to `HTTP_2` or `NEGOTIATE` on `Request`, `Download`, `SseRequest`, and the HTTP `Trigger`, for example to keep long requests alive behind a load balancer. [Docs](../../../15.how-to-guides/http-request/index.md#use-http2-for-long-running-requests)
+- **Expressions in `Pause` resume inputs**: the descriptions and defaults of `onResume` inputs can use expressions, such as an earlier task's output. [Docs](../../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#pause)
 
 ## UI
 
@@ -51,16 +52,27 @@ Approvals, asset leases and the ASSET input, searchable execution values, custom
 - **One plugins page**: the catalog lists each plugin once, as a card or a table row. In EE, it also shows each plugin's installed versions, their source, and available updates, and the Instance Owner installs, updates, and uninstalls versions from it, with installs running in the background. [Docs](../../../07.enterprise/05.instance/versioned-plugins/index.md#from-the-ui)
 - **Dashboard charts from flow outputs (EE)**: the `Outputs` data source charts an ION file that a flow returns as an output, read from the flow's latest successful execution. [Docs](../../../09.ui/00.dashboard/index.md#outputs-ee-and-cloud-only)
 - **Sign in again without losing work**: when a session ends, the UI asks you to sign in again and retries the failed request, so unsaved changes stay. [Docs](../../../09.ui/index.mdx#expired-sessions)
+- **Execution topology redesign**: task nodes show the task type, state, and a duration bar scaled to the longest task, flowable tasks are drawn as lanes, and the information icon opens a popup with the task's metrics, logs, outputs, and artifacts. In the flow editor, the **Topology** view lets you add, edit, and delete tasks in place, with undo. [Docs](../../../09.ui/02.executions/index.md#overview)
+- **Interrupt a task run**: stop one running task and set it to `FAILED` or `CANCELLED`, while the rest of the execution carries on.
+- **Logs chart time range**: drag across the chart on the **Logs** page to show only the logs from that time range.
+- **App layout blocks (EE)**: lay out an app's blocks in a grid, embed a dashboard chart, list the assets an execution created or updated, and render the app narrow or wide. [Docs](../../../07.enterprise/04.scalability/apps/index.md)
+- **Open Docs Tab setting**: choose whether the flow editor opens the **Documentation** view next to the code. [Docs](../../../09.ui/06.settings/index.md#preferences)
 
 ## AI
 
-- **Kestra MCP Server**: give external MCP clients the AI Copilot's tools at `/api/v1/mcp`, up to 78 of them, to read and change flows, executions, logs, namespace files, and KV entries, plus apps, test suites, groups, and banners in EE, where every call runs with the caller's permissions. [Docs](../../../develop-with-ai/05.kestra-mcp-server/index.md)
+- **Kestra MCP Server**: give external MCP clients the AI Copilot's tools at `/api/v1/mcp`, up to 79 of them, to read and change flows, executions, logs, namespace files, and KV entries, plus apps, test suites, groups, and banners in EE, where every call runs with the caller's permissions. [Docs](../../../develop-with-ai/05.kestra-mcp-server/index.md)
 - **Copilot unit tests (EE, Cloud)**: generate a unit test for an existing flow. [Docs](../../../develop-with-ai/01.ai-copilot/index.md#generate-a-unit-test)
 - **Review Copilot flow changes on the graph**: a flow draft's Graph tab marks each task as added, changed, renamed, moved, or removed, and the apply confirmation counts each kind of change. [Docs](../../../develop-with-ai/01.ai-copilot/index.md#review-a-flow-change)
 - **All Copilot providers in Open Source**: the open-source edition supports every AI Copilot provider (Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and Ollama) and several providers with a default, not only Gemini. A provider entry with an unknown `type` is now logged and skipped instead of stopping startup. [Docs](../../../develop-with-ai/01.ai-copilot/index.md#configure-an-llm-provider)
 - **Copilot free tier (OSS)**: an instance with no LLM provider uses a free Copilot hosted by Kestra. Turn it off with `kestra.ai.free-tier.enabled: false`. [Docs](../../../develop-with-ai/01.ai-copilot/index.md#free-tier)
 - **Copilot usage limits**: cap each provider's spend for the whole instance and per user, by day, week, or month. Copilot shows the share left. [Docs](../../../develop-with-ai/01.ai-copilot/index.md#set-usage-limits)
 - **`thinking-effort: none`**: AI Copilot works with OpenAI and Azure OpenAI reasoning deployments that reject tool calls unless reasoning is off. [Docs](../../../configuration/06.enterprise-and-advanced/index.md)
+
+## IDE and ecosystem
+
+- **JetBrains plugin**: write flows in IntelliJ IDEA, PyCharm, WebStorm, and the other JetBrains IDEs, with completion from the plugins installed on your instance, validation as you type, a topology preview, and runs with live logs. [Docs](../../../ide-extensions/02.jetbrains/index.md)
+- **Agent Skills as a plugin**: install Kestra's Agent Skills as a plugin in Claude Code, Codex, and Cursor, with the Docs MCP server already connected. [Docs](../../../develop-with-ai/03.agent-skills/index.md#install-as-a-plugin)
+- **Script libraries for 10 more languages**: send outputs, metrics, logs, and assets from R, PowerShell, Ruby, PHP, Perl, Groovy, Lua, Julia, Go, and C# or F# with a function call instead of hand-written `::{}::` lines. [Docs](../../../16.scripts/06.outputs-metrics/index.md#other-languages)
 
 ## Security and governance
 
@@ -73,6 +85,7 @@ Approvals, asset leases and the ASSET input, searchable execution values, custom
 - **Bulk invitations (EE)**: invite up to 25 users at once. Accepting an invitation with an SSO provider is also in 2.0.10. [Docs](../../../07.enterprise/03.auth/invitations/index.md)
 - **Impersonate service accounts (EE)**: Instance Owners can impersonate a service account, and impersonation is now reserved to Instance Owners. [Docs](../../../07.enterprise/03.auth/rbac/index.md#impersonate)
 - **LDAP user attributes (EE)**: the `user-attributes` mapping now sets new users' email, first name, and last name. Earlier versions accepted the setting but ignored it. [Docs](../../../07.enterprise/03.auth/sso/ldap/index.md)
+- **Unit test revisions (EE)**: every save of a unit test creates a revision that you can browse, restore, or delete, as with flows. [Docs](../../../07.enterprise/02.governance/unit-tests/index.md)
 - **Execution labels in test fixtures (EE)**: `fixtures.labels` sets the labels a flow gets in production. [Docs](../../../07.enterprise/02.governance/unit-tests/index.md#set-execution-labels-in-fixtures)
 - **Dedicated storage and secrets manager form (EE)**: a namespace or tenant's dedicated internal storage and secrets manager are set in a form built from the plugin's properties, and saved values are kept when you edit them. [Docs](../../../07.enterprise/02.governance/tenants/index.md#dedicated-storage-and-secrets-backend-per-tenant)
 - **Audit log for concurrency counter resets (EE)**: changing a running counter on the **Concurrency Limits** page or through the API writes an audit log entry. [Docs](../../../05.workflow-components/14.concurrency/index.md#reset-a-stuck-running-counter)
@@ -97,6 +110,10 @@ Approvals, asset leases and the ASSET input, searchable execution values, custom
 - **Microsoft Defender XDR**: list, get, and update alerts and incidents, run advanced hunting queries, and trigger flows on new or updated alerts and incidents, in the Microsoft 365 plugin from version 1.11.0. [Docs](/plugins/plugin-microsoft365)
 - **Proofpoint TAP (EE)**: a new plugin that fetches URL clicks, threat messages, and the events that reached users from the TAP SIEM API, gets threat summaries and forensic evidence, lists Very Attacked People, and triggers flows on new SIEM events. [Docs](/plugins/plugin-ee-proofpoint)
 - **Torq (EE)**: a new plugin that runs Torq workflows through their webhook, lists and reads workflows and their executions, queries, reads, updates, and comments on cases, and triggers flows on new or updated cases. [Docs](/plugins/plugin-ee-torq)
+- **Network automation (EE)**: plugins for Arista, Cisco, Palo Alto Networks, Fortinet, Aruba, NetBox, Infoblox, and other network vendors, to read, diff, and apply device configuration from flows. [Plugins](/plugins)
+- **Vector databases**: new plugins for Qdrant, Chroma, LanceDB, and Milvus. [Plugins](/plugins)
+- **Task runner monitoring (EE)**: the Kubernetes, AWS, Azure, Google Cloud, and Huawei Cloud task runners can report CPU, memory, and network usage, and forward traces from the task. [Docs](../../../task-runners/04.types/03.kubernetes-task-runner/index.md#monitoring)
+- **Private Service Connect for Cloud Run (EE)**: the Cloud Run task runner and `cloudrun.Run` task can reach Google APIs through Private Service Connect endpoints. [Docs](../../../task-runners/04.types/11.google-cloudrun-task-runner/index.md)
 
 ## Behavior changes
 
