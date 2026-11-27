@@ -107,9 +107,9 @@ A green JDBC or Airbyte task tells you the query or the sync ran. Finding out wh
 - **Fivetran**: the connector's sync state and freshness, its alerts, and a breakdown per table.
 - **dbt** (CLI and Cloud): a model graph colored by run status, and the compiled SQL of each model, which is off by default and turned on with `outputCompiledSql: true`. In the Enterprise Edition and Cloud, each dbt model, seed, snapshot, test, and exposure is recorded as its own asset type, and asset cards show the test status of a model.
 
-<!-- VERIFY: dbt needs plugin-dbt#350, #351, #362, and #364 (all open, kind/do-not-merge, need core 2.1 GA) released before publishing. #362 is breaking (dbt asset types replace Table), so add it to Upgrade and Migration with a migration guide, or drop the asset sentence. Add the dbt plugin version to the sentence below. -->
+<!-- VERIFY: dbt needs plugin-dbt#350, #351, #362, and #364 (all open, kind/do-not-merge, need core 2.1 GA) released before publishing. #362 is breaking (dbt asset types replace Table), so add it to Upgrade and Migration with a migration guide, or drop the asset sentence. -->
 
-To get them, update the plugins to JDBC 3.0, Airbyte 1.8, Fivetran 2.1, or the dbt release for Kestra 2.1, or any later version. In the Enterprise Edition and Cloud, JDBC tasks with `assets.enableAuto: true` also record the tables they read and write as assets, with the lineage between them. See [Artifacts](/docs/ui/executions#artifacts) and [Plugins that emit assets](/docs/enterprise/governance/assets/declare-assets#plugins-that-emit-assets).
+To get them, update the plugins for Kestra 2.1, or any later version. In the Enterprise Edition and Cloud, JDBC tasks with `assets.enableAuto: true` also record the tables they read and write as assets, with the lineage between them. See [Artifacts](/docs/ui/executions#artifacts) and [Plugins that emit assets](/docs/enterprise/governance/assets/declare-assets#plugins-that-emit-assets).
 
 ![The Artifacts tab of an execution with two JDBC tasks, showing the SQL of a CREATE TABLE AS SELECT statement, the 14 rows it affected, and the table it created and the table it read](./execution-artifacts-jdbc.png)
 
