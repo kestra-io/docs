@@ -99,6 +99,8 @@ For the full property list, see the [Commands plugin documentation](/plugins/plu
 
 ## Handling outputs
 
+The examples below print `::{}::` lines directly. The [Kestra library for C# and F#](../../16.scripts/00.languages/index.md#kestra-libraries-for-script-tasks) wraps the same lines in functions that check their input.
+
 ### Variable output
 
 Emit key-value outputs from your script using the `::{}::` pattern. Kestra captures any line matching this format and makes the values available to downstream tasks.

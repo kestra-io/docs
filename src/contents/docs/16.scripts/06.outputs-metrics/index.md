@@ -146,6 +146,11 @@ Kestra.counter('metric_name', 100, {partition: 'file1'});
 Kestra.timer('timer1', (callback) => {setTimeout(callback, 1000)}, {tag1: 'hi'});
 Kestra.timer('timer2', 2.12, {tag1: 'from', tag2: 'kestra'});
 ```
+
+### Other languages
+
+R, Go, Ruby, C#, F#, PowerShell, Groovy, Julia, Lua, Perl and PHP have the same methods in their own Kestra library. See [Kestra libraries for script tasks](../00.languages/index.md#kestra-libraries-for-script-tasks) for the install line and a full example for each.
+
 ### Shell
 
 To send outputs and metrics from a Shell task, wrap a JSON payload (i.e., a map/dictionary) with double colons `'::{"outputs": {"key":"value"}}::'` or `'::{"metrics": [{"name":"count","type":"counter","value":1,"tags":{"key":"value"}::'` as shown in the following examples:
