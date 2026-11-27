@@ -10,4 +10,21 @@ describe("markdownHeadings", () => {
             "Rotate keys",
         ])
     })
+
+    it("skips comment lines inside code blocks", () => {
+        const body = [
+            "## Install",
+            "```bash",
+            "## Perform the GET request",
+            "curl https://kestra.io",
+            "```",
+            "~~~~yaml",
+            "## not a heading",
+            "~~~",
+            "## still in the block",
+            "~~~~",
+            "## Configure",
+        ].join("\n")
+        expect(markdownHeadings(body)).toEqual(["Install", "Configure"])
+    })
 })
