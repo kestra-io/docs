@@ -35,7 +35,7 @@ export const navigationTree = {
     ],
     // Enterprise Edition only. Entries are page sidebarTitles under kestra-for-infra/:
     // the landing page hides its sub-menus so the pages aren't listed twice.
-    "Kestra for Infra": [
+    "Kestra Infra": [
         "Infrastructure Tenant",
         "Set Up an Infrastructure Tenant",
         "Catalog and Requests",
