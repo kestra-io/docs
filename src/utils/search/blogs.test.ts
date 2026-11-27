@@ -1,5 +1,7 @@
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 import { blogsSearchResults, type BlogEntry } from "~/utils/search/blogs"
+
+vi.mock("astro:env/client", () => ({ API_URL: "https://api.test/v1" }))
 
 const post = (
     id: string,

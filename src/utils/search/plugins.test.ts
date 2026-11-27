@@ -1,6 +1,8 @@
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 import { pluginsSearchResults } from "~/utils/search/plugins"
 import { pluginCard } from "~/utils/search/testing"
+
+vi.mock("astro:env/client", () => ({ API_URL: "https://api.test/v1" }))
 
 const aws = pluginCard("AWS", {
     href: "/plugins/plugin-aws",

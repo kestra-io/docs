@@ -9,7 +9,8 @@ import {
     sortPlugins,
 } from "~/utils/plugins/searchPlugins"
 import type { SearchResult } from "~/utils/searchResults"
-import { fetchJson, loadOnce } from "~/utils/search/loaders"
+import { $fetch } from "~/utils/fetch"
+import { loadOnce } from "~/utils/search/loaders"
 import { MAX_RESULTS } from "~/utils/search/matching"
 
 export type PluginSearchCard = CardPlugin & { elements?: ElementPreview[] }
@@ -27,7 +28,7 @@ export interface PluginSearchResult extends SearchResult {
 }
 
 export const loadPluginsIndex = loadOnce(() =>
-    fetchJson<PluginSearchCard[]>("/api/plugins-search"),
+    $fetch<PluginSearchCard[]>("/api/plugins-search"),
 )
 
 export const pluginIcon = (card: Pick<CardPlugin, "className">) =>

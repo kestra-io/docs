@@ -1,6 +1,7 @@
 import { capitalize } from "~/utils/plugins/pluginUtils"
 import type { SearchResult } from "~/utils/searchResults"
-import { fetchJson, loadOnce } from "~/utils/search/loaders"
+import { $fetch } from "~/utils/fetch"
+import { loadOnce } from "~/utils/search/loaders"
 import { includesAll, MAX_RESULTS, searchTokens } from "~/utils/search/matching"
 import { pluginIcon, type PluginSearchCard } from "~/utils/search/plugins"
 
@@ -28,7 +29,7 @@ export interface BlueprintSearchResult extends SearchResult {
 type Popularity = { usage: number; plugin: string }
 
 export const loadBlueprintsIndex = loadOnce(() =>
-    fetchJson<BlueprintEntry[]>("/api/blueprints-search"),
+    $fetch<BlueprintEntry[]>("/api/blueprints-search"),
 )
 
 const NOT_A_NAME = new Set([

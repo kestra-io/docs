@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 import {
     blueprintPlugins,
     blueprintPopularity,
@@ -6,6 +6,8 @@ import {
     type BlueprintEntry,
 } from "~/utils/search/blueprints"
 import { pluginCard } from "~/utils/search/testing"
+
+vi.mock("astro:env/client", () => ({ API_URL: "https://api.test/v1" }))
 
 const aws = pluginCard("AWS", {
     className: "io.kestra.plugin.aws",

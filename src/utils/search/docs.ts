@@ -1,6 +1,7 @@
 import type { SearchResult } from "~/utils/searchResults"
 import { withFullTextMatches } from "~/utils/search/fullText"
-import { fetchJson, loadOnce } from "~/utils/search/loaders"
+import { $fetch } from "~/utils/fetch"
+import { loadOnce } from "~/utils/search/loaders"
 import { includesAll, MAX_RESULTS, searchTokens } from "~/utils/search/matching"
 
 export type DocsSection = {
@@ -37,7 +38,7 @@ export interface DocsSearchResult extends SearchResult {
 }
 
 export const loadDocsIndex = loadOnce(() =>
-    fetchJson<DocsIndex>("/api/docs-search"),
+    $fetch<DocsIndex>("/api/docs-search"),
 )
 
 const sectionOf = (page: DocsPage) => page.id.split("/")[0]

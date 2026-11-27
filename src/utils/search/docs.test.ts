@@ -1,9 +1,11 @@
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 import {
     docsSearchResults,
     type DocsIndex,
     type DocsPage,
 } from "~/utils/search/docs"
+
+vi.mock("astro:env/client", () => ({ API_URL: "https://api.test/v1" }))
 
 const page = (
     id: string,

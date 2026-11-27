@@ -1,6 +1,7 @@
 import type { SearchResult } from "~/utils/searchResults"
 import { withFullTextMatches } from "~/utils/search/fullText"
-import { fetchJson, loadOnce } from "~/utils/search/loaders"
+import { $fetch } from "~/utils/fetch"
+import { loadOnce } from "~/utils/search/loaders"
 import { includesAll, MAX_RESULTS, searchTokens } from "~/utils/search/matching"
 
 type BlogAuthor = { name: string; role?: string; avatar?: string }
@@ -26,7 +27,7 @@ export interface BlogSearchResult extends SearchResult {
 }
 
 export const loadBlogsIndex = loadOnce(() =>
-    fetchJson<BlogEntry[]>("/api/blogs-search"),
+    $fetch<BlogEntry[]>("/api/blogs-search"),
 )
 
 const newestFirst = (a: BlogEntry, b: BlogEntry) => b.date.localeCompare(a.date)
