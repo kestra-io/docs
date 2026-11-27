@@ -36,6 +36,7 @@ Approvals, asset leases and the ASSET input, searchable execution values, custom
 - **Loop `parseValues`**: read the fields of JSON object values as `item.value.field` instead of parsing them with `fromJson`. [Docs](../../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#read-object-fields-with-parsevalues)
 - **Loop `breakWhen`**: stop a `Loop` from starting new iterations once a condition is true after an iteration ends. Also in 2.0.4. [Docs](../../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#stop-early-with-breakwhen)
 - **Concurrency `queueLimit`**: with `behavior: QUEUE`, cap how many executions wait in the queue. Incoming executions beyond the cap are `CANCELLED`. [Docs](../../../05.workflow-components/14.concurrency/index.md#behavior-property)
+- **HTTP/2 for HTTP tasks**: set `options.httpVersion` to `HTTP_2` or `NEGOTIATE` on `Request`, `Download`, `SseRequest`, and the HTTP `Trigger`, for example to keep long requests alive behind a load balancer. [Docs](../../../15.how-to-guides/http-request/index.md#use-http2-for-long-running-requests)
 
 ## UI
 

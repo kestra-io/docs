@@ -283,3 +283,36 @@ tasks:
 For production, add your internal root CA to the JVM truststore on the Kestra worker. The worker then trusts any endpoint signed by that CA, and tasks connect without disabling verification.
 
 Build the truststore from the Kestra image's default `cacerts` plus your CA: a truststore that holds only your CA stops Kestra from trusting public endpoints. See [Trust an internal CA for outbound HTTPS connections](../../10.administrator-guide/custom-ca/index.md) for the Docker, Docker Compose, and Kubernetes steps.
+
+## Use HTTP/2 for long-running requests
+
+HTTP tasks use HTTP/1.1 by default. Set `options.httpVersion` to use HTTP/2 instead, for example when a load balancer or proxy between Kestra and the API closes connections that stay idle while the server works on a long request:
+
+```yaml
+id: http2_long_request
+namespace: company.team
+
+tasks:
+  - id: generate_report
+    type: io.kestra.plugin.core.http.Request
+    uri: https://api.example.com/reports
+    method: POST
+    contentType: application/json
+    body: '{"period": "2026-Q3"}'
+    options:
+      httpVersion: NEGOTIATE
+      timeout:
+        readIdleTimeout: PT15M
+```
+
+| Value | Behavior |
+|---|---|
+| `HTTP_1_1` | Uses HTTP/1.1. This is the default. |
+| `NEGOTIATE` | Uses HTTP/2 when the server offers it during the TLS handshake, and HTTP/1.1 otherwise, including for `http://` URLs. |
+| `HTTP_2` | Always uses HTTP/2. An `https://` server must support HTTP/2, and an `http://` server is assumed to support it without negotiation. If the server can't use HTTP/2, the task fails with a connection error, even with `allowFailed: true`. |
+
+HTTP/2 keeps an idle connection open only when the server, or a proxy in between, sends HTTP/2 `PING` frames. Kestra doesn't send any itself. The read idle timeout still applies, so for a response that takes several minutes, also raise `options.timeout.readIdleTimeout`, as in the example above.
+
+With `HTTP_2` or `NEGOTIATE`, Kestra can't log request and response bodies. If `options.logs` includes `REQUEST_BODY` or `RESPONSE_BODY`, the task logs only the headers, with a warning.
+
+`options.httpVersion` works the same way on the `Download` and `SseRequest` tasks, on the HTTP `Trigger`, and on plugin tasks that accept the same `options`.
