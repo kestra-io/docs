@@ -45,7 +45,7 @@ Keep the `(namespace)` roles free of tenant-level permissions. The upgrade and t
 Users keep their access to the namespaces they were bound to. They lose the tenant-level permissions their namespace bindings granted. For example:
 
 - A namespace-bound Admin can no longer manage users, groups, roles, bindings, service accounts or invitations, or read the audit logs.
-- A namespace-bound Developer or Editor can no longer create, update or delete dashboards, and loses the blueprint and MCP server permissions of the role.
+- A namespace-bound Developer or Editor can no longer create, update or delete dashboards. Blueprint and MCP server permissions never applied through a namespace binding, so nothing changes for them.
 
 To give back a tenant-level permission, create a role with it and bind that role to the whole tenant.
 

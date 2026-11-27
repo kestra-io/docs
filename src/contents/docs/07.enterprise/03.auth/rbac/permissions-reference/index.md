@@ -865,27 +865,28 @@ Notes
 **Scope:** Tenant
 
 **Actions and their meaning**
-- `VIEW` / `LIST`: view service accounts and their API tokens.
+- `VIEW` / `LIST`: view service accounts.
 - `CREATE`: create service accounts.
-- `UPDATE`: update service accounts and issue API tokens.
-- `DELETE`: delete service accounts or revoke API tokens.
+- `UPDATE`: update service accounts, and list, issue, and revoke their API tokens.
+- `DELETE`: delete service accounts.
 
 **Endpoints**
 
 VIEW / LIST
+- `GET /api/v1/{tenant}/service-accounts`
 - `GET /api/v1/{tenant}/service-accounts/{id}`
-- `GET /api/v1/{tenant}/service-accounts/{id}/api-tokens`
 
 CREATE
 - `POST /api/v1/{tenant}/service-accounts`
 
 UPDATE
 - `PUT /api/v1/{tenant}/service-accounts/{id}`
+- `GET /api/v1/{tenant}/service-accounts/{id}/api-tokens`
 - `POST /api/v1/{tenant}/service-accounts/{id}/api-tokens`
+- `DELETE /api/v1/{tenant}/service-accounts/{id}/api-tokens/{tokenId}`
 
 DELETE
 - `DELETE /api/v1/{tenant}/service-accounts/{id}`
-- `DELETE /api/v1/{tenant}/service-accounts/{id}/api-tokens/{tokenId}`
 
 Notes
 - Instance-owner-only endpoints under `/api/v1/service-accounts` (no tenant segment) do not use `SERVICE_ACCOUNT` permissions.

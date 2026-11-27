@@ -179,7 +179,7 @@ Kestra ships five managed roles. Each role's full permission set is visible unde
 | **Developer** | Everything Editor has, plus: full namespace management (including file management), secrets, credentials, and full blueprint CRUD. For engineers who also need platform-level access. |
 | **Editor** | Full flow and execution management (create, update, delete, execute, restart, kill, review approvals, etc.), triggers, KV, reusable inputs, dashboards, apps, test suites, assets, MCP servers, Copilot, and read-only cases. No namespace file management, no secrets or credentials, blueprint read-only. No IAM resources. |
 | **Launcher** | Execute flows and monitor executions (`EXECUTE`, `REPLAY`, `RESTART`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW`, `EXPORT`). Read-only on triggers, KV, dashboards, and assets. No flow write access, no namespace management. |
-| **Viewer** | `VIEW`, `LIST`, and `EXPORT` on flows, executions, triggers, and namespaces. Can access execution logs, outputs, files, and live-follow executions. No execution state changes (no restart, kill, replay, etc.). No write access anywhere. |
+| **Viewer** | `VIEW` and `LIST` on flows, executions, triggers, namespaces, blueprints, KV, reusable inputs, dashboards, apps, test suites, assets, and MCP servers, plus `EXPORT` on flows, executions, triggers, and dashboards. Can access execution logs, outputs, files, and live-follow executions. No execution state changes (no restart, kill, replay, etc.). No write access anywhere. |
 
 Admin, Developer, Editor and Viewer hold tenant-level permissions, so they can only be bound to the whole tenant. Launcher can be bound to a namespace. See [Namespace bindings](#namespace-bindings).
 
