@@ -71,7 +71,7 @@ const FIELDS = [
                                 <span>{tag}</span>
                             </>
                         ))}
-                    </span>{" "}
+                    </span>
                     <span class:list={["request", { go: idx === 0 }]}>
                         <Icon name="mdi:monitor" /> View App
                     </span>
@@ -86,12 +86,12 @@ const FIELDS = [
             </p>
             <div class="views">
                 <div class="view form">
-                    <strong class="section">Submit a request</strong>{" "}
+                    <strong class="section">Submit a request</strong>
                     {FIELDS.map((field, idx) => (
                         <label>
                             <span>
                                 <b>*</b> {field.label}
-                            </span>{" "}
+                            </span>
                             <span
                                 class:list={["input", { select: field.select }]}
                             >
@@ -101,7 +101,7 @@ const FIELDS = [
                                 {field.select && (
                                     <Icon name="mdi:chevron-down" />
                                 )}
-                            </span>{" "}
+                            </span>
                         </label>
                     ))}
                     <span class="next">Submit</span>
@@ -112,7 +112,7 @@ const FIELDS = [
                     </span>
                     <span class="state waiting">
                         <i></i> Waiting for approval
-                    </span>{" "}
+                    </span>
                     <code>Approver: data-owners</code>
                 </div>
                 <div class="view done">
@@ -146,7 +146,7 @@ const FIELDS = [
                 <strong>Approval required</strong>
                 <p>j.kim requests the customers dataset</p>
                 <span class="choices">
-                    <span class="reject">Reject</span>{" "}
+                    <span class="reject">Reject</span>
                     <span class="approve">Approve</span>
                 </span>
             </div>
