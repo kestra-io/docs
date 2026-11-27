@@ -180,7 +180,7 @@ When you now run the flow using the second dropdown value for the `dbt_command` 
 
 ### Push changes to Git
 
-Once you are satisfied with the changes, you can push them to the same Git repository to your desired Git branch using the [PushNamespaceFiles](../../15.how-to-guides/pushnamespacefiles/index.md).
+Once you are satisfied with the changes, you can push them to the same Git repository to your desired Git branch using the [PushNamespaceFiles](../../version-control-cicd/04.git/01.push-to-git/index.md#push-namespace-files).
 
 ```yaml
 id: push_dbt_to_git

@@ -30,11 +30,10 @@ apps, banners, bindings, blueprints, cases (with their templates, linked executi
 
 Execution data (executions, logs, metrics, audit logs, test runs) is excluded by default due to size. Use `--include-data` to include it.
 
-A metadata backup is not a copy of internal storage. It keeps only the latest value of each KV entry, and `--include-data` adds execution records but not the input and output files stored for those executions. To move internal storage to a different backend, follow [Migrate internal storage to another backend](#migrate-internal-storage-to-another-backend) instead.
+A metadata backup is not a copy of internal storage. It keeps only the latest value of each KV entry and the latest revision of each namespace file, so a restore doesn't bring back a file's revision history. Empty namespace folders are kept. `--include-data` adds execution records but not the input and output files stored for those executions. To move internal storage to a different backend, follow [Migrate internal storage to another backend](#migrate-internal-storage-to-another-backend) instead.
 
-<!-- TODO: remove this alert once https://github.com/kestra-io/kestra-ee/issues/11801 is fixed. -->
 :::alert{type="warning"}
-Metadata restore does not preserve namespace file revisions. Each stored revision is restored as a separate file (for example, `run.py.v2` and `run.py.v3`), the original path serves the first revision, and empty folders are dropped.
+Archives created with a version before 2.0.12, including every 1.3.x release, restore each stored revision of a namespace file as a separate file (for example, `run.py.v2` and `run.py.v3`), and the original path serves the first revision. They can't be repaired, so take a new backup after upgrading to 2.0.12 or later.
 :::
 
 Each backup run writes a new timestamped archive and never overwrites existing files. Archives are not pruned automatically — removing old archives is your responsibility.

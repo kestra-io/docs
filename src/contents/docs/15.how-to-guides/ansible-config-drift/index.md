@@ -67,7 +67,7 @@ tasks:
       log_path={{ workingDir }}/log
       callback_plugins = ./callback_plugins
       callbacks_enabled = kestra_logger
-      stdout_callback = ansible.builtin.null
+      stdout_callback = null
     commands:
       - ansible-playbook -i inventory.ini myplaybook.yml
 

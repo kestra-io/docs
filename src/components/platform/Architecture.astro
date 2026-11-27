@@ -1,0 +1,578 @@
+---
+import Rails from "./Rails.astro"
+import ArchitectureDiagram from "./ArchitectureDiagram.astro"
+
+const EDITIONS = ["Open source", "Enterprise"]
+
+const PARTS = [
+    {
+        zone: "control",
+        title: "Control plane",
+        text: "Decides what runs and when. Serves the UI, API, and MCP endpoint, fires triggers, and tracks every execution. It never runs your code. In Enterprise, SSO and RBAC control who can see and change what, and tenants keep teams apart on one instance.",
+    },
+    {
+        zone: "data",
+        title: "Data plane",
+        text: "Runs your code where your data lives: in the cloud, on-premises, or both. Workers connect back over gRPC, secured with mTLS in Enterprise, where worker groups send each task to the workers you choose by team, site, or hardware.",
+    },
+    {
+        zone: "queue",
+        title: "Queue and database",
+        text: "Holds state and passes messages between control plane services. Workers never touch it. Open source runs both on PostgreSQL or MySQL. Enterprise adds Elasticsearch for the database and seven message brokers for the queue: Kafka, Redis, AMQP, Google Cloud Pub/Sub, NATS JetStream, Amazon SQS/SNS, and Azure Event Hubs.",
+    },
+]
+---
+
+<section class="architecture" id="architecture" aria-labelledby="arch-h">
+    <Rails>
+        <header class="intro">
+            <h2 id="arch-h">
+                Coordinate in one place.
+                <span>Run anywhere.</span>
+            </h2>
+            <p>
+                Kestra separates orchestration from execution. The control plane
+                decides what runs, workers run it next to your data, and the
+                queue keeps both in sync.
+            </p>
+        </header>
+
+        <div class="edition" data-edition-tabs>
+            <div
+                class="panel"
+                id="edition-panel"
+                role="tabpanel"
+                aria-labelledby="edition-tab-1"
+            >
+                <div class="head">
+                    <div class="swap">
+                        <div class="copy" data-edition="oss">
+                            <h3>Trusted by thousands of customers worldwide</h3>
+                            <p>
+                                Full-featured orchestration, free to self-host,
+                                and built in the open.
+                            </p>
+                        </div>
+                        <div class="copy" data-edition="ent">
+                            <h3>
+                                Scalability and performance enterprises demand
+                            </h3>
+                            <p>
+                                Worker groups isolate and scale workloads. Kafka
+                                and Elasticsearch backends handle enterprise
+                                throughput.{" "}
+                                <a href="/enterprise">
+                                    Learn more about Enterprise Edition.
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="tabs" role="tablist" aria-label="Edition">
+                        <span class="thumb" aria-hidden="true" />
+                        {EDITIONS.map((label, idx) => (
+                            <button
+                                type="button"
+                                role="tab"
+                                class="tab"
+                                id={`edition-tab-${idx + 1}`}
+                                aria-selected={idx === 0 ? "true" : "false"}
+                                aria-controls="edition-panel"
+                                tabindex={idx === 0 ? 0 : -1}
+                            >
+                                {label}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+                <div class="diagram" data-arch-diagram>
+                    <ArchitectureDiagram />
+                </div>
+            </div>
+            <ul class="parts">
+                {PARTS.map((part) => (
+                    <li tabindex="0" data-zone={part.zone}>
+                        <h3>{part.title}</h3>
+                        <p>{part.text}</p>
+                    </li>
+                ))}
+            </ul>
+        </div>
+
+        <div class="closing">
+            <p>Add workers to absorb load. Your flows don’t change.</p>
+            <a href="/docs/architecture">
+                Learn more about architecture <span class="arrow">→</span>
+            </a>
+        </div>
+    </Rails>
+</section>
+
+<script>
+    function wireArchitecture() {
+        const diagram = document.querySelector<HTMLElement>(
+            "[data-arch-diagram]:not([data-wired])",
+        )
+        if (!diagram) return
+        diagram.dataset.wired = "true"
+        const zones = [
+            ...document.querySelectorAll<HTMLElement>(
+                ".architecture [data-zone]",
+            ),
+        ]
+        const parts = zones.filter((zone) => !diagram.contains(zone))
+        const focus = (zone?: string) => {
+            if (zone) diagram.dataset.focus = zone
+            else delete diagram.dataset.focus
+            for (const part of parts)
+                part.classList.toggle("lit", part.dataset.zone === zone)
+        }
+        for (const zone of zones) {
+            const on = () => focus(zone.dataset.zone)
+            const off = () => focus()
+            zone.addEventListener("mouseenter", on)
+            zone.addEventListener("mouseleave", off)
+            if (!parts.includes(zone)) continue
+            zone.addEventListener("focus", on)
+            zone.addEventListener("blur", off)
+        }
+    }
+
+    function wireEditions() {
+        const root = document.querySelector<HTMLElement>(
+            "[data-edition-tabs]:not([data-wired])",
+        )
+        if (!root) return
+        root.dataset.wired = "true"
+        const tabs = [...root.querySelectorAll<HTMLElement>("[role=tab]")]
+        const panel = root.querySelector<HTMLElement>("[role=tabpanel]")!
+        const open = (idx: number) => {
+            tabs.forEach((tab, i) => {
+                tab.setAttribute("aria-selected", String(i === idx))
+                tab.tabIndex = i === idx ? 0 : -1
+            })
+            panel.setAttribute("aria-labelledby", tabs[idx].id)
+        }
+        tabs.forEach((tab, idx) => {
+            tab.addEventListener("click", () => open(idx))
+            tab.addEventListener("keydown", (e) => {
+                if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return
+                e.preventDefault()
+                const next = (idx + 1) % tabs.length
+                tabs[next].focus()
+                open(next)
+            })
+        })
+    }
+
+    function init() {
+        wireEditions()
+        wireArchitecture()
+    }
+
+    document.addEventListener("astro:page-load", init)
+    init()
+</script>
+
+<style lang="scss">
+    @use "/src/components/about/style/section" as *;
+
+    .architecture {
+        border-top: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-body);
+
+        :global([data-edition="ent"]) {
+            display: none;
+        }
+
+        &:has(#edition-tab-2[aria-selected="true"]) {
+            :global([data-edition="oss"]) {
+                display: none;
+            }
+
+            :global([data-edition="ent"]) {
+                display: flex;
+            }
+        }
+
+        :global(.swap) {
+            display: grid;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            &:not(:has(#edition-tab-2[aria-selected="true"]))
+                :global(.swap > [data-edition="oss"]),
+            &:has(#edition-tab-2[aria-selected="true"])
+                :global(.swap > [data-edition="ent"]) {
+                animation: edition-in 0.5s ease both;
+            }
+        }
+
+        :global(.swap > [data-edition]) {
+            grid-area: 1 / 1;
+            display: flex;
+        }
+
+        :global(.swap > [data-edition="ent"]) {
+            visibility: hidden;
+        }
+
+        &:has(#edition-tab-2[aria-selected="true"]) {
+            :global(.swap > [data-edition]) {
+                display: flex;
+            }
+
+            :global(.swap > [data-edition="oss"]) {
+                visibility: hidden;
+            }
+
+            :global(.swap > [data-edition="ent"]) {
+                visibility: visible;
+            }
+        }
+
+        @include media-breakpoint-down(lg) {
+            :global(.swap > [data-edition="ent"]) {
+                display: none;
+            }
+
+            &:has(#edition-tab-2[aria-selected="true"]) {
+                :global(.swap > [data-edition="oss"]) {
+                    display: none;
+                }
+
+                :global(.swap > [data-edition="ent"]) {
+                    display: flex;
+                }
+            }
+        }
+    }
+
+    .intro {
+        display: grid;
+        justify-items: center;
+        row-gap: 1.25rem;
+        padding-bottom: 4rem;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            padding-bottom: 3rem;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+            color: var(--ks-content-primary);
+            text-wrap: balance;
+
+            span {
+                display: block;
+                color: var(--ks-content-tertiary);
+            }
+        }
+
+        p {
+            max-width: 40rem;
+            margin: 0;
+            font-size: 1.125rem;
+            line-height: 1.55;
+            color: var(--ks-content-tertiary);
+            text-wrap: balance;
+        }
+    }
+
+    @keyframes edition-in {
+        from {
+            opacity: 0;
+            filter: blur(4px);
+        }
+    }
+
+    @mixin bleed($edge) {
+        content: "";
+        position: absolute;
+        #{$edge}: -1px;
+        left: -100vw;
+        right: -100vw;
+        height: 1px;
+        background: var(--ks-border-primary);
+        pointer-events: none;
+
+        @include media-breakpoint-down(xl) {
+            display: none;
+        }
+    }
+
+    .edition {
+        --rule: 1px solid var(--ks-border-primary);
+
+        position: relative;
+        margin: 0 calc(-1 * var(--inset));
+        border-block: var(--rule);
+        background:
+            radial-gradient(
+                ellipse 50% 40% at 100% 0%,
+                rgba(126, 104, 255, 0.1),
+                transparent 70%
+            ),
+            radial-gradient(
+                ellipse 50% 40% at 0% 70%,
+                rgba(126, 104, 255, 0.08),
+                transparent 70%
+            ),
+            color-mix(
+                in srgb,
+                var(--ks-background-secondary) 60%,
+                var(--ks-background-body)
+            );
+
+        @include media-breakpoint-down(xl) {
+            margin: 0;
+            border: var(--rule);
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+
+        @include media-breakpoint-down(md) {
+            margin-inline: calc(-1 * var(--inset));
+            border-inline: 0;
+            border-radius: 0;
+        }
+
+        &::before {
+            @include bleed(top);
+        }
+
+        &::after {
+            @include bleed(bottom);
+        }
+    }
+
+    .head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 2rem;
+
+        @include media-breakpoint-down(lg) {
+            flex-direction: column-reverse;
+            gap: 1.25rem;
+        }
+    }
+
+    .tabs {
+        position: relative;
+        display: inline-grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        flex: none;
+        padding: 0.25rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 0.625rem;
+        background: var(--ks-background-body);
+
+        @include media-breakpoint-down(md) {
+            display: grid;
+            align-self: stretch;
+        }
+    }
+
+    .thumb {
+        position: absolute;
+        top: 0.25rem;
+        bottom: 0.25rem;
+        left: 0.25rem;
+        width: calc(50% - 0.25rem);
+        border-radius: 0.375rem;
+        background: var(--ks-background-secondary);
+        transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+
+        .tabs:has(#edition-tab-2[aria-selected="true"]) > & {
+            transform: translateX(100%);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            transition: none;
+        }
+    }
+
+    .tab {
+        position: relative;
+        padding: 0.5rem 1.125rem;
+        border: 0;
+        border-radius: 0.375rem;
+        background: transparent;
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--ks-content-tertiary);
+        cursor: pointer;
+        transition: color 0.2s ease;
+
+        &:hover {
+            color: var(--ks-content-primary);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: 1px;
+        }
+
+        &[aria-selected="true"] {
+            color: var(--ks-content-primary);
+            cursor: default;
+        }
+    }
+
+    .panel {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 2.5rem var(--inset);
+
+        @include media-breakpoint-down(lg) {
+            padding: 1.25rem;
+        }
+    }
+
+    .copy {
+        position: relative;
+        flex-direction: column;
+        gap: 0.5rem;
+        max-width: 46rem;
+
+        &[data-edition="oss"] {
+            display: flex;
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            margin: 0;
+            font-size: 1.0625rem;
+            line-height: 1.6;
+            color: var(--ks-content-secondary);
+        }
+
+        a {
+            @include text-link;
+        }
+    }
+
+    .parts {
+        --rule: 1px solid var(--ks-border-primary);
+
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin: 0;
+        padding: 0;
+        border-top: var(--rule);
+        list-style: none;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        &::after {
+            @include bleed(top);
+        }
+
+        li {
+            position: relative;
+            padding: 2rem var(--inset) 2.25rem;
+            cursor: default;
+            transition: background-color 0.3s ease;
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: -1px;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: var(--ks-content-primary);
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+            }
+
+            &:hover,
+            &:focus-visible,
+            &.lit {
+                outline: none;
+                background: var(--ks-background-body);
+
+                &::before {
+                    transform: none;
+                }
+            }
+
+            & + li {
+                border-left: var(--rule);
+
+                @include media-breakpoint-down(lg) {
+                    border-left: 0;
+                    border-top: var(--rule);
+                }
+            }
+        }
+
+        h3 {
+            margin: 0 0 0.625rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            max-width: 26rem;
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--ks-content-secondary);
+        }
+    }
+
+    .closing {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem 2rem;
+        position: relative;
+        margin: 0 calc(-1 * var(--inset));
+        padding: 1.75rem var(--inset);
+        border-bottom: 1px solid var(--ks-border-primary);
+
+        &::after {
+            @include bleed(bottom);
+        }
+
+        @include media-breakpoint-down(xl) {
+            margin: 0;
+            padding-inline: 0;
+            border-bottom: 0;
+        }
+
+        p {
+            margin: 0;
+            font-size: $font-size-lg;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        a {
+            @include text-link;
+        }
+    }
+</style>

@@ -135,10 +135,11 @@ Changes to the official Terraform provider. Relevant for teams managing Kestra r
 
 ### CLI
 
-Changes to [`kestractl`](../../kestra-cli/kestractl/index.md#installation) behavior. Relevant for teams using the CLI in CI/CD pipelines.
+Changes to the server CLI and to [`kestractl`](../../kestra-cli/kestractl/index.md#installation) behavior. Relevant for teams using the CLI in CI/CD pipelines.
 
 | Guide | Editions | What changed |
 |---|---|---|
+| [Server CLI flow commands removed](./server-cli-flow-commands-removed) | OSS, EE | `kestra flow validate`, `create`, `update`, `updates`, `namespace update`, `expand`, and `kestra namespace files update` are removed, along with the `[[> file]]` include helper. Use `kestractl` in CI/CD pipelines. |
 | [flows bulk-update --delete default](./bulk-update-delete-default) | OSS, EE | `--delete` now defaults to `false`. Pipelines relying on the previous default must pass `--delete` explicitly to delete flows absent from the file. |
 
 ## Completing the migration

@@ -1,0 +1,320 @@
+---
+import BlockTitle from "~/components/enterprise/BlockTitle.astro"
+
+const DEFAULT_COLUMNS = ["Kestra Core", "Kestra Cloud", "Kestra Enterprise"]
+
+const DEFAULT_ROWS: { label: string; values: string[] }[] = [
+    { label: "Who operates", values: ["You", "Kestra", "You"] },
+    {
+        label: "Where it runs",
+        values: [
+            "Anywhere you deploy it",
+            "Managed by Kestra",
+            "Your infrastructure, including air-gapped",
+        ],
+    },
+    {
+        label: "Governance",
+        values: [
+            "Basic authentication",
+            "SSO, RBAC and audit logs",
+            "Full: SSO, LDAP, SCIM, RBAC, audit logs, policies",
+        ],
+    },
+    {
+        label: "How you pay",
+        values: ["Open Source", "Usage-based", "Instance-based"],
+    },
+]
+
+interface Props {
+    headingId?: string
+    title?: string
+    blockTitle?: string
+    columns?: string[]
+    rows?: { label: string; values: string[] }[]
+}
+
+const {
+    headingId = "how-to-choose",
+    title = "How to choose",
+    blockTitle = title.toUpperCase(),
+    columns = DEFAULT_COLUMNS,
+    rows = DEFAULT_ROWS,
+} = Astro.props
+---
+
+<section
+    class="pricing-choose surface-dark"
+    aria-labelledby={headingId}
+    style={`--cols: ${columns.length}`}
+>
+    <div class="container-xl">
+        <div class="rails">
+            <header>
+                <h2 id={headingId}>
+                    <span class="visually-hidden">{title}</span>
+                    <BlockTitle text={blockTitle} prefix={headingId} />
+                </h2>
+            </header>
+            <div class="scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <td></td>
+                            {columns.map((edition) => (
+                                <th scope="col">{edition}</th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {rows.map((row) => (
+                            <tr>
+                                <th scope="row">{row.label}</th>
+                                {row.values.map((value) => (
+                                    <td>{value}</td>
+                                ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            <ul class="cards">
+                {columns.map((edition, idx) => (
+                    <li class:list={{ featured: idx === columns.length - 1 }}>
+                        <h3>{edition}</h3>
+                        <dl>
+                            {rows.map((row) => (
+                                <div>
+                                    <dt>{row.label}</dt>
+                                    <dd>{row.values[idx]}</dd>
+                                </div>
+                            ))}
+                        </dl>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "../about/style/section" as *;
+
+    .pricing-choose {
+        --ks-border-primary: #{$dark-band-line};
+        --ks-content-primary: #ffffff;
+        --ks-content-secondary: #cfcdd9;
+        --ks-content-link: #a396ff;
+        --rule: 1px solid var(--ks-border-primary);
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+        --block-title-base: rgba(216, 214, 236, 0.68);
+
+        position: relative;
+        overflow: hidden;
+        @include dark-band;
+    }
+
+    .rails {
+        padding-bottom: 4rem;
+        border-inline: var(--rule);
+    }
+
+    header {
+        padding: 7.5rem var(--inset) 3.5rem;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem 2.5rem;
+        }
+
+        h2 {
+            max-width: 72rem;
+            margin: 0 auto;
+            user-select: none;
+        }
+    }
+
+    .scroll {
+        position: relative;
+        overflow-x: auto;
+        border-block: var(--rule);
+
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+
+        @include media-breakpoint-up(lg) {
+            overflow: visible;
+
+            &::before {
+                content: "";
+                position: absolute;
+                inset: -1px auto -1px 50%;
+                width: 100vw;
+                border-block: var(--rule);
+                translate: -50% 0;
+                pointer-events: none;
+            }
+
+            &::after {
+                content: "";
+                position: absolute;
+                inset: 0 0 0 auto;
+                z-index: 1;
+                width: calc(78% / var(--cols, 3));
+                border-radius: 1rem;
+                background: linear-gradient(
+                    180deg,
+                    color-mix(in srgb, var(--ks-content-link) 6%, transparent),
+                    transparent
+                );
+                border: 1px solid
+                    color-mix(in srgb, var(--ks-content-link) 55%, transparent);
+                animation: pricing-choose-glow 3.2s ease-in-out infinite
+                    alternate;
+                pointer-events: none;
+            }
+        }
+    }
+
+    table {
+        width: 100%;
+        min-width: 44rem;
+        margin: 0;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
+
+    th,
+    td {
+        padding: 1.5rem 1.5rem;
+        text-align: left;
+        vertical-align: top;
+
+        &:first-child {
+            width: 22%;
+            padding-left: var(--inset);
+        }
+
+        & + th,
+        & + td {
+            border-left: var(--rule);
+        }
+    }
+
+    tbody tr {
+        border-top: var(--rule);
+    }
+
+    thead > tr > *,
+    tbody th {
+        background: rgba(255, 255, 255, 0.035);
+    }
+
+    thead th {
+        font-size: $font-size-lg;
+        font-weight: 600;
+        color: var(--ks-content-primary);
+    }
+
+    tbody th {
+        font-size: $font-size-md;
+        font-weight: 400;
+        color: var(--ks-content-secondary);
+    }
+
+    tbody td {
+        font-size: $font-size-lg;
+        font-weight: 500;
+        line-height: 1.4;
+        color: var(--ks-content-primary);
+    }
+
+    tbody tr:last-child > * {
+        padding-bottom: 2.5rem;
+    }
+
+    .cards {
+        display: none;
+        margin: 0;
+        padding: 0;
+        border-top: var(--rule);
+        list-style: none;
+
+        @include media-breakpoint-down(md) {
+            display: block;
+        }
+
+        > li {
+            border-bottom: var(--rule);
+
+            &.featured {
+                margin: 1rem 0.75rem 0;
+                overflow: hidden;
+                border: 1px solid
+                    color-mix(in srgb, var(--ks-content-link) 55%, transparent);
+                border-radius: 1rem;
+                animation: pricing-choose-glow 3.2s ease-in-out infinite
+                    alternate;
+
+                h3,
+                dl > div {
+                    padding-inline: calc(var(--inset) - 0.75rem);
+                }
+            }
+        }
+
+        h3 {
+            margin: 0;
+            padding: 1rem var(--inset);
+            background: rgba(255, 255, 255, 0.035);
+            font-size: $font-size-md;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        dl {
+            margin: 0;
+
+            > div {
+                display: grid;
+                grid-template-columns: 7rem minmax(0, 1fr);
+                gap: 1rem;
+                padding: 0.875rem var(--inset);
+                border-top: var(--rule);
+            }
+        }
+
+        dt {
+            font-size: $font-size-sm;
+            font-weight: 400;
+            line-height: 1.7;
+            color: var(--ks-content-secondary);
+        }
+
+        dd {
+            margin: 0;
+            font-size: $font-size-md;
+            font-weight: 500;
+            line-height: 1.5;
+            color: var(--ks-content-primary);
+        }
+    }
+
+    @keyframes pricing-choose-glow {
+        from {
+            box-shadow: 0 0 1rem 0 rgba(163, 150, 255, 0.12);
+        }
+
+        to {
+            box-shadow: 0 0 2.75rem 0.25rem rgba(163, 150, 255, 0.42);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .scroll::after,
+        .cards > .featured {
+            animation: none;
+        }
+    }
+</style>

@@ -85,10 +85,7 @@ interface PluginInformation {
     href?: string
 }
 
-type KVNamespace = import("@cloudflare/workers-types").KVNamespace
-type ENV = {
-    ICON_CACHE: KVNamespace
-}
+type ENV = Record<string, never>
 
 type Runtime = import("@astrojs/cloudflare").Runtime<ENV>
 

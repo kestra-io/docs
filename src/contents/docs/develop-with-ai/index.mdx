@@ -7,7 +7,7 @@ description: "Use AI to build and operate Kestra: AI Copilot in the Kestra UI, o
 ---
 
 import ChildCard from "~/components/docs/ChildCard.astro"
-import PluginCount from "~/components/content/PluginCount.vue"
+import PluginCount from "~/components/content/PluginCount.astro"
 
 Use AI to write, fix, and operate flows, from the Kestra UI or from your own coding agent.
 
@@ -34,7 +34,7 @@ Start from where you already work:
 
 If your flows live in Git next to application code, you can stay in your coding agent. Three pieces work together, and each covers a different gap:
 
-- **[Docs MCP server](./02.kestra-mcp-resources/index.md) for context.** A hosted [Model Context Protocol](https://modelcontextprotocol.io/) endpoint that gives your agent live task schemas for all <PluginCount client:idle /> plugins, the blueprints library, and documentation search. Without it, an agent guesses plugin properties from stale training data.
+- **[Docs MCP server](./02.kestra-mcp-resources/index.md) for context.** A hosted [Model Context Protocol](https://modelcontextprotocol.io/) endpoint that gives your agent live task schemas for all <PluginCount /> plugins, the blueprints library, and documentation search. Without it, an agent guesses plugin properties from stale training data.
 - **[Agent Skills](./03.agent-skills/index.md) for know-how.** `SKILL.md` files that teach your agent to write valid flows, harden them for production, operate an environment, and migrate from Airflow or to Kestra 2.0. Skills carry the guardrails: no invented task types, no hardcoded secrets, validate before deploying.
 - **[`kestractl`](../kestra-cli/kestractl/index.md) to act.** The Kestra CLI that the agent calls to validate, deploy, and run flows on your instance. Without it, the agent can write flows but can't deploy them.
 

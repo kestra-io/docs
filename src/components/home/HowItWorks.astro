@@ -8,7 +8,7 @@ import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
 const totalPlugins = await fetchTotalPluginsCount()
 
-const STEPS = [
+const DEFAULT_STEPS = [
     {
         title: "Declare",
         text: "Write the workflow in YAML with your favorite editor or coding agent, or build it in the visual editor. Every change is versioned, reviewable, and deployable via your CI/CD pipeline.",
@@ -79,6 +79,127 @@ const CROWD = [
     "redis.list.ListPush",
 ]
 
+const RUN = [
+    { id: "extract", duration: "2.1s", start: 0, length: 0.14 },
+    { id: "approve", duration: "3m 40s", start: 0.14, length: 0.6 },
+    { id: "post_to_erp", duration: "4.6s", start: 0.74, length: 0.26 },
+]
+
+const LOGS = [
+    {
+        at: 1500,
+        level: "INFO",
+        time: "02:00:02.104",
+        task: "extract",
+        message: "Query returned 1,204 rows",
+    },
+    {
+        at: 1650,
+        level: "WARN",
+        time: "02:00:02.311",
+        task: "approve",
+        message: "Execution paused, waiting for m.lee",
+    },
+    {
+        at: 3300,
+        level: "INFO",
+        time: "02:03:42.518",
+        task: "approve",
+        message: "Execution resumed by m.lee",
+    },
+    {
+        at: 3450,
+        level: "INFO",
+        time: "02:03:42.640",
+        task: "post_to_erp",
+        message: "Python 3.12 container started",
+    },
+    {
+        at: 4400,
+        level: "INFO",
+        time: "02:03:47.330",
+        task: "post_to_erp",
+        message: "Journal posted to the ERP",
+    },
+]
+
+interface CardItem {
+    text: string
+    avatar?: string
+    reviewer?: boolean
+    code?: string
+    on?: number
+    fresh?: boolean
+    past?: boolean
+    state?: boolean
+}
+
+interface GovItem {
+    icon: string
+    text: string
+    small?: string
+    waiting?: string
+    approved?: string
+    on: number
+}
+
+const GIT = {
+    title: "Versioned in Git",
+    icon: "mdi:source-branch",
+    branch: "main",
+    items: [
+        { avatar: "ML", text: "Add the nightly close", code: "a3f9c2", on: 1400, fresh: true },
+        { avatar: "AR", reviewer: true, text: "Review approved", on: 2000, state: true },
+        { avatar: "ML", text: "Move cron to 02:00", code: "7be1d0", past: true },
+        { avatar: "AR", reviewer: true, text: "Initial flow", code: "c41e88", past: true },
+    ] as CardItem[],
+}
+
+const CI = {
+    title: "CI/CD",
+    icon: "mdi:rocket-launch-outline",
+    done: "Deployed",
+    doneOn: 3800,
+    open: "Running",
+    items: [
+        { text: "Validate flow", on: 2600 },
+        { text: "Run tests", on: 3000 },
+        { text: "Deploy to finance", on: 3500 },
+    ],
+}
+
+const GOV = {
+    title: "Governance",
+    icon: "mdi:shield-check-outline",
+    items: [
+        { icon: "mdi:key-outline", text: "Permissions", small: "etl-bot can run finance flows", on: 1000 },
+        { icon: "mdi:account-check-outline", text: "Approval", waiting: "Waiting for m.lee", approved: "Approved by m.lee", on: 1650 },
+        { icon: "mdi:text-box-search-outline", text: "Audit trail", small: "Every step logged", on: 4600 },
+    ] as GovItem[],
+}
+
+interface Props {
+    headingId?: string
+    title?: string
+    lead?: string
+    steps?: { title: string; text: string }[]
+    foot?: { label: string; href: string } | null
+}
+
+const {
+    headingId = "how-it-works",
+    title = "How it works",
+    lead = "Define workflows in YAML that teams review and version in Git, then run them on a schedule, on events, or through the API.",
+    steps: STEPS = DEFAULT_STEPS,
+    foot = { label: "See the platform", href: "/features" },
+} = Astro.props
+
+const SCENES = Astro.slots.has("scene-0")
+    ? await Promise.all(
+          STEPS.map((_, idx) => Astro.slots.render(`scene-${idx}`)),
+      )
+    : null
+
 const fetchIcon = async (type: string) => {
     try {
         const response = await fetch(
@@ -90,9 +211,9 @@ const fetchIcon = async (type: string) => {
         return null
     }
 }
-const [generic, ...fetched] = await Promise.all(
-    ["unknown.Plugin", ...USED, ...CROWD].map(fetchIcon),
-)
+const [generic, ...fetched] = SCENES
+    ? []
+    : await Promise.all(["unknown.Plugin", ...USED, ...CROWD].map(fetchIcon))
 const dataUri = (svg: string | null) =>
     svg && svg !== generic ? `data:image/svg+xml;base64,${svg}` : null
 const icons = fetched.slice(0, USED.length).map(dataUri)
@@ -161,65 +282,21 @@ const CODE = LINES.map((line) => {
     ].join("")
 }).join("")
 
-const RUN = [
-    { id: "extract", duration: "2.1s", start: 0, length: 0.14 },
-    { id: "approve", duration: "3m 40s", start: 0.14, length: 0.6 },
-    { id: "post_to_erp", duration: "4.6s", start: 0.74, length: 0.26 },
-]
-
-const LOGS = [
-    {
-        at: 1500,
-        level: "INFO",
-        time: "02:00:02.104",
-        task: "extract",
-        message: "Query returned 1,204 rows",
-    },
-    {
-        at: 1650,
-        level: "WARN",
-        time: "02:00:02.311",
-        task: "approve",
-        message: "Execution paused, waiting for m.lee",
-    },
-    {
-        at: 3300,
-        level: "INFO",
-        time: "02:03:42.518",
-        task: "approve",
-        message: "Execution resumed by m.lee",
-    },
-    {
-        at: 3450,
-        level: "INFO",
-        time: "02:03:42.640",
-        task: "post_to_erp",
-        message: "Python 3.12 container started",
-    },
-    {
-        at: 4400,
-        level: "INFO",
-        time: "02:03:47.330",
-        task: "post_to_erp",
-        message: "Journal posted to the ERP",
-    },
-]
-
 const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
 ---
 
-<section class="how-it-works" aria-labelledby="how-it-works" data-how>
+<section
+    class="how-it-works"
+    aria-labelledby={headingId}
+    data-how
+>
     <PixelEdges left="wide" right="cluster" />
     <div class="container-xl">
         <div class="grid">
             <header class="head">
-                <h2 id="how-it-works">How it works</h2>
+                <h2 id={headingId}>{title}</h2>
                 <div>
-                    <p>
-                        Define workflows in YAML that teams review and version
-                        in Git, then run them on a schedule, on events, or
-                        through the API.
-                    </p>
+                    {lead && <p>{lead}</p>}
                 </div>
             </header>
 
@@ -246,6 +323,8 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                     aria-hidden="true"
                     style={`--pixels: url("${pixelCluster}")`}></span>
 
+                {!SCENES && (
+                    <>
                 <div class="carousel" aria-hidden="true" style={CAROUSEL_ICONS}>
                     <div class="lane">
                         {
@@ -289,6 +368,17 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                     }
                 </svg>
 
+                    </>
+                )}
+
+                {SCENES ? (
+                    SCENES.map((html, idx) => (
+                        <div class="scene" data-scene={idx} data-scene-slot={idx}>
+                            <Fragment set:html={html} />
+                        </div>
+                    ))
+                ) : (
+                    <>
                 <div class="card editor" aria-label="The nightly_close flow">
                     <div class="tabs">
                         <span class="tab active yaml-tab">
@@ -387,114 +477,73 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
 
                 <div class="card side git" data-scene="0">
                     <div class="card-head">
-                        <Icon name="mdi:source-branch" />
-                        <span>Versioned in Git</span>
-                        <code class="branch">main</code>
+                        <Icon name={GIT.icon} />
+                        <span>{GIT.title}</span>
+                        <code class="branch">{GIT.branch}</code>
                     </div>
                     <ul>
-                        <li class="fresh" data-on="1400">
-                            <span class="avatar">ML</span>
-                            <span class="what">
-                                Add the nightly close
-                                <code>a3f9c2</code>
-                            </span>
-                        </li>
-                        <li data-on="2000">
-                            <span class="avatar reviewer">AR</span>
-                            <span class="what">Review approved</span>
-                            <span class="state"
-                                ><Icon name="mdi:check-circle-outline" /></span
+                        {GIT.items.map((item) => (
+                            <li
+                                class:list={{ fresh: item.fresh, past: item.past }}
+                                data-on={item.on}
                             >
-                        </li>
-                        <li class="past">
-                            <span class="avatar">ML</span>
-                            <span class="what">
-                                Move cron to 02:00
-                                <code>7be1d0</code>
-                            </span>
-                        </li>
-                        <li class="past">
-                            <span class="avatar reviewer">AR</span>
-                            <span class="what">
-                                Initial flow
-                                <code>c41e88</code>
-                            </span>
-                        </li>
+                                {item.avatar && (
+                                    <span class:list={["avatar", { reviewer: item.reviewer }]}>
+                                        {item.avatar}
+                                    </span>
+                                )}
+                                <span class="what">
+                                    {item.text}
+                                    {item.code && <code>{item.code}</code>}
+                                </span>
+                                {item.state && (
+                                    <span class="state">
+                                        <Icon name="mdi:check-circle-outline" />
+                                    </span>
+                                )}
+                            </li>
+                        ))}
                     </ul>
                 </div>
                 <div class="card side ci" data-scene="0">
                     <div class="card-head">
-                        <Icon name="mdi:rocket-launch-outline" />
-                        <span>CI/CD</span>
-                        <span class="pill merged" data-on="3800">Deployed</span>
-                        <span class="pill open">Running</span>
+                        <Icon name={CI.icon} />
+                        <span>{CI.title}</span>
+                        <span class="pill merged" data-on={CI.doneOn}>{CI.done}</span>
+                        <span class="pill open">{CI.open}</span>
                     </div>
                     <ul>
-                        <li data-on="2600">
-                            <span class="what">Validate flow</span>
-                            <span class="state"
-                                ><Icon name="mdi:check-circle-outline" /></span
-                            >
-                        </li>
-                        <li data-on="3000">
-                            <span class="what">Run tests</span>
-                            <span class="state"
-                                ><Icon name="mdi:check-circle-outline" /></span
-                            >
-                        </li>
-                        <li data-on="3500">
-                            <span class="what">Deploy to finance</span>
-                            <span class="state"
-                                ><Icon name="mdi:check-circle-outline" /></span
-                            >
-                        </li>
+                        {CI.items.map((item) => (
+                            <li data-on={item.on}>
+                                <span class="what">{item.text}</span>
+                                <span class="state">
+                                    <Icon name="mdi:check-circle-outline" />
+                                </span>
+                            </li>
+                        ))}
                     </ul>
                 </div>
 
                 <div class="card side gov" data-scene="2">
                     <div class="card-head">
-                        <Icon name="mdi:shield-check-outline" />
-                        <span>Governance</span>
+                        <Icon name={GOV.icon} />
+                        <span>{GOV.title}</span>
                     </div>
                     <ul>
-                        <li data-on="1000">
-                            <Icon name="mdi:key-outline" class="glyph" />
-                            <span class="what">
-                                Permissions
-                                <small>etl-bot can run finance flows</small>
-                            </span>
-                            <span class="state"
-                                ><Icon name="mdi:check-circle-outline" /></span
-                            >
-                        </li>
-                        <li class="approval" data-on="1650">
-                            <Icon
-                                name="mdi:account-check-outline"
-                                class="glyph"
-                            />
-                            <span class="what">
-                                Approval
-                                <small class="waiting">Waiting for m.lee</small>
-                                <small class="approved">Approved by m.lee</small
-                                >
-                            </span>
-                            <span class="state"
-                                ><Icon name="mdi:check-circle-outline" /></span
-                            >
-                        </li>
-                        <li data-on="4600">
-                            <Icon
-                                name="mdi:text-box-search-outline"
-                                class="glyph"
-                            />
-                            <span class="what">
-                                Audit trail
-                                <small>Every step logged</small>
-                            </span>
-                            <span class="state"
-                                ><Icon name="mdi:check-circle-outline" /></span
-                            >
-                        </li>
+                        {GOV.items.map((item) => (
+                            <li class:list={{ approval: !!item.waiting }} data-on={item.on}>
+                                <Icon name={item.icon} class="glyph" />
+                                <span class="what">
+                                    {item.text}
+                                    {item.small && <small>{item.small}</small>}
+                                    {item.waiting && <small class="waiting">{item.waiting}</small>}
+                                    {item.approved && <small class="approved">{item.approved}</small>}
+                                </span>
+                                <span class="state">
+                                    <Icon name="mdi:check-circle-outline" />
+                                </span>
+                            </li>
+                        ))}
                     </ul>
                 </div>
                 <div class="card side dash" data-scene="2">
@@ -541,17 +590,21 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                         </div>
                     </div>
                 </div>
+                    </>
+                )}
             </div>
 
-            <div class="foot">
-                <a href="/features" class="btn-ghost">See the platform</a>
-            </div>
+            {foot && (
+                <div class="foot">
+                    <a href={foot.href} class="btn-ghost">{foot.label}</a>
+                </div>
+            )}
         </div>
     </div>
 </section>
 
 <script>
-    const STEP_MS = [7000, 7000, 7000]
+    const STEP_MS = 7000
     const RUN: [number, number, string][] = [
         [900, 0, "running"],
         [1500, 0, "success"],
@@ -569,7 +622,12 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
             const steps = [...root.querySelectorAll<HTMLElement>(".step")]
             const body = root.querySelector<HTMLElement>(".body")!
             const tasks = [...root.querySelectorAll<HTMLElement>("[data-task]")]
-            const timed = [...root.querySelectorAll<HTMLElement>("[data-on]")]
+            const scenes = !!root.querySelector("[data-scene-slot]")
+            const timedIn = (idx: number) => [
+                ...root.querySelectorAll<HTMLElement>(
+                    scenes ? `[data-scene-slot="${idx}"] [data-on]` : "[data-on]",
+                ),
+            ]
             const still = matchMedia("(prefers-reduced-motion: reduce)").matches
             let auto = !still
             let inView = false
@@ -598,9 +656,10 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                           : "running"
             }
 
-            const editor = root.querySelector<HTMLElement>(".editor")!
+            const editor = root.querySelector<HTMLElement>(".editor")
             const links = [...root.querySelectorAll<SVGGElement>(".links g")]
             const drawLinks = () => {
+                if (!editor) return
                 const box = body.getBoundingClientRect()
                 const frame = editor.getBoundingClientRect()
                 links.forEach((link, i) => {
@@ -621,7 +680,7 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                     dot.setAttribute("cy", String(y1))
                 })
             }
-            window.addEventListener("resize", drawLinks)
+            if (editor) window.addEventListener("resize", drawLinks)
             document.addEventListener(
                 "astro:before-swap",
                 () => {
@@ -638,7 +697,7 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                 steps.forEach((step, i) => {
                     step.classList.toggle("active", i === idx)
                     step.classList.toggle("timed", auto && i === idx)
-                    step.style.setProperty("--dur", `${STEP_MS[i]}ms`)
+                    step.style.setProperty("--dur", `${STEP_MS}ms`)
                     step.querySelector("button")!.ariaPressed = String(
                         i === idx,
                     )
@@ -649,15 +708,17 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                 void body.offsetWidth
                 body.classList.add("enter")
 
-                timed.forEach((el) => el.classList.remove("on"))
-                for (const el of timed)
+                root.querySelectorAll("[data-on].on").forEach((el) =>
+                    el.classList.remove("on"),
+                )
+                for (const el of timedIn(idx))
                     later(Number(el.dataset.on), () => el.classList.add("on"))
 
                 tasks.forEach((_, i) => setTask(i, "created"))
                 delete body.dataset.run
                 body.dataset.exec = "idle"
                 body.classList.remove("pressing", "executing")
-                if (idx === 2) {
+                if (idx === 2 && tasks.length) {
                     later(400, () => body.classList.add("pressing"))
                     later(600, () => {
                         body.classList.remove("pressing")
@@ -668,7 +729,7 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                         later(at, () => setTask(task, status))
                 }
                 if (auto)
-                    later(STEP_MS[idx], () => {
+                    later(STEP_MS, () => {
                         const next = (idx + 1) % steps.length
                         if (inView) open(next)
                         else waiting = next
@@ -1432,6 +1493,7 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
             visibility 0s 0.4s;
 
         .body[data-at="0"] &[data-scene="0"],
+        .body[data-at="1"] &[data-scene="1"],
         .body[data-at="2"] &[data-scene="2"] {
             opacity: 1;
             visibility: visible;
@@ -1449,6 +1511,7 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
             display: none;
 
             .body[data-at="0"] &[data-scene="0"],
+            .body[data-at="1"] &[data-scene="1"],
             .body[data-at="2"] &[data-scene="2"] {
                 display: block;
             }
@@ -2333,6 +2396,18 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                 opacity: 1;
                 animation: none;
             }
+        }
+    }
+    .scene {
+        position: absolute;
+        inset: 2.5rem clamp(1.5rem, 4vw, 3.5rem);
+        display: grid;
+        place-items: center;
+
+        @include media-breakpoint-down(lg) {
+            position: relative;
+            inset: auto;
+            padding: 1.5rem;
         }
     }
 </style>

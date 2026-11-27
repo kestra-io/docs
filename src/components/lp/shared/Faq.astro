@@ -2,9 +2,14 @@
 export interface Props {
     items: { question: string; answer: string }[]
     heading?: string
+    group?: string
 }
 
-const { items, heading = "Frequently asked questions" } = Astro.props
+const {
+    items,
+    heading = "Frequently asked questions",
+    group = "lp-faq",
+} = Astro.props
 ---
 
 <section class="faq">
@@ -16,7 +21,7 @@ const { items, heading = "Frequently asked questions" } = Astro.props
         {
             items.map((item, index) => (
                 <details
-                    name="lp-faq"
+                    name={group}
                     open={index === 0}
                     data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
                 >

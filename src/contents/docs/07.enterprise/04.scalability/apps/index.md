@@ -555,7 +555,7 @@ access:
     - Finance
 ```
 
-Group membership is checked at runtime on every request. Users who belong to at least one listed group are granted access; users outside those groups are denied even if they have `APP: EXECUTE` permission on the namespace. If `groups` is omitted, any authenticated user with `APP: EXECUTE` permission on the namespace can use the app.
+Group membership is checked at runtime on every request. Users who belong to at least one listed group are granted access; users outside those groups are denied even if they have `APP: EXECUTE` permission on the namespace. If `groups` is omitted, any authenticated user with `APP: EXECUTE` permission on the namespace can use the app. Instance Owners are never restricted by `groups`: they see the app in the catalog and can open it without belonging to a listed group.
 
 `APP: EXECUTE` is namespace-scoped. A user with `APP: EXECUTE` on `company.team` cannot dispatch an app in `company.other`, even if both apps appear in the same catalog view.
 
@@ -664,6 +664,10 @@ Once added, open the **Apps Catalog** — a new thumbnail displays on the connec
 Each app layout is a list of stage-specific blocks. Each block renders when the execution reaches the matching stage (`OPEN`, `RUNNING`, `SUCCESS`, `FAILURE`, `PAUSE`, `RESUME`). Combine blocks to guide users through the full lifecycle of a request — form on `OPEN`, progress indicator on `RUNNING`, download link and logs on `SUCCESS`.
 
 If a layout uses a block on a stage that isn't listed for it, saving the app fails with `Invalid layout. Block '<type>' is not supported for layout on '<stage>'.`
+
+:::alert{type="warning"}
+An `ERROR` stage only handles errors raised while the app processes a request. It does not catch a stage that fails to render, for example a Pebble expression in a block that cannot be evaluated. In that case the `ERROR` stage is not shown: the app preview reports which block failed (its type and its position in the stage), while the people using the app see a generic "This app is currently unavailable" message. Fix the block in the app definition to restore the stage.
+:::
 
 | Block type               | Available on                                                             | Properties                                                                                  | Example                                                                                                                                                                                                                               |
 |--------------------------|--------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

@@ -2,7 +2,7 @@
 title: "13 Top Alternatives to Ansible for Modern DevOps"
 description: "Explore 13 popular alternatives to Ansible, including Puppet, Chef, Salt, and Terraform. Find the best automation tool for your needs today!"
 metaTitle: "Top Ansible Alternatives for Modern DevOps | Kestra"
-metaDescription: "Compare 13 top Ansible alternatives — Terraform, Puppet, Chef, Salt, Kestra, and more. Find the right IaC or orchestration tool for your DevOps stack."
+metaDescription: "Compare 13 Ansible alternatives, from Terraform, Puppet, Chef and Salt to orchestrators. Keeping your playbooks? See AWX and Ansible Tower alternatives."
 tag: infrastructure
 date: 2026-05-06
 faq:
@@ -13,18 +13,30 @@ faq:
   - question: "Why is Terraform better than Ansible for certain use cases?"
     answer: "Terraform excels at provisioning and managing infrastructure resources declaratively (e.g., VMs, networks, cloud services) as Infrastructure as Code. Ansible, while capable of some provisioning, is primarily designed for configuration management and application deployment on *existing* infrastructure. Terraform is better for lifecycle management of cloud resources, while Ansible is stronger for configuring the software *on* those resources."
   - question: "Is AWX free to use?"
-    answer: "Yes, AWX is the upstream open-source project for Red Hat Ansible Automation Platform's Automation Controller. It is free to use, Apache 2.0-licensed, and community-supported. While AWX receives new features first, Red Hat's Automation Controller provides hardened, enterprise-supported versions suitable for production environments requiring commercial support."
+    answer: "Yes, AWX is the upstream open-source project for Red Hat Ansible Automation Platform's Automation Controller. It is free to use, Apache 2.0-licensed, and community-supported. AWX hasn't shipped a release since 24.6.1 (July 2, 2024), and in November 2026 its maintainers removed the release pipeline (<a href='/resources/infrastructure/awx-release-status'>AWX release status</a>). Red Hat's automation controller, part of Ansible Automation Platform, is the supported, paid version."
   - question: "What are the top 5 automation tools?"
     answer: "The best tools depend on the use case. For modern orchestration and DevOps, key players include Kestra (declarative, multi-domain orchestration), Terraform (Infrastructure as Code), Puppet (configuration management), GitLab CI/CD (DevOps pipelines), and AWS Step Functions (cloud-native workflow orchestration). Each offers distinct strengths for different automation challenges across data, AI, and infrastructure domains."
   - question: "What is the difference between Ansible and Terraform?"
     answer: "Ansible is primarily a configuration management and application deployment tool — it automates tasks on existing servers using an agentless, push-based model. Terraform is an Infrastructure as Code (IaC) tool focused on provisioning and lifecycle management of cloud resources declaratively. In practice, many teams use both: Terraform to provision infrastructure and Ansible to configure the software on it."
   - question: "Can Kestra replace Ansible?"
     answer: "Kestra is not a direct replacement for Ansible's host-level configuration management. Rather, Kestra acts as a universal orchestration control plane that can invoke Ansible playbooks as part of broader, multi-step workflows spanning data pipelines, cloud APIs, and AI agents. Teams use Kestra alongside Ansible to coordinate when and how playbooks run within a larger automated system."
+  - question: "What are the alternatives to Ansible Automation Platform?"
+    answer: "If you want to keep your playbooks, the main options are AWX (free, no release since July 2024), Ascender (a maintained build of AWX), Semaphore UI, and orchestrators such as Kestra that run your playbooks and replace the controller. Our guide to <a href='/resources/infrastructure/ansible-tower-alternatives'>Ansible Tower and automation controller alternatives</a> compares them, and <a href='/vs/ansible-automation-platform'>Kestra vs Ansible Automation Platform</a> goes deeper on Kestra."
+resourceCtaOverride:
+  href: /get-started
+  label: Get Started
+  action: get_started
+  tagline: "Running Ansible next to Terraform and scripts? Orchestrate them in one workflow."
+  taglineEnd: "Ansible, Terraform and your scripts, orchestrated from one place."
 ---
 
 Ansible has long been a cornerstone of IT automation, lauded for its simplicity, agentless architecture, and human-readable playbooks. Yet, as DevOps evolves towards cloud-native, GitOps-driven, and polyglot environments, many organizations find themselves seeking alternatives. The imperative, Python-centric nature of Ansible, while powerful, can introduce friction when orchestrating complex, cross-domain workflows involving data, AI, and diverse infrastructure components.
 
 This article explores 13 top alternatives to Ansible for modern DevOps. We'll delve into tools that address the evolving needs of platform engineers, offering more declarative, event-driven, or specialized approaches to infrastructure as code, configuration management, and end-to-end workflow orchestration. By understanding their core strengths and trade-offs, you can identify the best fit for your team's unique automation challenges.
+
+Before you compare, decide what you are actually replacing. If the pain is host configuration itself, Terraform, Puppet, Chef, and Salt below are the candidates. If your playbooks work and what hurts is everything around them (scheduling, approvals, run history, chaining a playbook with the Terraform plan before it and the ticket after it), you don't need to rewrite anything: [Kestra orchestrates the playbooks you already have](#1-kestra-the-declarative-orchestration-control-plane), and our guides to [AWX alternatives](/resources/infrastructure/awx-alternatives) and [Ansible Tower and automation controller alternatives](/resources/infrastructure/ansible-tower-alternatives) compare the control planes built for that job.
+
+::resource-cta
 
 ## Understanding the Need for Ansible Alternatives
 
@@ -32,8 +44,8 @@ Ansible's success is built on a solid foundation: its agentless, SSH-based appro
 
 However, the landscape of modern infrastructure is shifting. Platform teams now manage complex ecosystems spanning multiple clouds, on-premise data centers, and a growing array of SaaS tools. This new reality highlights some of Ansible's limitations:
 - **Evolving Needs:** Modern workflows are increasingly event-driven and require coordination across disparate domains like data engineering, AI/ML, and business applications. Ansible's focus on host-based configuration can be cumbersome for orchestrating these end-to-end processes.
-- **Imperative vs. Declarative:** Ansible is largely imperative—you define the steps to reach a state. This contrasts with declarative tools like Terraform that define the desired end state, leaving the "how" to the tool. For complex [Infrastructure as Code (IaC)](/resources/infrastructure/everything-as-code), a declarative model is often more robust.
-- **GitOps and Polyglot Teams:** The rise of [GitOps](/resources/infrastructure/gitops) and polyglot engineering teams requires automation tools that are language-agnostic and treat configuration as a first-class citizen in version control. While Ansible uses YAML, its reliance on Python modules can create dependencies that complicate orchestration for non-Python teams.
+- **Imperative vs. Declarative:** Ansible is largely imperative—you define the steps to reach a state. This contrasts with declarative tools like Terraform that define the desired end state, leaving the "how" to the tool, which is why most teams [use Terraform and Ansible together](/resources/infrastructure/terraform-and-ansible). For complex [Infrastructure as Code (IaC)](/resources/infrastructure/everything-as-code), a declarative model is often more robust.
+- **GitOps and Polyglot Teams:** The rise of [GitOps](/resources/infrastructure/gitops) and polyglot engineering teams requires automation tools that are language-agnostic and treat configuration as a first-class citizen in version control. Ansible playbooks live in Git well, but running them alongside Terraform, scripts and other teams' tools usually needs something above Ansible.
 - **Multi-Cloud Complexity:** Managing state and dependencies across AWS, Azure, and GCP requires a control plane designed for [multi-cloud orchestration](/resources/infrastructure/multi-cloud-orchestration), a task that can stretch the limits of a traditional configuration management tool.
 
 ## Key Considerations When Evaluating Ansible Alternatives
@@ -55,14 +67,50 @@ We evaluated each alternative on its core purpose, deployment model, license (op
 
 ## 1. Kestra: The Declarative Orchestration Control Plane
 
-Kestra is an open-source, declarative orchestration platform designed to unify data, AI, and infrastructure workflows. It acts as a universal control plane, coordinating various tools, including Ansible, from a single, language-agnostic interface.
+Most teams looking for an Ansible alternative don't want to throw away years of tested playbooks. What they are missing sits around the playbook: a scheduler, retries, an approval step before production, a run history someone can audit, and a way to connect `ansible-playbook` to the Terraform apply that precedes it and the ServiceNow ticket that follows it. Ansible itself was never designed to be that layer, and AWX or Ansible Automation Platform only provide it for Ansible.
 
-- **Strengths:** Kestra's workflows are defined in YAML, making them easy to version and manage within a GitOps framework. It is language-agnostic, capable of running Python, Shell, Go, SQL, and Docker containers as first-class citizens. Its event-driven architecture is ideal for building reactive, real-time automations. With built-in features for CI/CD, robust error handling, and enterprise-grade security (RBAC, SSO, audit logs), Kestra provides a scalable foundation for platform engineering.
+Kestra is an open-source, declarative orchestration platform that supplies that layer for every tool in your stack. Your playbooks stay in Git and run unchanged through the [Ansible plugin](/plugins/plugin-ansible); Kestra decides when they run, with which inputs and credentials, and what happens next. A weekly patch run, with manual runs defaulting to a dry run and the playbook pulled straight from your repository, looks like this:
+
+```yaml
+id: patch_web_servers
+namespace: company.infra
+
+inputs:
+  - id: dry_run
+    type: BOOL
+    defaults: true
+
+tasks:
+  - id: run_playbook
+    type: io.kestra.plugin.core.flow.WorkingDirectory
+    tasks:
+      - id: clone
+        type: io.kestra.plugin.git.Clone
+        url: https://github.com/your-org/infrastructure
+        branch: main
+
+      - id: patch
+        type: io.kestra.plugin.ansible.cli.AnsibleCLI
+        checkMode: "{{ inputs.dry_run }}"
+        commands:
+          - ansible-playbook -i ansible/inventory.ini ansible/patch.yml
+
+triggers:
+  - id: weekly
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 3 * * 0"
+    inputs:
+      dry_run: false
+```
+
+Every execution records the exact output of each host, and the same flow can be triggered by a webhook, a ticket, or an upstream workflow instead of a schedule. The [Ansible playbook from Git blueprint](/blueprints/ansible-playbook-from-git) is a ready-to-run starting point.
+
+- **Strengths:** No migration: existing playbooks, roles, and inventories run as they are, inside a container, so workers need no local Ansible install. Workflows are YAML in Git, which fits a GitOps review process. The same flow can run Terraform, Python, Shell, SQL, Kubernetes jobs, and API calls, with event triggers, retries, human approvals, and enterprise controls (RBAC, SSO, audit logs).
 - **Proof Point:** Leading enterprises like Crédit Agricole and other Fortune 500 organizations use Kestra to coordinate complex workflows spanning VMware, Ansible, ITSM tools, APIs, and human approvals, demonstrating its power as a [unified orchestration](/resources/orchestration/unified-orchestration) layer.
-- **Weaknesses:** While Kestra can execute Ansible playbooks as part of a larger workflow, it is not a direct replacement for fine-grained, host-level configuration management. It's designed to orchestrate *around* tools like Ansible, not to replicate their specific function.
-- **Best for:** Platform engineers and DevOps teams who need a unified, declarative control plane to orchestrate Ansible playbooks alongside Terraform, cloud APIs, data pipelines, and AI agents in hybrid and multi-cloud environments.
+- **Weaknesses:** Kestra does not replace host-level configuration management. Ansible (or Puppet, Chef, Salt) still does the configuring; Kestra orchestrates *when* and *in what context* it happens.
+- **Best for:** Teams that are happy with their playbooks but have outgrown cron, CI jobs, or AWX as the way to run them, and need Ansible coordinated with Terraform, cloud APIs, ITSM tools, and approvals in one place.
 
-Learn more about how to [automate your infrastructure with Kestra](/docs/use-cases/infrastructure).
+See how teams [orchestrate Ansible with Kestra](/orchestration/ansible), or explore Kestra for [infrastructure automation](/infra-automation).
 
 ## 2. Terraform: Infrastructure as Code for Provisioning
 
@@ -106,11 +154,11 @@ Salt (or SaltStack) is a Python-based, event-driven automation platform known fo
 
 AWX is the open-source upstream project for Red Hat's Ansible Automation Platform (AAP). It provides a web-based UI and REST API on top of the Ansible engine.
 
-- **Strengths:** AWX offers centralized management, job scheduling, RBAC, and a graphical inventory for your Ansible playbooks. It makes Ansible more accessible to teams and easier to integrate into broader CI/CD pipelines. It is free and community-supported.
+- **Strengths:** AWX offers centralized management, job scheduling, RBAC, and a graphical inventory for your Ansible playbooks. It makes Ansible more accessible to teams and easier to integrate into broader CI/CD pipelines. It is free and community-supported. AWX hasn't shipped a release since 24.6.1 (July 2, 2024), and in November 2026 its maintainers removed the release pipeline ([AWX release status](/resources/infrastructure/awx-release-status)).
 - **Weaknesses:** As an upstream project, AWX lacks the enterprise support, hardening, and some of the advanced features (like analytics and certified content collections) found in the commercial Red Hat product.
-- **Best for:** Teams looking for a web UI and API for their Ansible automation without committing to a Red Hat subscription, often serving as a stepping stone to AAP.
+- **Best for:** Teams that want a free web UI and API for Ansible and can live without new releases. Teams planning beyond it should see [AWX alternatives](/resources/infrastructure/awx-alternatives).
 
-For an enterprise perspective, see our comparison of [Ansible Automation Platform vs Kestra](/vs/ansible-automation-platform).
+For an enterprise perspective, see our comparison of [Ansible Automation Platform vs Kestra](/vs/ansible-automation-platform). If you already run AWX and are hitting its limits, our guide to [AWX alternatives](/resources/infrastructure/awx-alternatives) compares the options in detail. If you run Ansible Tower or the automation controller in Red Hat Ansible Automation Platform, see our guide to [Ansible Tower and automation controller alternatives](/resources/infrastructure/ansible-tower-alternatives).
 
 ## 7. GitLab CI/CD: Integrated DevOps Automation
 
@@ -174,12 +222,12 @@ See a detailed comparison in our [Kestra vs. AWS Step Functions analysis](/vs/aw
 
 | Tool | License | Deployment Model | Primary Use Case | Authoring Model | Best for |
 |---|---|---|---|---|---|
-| **Kestra** | Open Source (Apache 2.0) & Enterprise | Agentless | Universal Orchestration (Infra, Data, AI) | Declarative (YAML) | Platform teams needing a unified control plane. |
-| **Terraform** | Open Source (BUSL) | Agentless | Infrastructure Provisioning (IaC) | Declarative (HCL) | Multi-cloud infrastructure lifecycle management. |
+| **Kestra** | Open Source (Apache 2.0) & Enterprise | Agentless | Universal Orchestration (Infra, Data, AI) | Declarative (YAML) | Platform teams running Ansible with Terraform, scripts and approvals in one workflow. |
+| **Terraform** | Source-available (BUSL). OpenTofu is the open source fork | Agentless | Infrastructure Provisioning (IaC) | Declarative (HCL) | Multi-cloud infrastructure lifecycle management. |
 | **Puppet** | Open Source & Enterprise | Agent-based | Configuration Management | Declarative (DSL) | Large enterprises needing strict state enforcement. |
 | **Chef** | Open Source & Enterprise | Agent-based | Configuration Management | Imperative (Ruby DSL) | Teams with strong Ruby skills and custom needs. |
 | **SaltStack** | Open Source (Apache 2.0) | Agent-based (Master/Minion) | Remote Execution & Config Management | Declarative/Imperative (YAML/Python) | High-speed, event-driven automation at scale. |
-| **AWX** | Open Source (Apache 2.0) | Agentless | Ansible Job Orchestration | Imperative (YAML) | Teams wanting a UI/API for Ansible without enterprise costs. |
+| **AWX** | Open Source (Apache 2.0) | Agentless | Ansible Job Orchestration | Imperative (YAML) | Teams wanting a free UI and API for Ansible (no release since July 2024) |
 | **GitLab CI/CD** | Open Source & Enterprise | Agent-based (Runner) | CI/CD & Software Delivery | Declarative (YAML) | Teams using GitLab for a unified DevOps platform. |
 | **Jenkins** | Open Source (MIT) | Agent-based (Controller/Agent) | CI/CD & General Automation | Imperative/Declarative (Groovy) | Complex, custom pipelines needing a vast plugin ecosystem. |
 | **CFEngine** | Open Source & Enterprise | Agent-based | Configuration Management | Declarative (DSL) | Large-scale, autonomous infrastructure with a focus on self-healing. |
@@ -195,9 +243,9 @@ The right choice depends on your team's profile and primary objective. Here’s 
 
 - **For platform engineers:** Your goal is to provide a standardized, self-service automation platform. Focus on declarative, GitOps-native tools that unify orchestration across domains. **Kestra** is a strong contender here, acting as the control plane above specialized tools. **Terraform** and **Spacelift** are essential for the IaC component.
 - **For data engineering teams:** Your automation needs often involve complex dependencies between data ingestion, transformation, and ML tools. Prioritize platforms with strong data ecosystem integrations and polyglot support, like **Kestra**, which can orchestrate dbt, Spark, and Airbyte in the same workflow as your infrastructure.
-- **For infrastructure/DevOps teams:** If your core task is managing server state, robust configuration management tools like **Puppet**, **Chef**, or **SaltStack** are strong alternatives. For provisioning, **Terraform** is the standard. A unified orchestrator like **Kestra** can tie these disparate tools together into a single, auditable workflow.
+- **For infrastructure/DevOps teams:** If your core task is managing server state, robust configuration management tools like **Puppet**, **Chef**, or **SaltStack** are strong alternatives. For provisioning, **Terraform** is the standard. An orchestrator like **Kestra** can tie these disparate tools together into a single, auditable workflow.
 - **For small teams getting started:** Weigh ease of use against future scalability. **AWX** offers a gentle step up from Ansible CLI. **Kestra's** open-source edition provides a powerful, all-in-one platform that can grow with you from simple cron job replacement to complex, event-driven orchestration.
-- **For teams staying on Ansible:** If your blocker is the control plane rather than the automation engine, the shortlist is different. See [AWX alternatives](/resources/infrastructure/awx-alternatives) for options that replace the web UI, RBAC, and API layer while keeping your existing playbooks.
+- **For teams staying on Ansible:** If your blocker is the control plane rather than the automation engine, the shortlist is different. See [AWX alternatives](/resources/infrastructure/awx-alternatives) or [Ansible Tower and automation controller alternatives](/resources/infrastructure/ansible-tower-alternatives) for options that replace the web UI, RBAC, and API layer while keeping your existing playbooks.
 
 ## Emerging Trends and the Future of Automation Tools
 

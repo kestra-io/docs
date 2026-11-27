@@ -1,0 +1,680 @@
+---
+import { Icon } from "astro-icon/components"
+import Rails from "./Rails.astro"
+import PixelEdges from "~/components/about/PixelEdges.astro"
+import CodeCard from "./CodeCard.astro"
+
+const FLOW = `id: hello_kestra
+namespace: company.team
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 9 * * *"
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: Hello from Kestra`
+
+const TITLE =
+    'The orchestration platform teams run in production<span class="brand-dot" aria-hidden="true"></span><span class="visually-hidden">.</span>'
+
+const SPARKS = [
+    [-1, 12],
+    [-1, 64],
+    [14, -1],
+    [46, -1],
+    [82, -1],
+    [101, 28],
+    [101, 78],
+    [70, 101],
+    [32, 101],
+    [6, 101],
+].map(([x, y], idx) => ({
+    x,
+    y,
+    s: 2 + (idx % 3),
+    delay: -((idx * 0.83) % 4.2).toFixed(2),
+}))
+---
+
+<section
+    class="platform-hero surface-dark"
+    aria-labelledby="platform-hero"
+    data-header-dark
+>
+    <div class="mesh" aria-hidden="true">
+        <span class="light violet"></span>
+        <span class="light lavender"></span>
+        <span class="light graphite"></span>
+    </div>
+    <PixelEdges left="tall" right="wide" />
+    <Rails dark top="none" bottom="none" lines={false}>
+        <div class="grid">
+            <div class="copy">
+                <h1 id="platform-hero">
+                    <span class="product">
+                        Platform Overview
+                        <span class="visually-hidden">:</span>
+                    </span>
+                    <span class="claim" set:html={TITLE} />
+                </h1>
+                <p class="lead">
+                    Schedule, trigger, observe, and govern every workflow. Use
+                    any language, orchestrate any system, deploy anywhere.
+                </p>
+                <div class="buttons">
+                    <a href="/get-started" class="btn-solid">
+                        Get started <Icon name="mdi:chevron-right" />
+                    </a>
+                    <a href="/demo" class="btn-ghost">
+                        Book a demo
+                    </a>
+                </div>
+            </div>
+            <div class="stage" data-hero-edit>
+                <span class="aura" aria-hidden="true"></span>
+                {SPARKS.map((spark) => (
+                    <span
+                        class="spark"
+                        aria-hidden="true"
+                        style={`left: ${spark.x}%; top: ${spark.y}%; --s: ${spark.s}px; --delay: ${spark.delay}s`}
+                    />
+                ))}
+                <CodeCard
+                    file="hello_kestra.yml"
+                    code={FLOW}
+                    dots
+                    dark
+                    guides
+                />
+            </div>
+        </div>
+    </Rails>
+</section>
+
+<script>
+    const EDITS: { line: number; keys?: string[]; values: string[] }[] = [
+        {
+            line: 5,
+            values: [
+                "io.kestra.plugin.core.trigger.Schedule",
+                "io.kestra.plugin.core.trigger.Webhook",
+            ],
+        },
+        {
+            line: 6,
+            keys: ["cron", "key"],
+            values: ['"0 9 * * *"', "orders-webhook"],
+        },
+        { line: 4, values: ["daily", "new_order"] },
+        {
+            line: 10,
+            values: ["Hello from Kestra", "New order {{ trigger.body.id }}"],
+        },
+    ]
+
+    const wait = (ms: number) =>
+        new Promise((resolve) => setTimeout(resolve, ms))
+
+    const PEBBLE = /(\{\{[\s\S]*?(?:\}\}|$))/
+    const TOKEN =
+        /('[^']*'?|"[^"]*"?)|(\d+(?:\.\d+)?)|([A-Za-z_][\w.]*)|(\|)|([\s\S])/g
+
+    const span = (cls: string, text: string) => {
+        const el = document.createElement("span")
+        el.className = cls
+        el.textContent = text
+        return el
+    }
+
+    function painted(source: string) {
+        const nodes: Node[] = []
+        source.split(PEBBLE).forEach((part, idx) => {
+            if (!(idx % 2)) {
+                if (part) nodes.push(document.createTextNode(part))
+                return
+            }
+            const closed = part.length >= 4 && part.endsWith("}}")
+            nodes.push(span("pb-delim", "{{"))
+            let afterPipe = false
+            for (const [, str, num, name, pipe, other] of part
+                .slice(2, closed ? -2 : undefined)
+                .matchAll(TOKEN)) {
+                if (str) nodes.push(span("pb-str", str))
+                else if (num) nodes.push(span("pb-num", num))
+                else if (name)
+                    nodes.push(span(afterPipe ? "pb-fn" : "pb-var", name))
+                else nodes.push(document.createTextNode(pipe ?? other))
+                if (name || pipe) afterPipe = !!pipe
+            }
+            if (closed) nodes.push(span("pb-delim", "}}"))
+        })
+        return nodes
+    }
+
+    function wireHeroEdit() {
+        const stage = document.querySelector<HTMLElement>(
+            "[data-hero-edit]:not([data-wired])",
+        )
+        if (!stage) return
+        stage.dataset.wired = "true"
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+
+        const lines = [...stage.querySelectorAll<HTMLElement>("pre .line")]
+        const fields = EDITS.map((edit) => {
+            const line = lines[edit.line - 1]
+            const value = line.querySelector<HTMLElement>(".value")!
+            value.textContent = "\u00a0"
+            const text = document.createElement("span")
+            text.className = "edit"
+            text.textContent = edit.values[0]
+            value.appendChild(text)
+            return {
+                text,
+                value,
+                key: line.querySelector<HTMLElement>(".key"),
+                keys: edit.keys,
+                values: edit.values,
+                index: 0,
+            }
+        })
+
+        const pre = stage.querySelector<HTMLElement>("pre")!
+        const reserve = () => {
+            pre.style.minHeight = ""
+            const saved = fields.map((field) => ({
+                nodes: [...field.text.childNodes],
+                key: field.key?.textContent ?? null,
+            }))
+            for (const field of fields) {
+                const line = field.value.parentElement!
+                let tallest = -1
+                let pick = 0
+                field.values.forEach((value, i) => {
+                    field.text.textContent = value
+                    if (field.keys && field.key)
+                        field.key.textContent = field.keys[i]
+                    const height = line.getBoundingClientRect().height
+                    if (height > tallest) {
+                        tallest = height
+                        pick = i
+                    }
+                })
+                field.text.textContent = field.values[pick]
+                if (field.keys && field.key)
+                    field.key.textContent = field.keys[pick]
+            }
+            pre.style.minHeight = `${pre.getBoundingClientRect().height}px`
+            fields.forEach((field, i) => {
+                const { nodes, key } = saved[i]
+                field.text.replaceChildren(...nodes)
+                if (field.key && key !== null) field.key.textContent = key
+            })
+        }
+        let width = 0
+        new ResizeObserver(([entry]) => {
+            if (entry.contentRect.width === width) return
+            width = entry.contentRect.width
+            requestAnimationFrame(reserve)
+        }).observe(pre)
+        void document.fonts.ready.then(reserve)
+
+        const caret = document.createElement("i")
+        caret.className = "caret"
+
+        let token = 0
+        const type = async (
+            field: (typeof fields)[number],
+            next: string,
+            id: number,
+        ) => {
+            const { text, key, keys } = field
+            const current = text.textContent ?? ""
+            let same = 0
+            while (same < current.length && current[same] === next[same]) same++
+            const selection = document.createElement("span")
+            selection.className = "selected"
+            selection.textContent = current.slice(same)
+            text.replaceChildren(
+                ...painted(current.slice(0, same)),
+                selection,
+                caret,
+            )
+            if (keys && key) key.classList.add("selected")
+            await wait(650)
+            if (id !== token) return
+            selection.remove()
+            if (keys && key) {
+                key.textContent = keys[field.index]
+                key.classList.remove("selected")
+            }
+            field.value.classList.toggle("string", next.startsWith('"'))
+            stage.classList.add("typing")
+            let typed = current.slice(0, same)
+            for (const char of next.slice(same)) {
+                typed += char
+                text.replaceChildren(...painted(typed), caret)
+                await wait(55 + Math.random() * 60)
+                if (id !== token) return
+            }
+            stage.classList.remove("typing")
+            await wait(500)
+            caret.remove()
+        }
+
+        const run = async () => {
+            const id = ++token
+            while (id === token) {
+                for (const field of fields) {
+                    await wait(1400)
+                    if (id !== token) return
+                    field.index = (field.index + 1) % field.values.length
+                    await type(field, field.values[field.index], id)
+                    if (id !== token) return
+                }
+            }
+        }
+
+        new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) void run()
+                else {
+                    token++
+                    caret.remove()
+                    stage.classList.remove("typing")
+                    stage
+                        .querySelectorAll(".selected")
+                        .forEach((el) => el.classList.remove("selected"))
+                }
+            },
+            { threshold: 0.3 },
+        ).observe(stage)
+    }
+
+    document.addEventListener("astro:page-load", wireHeroEdit)
+    wireHeroEdit()
+</script>
+
+<style lang="scss">
+    .platform-hero {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+        background: #09090b;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: calc(min(80vh, 800px) + 67px);
+        margin-top: -67px;
+        padding: calc(67px + 4rem) 0 4rem;
+        color: #ffffff;
+
+        @include media-breakpoint-down(md) {
+            min-height: 0;
+            padding: calc(67px + 3rem) 0 4rem;
+        }
+    }
+
+    .grid {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1.05fr 1fr;
+        gap: 4rem;
+        align-items: center;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+    }
+
+    .platform-hero :global(.pixel-edges .edge) {
+        background: rgba(190, 176, 255, 0.16);
+    }
+
+    .mesh {
+        position: absolute;
+        z-index: -1;
+        inset: 0;
+        pointer-events: none;
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.55'/></svg>");
+            opacity: 0.22;
+            mix-blend-mode: overlay;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            z-index: 1;
+            inset: 0;
+            background: radial-gradient(
+                    circle,
+                    rgba(255, 255, 255, 0.5) 0.6px,
+                    transparent 1px
+                )
+                0 0 / 4px 4px;
+            opacity: 0.12;
+            mask: radial-gradient(
+                ellipse 70% 80% at 50% 50%,
+                rgba(0, 0, 0, 0.25),
+                #000
+            );
+            mix-blend-mode: overlay;
+        }
+    }
+
+    .light {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(40px);
+        animation: glow-drift 28s ease-in-out infinite alternate;
+
+        &.violet {
+            top: -35%;
+            left: -20%;
+            width: 80%;
+            height: 120%;
+            background: radial-gradient(
+                closest-side,
+                rgba(98, 48, 255, 0.52),
+                rgba(88, 58, 255, 0.16) 55%,
+                transparent
+            );
+        }
+
+        &.lavender {
+            top: -25%;
+            right: 5%;
+            width: 55%;
+            height: 80%;
+            background: radial-gradient(
+                closest-side,
+                rgba(205, 182, 251, 0.18),
+                rgba(205, 182, 251, 0.05) 55%,
+                transparent
+            );
+            animation-duration: 34s;
+            animation-delay: -12s;
+        }
+
+        &.graphite {
+            right: -20%;
+            bottom: -45%;
+            width: 75%;
+            height: 115%;
+            background: radial-gradient(
+                closest-side,
+                rgba(120, 118, 135, 0.35),
+                rgba(120, 118, 135, 0.1) 55%,
+                transparent
+            );
+            animation-duration: 40s;
+            animation-delay: -20s;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            animation: none;
+        }
+    }
+
+    @keyframes glow-drift {
+        0% {
+            transform: translate(0, 0) scale(1);
+        }
+
+        50% {
+            transform: translate(5%, 4%) scale(1.06);
+        }
+
+        100% {
+            transform: translate(-3%, 6%) scale(0.96);
+        }
+    }
+
+    .stage {
+        position: relative;
+        isolation: isolate;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: -1.5px;
+            border-radius: calc(0.75rem + 1.5px);
+            background: conic-gradient(
+                from var(--edge-turn),
+                #6d8bff,
+                #6230ff 20%,
+                #ffffff 30%,
+                #b9a6ff 40%,
+                #6230ff 60%,
+                #2a2a3a 75%,
+                #6d8bff
+            );
+            box-shadow:
+                0 0 18px rgba(200, 190, 255, 0.3),
+                0 0 48px rgba(150, 125, 255, 0.4),
+                0 0 110px rgba(95, 77, 255, 0.35);
+            animation: edge-turn 5s linear infinite;
+            transition: box-shadow 0.5s ease;
+        }
+
+        &:global(.typing)::before {
+            box-shadow:
+                0 0 22px rgba(220, 210, 255, 0.45),
+                0 0 60px rgba(169, 80, 255, 0.55),
+                0 0 130px rgba(95, 77, 255, 0.45);
+        }
+
+        > :global(.code-card) {
+            position: relative;
+            border-color: transparent;
+        }
+
+        :global(pre) {
+            padding-block: 1.75rem 2rem;
+            line-height: 1.85;
+
+            @include media-breakpoint-down(md) {
+                padding-block: 1rem 1.25rem;
+                line-height: 1.7;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            &::before {
+                animation: none;
+            }
+        }
+
+        :global(.edit) {
+            border-radius: 2px;
+            transition: background-color 0.2s ease;
+        }
+
+        :global(.edit .selected),
+        :global(.key.selected) {
+            background: rgba(152, 105, 247, 0.4);
+        }
+
+        :global(.caret) {
+            display: inline-block;
+            width: 2px;
+            height: 1.15em;
+            margin-left: 1px;
+            vertical-align: -0.2em;
+            background: #cdb6fb;
+            box-shadow: 0 0 8px #9869f7;
+            animation: caret 1s steps(1) infinite;
+        }
+    }
+
+    .spark {
+        position: absolute;
+        z-index: 1;
+        width: var(--s);
+        height: var(--s);
+        margin: calc(var(--s) / -2);
+        border-radius: 50%;
+        background: #ffffff;
+        box-shadow:
+            0 0 6px rgba(233, 193, 255, 0.9),
+            0 0 14px rgba(169, 80, 255, 0.5);
+        opacity: 0;
+        animation: twinkle 4.2s ease-in-out var(--delay) infinite;
+        pointer-events: none;
+
+        @media (prefers-reduced-motion: reduce) {
+            display: none;
+        }
+    }
+
+    @property --edge-turn {
+        syntax: "<angle>";
+        inherits: false;
+        initial-value: 0deg;
+    }
+
+    @keyframes edge-turn {
+        to {
+            --edge-turn: 360deg;
+        }
+    }
+
+    @keyframes twinkle {
+        0%,
+        100% {
+            opacity: 0;
+            transform: scale(0.4);
+        }
+
+        45% {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        70% {
+            opacity: 0;
+            transform: scale(0.6);
+        }
+    }
+
+    .aura {
+        position: absolute;
+        z-index: -1;
+        inset: -12% -10%;
+        border-radius: 50%;
+        background: conic-gradient(
+            from 0deg,
+            #8405ff,
+            #3a26ff,
+            #b48cff,
+            #e94bd8,
+            #5f4dff,
+            #8405ff
+        );
+        filter: blur(64px);
+        opacity: 0.32;
+        animation: aura 14s linear infinite;
+        transition: opacity 0.6s ease;
+        pointer-events: none;
+
+        .typing & {
+            opacity: 0.55;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            animation: none;
+        }
+    }
+
+    @keyframes aura {
+        to {
+            rotate: 1turn;
+        }
+    }
+
+    @keyframes caret {
+        50% {
+            opacity: 0;
+        }
+    }
+
+    h1 {
+        margin: 0;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 600;
+        letter-spacing: -0.025em;
+        line-height: 1.05;
+        text-wrap: balance;
+        color: #ffffff;
+    }
+
+    .product {
+        display: block;
+        width: fit-content;
+        background: linear-gradient(
+                90deg,
+                #ffffff 0%,
+                #e4dcff 25%,
+                #a996ff 50%,
+                #e4dcff 75%,
+                #ffffff 100%
+            )
+            0 0 / 200% 100% repeat-x;
+        background-clip: text;
+        text-transform: uppercase;
+        color: transparent;
+    }
+
+    .claim {
+        display: block;
+        margin-top: 0.4em;
+        font-size: 0.5em;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+
+        @include media-breakpoint-down(md) {
+            font-size: 0.62em;
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .product {
+            animation: hero-sheen 8s linear infinite;
+        }
+    }
+
+    @keyframes hero-sheen {
+        to {
+            background-position-x: 200%;
+        }
+    }
+
+    h1 :global(.brand-dot) {
+        display: inline-block;
+        width: 0.15em;
+        height: 0.15em;
+        margin-left: 0.05em;
+        background: #fe0071;
+    }
+
+    .lead {
+        margin: 1.5rem 0 0;
+        max-width: 34rem;
+        font-size: $font-size-lg;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.78);
+    }
+
+    .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 2rem;
+    }
+</style>

@@ -1,237 +1,228 @@
-title: "Kestra vs. Windmill: Workflow Orchestration at Scale, Not Just Developer Scripts"
-description: "Compare Kestra vs Windmill: YAML-first orchestration with {totalPlugins}+ native plugins vs a code-first developer platform for scripts, flows, and internal apps. See use cases, setup, and which architecture fits your team."
+title: "Kestra vs Windmill: Workflow Orchestration at Scale"
+description: "Compare Kestra and Windmill side by side: scripts and flows vs. declarative YAML, the same signup flow in both, setup, licensing and pricing."
 competitorName: Windmill
 category: Data Orchestration
-shortDescription: "Developer scripts and flows platform vs. YAML-first workflow orchestration with {totalPlugins}+ plugins at scale."
-seeHowTitle: "Getting Started with Declarative Orchestration"
-seeHowBody: "See how Kestra can simplify your workflows—and scale beyond developer scripts."
+shortDescription: "A developer platform for scripts, flows and internal apps vs. a YAML orchestrator with {totalPlugins}+ plugins."
 
 brandColor:
   color: "#3B82F6"
 
 intro:
-  title: "Kestra vs. Windmill: Workflow Orchestration at Scale, Not Just Developer Scripts"
-  description: "Windmill is a developer platform for writing scripts, building flows, and creating internal apps, all in code. Kestra is a workflow orchestration platform built around declarative YAML, {totalPlugins}+ pre-built plugins, and first-class event-driven triggers. Both run workflows; they're built for different teams with different scope requirements."
+  title: "Kestra vs. Windmill"
+  description: "Windmill turns scripts in more than 20 languages into endpoints, flows and internal apps, with a visual flow editor. Kestra is a workflow orchestration platform that declares workflows in YAML, with plugins for data, cloud and infrastructure automation and scripts as tasks."
 
-philosophy:
-  mainTitle: Two Platforms Built for Different Jobs
-  kestra:
-    title: "Declarative Orchestration: YAML Coordinates, Code Executes"
-    description: "YAML describes what should run, when, and in what order. Business logic lives in your existing Python, SQL, Bash, or dbt scripts. No framework wrappers, no code refactoring required. Kestra handles scheduling, retries, dependencies, and observability as first-class YAML primitives, and scales from a single pipeline to 100,000 concurrent tasks."
-    subCardText: '"How do we orchestrate data pipelines, infrastructure jobs, and business workflows in a format every engineer and analyst can read?"'
+choose:
+  title: "Windmill or Kestra?"
   competitor:
-    title: Code-First Developer Platform
-    description: "Windmill is an all-in-one platform for scripts, flows, and internal apps. Write steps in Python, TypeScript, Go, or Bash; connect them in a visual DAG editor; optionally build a low-code UI on top. Windmill is built for developer productivity and internal tooling as much as for workflow automation. The authoring model is code throughout."
-    shadowColor: "#DBEAFE"
-    subCardBg: "var(--ks-background-blue-light)"
-    subCardText: '"How do we let our engineering team write scripts, build lightweight automations, and ship internal tools without a dedicated platform team?"'
-
-businessValue:
-  mainTitle: "Internal Developer Tooling vs. Enterprise Workflow Orchestration"
-  kestra:
-    title: Orchestration for Data and Engineering Teams
+    title: "Windmill is the better fit if"
     list:
-      - "Data pipelines, infrastructure automation, business processes, AI workflows"
-      - "{totalPlugins}+ plugins: dbt, Airbyte, Spark, Snowflake, Kafka, Databricks, and more"
-      - "Event-driven at core: file arrivals, Kafka, webhooks, database changes, schedules"
-      - "YAML-first: any engineer can read, modify, and run a workflow"
-      - "Enterprise RBAC with namespace isolation and SSO/SAML"
-  competitor:
-    title: Scripts, Flows, and Internal Apps
+      - "You want internal tools as well as workflows, with React or Svelte apps that call the same scripts."
+      - "Every script should get a generated form, an API endpoint and a webhook without extra work."
+  kestra:
+    title: "Choose Kestra if"
     list:
-      - "Write scripts in Python, TypeScript, Go, Bash, SQL, PHP, Rust, or C#"
-      - "Build flows as DAGs in a visual editor with OpenFlow format"
-      - "Low-code app builder for internal tools with auto-generated UIs"
-      - "Sub-20ms job overhead, designed for speed"
-      - "Limited native data pipeline plugin library"
-    shadowColor: "#DBEAFE"
-    bulletColor: "#3B82F6"
-  footerText: "Windmill is the right choice for developer teams who need a single platform for writing scripts, building lightweight flows, and shipping internal apps without a dedicated infrastructure team. Kestra is the right choice for data engineers, infrastructure teams, and enterprises who need YAML-first orchestration, {totalPlugins}+ pre-built integrations, and the ability to scale from one pipeline to 100,000 concurrent tasks."
+      - "You'd rather configure a plugin for dbt, Snowflake, Kafka or Terraform than write and maintain the client code."
+      - "You need an Apache 2.0 license for embedding or redistributing the orchestrator."
+      - "Flows should start from Kafka, NATS or SQS messages, and you want those triggers in the open-source edition."
 
-setupSpeed:
-  title: Time to First Workflow
-  subtitle: "Windmill offers both a cloud service (windmill.dev) and a self-hosted Docker deployment. This comparison uses their cloud path—sign up via SSO, write step code in the web IDE, and wire steps into a flow."
-  kestra:
-    title:
-      one: "~5"
-      two: Minutes
-    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Blueprint, run it. No code to write before your first workflow executes."
-    command: |
-      curl -o docker-compose.yml \
-      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
-      docker compose up
+table:
+  title: "How do Windmill and Kestra compare, feature by feature?"
+  rows:
+    - label: "Workflow definition"
+      competitor: "Scripts with a main function, chained into flows in the visual editor or as OpenFlow YAML"
+      kestra: "YAML flows, written in the editor, the no-code view or Git"
+    - label: "Languages"
+      competitor: "20+, including TypeScript, Python, Go, Bash, SQL, PHP, Rust and C#"
+      kestra: "Python, Node.js, Go, R, Shell, PowerShell, Ruby, PHP and more, plus SQL through database plugins"
+    - label: "Integrations"
+      competitor: "200+ resource types and a community Hub of scripts"
+      kestra: "{totalPlugins}+ plugins, versioned apart from the core"
+    - label: "Triggers"
+      competitor: "HTTP, cron, email, WebSocket, MQTT and Postgres CDC; Kafka, NATS and SQS on self-hosted Enterprise"
+      kestra: "Schedules, webhooks, flow triggers, polling and realtime triggers for Kafka, NATS, SQS, MQTT and Postgres CDC"
+    - label: "User interfaces"
+      competitor: "Generated forms for every script, and full-code or low-code apps for internal tools"
+      kestra: "Typed input forms for every flow, and Apps for forms and approvals in Kestra Enterprise"
+    - label: "Free edition limits"
+      competitor: "3 workspaces, 50 users, SSO for 10 users, Git sync for 2 users"
+      kestra: "No caps on flows, executions or namespaces; one shared login"
+    - label: "License"
+      competitor: "AGPLv3 core, proprietary Enterprise features"
+      kestra: "Apache 2.0"
+    - label: "GitHub stars"
+      competitor: "18k+"
+      kestra: "30k+"
 
-      # Open localhost:8080
-      # Pick a Blueprint, run it. Done.
-    lang: sh
+proof:
+  title: "Which engineering teams run their pipelines and integrations on Kestra?"
+  stories:
+    - story: scaling-big-data-operations
+      industry: "Customer intelligence"
+      stat: "50+"
+      label: "enterprise clients, each running as an isolated tenant on Acxiom's Kestra-based platform."
+    - story: when-your-api-writes-its-own-docs-with-kestra
+      industry: "API management"
+      stat: "2"
+      label: "engineers built Gravitee's AI documentation product on Kestra."
+    - story: erp-transformation-smarter-faster-fully-automated
+      industry: "Retail"
+      stat: "25+"
+      label: "engineers work in Kestra at Fila, across more than 2,000 workflows."
+
+architecture:
+  title: "How are Windmill and Kestra built?"
+  lead: "Both run stateless servers and workers on top of a database. They differ in what a workflow step is."
   competitor:
-    title:
-      one: "~15"
-      two: Minutes
-    description: "Sign up via GitHub SSO, enter the web IDE, write your first script step, connect it into a flow, wire inputs and outputs between steps, and run. Each step is code you write; there are no pre-built plugin tasks to drop in for dbt, Airbyte, or Snowflake."
-    shadowColor: "#DBEAFE"
-    command: |
-      # Cloud: sign up at windmill.dev (free tier available)
-      # Then in the web IDE:
-
-      # Step 1: Write a script step (Python or TypeScript)
-      # Step 2: Create a flow, add the step
-      # Step 3: Wire step inputs/outputs
-      # Step 4: Add a schedule trigger
-      # Step 5: Run and monitor
-
-      # Self-hosted option:
-      docker compose up -d
-      # Then go through the same authoring steps...
-    lang: sh
-
-easeOfUse:
-  title: Two Ways to Build a Scheduled Pipeline
+    title: "Windmill: scripts first"
+    text: "Each script is a standalone unit with a main function, its own lockfile and an HTTP endpoint. Flows chain scripts and pass each step's result to the next through JavaScript input expressions. Windmill orchestrates flows as DAGs built in a visual editor, with branches, for-loops, approval steps and schedules, and teams use them for ETL pipelines, automations and internal tools."
+    list:
+      - "Postgres holds all state, and servers and workers are stateless"
+      - "Workers pull jobs from the queue in scheduled order"
+      - "Worker groups listen to tags to take specific jobs"
+      - "Dependencies are resolved into a lockfile per script"
   kestra:
-    title: "Kestra: One file, one workflow"
-    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. No code required to run a dbt model, trigger an Airbyte sync, or load data to Snowflake."
+    title: "Kestra: plugins first"
+    text: "Each task in a flow is a plugin with a typed schema, whether it runs a script, a SQL query or a cloud API call. Outputs move between tasks through expressions and internal storage."
+    list:
+      - "Flows are checked against plugin schemas on save"
+      - "The executor runs the state machine and dispatches tasks"
+      - "Workers stream jobs and results through a gRPC controller"
+      - "Plugins ship and upgrade separately from the core"
+
+compare:
+  title: "What does the same flow look like in each?"
+  lead: "The same flow in both: a signup arrives by webhook, a company lookup is retried twice, and a CRM call uses its result."
+  cta:
+    label: "Get started with Kestra"
+    href: "/get-started"
+  competitor:
+    label: "Windmill flow"
+    file: "flow.yaml"
+    lang: yaml
     code: |
-      id: daily_etl
-      namespace: data.production
+      summary: Enrich new signup
+      schema:
+        type: object
+        properties:
+          email: {type: string}
+      value:
+        modules:
+          - id: lookup_company
+            retry:
+              constant: {attempts: 2, seconds: 30}
+            value:
+              type: rawscript
+              language: python3
+              content: |
+                import requests
+                def main(email: str):
+                    domain = email.split("@")[1]
+                    r = requests.get(f"https://enrich.example.com/companies/{domain}")
+                    r.raise_for_status()
+                    return r.json()
+              input_transforms:
+                email: {type: javascript, expr: flow_input.email}
+          - id: create_lead
+            value:
+              type: rawscript
+              language: python3
+              content: |
+                import requests
+                def main(email: str, company: dict):
+                    requests.post("https://crm.example.com/api/leads",
+                                  json={"email": email, "company": company["name"]}).raise_for_status()
+              input_transforms:
+                email: {type: javascript, expr: flow_input.email}
+                company: {type: javascript, expr: results.lookup_company}
+  kestra:
+    code: |
+      id: enrich_signup
+      namespace: company.growth
 
       tasks:
-        - id: extract
-          type: io.kestra.plugin.scripts.python.Script
-          script: |
-            # Your existing extraction logic, unchanged
-            result = {"records": 1000}
+        - id: lookup_company
+          type: io.kestra.plugin.core.http.Request
+          uri: "https://enrich.example.com/companies/{{ trigger.body.email | split('@') | last }}"
+          retry:
+            type: constant
+            interval: PT30S
+            maxAttempts: 3
 
-        - id: transform
-          type: io.kestra.plugin.dbt.cli.DbtCLI
-          commands:
-            - dbt run --select staging
-
-        - id: notify
-          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-          url: "{{ secret('SLACK_WEBHOOK') }}"
-          messageText: "ETL complete: {{ outputs.extract.vars.result.records }} records processed"
+        - id: create_lead
+          type: io.kestra.plugin.core.http.Request
+          method: POST
+          uri: https://crm.example.com/api/leads
+          contentType: application/json
+          body: |
+            {
+              "email": "{{ trigger.body.email }}",
+              "company": "{{ fromJson(outputs.lookup_company.body).name }}"
+            }
 
       triggers:
-        - id: daily
-          type: io.kestra.plugin.core.trigger.Schedule
-          cron: "0 0 * * *"
-    lang: yaml
+        - id: signup
+          type: io.kestra.plugin.core.trigger.Webhook
+          key: "{{ secret('SIGNUP_WEBHOOK_KEY') }}"
+
+setup:
+  title: "What does it take to get Windmill and Kestra running?"
+  lead: "Both ship a Docker Compose file that includes the database."
   competitor:
-    title: "Windmill: Each step is a script, wired in the editor"
-    description: "Windmill flows are built by writing individual script steps and wiring their inputs and outputs in the visual flow editor. Each integration with dbt, Slack, or an external system requires writing and maintaining the connection code yourself. The steps are readable to developers; the flow topology lives in the visual editor or the underlying OpenFlow JSON."
-    shadowColor: "#DBEAFE"
+    title: "Windmill"
+    tag: "Postgres and Caddy"
+    text: "Windmill's <a href='https://www.windmill.dev/docs/advanced/self_host'>self-host guide</a> downloads a Compose file, a Caddyfile and an .env file, then serves the UI on localhost through Caddy. Postgres holds all of Windmill's state, and the guide says to change the default superadmin login on first setup."
     code: |
-      # Step 1: extract.py (a Windmill script step)
-      def main():
-          # Your extraction logic
-          return {"records": 1000}
-
-      # Step 2: run_dbt.py (a separate script step)
-      import subprocess
-      def main():
-          subprocess.run(["dbt", "run", "--select", "staging"], check=True)
-
-      # Step 3: notify_slack.py (another script step)
-      import httpx, os
-      def main(records: int):
-          httpx.post(os.environ["SLACK_WEBHOOK"],
-                     json={"text": f"ETL complete: {records} records processed"})
-
-      # Connect these steps in Windmill's visual flow editor
-      # Add a cron schedule via the UI
-    lang: python
-
-visualPreview:
-  mainTitle: Two Platforms, Two Scopes
+      curl https://raw.githubusercontent.com/windmill-labs/windmill/main/docker-compose.yml -o docker-compose.yml
+      curl https://raw.githubusercontent.com/windmill-labs/windmill/main/Caddyfile -o Caddyfile
+      curl https://raw.githubusercontent.com/windmill-labs/windmill/main/.env -o .env
+      docker compose up -d
   kestra:
-    description: "Orchestrate data pipelines, infrastructure operations, business processes, and AI workflows in one unified platform. Event-driven at its core, with native triggers for S3, Kafka, webhooks, and database changes. {totalPlugins}+ plugins cover the full data and infrastructure stack, all defined in YAML."
-  competitor:
-    description: "A developer platform that combines script execution, flow orchestration, and internal app building in one workspace. Teams get scripts and lightweight automations alongside a drag-and-drop UI builder. Native data pipeline integrations (dbt, Airbyte, Snowflake) require writing and maintaining connection code rather than dropping in a plugin task."
-    shadowColor: "#DBEAFE"
+    title: "Kestra"
+    tag: "Database included"
+    text: "One Compose file starts Kestra and its Postgres database. Open localhost:8080, pick a blueprint and run it. Production runs the same image on Kubernetes with the <a href='/docs/installation/kubernetes'>Kestra Helm chart</a>."
+    code: |
+      curl -o docker-compose.yml https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
 
-featureGrid:
-  title: Kestra vs. Windmill at a Glance
-  tableData:
-    - feature: Workflow definition
-      kestra: Declarative YAML
-      competitor: "Code (Python, TypeScript, Go, Bash) + visual editor"
-    - feature: Native data pipeline plugins
-      kestra: "✓ {totalPlugins}+ plugins (dbt, Airbyte, Spark, Snowflake, Kafka)"
-      competitor: "No pre-built plugin library; integrations require custom code"
-    - feature: Event-driven triggers
-      kestra: "✓ Native (S3, Kafka, webhooks, database changes, schedules)"
-      competitor: "Webhooks, schedules, and HTTP routes"
-    - feature: Internal app builder
-      kestra: "✓ Kestra Apps (workflow trigger forms)"
-      competitor: "✓ Low-code drag-and-drop app builder"
-    - feature: Languages supported
-      kestra: "Any (scripts run in isolated containers, no SDK required)"
-      competitor: "Python, TypeScript, Go, PHP, Bash, SQL, Rust, C#"
-    - feature: Multi-tenancy
-      kestra: "Namespace isolation + RBAC out-of-box"
-      competitor: "Workspaces with role-based access"
-    - feature: Deployment complexity
-      kestra: "Docker Compose (two commands)"
-      competitor: "Docker Compose or Kubernetes"
-    - feature: Infrastructure automation
-      kestra: "✓ Native support"
-      competitor: "Possible via script steps, not a primary use case"
-    - feature: Self-service for non-engineers
-      kestra: "✓ Kestra Apps with parameter forms"
-      competitor: "Auto-generated UIs from script signatures"
+pairs:
+  - title: "How hard is it to move from Windmill to Kestra?"
+    columns:
+      - label: "Leaving Windmill"
+        brand: competitor
+        text: "Scripts are standard TypeScript, Python, Go or Bash with a main function, so their code is portable. Flow wiring is Windmill's own: input transforms, step results, retries and failure modules. Windmill apps have no direct counterpart and need a plan of their own."
+      - label: "Moving to Kestra"
+        brand: kestra
+        text: "Each script becomes a script task in the same language, or a plugin task where one covers the call. Step results become outputs, failure modules an errors block, and schedules and webhooks triggers in the flow file. Windmill's webhooks let both run in parallel until each flow is switched over."
+  - title: "How do Windmill and Kestra compare on licensing, pricing and self-hosting?"
+    lead: "Both are free to self-host, under different licenses."
+    columns:
+      - label: "Windmill"
+        brand: competitor
+        text: "The core is AGPLv3, and the Community Edition images add proprietary code under a free-use license that rules out reselling or running it as a managed service. The free edition has no execution limit but caps workspaces, users, SSO and Git sync. Enterprise is billed per builder and per compute unit of worker memory, and quoted on request."
+      - label: "Kestra"
+        brand: kestra
+        text: "Apache 2.0 and free to self-host, with no limits on flows or executions. Kestra Cloud is billed on usage, and Kestra Enterprise is licensed per instance. Both are on the <a href='/pricing'>pricing page</a>."
 
-testimonials:
-  - quote: "Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML."
-    author: "Senior Engineering Manager @ Apple (ML team)"
-    kpis:
-      - value: "200"
-        name: Engineers onboarded
-      - value: "2x"
-        name: Faster workflow creation
-      - value: "0"
-        name: Pipeline failures
-    storyLink: "/stories/apple"
-
-platformStrengths:
-  title: Kestra Is Built for Teams Who Orchestrate the Full Data Stack
-  features:
-    - title: "{totalPlugins}+ data and infrastructure plugins, no code required"
-      description: "Kestra ships native plugin tasks for dbt, Airbyte, Spark, Snowflake, BigQuery, Kafka, Databricks, and {totalPlugins}+ more. Drop one into a YAML workflow and it runs with no connection code to write or API docs to parse. Every integration is a pre-built task type, not custom code your team writes and maintains."
-    - title: YAML any analyst can read and modify
-      description: "A Kestra workflow is a YAML file that any team member can read and modify; ops teams can trigger runs from the UI without touching the implementation. Business users interact with workflows through Kestra Apps — no-code forms that trigger, monitor, and collect input without exposing the underlying YAML."
-    - title: Event-driven triggers as first-class declarations
-      description: "S3 file arrivals, Kafka message consumption, database row changes, and webhook callbacks are YAML trigger blocks sitting alongside the task list in the same file. Kestra's trigger system covers the reactive patterns data teams actually need without writing any polling code or managing external event listeners."
-
-decisionGuide:
-  mainTitle: Two Platforms Built for Different Teams
-  kestra:
-    title: Choose Kestra When
-    list:
-      - "You're orchestrating data pipelines that touch dbt, Airbyte, Snowflake, Spark, or Kafka and want pre-built tasks instead of custom code."
-      - "Your team includes analysts and data engineers who need to read and modify workflows without a Python background."
-      - "You need event-driven triggers for S3 arrivals, Kafka messages, or database changes as native YAML declarations."
-      - "Enterprise RBAC, namespace isolation, audit logs, and SSO/SAML are required."
-      - "You're orchestrating 100,000+ concurrent tasks and need a platform built for that scale."
-  competitor:
-    title: Choose Windmill When
-    list:
-      - "Your engineering team wants to write scripts in multiple languages and needs a shared platform to run and monitor them."
-      - "You need to build internal apps and forms on top of automations, and the low-code UI builder is a genuine time-saver."
-      - "Your workflows are developer-owned scripts where code is the right authoring medium, not YAML."
-      - "You want a single all-in-one tool for scripts, flows, and internal UIs rather than a dedicated orchestration platform."
-    shadowColor: "#DBEAFE"
-    bulletColor: "#3B82F6"
+faqTitle: "Questions from Windmill teams"
 
 commonQuestions:
-  - question: Can Kestra replace Windmill for internal tooling?
-    answer: "For workflow orchestration and data pipelines, yes. For building internal apps with drag-and-drop UI components, Windmill has a purpose-built low-code app builder that Kestra doesn't replicate. Kestra Apps let non-engineers trigger workflows and fill in parameters through a form UI, but it's not a general internal tool builder. If your use case is running data pipelines and infrastructure workflows, Kestra is the stronger fit; if you're primarily building internal UIs and scripts, Windmill's app builder is a genuine differentiator."
-  - question: Does Kestra support the same languages as Windmill?
-    answer: "Kestra runs scripts in any language inside isolated Docker containers: Python, TypeScript, Go, Bash, SQL, R, and more, with no SDK required. Windmill has native workers for Python, TypeScript, Go, PHP, Bash, SQL, Rust, and C#. The difference is that Kestra wraps script execution in a plugin system with pre-built task types for common integrations, so you don't write connection code for dbt, Airbyte, or Snowflake. Windmill scripts give you more flexibility at the cost of writing that code yourself."
-  - question: How does Kestra's plugin library compare to Windmill's integrations?
-    answer: "Kestra ships {totalPlugins}+ native plugin tasks covering dbt, Airbyte, Spark, Snowflake, BigQuery, Redshift, Kafka, Databricks, AWS, GCP, Azure, and the full modern data stack. Each is a typed YAML task definition. Windmill has a community script hub with shared scripts, but integrations aren't pre-built plugin tasks you drop into a workflow. They're community-maintained scripts you copy into your workspace and adapt. For teams who need reliable, versioned integrations with production data systems, the plugin model is faster to start and easier to maintain."
-  - question: How does migration from Windmill to Kestra work?
-    answer: "Your existing Python, TypeScript, and Bash scripts move directly into Kestra Script tasks with no modification. Logic that was spread across multiple Windmill script steps gets reorganized into a single YAML workflow file, with task inputs and outputs handled by Kestra's output system. Teams typically migrate flow by flow, running both platforms in parallel until the Kestra version is validated in production."
-  - question: Can Kestra and Windmill run in parallel?
-    answer: "Yes. Kestra can trigger Windmill flows via HTTP webhook, and Windmill can call Kestra workflow executions through the Kestra API. Teams running both sometimes use Windmill for developer scripts and internal apps while using Kestra for data pipeline orchestration that requires the {totalPlugins}+ plugin ecosystem."
-  - question: How does Kestra handle multi-tenancy compared to Windmill?
-    answer: "Kestra uses namespace isolation out-of-the-box: teams, environments, and projects get separate namespaces with scoped RBAC, secrets, and execution history. Windmill uses workspaces with role-based access. For enterprise deployments with strict tenant separation, Kestra's namespace model maps cleanly to team and environment boundaries without requiring separate deployments."
+  - question: "Can Kestra replace Windmill apps?"
+    answer: "Partly. Every Kestra flow gets a form generated from its typed inputs, and Apps in Kestra Enterprise add custom forms, output displays and approval buttons in front of a flow. Windmill apps go further for general internal tools, with React or Svelte frontends wired to Windmill scripts, so teams that rely on them often keep them."
+  - question: "Do I need to write client code for my tools in Kestra?"
+    answer: "Usually not. Plugins cover databases, warehouses, dbt, Airbyte, Kafka, cloud services and infrastructure tools as typed tasks with documented properties. For an API without a plugin, the HTTP Request task makes the call, and a script task runs your own client code when you need it."
+  - question: "How does Kestra handle secrets compared to Windmill variables and resources?"
+    answer: "Credentials are Kestra secrets, read with the secret() function in any task property. Non-secret settings go in the KV Store. Kestra Enterprise adds secrets scoped per namespace and connects to external managers such as HashiCorp Vault and Azure Key Vault."
+  - question: "How do several teams share one Kestra instance?"
+    answer: "Each team works in its own namespaces, with flows, files and KV pairs kept apart. Kestra Enterprise adds RBAC scoped to namespaces, SSO, audit logs and fully isolated tenants. Acxiom runs more than 50 enterprise clients as isolated tenants on Kestra."
+  - question: "Can Kestra and Windmill run side by side?"
+    answer: "Yes. Every Windmill script and flow has a webhook URL, so a Kestra flow can call it with an HTTP Request task. Teams often move the pipelines that need plugins first and keep internal tools on Windmill."
+  - question: "Is Kestra's license a factor for embedding it in a product?"
+    answer: "Kestra's open-source edition is Apache 2.0, which allows modification and redistribution, including inside commercial products. Windmill's license file asks for a commercial license to embed the Community Edition in a product you sell or to offer it as a managed service."
+
+related:
+  alternatives: windmill-alternatives
+  comparisons:
+    - dagster
+    - prefect
+    - luigi
+    - temporal

@@ -24,6 +24,7 @@ The **Preferences** section includes the following options:
 - **Default Triggers Tab**: Tab selected when navigating to the triggers page.
 - **Auto Refresh Interval**: Seconds between automatic data refreshes on list pages.
 - **Playground**: Toggle to enable or disable the editor playground, which lets you run tasks individually.
+- **Default Flow Template**: YAML that opens in the editor when you create a flow from scratch. Leave out `id` and `namespace` and Kestra generates them. Invalid YAML shows a warning but is still saved. **Reset to default** clears it, so new flows use the instance template from [`kestra.flowTemplate`](../../configuration/03.observability-and-networking/index.md#default-flow-template), or the built-in Hello World flow if none is set. The template is stored in your browser and doesn't follow you to another browser or device.
 - **Customize Sidebar**: Drag and drop items to reorder the left navigation sidebar, or remove items you don't need.
 
 ## Profile
@@ -76,6 +77,6 @@ Below is a detailed list of the Appearance options you can configure:
   - `Monday, September 30, 2024 12:44 PM`
 
 :::alert{type="info"}
-This setting only affects the UI display. It does not affect [Schedule triggers](../../05.workflow-components/07.triggers/01.schedule-trigger/index.md) or flow execution times, which run on UTC by default.
+This setting only affects the UI. It sets the zone in which dates are displayed and in which you enter dates in the Execute dialog, such as a `DATETIME` input. It does not affect [Schedule triggers](../../05.workflow-components/07.triggers/01.schedule-trigger/index.md) or flow execution times, which run on UTC by default.
 :::
 

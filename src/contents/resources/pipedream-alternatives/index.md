@@ -32,7 +32,7 @@ Pipedream Workflows, the serverless product for connecting APIs with triggers, c
 
 That changes the usual search for a Pipedream alternative. For Pipedream Workflows users, the question is no longer whether to move, but where to, and how to get every workflow, secret and webhook across before the data is gone. This page covers what the shutdown removes, what the export does and does not give you, how the alternatives compare for the workflows teams actually built on Pipedream, and a four-stage plan that finishes before the deadline.
 
-> **TL;DR:** Pipedream Workflows stops on March 31, 2027 and deletes all data, credentials included, on April 30. The export gives you workflow structure as JSON, not secrets, env vars, data stores or OAuth connections, so save those first. Kestra runs the same triggers and code steps as declarative YAML and adds native loops, retries, Git and observability. Kestra Cloud keeps the hosted model you had on Pipedream; if you prefer to self-host, Kestra Open Source (Apache 2.0) and Enterprise run the same flows on your own infrastructure. If you have already decided to move, go straight to the [Pipedream migration guide](/resources/migration/pipedream): export, concept mapping, a worked conversion and the cutover plan.
+> **TL;DR:** Pipedream Workflows stops on March 31, 2027 and deletes all data, credentials included, on April 30. The export gives you workflow structure as JSON, not secrets, env vars, data stores or OAuth connections, so save those first. Kestra runs the same triggers and code steps as declarative YAML and adds native loops, retries, Git and observability. Kestra Cloud keeps the hosted model you had on Pipedream; if you prefer to self-host, Kestra Open Source (Apache 2.0) and Enterprise run the same flows on your own infrastructure. If you have already decided to move, go straight to the [Pipedream Workflows shutdown migration guide](/resources/migration/pipedream): export, concept mapping, a worked conversion and the cutover plan.
 
 ## The shutdown timeline
 
@@ -67,7 +67,7 @@ The export is structure, not state. Plan for everything in the second half of th
 | File Store files, event history | No | Download what you need for operations or audits. |
 | Private multi-file components | Key only, not the source | Keep your own copy of the source code. |
 
-The manifest's warnings name every step and prop you will have to re-enter or reconnect, so it doubles as the checklist for the "save it first" pass. The [export checklist in the migration guide](/resources/migration/pipedream#section-3-3) lists where to get each missing piece and where it goes in Kestra.
+The manifest's warnings name every step and prop you will have to re-enter or reconnect, so it doubles as the checklist for the "save it first" pass. The [export checklist in the migration guide](/resources/migration/pipedream#pd-map-title) lists where to get each missing piece and where it goes in Kestra.
 
 ## What moves, and what stays put
 
@@ -88,7 +88,7 @@ Leaving Pipedream Workflows replaces the engine, not the systems around it. Slac
 
 ## Pipedream concepts in Kestra
 
-Every Pipedream construct has a Kestra equivalent, most of them in the open-source edition. The [complete Pipedream-to-Kestra mapping](/resources/migration/pipedream#section-3-2) in the migration guide covers every construct, from `$.flow.exit()` to per-workflow memory settings.
+Every Pipedream construct has a Kestra equivalent, most of them in the open-source edition. The [complete Pipedream-to-Kestra mapping](/resources/migration/pipedream#pd-map-title) in the migration guide covers every construct, from `$.flow.exit()` to per-workflow memory settings.
 
 | Pipedream | Kestra equivalent | Edition |
 |---|---|---|
@@ -154,7 +154,7 @@ Choose Zapier or Make when business users own simple automations and no code nee
 
 ## A Pipedream workflow rebuilt as a Kestra flow
 
-A common Pipedream pattern: a file lands in shared storage, a code step parses it, a loop inside the next step posts each record to an ERP API, and a final step notifies the team. In Kestra it is one flow, and it runs the same on Kestra Cloud, Open Source and Enterprise. For a webhook-driven example with a code step, an ERP call over HTTP and a Slack alert on failure, see the [worked conversion](/resources/migration/pipedream#section-5-1) in the migration guide.
+A common Pipedream pattern: a file lands in shared storage, a code step parses it, a loop inside the next step posts each record to an ERP API, and a final step notifies the team. In Kestra it is one flow, and it runs the same on Kestra Cloud, Open Source and Enterprise. For a webhook-driven example with a code step, an ERP call over HTTP and a Slack alert on failure, see the [worked conversion](/resources/migration/pipedream#pd-compare-title) in the migration guide.
 
 ```yaml
 id: post_journal_entries
@@ -259,7 +259,7 @@ Give the rest a verdict: convert as-is, rebuild because the Pipedream version wa
 ## Where to start
 
 1. Export every Pipedream project this week, and save the secrets, env vars, data stores and webhook senders the export leaves out.
-2. [Request Kestra Cloud access](/cloud) for a managed setup like the one you had on Pipedream, or start Kestra Open Source with [Docker Compose](/docs/installation/docker-compose) if you prefer to self-host, and have the people doing the migration take the free courses on [Kestra Academy](https://kestra.io/academy).
+2. [Request Kestra Cloud access](/cloud) for a managed setup like the one you had on Pipedream, or start Kestra Open Source with [Docker Compose](/docs/installation/docker-compose) if you prefer to self-host, and have the people doing the migration take the free courses on [Kestra Academy](https://academy.kestra.io/).
 3. Convert two or three real workflows first: one webhook-triggered, one scheduled, and the most complex one you have. Measure the hours each took; that rate, across your triage count, is the estimate.
 4. Plan the waves backwards from March 31, 2027 with the [migration guide](/resources/migration/pipedream), and [talk to us](/demo) if you want help with the conversion or a review of the plan.
 

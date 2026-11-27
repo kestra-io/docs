@@ -1,0 +1,3072 @@
+---
+import { Icon } from "astro-icon/components"
+import sharp from "sharp"
+import { fetchPluginIcon } from "~/utils/pluginIcon"
+import CodeCard from "./CodeCard.astro"
+import TopologyNode from "~/components/home/TopologyNode.astro"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
+
+const STEPS = [
+    {
+        tab: "Flows",
+        title: "Flows define your work",
+        dur: 15000,
+        text: "A YAML file with an id, a namespace, and tasks. Reviewed and versioned like code.",
+        link: {
+            href: "/docs/workflow-components/flow",
+            label: "Learn more about flows",
+        },
+    },
+    {
+        tab: "Plugins",
+        title: "Plugins connect your systems",
+        text: "Native connectivity to thousands of services like Terraform, Postgres, ServiceNow, and others.",
+        link: {
+            href: "/docs/workflow-components/plugins",
+            label: "Learn more about plugins",
+        },
+    },
+    {
+        tab: "Triggers",
+        title: "Events start flows",
+        dur: 12000,
+        text: "Kestra is event-driven. Start a flow the moment something happens, such as a message on a queue, a file landing in storage, a webhook call, or another flow finishing, or on a schedule.",
+        link: {
+            href: "/docs/workflow-components/triggers",
+            label: "Learn more about triggers",
+        },
+    },
+    {
+        tab: "No-code",
+        title: "Write flows with no code",
+        dur: 11000,
+        text: "Don’t like to code? Author flows in the no-code editor. Edits are interchangeable with YAML, so both views stay in sync.",
+        link: {
+            href: "/docs/ui/flows#no-code-view",
+            label: "Learn more about the no-code editor",
+        },
+    },
+    {
+        tab: "Observability",
+        dur: 12000,
+        title: "Execution with insight",
+        text: "Each execution retains its logs, outputs, and timing, so “what happened?” always has an answer. Metrics and alerts feed the tools you already monitor.",
+        link: {
+            href: "/docs/administrator-guide/monitoring",
+            label: "Learn more about monitoring",
+        },
+    },
+]
+
+const FLOW = `id: etl_orders
+namespace: company.team
+tasks:
+  - id: extract
+    type: io.kestra.plugin.core.http.Download
+    uri: https://api.example.com/orders.csv
+  - id: transform
+    type: io.kestra.plugin.scripts.python.Script
+    script: clean_orders("{{ outputs.extract.uri }}")
+  - id: load
+    type: io.kestra.plugin.jdbc.postgresql.Query`
+
+const TYPO = { line: 5, after: "core.ht", wrong: "pp" }
+
+const SUGGEST = [
+    {
+        line: 5,
+        after: "core.http.",
+        pick: 0,
+        options: [
+            ["Download", "core.http"],
+            ["Request", "core.http"],
+            ["SseRequest", "core.http"],
+            ["Trigger", "core.http"],
+        ],
+    },
+    {
+        line: 8,
+        after: "plugin.scripts.",
+        pick: 2,
+        options: [
+            ["Script", "scripts.bun"],
+            ["Commands", "scripts.python"],
+            ["Script", "scripts.python"],
+            ["Script", "scripts.node"],
+            ["Script", "scripts.deno"],
+            ["Commands", "scripts.shell"],
+        ],
+    },
+    {
+        line: 11,
+        after: "plugin.jdbc.",
+        pick: 3,
+        options: [
+            ["Batch", "jdbc.mysql"],
+            ["Query", "jdbc.mysql"],
+            ["Batch", "jdbc.postgresql"],
+            ["Query", "jdbc.postgresql"],
+            ["Query", "jdbc.snowflake"],
+            ["Query", "jdbc.clickhouse"],
+        ],
+    },
+]
+
+const PLUGIN_ROWS = [
+    [
+        ["Terraform", "terraform"],
+        ["Ansible", "ansible"],
+        ["Kubernetes", "kubernetes"],
+        ["Docker", "docker"],
+        ["AWS", "aws"],
+        ["Azure", "azure"],
+        ["Google Cloud", "gcp"],
+        ["GitHub", "github"],
+        ["GitLab", "gitlab"],
+        ["Argo CD", "argocd"],
+        ["Databricks", "databricks"],
+        ["Spark", "spark"],
+    ],
+    [
+        ["PostgreSQL", "jdbc.postgresql"],
+        ["Snowflake", "jdbc.snowflake"],
+        ["MySQL", "jdbc.mysql"],
+        ["MongoDB", "mongodb"],
+        ["Elasticsearch", "elasticsearch"],
+        ["Redis", "redis"],
+        ["ClickHouse", "jdbc.clickhouse"],
+        ["DuckDB", "jdbc.duckdb"],
+        ["dbt", "dbt"],
+        ["Airbyte", "airbyte"],
+        ["Fivetran", "fivetran"],
+        ["Kafka", "kafka"],
+    ],
+    [
+        ["Slack", "notifications.slack"],
+        ["Microsoft Teams", "notifications.teams"],
+        ["PagerDuty", "notifications.pagerduty"],
+        ["Jira", "jira"],
+        ["ServiceNow", "servicenow"],
+        ["HubSpot", "hubspot"],
+        ["Zendesk", "zendesk"],
+        ["Notion", "notion"],
+        ["OpenAI", "openai"],
+        ["Hugging Face", "huggingface"],
+        ["Python", "scripts.python"],
+        ["Node.js", "scripts.node"],
+    ],
+]
+
+const isDark = async (svg: string) => {
+    try {
+        const { data } = await sharp(Buffer.from(svg))
+            .resize(24, 24)
+            .ensureAlpha()
+            .raw()
+            .toBuffer({ resolveWithObject: true })
+        let light = 0
+        let ink = 0
+        for (let i = 0; i < data.length; i += 4) {
+            const alpha = data[i + 3] / 255
+            light +=
+                alpha *
+                (0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2])
+            ink += alpha
+        }
+        return ink > 0 && light / ink < 70
+    } catch {
+        return false
+    }
+}
+
+const ROWS = await Promise.all(
+    PLUGIN_ROWS.map(async (row) =>
+        (
+            await Promise.all(
+                row.map(async ([name, group]) => {
+                    const icon = await fetchPluginIcon(
+                        `io.kestra.plugin.${group}`,
+                    ).catch(() => null)
+                    return {
+                        name,
+                        icon,
+                        dark: icon ? await isDark(icon) : false,
+                    }
+                }),
+            )
+        ).filter((plugin) => plugin.icon),
+    ),
+)
+
+const totalPlugins = await fetchTotalPluginsCount()
+
+const TRIGGERS = [
+    {
+        id: "daily",
+        plugin: "core.trigger.Schedule",
+        text: "Cron-like timing, with backfills for missed intervals.",
+        fallback: "mdi:clock-outline",
+    },
+    {
+        id: "on_order",
+        plugin: "core.trigger.Webhook",
+        text: "An HTTP call starts a run.",
+        fallback: "mdi:webhook",
+    },
+    {
+        id: "after_extract",
+        plugin: "core.trigger.Flow",
+        text: "Run when another flow finishes or fails.",
+        fallback: "mdi:source-branch",
+    },
+    {
+        id: "new_files",
+        plugin: "aws.s3.Trigger",
+        text: "Check a file, queue, or table at intervals.",
+        fallback: "mdi:refresh",
+    },
+]
+
+const iconSrc = (plugin: string) =>
+    fetchPluginIcon(`io.kestra.plugin.${plugin}`)
+        .then(
+            (svg) =>
+                `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`,
+        )
+        .catch(() => null)
+
+const suggestIcons = await Promise.all(
+    SUGGEST.map((hint) =>
+        Promise.all(
+            hint.options.map(([name, pkg]) => iconSrc(`${pkg}.${name}`)),
+        ),
+    ),
+)
+const HINTS = SUGGEST.map(({ line, after, pick }) => ({ line, after, pick }))
+
+const triggerIcons = await Promise.all(
+    TRIGGERS.map((trigger) => iconSrc(trigger.plugin)),
+)
+const flowIcon = await iconSrc("core.flow.Subflow")
+const filterIcon = await iconSrc("transform.Filter")
+
+const WHERE = "todecimal(total) > 10"
+
+const SOURCE = [
+    '<span class="k">id</span><span class="p">:</span> filter',
+    '<span class="k">type</span><span class="p">:</span> io.kestra.plugin.transform.Filter',
+    '<span class="k">from</span><span class="p">:</span> <span class="s">"</span><span class="d">{{</span> <span class="v">item.value</span> <span class="d">}}</span><span class="s">"</span>',
+    `<span class="k">where</span><span class="p">:</span> <span data-where-source>${WHERE.replace(">", "&gt;")}</span>`,
+]
+    .map(
+        (line, idx) =>
+            `<span class="row"${idx === 3 ? " data-where-row" : ""}><span class="no">${idx + 1}</span>${line}</span>`,
+    )
+    .join("")
+
+const NODE_W = 260
+const NODE_H = 76
+const TRIGGER_H = 60
+const PAD = 14
+const STEP_Y = TRIGGER_H + PAD
+const TOP = 36
+const FLOW_X = 380
+const GROUP_H = TOP + TRIGGERS.length * STEP_Y
+const FLOW_Y = TOP + (TRIGGER_H - NODE_H) / 2
+const RUNS_Y = FLOW_Y + NODE_H + 40
+const CANVAS_W = FLOW_X + NODE_W
+const CANVAS_H = Math.max(GROUP_H, RUNS_Y + 195)
+
+const EDGE_X = PAD + NODE_W + 3
+const BUS_X = (EDGE_X + FLOW_X) / 2
+const FLOW_MID = FLOW_Y + NODE_H / 2
+const triggerMid = (idx: number) => TOP + idx * STEP_Y + TRIGGER_H / 2
+
+const GROUP_R = NODE_W + 2 * PAD
+
+const elbow = (y1: number, x0 = EDGE_X) => {
+    const dy = Math.sign(FLOW_MID - y1)
+    const r = Math.min(8, Math.abs(FLOW_MID - y1) / 2)
+    if (!dy) return `M${x0} ${y1} H${FLOW_X - 2}`
+    return `M${x0} ${y1} H${BUS_X - r} Q${BUS_X} ${y1} ${BUS_X} ${y1 + dy * r} V${FLOW_MID - dy * r} Q${BUS_X} ${FLOW_MID} ${BUS_X + r} ${FLOW_MID} H${FLOW_X - 2}`
+}
+
+const STUBS = TRIGGERS.map(
+    (_, idx) => `M${EDGE_X} ${triggerMid(idx)} H${BUS_X}`,
+)
+const BUS = `M${BUS_X} ${Math.max(triggerMid(TRIGGERS.length - 1), FLOW_MID)} V${Math.min(triggerMid(0), FLOW_MID)}`
+const TRUNK = `M${BUS_X} ${FLOW_MID} H${FLOW_X - 2}`
+const TRACES = TRIGGERS.map((_, idx) => ({
+    line: elbow(triggerMid(idx)),
+    inside: `M${EDGE_X} ${triggerMid(idx)} H${GROUP_R}`,
+    outside: elbow(triggerMid(idx), GROUP_R),
+}))
+
+const RUNS = [
+    { trigger: 0, time: "09:00:00.214" },
+    { trigger: 3, time: "08:55:00.087" },
+    { trigger: 2, time: "08:41:12.540" },
+    { trigger: 1, time: "08:37:05.931" },
+]
+
+const SIGNALS = [
+    { name: "Execution logs" },
+    { name: "Timeline and topology" },
+    { name: "Metrics and traces" },
+    { name: "Alerts" },
+    { name: "Audit logs", enterprise: true },
+    { name: "Log export", enterprise: true },
+]
+
+const RUN = [
+    {
+        task: "extract",
+        plugin: "core.http.Download",
+        offset: "+0.00s",
+        time: "2.1s",
+        start: 0,
+        length: 0.22,
+        end: "success",
+    },
+    {
+        task: "transform",
+        plugin: "scripts.python.Script",
+        offset: "+2.10s",
+        time: "6.4s",
+        start: 0.22,
+        length: 0.66,
+        end: "success",
+    },
+    {
+        task: "load #1",
+        plugin: "jdbc.postgresql.Query",
+        offset: "+8.50s",
+        time: "0.4s",
+        start: 0.88,
+        length: 0.04,
+        end: "failed",
+    },
+    {
+        task: "load #2",
+        plugin: "jdbc.postgresql.Query",
+        offset: "+9.10s",
+        time: "0.6s",
+        start: 0.94,
+        length: 0.06,
+        end: "success",
+    },
+]
+const runIcons = await Promise.all(RUN.map((row) => iconSrc(row.plugin)))
+---
+
+<section class="how" id="how" aria-labelledby="how-h" data-platform-how>
+    <div class="container-xl">
+        <div class="grid">
+            <header class="head">
+                <h2 id="how-h">How it works</h2>
+            </header>
+
+            <div class="tabs" role="tablist" aria-label="How it works">
+                {STEPS.map((step, idx) => (
+                    <button
+                        type="button"
+                        role="tab"
+                        class:list={["tab", { active: idx === 0 }]}
+                        id={`how-tab-${idx}`}
+                        aria-selected={idx === 0 ? "true" : "false"}
+                        aria-controls="how-panel"
+                        tabindex={idx === 0 ? 0 : -1}
+                        data-dur={step.dur}
+                    >
+                        <span class="swatch" aria-hidden="true" />
+                        {step.tab}
+                    </button>
+                ))}
+            </div>
+
+            <div
+                class="body"
+                id="how-panel"
+                role="tabpanel"
+                aria-labelledby="how-tab-0"
+                data-at="0"
+                style={`--pixels: url("${pixelCluster}")`}
+            >
+                <span class="pixels" aria-hidden="true" />
+                <div class="copies">
+                    {STEPS.map((step, idx) => (
+                        <div class="copy" data-copy={idx}>
+                            <h3>{step.title}</h3>
+                            <p>{step.text}</p>
+                            {step.link && (
+                                <a
+                                    href={step.link.href}
+                                    class="btn-ghost compact"
+                                >
+                                    {step.link.label}
+                                </a>
+                            )}
+                        </div>
+                    ))}
+                </div>
+
+                <div class="views">
+                    <div class="view typed" data-view="0">
+                        <div
+                            class="typer"
+                            data-typer
+                            data-suggest={JSON.stringify(HINTS)}
+                            data-typo={JSON.stringify(TYPO)}
+                        >
+                            <CodeCard
+                                file="company.team / etl_orders.yml"
+                                code={FLOW}
+                                editor
+                            >
+                                <span
+                                    slot="status"
+                                    class="status"
+                                    data-status="valid"
+                                >
+                                    <span class="valid">
+                                        <Icon name="mdi:check-circle-outline" />
+                                        Valid
+                                    </span>
+                                    <span class="warn">
+                                        <Icon name="mdi:alert-outline" />
+                                        Warning(s) detected.
+                                    </span>
+                                </span>
+                            </CodeCard>
+                            <div class="suggest" aria-hidden="true">
+                                <ul></ul>
+                            </div>
+                            {SUGGEST.map((hint, h) => (
+                                <template data-hint={hint.line}>
+                                    {hint.options.map(([name, pkg], idx) => (
+                                        <li>
+                                            {suggestIcons[h][idx] ? (
+                                                <img
+                                                    src={suggestIcons[h][idx]}
+                                                    alt=""
+                                                />
+                                            ) : (
+                                                <Icon name="mdi:puzzle-outline" />
+                                            )}
+                                            <b>{name}</b>
+                                            <span>io.kestra.plugin.{pkg}</span>
+                                        </li>
+                                    ))}
+                                </template>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div class="view wide" data-view="1">
+                        <div class="plugins">
+                            <div class="marquee">
+                                {ROWS.map((row) => (
+                                    <div class="row">
+                                        <ul class="track">
+                                            {[...row, ...row].map(
+                                                (plugin, idx) => (
+                                                    <li
+                                                        aria-hidden={
+                                                            idx >= row.length
+                                                                ? "true"
+                                                                : undefined
+                                                        }
+                                                    >
+                                                        <span
+                                                            class:list={[
+                                                                "tile",
+                                                                {
+                                                                    ink: plugin.dark,
+                                                                },
+                                                            ]}
+                                                            title={plugin.name}
+                                                            set:html={
+                                                                plugin.icon
+                                                            }
+                                                        />
+                                                    </li>
+                                                ),
+                                            )}
+                                        </ul>
+                                    </div>
+                                ))}
+                            </div>
+                            <a class="count" href="/plugins">
+                                {totalPlugins}+ plugins
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="view wide" data-view="2">
+                        <div class="fire" data-fire>
+                            <div
+                                class="canvas"
+                                style={`width: ${CANVAS_W}px; height: ${CANVAS_H}px`}
+                            >
+                                <div
+                                    class="group"
+                                    style={`height: ${GROUP_H}px`}
+                                    aria-hidden="true"
+                                >
+                                    <span class="group-label">trigger</span>
+                                </div>
+                                <svg
+                                    class="edges"
+                                    viewBox={`0 0 ${CANVAS_W} ${CANVAS_H}`}
+                                    aria-hidden="true"
+                                >
+                                    <defs>
+                                        <marker
+                                            id="how-arrow"
+                                            viewBox="0 0 10 10"
+                                            refX="9"
+                                            refY="5"
+                                            markerWidth="6"
+                                            markerHeight="6"
+                                            markerUnits="userSpaceOnUse"
+                                            orient="auto"
+                                        >
+                                            <path
+                                                d="M1 1.5 L9 5 L1 8.5 Q2.5 5 1 1.5 z"
+                                                class="arrow"
+                                            />
+                                        </marker>
+                                        <marker
+                                            id="how-arrow-run"
+                                            viewBox="0 0 10 10"
+                                            refX="9"
+                                            refY="5"
+                                            markerWidth="6"
+                                            markerHeight="6"
+                                            markerUnits="userSpaceOnUse"
+                                            orient="auto"
+                                        >
+                                            <path
+                                                d="M1 1.5 L9 5 L1 8.5 Q2.5 5 1 1.5 z"
+                                                class="arrow run"
+                                            />
+                                        </marker>
+                                        <marker
+                                            id="how-dot"
+                                            viewBox="0 0 6 6"
+                                            refX="3"
+                                            refY="3"
+                                            markerWidth="5"
+                                            markerHeight="5"
+                                            markerUnits="userSpaceOnUse"
+                                        >
+                                            <circle
+                                                cx="3"
+                                                cy="3"
+                                                r="3"
+                                                class="arrow"
+                                            />
+                                        </marker>
+                                    </defs>
+                                    {STUBS.map((d) => (
+                                        <path class="edge stub" d={d} />
+                                    ))}
+                                    <path class="edge" d={BUS} />
+                                    <path class="edge trunk" d={TRUNK} />
+                                    {TRACES.map((trace) => (
+                                        <g class="trace">
+                                            <path
+                                                class="mask inside"
+                                                d={trace.inside}
+                                            />
+                                            <path
+                                                class="mask"
+                                                d={trace.outside}
+                                            />
+                                            <path
+                                                class="stroke"
+                                                d={trace.line}
+                                            />
+                                        </g>
+                                    ))}
+                                </svg>
+                                {TRIGGERS.map((trigger, idx) => (
+                                    <TopologyNode
+                                        id={trigger.id}
+                                        type={trigger.plugin}
+                                        icon={triggerIcons[idx]}
+                                        fallback={trigger.fallback}
+                                        status="created"
+                                        duration="0.2s"
+                                        style={`position: absolute; left: ${PAD}px; top: ${TOP + idx * STEP_Y}px; height: ${TRIGGER_H}px`}
+                                        data-trigger={idx}
+                                    >
+                                        <button
+                                            slot="action"
+                                            type="button"
+                                            class="hint"
+                                            aria-label={trigger.text}
+                                        >
+                                            <Icon name="mdi:information-outline" />
+                                            <span
+                                                class="tip"
+                                                aria-hidden="true"
+                                            >
+                                                {trigger.text}
+                                            </span>
+                                        </button>
+                                    </TopologyNode>
+                                ))}
+                                <TopologyNode
+                                    id="etl_orders"
+                                    type="company.team"
+                                    icon={flowIcon}
+                                    fallback="mdi:sitemap-outline"
+                                    status="success"
+                                    duration="4.1s"
+                                    style={`position: absolute; left: ${FLOW_X}px; top: ${FLOW_Y}px`}
+                                    data-flow
+                                />
+                                <div
+                                    class="runs"
+                                    style={`left: ${FLOW_X}px; top: ${RUNS_Y}px; width: ${NODE_W}px`}
+                                >
+                                    <p class="runs-head">
+                                        <Icon name="mdi:play-outline" />
+                                        Executions
+                                    </p>
+                                    <ul>
+                                        {RUNS.map((run) => (
+                                            <li>
+                                                <span class="runs-icon">
+                                                    {flowIcon ? (
+                                                        <img
+                                                            src={flowIcon}
+                                                            alt=""
+                                                        />
+                                                    ) : (
+                                                        <Icon name="mdi:sitemap-outline" />
+                                                    )}
+                                                </span>
+                                                <code>{run.time}</code>
+                                                <span class="runs-by">
+                                                    {TRIGGERS[run.trigger].id}
+                                                </span>
+                                                <span class="runs-state">
+                                                    <Icon
+                                                        name="mdi:check-circle-outline"
+                                                        class="done"
+                                                    />
+                                                    <Icon
+                                                        name="mdi:loading"
+                                                        class="spin"
+                                                    />
+                                                </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="view wide" data-view="3">
+                        <div class="nc" data-nocode data-where={WHERE}>
+                            <div class="nc-tabs">
+                                <button
+                                    type="button"
+                                    class="nc-tab"
+                                    data-pane="source"
+                                >
+                                    <Icon name="mdi:code-tags" />
+                                    Flow Code
+                                    <span class="dirty" aria-hidden="true" />
+                                    <Icon name="mdi:close" class="x" />
+                                </button>
+                                <button
+                                    type="button"
+                                    class="nc-tab on"
+                                    data-pane="form"
+                                >
+                                    <Icon name="mdi:mouse-outline" />
+                                    No Code
+                                    <Icon name="mdi:close" class="x" />
+                                </button>
+                            </div>
+                            <div class="nc-panes" data-at="form">
+                                <div class="nc-form">
+                                    <div>
+                                        <p class="nc-label">
+                                            <i>*</i> type
+                                        </p>
+                                        <p class="nc-input select">
+                                            {filterIcon ? (
+                                                <img src={filterIcon} alt="" />
+                                            ) : (
+                                                <Icon name="mdi:filter-outline" />
+                                            )}
+                                            io.kestra.plugin.transform.Filter
+                                            <Icon name="mdi:chevron-down" />
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p class="nc-label">
+                                            <i>*</i> id
+                                            <span class="nc-tag">String</span>
+                                        </p>
+                                        <p class="nc-input">filter</p>
+                                    </div>
+                                    <div>
+                                        <p class="nc-label">
+                                            <i>*</i> from
+                                            <span class="nc-tag">
+                                                Expression
+                                            </span>
+                                        </p>
+                                        <p class="nc-input">
+                                            <span class="d">{"{{"}</span>{" "}
+                                            <span class="v">item.value</span>{" "}
+                                            <span class="d">{"}}"}</span>
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p class="nc-label">
+                                            <i>*</i> where
+                                            <span class="nc-tag">String</span>
+                                        </p>
+                                        <p class="nc-input">
+                                            <span data-where-form>{WHERE}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <pre class="nc-source"><code set:html={SOURCE} /></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="view wide exec-view" data-view="4">
+                        <div class="nc exec" data-exec data-state="success">
+                            <div class="nc-tabs">
+                                <span class="nc-tab on">
+                                    <Icon name="mdi:play-outline" />
+                                    Execution
+                                </span>
+                                <span class="exec-status">
+                                    <span class="running">
+                                        <Icon name="mdi:loading" class="spin" />
+                                        Running
+                                    </span>
+                                    <span class="failed">
+                                        <Icon name="mdi:close-circle-outline" />
+                                        Failed
+                                    </span>
+                                    <span class="success">
+                                        <Icon name="mdi:check-circle-outline" />
+                                        Success
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="exec-body">
+                                <p class="exec-head">
+                                    Execution <code>4f2a…</code>
+                                    <span>etl_orders</span>
+                                </p>
+                                <ul class="exec-gantt">
+                                    {RUN.map((row, idx) => (
+                                        <li
+                                            class={`is-${row.end}`}
+                                            data-end={row.end}
+                                            style={`--start: ${row.start}; --length: ${row.length}`}
+                                        >
+                                            <span class="task">
+                                                <span class="task-icon">
+                                                    {runIcons[idx] ? (
+                                                        <img
+                                                            src={runIcons[idx]}
+                                                            alt=""
+                                                        />
+                                                    ) : (
+                                                        <Icon name="mdi:puzzle-outline" />
+                                                    )}
+                                                </span>
+                                                <code class="name">
+                                                    {row.task}
+                                                </code>
+                                            </span>
+                                            <span class="offset">
+                                                {row.offset}
+                                            </span>
+                                            <span class="bar">
+                                                <span class="fill" />
+                                            </span>
+                                            <span class="took">{row.time}</span>
+                                            <span class="state">
+                                                <Icon
+                                                    name="mdi:loading"
+                                                    class="spin"
+                                                />
+                                                <Icon
+                                                    name="mdi:close-circle-outline"
+                                                    class="fail"
+                                                />
+                                                <Icon
+                                                    name="mdi:check-circle-outline"
+                                                    class="done"
+                                                />
+                                                <span class="label-running">
+                                                    Running
+                                                </span>
+                                                <span class="label-failed">
+                                                    Failed
+                                                </span>
+                                                <span class="label-success">
+                                                    Success
+                                                </span>
+                                            </span>
+                                            <Icon
+                                                name="mdi:dots-vertical"
+                                                class="kebab"
+                                            />
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                        <ul class="exec-signals">
+                            {SIGNALS.map((signal) => (
+                                <li>
+                                    {signal.name}
+                                    {signal.enterprise && (
+                                        <span class="ent">
+                                            Enterprise Edition
+                                        </span>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const STEP_MS = 7000
+    const TYPE_MS = 22
+    const LINE_MS = 90
+
+    interface Hint {
+        line: number
+        after: string
+        pick: number
+    }
+
+    interface Typo {
+        line: number
+        after: string
+        wrong: string
+    }
+
+    const wait = (ms: number) =>
+        new Promise((resolve) => setTimeout(resolve, ms))
+
+    function makeTyper(box: HTMLElement) {
+        const pop = box.querySelector<HTMLElement>(".suggest")!
+        const list = pop.querySelector("ul")!
+        const hints = JSON.parse(box.dataset.suggest!) as Hint[]
+        const typo = JSON.parse(box.dataset.typo!) as Typo
+        const status = box.querySelector<HTMLElement>("[data-status]")!
+        const slip = document.createElement("span")
+        slip.className = "typo"
+        const rows = [...box.querySelectorAll<HTMLElement>(".line")].map(
+            (line) => {
+                const txt = document.createElement("span")
+                txt.className = "txt"
+                const nodes = [...line.childNodes].slice(1)
+                if (nodes.at(-1)?.textContent === "\n") nodes.pop()!.remove()
+                for (const node of nodes) txt.appendChild(node)
+                line.appendChild(txt)
+                return { line, txt, text: txt.textContent ?? "" }
+            },
+        )
+        let token = 0
+
+        const fill = (hint: Hint, active: number) => {
+            if (
+                !list.children.length ||
+                list.dataset.hint !== String(hint.line)
+            ) {
+                const template = box.querySelector<HTMLTemplateElement>(
+                    `template[data-hint="${hint.line}"]`,
+                )!
+                list.replaceChildren(template.content.cloneNode(true))
+                list.dataset.hint = String(hint.line)
+            }
+            ;[...list.children].forEach((item, i) =>
+                item.classList.toggle("on", i === active),
+            )
+        }
+
+        const place = (txt: HTMLElement) => {
+            const base = box.getBoundingClientRect()
+            const caret = txt.getBoundingClientRect()
+            const left = Math.min(
+                caret.right - base.left,
+                base.width - pop.offsetWidth - 8,
+            )
+            const room = box
+                .closest<HTMLElement>(".body")!
+                .getBoundingClientRect()
+            const below = caret.bottom - base.top + 4
+            const top =
+                caret.bottom + 4 + pop.offsetHeight > room.bottom
+                    ? caret.top - base.top - pop.offsetHeight - 4
+                    : below
+            pop.style.transform = `translate(${Math.max(8, left)}px, ${top}px)`
+        }
+
+        const suggest = async (hint: Hint, txt: HTMLElement, id: number) => {
+            fill(hint, 0)
+            place(txt)
+            pop.classList.add("open")
+            await wait(550)
+            for (let i = 1; i <= hint.pick && id === token; i++) {
+                fill(hint, i)
+                await wait(260)
+            }
+            await wait(450)
+            pop.classList.remove("open")
+        }
+
+        const mistype = async (row: { line: HTMLElement }, id: number) => {
+            slip.textContent = ""
+            row.line.appendChild(slip)
+            for (const char of typo.wrong) {
+                slip.textContent += char
+                await wait(TYPE_MS * 2)
+            }
+            await wait(300)
+            if (id !== token) return
+            status.dataset.status = "warn"
+            await wait(1300)
+            while (slip.textContent && id === token) {
+                slip.textContent = slip.textContent.slice(0, -1)
+                await wait(110)
+            }
+            slip.remove()
+            if (id !== token) return
+            status.dataset.status = "valid"
+            await wait(250)
+        }
+
+        const reset = () => {
+            slip.remove()
+            status.dataset.status = "valid"
+            pop.classList.remove("open")
+            for (const row of rows) {
+                row.txt.style.width = ""
+                row.line.classList.remove("seen", "typing")
+            }
+        }
+
+        const run = async () => {
+            const id = ++token
+            reset()
+            for (const row of rows) row.txt.style.width = "0ch"
+            box.classList.add("running")
+            for (const [i, row] of rows.entries()) {
+                row.line.classList.add("seen", "typing")
+                row.txt.style.width = "0ch"
+                const hint = hints.find((h) => h.line === i + 1)
+                const stop = hint
+                    ? row.text.indexOf(hint.after) + hint.after.length
+                    : -1
+                const slipAt =
+                    typo.line === i + 1
+                        ? row.text.indexOf(typo.after) + typo.after.length
+                        : -1
+                for (let c = 1; c <= row.text.length; c++) {
+                    row.txt.style.width = `${c}ch`
+                    if (c === slipAt) {
+                        await mistype(row, id)
+                        if (id !== token) return
+                    }
+                    if (hint && c === stop) {
+                        await suggest(hint, row.txt, id)
+                        if (id !== token) return
+                        row.txt.style.width = `${row.text.length}ch`
+                        break
+                    }
+                    await wait(TYPE_MS)
+                    if (id !== token) return
+                }
+                await wait(LINE_MS)
+                if (id !== token) return
+                if (i < rows.length - 1) row.line.classList.remove("typing")
+            }
+        }
+
+        const stop = () => {
+            token++
+            reset()
+            box.classList.remove("running")
+        }
+
+        const view = Number(
+            box.closest<HTMLElement>("[data-view]")!.dataset.view,
+        )
+        return { run, stop, view }
+    }
+
+    const FIRES = [1, 0, 3, 1, 2, 3, 1, 0]
+    const GAPS = [
+        74.318, 31.062, 112.745, 9.481, 46.207, 63.926, 18.153, 95.604,
+    ]
+    const TOOK = ["4.1s", "3.8s", "5.2s", "2.9s"]
+    const FIRE_MS = 2800
+    const ROW_H = 40
+
+    const setStatus = (node: Element, status: string) => {
+        node.classList.remove("is-created", "is-running", "is-success")
+        node.classList.add(`is-${status}`)
+    }
+
+    function makeFirer(box: HTMLElement) {
+        const triggers = [
+            ...box.querySelectorAll<HTMLElement>("[data-trigger]"),
+        ]
+        const edges = [...box.querySelectorAll<SVGGElement>(".trace")]
+        const flow = box.querySelector<HTMLElement>("[data-flow]")!
+        const took = [
+            ...flow.querySelector(".pill.state")!.childNodes,
+        ].findLast(
+            (node) =>
+                node.nodeType === Node.TEXT_NODE && node.textContent?.trim(),
+        )!
+        const initial = took.textContent
+        const list = box.querySelector<HTMLElement>(".runs ul")!
+        const template = list.firstElementChild!.cloneNode(true) as HTMLElement
+        const seed = [...list.children].map((row) => row.cloneNode(true))
+        const view = Number(
+            box.closest<HTMLElement>("[data-view]")!.dataset.view,
+        )
+        let token = 0
+
+        const clock = (seconds: number) => {
+            const ms = Math.round(seconds * 1000)
+            const pad = (value: number, size = 2) =>
+                String(value).padStart(size, "0")
+            return `${pad(Math.floor(ms / 3600000))}:${pad(Math.floor(ms / 60000) % 60)}:${pad(Math.floor(ms / 1000) % 60)}.${pad(ms % 1000, 3)}`
+        }
+
+        const fire = async (src: number, n: number, at: number, id: number) => {
+            setStatus(triggers[src], "running")
+            edges[src].classList.add("active")
+            await wait(900)
+            if (id !== token) return
+            setStatus(flow, "running")
+            const row = template.cloneNode(true) as HTMLElement
+            row.classList.add("running")
+            row.querySelector(".runs-by")!.textContent =
+                triggers[src].querySelector("strong")!.textContent
+            row.querySelector("code")!.textContent = clock(at)
+            list.style.transition = "none"
+            list.style.transform = `translateY(${-ROW_H}px)`
+            list.insertBefore(row, list.firstChild)
+            void list.offsetHeight
+            list.style.transition = ""
+            list.style.transform = ""
+            await wait(500)
+            if (id !== token) return
+            setStatus(triggers[src], "created")
+            await wait(700)
+            if (id !== token) return
+            took.textContent = TOOK[n % TOOK.length]
+            setStatus(flow, "success")
+            edges[src].classList.remove("active")
+            row.classList.remove("running")
+            while (list.children.length > 4) list.lastElementChild!.remove()
+        }
+
+        const reset = () => {
+            list.style.transform = ""
+            list.replaceChildren()
+            for (const row of seed) list.appendChild(row.cloneNode(true))
+            for (const trigger of triggers) setStatus(trigger, "created")
+            for (const edge of edges) edge.classList.remove("active")
+            setStatus(flow, "success")
+            took.textContent = initial
+        }
+
+        const run = async () => {
+            const id = ++token
+            reset()
+            let at = 9 * 3600 + 2 * 60 + 14.104
+            for (let n = 0; id === token; n++) {
+                const i = n % FIRES.length
+                void fire(FIRES[i], n, at, id)
+                at += GAPS[i]
+                await wait(FIRE_MS)
+            }
+        }
+
+        const stop = () => {
+            token++
+            reset()
+        }
+
+        return { run, stop, view }
+    }
+
+    function makeNoCode(box: HTMLElement) {
+        const where = box.dataset.where!
+        const panes = box.querySelector<HTMLElement>(".nc-panes")!
+        const tabs = [...box.querySelectorAll<HTMLElement>(".nc-tab")]
+        const code = box.querySelector<HTMLElement>(
+            '.nc-tab[data-pane="source"]',
+        )!
+        const field = box.querySelector<HTMLElement>("[data-where-form]")!
+        const row = box.querySelector<HTMLElement>("[data-where-row]")!
+        const view = Number(
+            box.closest<HTMLElement>("[data-view]")!.dataset.view,
+        )
+        let token = 0
+
+        const show = (pane: string) => {
+            panes.dataset.at = pane
+            for (const tab of tabs)
+                tab.classList.toggle("on", tab.dataset.pane === pane)
+            if (pane === "source") code.classList.remove("dirty-on")
+            row.classList.toggle("on", pane === "source")
+        }
+
+        for (const tab of tabs)
+            tab.addEventListener("click", () => {
+                token++
+                field.classList.remove("typing")
+                field.textContent = where
+                show(tab.dataset.pane!)
+            })
+
+        const run = async () => {
+            const id = ++token
+            while (id === token) {
+                show("form")
+                field.textContent = ""
+                field.classList.add("typing")
+                await wait(600)
+                for (let c = 1; c <= where.length && id === token; c++) {
+                    field.textContent = where.slice(0, c)
+                    await wait(45)
+                }
+                if (id !== token) return
+                code.classList.add("dirty-on")
+                await wait(900)
+                field.classList.remove("typing")
+                if (id !== token) return
+                show("source")
+                await wait(2800)
+                if (id !== token) return
+                show("form")
+                await wait(1200)
+            }
+        }
+
+        const stop = () => {
+            token++
+            field.classList.remove("typing")
+            field.textContent = where
+            code.classList.remove("dirty-on")
+            show("form")
+        }
+
+        show("form")
+        return { run, stop, view }
+    }
+
+    function makeExec(box: HTMLElement) {
+        const rows = [...box.querySelectorAll<HTMLElement>(".exec-gantt li")]
+        const view = Number(
+            box.closest<HTMLElement>("[data-view]")!.dataset.view,
+        )
+        const STEPS_MS = [700, 1100, 700, 900]
+        let token = 0
+
+        const set = (row: HTMLElement, status: string) => {
+            row.classList.remove(
+                "is-created",
+                "is-running",
+                "is-success",
+                "is-failed",
+            )
+            row.classList.add(`is-${status}`)
+        }
+
+        const finish = () => {
+            for (const row of rows) set(row, row.dataset.end!)
+            box.dataset.state = "success"
+        }
+
+        const run = async () => {
+            const id = ++token
+            while (id === token) {
+                for (const row of rows) set(row, "created")
+                box.dataset.state = "running"
+                await wait(500)
+                for (const [i, row] of rows.entries()) {
+                    if (id !== token) return
+                    set(row, "running")
+                    await wait(STEPS_MS[i])
+                    if (id !== token) return
+                    set(row, row.dataset.end!)
+                    if (row.dataset.end === "failed") {
+                        box.dataset.state = "failed"
+                        await wait(1400)
+                        if (id !== token) return
+                        box.dataset.state = "running"
+                    }
+                }
+                box.dataset.state = "success"
+                await wait(3000)
+            }
+        }
+
+        const stop = () => {
+            token++
+            finish()
+        }
+
+        return { run, stop, view }
+    }
+
+    function wirePlatformHow() {
+        for (const root of document.querySelectorAll<HTMLElement>(
+            "[data-platform-how]:not([data-wired])",
+        )) {
+            root.dataset.wired = "true"
+            const tabs = [
+                ...root.querySelectorAll<HTMLElement>(".tabs > [role=tab]"),
+            ]
+            const body = root.querySelector<HTMLElement>(".body")!
+            const still = matchMedia("(prefers-reduced-motion: reduce)").matches
+            const narrow = matchMedia("(max-width: 767.98px)").matches
+            const typerBox = root.querySelector<HTMLElement>("[data-typer]")
+            const firerBox = root.querySelector<HTMLElement>("[data-fire]")
+            const noCodeBox = root.querySelector<HTMLElement>("[data-nocode]")
+            const execBox = root.querySelector<HTMLElement>("[data-exec]")
+            const observers: { disconnect: () => void }[] = []
+            if (firerBox) {
+                const canvas = firerBox.querySelector<HTMLElement>(".canvas")!
+                const width = canvas.offsetWidth
+                const resize = new ResizeObserver(([entry]) => {
+                    const scale = Math.min(1, entry.contentRect.width / width)
+                    canvas.style.zoom = String(scale)
+                })
+                resize.observe(firerBox)
+                observers.push(resize)
+            }
+            const players = [
+                typerBox && !still && !narrow && makeTyper(typerBox),
+                firerBox && !still && makeFirer(firerBox),
+                noCodeBox && makeNoCode(noCodeBox),
+                execBox && !still && makeExec(execBox),
+            ].filter((player) => !!player)
+            type Player = (typeof players)[number]
+            const playing = new Set<Player>()
+            let auto = !still
+            let inView = false
+            let started = false
+            let current = -1
+            let waiting: number | null = null
+            let timer: number | null = null
+
+            const stop = () => {
+                if (timer !== null) clearTimeout(timer)
+                timer = null
+            }
+
+            const sync = () => {
+                const live = inView && !document.hidden && !still
+                for (const player of players) {
+                    if (live && player.view === current) {
+                        if (playing.has(player)) continue
+                        playing.add(player)
+                        void player.run()
+                    } else if (playing.has(player)) {
+                        playing.delete(player)
+                        player.stop()
+                    }
+                }
+            }
+            document.addEventListener("visibilitychange", sync)
+
+            const hints = [...root.querySelectorAll<HTMLElement>(".hint")]
+            for (const hint of hints) {
+                const restore = () => delete hint.dataset.dismissed
+                hint.addEventListener("pointerleave", restore)
+                hint.addEventListener("blur", restore)
+            }
+            const dismiss = (event: KeyboardEvent) => {
+                if (event.key !== "Escape") return
+                for (const hint of hints)
+                    if (hint.matches(":hover, :focus-visible"))
+                        hint.dataset.dismissed = ""
+            }
+            document.addEventListener("keydown", dismiss)
+
+            document.addEventListener(
+                "astro:before-swap",
+                () => {
+                    stop()
+                    document.removeEventListener("visibilitychange", sync)
+                    document.removeEventListener("keydown", dismiss)
+                    for (const player of playing) player.stop()
+                    playing.clear()
+                    for (const observer of observers) observer.disconnect()
+                },
+                { once: true },
+            )
+
+            const reveal = (tab: HTMLElement) => {
+                const strip = tab.parentElement!
+                if (!inView || strip.scrollWidth <= strip.clientWidth) return
+                const box = strip.getBoundingClientRect()
+                const rect = tab.getBoundingClientRect()
+                strip.scrollBy({
+                    left:
+                        rect.left -
+                        box.left -
+                        (strip.clientWidth - rect.width) / 2,
+                    behavior: still ? "auto" : "smooth",
+                })
+            }
+
+            const open = (idx: number) => {
+                stop()
+                tabs.forEach((tab, i) => {
+                    tab.classList.toggle("active", i === idx)
+                    tab.classList.toggle("timed", auto && i === idx)
+                    tab.style.setProperty(
+                        "--dur",
+                        `${Number(tab.dataset.dur) || STEP_MS}ms`,
+                    )
+                    tab.setAttribute("aria-selected", String(i === idx))
+                    tab.tabIndex = i === idx ? 0 : -1
+                })
+                body.dataset.at = String(idx)
+                body.setAttribute("aria-labelledby", tabs[idx].id)
+                body.classList.remove("enter")
+                void body.offsetWidth
+                body.classList.add("enter")
+                current = idx
+                for (const player of players) {
+                    playing.delete(player)
+                    player.stop()
+                }
+                sync()
+                reveal(tabs[idx])
+                if (auto)
+                    timer = window.setTimeout(
+                        () => {
+                            const next = (idx + 1) % tabs.length
+                            if (inView) open(next)
+                            else waiting = next
+                        },
+                        Number(tabs[idx].dataset.dur) || STEP_MS,
+                    )
+            }
+
+            const takeOver = () => {
+                auto = false
+                stop()
+                tabs.forEach((tab) => tab.classList.remove("timed"))
+            }
+            root.addEventListener("pointerdown", takeOver)
+            root.addEventListener("focusin", takeOver)
+
+            tabs.forEach((tab, idx) => {
+                tab.addEventListener("click", () => open(idx))
+                tab.addEventListener("keydown", (e) => {
+                    const n = tabs.length
+                    const moves: Record<string, number> = {
+                        ArrowRight: (idx + 1) % n,
+                        ArrowLeft: (idx - 1 + n) % n,
+                        Home: 0,
+                        End: n - 1,
+                    }
+                    const next = moves[e.key]
+                    if (next === undefined) return
+                    e.preventDefault()
+                    tabs[next].focus()
+                    open(next)
+                })
+            })
+
+            const seen = new IntersectionObserver(
+                ([entry]) => {
+                    inView = entry.isIntersecting
+                    if (!inView) return sync()
+                    if (!started) {
+                        started = true
+                        open(0)
+                    } else if (waiting !== null) {
+                        const next = waiting
+                        waiting = null
+                        open(next)
+                    } else sync()
+                },
+                { threshold: 0.35 },
+            )
+            seen.observe(body)
+            observers.push(seen)
+        }
+    }
+
+    document.addEventListener("astro:page-load", wirePlatformHow)
+    wirePlatformHow()
+</script>
+
+<style lang="scss">
+    @use "/src/components/enterprise/mocks/tokens" as *;
+
+    .grid {
+        --rule: 1px solid var(--ks-border-primary);
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+        --tint: #8405ff;
+
+        position: relative;
+        border-left: var(--rule);
+        border-right: var(--rule);
+        padding-bottom: clamp(2.5rem, 4vw, 3.5rem);
+
+        @include media-breakpoint-down(xl) {
+            border-inline: 0;
+        }
+
+        :global(html.dark) & {
+            --tint: #9869f7;
+        }
+
+        > .tabs,
+        > .body {
+            position: relative;
+            border-top: var(--rule);
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: -1px;
+                left: -100vw;
+                right: -100vw;
+                height: 1px;
+                background: var(--ks-border-primary);
+                pointer-events: none;
+            }
+        }
+
+        > .body {
+            border-bottom: var(--rule);
+
+            &::after {
+                content: "";
+                position: absolute;
+                bottom: -1px;
+                left: -100vw;
+                right: -100vw;
+                height: 1px;
+                background: var(--ks-border-primary);
+                pointer-events: none;
+            }
+        }
+    }
+
+    .head {
+        padding: 7.5rem var(--inset) 4rem;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem 3rem;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            color: var(--ks-content-primary);
+        }
+    }
+
+    .tabs {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        border-bottom: var(--rule);
+
+        @include media-breakpoint-down(lg) {
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+    }
+
+    .tab {
+        position: relative;
+        display: flex;
+        flex: none;
+        align-items: center;
+        justify-content: center;
+        gap: 0.625rem;
+        padding: 1.375rem 1rem;
+        border: 0;
+        background: var(--ks-background-body);
+        font-size: 1.0625rem;
+        font-weight: 500;
+        white-space: nowrap;
+        color: var(--ks-content-primary);
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        & + & {
+            border-left: var(--rule);
+        }
+
+        @include media-breakpoint-down(lg) {
+            flex: 1 0 auto;
+            padding-inline: 1.25rem;
+        }
+
+        &:hover {
+            background: color-mix(
+                in srgb,
+                var(--tint) 4%,
+                var(--ks-background-body)
+            );
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: -2px;
+        }
+
+        &.active {
+            cursor: default;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -1px;
+            height: 2px;
+            background: var(--tint);
+            opacity: 0;
+            transform-origin: left;
+            transition: opacity 0.2s ease;
+        }
+
+        &.active::after {
+            opacity: 1;
+        }
+
+        &.timed::after {
+            animation: tab-time var(--dur) linear forwards;
+        }
+    }
+
+    .swatch {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 2px;
+        background: var(--ks-content-tertiary);
+        opacity: 0.5;
+        transition:
+            background-color 0.3s ease,
+            opacity 0.3s ease;
+
+        .active > & {
+            background: var(--tint);
+            opacity: 1;
+        }
+    }
+
+    @keyframes tab-time {
+        from {
+            transform: scaleX(0);
+        }
+
+        to {
+            transform: scaleX(1);
+        }
+    }
+
+    .body {
+        @include tokens;
+
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
+        align-items: center;
+        gap: 3rem;
+        min-height: max(28rem, min(32rem, calc(100vh - 14rem)));
+        padding: var(--inset);
+        background:
+            radial-gradient(
+                80% 90% at 100% 0%,
+                color-mix(in srgb, var(--tint) 20%, transparent),
+                transparent 70%
+            ),
+            radial-gradient(
+                60% 70% at 0% 100%,
+                color-mix(in srgb, var(--tint) 10%, transparent),
+                transparent 70%
+            ),
+            color-mix(in srgb, var(--tint) 3%, var(--ks-background-body));
+
+        :global(html.dark) & {
+            background:
+                radial-gradient(
+                    80% 90% at 100% 0%,
+                    color-mix(in srgb, var(--tint) 12%, transparent),
+                    transparent 70%
+                ),
+                radial-gradient(
+                    60% 70% at 0% 100%,
+                    color-mix(in srgb, var(--tint) 6%, transparent),
+                    transparent 70%
+                ),
+                color-mix(in srgb, var(--tint) 3%, var(--ks-background-body));
+        }
+
+        @include media-breakpoint-down(xl) {
+            grid-template-columns: minmax(0, 1fr);
+            align-content: start;
+            gap: 2rem;
+        }
+
+        @include media-breakpoint-down(lg) {
+            gap: 1rem;
+            min-height: 0;
+            padding: 2rem 1.25rem 3rem;
+        }
+    }
+
+    .pixels {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        width: 96px;
+        aspect-ratio: 194 / 168;
+        background: var(--tint);
+        mask: var(--pixels) no-repeat center / contain;
+        opacity: 0.3;
+        pointer-events: none;
+
+        @include media-breakpoint-down(lg) {
+            width: 64px;
+        }
+    }
+
+    .copies,
+    .views {
+        position: relative;
+        display: grid;
+    }
+
+    @include media-breakpoint-down(lg) {
+        .copies {
+            display: contents;
+        }
+
+        .copies .copy h3 {
+            order: 1;
+            margin: 0;
+        }
+
+        .views {
+            order: 2;
+            margin-block: 0.75rem;
+        }
+
+        .copies .copy p {
+            order: 3;
+        }
+
+        .copies .copy a {
+            order: 4;
+            justify-self: start;
+            margin-top: 0.5rem;
+        }
+    }
+
+    .views {
+        grid-template-columns: minmax(0, 1fr);
+        place-items: center;
+    }
+
+    .copy {
+        grid-area: 1 / 1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(0.75rem);
+        transition:
+            opacity 0.4s ease,
+            transform 0.4s ease,
+            visibility 0s linear 0.4s;
+
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+
+        h3 {
+            margin: 0 0 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            margin: 0;
+            font-size: 1.0625rem;
+            line-height: 1.65;
+            color: var(--ks-content-secondary);
+        }
+
+        a {
+            margin-top: 1.75rem;
+        }
+    }
+
+    .view {
+        grid-area: 1 / 1;
+        width: min(100%, 40rem);
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(0.75rem);
+        transition:
+            opacity 0.4s ease,
+            transform 0.4s ease,
+            visibility 0s linear 0.4s;
+
+        &.wide {
+            width: 100%;
+        }
+    }
+
+    @for $i from 0 through 4 {
+        .body[data-at="#{$i}"] .view[data-view="#{$i}"] {
+            visibility: visible;
+            opacity: 1;
+            transform: none;
+            transition:
+                opacity 0.4s ease 0.1s,
+                transform 0.4s ease 0.1s,
+                visibility 0s;
+        }
+
+        .body[data-at="#{$i}"] .view:not([data-view="#{$i}"]) {
+            @include media-breakpoint-down(lg) {
+                display: none;
+            }
+        }
+
+        .body[data-at="#{$i}"] .copy[data-copy="#{$i}"] {
+            display: flex;
+
+            @include media-breakpoint-down(lg) {
+                display: contents;
+            }
+
+            visibility: visible;
+            opacity: 1;
+            transform: none;
+            transition:
+                opacity 0.4s ease,
+                transform 0.4s ease,
+                visibility 0s;
+        }
+    }
+
+    .body.enter .view:not(.typed) :global(.line) {
+        animation: line-in 0.35s ease both;
+    }
+
+    @for $n from 1 through 12 {
+        .body.enter .view:not(.typed) :global(.line:nth-child(#{$n})) {
+            animation-delay: #{0.1 + $n * 0.04}s;
+        }
+    }
+
+    .body.enter [style*="--k"] {
+        animation: pop-in 0.4s ease both;
+        animation-delay: calc(0.15s + var(--k) * 0.05s);
+    }
+
+    .typer {
+        position: relative;
+
+        &.running :global(.txt) {
+            display: inline-block;
+            overflow: hidden;
+            white-space: pre;
+            vertical-align: top;
+        }
+
+        &.running :global(.line:not(.seen) .no) {
+            visibility: hidden;
+        }
+
+        :global(.line.typing::after) {
+            content: "";
+            display: inline-block;
+            width: 2px;
+            height: 1.15em;
+            margin-left: 1px;
+            vertical-align: -0.2em;
+            background: var(--tint);
+            animation: caret 1s steps(1) infinite;
+        }
+    }
+
+    .status {
+        display: grid;
+        align-self: center;
+        margin-left: auto;
+        font-family: $font-family-sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+
+        > span {
+            display: inline-flex;
+            grid-area: 1 / 1;
+            align-items: center;
+            justify-self: end;
+            gap: 0.375rem;
+            transition: opacity 0.25s ease;
+        }
+
+        :global(svg) {
+            width: 16px;
+            height: 16px;
+        }
+
+        .valid {
+            color: var(--ok);
+        }
+
+        .warn {
+            color: var(--wait);
+            opacity: 0;
+        }
+
+        &[data-status="warn"] {
+            .valid {
+                opacity: 0;
+            }
+
+            .warn {
+                opacity: 1;
+            }
+        }
+    }
+
+    .typer :global(.typo) {
+        text-decoration: underline wavy #e5484d;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 3px;
+    }
+
+    .suggest {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        width: 25rem;
+        padding: 0.25rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 8px;
+        background: var(--ks-background-body);
+        box-shadow: 0 16px 36px -14px rgba(43, 43, 51, 0.35);
+        font-family: $font-family-monospace;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.15s ease;
+
+        &:global(.open) {
+            opacity: 1;
+        }
+
+        :global(ul) {
+            max-height: calc(5 * 1.75rem);
+            overflow: hidden;
+        }
+
+        :global(li) {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            height: 1.75rem;
+            padding: 0 0.5rem;
+            border-radius: 5px;
+            color: var(--ks-content-primary);
+        }
+
+        :global(li.on) {
+            background: color-mix(in srgb, var(--tint) 14%, transparent);
+        }
+
+        :global(li img),
+        :global(li svg) {
+            flex: none;
+            width: 16px;
+            height: 16px;
+        }
+
+        :global(li b) {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        :global(li.on b) {
+            color: var(--tint);
+        }
+
+        :global(li span) {
+            margin-left: auto;
+            font-size: 11.5px;
+            white-space: nowrap;
+            color: var(--ks-content-tertiary);
+        }
+    }
+
+    @keyframes caret {
+        50% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes line-in {
+        from {
+            opacity: 0;
+            transform: translateX(-0.5rem);
+        }
+    }
+
+    @keyframes pop-in {
+        from {
+            opacity: 0;
+            transform: translateY(0.5rem) scale(0.96);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .body.enter .view:not(.typed) :global(.line),
+        .body.enter [style*="--k"] {
+            animation: none;
+        }
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .marquee {
+        --tile: 3.75rem;
+        --gap: 1rem;
+
+        position: relative;
+        display: grid;
+        gap: var(--gap);
+        width: 100%;
+        margin-bottom: -2.5rem;
+        padding-bottom: 2.5rem;
+        mask-image: linear-gradient(
+            90deg,
+            transparent,
+            #000 14%,
+            #000 86%,
+            transparent
+        );
+
+        @include media-breakpoint-down(sm) {
+            --tile: 3rem;
+            --gap: 0.75rem;
+        }
+    }
+
+    .row {
+        overflow: hidden;
+        margin-block: -1rem -2rem;
+        padding-block: 1rem 2.75rem;
+
+        &:nth-child(2) .track {
+            animation-direction: reverse;
+            animation-duration: 46s;
+        }
+
+        &:nth-child(3) .track {
+            animation-duration: 62s;
+        }
+    }
+
+    .track {
+        display: flex;
+        gap: var(--gap);
+        width: max-content;
+        padding-right: var(--gap);
+        animation: marquee 54s linear infinite;
+
+        li {
+            flex: none;
+            width: var(--tile);
+            height: var(--tile);
+        }
+    }
+
+    @keyframes marquee {
+        to {
+            transform: translateX(-50%);
+        }
+    }
+
+    .tile {
+        display: grid;
+        place-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 22%;
+        border: 1px solid var(--line);
+        border-radius: 28%;
+        background: #ffffff;
+        box-shadow: var(--shadow);
+        color: #2b2b33;
+
+        :global(html.dark) & {
+            border-color: rgba(255, 255, 255, 0.14);
+            background: linear-gradient(180deg, #26262c, #18181c);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.12),
+                0 10px 30px rgba(0, 0, 0, 0.5);
+            color: #ffffff;
+        }
+
+        :global(html.dark) &.ink :global(svg) {
+            filter: brightness(0) invert(1);
+        }
+
+        :global(svg) {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .plugins {
+        display: grid;
+        justify-items: center;
+        gap: 1.5rem;
+    }
+
+    .count {
+        margin: 0;
+        padding: 0.375rem 0.875rem;
+        border: 1px dashed var(--line);
+        border-radius: 999px;
+        font-size: $font-size-sm;
+        font-weight: 600;
+        color: var(--run);
+        text-decoration: none;
+        transition:
+            border-color 0.2s ease,
+            background-color 0.2s ease;
+
+        &:hover {
+            border-style: solid;
+            border-color: var(--run);
+            background: color-mix(in srgb, var(--run) 6%, transparent);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .track {
+            animation: none;
+        }
+    }
+
+    .fire {
+        --edge: #d0d0da;
+        --run-c: #8405ff;
+        --ok-c: #1c7e57;
+        --ok-bg: #e7f6ef;
+        --trigger: #4fb383;
+        --trigger-border: #7fdcc0;
+        --trigger-bg: rgba(95, 214, 180, 0.12);
+        --trigger-solid: color-mix(
+            in srgb,
+            rgb(95, 214, 180) 12%,
+            var(--ks-background-body)
+        );
+
+        width: 100%;
+        font-family: $font-family-sans-serif;
+
+        :global(html.dark) & {
+            --edge: #4a4a5a;
+            --run-c: #9869f7;
+            --ok-c: #06f0b1;
+            --ok-bg: rgba(30, 135, 94, 0.14);
+            --trigger: #1e875e;
+            --trigger-border: rgba(6, 240, 177, 0.35);
+            --trigger-bg: rgba(6, 240, 177, 0.06);
+            --trigger-solid: color-mix(
+                in srgb,
+                rgb(6, 240, 177) 6%,
+                var(--ks-background-body)
+            );
+        }
+    }
+
+    .canvas {
+        position: relative;
+        margin-inline: auto;
+
+        :global([data-trigger]) {
+            padding-bottom: 0;
+        }
+
+        :global([data-trigger] .pills),
+        :global([data-trigger] .progress),
+        :global([data-trigger])::after {
+            display: none;
+        }
+
+        :global([data-trigger].is-running) {
+            animation: trigger-ping 1s ease-out infinite;
+        }
+
+        :global([data-flow].is-running .progress) {
+            transform-origin: right;
+            animation: flow-fill 1.2s linear forwards;
+        }
+
+        :global([data-trigger]:has(.hint:hover)),
+        :global([data-trigger]:has(.hint:focus-visible)) {
+            z-index: 3;
+        }
+    }
+
+    .hint {
+        position: relative;
+        display: grid;
+        place-items: center;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: var(--muted);
+        cursor: help;
+
+        > :global(svg) {
+            width: 18px;
+            height: 18px;
+            transition: color 0.2s ease;
+        }
+
+        &:hover > :global(svg),
+        &:focus-visible > :global(svg) {
+            color: var(--text);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: 2px;
+            border-radius: 50%;
+        }
+    }
+
+    .tip {
+        position: absolute;
+        right: -8px;
+        bottom: calc(100% + 10px);
+        width: max-content;
+        max-width: 15rem;
+        padding: 0.5rem 0.75rem;
+        border-radius: 6px;
+        background: #2b2b33;
+        box-shadow: 0 8px 24px -8px rgba(13, 13, 16, 0.35);
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 1.45;
+        text-align: left;
+        color: #ffffff;
+        opacity: 0;
+        transform: translateY(4px);
+        pointer-events: none;
+        transition:
+            opacity 0.15s ease,
+            transform 0.15s ease;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            height: 10px;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            right: 12px;
+            border: 5px solid transparent;
+            border-top-color: #2b2b33;
+        }
+
+        .hint:not([data-dismissed]):hover > &,
+        .hint:not([data-dismissed]):focus-visible > & {
+            opacity: 1;
+            transform: none;
+            pointer-events: auto;
+        }
+    }
+
+    .group {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: calc(260px + 28px);
+        border: 1px solid var(--trigger-border);
+        border-radius: 10px;
+        background: var(--trigger-bg);
+    }
+
+    .group-label {
+        position: absolute;
+        top: 9px;
+        left: 10px;
+        padding: 1px 9px 2px;
+        border-radius: 9px;
+        background: var(--trigger);
+        font-size: 12px;
+        font-weight: 600;
+        color: #ffffff;
+    }
+
+    .edges {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+    }
+
+    .edge {
+        fill: none;
+        stroke: var(--edge);
+        stroke-width: 1.5;
+        stroke-dasharray: 4 4;
+
+        &.stub {
+            marker-start: url(#how-dot);
+        }
+
+        &.trunk {
+            marker-end: url(#how-arrow);
+        }
+    }
+
+    .trace {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+
+        &:global(.active) {
+            opacity: 1;
+        }
+
+        path {
+            fill: none;
+        }
+
+        .mask {
+            stroke: var(--ks-background-body);
+            stroke-width: 5;
+
+            &.inside {
+                stroke: var(--trigger-solid);
+            }
+        }
+
+        .stroke {
+            stroke: var(--run-c);
+            stroke-width: 1.5;
+            stroke-dasharray: 4 4;
+            marker-start: url(#how-dot);
+            marker-end: url(#how-arrow-run);
+            animation: edge-flow 1.2s linear infinite;
+            transition: stroke 0.3s ease;
+        }
+    }
+
+    .arrow {
+        fill: var(--edge);
+
+        &.run {
+            fill: var(--run-c);
+        }
+    }
+
+    @keyframes trigger-ping {
+        from {
+            box-shadow: 0 0 0 0
+                color-mix(in srgb, var(--run-c) 35%, transparent);
+        }
+
+        to {
+            box-shadow: 0 0 0 8px transparent;
+        }
+    }
+
+    @keyframes flow-fill {
+        from {
+            transform: scaleX(0);
+        }
+
+        to {
+            transform: scaleX(1);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .trace .stroke,
+        .canvas :global([data-trigger].is-running),
+        .canvas :global([data-flow].is-running .progress) {
+            animation: none;
+        }
+    }
+
+    @keyframes edge-flow {
+        to {
+            stroke-dashoffset: -16;
+        }
+    }
+
+    .runs {
+        position: absolute;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+
+        ul {
+            display: grid;
+            height: 160px;
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            height: 40px;
+            padding: 0 0.75rem;
+            border-top: 1px solid var(--line);
+        }
+
+        code {
+            flex: 1;
+            padding: 0;
+            background: none;
+            font-family: $font-family-monospace;
+            font-size: 12px;
+            color: var(--text);
+        }
+    }
+
+    .runs-head {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0;
+        padding: 0.5rem 0.75rem;
+        background: var(--deep);
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text);
+
+        :global(svg) {
+            width: 16px;
+            height: 16px;
+            color: var(--muted);
+        }
+    }
+
+    .runs-icon {
+        display: grid;
+        flex: none;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        background: #ffffff;
+        box-shadow: inset 0 0 0 1px var(--line);
+
+        :global(img),
+        :global(svg) {
+            width: 16px;
+            height: 16px;
+            color: #2b2b33;
+        }
+    }
+
+    .runs-by {
+        font-size: 12px;
+        color: var(--muted);
+    }
+
+    .runs-state {
+        display: grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        background: var(--ok-bg);
+        color: var(--ok-c);
+
+        :global(svg) {
+            grid-area: 1 / 1;
+            width: 15px;
+            height: 15px;
+        }
+
+        :global(.spin) {
+            display: none;
+            animation: spin 0.9s linear infinite;
+        }
+
+        :global(.running) > & {
+            background: color-mix(in srgb, var(--run-c) 12%, transparent);
+            color: var(--run-c);
+
+            :global(.done) {
+                display: none;
+            }
+
+            :global(.spin) {
+                display: block;
+            }
+        }
+    }
+
+    @keyframes spin {
+        to {
+            rotate: 360deg;
+        }
+    }
+
+    .nc {
+        --c-key: #631bf3;
+        --c-val: #001233;
+        --c-punct: #424256;
+        --c-delim: #215d42;
+        --c-var: #194530;
+        --c-str: #ab0009;
+        --c-req: #e5484d;
+        --c-hl: rgba(132, 5, 255, 0.08);
+        --c-chrome: #f7f7fa;
+
+        width: min(100%, 38rem);
+        margin-inline: auto;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        font-family: $font-family-sans-serif;
+
+        :global(html.dark) & {
+            --c-key: #cdb6fb;
+            --c-val: #f7f7f8;
+            --c-punct: #adadbf;
+            --c-delim: #80fac5;
+            --c-var: #bffddd;
+            --c-str: #ffc5b7;
+            --c-req: #ff6a6c;
+            --c-hl: rgba(152, 105, 247, 0.16);
+            --c-chrome: #1e1e26;
+        }
+    }
+
+    .exec {
+        --bad: #d4183d;
+        --bad-bg: rgba(212, 24, 61, 0.1);
+
+        :global(html.dark) & {
+            --bad: #ff6a6c;
+            --bad-bg: rgba(255, 106, 108, 0.14);
+        }
+
+        .nc-tab {
+            cursor: default;
+        }
+    }
+
+    .exec-status {
+        display: grid;
+        align-self: center;
+        margin-left: auto;
+        font-size: 13px;
+        font-weight: 500;
+
+        > span {
+            display: inline-flex;
+            grid-area: 1 / 1;
+            align-items: center;
+            justify-self: end;
+            gap: 0.375rem;
+            padding: 0.1875rem 0.625rem;
+            border-radius: 6px;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        :global(svg) {
+            width: 15px;
+            height: 15px;
+        }
+
+        :global(.spin) {
+            animation: spin 0.9s linear infinite;
+        }
+
+        .running {
+            background: color-mix(in srgb, var(--run) 12%, transparent);
+            color: var(--run);
+        }
+
+        .failed {
+            background: var(--bad-bg);
+            color: var(--bad);
+        }
+
+        .success {
+            background: var(--ok-bg);
+            color: var(--ok);
+        }
+
+        [data-state="running"] & .running,
+        [data-state="failed"] & .failed,
+        [data-state="success"] & .success {
+            opacity: 1;
+        }
+    }
+
+    .exec-body {
+        padding: 1.25rem 1.5rem 1.5rem;
+    }
+
+    .exec-head {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
+        margin: 0 0 0.75rem;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+
+        code {
+            padding: 0;
+            background: none;
+            font-family: $font-family-monospace;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--muted);
+        }
+
+        span {
+            margin-left: auto;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--muted);
+        }
+    }
+
+    .exec-gantt {
+        display: grid;
+
+        li {
+            display: grid;
+            grid-template-columns:
+                minmax(0, 1fr) 3.25rem minmax(4rem, 8rem) 2.5rem
+                5.75rem 1rem;
+            align-items: center;
+            gap: 0.625rem;
+            height: 2.625rem;
+            border-bottom: 1px solid var(--line);
+
+            &:last-child {
+                border-bottom: 0;
+            }
+
+            @include media-breakpoint-down(sm) {
+                grid-template-columns:
+                    minmax(0, 1fr) minmax(3rem, 5rem) 2.5rem
+                    1.5rem;
+
+                .offset,
+                .kebab,
+                .state > span {
+                    display: none;
+                }
+            }
+        }
+
+        .task {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 0;
+        }
+
+        .name {
+            overflow: hidden;
+            padding: 0;
+            background: none;
+            font-family: $font-family-monospace;
+            font-size: 12px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: var(--text);
+        }
+
+        .offset,
+        .took {
+            font-family: $font-family-monospace;
+            font-size: 11.5px;
+            text-align: right;
+            color: var(--muted);
+        }
+
+        .took {
+            text-align: left;
+            color: var(--text);
+            visibility: hidden;
+        }
+
+        :global(.is-success) > .took,
+        :global(.is-failed) > .took {
+            visibility: visible;
+        }
+
+        :global(.kebab) {
+            width: 16px;
+            height: 16px;
+            color: var(--muted);
+        }
+    }
+
+    .task-icon {
+        display: grid;
+        flex: none;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        background: #ffffff;
+        box-shadow: inset 0 0 0 1px var(--line);
+
+        img,
+        :global(svg) {
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    .bar {
+        position: relative;
+        height: 6px;
+        border-radius: 3px;
+        background: var(--chip);
+    }
+
+    .fill {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: calc(var(--start) * 100%);
+        width: max(6px, calc(var(--length) * 100%));
+        border-radius: 3px;
+        background: var(--run);
+        transform: scaleX(0);
+        transform-origin: right;
+
+        :global(.is-running) > .bar > & {
+            transform: scaleX(0.85);
+            transition: transform 0.9s ease-out;
+        }
+
+        :global(.is-success) > .bar > & {
+            background: var(--ok);
+            transform: none;
+            transition: transform 0.3s ease;
+        }
+
+        :global(.is-failed) > .bar > & {
+            background: var(--bad);
+            transform: none;
+            transition: transform 0.3s ease;
+        }
+    }
+
+    .state {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.3125rem;
+        height: 1.625rem;
+        padding: 0 0.5rem;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 500;
+        visibility: hidden;
+
+        :global(svg),
+        > span {
+            display: none;
+        }
+
+        :global(svg) {
+            width: 14px;
+            height: 14px;
+        }
+
+        :global(.spin) {
+            animation: spin 0.9s linear infinite;
+        }
+
+        :global(.is-running) > & {
+            visibility: visible;
+            background: color-mix(in srgb, var(--run) 12%, transparent);
+            color: var(--run);
+
+            :global(.spin),
+            .label-running {
+                display: inline;
+            }
+        }
+
+        :global(.is-success) > & {
+            visibility: visible;
+            background: var(--ok-bg);
+            color: var(--ok);
+
+            :global(.done),
+            .label-success {
+                display: inline;
+            }
+        }
+
+        :global(.is-failed) > & {
+            visibility: visible;
+            background: var(--bad-bg);
+            color: var(--bad);
+
+            :global(.fail),
+            .label-failed {
+                display: inline;
+            }
+        }
+    }
+
+    .exec-view {
+        display: grid;
+        justify-items: center;
+        gap: 1.25rem;
+    }
+
+    .exec-signals {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        width: min(100%, 38rem);
+
+        li {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.625rem;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: var(--panel);
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--soft);
+        }
+    }
+
+    .ent {
+        display: inline-flex;
+        align-items: center;
+        height: 18px;
+        padding: 0 0.4375rem;
+        border-radius: 2.5rem;
+        background: var(--ks-background-tag-EE);
+        font-size: 11px;
+        font-weight: 500;
+        white-space: nowrap;
+        color: var(--ks-content-tag-EE);
+    }
+
+    .nc-tabs {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.375rem;
+        height: 3rem;
+        padding: 0 0.75rem;
+        border-bottom: 1px solid var(--line);
+        background: var(--c-chrome);
+    }
+
+    .nc-tab {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        height: 2.375rem;
+        padding: 0 0.75rem;
+        border: 1px solid transparent;
+        border-bottom: 0;
+        border-radius: 8px 8px 0 0;
+        background: none;
+        font-size: 14px;
+        font-weight: 500;
+        white-space: nowrap;
+        color: var(--muted);
+        cursor: pointer;
+        transition:
+            background-color 0.25s ease,
+            color 0.25s ease;
+
+        > :global(svg) {
+            width: 16px;
+            height: 16px;
+        }
+
+        > :global(.x) {
+            width: 14px;
+            height: 14px;
+            margin-left: 0.25rem;
+            opacity: 0.7;
+        }
+
+        &:global(.on) {
+            margin-bottom: -1px;
+            border-color: var(--line);
+            background: var(--panel);
+            color: var(--text);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: -2px;
+        }
+    }
+
+    .dirty {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: 0;
+        transition: opacity 0.25s ease;
+
+        :global(.dirty-on) > & {
+            opacity: 1;
+        }
+    }
+
+    .nc-panes {
+        display: grid;
+
+        > * {
+            grid-area: 1 / 1;
+            transition:
+                opacity 0.3s ease,
+                visibility 0s linear 0.3s;
+        }
+
+        &[data-at="form"] .nc-source,
+        &[data-at="source"] .nc-form {
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        &[data-at="form"] .nc-form,
+        &[data-at="source"] .nc-source {
+            transition:
+                opacity 0.3s ease,
+                visibility 0s;
+        }
+    }
+
+    .nc-form {
+        display: grid;
+        gap: 0.875rem;
+        padding: 1rem 1.25rem 1.25rem;
+    }
+
+    .nc-label {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        margin: 0 0 0.375rem;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+
+        i {
+            font-style: normal;
+            color: var(--c-req);
+        }
+    }
+
+    .nc-tag {
+        margin-left: 0.25rem;
+        padding: 1px 0.5rem;
+        border-radius: 6px;
+        background: var(--chip);
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--muted);
+    }
+
+    .nc-input {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        min-height: 2.25rem;
+        margin: 0;
+        padding: 0 0.75rem;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--field);
+        font-family: $font-family-monospace;
+        font-size: 13px;
+        white-space: nowrap;
+        color: var(--c-val);
+
+        &.select {
+            font-family: $font-family-sans-serif;
+
+            img,
+            > :global(svg:first-child) {
+                width: 20px;
+                height: 20px;
+            }
+
+            > :global(svg:last-child) {
+                width: 18px;
+                height: 18px;
+                margin-left: auto;
+                color: var(--muted);
+            }
+        }
+
+        :global(.typing)::after {
+            content: "";
+            display: inline-block;
+            width: 2px;
+            height: 1.1em;
+            margin-left: 1px;
+            vertical-align: -0.2em;
+            background: var(--run);
+            animation: caret 1s steps(1) infinite;
+        }
+    }
+
+    .d {
+        color: var(--c-delim);
+    }
+
+    .v {
+        color: var(--c-var);
+    }
+
+    .nc-source {
+        margin: 0;
+        padding: 1rem 0;
+        background: none;
+        font-family: $font-family-monospace;
+        font-size: 13px;
+        line-height: 1.9;
+        color: var(--c-val);
+
+        code {
+            display: block;
+            padding: 0;
+            background: none;
+            font: inherit;
+            color: inherit;
+
+            :global(span) {
+                width: auto;
+                margin: 0;
+                padding: 0;
+            }
+
+            :global(.no) {
+                display: inline-block;
+                width: 3rem;
+                padding-right: 1.25rem;
+                text-align: right;
+                color: var(--muted);
+                user-select: none;
+            }
+        }
+
+        :global(.row) {
+            display: block;
+            padding-right: 1.25rem;
+            transition:
+                background-color 0.3s ease,
+                box-shadow 0.3s ease;
+        }
+
+        :global(.row.on) {
+            background: linear-gradient(90deg, var(--c-hl), transparent 85%);
+            box-shadow: inset 2px 0 0 var(--c-key);
+        }
+
+        :global(.k) {
+            color: var(--c-key);
+        }
+
+        :global(.p) {
+            color: var(--c-punct);
+        }
+
+        :global(.s) {
+            color: var(--c-str);
+        }
+
+        :global(.d) {
+            color: var(--c-delim);
+        }
+
+        :global(.v) {
+            color: var(--c-var);
+        }
+    }
+</style>

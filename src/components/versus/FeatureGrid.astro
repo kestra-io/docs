@@ -61,20 +61,22 @@ const { featureGrid, id, columns } = Astro.props
                                                 name="mdi:check"
                                                 class="check-icon"
                                             />
-                                            <span>
-                                                {row.kestra
+                                            <span
+                                                set:html={row.kestra
                                                     .replace("✓", "")
                                                     .trim()}
-                                            </span>
+                                            />
                                         </div>
                                     ) : (
-                                        row.kestra
+                                        <Fragment set:html={row.kestra} />
                                     )}
                                 </td>
                                 {columns ? (
-                                    columns.map((col) => <td>{row[col]}</td>)
+                                    columns.map((col) => (
+                                        <td set:html={row[col]} />
+                                    ))
                                 ) : (
-                                    <td>{row.competitor}</td>
+                                    <td set:html={row.competitor} />
                                 )}
                             </tr>
                         ))

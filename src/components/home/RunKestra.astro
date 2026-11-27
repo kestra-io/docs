@@ -1,61 +1,86 @@
 ---
+interface Edition {
+    id: "core" | "cloud" | "enterprise"
+    title: string
+    badge?: string
+    text: string
+    cta: { label: string; href: string }
+    featured?: boolean
+}
 
+interface Props {
+    title?: string
+    lead?: string
+    editions?: Edition[]
+    compare?: { label: string; href: string }
+}
+
+const DEFAULT_EDITIONS: Edition[] = [
+    {
+        id: "core",
+        title: "Kestra Core",
+        badge: "Open Source",
+        text: "Where most teams start, and where many experiment with a first production. Self-hosted and free, with no limits on flows or executions.",
+        cta: { label: "Get started", href: "/get-started" },
+    },
+    {
+        id: "cloud",
+        title: "Kestra Cloud",
+        badge: "Early Access",
+        text: "Managed by the people who build Kestra. No platform to run, pay for what you use.",
+        cta: { label: "Try Kestra Cloud", href: "/cloud" },
+    },
+    {
+        id: "enterprise",
+        title: "Kestra Enterprise",
+        text: "The Kestra experience scaled for the enterprise: multi-team organization, security and governance, support with SLAs. Self-hosted, cloud or air-gapped.",
+        cta: { label: "Book a demo", href: "/demo" },
+        featured: true,
+    },
+]
+
+const {
+    title = "Three ways to run Kestra",
+    lead = "Try it alone, try it managed, or talk to an expert who has done the migration before.",
+    editions = DEFAULT_EDITIONS,
+    compare = { label: "Find the edition that fits your team", href: "/pricing" },
+} = Astro.props
 ---
 
-<section class="run-kestra" aria-labelledby="run-kestra">
+<section class="run-kestra" aria-labelledby="run-kestra" data-header-dark>
     <canvas class="sky" aria-hidden="true" data-rocket></canvas>
     <div class="container-xl">
         <div class="stage">
             <header class="head">
-                <h2 id="run-kestra">Three ways to run Kestra</h2>
-                <p>
-                    Try it alone, try it managed, or talk to an expert who has
-                    done the migration before.
-                </p>
+                <h2 id="run-kestra">{title}</h2>
+                <p>{lead}</p>
             </header>
-
             <div class="side">
                 <div class="editions surface-dark">
-                    <article class="edition">
-                        <h3>Kestra Core</h3>
-                        <p class="badge">Open Source</p>
-                        <p>
-                            Where most teams start, and where many experiment
-                            with a first production. Self-hosted and free, with
-                            no limits on flows or executions.
-                        </p>
-                        <a href="/get-started" class="btn-ghost compact">
-                            Get started
-                        </a>
-                    </article>
-
-                    <article class="edition">
-                        <h3>Kestra Cloud</h3>
-                        <p class="badge">Early Access</p>
-                        <p>
-                            Managed by the people who build Kestra. No platform
-                            to run, pay for what you use.
-                        </p>
-                        <a href="/cloud" class="btn-ghost compact">
-                            Try Kestra Cloud
-                        </a>
-                    </article>
-
-                    <article class="edition featured">
-                        <h3>Kestra Enterprise</h3>
-                        <p>
-                            The Kestra experience scaled for the enterprise:
-                            multi-team organization, security and governance,
-                            support with SLAs. Self-hosted, cloud or air-gapped.
-                        </p>
-                        <a href="/demo" class="btn-solid compact">
-                            Book a demo
-                        </a>
-                    </article>
+                    {
+                        editions.map((edition) => (
+                            <article
+                                class:list={["edition", { featured: edition.featured }]}
+                                data-edition={edition.id}
+                            >
+                                <h3>{edition.title}</h3>
+                                {edition.badge && <p class="badge">{edition.badge}</p>}
+                                <p>{edition.text}</p>
+                                <a
+                                    href={edition.cta.href}
+                                    class:list={[
+                                        edition.featured ? "btn-solid" : "btn-ghost",
+                                        "compact",
+                                    ]}
+                                >
+                                    {edition.cta.label}
+                                </a>
+                            </article>
+                        ))
+                    }
                 </div>
-                <a href="/pricing" class="compare">
-                    Find the edition that fits your team{" "}
-                    <span aria-hidden="true">→</span>
+                <a href={compare.href} class="compare">
+                    {compare.label} <span aria-hidden="true">→</span>
                 </a>
             </div>
         </div>
@@ -63,6 +88,8 @@
 </section>
 
 <script>
+    import { HEART, HULL, SPRITE, type Rgb } from "./rocket"
+
     function flyRocket() {
         const canvas =
             document.querySelector<HTMLCanvasElement>("[data-rocket]")
@@ -75,86 +102,86 @@
         const HEADING = (-29 * Math.PI) / 180
         const FWD = { x: Math.cos(HEADING), y: Math.sin(HEADING) }
 
-        const SPRITE = [
-            "..BBBBBBBBBBBBBBBBBBBBBPPPPPP",
-            "..BBBBBBBBBBBBBBBBBBBBBPPPPPP",
-            "..BBBBBBBBBBBBBBBBBBBBBPPPPPP",
-            ".....BBBBBBBBBBBB",
-            ".....BBBBBBBBBBBB",
-            ".....BBBBBBBBBBBB",
-            "........BBBBBBBBBBBB",
-            "........BBBBBBBBBBBB",
-            "........BBBBBBBBBBBB",
-            "...........BBBBBBBBBBBBBBBPPPPPP",
-            "...........BBBBBBBBBBBBBBBPPPPPP",
-            "...........BBBBBBBBBBBBBBBPPPPPP",
-            ".......DDDDBBBBBBBBBDDD",
-            "..DDDDDDDDDBBBBBBBBBDDD",
-            "..DDDDDDDDDBBBBBBBBBDDD",
-            "......DDDDDDBBBBBBBBBBBDDD",
-            "......DDDDDBBBBBBBBBBBBBDD",
-            "......DDDDDDBBBBBBBBBBBBDD",
-            "......BBBBBBBBBBBBLLLBBBBBDDD",
-            "......BBBBBBBBBBBBLLLBBBBBBDD",
-            "......BBBBBBBBBBBBLLLBBBBBBDD",
-            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
-            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
-            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
-            ".........BBBLLLBBBLLLBBBLLLBBBBBBBBBBBBBBBBBBPPPPPP",
-            "BBBBBBBBBBBBLLLBBBLLLBBBLLLBBBBBBBBBBBBBBBBBBPPPPPP",
-            "BBBBBBBBBBBBLLLBBBLLLBBBLLLBBBBBBBBBBBBBBBBBBPPPPPP",
-            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
-            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
-            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
-            "......BBBBBBBBBBBBLLLBBBBBBDDD",
-            "......BBBBBBBBBBBBLLLBBBBBBDDD",
-            "......BBBBBBBBBBBBLLLBBBBBBDDD",
-            "......DDDDDDBBBBBBBBBBBBDDD",
-            "......DDDDDDBBBBBBBBBBBBDDD",
-            "......DDDDDDBBBBBBBBBBBBDDD",
-            "......DDDDDDBBBBBBBBBDDD",
-            "...DDDDDDDDDBBBBBBBBBDDD",
-            "...DDDDDDDDDBBBBBBBBBDDD",
-            "............BBBBBBBBBBBBBBBPPPPPP",
-            "............BBBBBBBBBBBBBBBPPPPPP",
-            "............BBBBBBBBBBBBBBBPPPPPP",
-            "............BBBBBBBBB",
-            ".........BBBBBBBBBBBB",
-            ".........BBBBBBBBBBBB",
-            ".........BBBBBBBBB",
-            "......BBBBBBBBBBBB",
-            "......BBBBBBBBBBBB",
-            "......BBBBBBBBBBBB",
-            "...BBBBBBBBBBBBBBBBBBBBBPPPPPP",
-            "...BBBBBBBBBBBBBBBBBBBBBPPPPPP",
-            "...BBBBBBBBBBBBBBBBBBBBBPPPPPP",
-        ]
-        const HEART = { x: 14, y: 25.5 }
-        const INK: Record<string, string> = {
-            B: "rgb(92, 84, 255)",
-            D: "rgb(33, 66, 255)",
-            L: "rgb(184, 176, 255)",
-            P: "rgb(255, 4, 254)",
+        const FLAGSHIP: Record<string, Rgb> = {
+            B: [238, 236, 250],
+            D: [150, 152, 196],
+            L: [92, 84, 255],
+            P: [255, 4, 254],
         }
         const STEPS = 3
+        const PLUMES = {
+            core: [
+                [0, "rgba(130, 90, 255, 1)"],
+                [0.2, "rgba(92, 70, 255, 1)"],
+                [0.55, "rgba(50, 60, 255, 0.75)"],
+                [0.85, "rgba(33, 66, 255, 0.3)"],
+                [1, "rgba(33, 66, 255, 0)"],
+            ],
+            cloud: [
+                [0, "rgba(96, 170, 255, 1)"],
+                [0.2, "rgba(60, 140, 255, 1)"],
+                [0.55, "rgba(40, 110, 255, 0.7)"],
+                [0.85, "rgba(30, 90, 255, 0.28)"],
+                [1, "rgba(30, 90, 255, 0)"],
+            ],
+            power: [
+                [0, "rgba(255, 255, 255, 1)"],
+                [0.12, "rgba(214, 206, 255, 1)"],
+                [0.4, "rgba(130, 90, 255, 0.95)"],
+                [0.75, "rgba(92, 70, 255, 0.5)"],
+                [1, "rgba(60, 60, 255, 0)"],
+            ],
+        } as const
+        type Mode = keyof typeof PLUMES
+        const CLOUD_SHAPES = [
+            ["...XXXX.....", ".XXXXXXXXX..", "XXXXXXXXXXXX", ".XXXXXXXXXX."],
+            [
+                "....XXX...",
+                "..XXXXXXX.",
+                "XXXXXXXXXX",
+                "XXXXXXXXXX",
+                "..XXXXXX..",
+            ],
+            ["..XXXX..", "XXXXXXXX", ".XXXXXX."],
+        ]
+        const mix = { cloud: 0, power: 0 }
+        const goal = { cloud: 0, power: 0 }
+        const blend = (from: number, to: number, k: number) =>
+            from + (to - from) * k
+        const tint = (from: Rgb, to: Rgb, k: number) =>
+            from.map((c, i) => Math.round(blend(c, to[i], k))).join(", ")
 
         let width = 0
         let height = 0
         let unit = 14
         let at = { x: 0, y: 0 }
         let reach = 600
-        let plume: HTMLCanvasElement | null = null
+        let wide = false
+        let plumes: Partial<Record<Mode, HTMLCanvasElement>> = {}
         let cells: { u: number; v: number; ink: string }[] = []
+        let clock = 0
+        let flow = 0
+        let dash = 0
+        let spin = 0
 
         const rand = (i: number, k: number) => {
             const h = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453
             return h - Math.floor(h)
         }
-        const LINES = Array.from({ length: 8 }, (_, i) => ({
+        const LINES = Array.from({ length: 16 }, (_, i) => ({
             lane: rand(i, 1) * 2 - 1,
             pace: 0.8 + rand(i, 2) * 0.7,
             length: 0.6 + rand(i, 3) * 0.8,
             offset: rand(i, 4),
+            boost: i >= 8,
+        }))
+        const CLOUDS = Array.from({ length: 9 }, (_, i) => ({
+            x: rand(i, 21),
+            y: rand(i, 22),
+            shape: CLOUD_SHAPES[i % CLOUD_SHAPES.length],
+            size: 1.4 + rand(i, 23) * 1.8,
+            pace: 0.7 + rand(i, 24) * 0.9,
+            alpha: 0.22 + rand(i, 25) * 0.34,
         }))
         const STARS = Array.from({ length: 140 }, (_, i) => {
             const depth = rand(i, 11) < 0.55 ? 0 : rand(i, 12) < 0.7 ? 1 : 2
@@ -190,7 +217,7 @@
             canvas.height = Math.round(height * ratio)
             ctx.setTransform(ratio, 0, 0, ratio, 0, 0)
 
-            const wide = width >= 992
+            wide = width >= 992
             unit = wide
                 ? Math.max(10, Math.min(19, width / 100))
                 : Math.max(6, width / 60)
@@ -202,7 +229,7 @@
             cells = []
             SPRITE.forEach((line, row) => {
                 ;[...line].forEach((key, col) => {
-                    if (INK[key])
+                    if (HULL[key])
                         cells.push({
                             u: col - HEART.x,
                             v: row - HEART.y,
@@ -211,23 +238,23 @@
                 })
             })
 
+            plumes = {}
+        }
+
+        const plumeFor = (mode: Mode) => {
+            if (plumes[mode]) return plumes[mode]
             const w = unit * 20
             const pad = unit * 6
-            plume = document.createElement("canvas")
-            plume.width = Math.round(w + pad * 2)
-            plume.height = Math.round(reach + pad * 2)
-            const pctx = plume.getContext("2d")
+            const sheet = document.createElement("canvas")
+            sheet.width = Math.round(w + pad * 2)
+            sheet.height = Math.round(reach + pad * 2)
+            const pctx = sheet.getContext("2d")
             if (!pctx) return
-            const W = plume.width
-            const H = plume.height
+            const W = sheet.width
+            const H = sheet.height
             const g = pctx.createLinearGradient(0, pad, 0, pad + reach)
-            // The rocket's own blues, saturated: a vivid violet at the nozzle,
-            // its hull's violet, then its deep blue fading out.
-            g.addColorStop(0, "rgba(130, 90, 255, 1)")
-            g.addColorStop(0.2, "rgba(92, 70, 255, 1)")
-            g.addColorStop(0.55, "rgba(50, 60, 255, 0.75)")
-            g.addColorStop(0.85, "rgba(33, 66, 255, 0.3)")
-            g.addColorStop(1, "rgba(33, 66, 255, 0)")
+            for (const [stop, colour] of PLUMES[mode])
+                g.addColorStop(stop, colour)
             pctx.fillStyle = g
             pctx.fillRect(0, 0, W, H)
             pctx.globalCompositeOperation = "destination-in"
@@ -244,12 +271,45 @@
             head.addColorStop(1, "rgba(0, 0, 0, 1)")
             pctx.fillStyle = head
             pctx.fillRect(0, 0, W, H)
-            pctx.globalCompositeOperation = "source-over"
+            plumes[mode] = sheet
+            return sheet
         }
 
         const frame = (time: number) => {
             const t = time / 1000
+            const dt = Math.min(0.1, Math.max(0, t - clock))
+            clock = t
+            const ease = still ? 1 : Math.min(1, dt * 5)
+            mix.cloud = blend(mix.cloud, goal.cloud, ease)
+            mix.power = blend(mix.power, goal.power, ease)
+            const { cloud, power } = mix
+            flow += dt * unit * 30 * (1 + power * 0.9)
+            dash += dt * (1.4 + power * 1.4)
+            spin += dt * (1 + power * 0.8)
             ctx.clearRect(0, 0, width, height)
+
+            const halo = cloud * 0.2 + power * 0.24
+            if (halo > 0.004) {
+                const radius = unit * (34 + power * 10)
+                const g = ctx.createRadialGradient(
+                    at.x,
+                    at.y,
+                    0,
+                    at.x,
+                    at.y,
+                    radius,
+                )
+                const glow = tint([60, 140, 255], [150, 110, 255], power)
+                g.addColorStop(0, `rgba(${glow}, ${halo})`)
+                g.addColorStop(1, `rgba(${glow}, 0)`)
+                ctx.fillStyle = g
+                ctx.fillRect(
+                    at.x - radius,
+                    at.y - radius,
+                    radius * 2,
+                    radius * 2,
+                )
+            }
 
             const dot = Math.max(2, Math.round(unit / STEPS))
             for (const star of STARS) {
@@ -278,12 +338,59 @@
                 }
             }
 
-            if (plume) {
+            if (cloud > 0.01) {
+                for (const puff of CLOUDS) {
+                    const cell = dot * puff.size
+                    const w = puff.shape[0].length * cell
+                    const h = puff.shape.length * cell
+                    const speed = 70 * puff.pace
+                    const x =
+                        ((((puff.x * (width + w) - FWD.x * speed * t) %
+                            (width + w)) +
+                            (width + w)) %
+                            (width + w)) -
+                        w
+                    const y =
+                        ((((puff.y * (height + h) - FWD.y * speed * t) %
+                            (height + h)) +
+                            (height + h)) %
+                            (height + h)) -
+                        h
+                    puff.shape.forEach((line, row) => {
+                        const shade =
+                            row === puff.shape.length - 1
+                                ? "120, 170, 255"
+                                : "196, 222, 255"
+                        ctx.fillStyle = `rgba(${shade}, ${puff.alpha * cloud})`
+                        ;[...line].forEach((key, col) => {
+                            if (key === "X")
+                                ctx.fillRect(
+                                    Math.round(x + col * cell),
+                                    Math.round(y + row * cell),
+                                    Math.ceil(cell),
+                                    Math.ceil(cell),
+                                )
+                        })
+                    })
+                }
+            }
+
+            const beat = 0.85 + 0.15 * Math.sin(t * (8 + power * 8))
+            const shares: Record<Mode, number> = {
+                core: (1 - cloud) * (1 - power),
+                cloud,
+                power,
+            }
+            for (const mode of Object.keys(shares) as Mode[]) {
+                if (shares[mode] < 0.01) continue
+                const sheet = plumeFor(mode)
+                if (!sheet) continue
                 ctx.save()
                 ctx.translate(at.x, at.y)
                 ctx.rotate(HEADING + Math.PI / 2)
-                ctx.globalAlpha = 0.85 + 0.15 * Math.sin(t * 8)
-                ctx.drawImage(plume, -plume.width / 2, -unit * 6)
+                ctx.scale(1 + power * 0.4, 1 + power * 0.3)
+                ctx.globalAlpha = beat * shares[mode]
+                ctx.drawImage(sheet, -sheet.width / 2, -unit * 6)
                 ctx.restore()
             }
 
@@ -292,15 +399,15 @@
             ctx.rotate(HEADING)
 
             const fine = unit / STEPS
-            const flow = t * unit * 30
+            const dust = tint([255, 235, 250], [200, 230, 255], cloud)
             for (let row = 4; row * fine < reach * 0.8; row += 1) {
                 const fade = 1 - (row * fine) / (reach * 0.8)
                 const slot = Math.floor((row * fine + flow) / fine)
                 for (let lane = -24; lane <= 24; lane += 2) {
                     const spread = Math.exp(-((lane / 14) ** 2))
                     const n = rand(lane + 80, slot - row * 2)
-                    if (n > spread * fade * 0.06) continue
-                    ctx.fillStyle = `rgba(255, 235, 250, ${0.2 + 0.35 * fade})`
+                    if (n > spread * fade * (0.06 + power * 0.1)) continue
+                    ctx.fillStyle = `rgba(${dust}, ${0.2 + 0.35 * fade})`
                     ctx.fillRect(
                         -row * fine - unit * 4,
                         lane * fine,
@@ -312,11 +419,13 @@
 
             ctx.lineCap = "round"
             for (const line of LINES) {
-                const k = (line.offset + t * line.pace * 1.4) % 1
+                const shown = line.boost ? power : 1
+                if (shown < 0.01) continue
+                const k = (line.offset + dash * line.pace) % 1
                 const x = -unit * 5 - k * reach * 0.6
                 const y = line.lane * unit * 12
-                const length = unit * 4 * line.length
-                const fade = Math.sin(k * Math.PI)
+                const length = unit * 4 * line.length * (1 + power * 0.7)
+                const fade = Math.sin(k * Math.PI) * shown
                 const g = ctx.createLinearGradient(x, y, x - length, y)
                 g.addColorStop(0, `rgba(255, 255, 255, ${0.9 * fade})`)
                 g.addColorStop(1, "rgba(255, 255, 255, 0)")
@@ -328,8 +437,10 @@
                 ctx.stroke()
             }
 
+            const ember = tint([255, 4, 254], [150, 220, 255], cloud)
+            const trail = tint([92, 84, 255], [70, 150, 255], cloud)
             for (const spark of SPARKS) {
-                const k = (spark.offset + t * spark.pace) % 1
+                const k = (spark.offset + spin * spark.pace) % 1
                 const fade = Math.sin(k * Math.PI)
                 for (let i = 0; i < 3; i++) {
                     const x = -unit * 6 - k * reach * 0.35 - i * unit * 2.2
@@ -337,20 +448,38 @@
                     const h = unit * (0.9 - i * 0.12)
                     ctx.fillStyle =
                         i === 0
-                            ? `rgba(255, 4, 254, ${fade})`
-                            : `rgba(92, 84, 255, ${fade * (1 - i * 0.2)})`
+                            ? `rgba(${ember}, ${fade})`
+                            : `rgba(${trail}, ${fade * (1 - i * 0.2)})`
                     ctx.fillRect(x - w, spark.lane * unit - h / 2, w, h)
                 }
             }
 
-            const shake = still ? 0 : 0.9
+            if (power > 0.01) {
+                for (let ring = 0; ring < 4; ring++) {
+                    const pulse = 0.7 + 0.3 * Math.sin(t * 14 + ring * 1.7)
+                    const tall = unit * (5.4 - ring * 1.15)
+                    ctx.fillStyle = `rgba(226, 220, 255, ${power * (0.6 - ring * 0.14) * pulse})`
+                    ctx.fillRect(
+                        -unit * (7.5 + ring * 3.1),
+                        -tall / 2,
+                        fine * 1.3,
+                        tall,
+                    )
+                }
+            }
+
+            const shake = still ? 0 : 0.9 + power * 0.9
             ctx.translate(
                 (rand(t * 60, 1) - 0.5) * shake * 2,
                 (rand(t * 60, 2) - 0.5) * shake * 2,
             )
+            ctx.scale(1 + power * 0.16, 1 + power * 0.16)
             const gap = fine > 4 ? 0.6 : 0
+            const ink: Record<string, string> = {}
+            for (const key of Object.keys(HULL))
+                ink[key] = `rgb(${tint(HULL[key], FLAGSHIP[key], power)})`
             for (const cell of cells) {
-                ctx.fillStyle = INK[cell.ink]
+                ctx.fillStyle = ink[cell.ink]
                 ctx.fillRect(
                     cell.u * fine,
                     cell.v * fine,
@@ -361,11 +490,49 @@
             ctx.restore()
         }
 
+        const editions = canvas
+            .closest(".run-kestra")
+            ?.querySelector<HTMLElement>(".editions")
+        let hovered: string | undefined
+        let focused: string | undefined
+        const editionOf = (target: EventTarget | null) =>
+            (target as Element | null)?.closest<HTMLElement>("[data-edition]")
+                ?.dataset.edition
+        const aim = () => {
+            const edition = wide ? (hovered ?? focused) : undefined
+            goal.cloud = edition === "cloud" ? 1 : 0
+            goal.power = edition === "enterprise" ? 1 : 0
+            if (still) frame(0)
+        }
+
         layout()
         new ResizeObserver(() => {
             layout()
-            if (still) frame(0)
+            aim()
         }).observe(canvas)
+
+        if (editions) {
+            if (matchMedia("(hover: hover)").matches) {
+                editions.addEventListener("pointerover", (event) => {
+                    hovered = editionOf(event.target)
+                    aim()
+                })
+                editions.addEventListener("pointerleave", () => {
+                    hovered = undefined
+                    aim()
+                })
+            }
+            editions.addEventListener("focusin", (event) => {
+                focused = editionOf(event.target)
+                aim()
+            })
+            editions.addEventListener("focusout", (event) => {
+                if (editions.contains(event.relatedTarget as Node | null))
+                    return
+                focused = undefined
+                aim()
+            })
+        }
         if (still) {
             frame(0)
             return
@@ -486,6 +653,17 @@
         flex-direction: column;
         align-items: flex-start;
         padding: 2rem var(--inset) 2.25rem;
+        transition: background-color 0.3s ease;
+
+        @media (hover: hover) {
+            &:hover {
+                background: rgba(255, 255, 255, 0.05);
+            }
+        }
+
+        &:focus-within {
+            background: rgba(255, 255, 255, 0.05);
+        }
 
         & + & {
             border-left: var(--rule);

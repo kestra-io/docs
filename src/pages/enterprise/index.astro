@@ -25,9 +25,9 @@ import SupportPlans from "~/components/enterprise/SupportPlans.astro"
 import ReplaceLegacy from "~/components/home/ReplaceLegacy.astro"
 import BuyerQuestions from "~/components/enterprise/BuyerQuestions.astro"
 
-const title = "Kestra Enterprise"
+const title = "Enterprise Edition: Secure, Self-Hosted Orchestration"
 const description =
-    "Kestra Enterprise gives your teams the security, governance, and operational capabilities to automate workflows across your organization."
+    "Kestra Enterprise adds SSO, RBAC, audit logs, multi-tenancy and worker groups to open-source Kestra. Self-hosted, hybrid or air-gapped, with SLA-backed support."
 
 const FEATURES = [
     {
@@ -190,7 +190,14 @@ const FAQ = [
 ]
 ---
 
-<Layout {title} {description} headerClean headerClear headerOverDark>
+<Layout
+    {title}
+    {description}
+    breadcrumbTitle="Kestra Enterprise"
+    headerClean
+    headerClear
+    headerOverDark
+>
     <Fragment slot="head">
         <SchemaSoftwareApplication
             id="https://kestra.io/#enterprise-edition"
@@ -198,6 +205,20 @@ const FAQ = [
             description="Kestra Enterprise adds SSO, RBAC, audit logs, multi-tenancy, worker groups and SLA-backed support to the open source Kestra orchestration platform. Self-hosted, hybrid or air-gapped."
             url="https://kestra.io/enterprise"
             isVariantOf="https://kestra.io/#software"
+            edition="enterprise"
+            featureList={[
+                "Single sign-on (OIDC), LDAP and SCIM",
+                "Role-based access control",
+                "Audit logs exported to your SIEM",
+                "Multi-tenancy and namespaces",
+                "Secrets from your own secrets manager",
+                "Worker groups and task runners",
+                "Apps and human-in-the-loop approvals",
+                "Policies, plugin restrictions and kill switch",
+                "Backup and restore, maintenance mode",
+                "Self-hosted, hybrid or air-gapped deployment",
+                "Support with SLA",
+            ]}
         />
         <SchemaFAQ items={FAQ} />
     </Fragment>
