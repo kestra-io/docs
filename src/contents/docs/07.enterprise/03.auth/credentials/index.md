@@ -25,6 +25,8 @@ Credentials can be accessed and created at:
 
 During setup, Kestra lets you **test token retrieval** from the UI to ensure your configuration is correct.
 
+To limit which token endpoints credentials can call, set an allowed list or a denied list under `kestra.security.http-client.credentials`. See [Credential and Promote URL filtering](../../../security-hardening/index.md#credential-and-promote-url-filtering-ee).
+
 ## The credential() function
 
 The `credential()` Pebble function retrieves the current access token for a credential key.

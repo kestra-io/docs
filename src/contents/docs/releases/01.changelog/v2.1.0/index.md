@@ -75,6 +75,7 @@ Approvals, asset leases and the ASSET input, searchable execution values, custom
 - **Execution labels in test fixtures (EE)**: `fixtures.labels` sets the labels a flow gets in production. [Docs](../../../07.enterprise/02.governance/unit-tests/index.md#set-execution-labels-in-fixtures)
 - **Dedicated storage and secrets manager form (EE)**: a namespace or tenant's dedicated internal storage and secrets manager are set in a form built from the plugin's properties, and saved values are kept when you edit them. [Docs](../../../07.enterprise/02.governance/tenants/index.md#dedicated-storage-and-secrets-backend-per-tenant)
 - **Audit log for concurrency counter resets (EE)**: changing a running counter on the **Concurrency Limits** page or through the API writes an audit log entry. [Docs](../../../05.workflow-components/14.concurrency/index.md#reset-a-stuck-running-counter)
+- **Credential and Promote URL filtering (EE)**: restrict the token endpoints that OAuth2 credentials call and the URLs of promotion targets with allowed and denied lists under `kestra.security.http-client`. [Docs](../../../security-hardening/index.md#credential-and-promote-url-filtering-ee)
 
 ## Infrastructure
 
