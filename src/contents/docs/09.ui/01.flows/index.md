@@ -104,7 +104,7 @@ The **Topology** view shows a visual DAG of the flow, useful for complex flows w
 
 ### Documentation view
 
-The **Documentation** view displays plugin docs directly inside the editor. The panel updates as you move your cursor to reflect the task type at the current position.
+The **Documentation** view displays plugin docs directly inside the editor. The panel updates as you move your cursor to reflect the task type at the current position. It opens next to the code by default. To start new flows with the editor only, turn off **Open Docs Tab** in [Settings](../06.settings/index.md#preferences).
 
 :::alert{type="warning"}
 If you use the [Brave browser](https://brave.com/), you may need to disable Brave Shields to make the editor work as expected. To view task documentation, set the **Block cookies** option to **Disabled** in Shields settings at `brave://settings/shields`.
