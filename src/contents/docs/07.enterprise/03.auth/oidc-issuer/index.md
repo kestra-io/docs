@@ -164,6 +164,41 @@ The task needs no `accessKeyId` or `secretKeyId`. The role session lasts `stsRol
 
 `webIdentityToken` is available on the tasks of the AWS plugin. The [AWS Batch task runner](../../../task-runners/04.types/04.aws-batch-task-runner/index.md) doesn't support it yet.
 
+To avoid repeating the role and the token on every task, put them in a [reference policy](../../02.governance/policies/index.md#reference-policies) and list it in each task's `policyRefs`. Create one policy per role:
+
+```yaml
+id: aws-team-data
+description: "Assume the kestra-team-data role with a Kestra OIDC token."
+enforcement: REFERENCE
+rules:
+  - type: io.kestra.plugin.ee.rules.Add
+    on: PLUGIN
+    where:
+      - field: type
+        operator: STARTS_WITH
+        value: io.kestra.plugin.aws
+    values:
+      stsRoleArn: arn:aws:iam::123456789012:role/kestra-team-data
+      webIdentityToken: "{{ oidcToken(audience='sts.amazonaws.com') }}"
+```
+
+The task then only names the policy:
+
+```yaml
+id: list_bucket
+namespace: team.data
+
+tasks:
+  - id: list
+    type: io.kestra.plugin.aws.s3.List
+    region: eu-west-1
+    bucket: my-bucket
+    policyRefs:
+      - aws-team-data
+```
+
+Kestra renders the injected `oidcToken()` expression at runtime, the same way as one written in the flow. The same approach works for the Google Cloud properties below.
+
 ## Connect Google Cloud
 
 Google Cloud exchanges the token through Workload Identity Federation. A flow then acts as a service account that the workload identity pool can impersonate.
