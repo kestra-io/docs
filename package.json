@@ -18,7 +18,7 @@
     "workers:deploy-dryrun": "wrangler deploy --dry-run",
     "workers:build-deploy": "npm run workers:build && npm run workers:deploy",
     "cf-typegen": "wrangler types",
-    "check": "npm run cf-typegen && astro check",
+    "check": "wrangler types --check && astro check",
     "svgo": "node scripts/svgo-batch.mjs",
     "svgo:check": "node scripts/svgo-batch.mjs --check",
     "lint": "oxlint --fix",
