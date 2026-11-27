@@ -1,0 +1,51 @@
+<svg width="458" height="260" viewBox="0 0 458 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="458" height="260" rx="8" fill="#1A1D2E"/>
+  <rect width="458" height="38" rx="8" fill="#0D0F1C"/>
+  <rect y="24" width="458" height="14" fill="#0D0F1C"/>
+  <rect x="16" y="11" width="62" height="16" rx="3" fill="#7C47FC" opacity="0.9"/>
+  <text x="21" y="23" font-family="monospace" font-size="9" fill="white">Spacelift</text>
+  <rect x="88" y="14" width="110" height="10" rx="2" fill="#2D3250"/>
+  <circle cx="428" cy="19" r="8" fill="#1E2235"/>
+  <!-- Sidebar -->
+  <rect y="38" width="70" height="222" fill="#0B0D18"/>
+  <rect x="10" y="54" width="50" height="8" rx="2" fill="#7C47FC" opacity="0.7"/>
+  <rect x="10" y="70" width="50" height="8" rx="2" fill="#1E2235"/>
+  <rect x="10" y="86" width="50" height="8" rx="2" fill="#1E2235"/>
+  <rect x="10" y="102" width="50" height="8" rx="2" fill="#1E2235"/>
+  <rect x="10" y="118" width="50" height="8" rx="2" fill="#1E2235"/>
+  <!-- Stacks header -->
+  <text x="84" y="60" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="10" font-weight="700" fill="white">Stacks</text>
+  <rect x="376" y="49" width="68" height="16" rx="3" fill="#7C47FC" opacity="0.6"/>
+  <text x="410" y="60" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="8" fill="white" text-anchor="middle">Create stack</text>
+  <rect x="82" y="74" width="364" height="30" rx="3" fill="#161829" stroke="#2D3250"/>
+  <circle cx="97" cy="89" r="5" fill="#48C774"/>
+  <text x="110" y="92" font-family="monospace" font-size="9" fill="white">network-prod</text>
+  <rect x="200" y="84" width="70" height="9" rx="2" fill="#2D3250"/>
+  <rect x="284" y="84" width="50" height="9" rx="2" fill="#2D3250"/>
+  <rect x="356" y="82" width="80" height="14" rx="2" fill="#48C774" opacity="0.25"/>
+  <text x="396" y="92" font-family="monospace" font-size="7" fill="white" text-anchor="middle">FINISHED</text>
+  <rect x="82" y="110" width="364" height="30" rx="3" fill="#161829" stroke="#2D3250"/>
+  <circle cx="97" cy="125" r="5" fill="#F5B73D"/>
+  <text x="110" y="128" font-family="monospace" font-size="9" fill="white">cluster-prod</text>
+  <rect x="200" y="120" width="70" height="9" rx="2" fill="#2D3250"/>
+  <rect x="284" y="120" width="50" height="9" rx="2" fill="#2D3250"/>
+  <rect x="356" y="118" width="80" height="14" rx="2" fill="#F5B73D" opacity="0.25"/>
+  <text x="396" y="128" font-family="monospace" font-size="7" fill="white" text-anchor="middle">UNCONFIRMED</text>
+  <rect x="82" y="146" width="364" height="30" rx="3" fill="#161829" stroke="#2D3250"/>
+  <circle cx="97" cy="161" r="5" fill="#2D3250"/>
+  <text x="110" y="164" font-family="monospace" font-size="9" fill="white">config-prod</text>
+  <rect x="200" y="156" width="70" height="9" rx="2" fill="#2D3250"/>
+  <rect x="284" y="156" width="50" height="9" rx="2" fill="#2D3250"/>
+  <rect x="356" y="154" width="80" height="14" rx="2" fill="#2D3250" opacity="0.25"/>
+  <text x="396" y="164" font-family="monospace" font-size="7" fill="white" text-anchor="middle">QUEUED</text>
+  <!-- Stack dependencies -->
+  <text x="84" y="196" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="8" fill="#8A8FA8">Stack dependencies</text>
+  <rect x="82" y="204" width="96" height="34" rx="4" fill="#7C47FC" opacity="0.75"/>
+  <text x="130" y="224" font-family="monospace" font-size="8" fill="white" text-anchor="middle">network</text>
+  <line x1="178" y1="221" x2="214" y2="221" stroke="#4A4F6E" stroke-width="2"/>
+  <rect x="214" y="204" width="96" height="34" rx="4" fill="#1E2235" stroke="#7C47FC"/>
+  <text x="262" y="224" font-family="monospace" font-size="8" fill="white" text-anchor="middle">cluster</text>
+  <line x1="310" y1="221" x2="346" y2="221" stroke="#4A4F6E" stroke-width="2"/>
+  <rect x="346" y="204" width="100" height="34" rx="4" fill="#1E2235" stroke="#2D3250"/>
+  <text x="396" y="224" font-family="monospace" font-size="8" fill="white" text-anchor="middle">config</text>
+</svg>
