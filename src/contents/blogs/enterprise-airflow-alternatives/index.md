@@ -27,6 +27,8 @@ So what are your actual options in 2026?
 | **AWS Step Functions** | AWS-native shops orchestrating serverless and microservices |
 | **Azure Data Factory** | Microsoft-centric enterprises with hybrid on-prem/cloud data movement |
 
+Looking for a free, self-hosted option? See our guide to [open-source Airflow alternatives](https://kestra.io/resources/data/airflow-alternatives).
+
 :::alert{type="info"}
 📘 **Airflow 2 reached end of life on April 22, 2026.** For a structured framework to decide between upgrading to Airflow 3, going managed, or switching to declarative orchestration, download our free [Airflow 2 end-of-life guide](/resources/airflow-2-eol-whitepaper). For a technical breakdown of the Airflow 3 changes, see our [Airflow 3 vs Airflow 2](../airflow-3-vs-airflow-2/index.md) guide.
 :::
