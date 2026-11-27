@@ -4,7 +4,15 @@
             <h1 v-if="showTitle" class="content-preview-title">
                 {{ page.title }}
             </h1>
-            <div class="bd-content" v-html="page.html" />
+            <div ref="clip" class="content-preview-clip" :class="{ truncated }">
+                <div ref="content" class="bd-content" v-html="page.html" />
+            </div>
+            <a
+                v-if="truncated"
+                class="content-preview-more"
+                :href="`/${section}/${id}`"
+                >Continue reading →</a
+            >
         </template>
         <p v-else-if="failed" class="content-preview-failed">
             This page could not be loaded.
@@ -16,6 +24,8 @@
 </template>
 
 <script setup lang="ts">
+    import { useResizeObserver } from "@vueuse/core"
+    import { ref, useTemplateRef } from "vue"
     import { useDeferredLoad } from "~/composables/useDeferredLoad"
     import {
         isContentPreviewLoaded,
@@ -36,10 +46,26 @@
         () => loadContentPreview(props.section, props.id),
         () => isContentPreviewLoaded(props.section, props.id),
     )
+
+    // The preview fills what is left of the pane and stops there.
+    const clip = useTemplateRef<HTMLElement>("clip")
+    const content = useTemplateRef<HTMLElement>("content")
+    const truncated = ref(false)
+    useResizeObserver([clip, content], () => {
+        truncated.value = Boolean(
+            clip.value &&
+            content.value &&
+            content.value.offsetHeight > clip.value.clientHeight,
+        )
+    })
 </script>
 
 <style scoped lang="scss">
     .content-preview {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 0;
+        min-height: 10rem;
         color: var(--ks-content-primary);
 
         .content-preview-title {
@@ -49,6 +75,27 @@
             margin: 4px 0 20px;
             text-wrap: balance;
             text-box: trim-both cap alphabetic;
+        }
+
+        .content-preview-clip {
+            flex: 1 1 0;
+            min-height: 0;
+            overflow: hidden;
+
+            &.truncated {
+                mask-image: linear-gradient(
+                    to bottom,
+                    #000 calc(100% - 96px),
+                    transparent
+                );
+            }
+        }
+
+        .content-preview-more {
+            align-self: flex-start;
+            margin-top: 4px;
+            font-weight: 600;
+            color: var(--ks-content-link);
         }
 
         :deep(.doc-video) {
