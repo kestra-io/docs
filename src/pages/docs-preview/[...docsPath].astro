@@ -3,6 +3,7 @@ import { getCollection, render, type CollectionEntry } from "astro:content"
 import {
     collectionMetadataDigest,
     entryCacheKey,
+    layoutDigest,
 } from "~/utils/incrementalCacheKey"
 import {
     fetchTotalPluginsCount,
@@ -12,17 +13,19 @@ import {
 export async function getStaticPaths() {
     const docsPages = await getCollection("docs")
     // Child cards read every doc's metadata, so it is part of each page's key.
-    const metadata = collectionMetadataDigest(docsPages)
+    const scope = [collectionMetadataDigest(docsPages), await layoutDigest()]
     const totalPlugins = await fetchTotalPluginsCount()
-    return docsPages.map((doc) => ({
-        params: { docsPath: doc.id },
-        props: doc,
-        cacheKey: entryCacheKey(
-            doc,
-            metadata,
-            ...pluginCountScope(totalPlugins, doc.body),
-        ),
-    }))
+    return docsPages
+        .filter((doc) => doc.id !== "<index>")
+        .map((doc) => ({
+            params: { docsPath: doc.id },
+            props: doc,
+            cacheKey: entryCacheKey(
+                doc,
+                ...scope,
+                ...pluginCountScope(totalPlugins, doc.body),
+            ),
+        }))
 }
 type Props = CollectionEntry<"docs">
 

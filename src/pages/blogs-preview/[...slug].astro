@@ -1,7 +1,7 @@
 ---
 import { getCollection, render, type CollectionEntry } from "astro:content"
 import LivePluginCount from "~/components/content/LivePluginCount.astro"
-import { entryCacheKey } from "~/utils/incrementalCacheKey"
+import { entryCacheKey, layoutDigest } from "~/utils/incrementalCacheKey"
 import {
     fetchTotalPluginsCount,
     pluginCountScope,
@@ -9,12 +9,14 @@ import {
 
 export async function getStaticPaths() {
     const posts = await getCollection("blogs")
+    const scope = [await layoutDigest()]
     const totalPlugins = await fetchTotalPluginsCount()
     return posts.map((post) => ({
         params: { slug: post.id.toLowerCase() },
         props: post,
         cacheKey: entryCacheKey(
             post,
+            ...scope,
             ...pluginCountScope(totalPlugins, post.body),
         ),
     }))
