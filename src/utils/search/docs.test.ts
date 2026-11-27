@@ -22,13 +22,24 @@ const page = (
 
 const docs: DocsIndex = {
     sections: {
-        concepts: { title: "Concepts", order: 6, reference: false },
+        concepts: {
+            title: "Concepts",
+            order: 6,
+            sidebar: true,
+            reference: false,
+        },
         "how-to-guides": {
             title: "How-to Guides",
             order: 15,
+            sidebar: true,
             reference: false,
         },
-        terraform: { title: "Terraform", order: 13, reference: true },
+        terraform: {
+            title: "Terraform",
+            order: 13,
+            sidebar: true,
+            reference: true,
+        },
     },
     pages: [
         page("concepts/namespace-files", "Namespace Files"),
@@ -84,10 +95,19 @@ describe("docsSearchResults", () => {
         })
     })
 
-    it("lists the sections in sidebar order before anything is typed, minus reference ones", () => {
+    it("lists the sidebar's sections in its order before anything is typed, minus reference ones", () => {
         const withRoots = {
-            ...docs,
+            sections: {
+                ...docs.sections,
+                "why-kestra": {
+                    title: "Why Kestra",
+                    order: 40,
+                    sidebar: false,
+                    reference: false,
+                },
+            },
             pages: [
+                page("why-kestra", "Why Kestra"),
                 page("terraform", "Terraform"),
                 page("how-to-guides", "How-to Guides"),
                 page("concepts", "Concepts"),

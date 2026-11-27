@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro"
 import { getCollection } from "astro:content"
+import { getNavigationTree } from "~/utils/getNavigationTree"
 import type { DocsIndex, DocsSection } from "~/utils/search/docs"
 import { markdownHeadings } from "~/utils/search/markdownHeadings"
 
@@ -29,21 +30,24 @@ export const GET: APIRoute = async () => {
     const roots = new Map(
         docs.filter((doc) => !doc.id.includes("/")).map((doc) => [doc.id, doc]),
     )
+    const sidebar = getNavigationTree([...docs])
+        .flatMap((group) => group.children ?? [])
+        .map((item) => item.path.replace(/^\/docs\//, ""))
 
     const sections: Record<string, DocsSection> = {}
     for (const doc of docs) {
         const section = doc.id.split("/")[0]
         if (sections[section]) continue
         const root = roots.get(section)
-        const folder =
-            doc.filePath?.split("contents/docs/")[1]?.split("/")[0] ?? ""
+        const position = sidebar.indexOf(section)
         const firstIcon = docs.find(
             (d) => d.id.startsWith(`${section}/`) && d.data.icon,
         )?.data.icon
         sections[section] = {
             title: root?.data.sidebarTitle ?? root?.data.title ?? section,
             icon: await iconSrc(root?.data.icon ?? firstIcon),
-            order: Number(folder.match(/^(\d+)\./)?.[1] ?? 50),
+            order: position === -1 ? sidebar.length : position,
+            sidebar: position !== -1,
             reference: REFERENCE_SECTIONS.has(section),
         }
     }

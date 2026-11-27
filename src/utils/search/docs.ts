@@ -8,6 +8,7 @@ export type DocsSection = {
     title: string
     icon?: string
     order: number
+    sidebar: boolean
     reference: boolean
 }
 
@@ -134,6 +135,7 @@ function docsHome(docs: DocsIndex) {
         .filter(
             (page) =>
                 !page.id.includes("/") &&
+                docs.sections[page.id]?.sidebar === true &&
                 docs.sections[page.id]?.reference === false,
         )
         .sort((a, b) => docs.sections[a.id].order - docs.sections[b.id].order)
