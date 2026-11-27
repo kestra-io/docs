@@ -64,29 +64,47 @@
                             @click="() => selectFacet(undefined)"
                         >
                             <span>All</span>
-                            <span>({{ allSum }})</span>
+                            <span v-if="allSum !== undefined"
+                                >({{ allSum }})</span
+                            >
                         </button>
                         <button
                             class="facet"
-                            v-for="(result, key, index) in searchFacets"
+                            v-for="key in tabKeys"
                             @click="() => selectFacet(key)"
                             :class="{ 'facet-active': selectedFacet === key }"
                             role="tab"
-                            :key="index"
+                            :key="key"
                         >
                             <span>{{
                                 key.charAt(0).toUpperCase() +
                                 key.slice(1).toLowerCase()
                             }}</span>
-                            <span>({{ result }})</span>
+                            <span v-if="tabCount(key) !== undefined"
+                                >({{ tabCount(key) }})</span
+                            >
                         </button>
                     </div>
                     <div :class="{ loading: loading }">
                         <div
-                            class="d-flex justify-content-center mt-5 mb-5"
                             v-if="initialLoad === false"
+                            class="row search-results"
+                            role="status"
+                            aria-label="Loading results"
                         >
-                            <div class="spinner-border" role="status"></div>
+                            <div class="search-loading col-12 col-md-6">
+                                <div
+                                    v-for="n in 6"
+                                    :key="n"
+                                    class="search-loading-row"
+                                >
+                                    <span class="search-loading-icon"></span>
+                                    <span class="search-loading-text">
+                                        <span></span>
+                                        <span></span>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
 
                         <div
@@ -116,6 +134,22 @@
                                         () => onItemMouseOver(result, index)
                                     "
                                 >
+                                    <div
+                                        v-if="result.doc?.groupStart"
+                                        class="doc-group"
+                                    >
+                                        <img
+                                            v-if="result.doc.sectionIcon"
+                                            :src="result.doc.sectionIcon"
+                                            alt=""
+                                            width="16"
+                                            height="16"
+                                        />
+                                        {{ result.doc.sectionTitle }}
+                                        <span
+                                            >({{ result.doc.groupCount }})</span
+                                        >
+                                    </div>
                                     <a
                                         :href="resultHref(result)"
                                         :class="{
@@ -123,7 +157,244 @@
                                         }"
                                         @click="close"
                                     >
-                                        <div class="result">
+                                        <div
+                                            v-if="result.plugin"
+                                            class="result plugin-result"
+                                        >
+                                            <div class="plugin-icon">
+                                                <img
+                                                    :src="result.plugin.icon"
+                                                    alt=""
+                                                    width="30"
+                                                    height="30"
+                                                    loading="lazy"
+                                                />
+                                            </div>
+                                            <div class="result-text">
+                                                <div
+                                                    v-if="result.kind"
+                                                    class="result-kind"
+                                                >
+                                                    {{ result.kind }}
+                                                </div>
+                                                <div class="plugin-title-row">
+                                                    <h5>{{ result.title }}</h5>
+                                                    <span
+                                                        v-if="
+                                                            result.plugin
+                                                                .isEnterprise
+                                                        "
+                                                        class="enterprise-badge"
+                                                        >Enterprise</span
+                                                    >
+                                                </div>
+                                                <p
+                                                    v-if="
+                                                        result.plugin
+                                                            .description
+                                                    "
+                                                    class="result-description"
+                                                >
+                                                    {{
+                                                        result.plugin
+                                                            .description
+                                                    }}
+                                                </p>
+                                                <div class="plugin-categories">
+                                                    <span
+                                                        v-for="category in result
+                                                            .plugin.categories"
+                                                        :key="category"
+                                                        class="category-tag"
+                                                        >{{ category }}</span
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            v-else-if="result.blueprint"
+                                            class="result blueprint-result"
+                                        >
+                                            <div class="result-text">
+                                                <div
+                                                    v-if="result.kind"
+                                                    class="result-kind"
+                                                >
+                                                    {{ result.kind }}
+                                                </div>
+                                                <h5>{{ result.title }}</h5>
+                                                <p
+                                                    v-if="
+                                                        result.blueprint
+                                                            .description
+                                                    "
+                                                    class="result-description"
+                                                >
+                                                    {{
+                                                        result.blueprint
+                                                            .description
+                                                    }}
+                                                </p>
+                                                <div class="blueprint-meta">
+                                                    <span
+                                                        v-for="icon in result.blueprint.icons.slice(
+                                                            0,
+                                                            ROW_ICONS,
+                                                        )"
+                                                        :key="icon"
+                                                        class="blueprint-icon"
+                                                        ><img
+                                                            :src="icon"
+                                                            alt=""
+                                                            width="18"
+                                                            height="18"
+                                                            loading="lazy"
+                                                    /></span>
+                                                    <span
+                                                        v-if="
+                                                            result.blueprint
+                                                                .icons.length >
+                                                            ROW_ICONS
+                                                        "
+                                                        class="blueprint-more"
+                                                        >+{{
+                                                            result.blueprint
+                                                                .icons.length -
+                                                            ROW_ICONS
+                                                        }}</span
+                                                    >
+                                                    <span
+                                                        v-for="tag in result
+                                                            .blueprint.tags"
+                                                        :key="tag"
+                                                        class="category-tag"
+                                                        >{{ tag }}</span
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            v-else-if="result.blog"
+                                            class="result blog-result"
+                                        >
+                                            <img
+                                                v-if="result.blog.thumb"
+                                                class="blog-thumb"
+                                                :src="result.blog.thumb"
+                                                alt=""
+                                                loading="lazy"
+                                            />
+                                            <div class="blog-text">
+                                                <div class="blog-meta">
+                                                    <template v-if="result.kind"
+                                                        >{{ result.kind }}
+                                                        •
+                                                    </template>
+                                                    {{ result.blog.category }} •
+                                                    {{ result.blog.date }}
+                                                </div>
+                                                <h5>{{ result.title }}</h5>
+                                                <p
+                                                    v-if="result.blog.snippet"
+                                                    class="result-snippet"
+                                                >
+                                                    <template
+                                                        v-for="(
+                                                            part, partIndex
+                                                        ) in result.blog
+                                                            .snippet"
+                                                        :key="partIndex"
+                                                        ><mark
+                                                            v-if="part.mark"
+                                                            >{{
+                                                                part.text
+                                                            }}</mark
+                                                        ><template v-else>{{
+                                                            part.text
+                                                        }}</template></template
+                                                    >
+                                                </p>
+                                                <div
+                                                    v-else-if="
+                                                        result.blog.author
+                                                    "
+                                                    class="blog-author"
+                                                >
+                                                    <img
+                                                        v-if="
+                                                            result.blog.author
+                                                                .avatar
+                                                        "
+                                                        :src="
+                                                            result.blog.author
+                                                                .avatar
+                                                        "
+                                                        alt=""
+                                                    />
+                                                    {{
+                                                        result.blog.authorNames
+                                                    }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            v-else-if="result.doc"
+                                            class="result doc-result"
+                                            :class="{ grouped: !result.kind }"
+                                        >
+                                            <div class="result-text">
+                                                <div
+                                                    v-if="result.kind"
+                                                    class="result-kind"
+                                                >
+                                                    {{ result.kind
+                                                    }}<template
+                                                        v-if="
+                                                            result.doc
+                                                                .section &&
+                                                            result.doc
+                                                                .section !==
+                                                                result.doc.id
+                                                        "
+                                                    >
+                                                        ›
+                                                        {{
+                                                            result.doc
+                                                                .sectionTitle
+                                                        }}</template
+                                                    >
+                                                </div>
+                                                <h5>{{ result.title }}</h5>
+                                                <p
+                                                    v-if="result.doc.snippet"
+                                                    class="result-snippet"
+                                                >
+                                                    <template
+                                                        v-for="(
+                                                            part, partIndex
+                                                        ) in result.doc.snippet"
+                                                        :key="partIndex"
+                                                        ><mark
+                                                            v-if="part.mark"
+                                                            >{{
+                                                                part.text
+                                                            }}</mark
+                                                        ><template v-else>{{
+                                                            part.text
+                                                        }}</template></template
+                                                    >
+                                                </p>
+                                                <p
+                                                    v-else-if="
+                                                        result.doc.description
+                                                    "
+                                                    class="result-description"
+                                                >
+                                                    {{ result.doc.description }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div v-else class="result">
                                             <div class="w-100">
                                                 <span class="type">{{
                                                     result.type
@@ -161,13 +432,309 @@
                                         </div>
                                     </a>
                                 </div>
+                                <button
+                                    v-if="searchResults.length < resultsTotal"
+                                    type="button"
+                                    class="show-more"
+                                    @click="showMore"
+                                >
+                                    Show more results
+                                </button>
                             </div>
                             <div
                                 class="search-detail p-3 col-6 d-none d-md-flex"
                             >
                                 <div
+                                    class="rounded-3 w-100 plugin-detail"
+                                    v-if="selectedItem?.plugin"
+                                >
+                                    <div class="plugin-detail-header">
+                                        <div class="plugin-icon large">
+                                            <img
+                                                :src="selectedItem.plugin.icon"
+                                                alt=""
+                                                width="45"
+                                                height="45"
+                                            />
+                                        </div>
+                                        <div>
+                                            <div class="plugin-title-row">
+                                                <h5>
+                                                    {{ selectedItem.title }}
+                                                </h5>
+                                                <span
+                                                    v-if="
+                                                        selectedItem.plugin
+                                                            .isEnterprise
+                                                    "
+                                                    class="enterprise-badge"
+                                                    >Enterprise</span
+                                                >
+                                            </div>
+                                            <div class="slug">
+                                                <span
+                                                    v-for="item in breadcrumb(
+                                                        selectedItem.url,
+                                                    )"
+                                                    :key="item"
+                                                    >{{ item }}</span
+                                                >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="plugin-categories">
+                                        <span
+                                            v-for="category in selectedItem
+                                                .plugin.categories"
+                                            :key="category"
+                                            class="category-tag"
+                                            >{{ category }}</span
+                                        >
+                                    </div>
+                                    <p class="plugin-detail-description">
+                                        {{ selectedItem.plugin.description }}
+                                    </p>
+                                    <p class="plugin-stats">
+                                        <span
+                                            v-if="
+                                                selectedItem.plugin
+                                                    .elementCounts
+                                            "
+                                            ><strong>{{
+                                                selectedItem.plugin
+                                                    .elementCounts
+                                            }}</strong>
+                                            tasks</span
+                                        >
+                                        <span
+                                            v-if="
+                                                selectedItem.plugin.blueprints
+                                            "
+                                            ><strong>{{
+                                                selectedItem.plugin.blueprints
+                                            }}</strong>
+                                            blueprints</span
+                                        >
+                                    </p>
+                                    <section
+                                        v-for="group in selectedItem.plugin
+                                            .elements"
+                                        :key="group.type"
+                                        class="plugin-elements"
+                                    >
+                                        <h6>
+                                            {{ group.type }} ({{ group.total }})
+                                        </h6>
+                                        <a
+                                            v-for="element in group.items"
+                                            :key="element.cls"
+                                            :href="
+                                                element.href ??
+                                                resultHref(selectedItem)
+                                            "
+                                            class="plugin-element"
+                                            @click="close"
+                                        >
+                                            <img
+                                                :src="`/icons/${element.cls}.svg`"
+                                                alt=""
+                                                width="22"
+                                                height="22"
+                                                loading="lazy"
+                                            />
+                                            <div>
+                                                <strong>{{
+                                                    element.name
+                                                }}</strong>
+                                                <span v-if="element.title">{{
+                                                    element.title
+                                                }}</span>
+                                            </div>
+                                        </a>
+                                        <a
+                                            v-if="
+                                                group.total > group.items.length
+                                            "
+                                            :href="resultHref(selectedItem)"
+                                            class="plugin-elements-more"
+                                            @click="close"
+                                            >See all {{ group.total }}
+                                            {{ group.type.toLowerCase() }}</a
+                                        >
+                                    </section>
+                                </div>
+                                <div
+                                    class="rounded-3 w-100 plugin-detail blueprint-detail"
+                                    v-else-if="selectedItem?.blueprint"
+                                >
+                                    <h5>{{ selectedItem.title }}</h5>
+                                    <div class="plugin-categories">
+                                        <span
+                                            v-for="tag in selectedItem.blueprint
+                                                .tags"
+                                            :key="tag"
+                                            class="category-tag"
+                                            >{{ tag }}</span
+                                        >
+                                    </div>
+                                    <p class="plugin-detail-description">
+                                        {{ selectedItem.blueprint.description }}
+                                    </p>
+                                    <div class="topology-slot">
+                                        <TopologyPreview
+                                            :key="selectedItem.blueprint.id"
+                                            :id="selectedItem.blueprint.id"
+                                            :icons="
+                                                selectedItem.blueprint.icons
+                                            "
+                                            :focus="
+                                                selectedItem.blueprint
+                                                    .focusTasks
+                                            "
+                                        />
+                                    </div>
+                                    <a
+                                        :href="resultHref(selectedItem)"
+                                        class="btn btn-sm btn-primary align-self-start"
+                                        @click="close"
+                                        >Open blueprint</a
+                                    >
+                                </div>
+                                <div
+                                    class="rounded-3 w-100 doc-detail"
+                                    v-else-if="selectedItem?.doc"
+                                >
+                                    <div class="doc-detail-bar">
+                                        <div class="doc-crumb">
+                                            Docs<template
+                                                v-if="
+                                                    selectedItem.doc.section &&
+                                                    selectedItem.doc.section !==
+                                                        selectedItem.doc.id
+                                                "
+                                            >
+                                                ›
+                                                {{
+                                                    selectedItem.doc
+                                                        .sectionTitle
+                                                }}</template
+                                            >
+                                            ›
+                                            <strong>{{
+                                                selectedItem.title
+                                            }}</strong>
+                                        </div>
+                                        <a
+                                            :href="resultHref(selectedItem)"
+                                            class="btn btn-sm btn-primary"
+                                            @click="close"
+                                            >Open page</a
+                                        >
+                                    </div>
+                                    <div
+                                        v-if="selectedItem.doc.snippet"
+                                        class="preview-match"
+                                    >
+                                        <span>Matched in this page</span>
+                                        <p>
+                                            <template
+                                                v-for="(
+                                                    part, partIndex
+                                                ) in selectedItem.doc.snippet"
+                                                :key="partIndex"
+                                                ><mark v-if="part.mark">{{
+                                                    part.text
+                                                }}</mark
+                                                ><template v-else>{{
+                                                    part.text
+                                                }}</template></template
+                                            >
+                                        </p>
+                                    </div>
+                                    <ContentPreview
+                                        :key="selectedItem.doc.id"
+                                        section="docs"
+                                        :id="selectedItem.doc.id"
+                                    />
+                                </div>
+                                <div
+                                    class="rounded-3 w-100 doc-detail blog-detail"
+                                    v-else-if="selectedItem?.blog"
+                                >
+                                    <div class="doc-detail-bar">
+                                        <div class="doc-crumb">
+                                            Blog ›
+                                            <strong>{{
+                                                selectedItem.blog.category
+                                            }}</strong>
+                                        </div>
+                                        <a
+                                            :href="resultHref(selectedItem)"
+                                            class="btn btn-sm btn-primary"
+                                            @click="close"
+                                            >Read post</a
+                                        >
+                                    </div>
+                                    <div>
+                                        <img
+                                            v-if="selectedItem.blog.cover"
+                                            class="blog-cover"
+                                            :src="selectedItem.blog.cover"
+                                            alt=""
+                                        />
+                                        <h1 class="blog-title">
+                                            {{ selectedItem.title }}
+                                        </h1>
+                                        <div class="blog-byline">
+                                            <img
+                                                v-if="
+                                                    selectedItem.blog.author
+                                                        ?.avatar
+                                                "
+                                                :src="
+                                                    selectedItem.blog.author
+                                                        .avatar
+                                                "
+                                                alt=""
+                                            />
+                                            <div
+                                                v-if="selectedItem.blog.author"
+                                            >
+                                                <strong>{{
+                                                    selectedItem.blog
+                                                        .authorNames
+                                                }}</strong>
+                                                <span
+                                                    v-if="
+                                                        selectedItem.blog
+                                                            .authors.length ===
+                                                        1
+                                                    "
+                                                    >{{
+                                                        selectedItem.blog.author
+                                                            .role
+                                                    }}</span
+                                                >
+                                            </div>
+                                            <div class="blog-when">
+                                                {{ selectedItem.blog.date
+                                                }}<br />{{
+                                                    selectedItem.blog.minutes
+                                                }}
+                                                min read
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ContentPreview
+                                        :key="selectedItem.blog.id"
+                                        section="blogs"
+                                        :id="selectedItem.blog.id"
+                                        :show-title="false"
+                                    />
+                                </div>
+                                <div
                                     class="rounded-3 w-100"
-                                    v-if="selectedItem"
+                                    v-else-if="selectedItem"
                                 >
                                     <div>
                                         <span class="type">{{
@@ -242,6 +809,15 @@
     import MagnifyExpand from "vue-material-design-icons/MagnifyExpand.vue"
     import AiChatDialog from "~/components/ai/AiChatDialog.vue"
     import KSAIImg from "../docs/assets/ks-ai.svg"
+    import { defineAsyncComponent } from "vue"
+    import { ROW_ICONS } from "~/utils/search/blueprints"
+
+    const TopologyPreview = defineAsyncComponent(
+        () => import("~/components/layout/search/TopologyPreview.vue"),
+    )
+    const ContentPreview = defineAsyncComponent(
+        () => import("~/components/layout/search/ContentPreview.vue"),
+    )
 </script>
 
 <script>
@@ -253,8 +829,58 @@
     import posthog from "posthog-js"
     import { $fetchApi } from "~/utils/fetch"
     import { prepareSearchResults } from "~/utils/searchResults"
+    import { markRaw } from "vue"
+    import { allResults } from "~/utils/search/all"
+    import { blogsSearchResults, loadBlogsIndex } from "~/utils/search/blogs"
+    import {
+        blueprintsSearchResults,
+        loadBlueprintsIndex,
+    } from "~/utils/search/blueprints"
+    import { docsSearchResults, loadDocsIndex } from "~/utils/search/docs"
+    import { fullTextMatches } from "~/utils/search/fullText"
+    import { MAX_RESULTS } from "~/utils/search/matching"
+    import {
+        loadPluginsIndex,
+        pluginsSearchResults,
+    } from "~/utils/search/plugins"
     import { searchResultHref, searchScope } from "~/utils/versionedDocs"
     import { isEventInModal, openModal } from "~/utils/modal"
+
+    // Tabs searched in the browser, from indexes the popup loads when it opens.
+    const LOCAL_TABS = {
+        PLUGINS: {
+            kind: "Plugin",
+            load: loadPluginsIndex,
+            search: (indexes, query, _fullText, limit) =>
+                pluginsSearchResults(indexes.PLUGINS, query, limit),
+        },
+        BLUEPRINTS: {
+            kind: "Blueprint",
+            load: loadBlueprintsIndex,
+            search: (indexes, query, _fullText, limit) =>
+                blueprintsSearchResults(
+                    indexes.BLUEPRINTS,
+                    indexes.PLUGINS ?? [],
+                    query,
+                    limit,
+                ),
+        },
+        DOCS: {
+            kind: "Docs",
+            load: loadDocsIndex,
+            search: (indexes, query, fullText, limit) =>
+                docsSearchResults(indexes.DOCS, query, fullText, limit),
+        },
+        BLOGS: {
+            kind: "Blog post",
+            load: loadBlogsIndex,
+            search: (indexes, query, fullText, limit) =>
+                blogsSearchResults(indexes.BLOGS, query, fullText, limit),
+        },
+    }
+
+    // Tabs that also list the pages only the server's full-text search finds.
+    const FULL_TEXT_TABS = ["DOCS", "BLOGS"]
 
     export default {
         props: {
@@ -271,6 +897,8 @@
         data() {
             return {
                 searchResults: [],
+                resultsTotal: 0,
+                resultLimit: MAX_RESULTS,
                 searchFacets: {},
                 selectedFacet: undefined,
                 selectedIndex: 0,
@@ -280,6 +908,11 @@
                 showAiDialog: false,
                 initialLoad: false,
                 abortController: undefined,
+                indexes: {},
+                failedIndexes: [],
+                localResults: {},
+                fullText: {},
+                facetsQuery: undefined,
                 // Version whose segment the current results' docs hits need
                 // back; unset for docs-latest hits and for latest fallbacks.
                 hrefVersion: undefined,
@@ -287,21 +920,45 @@
         },
         mounted() {
             window.addEventListener("keydown", this.handleKeyboard)
+            document.addEventListener("pointerover", this.preloadIndexes)
+            document.addEventListener("focusin", this.preloadIndexes)
         },
         unmounted() {
             window.removeEventListener("keydown", this.handleKeyboard)
+            document.removeEventListener("pointerover", this.preloadIndexes)
+            document.removeEventListener("focusin", this.preloadIndexes)
         },
         computed: {
+            tabKeys() {
+                return [
+                    ...new Set([
+                        ...Object.keys(LOCAL_TABS),
+                        ...Object.keys(this.searchFacets),
+                    ]),
+                ]
+            },
             allSum() {
-                return Object.values(this.searchFacets).reduce(
-                    (accumulator, currentValue) => {
-                        return accumulator + currentValue
-                    },
-                    0,
-                )
+                const counts = this.tabKeys.map((key) => this.tabCount(key))
+                if (counts.includes(undefined)) return undefined
+                return counts.reduce((sum, count) => sum + count, 0)
             },
         },
         methods: {
+            // Starts downloading when a search button is hovered or focused, ahead of the click.
+            preloadIndexes(event) {
+                if (
+                    !event.target.closest?.(
+                        '[data-modal-target="#search-modal"]',
+                    )
+                ) {
+                    return
+                }
+                for (const tab of Object.values(LOCAL_TABS)) {
+                    tab.load().catch(() => {})
+                }
+                document.removeEventListener("pointerover", this.preloadIndexes)
+                document.removeEventListener("focusin", this.preloadIndexes)
+            },
             focusSearch() {
                 document.querySelector("#search-input").value = ""
                 document.querySelector("#search-input").focus()
@@ -311,6 +968,12 @@
                     this.selectedFacet = undefined
                 }
                 this.search()
+                for (const [type, tab] of Object.entries(LOCAL_TABS)) {
+                    tab.load().then(
+                        (index) => this.settleIndex(type, index),
+                        () => this.settleIndex(type),
+                    )
+                }
             },
             onHiddenSearch() {
                 this.selectedIndex = null
@@ -332,8 +995,10 @@
                 // A newer search has started: this one must not touch the state.
                 const isStale = () => this.abortController !== controller
                 this.loading = true
+                this.resultLimit = MAX_RESULTS
 
                 this.searchValue = value
+                this.updateLocalResults(value)
                 const params = new URLSearchParams()
                 params.append("q", value)
                 if (this.selectedFacet) {
@@ -367,39 +1032,190 @@
                     })
                     .then((response) => {
                         if (isStale()) return
-                        this.initialLoad = true
-                        const results = prepareSearchResults(
-                            response?.results,
-                            value,
-                        )
-                        if (results.length) {
-                            this.searchResults = results
+                        // Server rows would flash before the local results replace them.
+                        const waiting = this.waitsForLocalResults()
+                        if (!waiting) this.initialLoad = true
+                        if (!this.usesLocalResults() && !waiting) {
+                            const results = prepareSearchResults(
+                                response?.results,
+                                value,
+                            )
+                            if (results.length) {
+                                this.searchResults = results
+                                this.resultsTotal = results.length
 
-                            this.selectedIndex = 0
-                            this.selectedItem = this.searchResults[0]
-                            this.loading = false
-                        } else {
-                            this.resetData()
+                                this.selectedIndex = 0
+                                this.selectedItem = this.searchResults[0]
+                                this.loading = false
+                            } else {
+                                this.resetData()
+                            }
                         }
 
                         if (response?.facets) {
                             this.searchFacets = this.sortFacet(response.facets)
+                            this.facetsQuery = value
                         }
+
+                        const found = response?.results ?? []
+                        for (const type of FULL_TEXT_TABS) {
+                            if (
+                                this.selectedFacet === undefined ||
+                                this.selectedFacet === type
+                            ) {
+                                this.fullText = {
+                                    ...this.fullText,
+                                    [type]: {
+                                        query: value,
+                                        matches: fullTextMatches(found, type),
+                                        // The server stops at 100 results: a longer list is partial.
+                                        complete:
+                                            found.length >=
+                                            (response?.total ?? 0),
+                                    },
+                                }
+                            }
+                        }
+                        this.updateLocalResults(value, true)
 
                         posthog.capture("search", {
                             text: value,
                             type: this.selectedFacet,
-                            resultsCount: response?.results?.length || 0,
+                            resultsCount: !this.usesLocalResults()
+                                ? response?.results?.length || 0
+                                : this.selectedFacet
+                                  ? this.tabCount(this.selectedFacet)
+                                  : this.allSum,
                         })
                     })
                     .catch(() => {
-                        if (!isStale()) this.resetData()
+                        if (!isStale() && !this.usesLocalResults()) {
+                            this.resetData()
+                        }
                     })
                     .finally(() => {
                         if (isStale()) return
                         this.abortController = undefined
                         this.loading = false
                     })
+            },
+            onArchivedDocs() {
+                return Boolean(
+                    searchScope(window.location.pathname, this.docsLatest)
+                        .hrefVersion,
+                )
+            },
+            usesLocalResults(type = this.selectedFacet) {
+                if (type === undefined) {
+                    return Object.keys(LOCAL_TABS).every((key) =>
+                        this.usesLocalResults(key),
+                    )
+                }
+                // Archived docs pages search their own version, which only the server indexes.
+                if (type === "DOCS" && this.onArchivedDocs()) return false
+                return type in this.indexes
+            },
+            settleIndex(type, index) {
+                const waited = this.waitsForLocalResults()
+                if (index) {
+                    this.indexes = { ...this.indexes, [type]: markRaw(index) }
+                } else {
+                    this.failedIndexes = [...this.failedIndexes, type]
+                }
+                this.updateLocalResults(this.searchValue ?? "", true)
+                // Nothing local to show: fetch the server answer the popup held back.
+                if (
+                    waited &&
+                    !this.waitsForLocalResults() &&
+                    !this.usesLocalResults()
+                ) {
+                    this.search(this.searchValue ?? "")
+                }
+            },
+            waitsForLocalResults(type = this.selectedFacet) {
+                if (type === undefined) {
+                    return Object.keys(LOCAL_TABS).some((key) =>
+                        this.waitsForLocalResults(key),
+                    )
+                }
+                if (!(type in LOCAL_TABS)) return false
+                if (type === "DOCS" && this.onArchivedDocs()) return false
+                return (
+                    !(type in this.indexes) &&
+                    !this.failedIndexes.includes(type)
+                )
+            },
+            updateLocalResults(value, keepSelection = false) {
+                const localResults = {}
+                for (const [type, tab] of Object.entries(LOCAL_TABS)) {
+                    if (!(type in this.indexes)) continue
+                    const fullText = this.fullText[type]
+                    const matches =
+                        fullText?.query === value ? fullText.matches : []
+                    localResults[type] = tab.search(
+                        this.indexes,
+                        value,
+                        matches,
+                        this.resultLimit,
+                    )
+                }
+                this.localResults = localResults
+                if (!this.usesLocalResults()) {
+                    if (this.waitsForLocalResults()) this.initialLoad = false
+                    return
+                }
+
+                const results = this.selectedFacet
+                    ? localResults[this.selectedFacet].results
+                    : allResults(
+                          Object.entries(LOCAL_TABS).map(([type, tab]) => ({
+                              kind: tab.kind,
+                              results: localResults[type].results,
+                          })),
+                          value,
+                          this.resultLimit,
+                      )
+                const total = this.selectedFacet
+                    ? localResults[this.selectedFacet].total
+                    : Object.values(localResults).reduce(
+                          (sum, { total }) => sum + total,
+                          0,
+                      )
+                this.showResults(results, keepSelection, total)
+            },
+            showMore() {
+                this.resultLimit += MAX_RESULTS
+                this.updateLocalResults(this.searchValue ?? "", true)
+            },
+            showResults(results, keepSelection = false, total = 0) {
+                const kept = keepSelection
+                    ? results.findIndex(
+                          (result) => result.url === this.selectedItem?.url,
+                      )
+                    : -1
+                this.searchResults = results
+                this.resultsTotal = Math.max(total, results.length)
+                this.selectedIndex = Math.max(kept, 0)
+                this.selectedItem = results[this.selectedIndex] ?? null
+                this.initialLoad = true
+                this.loading = false
+            },
+            tabCount(key) {
+                if (this.waitsForLocalResults(key)) return undefined
+                const serverCount = Number(this.searchFacets[key]) || 0
+                if (!this.usesLocalResults(key)) return serverCount
+                const localCount = this.localResults[key]?.total ?? 0
+                const fullText = this.fullText[key]
+                const typed = Boolean(this.searchValue?.trim())
+                const complete =
+                    fullText?.query === this.searchValue && fullText.complete
+                if (!typed || !FULL_TEXT_TABS.includes(key) || complete) {
+                    return localCount
+                }
+                // Until this query's full-text answer arrives, the server count is the floor.
+                return this.facetsQuery === this.searchValue
+                    ? Math.max(localCount, serverCount)
+                    : localCount
             },
             fetchSearch(params, version, signal) {
                 const path = version
@@ -425,8 +1241,8 @@
             sortFacetIndex(value) {
                 const index = [
                     "PLUGINS",
-                    "DOCS",
                     "BLUEPRINTS",
+                    "DOCS",
                     "BLOGS",
                     "JOBS",
                 ].indexOf(value)
@@ -437,6 +1253,7 @@
                 this.selectedIndex = null
                 this.selectedItem = null
                 this.searchResults = []
+                this.resultsTotal = 0
                 this.searchFacets = {}
             },
             breadcrumb(slug) {
@@ -487,6 +1304,7 @@
 
                 if (
                     e.key === "Enter" &&
+                    e.target?.id === "search-input" &&
                     this.searchResults &&
                     this.searchResults[this.selectedIndex]
                 ) {
@@ -776,8 +1594,509 @@
                 }
             }
         }
+        .plugin-icon {
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+            background: $white;
+            border-radius: 8px;
+            border: $block-border;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                width: 30px;
+                height: 30px;
+                object-fit: contain;
+            }
+
+            &.large {
+                width: 60px;
+                height: 60px;
+
+                img {
+                    width: 45px;
+                    height: 45px;
+                }
+            }
+        }
+        .search-result .plugin-result {
+            gap: 1rem;
+            align-items: flex-start;
+
+            > .plugin-icon {
+                flex: 0 0 44px;
+            }
+        }
+        .result-text {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+        .plugin-title-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            h5 {
+                margin: 0;
+            }
+        }
+        .enterprise-badge {
+            border-radius: 40px;
+            font-size: $font-size-xs;
+            background: var(--ks-background-tag-EE);
+            color: var(--ks-content-tag-EE);
+            padding: 0.1rem 0.5rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .result-kind {
+            margin-bottom: 0.2rem;
+            font-size: $font-size-xs;
+            color: var(--ks-content-secondary);
+        }
+        .result-snippet {
+            color: var(--ks-content-secondary);
+            font-size: $font-size-xs;
+            margin: 0.25rem 0 0;
+            overflow: hidden;
+            display: -webkit-box;
+            line-clamp: 2;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+
+            mark {
+                padding: 0;
+                color: var(--ks-content-primary);
+                background: var(--ks-background-tag-category);
+            }
+        }
+        .show-more {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 0;
+            border-bottom: 1px solid var(--ks-border-primary);
+            background: var(--ks-background-secondary);
+            color: var(--ks-content-link);
+            font-size: $font-size-sm;
+            font-weight: 600;
+
+            &:hover {
+                background: var(--ks-background-primary);
+            }
+        }
+        .preview-match {
+            margin-bottom: 1rem;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--ks-border-primary);
+            border-radius: 8px;
+            background: var(--ks-background-secondary);
+            font-size: $font-size-sm;
+
+            span {
+                display: block;
+                margin-bottom: 0.25rem;
+                font-size: $font-size-xs;
+                font-weight: 600;
+                color: var(--ks-content-secondary);
+            }
+
+            p {
+                margin: 0;
+                color: var(--ks-content-primary);
+            }
+
+            mark {
+                padding: 0;
+                color: inherit;
+                background: var(--ks-background-tag-category);
+            }
+        }
+        .doc-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.55rem 1rem 0.4rem;
+            font-size: $font-size-xs;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--ks-content-secondary);
+            background: var(--ks-background-secondary);
+            border-bottom: 1px solid var(--ks-border-primary);
+
+            img {
+                object-fit: contain;
+            }
+
+            span {
+                font-weight: 500;
+            }
+        }
+        .search-result .doc-result {
+            padding: 0.65rem 1rem;
+
+            &.grouped {
+                padding-left: 2.4rem;
+            }
+
+            h5 {
+                margin: 0;
+                font-size: $font-size-sm;
+            }
+
+            .result-description {
+                margin: 0.15rem 0 0;
+            }
+        }
+        .search-result .active .doc-result,
+        .search-result .active .blog-result {
+            box-shadow: inset 3px 0 0 var(--ks-border-active);
+        }
+        .search-result .blog-result {
+            align-items: center;
+            gap: 1rem;
+
+            > .blog-thumb {
+                flex: 0 0 112px;
+                height: 63px;
+                border-radius: 8px;
+                object-fit: cover;
+                border: 1px solid var(--ks-border-primary);
+            }
+
+            h5 {
+                margin: 0;
+                line-height: 1.3;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            .blog-meta,
+            .blog-author {
+                font-size: $font-size-xs;
+                color: var(--ks-content-secondary);
+            }
+
+            .blog-meta {
+                margin-bottom: 0.2rem;
+            }
+
+            .blog-author {
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+                margin-top: 0.35rem;
+
+                img {
+                    width: 18px;
+                    height: 18px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+            }
+        }
+        .blog-detail {
+            .blog-cover {
+                display: block;
+                width: 100%;
+                aspect-ratio: 16 / 9;
+                object-fit: cover;
+                border-radius: 12px;
+                border: 1px solid var(--ks-border-primary);
+                margin: 4px 0 20px;
+            }
+
+            .blog-title {
+                font-size: 26px;
+                line-height: 32px;
+                letter-spacing: -0.01em;
+                margin: 0 0 12px;
+                text-wrap: balance;
+            }
+
+            .blog-byline {
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+                font-size: 13px;
+                color: var(--ks-content-secondary);
+
+                img {
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+
+                strong {
+                    display: block;
+                    font-size: 14px;
+                    line-height: 18px;
+                    color: var(--ks-content-primary);
+                }
+
+                .blog-when {
+                    margin-left: auto;
+                    text-align: right;
+                }
+            }
+        }
+        .doc-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+            .doc-detail-bar {
+                position: sticky;
+                top: -1rem;
+                z-index: 1;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1rem;
+                margin: -1rem -1rem 0;
+                padding: 0.5rem 1rem;
+                background: var(--ks-background-body);
+                border-bottom: 1px solid var(--ks-border-primary);
+
+                .btn {
+                    flex-shrink: 0;
+                    padding: 0.25rem 0.75rem;
+                    font-size: 13px;
+                    line-height: 20px;
+                }
+            }
+
+            .doc-crumb {
+                font-size: 13px;
+                line-height: 20px;
+                color: var(--ks-content-secondary);
+
+                strong {
+                    color: var(--ks-content-primary);
+                }
+            }
+        }
+        .blueprint-detail {
+            > * {
+                flex-shrink: 0;
+            }
+
+            h5 {
+                line-height: 1.25rem;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+            }
+
+            .plugin-categories {
+                height: 1.5rem;
+                overflow: hidden;
+            }
+
+            .plugin-detail-description {
+                line-height: 1.3125rem;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+            }
+
+            .topology-slot {
+                height: 460px;
+            }
+        }
+        // Undoes the modal's 16px `.icon-wrapper` size: the topology's task icons fill their node.
+        .topology-preview .icon-wrapper {
+            width: 100%;
+            height: 100%;
+            margin-right: 0;
+        }
+        .blueprint-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.35rem;
+
+            .blueprint-icon {
+                width: 26px;
+                height: 26px;
+                border: $block-border;
+                border-radius: 6px;
+                background: $white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                img {
+                    object-fit: contain;
+                }
+            }
+
+            .blueprint-more {
+                font-size: $font-size-xs;
+                color: var(--ks-content-secondary);
+            }
+
+            .category-tag {
+                background: var(--ks-background-tag-category);
+                color: var(--ks-content-tag-category);
+                padding: 0.125rem 0.5rem;
+                border-radius: 40px;
+                font-size: $font-size-xs;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+        }
+        .result-description {
+            color: var(--ks-content-secondary);
+            font-size: $font-size-xs;
+            margin: 0.25rem 0 0.5rem;
+            overflow: hidden;
+            display: -webkit-box;
+            line-clamp: 1;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+        }
+        .plugin-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+
+            .category-tag {
+                background: var(--ks-background-tag-category);
+                color: var(--ks-content-tag-category);
+                padding: 0.125rem 0.5rem;
+                border-radius: 40px;
+                font-size: $font-size-xs;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+        }
+        .plugin-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+            .plugin-detail-header {
+                display: flex;
+                gap: 1rem;
+                align-items: center;
+            }
+
+            .plugin-detail-description {
+                margin: 0;
+                color: var(--ks-content-primary);
+                font-size: $font-size-sm;
+            }
+
+            .plugin-stats {
+                margin: 0;
+                display: flex;
+                gap: 1rem;
+                font-size: $font-size-xs;
+                color: var(--ks-content-primary);
+            }
+
+            .plugin-elements {
+                display: flex;
+                flex-direction: column;
+                gap: 0.4rem;
+
+                h6 {
+                    margin: 0;
+                    font-size: $font-size-xs;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
+                    color: var(--ks-content-secondary);
+                }
+            }
+
+            .plugin-element {
+                display: flex;
+                gap: 0.75rem;
+                align-items: flex-start;
+                padding: 0.5rem 0.6rem;
+                border: 1px solid var(--ks-border-primary);
+                border-radius: 8px;
+                background: var(--ks-background-primary);
+                color: var(--ks-content-primary);
+                text-decoration: none;
+
+                &:hover {
+                    border-color: var(--ks-border-active);
+                }
+
+                img {
+                    flex-shrink: 0;
+                    margin-top: 2px;
+                    object-fit: contain;
+                }
+
+                strong {
+                    display: block;
+                    font-size: $font-size-sm;
+                }
+
+                span {
+                    font-size: $font-size-xs;
+                    color: var(--ks-content-secondary);
+                }
+            }
+
+            .plugin-elements-more {
+                font-size: $font-size-xs;
+                color: var(--ks-content-link);
+                text-decoration: none;
+            }
+        }
         .loading {
             opacity: 0.6;
+        }
+        .search-loading-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem 1rem;
+            border-bottom: 1px solid var(--ks-border-primary);
+        }
+        .search-loading-icon,
+        .search-loading-text span {
+            background: var(--ks-background-secondary);
+            animation: search-loading 1.2s ease-in-out infinite alternate;
+
+            @media (prefers-reduced-motion: reduce) {
+                animation: none;
+            }
+        }
+        .search-loading-icon {
+            flex: 0 0 44px;
+            height: 44px;
+            border-radius: 8px;
+        }
+        .search-loading-text {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+
+            span {
+                height: 0.75rem;
+                width: 85%;
+                border-radius: 4px;
+
+                &:first-child {
+                    height: 0.9rem;
+                    width: 45%;
+                }
+            }
         }
         .search-results {
             border-top: 1px solid var(--ks-border-primary);
@@ -788,6 +2107,12 @@
             font-weight: 700;
             padding: 0;
             margin: 0;
+        }
+    }
+
+    @keyframes search-loading {
+        to {
+            opacity: 0.45;
         }
     }
 </style>

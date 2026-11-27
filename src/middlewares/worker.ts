@@ -113,17 +113,22 @@ const middlewares: CFMiddleware[] = [setupContentSecurityPolicyHeaders, noIndex,
 // cache (the Workers Cache API does not revalidate in the background itself).
 const EDGE_CACHE_TTL = 60 * 60
 const EDGE_CACHE_SWR = 60 * 60 * 24
+const EDGE_CACHE_JSON_BROWSER_TTL = 60 * 5
 
 // The plugin & blueprint templates declare `prerender = false`, so every hit
 // re-runs a full Astro render inside the Worker (high TTFB — see issue #5158).
 // Their HTML is public and request-independent (any content that varies —
 // `?version=` on plugins, `?q=` on pattern pages — is part of the URL and
 // therefore part of the cache key), so it is safe to serve from Cloudflare's
-// edge cache. Other `prerender = false` routes (/api/*, /t/*, careers apply,
-// cloud-early-access, hubspot-submit, …) are intentionally excluded.
+// edge cache. The search popup's plugin and blueprint indexes are built from
+// the same API data, and would otherwise re-read it on every popup open. Other
+// `prerender = false` routes (/api/*, /t/*, careers apply, cloud-early-access,
+// hubspot-submit, …) are intentionally excluded.
 function isEdgeCacheablePage(url: URL): boolean {
     const path = url.pathname
     return (
+        path === "/api/plugins-search" ||
+        path === "/api/blueprints-search" ||
         path === "/plugins" ||
         path.startsWith("/plugins/") ||
         path === "/blueprints" ||
@@ -271,9 +276,14 @@ export default {
 
         if (cacheKey && finalResponse.status === 200) {
             const response = new Response(finalResponse.body, finalResponse)
+            const browserTtl = finalResponse.headers
+                .get("content-type")
+                ?.includes("application/json")
+                ? `max-age=${EDGE_CACHE_JSON_BROWSER_TTL}, `
+                : ""
             response.headers.set(
                 "Cache-Control",
-                `public, s-maxage=${EDGE_CACHE_TTL}, stale-while-revalidate=${EDGE_CACHE_SWR}`,
+                `public, ${browserTtl}s-maxage=${EDGE_CACHE_TTL}, stale-while-revalidate=${EDGE_CACHE_SWR}`,
             )
 
             // Cloudflare's Cache API rejects `put()` on any response carrying a

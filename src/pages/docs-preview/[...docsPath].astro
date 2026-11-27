@@ -1,0 +1,40 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content"
+import {
+    collectionMetadataDigest,
+    entryCacheKey,
+    layoutDigest,
+} from "~/utils/incrementalCacheKey"
+import {
+    fetchTotalPluginsCount,
+    pluginCountScope,
+} from "~/utils/plugins/pluginCount"
+
+export async function getStaticPaths() {
+    const docsPages = await getCollection("docs")
+    // Child cards read every doc's metadata, so it is part of each page's key.
+    const scope = [collectionMetadataDigest(docsPages), await layoutDigest()]
+    const totalPlugins = await fetchTotalPluginsCount()
+    return docsPages
+        .filter((doc) => doc.id !== "<index>")
+        .map((doc) => ({
+            params: { docsPath: doc.id },
+            props: doc,
+            cacheKey: entryCacheKey(
+                doc,
+                ...scope,
+                ...pluginCountScope(totalPlugins, doc.body),
+            ),
+        }))
+}
+type Props = CollectionEntry<"docs">
+
+const doc = Astro.props
+Astro.locals.docPath = `/docs/${doc.id}`
+const { Content } = await render(doc)
+---
+
+<h1>{doc.data?.h1 ?? doc.data?.title}</h1>
+<div class="bd-content">
+    <Content />
+</div>

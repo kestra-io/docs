@@ -2,10 +2,9 @@
 import { getCollection } from "astro:content"
 import type { CollectionEntry } from "astro:content"
 import GuidesChildCardRender from "~/components/content/GuidesChildCard.vue"
+import { currentDocPath } from "~/utils/currentDocPath"
 
-const currentPage = Astro.url.pathname.endsWith("/")
-    ? Astro.url.pathname.slice(0, -1)
-    : Astro.url.pathname
+const currentPage = currentDocPath(Astro)
 
 const contentPath = currentPage.replace("/docs/", "")
 

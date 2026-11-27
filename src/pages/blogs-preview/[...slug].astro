@@ -1,0 +1,35 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content"
+import LivePluginCount from "~/components/content/LivePluginCount.astro"
+import { entryCacheKey, layoutDigest } from "~/utils/incrementalCacheKey"
+import {
+    fetchTotalPluginsCount,
+    pluginCountScope,
+} from "~/utils/plugins/pluginCount"
+
+export async function getStaticPaths() {
+    const posts = await getCollection("blogs")
+    const scope = [await layoutDigest()]
+    const totalPlugins = await fetchTotalPluginsCount()
+    return posts.map((post) => ({
+        params: { slug: post.id.toLowerCase() },
+        props: post,
+        cacheKey: entryCacheKey(
+            post,
+            ...scope,
+            ...pluginCountScope(totalPlugins, post.body),
+        ),
+    }))
+}
+type Props = CollectionEntry<"blogs">
+
+const post = Astro.props
+const { Content } = await render(post)
+---
+
+<h1>{post.data.title}</h1>
+<div class="bd-content">
+    <LivePluginCount body={post.body}>
+        <Content />
+    </LivePluginCount>
+</div>

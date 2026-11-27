@@ -3,5 +3,6 @@
 declare namespace App {
     interface Locals {
         versionedDoc?: import("~/utils/versionedDocs").VersionedDocLocals
+        docPath?: string
     }
 }
