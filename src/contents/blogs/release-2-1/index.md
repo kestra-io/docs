@@ -63,7 +63,7 @@ Thank you to everyone who spent their free time with us; we're proud to build Ke
 
 ## Kestra MCP Server
 
-The new Kestra MCP Server gives Claude, Cursor, or any other MCP client the same tools as the AI Copilot, and there are a lot of them. An agent can read and edit flows, start, restart, replay, or kill executions, search logs, and manage namespace files and KV entries. It can also draft a new flow for you to review before anything is saved. In the Enterprise Edition, agents can work with apps, test suites, groups, and announcement banners too, for 78 tools in all.
+The new Kestra MCP Server gives Claude, Cursor, or any other MCP client the same tools as the AI Copilot, and there are a lot of them. An agent can read and edit flows, start, restart, replay, or kill executions, search logs, and manage namespace files and KV entries. It can also draft a new flow for you to review before anything is saved. In the Enterprise Edition, agents can work with apps, test suites, groups, and announcement banners too, for 79 tools in all.
 
 Here's what that looks like. Asked why a nightly sync failed, Claude Code finds the execution, reads the logs, and checks the KV store: the key the flow needs doesn't exist. Give it the value, and it creates the key and restarts the run from the failed task.
 
