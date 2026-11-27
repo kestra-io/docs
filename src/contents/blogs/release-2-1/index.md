@@ -321,7 +321,7 @@ Since 2.0, 60 new plugin repositories have been released, which brings the catal
   - Switches and routers: Arista EOS and CloudVision, Cisco IOS-XE, IOS, and NX-OS.
   - Firewalls and access: Palo Alto PAN-OS and Panorama, Fortinet FortiGate and FortiManager, Aruba Central On-Premises and InstantOS, Cisco ISE.
   - Sources of truth and monitoring: NetBox, Infoblox, IP Fabric, Tufin, AKIPS, Zabbix, and F5 APM.
-  - Arista EOS, Aruba InstantOS, and Fortinet FortiGate (beta) can also connect over SSH, for devices whose API is turned off.
+  - Arista EOS, Aruba InstantOS, and Fortinet FortiGate can also connect over SSH, for devices whose API is turned off.
 
 <!-- VERIFY: ship status and plugin links per vendor. Arista 1.0.0 (2026-10-27, bundled in EE 2.0.8), Cisco 1.0.0 (2026-10-27, IOS-XE only), then 1.1.0 (2026-11-25). plugin-ee-paloalto, fortinet, aruba, akips, tufin, zabbix 1.0.0 shipped 2026-11-24, ipfabric 1.0.0 on 2026-11-25. Confirm NX-OS, IOS, ISE, F5 APM (ee-f5 1.2.0), and Infoblox (ee-infoblox 1.3.0 and 1.4.0) are in those releases, and drop what is not. Also add GuardDuty and Okta if they ship. -->
 
