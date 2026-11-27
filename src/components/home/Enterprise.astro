@@ -171,11 +171,11 @@ const ago = (seconds: number) =>
 
 const BACKENDS = {
     repository: [
-        { id: "jdbc", name: "JDBC" },
+        { id: "jdbc", name: "PostgreSQL", plugin: "jdbc.postgresql" },
         { id: "elasticsearch", name: "Elasticsearch", plugin: "elasticsearch" },
     ],
     queue: [
-        { id: "jdbc", name: "JDBC" },
+        { id: "jdbc", name: "PostgreSQL", plugin: "jdbc.postgresql" },
         { id: "redis", name: "Redis", plugin: "redis" },
         { id: "rabbitmq", name: "RabbitMQ", plugin: "amqp" },
         { id: "kafka", name: "Kafka", plugin: "kafka" },

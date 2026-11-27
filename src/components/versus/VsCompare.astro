@@ -1,0 +1,369 @@
+---
+import VsTitle from "./VsTitle.astro"
+import { Icon } from "astro-icon/components"
+import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
+import { parse } from "yaml"
+import { flowLines, source } from "~/components/migration/highlight"
+
+interface Props {
+    headingId?: string
+    title: string
+    lead: string
+    cta?: { label: string; href: string }
+    competitor: {
+        name: string
+        logo?: string
+        label: string
+        file: string
+        lang: string
+        code: string
+    }
+    kestra: {
+        code: string
+    }
+}
+
+const {
+    headingId = "vs-compare-title",
+    title,
+    lead,
+    cta,
+    competitor,
+    kestra,
+} = Astro.props
+
+const SCRIPT_LANGS: [RegExp, string][] = [
+    [/scripts\.python\./, "python"],
+    [/scripts\.go\./, "go"],
+    [/scripts\.node\./, "javascript"],
+    [/scripts\.shell\./, "sh"],
+    [/scripts\.ruby\./, "ruby"],
+]
+const scriptLang =
+    SCRIPT_LANGS.find(([pattern]) => pattern.test(kestra.code))?.[1] ?? "sh"
+
+const theirLines = competitor.code
+    .replace(/\n$/, "")
+    .split("\n")
+    .map((line) => source(line, competitor.lang))
+const flow = kestra.code.replace(/\n$/, "")
+const ourLines = flowLines(flow, (line) => source(line, scriptLang))
+const id = (parse(flow) as { id?: string }).id ?? ""
+---
+
+<section class="vs-compare" aria-labelledby={headingId}>
+    <div class="container-xl">
+        <div class="rails">
+            <header class="head">
+                <h2 id={headingId}>
+                    <VsTitle text={title} />
+                </h2>
+                <p>{lead}</p>
+                {cta && (
+                    <a href={cta.href} class="btn-solid">
+                        {cta.label}
+                    </a>
+                )}
+            </header>
+            <div class="stage">
+                <figure
+                    class="theirs"
+                    aria-label={`${competitor.label} from ${competitor.name}`}
+                >
+                    <figcaption class="bar">
+                        {competitor.logo && (
+                            <span
+                                class="brand-icon"
+                                set:html={competitor.logo}
+                                aria-hidden="true"
+                            />
+                        )}
+                        <strong>{competitor.label}</strong>
+                        <span class="file">{competitor.file}</span>
+                    </figcaption>
+                    <pre class="src">{theirLines.map((line, i) => (
+                        <span class="ln"><i>{i + 1}</i><Fragment set:html={line} /></span>
+                    ))}</pre>
+                </figure>
+                <figure
+                    class="ks"
+                    aria-label={`The ${id} flow in the Kestra editor`}
+                >
+                    <figcaption class="ks-top">
+                        <img src={kestraMark.src} alt="" class="ks-logo" />
+                        <span class="slash">/</span>
+                        <Icon name="mdi:sitemap-outline" />
+                        <span>Flows</span>
+                        <span class="slash">/</span>
+                        <strong>{id}</strong>
+                    </figcaption>
+                    <pre class="ks-code">{ourLines.map((line, i) => (
+                        <span class="ln"><i>{i + 1}</i><Fragment set:html={line.html} /></span>
+                    ))}</pre>
+                </figure>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "/src/components/migration/migration" as *;
+
+    .vs-compare {
+        @include band;
+    }
+
+    .rails {
+        @include rails;
+    }
+
+    .head {
+        @include head;
+
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: minmax(0, 1fr) auto;
+            column-gap: 3rem;
+
+            > :not(.btn-solid) {
+                grid-column: 1;
+            }
+
+            .btn-solid {
+                grid-column: 2;
+                grid-row: 1 / span 2;
+                align-self: end;
+            }
+        }
+    }
+
+    .stage {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.25rem;
+        align-items: start;
+        padding: 0 var(--inset) 3.5rem;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        @include media-breakpoint-down(md) {
+            padding-bottom: 2.5rem;
+        }
+    }
+
+    figure {
+        min-width: 0;
+        margin: 0;
+        overflow: hidden;
+        border-radius: 10px;
+        font-size: 0.8125rem;
+    }
+
+    pre {
+        margin: 0;
+        padding: 0.75rem 0 1rem;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        font-family: var(--font-family-jetbrains-mono);
+        font-size: 0.75rem;
+        line-height: 1.7;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+    }
+
+    .ln {
+        display: block;
+        padding-right: 1rem;
+        padding-left: 2.5rem;
+        text-indent: -2.5rem;
+
+        i {
+            display: inline-block;
+            width: 2.5rem;
+            text-indent: 0;
+            padding-right: 0.875rem;
+            font-style: normal;
+            text-align: right;
+            opacity: 0.5;
+        }
+    }
+
+    .theirs {
+        position: sticky;
+        top: 6rem;
+        border: 1px solid #e2e2e8;
+
+        @include media-breakpoint-down(lg) {
+            position: static;
+        }
+
+        background: #f7f7f9;
+        color: #2b2b33;
+
+        :global(html.dark) & {
+            border-color: #2e2e3c;
+            background: #15151b;
+            color: #d6d6e0;
+        }
+
+        .src {
+            color: inherit !important;
+
+            :global(.s) {
+                color: #a3401f;
+            }
+
+            :global(.k) {
+                color: #6b2bd6;
+            }
+
+            :global(.f) {
+                color: #1f5fbf;
+            }
+
+            :global(.c) {
+                color: #8a8a96;
+            }
+
+            :global(html.dark) & {
+                :global(.s) {
+                    color: #ffc5b7;
+                }
+
+                :global(.k) {
+                    color: #cdb6fb;
+                }
+
+                :global(.f) {
+                    color: #8fa2ff;
+                }
+
+                :global(.c) {
+                    color: #7a7a88;
+                }
+            }
+        }
+    }
+
+    .bar {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.625rem 1rem;
+        border-bottom: 1px solid #e2e2e8;
+        background: #ffffff;
+
+        :global(html.dark) & {
+            border-color: #2e2e3c;
+            background: #121216;
+        }
+
+        .brand-icon {
+            display: inline-flex;
+            width: 1.25rem;
+            height: 1.25rem;
+
+            :global(svg) {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        strong {
+            font-weight: 600;
+        }
+
+        .file {
+            margin-left: auto;
+            font-family: var(--font-family-jetbrains-mono);
+            font-size: 0.75rem;
+            color: #6d6d74;
+
+            :global(html.dark) & {
+                color: #9696a5;
+            }
+        }
+    }
+
+    .ks {
+        border: 1px solid #2e2e3c;
+        background: #18181e;
+        color: #ffffff;
+        box-shadow: 0 16px 36px -18px rgba(43, 43, 51, 0.22);
+
+        :global(html.dark) & {
+            box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.7);
+        }
+    }
+
+    .ks-top {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-bottom: 1px solid #2e2e3c;
+        background: #121216;
+
+        .slash {
+            color: #5c5d66;
+        }
+
+        strong {
+            font-weight: 600;
+        }
+    }
+
+    .ks-logo {
+        width: 1.5rem;
+        height: 1.5rem;
+        padding: 0.25rem;
+        border-radius: 6px;
+        background: #0d0d10;
+    }
+
+    .ks-code {
+        color: #d6d6e0 !important;
+
+        .ln i {
+            color: #adadbf;
+        }
+
+        :global(.y) {
+            color: #cdb6fb;
+        }
+
+        :global(.v) {
+            color: #d6d6e0;
+        }
+
+        :global(.s) {
+            color: #ffc5b7;
+        }
+
+        :global(.p) {
+            color: #9696a5;
+        }
+
+        :global(.pbd) {
+            color: #80fac5;
+        }
+
+        :global(.pbv) {
+            color: #bffddd;
+        }
+
+        :global(.k) {
+            color: #cdb6fb;
+        }
+
+        :global(.f) {
+            color: #718bfe;
+        }
+
+        :global(.c) {
+            color: #7a7a88;
+        }
+    }
+</style>

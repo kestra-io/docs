@@ -1,13 +1,17 @@
 ---
-import BrandedHero from "~/components/common/BrandedHero.astro"
+import EnterpriseHero from "~/components/enterprise/EnterpriseHero.astro"
+import PageShell from "~/components/home/PageShell.astro"
+import ksIcon from "./assets/ks-icon.svg?raw"
 import swordSvg from "./assets/sword.svg?raw"
 
 interface Props {
     title?: string | null
+    claim?: string
     description?: string
     competitor?: {
         name?: string
         monogram?: string
+        color?: string
     }
     secondaryCta?: {
         label: string
@@ -17,32 +21,201 @@ interface Props {
 
 const {
     title,
+    claim,
     description,
     competitor,
-    secondaryCta = { label: "Book a Demo", href: "/demo" },
+    secondaryCta = { label: "Book a demo", href: "/demo" },
 } = Astro.props as Props
 ---
 
-<BrandedHero
-    title={title ?? ""}
-    description={description ?? ""}
-    cta={{ label: "Get Started", href: "/get-started" }}
-    {secondaryCta}
-    secondaryIcon={competitor?.monogram}
-    secondaryLabel={competitor?.name}
-    highlightKestraOnlyAtStart={true}
->
-    <div class="sword" slot="between" set:html={swordSvg} aria-hidden="true" />
-</BrandedHero>
+<PageShell>
+    <EnterpriseHero
+        headingId="vs-hero"
+        size="standard"
+        eyebrow={title}
+        title={claim ?? ""}
+        lead={description}
+        buttons={[
+            {
+                label: "Get started",
+                href: "/get-started",
+                solid: true,
+                chevron: true,
+            },
+            secondaryCta,
+        ]}
+    >
+        <div
+            class="duel"
+            slot="visual"
+            aria-hidden="true"
+            style={
+                competitor?.color
+                    ? `--tool-color: ${competitor.color}`
+                    : undefined
+            }
+        >
+            <div class="split">
+                <span class="edge"></span>
+                <span class="dark"></span>
+            </div>
+            <div class="tile ks" set:html={ksIcon} />
+            <div class="sword" set:html={swordSvg} />
+            {competitor?.monogram && (
+                <div class="tile tool" set:html={competitor.monogram} />
+            )}
+        </div>
+    </EnterpriseHero>
+</PageShell>
 
 <style lang="scss">
-    .sword {
+    $bolt: (
+        118 0%,
+        92 calc(50% - 340px),
+        106 calc(50% - 255px),
+        40 calc(50% - 205px),
+        96 calc(50% - 130px),
+        24 calc(50% - 70px),
+        92 calc(50% + 125px),
+        22 calc(50% + 165px),
+        30 calc(50% + 290px),
+        14 100%
+    );
+
+    @function bolt($shift) {
+        $points: ();
+        @each $x, $y in $bolt {
+            $points: append($points, #{$x - $shift}px $y, comma);
+        }
+        @return polygon(#{$points}, 100% 100%, 100% 0%);
+    }
+
+    .duel {
+        --tool-color: #8b8b99;
+
+        position: relative;
+        isolation: isolate;
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 56px;
-        height: 60px;
+        gap: 1.25rem;
+
+        @include media-breakpoint-down(lg) {
+            margin-top: 3rem;
+        }
+
+        @include media-breakpoint-down(md) {
+            margin-block: 2rem;
+            gap: 0.75rem;
+        }
+    }
+
+    .split {
+        position: absolute;
+        z-index: -1;
+        top: -14rem;
+        bottom: -14rem;
+        left: calc(50% - 4rem);
+        width: 100vw;
+        mask:
+            linear-gradient(
+                to bottom,
+                transparent,
+                #000 35%,
+                #000 65%,
+                transparent
+            ),
+            linear-gradient(to right, #000 40%, transparent 85%);
+        mask-composite: intersect;
+        pointer-events: none;
+
+        span {
+            position: absolute;
+            inset: 0;
+        }
+
+        .edge {
+            background: color-mix(in srgb, var(--tool-color) 70%, transparent);
+            clip-path: bolt(1.5);
+        }
+
+        .dark {
+            background: rgba(0, 0, 0, 0.45);
+            clip-path: bolt(0);
+        }
+
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+    }
+
+    .tile {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 10rem;
+        height: 10rem;
+        padding: 2.25rem;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 1rem;
+        background: #ffffff;
+        box-shadow:
+            0 0 0 6px rgba(255, 255, 255, 0.04),
+            0 24px 60px -20px rgba(0, 0, 0, 0.8);
+
+        :global(svg) {
+            width: 100%;
+            height: 100%;
+        }
+
+        &.ks {
+            padding: 1.5rem;
+            box-shadow:
+                0 0 0 6px rgba(152, 105, 247, 0.12),
+                0 0 48px rgba(132, 5, 255, 0.45),
+                0 24px 60px -20px rgba(0, 0, 0, 0.8);
+        }
+
+        @include media-breakpoint-down(md) {
+            width: 6rem;
+            height: 6rem;
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+
+            &.ks {
+                padding: 0.875rem;
+            }
+        }
+    }
+
+    .sword {
+        position: relative;
+        isolation: isolate;
         flex-shrink: 0;
+        width: 5rem;
+        height: 5.375rem;
+
+        &::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            inset: -55%;
+            border-radius: 50%;
+            background: radial-gradient(
+                closest-side,
+                rgba(169, 80, 255, 0.75),
+                rgba(98, 48, 255, 0.35) 45%,
+                transparent
+            );
+            filter: blur(12px);
+            animation: sword-glow 3.2s ease-in-out infinite;
+
+            @media (prefers-reduced-motion: reduce) {
+                animation: none;
+                opacity: 0.7;
+            }
+        }
 
         :global(svg) {
             width: 100%;
@@ -50,8 +223,21 @@ const {
         }
 
         @include media-breakpoint-down(md) {
-            width: 36px;
-            height: 40px;
+            width: 3.25rem;
+            height: 3.5rem;
+        }
+    }
+
+    @keyframes sword-glow {
+        0%,
+        100% {
+            opacity: 0.45;
+            transform: scale(0.85);
+        }
+
+        50% {
+            opacity: 1;
+            transform: scale(1.1);
         }
     }
 </style>

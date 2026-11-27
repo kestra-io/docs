@@ -25,6 +25,10 @@ const PLUGINS = {
     Redis: "io.kestra.plugin.redis",
     AMQP: "io.kestra.plugin.amqp",
     Kafka: "io.kestra.plugin.kafka",
+    "Pub/Sub": "io.kestra.plugin.gcp.pubsub",
+    NATS: "io.kestra.plugin.nats",
+    SQS: "io.kestra.plugin.aws.sqs",
+    "Event Hubs": "io.kestra.plugin.azure.eventhubs",
 }
 
 type Backend = keyof typeof PLUGINS
@@ -47,7 +51,17 @@ const STORES: {
     {
         edition: "ent",
         label: "Queue",
-        backends: ["Redis", "AMQP", "Kafka", "PostgreSQL", "MySQL"],
+        backends: [
+            "Kafka",
+            "Redis",
+            "AMQP",
+            "Pub/Sub",
+            "NATS",
+            "SQS",
+            "Event Hubs",
+            "PostgreSQL",
+            "MySQL",
+        ],
     },
 ]
 
@@ -75,6 +89,8 @@ const TARGETS = [
 const totalPlugins = await fetchTotalPluginsCount()
 
 const WORKER_ICON = "mdi:account-cog-outline"
+
+const WORKER_GROUPS = ["on-prem", "gpu", "eu-west"]
 ---
 
 <div class="arch-diagram" role="img" aria-label="Kestra architecture">
@@ -160,6 +176,10 @@ const WORKER_ICON = "mdi:account-cog-outline"
             <Icon name="mdi:puzzle-outline" />
             {totalPlugins}+ plugins
         </p>
+        <p class="plugins gov" data-edition="ent">
+            <Icon name="mdi:shield-account-outline" />
+            SSO · RBAC · Tenants
+        </p>
     </div>
 
     <div class="stores swap">
@@ -230,17 +250,15 @@ const WORKER_ICON = "mdi:account-cog-outline"
                 <strong>Worker</strong>
             </div>
             <div class="group link" data-edition="ent" data-anchor="worker">
-                <strong>Worker group</strong>
-                <span class="sub">
-                    Dedicated workers · reserved capacity
-                </span>
+                <strong>Worker groups</strong>
+                <span class="sub">By team, site, or hardware</span>
                 <ul class="tiles">
-                    {Array.from({ length: 3 }, () => (
+                    {WORKER_GROUPS.map((group) => (
                         <li class="node tile">
                             <span class="icon">
                                 <Icon name={WORKER_ICON} />
                             </span>
-                            <strong>Worker</strong>
+                            <strong>{group}</strong>
                         </li>
                     ))}
                 </ul>
@@ -788,6 +806,11 @@ const WORKER_ICON = "mdi:account-cog-outline"
         font-size: 0.8125rem;
         font-weight: 500;
         color: var(--k);
+    }
+
+    .plugins.gov {
+        margin-top: 0.5rem;
+        border-style: solid;
     }
 
     .stores {

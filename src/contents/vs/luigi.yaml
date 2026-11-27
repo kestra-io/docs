@@ -1,262 +1,236 @@
-title: "Kestra vs. Luigi: Orchestration Beyond Python Batch Jobs"
-description: "Compare Kestra vs Luigi: declarative YAML orchestration vs Spotify's Python batch pipeline library. See how architecture, language support, event-driven triggers, and setup time differ when you need more than scheduled batch jobs."
+title: "Kestra vs Spotify Luigi: Beyond Python Batch Jobs"
+description: "Compare Kestra and Spotify's Luigi: Python task classes run from cron vs YAML flows with built-in schedules and triggers. Architecture, code, setup, migration."
 competitorName: Luigi
 category: "Data Orchestration"
-shortDescription: "Python batch pipeline library vs. declarative YAML orchestration for any team."
+shortDescription: "A Python library for batch job dependencies vs. an orchestration platform with schedules, triggers and a UI."
+
 brandColor:
   color: "#28A745"
 
 intro:
-  title: "Kestra vs. Luigi: Orchestration Beyond Python Batch Jobs"
-  description: "Luigi gets batch jobs running. Kestra orchestrates everything around them: scheduling, event triggers, retries, and visibility across every team and tool."
+  title: "Kestra vs. Luigi"
+  description: "Luigi is a Python module from Spotify for building pipelines of batch jobs, where each task declares its dependencies and the output it produces. Kestra is an orchestration platform that runs YAML flows with built-in schedules, event triggers and a UI."
 
-philosophy:
-  mainTitle: Two Models for Building Data Pipelines
-  kestra:
-    title: "Declarative Orchestration: Configuration Drives Execution"
-    description: "YAML describes what should run, when, and in what order. Business logic stays in your existing Python scripts, SQL queries, Bash commands, or dbt models. Kestra handles scheduling, retries, dependencies, and observability as first-class YAML primitives. Any engineer on the team can read, modify, or trigger a workflow without understanding the orchestration layer."
-    subCardText: '"How do we schedule and monitor data pipelines across our entire stack without wrapping every script in Python framework code?"'
+choose:
+  title: "Luigi or Kestra?"
   competitor:
-    title: Python-Based Batch Pipeline Framework
-    description: "Originally built by Spotify to manage complex batch pipeline dependencies at scale, Luigi is a lightweight Python library for defining jobs and their dependencies. Minimal by design: no built-in scheduler, no event triggers, no UI. Spotify has since moved on to other tools for its own production pipelines."
-    shadowColor: "#D4EDDA"
-    subCardBg: "#eaf6ee"
-    subCardText: '"How do we define batch job dependencies in Python and ensure tasks only run when their upstream outputs are ready?"'
-
-businessValue:
-  mainTitle: "Batch Pipelines vs. Universal Workflow Orchestration"
-  kestra:
-    title: Orchestration for the Whole Team
+    title: "Luigi is the better fit if"
     list:
-      - "Data pipelines, infrastructure automation, business processes, and AI workflows in one platform"
-      - "Multi-language: Python, SQL, Bash, Go, Node.js, R (run scripts directly, no framework wrapping)"
-      - "Event-driven at core: file arrivals, Kafka, webhooks, database changes, schedules"
-      - "Self-service for non-engineers via Kestra Apps"
-      - "{totalPlugins}+ plugins: dbt, Airbyte, Snowflake, Spark, Kafka, and more"
-  competitor:
-    title: Python Batch Pipelines
-    list:
-      - "Dependency resolution for Python-defined batch jobs"
-      - "Task deduplication: tasks only re-run when their outputs are missing"
-      - "HDFS and local filesystem atomicity for big data pipelines"
-      - "No built-in scheduler daemon (relies on cron or external scheduling)"
-      - "No native event-driven triggers or real-time workflow support"
-    shadowColor: "#D4EDDA"
-    bulletColor: "#28A745"
-  footerText: "Luigi was built for a specific problem: wiring together Python batch jobs with clear dependency trees. Use Kestra when workflows span languages, teams, or systems, and when you need event-driven triggers, built-in observability, and a platform your whole team can operate."
-
-setupSpeed:
-  title: Time to First Workflow
-  subtitle: "Luigi has no built-in scheduler. Getting a pipeline running on a schedule means installing the package, starting the luigid daemon separately, writing Task classes in Python, then wiring up cron yourself. Kestra ships with scheduling, a UI, and a database in a single Docker Compose."
+      - "Your pipelines are Python batch jobs that write files or tables, and you rely on Luigi skipping tasks whose output already exists."
+      - "You want a library you install with pip, plus a small central scheduler, and no database to run."
+      - "Your jobs already use Luigi's contrib modules for Hadoop, Spark, BigQuery or Redshift, and they work."
   kestra:
-    title:
-      one: "~5"
-      two: Minutes
-    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Blueprint, run it. No Python environment to configure, no scheduler daemon to manage separately."
-    command: |
-      curl -o docker-compose.yml \
-      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
-      docker compose up
+    title: "Choose Kestra if"
+    list:
+      - "Schedules, retries, event triggers and alerts should live in the orchestrator, out of cron entries and config files."
+      - "Steps are written in SQL, shell, dbt or other languages as well as Python."
+      - "People beyond the original authors need run history, logs and failures in a UI."
 
-      # Open localhost:8080
-      # Pick a Blueprint, run it. Done.
-    lang: sh
+table:
+  title: "How do Luigi and Kestra compare, feature by feature?"
+  rows:
+    - label: "Workflow definition"
+      competitor: "Python classes that subclass luigi.Task"
+      kestra: "YAML flows, edited in code or in the no-code editor"
+    - label: "Dependencies"
+      competitor: "requires() returns upstream tasks; output() targets mark completion"
+      kestra: "Task order in the flow, plus Parallel, Loop and Subflow tasks"
+    - label: "Scheduling"
+      competitor: "None built in; cron or another scheduler starts each run"
+      kestra: "Schedule trigger with backfills"
+    - label: "Event triggers"
+      competitor: "None built in; cron can poll for new data"
+      kestra: "Webhook, file, message queue and database triggers"
+    - label: "Re-running work"
+      competitor: "Tasks whose output targets exist are skipped"
+      kestra: "Replay an execution or restart it from the failed task"
+    - label: "Retries"
+      competitor: "retry_count, retry_delay and disable_window in the scheduler config"
+      kestra: "A retry block per task or per flow"
+    - label: "Execution"
+      competitor: "The worker process runs each run() itself; luigid runs nothing"
+      kestra: "Workers run tasks in processes or containers, or on Kubernetes and cloud batch services"
+    - label: "UI"
+      competitor: "Visualiser with task status and the dependency graph; task history is experimental"
+      kestra: "Flow editor, execution history, logs, Gantt view and metrics"
+    - label: "Alerts"
+      competitor: "Error emails through SMTP, SendGrid, SES or SNS"
+      kestra: "Slack, Teams, email and other notification tasks in an errors block"
+    - label: "Project"
+      competitor: "Apache 2.0, maintained by Spotify's Data Team, 18k+ GitHub stars"
+      kestra: "Apache 2.0, 30k+ GitHub stars"
+
+proof:
+  title: "Which teams moved their Python batch jobs and cron to Kestra?"
+  stories:
+    - story: airpaz-optimizes-travel-data-workflows-with-kestra
+      industry: "Travel"
+      stat: "70%"
+      label: "less manual data processing at Airpaz, with Kestra running its Python ingestion across 10 connected sources."
+    - story: copines-de-voyage-enhancing-travel-experiences-through-advanced-data-orchestration-with-kestra
+      industry: "Travel"
+      stat: "2x"
+      label: "team efficiency at Copines de Voyage after cron jobs and PHP scripts were replaced by Kestra, dbt and BigQuery."
+
+architecture:
+  title: "How are Luigi and Kestra built?"
+  lead: "Luigi is a library that your own processes run. Kestra is a server that owns scheduling, execution and history."
   competitor:
-    title:
-      one: "~30"
-      two: Minutes
-    description: "Install Luigi, start the luigid central scheduler daemon, then write your first Task class with output(), requires(), and run() methods. Add cron or a separate process manager to schedule recurring jobs. The framework is intentionally minimal, so production setup requires assembling the surrounding infrastructure yourself."
-    shadowColor: "#D4EDDA"
-    command: |
-      pip install luigi
+    title: "Luigi: a Python library and a central scheduler"
+    text: "A pipeline is a set of Task classes. When a run starts, the worker process walks requires() back to the tasks whose outputs are missing and calls run() on each of them in that same process."
+    list:
+      - "luigid keeps two workers from running the same task"
+      - "A task counts as complete when its output targets exist"
+      - "cron or another scheduler starts each run"
+      - "RangeDaily fills in missed dates each time cron calls it"
+  kestra:
+    title: "Kestra: a server that runs flows"
+    text: "Kestra runs a scheduler, an executor and workers as one process or as separate services. Every execution's state, logs and outputs are stored, so the UI and API can show what ran and why it failed."
+    list:
+      - "The scheduler fires schedules, polling triggers and realtime triggers"
+      - "The executor picks the next task and applies retries"
+      - "Workers run scripts in containers with per-task dependencies"
+      - "Backfills replay missed schedule intervals between two dates"
 
-      # Start the central scheduler daemon separately
-      luigid --background --logdir /tmp/luigi
+compare:
+  title: "What does the same batch job look like in each?"
+  lead: "The same job in both: download a day of orders from an API, then total them per store into a CSV, once a day (from cron for Luigi, from a Schedule trigger for Kestra)."
+  cta:
+    label: "Get started with Kestra"
+    href: "/get-started"
+  competitor:
+    label: "Luigi tasks"
+    file: "store_totals.py"
+    lang: python
+    code: |
+      import csv
+      from collections import defaultdict
 
-      # Then write your pipeline in Python
-      # tasks.py
       import luigi
+      import requests
 
-      class MyTask(luigi.Task):
+
+      class FetchOrders(luigi.Task):
           date = luigi.DateParameter()
 
           def output(self):
-              return luigi.LocalTarget(f'/data/output_{self.date}.txt')
+              return luigi.LocalTarget(f"data/orders_{self.date}.csv")
 
           def run(self):
-              with self.output().open('w') as f:
-                  f.write('done')
+              response = requests.get(f"https://api.example.com/orders?date={self.date}", timeout=30)
+              response.raise_for_status()
+              with self.output().open("w") as out:
+                  out.write(response.text)
 
-      # Run from command line (no UI, no triggers)
-      python -m luigi --module tasks MyTask --date 2024-01-01
-    lang: python
 
-easeOfUse:
-  title: Workflows Your Whole Team Can Read
+      class StoreTotals(luigi.Task):
+          date = luigi.DateParameter()
+
+          def requires(self):
+              return FetchOrders(self.date)
+
+          def output(self):
+              return luigi.LocalTarget(f"data/store_totals_{self.date}.csv")
+
+          def run(self):
+              totals = defaultdict(float)
+              with self.input().open() as orders:
+                  for row in csv.DictReader(orders):
+                      totals[row["store"]] += float(row["amount"])
+              with self.output().open("w") as out:
+                  csv.writer(out).writerows(totals.items())
   kestra:
-    title: "Kestra: Readable by your whole team"
-    description: "YAML is readable on day 1. Docs are embedded in the UI for easy reference, the <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. No Python knowledge required to read, understand, or modify a workflow."
     code: |
-      id: daily_etl
-      namespace: data.production
+      id: store_totals
+      namespace: company.retail
 
       tasks:
-        - id: extract
+        - id: fetch_orders
+          type: io.kestra.plugin.core.http.Download
+          uri: "https://api.example.com/orders?date={{ trigger.date ?? execution.startDate | date('yyyy-MM-dd') }}"
+
+        - id: store_totals
           type: io.kestra.plugin.scripts.python.Script
+          inputFiles:
+            orders.csv: "{{ outputs.fetch_orders.uri }}"
+          outputFiles:
+            - store_totals.csv
           script: |
-            # Paste your existing extraction logic here
-            result = {"records": 1000}
+            import csv
+            from collections import defaultdict
 
-        - id: transform
-          type: io.kestra.plugin.dbt.cli.DbtCLI
-          commands:
-            - dbt run --select staging
-
-        - id: notify
-          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-          url: "{{ secret('SLACK_WEBHOOK') }}"
-          messageText: "ETL complete: {{ outputs.extract.vars.result.records }} records processed"
+            totals = defaultdict(float)
+            with open("orders.csv") as orders:
+                for row in csv.DictReader(orders):
+                    totals[row["store"]] += float(row["amount"])
+            with open("store_totals.csv", "w", newline="") as out:
+                csv.writer(out).writerows(totals.items())
 
       triggers:
         - id: daily
           type: io.kestra.plugin.core.trigger.Schedule
-          cron: "0 0 * * *"
-    lang: yaml
+          cron: "@daily"
+
+setup:
+  title: "What does it take to get Luigi and Kestra running?"
+  lead: "Luigi installs with pip. Kestra starts with Docker Compose."
   competitor:
-    title: "Luigi: Python classes define every pipeline"
-    description: "Every Luigi pipeline is a set of Python classes. Each task must define output(), requires(), and run() methods. Non-Python contributors cannot read or modify pipeline logic without understanding both Python and Luigi's class model. There is no visual editor, no YAML interface, and no built-in notification layer."
-    shadowColor: "#D4EDDA"
+    title: "Luigi"
+    tag: "Cron required"
+    text: "The <a href='https://luigi.readthedocs.io/en/stable/central_scheduler.html'>central scheduler</a> serves the visualiser on port 8082 and keeps two workers from running the same task. It runs nothing itself, so cron or another scheduler starts each run."
     code: |
-      import luigi
-      import subprocess
-
-      class ExtractTask(luigi.Task):
-          date = luigi.DateParameter()
-
-          def output(self):
-              return luigi.LocalTarget(f'/data/extracted_{self.date}.json')
-
-          def run(self):
-              # Your extraction logic here
-              with self.output().open('w') as f:
-                  f.write('{"records": 1000}')
-
-      class TransformTask(luigi.Task):
-          date = luigi.DateParameter()
-
-          def requires(self):
-              return ExtractTask(date=self.date)
-
-          def output(self):
-              return luigi.LocalTarget(f'/data/transformed_{self.date}.json')
-
-          def run(self):
-              subprocess.run(['dbt', 'run', '--select', 'staging'], check=True)
-              with self.output().open('w') as f:
-                  f.write('transformed')
-
-      # No built-in notification task
-      # No YAML interface
-      # Schedule externally via cron or luigid
-    lang: python
-
-visualPreview:
-  mainTitle: One Platform for Your Entire Technology Stack
+      pip install luigi python-daemon
+      luigid --background --pidfile luigid.pid --logdir logs --state-path luigi-state.pickle
+      luigi --module store_totals StoreTotals --date 2026-11-01
   kestra:
-    description: "Orchestrate across data pipelines, infrastructure operations, business processes, and AI workflows in one unified platform. Event-driven at its core, with native triggers for S3 file arrivals, webhooks, Kafka messages, and database changes. The visual DAG editor updates live as you type YAML."
-  competitor:
-    description: "A Python batch pipeline framework focused on dependency resolution for scheduled jobs. The Luigi web UI visualizes task state and dependency graphs. Scheduling, event-driven triggers, and real-time notifications are not built in; they require external tooling layered on top of the framework."
-    shadowColor: "#D4EDDA"
+    title: "Kestra"
+    tag: "Database included"
+    text: "One Compose file starts Kestra and its Postgres database. Open localhost:8080, pick a blueprint and run it. Production runs the same image on Kubernetes with the <a href='/docs/installation/kubernetes'>Kestra Helm chart</a>."
+    code: |
+      curl -o docker-compose.yml https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
 
-featureGrid:
-  title: Kestra vs. Luigi at a Glance
-  tableData:
-    - feature: Workflow definition
-      kestra: Declarative YAML
-      competitor: Python classes (Task subclasses)
-    - feature: Languages supported
-      kestra: "Any (Python, SQL, R, Bash, Go, Node.js)"
-      competitor: Python only
-    - feature: Built-in scheduler
-      kestra: "✓ Native cron + event-driven triggers"
-      competitor: "No built-in scheduler (luigid coordinates tasks, scheduling via cron)"
-    - feature: Architecture
-      kestra: Event-driven at core
-      competitor: Batch-only, dependency resolution on task outputs
-    - feature: Event-driven triggers
-      kestra: "✓ S3, Kafka, webhooks, DB changes, file arrivals"
-      competitor: "Not supported natively"
-    - feature: Visual editor
-      kestra: "✓ Live DAG editor updates as you type"
-      competitor: "Read-only dependency graph visualization"
-    - feature: Primary use case
-      kestra: Universal workflow orchestration
-      competitor: Batch pipeline dependency management
-    - feature: Multi-tenancy / RBAC
-      kestra: "✓ Namespace isolation + RBAC out-of-the-box"
-      competitor: "Not supported"
-    - feature: Self-service for non-engineers
-      kestra: "✓ Kestra Apps"
-      competitor: "Not supported"
-    - feature: Infrastructure automation
-      kestra: "✓ Native support"
-      competitor: "Possible via Python run() methods, not a primary use case"
-    - feature: Open source
-      kestra: "✓ Full open-source core, self-hostable"
-      competitor: "✓ Apache 2.0, community-maintained (Spotify moved to Flyte internally)"
+pairs:
+  - title: "How hard is it to move from Luigi to Kestra?"
+    columns:
+      - label: "Leaving Luigi"
+        brand: competitor
+        text: "Each Task class mixes the graph with the work. requires() and output() describe the pipeline, run() holds the logic, and parameters such as dates tie the two together. The logic moves almost as it is, while the graph, targets and parameters are declared again in the flow."
+      - label: "Moving to Kestra"
+        brand: kestra
+        text: "run() bodies become Python script tasks, requires() chains become task order, and DateParameter values come from the trigger date. Cron entries become Schedule triggers, and the gaps RangeDaily used to fill become backfills. Luigi's output-based skipping has no direct equivalent, so decide per pipeline whether a rerun overwrites its output or checks for it first."
+  - title: "How do Luigi and Kestra compare on licensing, pricing and self-hosting?"
+    lead: "Both projects are open source under Apache 2.0 and run on your own machines."
+    columns:
+      - label: "Luigi"
+        brand: competitor
+        text: "Apache 2.0, built at Spotify and maintained by Spotify's Data Team, with regular releases on PyPI. You install it with pip and run luigid, your workers and cron on your own machines."
+      - label: "Kestra"
+        brand: kestra
+        text: "Apache 2.0 and free to self-host, with no limits on flows or executions. Kestra Cloud is billed on usage, and Kestra Enterprise is licensed per instance. Both are on the <a href='/pricing'>pricing page</a>."
 
-testimonials:
-  - quote: "Kestra has changed how we handle data orchestration. Instead of spending days fixing issues, we now have full visibility and control. As we scale, having a system that grows with us is invaluable"
-    author: "John Kim, IT Lead @ FILA"
-    kpis:
-      - value: "2.5M"
-        name: Monthly Executions
-      - value: "2,000+"
-        name: Active Workflows
-      - value: "25+"
-        name: Engineers on Platform
-    storyLink: "/stories/fila"
-
-platformStrengths:
-  title: Kestra Is Built for Teams Who Have Outgrown Batch-Only Pipelines
-  features:
-    - title: Any language, no framework required
-      description: "Bring your Python scripts, SQL queries, Bash commands, and R notebooks. Kestra orchestrates all of them in YAML. The orchestration definition is configuration; the business logic is yours, untouched."
-    - title: Event-driven from the start
-      description: "Native triggers for S3 file arrivals, Kafka messages, webhooks, and database changes mean your workflows react to real business events the moment they happen, not on the next scheduled window."
-    - title: Observability without extra tooling
-      description: "Built-in execution logs, real-time metrics, Gantt charts, and distributed tracing come with Kestra out of the box. Your team gets full visibility into every execution without bolting on a separate observability stack."
-
-decisionGuide:
-  mainTitle: The Right Tool for the Right Job
-  kestra:
-    title: Choose Kestra When
-    list:
-      - "Your pipelines span Python, SQL, Bash, and dbt, and you want orchestration that doesn't force all logic through Python classes."
-      - "You need event-driven workflows that react to file arrivals, Kafka messages, or webhook events in real time, not just scheduled cron windows."
-      - "Your team includes data analysts, DevOps engineers, or non-Python contributors who need to read, trigger, or modify workflows."
-      - "You want to orchestrate data pipelines, infrastructure automation, and business processes from one platform without adding more tools."
-      - "You need built-in RBAC, namespace isolation, audit logs, and multi-tenancy for teams operating at enterprise scale."
-  competitor:
-    title: Choose Luigi When
-    list:
-      - "Your workload is entirely batch-based with clear, static dependency trees defined in Python."
-      - "Your team is experienced Python engineers who prefer expressing pipeline logic as code over YAML configuration."
-      - "Your pipelines are already built in Luigi and the migration cost outweighs the gaps in observability and event-driven support."
-      - "You need a lightweight, minimal Python library with no infrastructure requirements beyond a Python environment."
-    shadowColor: "#D4EDDA"
-    bulletColor: "#28A745"
+faqTitle: "Questions from Luigi teams"
 
 commonQuestions:
-  - question: How do I migrate from Luigi to Kestra?
-    answer: "Luigi tasks are Python functions with output() and run() methods. Migrating to Kestra means extracting that business logic and running it directly as a Script task without modification. Your Python scripts work as-is in a Kestra flow. The dependency chain you defined in requires() becomes a task sequence in YAML. Most teams migrate incrementally, moving new pipelines to Kestra while letting existing Luigi jobs run until they come up for maintenance."
-  - question: Can Kestra handle the same dependency resolution Luigi provides?
-    answer: "Sequential and parallel dependencies are first-class in Kestra YAML. Tasks in sequence run in order; tasks in a parallel block run concurrently. Conditional branching, dynamic task generation with ForEach, and subflows handle complex graphs without orchestration code. The main difference from Luigi: Kestra tracks dependency state through execution history rather than checking whether output files exist on a filesystem. That means dependency resolution works the same way whether your tasks write to HDFS, S3, a database, or nothing at all."
-  - question: Luigi only requires Python and pip. Is Kestra much heavier to run?
-    answer: "Kestra runs as a single Docker Compose stack with a database (PostgreSQL or MySQL) and the Kestra server. The two-command setup takes under 5 minutes and gives you the UI, scheduler, executor, and observability in one place. For production, Kestra scales horizontally on Kubernetes. Luigi is lighter to install initially, but production Luigi deployments typically need an external scheduler (cron), a process manager, and separate logging infrastructure. The total operational footprint ends up comparable."
-  - question: Does Kestra support Luigi's output-based task deduplication?
-    answer: "Kestra tracks execution state rather than filesystem outputs. Each flow execution is versioned and logged, so you can replay, cancel, or rerun specific tasks without re-executing the full pipeline. For pipelines that previously relied on Luigi's output existence checks to avoid duplicate work, Kestra's execution history and conditional triggers serve the same purpose. You can also use Kestra's KV Store or outputs to pass data between tasks and short-circuit execution when upstream conditions are already met."
-  - question: What happens to my HDFS and Spark jobs that Luigi orchestrates today?
-    answer: "Kestra has native plugins for Spark (submit jobs, monitor runs), HDFS (read, write, move files), Hive, and the broader Hadoop ecosystem. Your existing Spark and HDFS logic can run as Script tasks or dedicated plugin tasks in a Kestra flow. The orchestration definition moves to YAML; the underlying job code stays unchanged. Teams running Hadoop-era pipelines typically migrate task by task, since there is no coupling between pipeline steps in Kestra the way Luigi's requires() chain creates."
-  - question: Spotify built Luigi but has since moved on. What does that signal?
-    answer: "Spotify published a detailed post in 2022 explaining why they moved. The core issues were fragmented versioning across 1,000+ repositories (making platform-wide fixes impractical), no execution visibility until tasks completed (which wasted cluster resources on polling), and the overhead of maintaining two pipeline frameworks at once. Kestra addresses all three: centralized execution state, real-time DAG visibility before and during runs, and a single platform that covers the full range of workflow types."
+  - question: "Is Luigi still maintained?"
+    answer: "Yes. Spotify's Data Team maintains it, releases continue on PyPI, and Spotify still uses Luigi internally to run thousands of tasks a day. Kestra's additions are the pieces Luigi leaves to you, such as scheduling, event triggers, alerting and a shared UI."
+  - question: "Can Kestra run our Luigi pipelines unchanged during a migration?"
+    answer: "Yes. A Python Commands task can install your package and call luigi --module with the same task and parameters you use from cron today, so Kestra takes over the schedule, retries and alerts first. You then rewrite pipelines as native flows one at a time."
+  - question: "Can Kestra skip work that already ran, like Luigi's output checks?"
+    answer: "Not automatically. Kestra tracks executions, and output targets play no part in deciding what runs. Where skipping matters, a flow can check for the file or table first and branch with an If task, or record finished dates in the KV Store and read them at the start of each run."
+  - question: "How do Luigi's date parameters and RangeDaily map to Kestra?"
+    answer: "A Schedule trigger passes each run's date as trigger.date, which tasks use the way Luigi tasks use a DateParameter. To fill a gap, start a backfill on the trigger with a start and end date, and Kestra replays every interval in that window."
+  - question: "Does Kestra cover the systems our Luigi contrib tasks talk to?"
+    answer: "Kestra has plugins for Spark, BigQuery, Redshift, S3, Cloud Storage, Postgres, Kubernetes and many more, out of {totalPlugins}+ in total. Anything without a plugin runs as a Python or shell script task with the same code you call today."
+  - question: "Is Kestra heavier to run than Luigi?"
+    answer: "Yes, at the start. Luigi needs Python and the luigid process, while Kestra needs a server and a database such as Postgres, which one Docker Compose file starts together. In exchange, scheduling, retries, alerting, logs and execution history come built in, with nothing to assemble around cron."
+  - question: "How far does Kestra scale?"
+    answer: "Kestra's <a href='/docs/performance/benchmark'>benchmark</a> shows the open-source edition on Postgres running 4,000 executions a minute, and Kestra Enterprise 7,000. Workers scale horizontally as the number of flows grows."
+
+related:
+  alternatives: luigi-alternatives
+  comparisons:
+    - dagster
+    - prefect
+    - windmill
+    - temporal

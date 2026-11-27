@@ -10,12 +10,48 @@ import Faq from "~/components/lp/shared/Faq.astro"
 import ClosingBanner from "~/components/lp/shared/ClosingBanner.astro"
 import Translation from "~/components/lp/shared/Translation.astro"
 import VideoDialog from "~/components/common/VideoDialog.astro"
+import Meeting from "~/components/demo/Meeting.vue"
 
 import { Icon } from "astro-icon/components"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
-import { automateInfraContent as content } from "~/components/lp/automate-infra/automateInfraContent"
+import {
+    automateInfraContent as content,
+    awxContent,
+} from "~/components/lp/automate-infra/automateInfraContent"
+import {
+    AWX_CAMPAIGN,
+    AWX_FALLBACK_HEADLINE,
+    AWX_HEADLINE_RULES,
+    AWX_TERM_PATTERN,
+} from "~/components/lp/automate-infra/awxVariant"
+import quickstartDoc from "/src/contents/docs/01.quickstart/index.md?raw"
 
 const routePath = "/lp/automate-infra"
+
+/* The G_AWX variant's runnable section shows the docs quickstart command as
+ * it is published, so the two never drift apart. */
+const fence = "`".repeat(3)
+const dockerCommand = quickstartDoc
+    .match(
+        new RegExp(
+            `${fence}bash\\n(docker run --pull=always[\\s\\S]*?)\\n${fence}`,
+        ),
+    )?.[1]
+    ?.trim()
+if (!dockerCommand) {
+    throw new Error(
+        "lp/automate-infra: the docker one-liner was not found in the quickstart doc",
+    )
+}
+
+const awxHeroes = Object.entries(awxContent.heroes)
+
+const variantVars = {
+    rules: AWX_HEADLINE_RULES,
+    termPattern: AWX_TERM_PATTERN,
+    campaign: AWX_CAMPAIGN,
+    fallback: AWX_FALLBACK_HEADLINE,
+}
 
 const formProps = { submitLabel: "Book a 30-minute call" }
 
@@ -157,34 +193,115 @@ const migrationSteps = [
 ---
 
 <LpLayout title={content.title} description={content.description}>
+    {/* Picks the G_AWX variant before the hero is parsed, so the right
+     * headline is the first one painted. The rules come from awxVariant.ts,
+     * where the unit test checks them against every G_AWX keyword. Without
+     * G_AWX parameters nothing is set and the page renders as before. */}
+    <script is:inline define:vars={variantVars}>
+        try {
+            const params = new URLSearchParams(location.search)
+            const term = (params.get("utm_term") || "").toLowerCase()
+            const fromCampaign =
+                (params.get("utm_campaign") || "").toLowerCase() === campaign
+            if (fromCampaign || new RegExp(termPattern).test(term)) {
+                const match = rules.find(([, pattern]) =>
+                    new RegExp(pattern).test(term),
+                )
+                const root = document.documentElement
+                root.dataset.lpVariant = "awx"
+                root.dataset.lpHeadline = match ? match[0] : fallback
+            }
+        } catch {}
+    </script>
     <Hero {routePath} {...content.hero}>
         <Fragment slot="title">
-            Your <span class="grad grad-a">Terraform</span>, Ansible and
-            scripts, in <span class="grad grad-b">one workflow</span>.
+            <span data-variant-hide="awx">
+                Your <span class="grad grad-a">Terraform</span>, Ansible and
+                scripts, in <span class="grad grad-b">one workflow</span>.
+            </span>
+            {awxHeroes.map(([key, hero]) => (
+                <span data-headline={key}>
+                    {hero.title.map((part) =>
+                        part.grad ? (
+                            <span
+                                class={`grad grad-${part.grad}`}
+                                set:text={part.text}
+                            />
+                        ) : (
+                            part.text
+                        ),
+                    )}
+                </span>
+            ))}
         </Fragment>
         <Fragment slot="lead">
-            Each tool already automates its own step. Kestra runs the chain
-            between them: one YAML file in Git, with triggers, approvals,
-            retries and a log of every run.<br />
-            <strong
-                >Open source, self-hosted, and your first flow runs in
-                minutes.</strong
-            >
+            <span data-variant-hide="awx">
+                Each tool already automates its own step. Kestra runs the chain
+                between them: one YAML file in Git, with triggers, approvals,
+                retries and a log of every run.
+                <br />
+                <strong>
+                    Open source, self-hosted, and your first flow runs in
+                    minutes.
+                </strong>
+            </span>
+            {awxHeroes.map(([key, hero]) => (
+                <span data-headline={key}>
+                    {hero.lead}
+                    <br />
+                    <strong>{hero.strong}</strong>
+                </span>
+            ))}
+            <span class="try-link" data-variant-only="awx">
+                <a href="#run-a-playbook" data-event="lp_infra_hero_try_click">
+                    Or try it yourself in 5 minutes ↓
+                </a>
+            </span>
+        </Fragment>
+        <Fragment slot="form-title">
+            <span data-variant-hide="awx">{content.hero.formTitle}</span>
+            <span data-variant-only="awx">{awxContent.heroCard.title}</span>
         </Fragment>
         <Fragment slot="form-sub">
-            Free and open source. Runs on a laptop, a single VM or
-            Kubernetes.
+            <span data-variant-hide="awx">
+                Free and open source. Runs on a laptop, a single VM or
+                Kubernetes.
+            </span>
+            <span data-variant-only="awx">{awxContent.heroCard.sub}</span>
         </Fragment>
         <div slot="form" class="start">
-            <a class="btn-start" href="/docs/quickstart">Get started free</a
-            >
-            <a class="btn-call" href="#contact-sales">
-                Rolling it out? Book a call
-            </a>
-            <p class="proof">
-                <a href="https://github.com/kestra-io/kestra"
-                    >30,000+ GitHub stars</a
-                > · Apache 2.0
+            <div class="start-actions" data-variant-hide="awx">
+                <a
+                    class="btn-start"
+                    href="/docs/quickstart"
+                    data-event="lp_infra_quickstart_click"
+                >
+                    Get started free
+                </a>
+                <a
+                    class="btn-call"
+                    href="#contact-sales"
+                    data-event="lp_infra_hero_call_click"
+                >
+                    Rolling it out? Book a call
+                </a>
+            </div>
+            <div class="start-offer" data-variant-only="awx">
+                <Meeting
+                    {routePath}
+                    variant="plain"
+                    submitLabel={awxContent.heroCard.submitLabel}
+                    client:visible
+                />
+            </div>
+            <p class="proof" data-variant-hide="awx">
+                <a
+                    href="https://github.com/kestra-io/kestra"
+                    data-event="lp_infra_github_click"
+                >
+                    30,000+ GitHub stars
+                </a>{" "}
+                · Apache 2.0
             </p>
         </div>
     </Hero>
@@ -193,11 +310,11 @@ const migrationSteps = [
             <div class="copy">
                 <h2>Request, approve, provision, configure</h2>
                 <p>
-                    A request comes in with a hostname. When the change
-                    needs sign-off, the owner approves it, then Terraform
-                    creates the VM and your playbook configures it. If a
-                    step fails, the run stops there with its logs, and you
-                    restart it from that step.
+                    A request comes in with a hostname. When the change needs
+                    sign-off, the owner approves it, then Terraform creates the
+                    VM and your playbook configures it. If a step fails, the run
+                    stops there with its logs, and you restart it from that
+                    step.
                 </p>
                 <p class="note">
                     Each node is a task in one YAML file, versioned in Git.
@@ -209,30 +326,122 @@ const migrationSteps = [
             </div>
         </div>
     </section>
+    <section
+        class="run-playbook"
+        id="run-a-playbook"
+        data-variant-only="awx"
+        aria-labelledby="run-a-playbook-title"
+    >
+        <div class="head">
+            <h2 id="run-a-playbook-title">
+                Run a playbook in Kestra in 5 minutes
+            </h2>
+            <p>
+                No repository to clone and no account to request. You need
+                Docker.
+            </p>
+        </div>
+        <ol class="steps">
+            <li class="step">
+                <h3>Start Kestra</h3>
+                <div class="code">
+                    <pre><code id="awx-docker-command">{dockerCommand}</code></pre>
+                    <button
+                        type="button"
+                        class="copy"
+                        data-copy="awx-docker-command"
+                        data-event="lp_infra_copy_command_click"
+                    >
+                        Copy
+                    </button>
+                </div>
+                <p>
+                    When the logs say the server is running, open
+                    <code>http://localhost:8080</code> and create your local
+                    user.
+                </p>
+            </li>
+            <li class="step step-flow">
+                <h3>Paste this flow</h3>
+                <div class="code">
+                    <pre><code id="awx-playbook-flow">{awxContent.playbookFlow}</code></pre>
+                    <button
+                        type="button"
+                        class="copy"
+                        data-copy="awx-playbook-flow"
+                        data-event="lp_infra_copy_flow_click"
+                    >
+                        Copy
+                    </button>
+                </div>
+                <p>
+                    Create a flow, replace its YAML with this one and save. The
+                    inventory and the playbook are inline, so it runs as is.
+                </p>
+            </li>
+            <li class="step">
+                <h3>Execute it</h3>
+                <p>
+                    Click Execute. <code>dry_run</code> is on, so the playbook
+                    runs with <code>--check</code> first. Each host's result is
+                    in the logs.
+                </p>
+                <div class="next">
+                    <a
+                        href="/blueprints/ansible-playbook-from-git"
+                        data-event="lp_infra_blueprint_click"
+                    >
+                        Run it from your own Git repository →
+                    </a>
+                    <a
+                        href="/plugins/plugin-ansible/ansible-cli/io.kestra.plugin.ansible.cli.ansiblecli"
+                        data-event="lp_infra_plugin_doc_click"
+                    >
+                        Every option of the Ansible task →
+                    </a>
+                </div>
+            </li>
+        </ol>
+        <p class="story">
+            CAGIP, the IT production arm of Crédit Agricole, transformed its
+            infrastructure operations and scaled data workflows across more than
+            100 clusters with Kestra.
+            <a
+                href="/stories/credit-agricole"
+                data-event="lp_infra_story_click"
+            >
+                Read the story
+            </a>
+        </p>
+        {/* Dec 15: Will's "Ansible Playbooks for your whole team" video goes
+         * here, under the three steps, as a VideoDialog like the vRA one. */}
+    </section>
     <Platform {...content.platform} />
     <section class="plugins">
         <h2>Plugs into your stack</h2>
         <p class="sub">
-            {totalPlugins}+ open-source plugins, installed the first time a
-            flow uses them.
+            {totalPlugins}+ open-source plugins, installed the first time a flow
+            uses them.
         </p>
         <ul>
-            {
-                plugins.map((plugin) => (
-                    <li>
-                        <a href={`/plugins/${plugin.slug}`}>
-                            <img
-                                src={`/icons/io.kestra.plugin.${plugin.cls}.svg`}
-                                alt=""
-                                width="36"
-                                height="36"
-                                loading="lazy"
-                            />
-                            <span>{plugin.name}</span>
-                        </a>
-                    </li>
-                ))
-            }
+            {plugins.map((plugin) => (
+                <li
+                    class:list={[
+                        { "is-ansible": plugin.slug === "plugin-ansible" },
+                    ]}
+                >
+                    <a href={`/plugins/${plugin.slug}`}>
+                        <img
+                            src={`/icons/io.kestra.plugin.${plugin.cls}.svg`}
+                            alt=""
+                            width="36"
+                            height="36"
+                            loading="lazy"
+                        />
+                        <span>{plugin.name}</span>
+                    </a>
+                </li>
+            ))}
             <li>
                 <a class="all" href="/plugins">
                     <span>All {totalPlugins}+ plugins</span>
@@ -240,68 +449,75 @@ const migrationSteps = [
             </li>
         </ul>
     </section>
-    <Translation {...content.translation} />
-    <section class="vmware">
+    <div data-variant-hide="awx">
+        <Translation {...content.translation} />
+    </div>
+    <div data-variant-only="awx">
+        <Translation {...awxContent.translation} />
+    </div>
+    <section class="vmware" data-variant-hide="awx">
         <div class="inner">
             <div class="why">
                 <p class="eyebrow">Using VMware Cloud Foundation?</p>
                 <h2>
-                    Move your vRA and vRO workflows out of the Broadcom
-                    lock-in
+                    Move your vRA and vRO workflows out of the Broadcom lock-in
                 </h2>
                 <p>
                     vRA and vRO are no longer sold on their own. They ship
-                    inside VMware Cloud Foundation, licensed per core, so
-                    the automation bill follows the size of the hypervisor
-                    footprint, not how much you automate. The workflows
-                    built on them do not move by themselves.
+                    inside VMware Cloud Foundation, licensed per core, so the
+                    automation bill follows the size of the hypervisor
+                    footprint, not how much you automate. The workflows built on
+                    them do not move by themselves.
                 </p>
-                <a class="btn-start" href="/resources/migration/vra"
-                    >Read the vRA migration guide</a
-                >
+                <a class="btn-start" href="/resources/migration/vra">
+                    Read the vRA migration guide
+                </a>
             </div>
             <div class="how">
                 <p class="eyebrow">Migration Assistant</p>
                 <h3>From vRO package to running flows, in four steps</h3>
                 <ol>
-                    {
-                        migrationSteps.map((step) => (
-                            <li>
-                                <strong>{step.title}</strong>
-                                <span>{step.body}</span>
-                            </li>
-                        ))
-                    }
+                    {migrationSteps.map((step) => (
+                        <li>
+                            <strong>{step.title}</strong>
+                            <span>{step.body}</span>
+                        </li>
+                    ))}
                 </ol>
                 <div class="links">
                     <a
                         class="btn-ghost"
                         href="/resources/migration/vra/assistant"
-                        >Get the Migration Assistant</a
                     >
+                        Get the Migration Assistant
+                    </a>
                 </div>
             </div>
         </div>
         <a class="proof-card" href="/stories/fortune-500-company">
             <span class="figures">
-                <span><strong>−90%</strong> licensing cost</span>
-                <span><strong>30×</strong> faster delivery</span>
+                <span>
+                    <strong>−90%</strong> licensing cost
+                </span>
+                <span>
+                    <strong>30×</strong> faster delivery
+                </span>
             </span>
-            <span class="who"
-                >A Fortune 500 industrial manufacturer replaced Aria
-                Automation with Kestra.</span
-            >
+            <span class="who">
+                A Fortune 500 industrial manufacturer replaced Aria Automation
+                with Kestra.
+            </span>
             <span class="more">Read the story →</span>
         </a>
     </section>
-    <section class="video">
+    <section class="video" data-variant-hide="awx">
         <div class="inner">
             <div class="copy">
                 <h2>Replace vRA without changing how your team works</h2>
                 <p>
-                    The lifecycle of a VM in Kestra, one person at a time:
-                    who requests it, who approves it, who runs it, and what
-                    each of them sees.
+                    The lifecycle of a VM in Kestra, one person at a time: who
+                    requests it, who approves it, who runs it, and what each of
+                    them sees.
                 </p>
             </div>
             <VideoDialog
@@ -318,69 +534,175 @@ const migrationSteps = [
                     height="720"
                     loading="lazy"
                 />
-                <span class="play"><Icon name="mdi:play" /></span>
+                <span class="play">
+                    <Icon name="mdi:play" />
+                </span>
             </VideoDialog>
         </div>
     </section>
     <section class="editions">
         <h2>Start free. Add Enterprise when the team needs it.</h2>
         <p class="sub">
-            The same flows run on both editions, so nothing is rewritten
-            when you move.
+            The same flows run on both editions, so nothing is rewritten when
+            you move.
+        </p>
+        <p class="sub editions-note" data-variant-only="awx">
+            {awxContent.editionsNote}
         </p>
         <div class="table" role="table">
             <div class="row head" role="row">
                 <span role="columnheader"></span>
-                <span role="columnheader" class="col-oss"
-                    >Open source<small>Free</small></span
-                >
-                <span role="columnheader"
-                    >Enterprise<small>On a call</small></span
-                >
+                <span role="columnheader" class="col-oss">
+                    Open source<small>Free</small>
+                </span>
+                <span role="columnheader">
+                    Enterprise<small>On a call</small>
+                </span>
             </div>
-            {
-                editions.map((row) => (
-                    <div class="row" role="row">
-                        <span role="rowheader">{row.feature}</span>
-                        {[row.oss, row.ee].map((value, idx) => (
-                            <span
-                                role="cell"
-                                class:list={[{ "col-oss": idx === 0 }]}
-                            >
-                                {value === true ? (
-                                    <Icon
-                                        name="mdi:check"
-                                        class="yes"
-                                        aria-label="Included"
-                                    />
-                                ) : value === false ? (
-                                    <span
-                                        class="no"
-                                        aria-label="Not included"
-                                    >
-                                        –
-                                    </span>
-                                ) : (
-                                    value
-                                )}
-                            </span>
-                        ))}
-                    </div>
-                ))
-            }
+            {editions.map((row) => (
+                <div class="row" role="row">
+                    <span role="rowheader">{row.feature}</span>
+                    {[row.oss, row.ee].map((value, idx) => (
+                        <span
+                            role="cell"
+                            class:list={[{ "col-oss": idx === 0 }]}
+                        >
+                            {value === true ? (
+                                <Icon
+                                    name="mdi:check"
+                                    class="yes"
+                                    aria-label="Included"
+                                />
+                            ) : value === false ? (
+                                <span class="no" aria-label="Not included">
+                                    –
+                                </span>
+                            ) : (
+                                value
+                            )}
+                        </span>
+                    ))}
+                </div>
+            ))}
         </div>
         <div class="editions-cta">
-            <a class="btn-start" href="/docs/quickstart">Get started free</a
+            <a
+                class="btn-start"
+                href="/docs/quickstart"
+                data-event="lp_infra_quickstart_click"
             >
-            <a class="btn-call" href="#contact-sales"
-                >Talk to us about Enterprise</a
+                Get started free
+            </a>
+            <a
+                class="btn-call"
+                href="#contact-sales"
+                data-event="lp_infra_editions_call_click"
             >
+                Talk to us about Enterprise
+            </a>
         </div>
     </section>
-    <UseCases {routePath} {...content.useCases} {formProps} />
-    <Faq {...content.faq} />
-    <ClosingBanner {...content.closingBanner} />
+    <div data-variant-hide="awx">
+        <UseCases {routePath} {...content.useCases} {formProps} />
+    </div>
+    <div data-variant-only="awx">
+        <UseCases
+            {routePath}
+            {...awxContent.useCases}
+            formProps={{ submitLabel: awxContent.heroCard.submitLabel }}
+            formId="job-template-session"
+        />
+    </div>
+    <div data-variant-hide="awx">
+        <Faq {...content.faq} />
+        <ClosingBanner {...content.closingBanner} />
+    </div>
+    <div data-variant-only="awx">
+        <Faq {...awxContent.faq} group="lp-faq-awx" />
+        <ClosingBanner {...awxContent.closingBanner} />
+    </div>
 </LpLayout>
+
+<script>
+    import "../../scripts/lp-infra-tracking.ts"
+
+    if (document.documentElement.dataset.lpVariant === "awx") {
+        document
+            .querySelectorAll<HTMLAnchorElement>('a[href="#contact-sales"]')
+            .forEach((link) =>
+                link.setAttribute("href", "#job-template-session"),
+            )
+    }
+
+    /* Copy buttons of the G_AWX runnable section. */
+    document
+        .querySelectorAll<HTMLButtonElement>("[data-copy]")
+        .forEach((button) => {
+            button.addEventListener("click", async () => {
+                const source = document.getElementById(
+                    button.dataset.copy ?? "",
+                )
+                if (!source) return
+                try {
+                    await navigator.clipboard.writeText(
+                        source.textContent ?? "",
+                    )
+                    button.textContent = "Copied"
+                } catch {
+                    button.textContent = "Select and copy"
+                }
+                setTimeout(() => (button.textContent = "Copy"), 2000)
+            })
+        })
+</script>
+
+<style lang="scss" is:global>
+    /* Variant switch. The inline script at the top of the page sets
+     * data-lp-variant and data-lp-headline on <html> before first paint;
+     * these rules show one variant and hide the other, with no client-side
+     * rendering, so nothing moves once the page is painted. */
+    html:not([data-lp-variant="awx"]) [data-variant-only="awx"],
+    html[data-lp-variant="awx"] [data-variant-hide="awx"],
+    [data-headline] {
+        display: none !important;
+    }
+
+    @each $key in pricing, compare, tower, aap, awx, orchestrate, ui {
+        html[data-lp-headline="#{$key}"] [data-headline="#{$key}"] {
+            display: inline !important;
+        }
+    }
+
+    html[data-lp-variant="awx"] .plugins li.is-ansible {
+        order: -1;
+    }
+
+    /* G_AWX visitors are desktop only (ads targeting). A slightly smaller
+     * headline and logo row put the start of the runnable section above the
+     * fold at 1366x768. */
+    @media (min-width: 992px) {
+        html[data-lp-variant="awx"] .lp-hero h1 {
+            font-size: 3.25rem;
+        }
+        html[data-lp-variant="awx"] .lp-hero {
+            padding-top: 3.5rem;
+        }
+        html[data-lp-variant="awx"] .lp-hero .logos {
+            margin-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+        /* The logos stay; their caption goes, to win the last line. */
+        html[data-lp-variant="awx"] .lp-hero .logos > p {
+            display: none;
+        }
+        html[data-lp-variant="awx"] .lp-hero .logos .logo-carousel {
+            margin-top: 0;
+        }
+        html[data-lp-variant="awx"] .example {
+            padding-top: 1.75rem;
+        }
+    }
+</style>
 
 <style lang="scss">
     @use "/src/components/lp/shared/lp" as *;
@@ -390,6 +712,204 @@ const migrationSteps = [
         flex-direction: column;
         gap: 0.75rem;
         padding-top: 1.25rem;
+    }
+
+    .start-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    /* G_AWX hero: the self-serve way out, under the lead, outside the card. */
+    .try-link {
+        display: block;
+        margin-top: 1rem;
+        font-size: $font-size-base;
+        a {
+            color: #ffffff;
+            font-weight: 600;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            &:hover {
+                text-decoration-thickness: 2px;
+            }
+        }
+    }
+
+    /* G_AWX hero card: the offer form only. */
+    .start-offer {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-top: -1.25rem;
+    }
+
+    .story {
+        @include lp-container(820px);
+        margin-top: 2.5rem;
+        margin-bottom: 0;
+        color: var(--lp-content-secondary);
+        font-size: $font-size-base;
+        line-height: 1.5;
+        text-align: center;
+        a {
+            color: var(--lp-purple);
+            font-weight: 600;
+        }
+    }
+
+    /* G_AWX variant: the runnable section, right after the example flow. */
+    .run-playbook {
+        @include lp-section;
+        scroll-margin-top: var(--top-bar-height);
+
+        .head {
+            @include lp-section-head(820px);
+            h2 {
+                margin: 0 0 1rem;
+                @include lp-heading;
+            }
+            p {
+                margin: 0;
+                @include lp-lead;
+            }
+        }
+
+        .steps {
+            display: grid;
+            gap: 1.5rem;
+            @include lp-container;
+            margin-block: 0;
+            padding: 0;
+            list-style: none;
+            counter-reset: step;
+            @include media-breakpoint-up(lg) {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-rows: auto auto;
+                align-items: start;
+            }
+        }
+
+        .step {
+            position: relative;
+            min-width: 0;
+            padding: 1.5rem 1.5rem 1.5rem 4rem;
+            border: 1px solid var(--lp-border-subtle);
+            border-radius: 12px;
+            background-color: #ffffff;
+            counter-increment: step;
+
+            &::before {
+                content: counter(step);
+                position: absolute;
+                top: 1.4rem;
+                left: 1.5rem;
+                display: grid;
+                place-items: center;
+                width: 1.75rem;
+                height: 1.75rem;
+                border-radius: 50%;
+                background-color: var(--lp-purple);
+                color: #ffffff;
+                font-size: $font-size-sm;
+                font-weight: 700;
+            }
+
+            h3 {
+                margin: 0 0 1rem;
+                color: var(--lp-content-primary);
+                font-size: 1.25rem;
+                font-weight: 600;
+                line-height: 1.4;
+            }
+
+            p {
+                margin: 1rem 0 0;
+                color: var(--lp-content-on-card);
+                font-size: $font-size-base;
+                line-height: 1.5;
+            }
+
+            h3 + p {
+                margin-top: 0;
+            }
+
+            p code {
+                padding: 0.1rem 0.3rem;
+                border-radius: 4px;
+                background-color: var(--lp-bg-base);
+                color: var(--lp-content-primary);
+                font-size: 0.9em;
+            }
+        }
+
+        /* The flow is the longest step: it takes the right column on both
+         * rows, so steps 1 and 3 stack on the left. */
+        .step-flow {
+            @include media-breakpoint-up(lg) {
+                grid-column: 2;
+                grid-row: 1 / span 2;
+            }
+        }
+
+        .code {
+            position: relative;
+
+            pre {
+                margin: 0;
+                /* Room on the right for the Copy button. */
+                padding: 2.75rem 1.25rem 1rem;
+                overflow-x: auto;
+                border-radius: 8px;
+                background-color: var(--lp-bg-dark);
+            }
+
+            code {
+                color: #e9e9ee;
+                font-size: 0.8125rem;
+                line-height: 1.55;
+                white-space: pre;
+            }
+        }
+
+        .copy {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 6px;
+            background-color: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            font-size: $font-size-xs;
+            font-weight: 600;
+            cursor: pointer;
+            &:hover {
+                border-color: #ffffff;
+            }
+        }
+
+        .next {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1.25rem;
+            a {
+                color: var(--lp-purple);
+                font-weight: 600;
+                text-decoration: none;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+
+    .editions .editions-note {
+        max-width: 760px;
+        margin-top: -1.5rem;
+        color: var(--lp-content-on-card);
+        font-size: $font-size-base;
     }
 
     .btn-start,

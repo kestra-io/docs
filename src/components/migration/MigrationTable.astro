@@ -76,14 +76,20 @@ const logoOf = (svg: string) => logos.find((logo) => logo.svg === svg)!
     {logos.length > 0 && (
         <svg class="sprite" aria-hidden="true">
             {logos.map((logo) => (
-                <symbol id={logo.ref} viewBox={logo.viewBox} set:html={logo.body} />
+                <symbol
+                    id={logo.ref}
+                    viewBox={logo.viewBox}
+                    set:html={logo.body}
+                />
             ))}
         </svg>
     )}
     <div class="container-xl">
         <div class="rails">
             <header>
-                <h2 {id}>{title}</h2>
+                <h2 {id}>
+                    <slot name="title">{title}</slot>
+                </h2>
                 {lead && <p set:html={lead} />}
             </header>
             {tabs && (
@@ -122,30 +128,41 @@ const logoOf = (svg: string) => logos.find((logo) => logo.svg === svg)!
                         <table>
                             <thead>
                                 <tr>
-                                    {panel.columns.map(head).map((column, c) => (
-                                        <th
-                                            scope="col"
-                                            class:list={[{ brand: !!column.logo }]}
-                                            style={
-                                                panel.widths?.[c]
-                                                    ? `width: ${panel.widths[c]}`
-                                                    : undefined
-                                            }
-                                        >
-                                            {column.logo ? (
-                                                <svg
-                                                    class="logo"
-                                                    role="img"
-                                                    aria-label={column.label}
-                                                    viewBox={logoOf(column.logo).viewBox}
-                                                >
-                                                    <use href={`#${logoOf(column.logo).ref}`} />
-                                                </svg>
-                                            ) : (
-                                                column.label
-                                            )}
-                                        </th>
-                                    ))}
+                                    {panel.columns
+                                        .map(head)
+                                        .map((column, c) => (
+                                            <th
+                                                scope="col"
+                                                class:list={[
+                                                    { brand: !!column.logo },
+                                                ]}
+                                                style={
+                                                    panel.widths?.[c]
+                                                        ? `width: ${panel.widths[c]}`
+                                                        : undefined
+                                                }
+                                            >
+                                                {column.logo ? (
+                                                    <svg
+                                                        class="logo"
+                                                        role="img"
+                                                        aria-label={
+                                                            column.label
+                                                        }
+                                                        viewBox={
+                                                            logoOf(column.logo)
+                                                                .viewBox
+                                                        }
+                                                    >
+                                                        <use
+                                                            href={`#${logoOf(column.logo).ref}`}
+                                                        />
+                                                    </svg>
+                                                ) : (
+                                                    column.label
+                                                )}
+                                            </th>
+                                        ))}
                                 </tr>
                             </thead>
                             {panel.groups.map((group) => (
@@ -186,8 +203,11 @@ const logoOf = (svg: string) => logos.find((logo) => logo.svg === svg)!
                                                             { main: c === 1 },
                                                         ]}
                                                         data-label={
-                                                            head(panel.columns[c])
-                                                                .label
+                                                            head(
+                                                                panel.columns[
+                                                                    c
+                                                                ],
+                                                            ).label
                                                         }
                                                     >
                                                         {c === 1 && row.href ? (

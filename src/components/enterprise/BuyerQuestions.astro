@@ -17,7 +17,9 @@ const { items, title = "Frequently asked questions" } = Astro.props
     <div class="container-xl">
         <div class="grid">
             <header class="head">
-                <h2 id="ee-faq">{title}</h2>
+                <h2 id="ee-faq">
+                    <slot name="title">{title}</slot>
+                </h2>
                 <div class="trust">
                     <div class="badges">
                         <Image src={soc2Img} alt="SOC 2" height="56" />
