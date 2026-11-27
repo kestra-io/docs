@@ -115,6 +115,8 @@ To get them, update the plugins to JDBC 3.0, Airbyte 1.8, Fivetran 2.1, or the d
 
 ![The Airbyte details artifact of a sync task: a succeeded job with one attempt and 1,100 rows synced, a table of three streams with the records each emitted and committed, and the connection's source and destination](./airbyte-details-artifact.png)
 
+![The Model graph artifact of a dbt build task: two models, my_first_dbt_model and my_second_dbt_model, colored by run status, with the selected model's unique ID, relation, and downstream dependency in a side panel](./dbt-artifact.png)
+
 ## Approvals
 
 Until now, asking someone for a decision meant a `Pause` task, and the only way to say no was to kill the execution. The new `Approval` task gives your flow a real yes or no: it waits for a reviewer, then runs the tasks for whichever way they decided. Reviewers can leave a comment and fill in a few fields, and a request can approve itself when a condition is met or expire after a while.
