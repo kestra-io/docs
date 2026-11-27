@@ -113,8 +113,6 @@ To get them, update the plugins for Kestra 2.1, or any later version. In the Ent
 
 ![The Artifacts tab of an execution with two JDBC tasks, showing the SQL of a CREATE TABLE AS SELECT statement, the 14 rows it affected, and the table it created and the table it read](./execution-artifacts-jdbc.png)
 
-![The Airbyte details artifact of a sync task: a succeeded job with one attempt and 1,100 rows synced, a table of three streams with the records each emitted and committed, and the connection's source and destination](./airbyte-details-artifact.png)
-
 ![The Model graph artifact of a dbt build task: two models, my_first_dbt_model and my_second_dbt_model, colored by run status, with the selected model's unique ID, relation, and downstream dependency in a side panel](./dbt-artifact.png)
 
 ## Approvals
