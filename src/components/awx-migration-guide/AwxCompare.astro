@@ -1,0 +1,857 @@
+---
+import { Icon } from "astro-icon/components"
+import awxMark from "./assets/awx-placeholder.svg"
+import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
+import { RESTART_APP, RESTART_AWX, RESTART_CURL, RESTART_KESTRA } from "./code"
+import { SURVEY } from "./guide"
+import { escapeHtml, flowLines } from "~/components/migration/highlight"
+
+const AWX_LINES = flowLines(RESTART_AWX, escapeHtml)
+const FLOW_LINES = flowLines(RESTART_KESTRA, escapeHtml)
+const APP_LINES = flowLines(RESTART_APP, escapeHtml)
+
+const AWX_NAV = [
+    { icon: "mdi:view-dashboard-outline", label: "Dashboard" },
+    { icon: "mdi:rocket-launch-outline", label: "Templates", on: true },
+    { icon: "mdi:calendar-clock", label: "Schedules" },
+    { icon: "mdi:server-network", label: "Inventories" },
+    { icon: "mdi:account-group-outline", label: "Teams" },
+]
+
+const SURVEY_FIELDS = [
+    { label: "Service", value: "orders-api" },
+    { label: "Environment", value: "prod" },
+]
+
+const K_TABS = [
+    { icon: "mdi:code-tags", label: "Flow Code", on: true },
+    { icon: "mdi:gesture-tap", label: "No-code" },
+    { icon: "mdi:sitemap-outline", label: "Topology" },
+    { icon: "mdi:file-document-outline", label: "Docs" },
+    { icon: "mdi:monitor", label: "Apps", on: true },
+]
+---
+
+<section class="awx-compare" aria-labelledby="awx-survey-title">
+    <div class="container-xl">
+        <div class="rails">
+            <header class="head">
+                <h2 id="awx-survey-title">{SURVEY.title}</h2>
+                <p>{SURVEY.lead}</p>
+            </header>
+            <div class="stage">
+                <div class="compare" data-awx-compare>
+                    <div
+                        class="layer awx"
+                        role="img"
+                        aria-label="The restart-service survey launched from the AWX UI, next to the awx.awx job template and the role grant it needs."
+                    >
+                        <aside class="awx-rail">
+                            <img src={awxMark.src} alt="" />
+                            {AWX_NAV.map((item) => (
+                                <span class:list={["rail-item", { on: item.on }]}>
+                                    <Icon name={item.icon} />
+                                    {item.label}
+                                </span>
+                            ))}
+                        </aside>
+                        <div class="awx-main">
+                            <div class="awx-top">
+                                <span class="crumb">
+                                    <small>Templates</small>
+                                    restart-service
+                                </span>
+                                <span class="launch">
+                                    <Icon name="mdi:rocket-launch-outline" /> Launch
+                                </span>
+                            </div>
+                            <div class="cols">
+                                <div class="awx-survey">
+                                    <div class="modal">
+                                        <div class="modal-head">
+                                            Launch | restart-service
+                                            <Icon name="mdi:close" class="x" />
+                                        </div>
+                                        <ol class="wizard">
+                                            <li>Credentials</li>
+                                            <li class="on">Survey</li>
+                                            <li>Preview</li>
+                                        </ol>
+                                        <p class="survey-name">Restart a service</p>
+                                        {SURVEY_FIELDS.map((field) => (
+                                            <label class="field">
+                                                <span>
+                                                    {field.label} <b>*</b>
+                                                </span>
+                                                <span class="select">
+                                                    {field.value}
+                                                    <Icon name="mdi:chevron-down" />
+                                                </span>
+                                            </label>
+                                        ))}
+                                        <div class="modal-foot">
+                                            <span class="btn primary">Next</span>
+                                            <span class="btn">Cancel</span>
+                                        </div>
+                                    </div>
+                                    <div class="grant">
+                                        <Icon name="mdi:account-key-outline" />
+                                        <span>
+                                            <strong>app-owners</strong> · Execute
+                                            role on restart-service
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="awx-panel">
+                                    <div class="awx-file">restart-service.yml</div>
+                                    <pre class="code light-code">{AWX_LINES.map((line, i) => (
+                                        <span class="ln"><i>{i + 1}</i><Fragment set:html={line.html} /></span>
+                                    ))}</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="layer ks"
+                        role="img"
+                        aria-label="The restart_service flow in the Kestra editor, next to the App that puts a form in front of it."
+                    >
+                        <div class="ks-top">
+                            <img src={kestraMark.src} alt="" class="ks-logo" />
+                            <span class="slash">/</span>
+                            <Icon name="mdi:sitemap-outline" />
+                            <strong>infra.apps.restart_service</strong>
+                            <span class="ks-right">
+                                <span class="ks-btn ghost">
+                                    <Icon name="mdi:play-outline" /> Execute
+                                </span>
+                                <span class="ks-btn">Save</span>
+                            </span>
+                        </div>
+                        <div class="ks-tabs">
+                            {K_TABS.map((tab) => (
+                                <span class:list={{ on: tab.on }}>
+                                    <Icon name={tab.icon} />
+                                    {tab.label}
+                                </span>
+                            ))}
+                        </div>
+                        <div class="cols">
+                            <div class="ks-panel">
+                                <div class="ks-ptab">
+                                    <Icon name="mdi:code-tags" /> restart_service
+                                </div>
+                                <pre class="code ks-code">{FLOW_LINES.map((line, i) => (
+                                    <span class="ln"><i>{i + 1}</i><Fragment set:html={line.html} /></span>
+                                ))}</pre>
+                            </div>
+                            <div class="ks-panel">
+                                <div class="ks-ptab">
+                                    <Icon name="mdi:monitor" /> restart_a_service
+                                </div>
+                                <pre class="code ks-code">{APP_LINES.map((line, i) => (
+                                    <span class="ln"><i>{i + 1}</i><Fragment set:html={line.html} /></span>
+                                ))}</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        step="0.1"
+                        value="50"
+                        aria-label="Compare the AWX survey with the Kestra flow and App"
+                    />
+                    <div class="handle" aria-hidden="true">
+                        <span class="knob">
+                            <Icon name="mdi:chevron-left" />
+                            <Icon name="mdi:chevron-right" />
+                        </span>
+                    </div>
+                </div>
+                <div class="after">
+                    <figure
+                        class="term"
+                        aria-label="The same flow started from a Jira automation rule"
+                    >
+                        <figcaption>
+                            <span class="dots" aria-hidden="true">
+                                <i></i>
+                                <i></i>
+                                <i></i>
+                            </span>
+                            Terminal
+                        </figcaption>
+                        <pre>{RESTART_CURL}</pre>
+                    </figure>
+                    <div class="notes">
+                        <ol>
+                            {SURVEY.callouts.map((text) => (
+                                <li>{text}</li>
+                            ))}
+                        </ol>
+                        <a href={SURVEY.link.href} class="more">
+                            {SURVEY.link.label} <Icon name="mdi:arrow-right" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function wire() {
+        document
+            .querySelectorAll<HTMLElement>("[data-awx-compare]:not([data-wired])")
+            .forEach((root) => {
+                root.dataset.wired = ""
+                const input = root.querySelector<HTMLInputElement>("input")!
+                input.addEventListener("input", () =>
+                    root.style.setProperty("--pos", `${input.value}%`),
+                )
+            })
+    }
+
+    wire()
+    document.addEventListener("astro:page-load", wire)
+</script>
+
+<style lang="scss">
+    @use "/src/components/migration/migration" as *;
+
+    .awx-compare {
+        @include band;
+    }
+
+    .rails {
+        @include rails;
+    }
+
+    .head {
+        @include head;
+    }
+
+    .stage {
+        display: grid;
+        gap: 1.5rem;
+        padding: 0 var(--inset) 3.5rem;
+
+        @include media-breakpoint-down(md) {
+            padding-bottom: 2.5rem;
+        }
+    }
+
+    .compare {
+        --pos: 50%;
+        --k: #8405ff;
+        position: relative;
+        display: grid;
+        overflow: hidden;
+        border: 1px solid #ebebf0;
+        border-radius: 10px;
+        box-shadow: 0 16px 36px -18px rgba(43, 43, 51, 0.22);
+        user-select: none;
+
+        :global(html.dark) & {
+            --k: #9869f7;
+            border-color: #2e2e3c;
+            box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.7);
+        }
+    }
+
+    .layer {
+        display: grid;
+        grid-area: 1 / 1;
+        min-width: 0;
+        font-size: 0.8125rem;
+    }
+
+    .cols {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        min-height: 0;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    .code {
+        scrollbar-width: none;
+        max-height: 24rem;
+        margin: 0;
+        padding: 0.75rem 0 1rem;
+        overflow: hidden;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        font-family: var(--font-family-jetbrains-mono);
+        font-size: 0.6875rem;
+        line-height: 1.7;
+        white-space: pre;
+    }
+
+    .ln {
+        display: block;
+        padding-right: 1rem;
+
+        i {
+            display: inline-block;
+            width: 2.25rem;
+            padding-right: 0.75rem;
+            font-style: normal;
+            text-align: right;
+            opacity: 0.6;
+        }
+    }
+
+    .x {
+        margin-left: auto;
+        opacity: 0.6;
+    }
+
+    /* AWX side: a neutral controller UI, light */
+    .awx {
+        --awx-text: #1f1f29;
+        --awx-muted: #6a6e73;
+        --awx-line: #d2d2d2;
+        --awx-accent: #0066cc;
+        grid-template-columns: 3.75rem minmax(0, 1fr);
+        background: #f0f0f0;
+        color: var(--awx-text);
+    }
+
+    .awx-rail {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.375rem;
+        padding: 0.625rem 0.25rem;
+        background: #212427;
+        color: #c7c7c7;
+
+        img {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .rail-item {
+            display: grid;
+            justify-items: center;
+            gap: 0.125rem;
+            width: 100%;
+            padding: 0.375rem 0;
+            border-radius: 4px;
+            font-size: 0.5625rem;
+            font-weight: 500;
+
+            :global(svg) {
+                font-size: 1rem;
+            }
+
+            &.on {
+                background: #3c3f42;
+                box-shadow: inset 3px 0 0 #73bcf7;
+                color: #ffffff;
+            }
+        }
+    }
+
+    .awx-main {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        min-width: 0;
+    }
+
+    .awx-top {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        border-bottom: 1px solid var(--awx-line);
+        background: #ffffff;
+
+        .crumb {
+            display: grid;
+            margin-right: auto;
+            font-weight: 600;
+            line-height: 1.2;
+
+            small {
+                font-size: 0.625rem;
+                font-weight: 500;
+                color: var(--awx-accent);
+            }
+        }
+
+        .launch {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.3125rem 0.75rem;
+            border-radius: 3px;
+            background: var(--awx-accent);
+            font-weight: 600;
+            color: #ffffff;
+        }
+    }
+
+    .awx-survey {
+        display: grid;
+        align-content: start;
+        gap: 0.75rem;
+        padding: 0.875rem;
+    }
+
+    .modal {
+        display: grid;
+        gap: 0.625rem;
+        padding: 0 0 0.875rem;
+        border: 1px solid var(--awx-line);
+        border-radius: 3px;
+        background: #ffffff;
+        box-shadow: 0 0.5rem 1.25rem rgba(3, 3, 3, 0.12);
+
+        > :not(.modal-head):not(.wizard) {
+            margin-inline: 0.875rem;
+        }
+    }
+
+    .modal-head {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 0.875rem 0.25rem;
+        font-size: 0.9375rem;
+        font-weight: 600;
+    }
+
+    .wizard {
+        display: flex;
+        gap: 1rem;
+        margin: 0;
+        padding: 0 0.875rem;
+        border-bottom: 1px solid var(--awx-line);
+        list-style: none;
+        color: var(--awx-muted);
+
+        li {
+            padding: 0.375rem 0;
+        }
+
+        .on {
+            box-shadow: inset 0 -2px 0 var(--awx-accent);
+            color: var(--awx-text);
+            font-weight: 600;
+        }
+    }
+
+    .survey-name {
+        margin-block: 0;
+        font-weight: 600;
+    }
+
+    .field {
+        display: grid;
+        gap: 0.25rem;
+        margin-bottom: 0;
+        font-weight: 600;
+
+        b {
+            color: #c9190b;
+        }
+    }
+
+    .select {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.3125rem 0.5rem;
+        border: 1px solid var(--awx-line);
+        border-bottom-color: #8a8d90;
+        font-weight: 400;
+    }
+
+    .modal-foot {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.25rem;
+
+        .btn {
+            padding: 0.3125rem 0.875rem;
+            border-radius: 3px;
+            color: var(--awx-accent);
+            font-size: 0.8125rem;
+        }
+
+        .primary {
+            background: var(--awx-accent);
+            color: #ffffff;
+            font-weight: 600;
+        }
+    }
+
+    .grant {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        border: 1px dashed var(--awx-line);
+        border-radius: 3px;
+        background: #ffffff;
+        color: var(--awx-muted);
+
+        :global(svg) {
+            flex: none;
+            font-size: 1rem;
+        }
+
+        strong {
+            color: var(--awx-text);
+        }
+    }
+
+    .awx-panel {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        border-left: 1px solid var(--awx-line);
+        background: #ffffff;
+
+        @include media-breakpoint-down(lg) {
+            border-left: 0;
+            border-top: 1px solid var(--awx-line);
+        }
+    }
+
+    .awx-file {
+        align-self: flex-start;
+        margin: 0.625rem 0.75rem 0;
+        padding: 0.125rem 0.5rem;
+        border-radius: 4px;
+        background: #f0f0f0;
+        font-family: var(--font-family-jetbrains-mono);
+        font-size: 0.6875rem;
+    }
+
+    .light-code {
+        color: var(--awx-text) !important;
+
+        i {
+            color: var(--awx-muted);
+        }
+
+        :global(.y) {
+            color: #0b5cad;
+        }
+
+        :global(.s) {
+            color: #a31515;
+        }
+
+        :global(.v) {
+            color: #1f1f29;
+        }
+
+        :global(.p) {
+            color: #6a6e73;
+        }
+    }
+
+    /* Kestra side, dark like the editor */
+    .ks {
+        grid-template-rows: auto auto 1fr;
+        background: #18181e;
+        color: #ffffff;
+        clip-path: inset(0 0 0 var(--pos));
+    }
+
+    .ks-top {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        min-width: 0;
+        padding: 0.5rem 1rem;
+        border-bottom: 1px solid #2e2e3c;
+        background: #121216;
+        white-space: nowrap;
+
+        .slash {
+            color: #5c5d66;
+        }
+
+        strong {
+            overflow: hidden;
+            font-weight: 600;
+            text-overflow: ellipsis;
+        }
+    }
+
+    .ks-logo {
+        width: 1.5rem;
+        height: 1.5rem;
+        padding: 0.25rem;
+        border-radius: 6px;
+        background: #0d0d10;
+    }
+
+    .ks-right {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-left: auto;
+        color: #d6d6e0;
+    }
+
+    .ks-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.3125rem 0.75rem;
+        border-radius: 6px;
+        background: #8405ff;
+        font-weight: 600;
+        color: #ffffff;
+
+        &.ghost {
+            background: #26262f;
+            font-weight: 500;
+        }
+    }
+
+    .ks-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        padding: 0.375rem 0.75rem;
+        border-bottom: 1px solid #2e2e3c;
+        color: #adadbf;
+
+        span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.3125rem 0.625rem;
+            border-radius: 6px;
+        }
+
+        .on {
+            background: #26262f;
+            color: #ffffff;
+        }
+    }
+
+    .ks-panel {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+
+        & + & {
+            border-left: 1px solid #2e2e3c;
+
+            @include media-breakpoint-down(lg) {
+                border-left: 0;
+                border-top: 1px solid #2e2e3c;
+            }
+        }
+    }
+
+    .ks-ptab {
+        display: inline-flex;
+        align-self: flex-start;
+        align-items: center;
+        gap: 0.375rem;
+        margin: 0.5rem 0.75rem 0;
+        padding: 0.3125rem 0.625rem;
+        border-radius: 6px;
+        background: #26262f;
+        color: #ffffff;
+    }
+
+    .ks-code {
+        color: #d6d6e0 !important;
+
+        i {
+            color: #adadbf;
+        }
+
+        :global(.y) {
+            color: #cdb6fb;
+        }
+
+        :global(.v) {
+            color: #d6d6e0;
+        }
+
+        :global(.s) {
+            color: #ffc5b7;
+        }
+
+        :global(.p) {
+            color: #9696a5;
+        }
+
+        :global(.pbd) {
+            color: #80fac5;
+        }
+
+        :global(.pbv) {
+            color: #bffddd;
+        }
+    }
+
+    input {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        opacity: 0;
+        cursor: ew-resize;
+    }
+
+    .handle {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: var(--pos);
+        z-index: 1;
+        width: 2px;
+        margin-left: -1px;
+        background: var(--k);
+        box-shadow: 0 0 1rem rgba(132, 5, 255, 0.55);
+        pointer-events: none;
+    }
+
+    .knob {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+        background: var(--k);
+        box-shadow:
+            0 0 0 4px rgba(132, 5, 255, 0.18),
+            0 0.5rem 1.25rem rgba(0, 0, 0, 0.35);
+        color: #ffffff;
+        font-size: 1rem;
+        translate: -50% -50%;
+
+        :global(svg) {
+            margin-inline: -0.25rem;
+        }
+    }
+
+    input:focus-visible ~ .handle .knob {
+        outline: 3px solid var(--k);
+        outline-offset: 3px;
+    }
+
+    /* Below the slider: the API launch and the three takeaways */
+    .after {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+        align-items: start;
+        gap: 1.5rem;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    .term {
+        margin: 0;
+        overflow: hidden;
+        border: 1px solid #2e2e3c;
+        border-radius: 10px;
+        background: #121216;
+
+        figcaption {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0.875rem;
+            border-bottom: 1px solid #2e2e3c;
+            font-size: 0.75rem;
+            color: #adadbf;
+        }
+
+        .dots {
+            display: inline-flex;
+            gap: 0.375rem;
+
+            i {
+                width: 0.625rem;
+                height: 0.625rem;
+                border-radius: 50%;
+                background: #3a3a48;
+            }
+        }
+
+        pre {
+            margin: 0;
+            padding: 0.875rem 1rem;
+            overflow-x: auto;
+            border: 0;
+            background: transparent;
+            font-family: var(--font-family-jetbrains-mono);
+            font-size: 0.75rem;
+            line-height: 1.7;
+            color: #d6d6e0;
+            white-space: pre;
+        }
+    }
+
+    .notes {
+        display: grid;
+        gap: 1rem;
+
+        ol {
+            display: grid;
+            gap: 0.75rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            counter-reset: note;
+        }
+
+        li {
+            display: grid;
+            grid-template-columns: 1.75rem minmax(0, 1fr);
+            gap: 0.5rem;
+            font-size: 0.9375rem;
+            line-height: 1.45;
+            color: var(--ks-content-secondary);
+            counter-increment: note;
+
+            &::before {
+                content: counter(note);
+                display: grid;
+                place-items: center;
+                width: 1.5rem;
+                height: 1.5rem;
+                border-radius: 50%;
+                background: var(--ks-background-secondary);
+                font-size: 0.75rem;
+                font-weight: 600;
+                color: var(--ks-content-primary);
+            }
+        }
+
+        .more {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-weight: 600;
+            color: var(--ks-content-link);
+        }
+    }
+</style>

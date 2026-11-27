@@ -4,7 +4,25 @@ import { fetchPluginIcon } from "~/utils/pluginIcon"
 import airflowMark from "~/components/versus/assets/airflow-monograme.svg"
 import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
 
-const ROWS = [
+export interface HeroRow {
+    code: (string | number)[][]
+    kestra: {
+        id: string
+        type: string
+        fallback: string
+        time: string
+        // Plugin class fetched for the icon; "" skips the fetch.
+        plugin?: string
+    }
+}
+
+export interface Props {
+    source?: { mark: string; label: string; file: string }
+    target?: string
+    rows?: HeroRow[]
+}
+
+const AIRFLOW_ROWS: HeroRow[] = [
     {
         code: [[10, 'schedule=<s>"0 6 * * *"</s>,']],
         kestra: { id: "daily", type: "core.trigger.Schedule", fallback: "mdi:clock-outline", time: "0.2s" },
@@ -25,6 +43,12 @@ const ROWS = [
     },
 ]
 
+const {
+    source = { mark: airflowMark.src, label: "Airflow", file: "orders_daily.py" },
+    target = "company.data.orders_daily",
+    rows: ROWS = AIRFLOW_ROWS,
+} = Astro.props
+
 const paint = (line: string) =>
     line
         .replace(/<s>(.*?)<\/s>/g, '<span class="str">$1</span>')
@@ -32,8 +56,11 @@ const paint = (line: string) =>
 
 const icons = await Promise.all(
     ROWS.map(async ({ kestra }) => {
+        if (kestra.plugin === "") return null
         try {
-            const svg = await fetchPluginIcon(`io.kestra.plugin.${kestra.type}`)
+            const svg = await fetchPluginIcon(
+                `io.kestra.plugin.${kestra.plugin ?? kestra.type}`,
+            )
             return `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`
         } catch {
             return null
@@ -46,9 +73,9 @@ const icons = await Promise.all(
     <div class="panel">
         <div class="heads">
             <span class="head">
-                <img src={airflowMark.src} alt="" />
-                Airflow
-                <code>orders_daily.py</code>
+                <img src={source.mark} alt="" />
+                {source.label}
+                <code>{source.file}</code>
             </span>
             <span />
             <span class="head">
@@ -56,7 +83,7 @@ const icons = await Promise.all(
                     <img src={kestraMark.src} alt="" />
                 </span>
                 Kestra
-                <code>company.data.orders_daily</code>
+                <code>{target}</code>
             </span>
         </div>
         <ol class="rows">

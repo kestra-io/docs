@@ -16,6 +16,7 @@ interface Domain {
     description: string
     solutionHref?: string
     cta?: { label: string; href: string; external?: boolean }
+    moreCtas?: { label: string; href: string; external?: boolean }[]
     topology?: TopologyProps
     terminal?: TerminalProps
 }
@@ -396,6 +397,16 @@ const VISUALS = Object.fromEntries(
                                                 ? "Explore the solution"
                                                 : "Browse blueprints")}
                                     </a>
+                                    {domain.moreCtas?.map((more) => (
+                                        <a
+                                            href={more.href}
+                                            class="btn-ghost compact solution"
+                                            target={more.external ? "_blank" : undefined}
+                                            rel={more.external ? "noopener" : undefined}
+                                        >
+                                            {more.label}
+                                        </a>
+                                    ))}
                                 </div>
                                 <div class="panel-topology">
                                     {VISUALS[domain.id] ? (
@@ -891,6 +902,10 @@ const VISUALS = Object.fromEntries(
 
     .solution {
         margin-top: 1.75rem;
+    }
+
+    .solution + .solution {
+        margin-top: 0.75rem;
     }
 
     .panel-topology {
