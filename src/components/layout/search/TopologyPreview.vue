@@ -295,9 +295,8 @@
             font-weight: 600;
             padding: 0.15rem 0.6rem;
             border-radius: 6px;
-            color: #6a20d8;
-            background: rgba(132, 5, 255, 0.08);
-            border: 1px solid rgba(132, 5, 255, 0.18);
+            color: var(--ks-content-tag-category);
+            background: var(--ks-background-tag-category);
         }
     }
 
