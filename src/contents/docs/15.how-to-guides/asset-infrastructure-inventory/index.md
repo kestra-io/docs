@@ -241,6 +241,7 @@ To chart the inventory, for example VMs by `env` or `state`, use the [Assets dat
 ## Next steps
 
 - Run operations against VMs selected from this inventory: [Target fleet operations with asset metadata](../asset-fleet-operations/index.md).
+- Group resources into deployments with a lease, and let other teams request them from a catalog, in an [Infrastructure tenant](../../kestra-for-infra/index.mdx).
 - Review the [asset declaration reference](../../07.enterprise/02.governance/01.assets/01.declare-assets/index.md) for update rules and failure behavior.
 - Plan IDs, metadata keys, and namespaces with the [asset best practices](../../14.best-practices/13.assets/index.md).
 - Explore the graph and lock assets during maintenance in [Manage assets](../../07.enterprise/02.governance/01.assets/03.manage-assets/index.md).

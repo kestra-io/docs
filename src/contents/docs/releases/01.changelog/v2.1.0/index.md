@@ -6,14 +6,16 @@ icon: /src/contents/docs/icons/admin.svg
 description: Notable changes in Kestra 2.1.0, including new features, behavior changes, and breaking changes.
 ---
 
-Approvals, asset leases and the ASSET input, searchable execution values, custom webhook responses, new queue backends, and keyless cloud access.
+Infrastructure self-service in a dedicated tenant type, searchable execution values, custom webhook responses, new queue backends, and keyless cloud access.
 
-## Assets
+## Infrastructure and assets
 
+- **Infrastructure tenants (EE)**: a tenant type with a self-service catalog, requests, deployments, inventory, and approvals. [Docs](../../../kestra-for-infra/index.mdx)
+- **App templates (EE)**: one template creates a flow and the app that runs it, with guardrails set by the platform team. [Docs](../../../kestra-for-infra/05.app-templates/index.md)
+- **Inventory import (EE)**: import Terraform state, CSV, JSON, or YAML into the asset inventory. [Docs](../../../kestra-for-infra/04.inventory/index.md#import-an-existing-inventory)
 - **Asset leases and day-2 actions (EE, Cloud)**: `ttl`, `owner`, and `status` fields on assets, the `TtlTrigger`, and asset actions with `when` conditions. [Docs](../../../07.enterprise/02.governance/01.assets/02.tasks-and-triggers/index.md#ttltrigger)
 - **ASSET input and output (EE, Cloud)**: let users pick assets from a searchable list filtered by type, ID, namespace, status, or metadata, and read them in tasks with the new `asset()` function. [Docs](../../../05.workflow-components/05.inputs/index.md#asset-inputs)
 - **Asset relations (EE, Cloud)**: `partOf` and `related` model deployments and their resources, and replace lineage events. [Migration guide](../../../11.migration-guide/v2.1.0/asset-relations/index.md)
-- **Bulk asset API (EE, Cloud)**: create or update many assets in one request, with a dry run to preview the result. [Docs](../../../07.enterprise/02.governance/01.assets/03.manage-assets/index.md#create-or-update-assets-in-bulk)
 
 <!-- TODO(GA): dbt artifacts and asset types (plugin-dbt#350, #351, #362, #364) are held for a plugin release after core 2.1. Add dbt to the Artifacts bullet under UI once they ship. -->
 
