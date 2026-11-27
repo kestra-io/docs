@@ -97,4 +97,20 @@ describe("allResults", () => {
         expect(first.url).toBe("docs/a")
         expect(first.doc?.groupStart).toBe(false)
     })
+
+    it("stops at the given limit", () => {
+        const rows = allResults(
+            [
+                {
+                    kind: "Plugin",
+                    results: ["a", "b", "c"].map((id) =>
+                        row(`plugins/${id}`, "PLUGINS", `Airflow ${id}`),
+                    ),
+                },
+            ],
+            "airflow",
+            2,
+        )
+        expect(rows).toHaveLength(2)
+    })
 })

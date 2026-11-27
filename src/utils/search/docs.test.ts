@@ -137,6 +137,12 @@ describe("docsSearchResults", () => {
         expect(results[0].doc.snippet).toBeUndefined()
     })
 
+    it("stops at the limit but counts every match", () => {
+        const { total, results } = docsSearchResults(docs, "secr", [], 2)
+        expect(total).toBe(4)
+        expect(results).toHaveLength(2)
+    })
+
     it("builds rows linking to the page, titled with its sidebar name", () => {
         expect(docsSearchResults(docs, "secr").results[0]).toMatchObject({
             url: "docs/concepts/secret",

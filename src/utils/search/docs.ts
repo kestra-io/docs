@@ -181,6 +181,7 @@ export function docsSearchResults(
     docs: DocsIndex,
     query: string,
     fullText: FullTextMatch[] = [],
+    limit = MAX_RESULTS,
 ) {
     const tokens = searchTokens(query)
     if (!tokens.length) {
@@ -199,7 +200,7 @@ export function docsSearchResults(
         total: pages.length,
         results: groupRuns(
             docs,
-            pages.slice(0, MAX_RESULTS).map((page) => ({
+            pages.slice(0, limit).map((page) => ({
                 page,
                 snippet: local.has(page.id) ? undefined : snippets.get(page.id),
             })),

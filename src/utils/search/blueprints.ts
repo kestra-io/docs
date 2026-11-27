@@ -239,6 +239,7 @@ export function blueprintsSearchResults(
     entries: BlueprintEntry[],
     cards: PluginSearchCard[],
     query: string,
+    limit = MAX_RESULTS,
 ) {
     const popularity = (entry: BlueprintEntry) =>
         blueprintPopularity(entry, cards)
@@ -248,8 +249,6 @@ export function blueprintsSearchResults(
         : rotateByPlugin(entries, popularity)
     return {
         total: matches.length,
-        results: matches
-            .slice(0, MAX_RESULTS)
-            .map((entry) => toResult(entry, cards)),
+        results: matches.slice(0, limit).map((entry) => toResult(entry, cards)),
     }
 }

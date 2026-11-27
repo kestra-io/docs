@@ -432,6 +432,14 @@
                                         </div>
                                     </a>
                                 </div>
+                                <button
+                                    v-if="searchResults.length < resultsTotal"
+                                    type="button"
+                                    class="show-more"
+                                    @click="showMore"
+                                >
+                                    Show more results
+                                </button>
                             </div>
                             <div
                                 class="search-detail p-3 col-6 d-none d-md-flex"
@@ -830,6 +838,7 @@
     } from "~/utils/search/blueprints"
     import { docsSearchResults, loadDocsIndex } from "~/utils/search/docs"
     import { fullTextMatches } from "~/utils/search/fullText"
+    import { MAX_RESULTS } from "~/utils/search/matching"
     import {
         loadPluginsIndex,
         pluginsSearchResults,
@@ -842,30 +851,31 @@
         PLUGINS: {
             kind: "Plugin",
             load: loadPluginsIndex,
-            search: (indexes, query) =>
-                pluginsSearchResults(indexes.PLUGINS, query),
+            search: (indexes, query, _fullText, limit) =>
+                pluginsSearchResults(indexes.PLUGINS, query, limit),
         },
         BLUEPRINTS: {
             kind: "Blueprint",
             load: loadBlueprintsIndex,
-            search: (indexes, query) =>
+            search: (indexes, query, _fullText, limit) =>
                 blueprintsSearchResults(
                     indexes.BLUEPRINTS,
                     indexes.PLUGINS ?? [],
                     query,
+                    limit,
                 ),
         },
         DOCS: {
             kind: "Docs",
             load: loadDocsIndex,
-            search: (indexes, query, fullText) =>
-                docsSearchResults(indexes.DOCS, query, fullText),
+            search: (indexes, query, fullText, limit) =>
+                docsSearchResults(indexes.DOCS, query, fullText, limit),
         },
         BLOGS: {
             kind: "Blog post",
             load: loadBlogsIndex,
-            search: (indexes, query, fullText) =>
-                blogsSearchResults(indexes.BLOGS, query, fullText),
+            search: (indexes, query, fullText, limit) =>
+                blogsSearchResults(indexes.BLOGS, query, fullText, limit),
         },
     }
 
@@ -887,6 +897,8 @@
         data() {
             return {
                 searchResults: [],
+                resultsTotal: 0,
+                resultLimit: MAX_RESULTS,
                 searchFacets: {},
                 selectedFacet: undefined,
                 selectedIndex: 0,
@@ -983,6 +995,7 @@
                 // A newer search has started: this one must not touch the state.
                 const isStale = () => this.abortController !== controller
                 this.loading = true
+                this.resultLimit = MAX_RESULTS
 
                 this.searchValue = value
                 this.updateLocalResults(value)
@@ -1029,6 +1042,7 @@
                             )
                             if (results.length) {
                                 this.searchResults = results
+                                this.resultsTotal = results.length
 
                                 this.selectedIndex = 0
                                 this.selectedItem = this.searchResults[0]
@@ -1142,6 +1156,7 @@
                         this.indexes,
                         value,
                         matches,
+                        this.resultLimit,
                     )
                 }
                 this.localResults = localResults
@@ -1158,16 +1173,28 @@
                               results: localResults[type].results,
                           })),
                           value,
+                          this.resultLimit,
                       )
-                this.showResults(results, keepSelection)
+                const total = this.selectedFacet
+                    ? localResults[this.selectedFacet].total
+                    : Object.values(localResults).reduce(
+                          (sum, { total }) => sum + total,
+                          0,
+                      )
+                this.showResults(results, keepSelection, total)
             },
-            showResults(results, keepSelection = false) {
+            showMore() {
+                this.resultLimit += MAX_RESULTS
+                this.updateLocalResults(this.searchValue ?? "", true)
+            },
+            showResults(results, keepSelection = false, total = 0) {
                 const kept = keepSelection
                     ? results.findIndex(
                           (result) => result.url === this.selectedItem?.url,
                       )
                     : -1
                 this.searchResults = results
+                this.resultsTotal = Math.max(total, results.length)
                 this.selectedIndex = Math.max(kept, 0)
                 this.selectedItem = results[this.selectedIndex] ?? null
                 this.initialLoad = true
@@ -1226,6 +1253,7 @@
                 this.selectedIndex = null
                 this.selectedItem = null
                 this.searchResults = []
+                this.resultsTotal = 0
                 this.searchFacets = {}
             },
             breadcrumb(slug) {
@@ -1642,6 +1670,21 @@
                 padding: 0;
                 color: var(--ks-content-primary);
                 background: var(--ks-background-tag-category);
+            }
+        }
+        .show-more {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 0;
+            border-bottom: 1px solid var(--ks-border-primary);
+            background: var(--ks-background-secondary);
+            color: var(--ks-content-link);
+            font-size: $font-size-sm;
+            font-weight: 600;
+
+            &:hover {
+                background: var(--ks-background-primary);
             }
         }
         .preview-match {

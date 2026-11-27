@@ -55,7 +55,11 @@ const toResult = (card: PluginSearchCard): PluginSearchResult => ({
     },
 })
 
-export function pluginsSearchResults(cards: PluginSearchCard[], query: string) {
+export function pluginsSearchResults(
+    cards: PluginSearchCard[],
+    query: string,
+    limit = MAX_RESULTS,
+) {
     const matches = sortPlugins(
         filterPluginsBySearch(cards, query),
         "most-used",
@@ -63,6 +67,6 @@ export function pluginsSearchResults(cards: PluginSearchCard[], query: string) {
     )
     return {
         total: matches.length,
-        results: matches.slice(0, MAX_RESULTS).map(toResult),
+        results: matches.slice(0, limit).map(toResult),
     }
 }

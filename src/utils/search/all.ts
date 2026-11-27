@@ -21,6 +21,7 @@ function relevance(row: Row, tokens: string[]) {
 export function allResults(
     tabs: { kind: string; results: Row[] }[],
     query: string,
+    limit = MAX_RESULTS,
 ) {
     const tokens = searchTokens(query)
     const levels = [EXACT_TITLE, IN_TITLE, ELSEWHERE].map((level) =>
@@ -42,5 +43,5 @@ export function allResults(
             lists.flatMap((list) => list[i] ?? []),
         ).flat()
     })
-    return mixed.slice(0, MAX_RESULTS)
+    return mixed.slice(0, limit)
 }

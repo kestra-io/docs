@@ -86,13 +86,14 @@ export function blogsSearchResults(
     posts: BlogEntry[],
     query: string,
     fullText: FullTextMatch[] = [],
+    limit = MAX_RESULTS,
 ) {
     const tokens = searchTokens(query)
     if (!tokens.length) {
         const newest = [...posts].sort(newestFirst)
         return {
             total: newest.length,
-            results: newest.slice(0, MAX_RESULTS).map((post) => toResult(post)),
+            results: newest.slice(0, limit).map((post) => toResult(post)),
         }
     }
     const ranked = rankBlogs(posts, tokens)
@@ -107,7 +108,7 @@ export function blogsSearchResults(
     return {
         total: matches.length,
         results: matches
-            .slice(0, MAX_RESULTS)
+            .slice(0, limit)
             .map((post) =>
                 toResult(
                     post,
