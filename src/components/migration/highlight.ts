@@ -1,25 +1,21 @@
 export const escapeHtml = (text: string) =>
     text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
 
-const KEYWORDS = /\b(def|return|import|from|with|as|None)\b/
+const PYTHON_TOKEN =
+    /("[^"]*")|(@\w+(?:\(\))?)|\b(def|return|import|from|with|as|None)\b|\b([A-Za-z_]\w*)\b/g
 
-export const python = (line: string, calls: readonly string[] = []) => {
-    const pattern = new RegExp(
-        `("[^"]*")|(@\\w+(?:\\(\\))?)|${KEYWORDS.source}${calls.length ? `|\\b(${calls.join("|")})\\b` : ""}`,
-        "g",
-    )
-    return escapeHtml(line).replace(pattern, (match, str, deco, kw, fn) =>
+export const python = (line: string, calls: readonly string[] = []) =>
+    escapeHtml(line).replace(PYTHON_TOKEN, (match, str, deco, kw, word) =>
         str
             ? `<span class="s">${match}</span>`
             : deco
               ? `<span class="d">${match}</span>`
               : kw
                 ? `<span class="k">${match}</span>`
-                : fn
+                : calls.includes(word)
                   ? `<span class="f">${match}</span>`
                   : match,
     )
-}
 
 export const pebble = (value: string) =>
     escapeHtml(value).replace(
@@ -93,23 +89,23 @@ const commentAt = (line: string, marker?: string) => {
     return -1
 }
 
+const SOURCE_TOKEN = /("[^"]*"|'[^']*'|`[^`]*`)|\b([A-Za-z_]\w*)\b/g
+
 export const source = (line: string, lang: string) => {
     const words = SOURCE_KEYWORDS[lang] ?? []
     const at = commentAt(line, LINE_COMMENT[lang])
     const body = at >= 0 ? line.slice(0, at) : line
     const comment = at >= 0 ? line.slice(at) : ""
-    const pattern = new RegExp(
-        `("[^"]*"|'[^']*'|\`[^\`]*\`)${words.length ? `|\\b(${words.join("|")})\\b` : ""}|(\\b[A-Za-z_]\\w*)(?=\\()`,
-        "g",
-    )
-    const html = escapeHtml(body).replace(pattern, (match, str, kw, fn) =>
-        str
-            ? `<span class="s">${match}</span>`
-            : kw
-              ? `<span class="k">${match}</span>`
-              : fn
-                ? `<span class="f">${match}</span>`
-                : match,
+    const html = escapeHtml(body).replace(
+        SOURCE_TOKEN,
+        (match, str, word, offset: number, input: string) =>
+            str
+                ? `<span class="s">${match}</span>`
+                : words.includes(word)
+                  ? `<span class="k">${match}</span>`
+                  : input[offset + match.length] === "("
+                    ? `<span class="f">${match}</span>`
+                    : match,
     )
     return comment ? `${html}<span class="c">${escapeHtml(comment)}</span>` : html
 }
