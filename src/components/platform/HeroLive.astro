@@ -1,0 +1,550 @@
+---
+import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
+import PixelGrid from "~/components/common/PixelGrid.astro"
+import { fetchPluginIcon } from "~/utils/pluginIcon"
+
+const ROWS = [-14, -6, 2, 10]
+const EXITS = [-12, -5, 4, 11]
+const ROWS_STACKED = [-11, -5, 1, 7]
+const EXITS_STACKED = [-9, -3, 2, 8]
+
+const TRIGGERS = [
+    { plugin: "io.kestra.plugin.core.trigger.Schedule", label: "Schedule" },
+    { plugin: "io.kestra.plugin.core.trigger.Webhook", label: "Webhook" },
+    { plugin: "io.kestra.plugin.aws.s3.Trigger", label: "Event" },
+    { plugin: "io.kestra.plugin.ai.agent.AIAgent", label: "AI agent" },
+]
+
+const TASKS = [
+    {
+        plugin: "io.kestra.plugin.scripts.python.Script",
+        label: "Python script",
+    },
+    { plugin: "io.kestra.plugin.jdbc.postgresql.Query", label: "SQL query" },
+    { plugin: "io.kestra.plugin.core.http.Request", label: "HTTP request" },
+    {
+        plugin: "io.kestra.plugin.scripts.shell.Commands",
+        label: "Shell script",
+    },
+]
+
+const BACKENDS = {
+    PostgreSQL: "io.kestra.plugin.jdbc.postgresql",
+    MySQL: "io.kestra.plugin.jdbc.mysql",
+    Elasticsearch: "io.kestra.plugin.elasticsearch",
+    Kafka: "io.kestra.plugin.kafka",
+    Redis: "io.kestra.plugin.redis",
+    AMQP: "io.kestra.plugin.amqp",
+    "Pub/Sub": "io.kestra.plugin.gcp.pubsub",
+    NATS: "io.kestra.plugin.nats",
+    SQS: "io.kestra.plugin.aws.sqs",
+    "Event Hubs": "io.kestra.plugin.azure.eventhubs",
+}
+
+const STORES: { label: string; backends: (keyof typeof BACKENDS)[] }[] = [
+    {
+        label: "Queue",
+        backends: [
+            "PostgreSQL",
+            "Kafka",
+            "MySQL",
+            "Redis",
+            "AMQP",
+            "Pub/Sub",
+            "NATS",
+            "SQS",
+            "Event Hubs",
+        ],
+    },
+    { label: "Database", backends: ["PostgreSQL", "Elasticsearch", "MySQL"] },
+]
+
+const icons: Record<string, string> = Object.fromEntries(
+    await Promise.all(
+        [
+            ...TRIGGERS,
+            ...TASKS,
+            ...Object.values(BACKENDS).map((plugin) => ({ plugin })),
+        ].map(async ({ plugin }) => [
+            plugin,
+            await fetchPluginIcon(plugin).catch(() => ""),
+        ]),
+    ),
+)
+
+const MASK =
+    "radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0, 0, 0, 0.55) 0%, #000 50%, transparent 100%)"
+
+const spot = (u: number, idx: number, n: number) =>
+    `--u: ${u}; --v: ${ROWS[idx]}; --vs: ${ROWS_STACKED[idx]}; --n: ${n}`
+---
+
+<div
+    class="field"
+    role="img"
+    aria-label="Triggers start flows in Kestra, which sends each task to a worker"
+    data-hero-live
+>
+    <div class="backdrop">
+        <PixelGrid rows={56} cell={10} gap={3} mask={MASK} />
+    </div>
+
+    {TRIGGERS.map((trigger, idx) => (
+        <div
+            class="block trigger"
+            aria-hidden="true"
+            style={spot(-20, idx, 4)}
+            data-trigger
+            data-exit={EXITS[idx]}
+            data-exit-stacked={EXITS_STACKED[idx]}
+        >
+            <span class="tile" set:html={icons[trigger.plugin]} />
+            <span class="label">
+                <b>{trigger.label}</b>
+            </span>
+        </div>
+    ))}
+
+    <div
+        class="block core"
+        aria-hidden="true"
+        style="--u: -5; --v: -5; --vs: -5; --n: 10"
+        data-core
+    >
+        <img src={kestraMark.src} alt="" />
+    </div>
+    <dl class="store" aria-hidden="true">
+        {STORES.map((store) => (
+            <>
+                <dt>{store.label}</dt>
+                <dd data-rotate>
+                    {store.backends.map((name, idx) => (
+                        <span class:list={["backend", { active: idx === 0 }]}>
+                            <span
+                                class="logo"
+                                set:html={icons[BACKENDS[name]]}
+                            />
+                            {name}
+                        </span>
+                    ))}
+                </dd>
+            </>
+        ))}
+    </dl>
+
+    {TASKS.map((task, idx) => (
+        <div
+            class="block task"
+            aria-hidden="true"
+            style={spot(16, idx, 4)}
+            data-task
+        >
+            <span class="tile" set:html={icons[task.plugin]} />
+            <span class="label">
+                <b>{task.label}</b>
+            </span>
+        </div>
+    ))}
+</div>
+
+<script>
+    type Cell = [number, number]
+
+    const ENTRIES = [-4, -2, 1, 3]
+    const STACKED = "(max-width: 767.98px)"
+    const SEQUENCE = [
+        [0, 2],
+        [2, 0],
+        [1, 3],
+        [3, 1],
+        [0, 3],
+        [2, 1],
+        [1, 0],
+        [3, 2],
+    ]
+    const wait = (ms: number) =>
+        new Promise((resolve) => setTimeout(resolve, ms))
+
+    function inbound(exit: number, entry: number, outer: boolean): Cell[] {
+        const turn = outer ? -8 : -11
+        const cells: Cell[] = []
+        for (let u = -16; u <= turn; u++) cells.push([u, exit])
+        const step = Math.sign(entry - exit)
+        for (let v = exit + step; v !== entry + step; v += step)
+            cells.push([turn, v])
+        for (let u = turn + 1; u <= -6; u++) cells.push([u, entry])
+        return cells
+    }
+
+    function wireLive(root: HTMLElement, grid: HTMLElement) {
+        const rows = Number(grid.dataset.rows)
+        const pitch = Number(grid.dataset.pitch)
+        const gap = parseFloat(getComputedStyle(grid).getPropertyValue("--gap"))
+        const column = Math.floor(grid.children.length / rows / 2)
+        const row = rows / 2
+        const core = root.querySelector<HTMLElement>("[data-core]")!
+        const triggers = [
+            ...root.querySelectorAll<HTMLElement>("[data-trigger]"),
+        ]
+        const tasks = [...root.querySelectorAll<HTMLElement>("[data-task]")]
+        const stacked = matchMedia(STACKED)
+
+        const place = () => {
+            const box = root.getBoundingClientRect()
+            const cells = grid.getBoundingClientRect()
+            const zoom = box.width / root.offsetWidth
+            root.style.setProperty(
+                "--ox",
+                `${(cells.left - box.left) / zoom + column * pitch - gap / 2}px`,
+            )
+            root.style.setProperty(
+                "--oy",
+                `${(cells.top - box.top) / zoom + row * pitch - gap / 2}px`,
+            )
+        }
+        new ResizeObserver(place).observe(root)
+
+        const cell = ([u, v]: Cell) => {
+            const [x, y] = stacked.matches ? [v, u] : [u, v]
+            return grid.children[(column + x) * rows + row + y] as
+                HTMLElement | undefined
+        }
+
+        const blocks = [...root.querySelectorAll<HTMLElement>(".block")]
+        let voids: HTMLElement[] = []
+        let routes: { in: HTMLElement[]; out: HTMLElement[] }[] = []
+        const trace = () => {
+            voids.forEach((el) => el.classList.remove("void"))
+            voids = blocks.flatMap((block) => {
+                const value = (name: string) =>
+                    Number(block.style.getPropertyValue(name))
+                const u = value("--u")
+                const v = value(stacked.matches ? "--vs" : "--v")
+                const size = value("--n")
+                return Array.from({ length: size * size }, (_, idx) =>
+                    cell([u + (idx % size), v + Math.floor(idx / size)]),
+                ).flatMap((el) => el ?? [])
+            })
+            voids.forEach((el) => el.classList.add("void"))
+            routes.forEach((route) =>
+                [...route.in, ...route.out].forEach((el) =>
+                    el.classList.remove("route"),
+                ),
+            )
+            routes = triggers.map((trigger, idx) => {
+                const path = inbound(
+                    Number(
+                        stacked.matches
+                            ? trigger.dataset.exitStacked
+                            : trigger.dataset.exit,
+                    ),
+                    ENTRIES[idx],
+                    idx === 0 || idx === triggers.length - 1,
+                )
+                const lit = (cells: Cell[]) =>
+                    cells.flatMap((c) => cell(c) ?? [])
+                return {
+                    in: lit(path),
+                    out: lit(path.map(([u, v]): Cell => [-u - 1, v]).reverse()),
+                }
+            })
+            routes.forEach((route) =>
+                [...route.in, ...route.out].forEach((el) =>
+                    el.classList.add("route"),
+                ),
+            )
+        }
+        trace()
+        stacked.addEventListener("change", trace)
+
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+
+        const shoot = (cells: HTMLElement[]) => {
+            cells.forEach((el, idx) =>
+                setTimeout(() => {
+                    el.classList.add("pulse")
+                    setTimeout(() => el.classList.remove("pulse"), 220)
+                }, idx * 26),
+            )
+            return cells.length * 26
+        }
+
+        const flash = (el: Element, ms: number) => {
+            el.classList.add("fired")
+            setTimeout(() => el.classList.remove("fired"), ms)
+        }
+
+        const stores = [
+            ...root.querySelectorAll<HTMLElement>("[data-rotate]"),
+        ].map((el) => ({ items: [...el.children], index: 0 }))
+        const rotate = async (id: number) => {
+            for (let turn = 0; id === token; turn++) {
+                await wait(2200)
+                if (id !== token) return
+                const store = stores[turn % stores.length]
+                store.items[store.index].classList.remove("active")
+                store.index = (store.index + 1) % store.items.length
+                store.items[store.index].classList.add("active")
+            }
+        }
+
+        let token = 0
+        const run = async () => {
+            const id = ++token
+            void rotate(id)
+            for (let count = 0; id === token; count++) {
+                const [from, to] = SEQUENCE[count % SEQUENCE.length]
+                flash(triggers[from], 900)
+                await wait(shoot(routes[from].in))
+                if (id !== token) return
+                flash(core, 500)
+                await wait(shoot(routes[to].out))
+                if (id !== token) return
+                flash(tasks[to], 900)
+                await wait(900)
+            }
+        }
+
+        new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) void run()
+                else token++
+            },
+            { threshold: 0.3 },
+        ).observe(root)
+    }
+
+    function init() {
+        document
+            .querySelectorAll<HTMLElement>("[data-hero-live]:not([data-wired])")
+            .forEach((root) => {
+                const grid = root.querySelector<HTMLElement>(".cells")!
+                const start = () => {
+                    if (!grid.children.length)
+                        return void requestAnimationFrame(start)
+                    root.dataset.wired = "true"
+                    wireLive(root, grid)
+                }
+                start()
+            })
+    }
+
+    document.addEventListener("astro:page-load", init)
+    init()
+</script>
+
+<style lang="scss">
+    .field {
+        --pitch: 13px;
+        --gap: 3px;
+        --ox: 50%;
+        --oy: 50%;
+        --muted: #9a9aab;
+
+        position: relative;
+        height: 26rem;
+        color: #ffffff;
+
+        @include media-breakpoint-up(xxl) {
+            margin-block: 3.5rem;
+            scale: 1.25;
+        }
+
+        @include media-breakpoint-down(md) {
+            height: 37rem;
+        }
+
+        :global(.cells span.trail) {
+            background: rgba(255, 255, 255, 0.03);
+            transition-duration: 0.9s;
+        }
+
+        :global(.cells span.trail.l1) {
+            background: rgba(99, 27, 255, 0.14);
+        }
+
+        :global(.cells span.trail.l2) {
+            background: rgba(99, 27, 255, 0.24);
+        }
+
+        :global(.cells span.trail.l3) {
+            background: rgba(122, 61, 255, 0.36);
+        }
+
+        :global(.cells span.void),
+        :global(.cells span.void.trail) {
+            background: transparent;
+            box-shadow: none;
+        }
+
+        :global(.cells span.route),
+        :global(.cells span.route.trail) {
+            background: rgba(167, 150, 255, 0.28);
+        }
+
+        :global(.cells span.pulse),
+        :global(.cells span.pulse.trail) {
+            background: #d8ccff;
+            box-shadow: 0 0 10px 1px rgba(185, 166, 255, 0.7);
+            transition-duration: 0.08s;
+        }
+    }
+
+    .backdrop {
+        position: absolute;
+        inset: -8rem -11rem;
+        pointer-events: none;
+
+        @include media-breakpoint-down(md) {
+            inset: -4rem -1.5rem;
+        }
+    }
+
+    .block {
+        --x: var(--u);
+        --y: var(--v);
+
+        position: absolute;
+        top: calc(var(--oy) + var(--y) * var(--pitch) + var(--gap) / 2);
+        left: calc(var(--ox) + var(--x) * var(--pitch) + var(--gap) / 2);
+        width: calc(var(--n) * var(--pitch) - var(--gap));
+        aspect-ratio: 1;
+
+        @include media-breakpoint-down(md) {
+            --x: var(--vs);
+            --y: var(--u);
+        }
+    }
+
+    .tile {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        padding: 12%;
+        border-radius: 0.5rem;
+        transition: filter 0.4s ease;
+
+        :global(svg) {
+            width: 100%;
+            height: 100%;
+        }
+
+        :global(.fired) > & {
+            filter: drop-shadow(0 0 12px rgba(124, 80, 255, 0.7));
+        }
+    }
+
+    .label {
+        position: absolute;
+        top: calc(100% + 0.5rem);
+        left: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.125rem;
+        white-space: nowrap;
+        translate: -50% 0;
+
+        b {
+            font-size: 0.75rem;
+            font-weight: 400;
+            line-height: 1.2;
+            color: #c9c9d6;
+        }
+
+        @include media-breakpoint-down(md) {
+            width: 4.75rem;
+            text-align: center;
+            white-space: normal;
+
+            b {
+                font-size: 0.6875rem;
+            }
+
+            .trigger & {
+                top: auto;
+                bottom: calc(100% + 0.5rem);
+            }
+        }
+    }
+
+    .store {
+        position: absolute;
+        top: calc(var(--oy) + 5 * var(--pitch) + 0.75rem);
+        left: var(--ox);
+        display: grid;
+        grid-template-columns: auto auto;
+        align-items: center;
+        gap: 0.375rem 0.625rem;
+        margin: 0;
+        font-size: 0.75rem;
+        line-height: 1.2;
+        white-space: nowrap;
+        translate: -50% 0;
+
+        dt {
+            font-weight: 400;
+            text-align: right;
+            color: var(--muted);
+        }
+
+        dd {
+            display: grid;
+            margin: 0;
+            color: #c9c9d6;
+        }
+
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
+
+    .backend {
+        display: flex;
+        grid-area: 1 / 1;
+        align-items: center;
+        gap: 0.375rem;
+        opacity: 0;
+        translate: 0 0.25rem;
+        transition:
+            opacity 0.3s ease,
+            translate 0.3s ease;
+
+        &:global(.active) {
+            opacity: 1;
+            translate: none;
+        }
+    }
+
+    .logo {
+        display: grid;
+        flex: none;
+        width: 1.125rem;
+        height: 1.125rem;
+        padding: 0.125rem;
+        border-radius: 0.25rem;
+        background: #ffffff;
+
+        :global(svg) {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .core {
+        display: grid;
+        place-items: center;
+        transition: scale 0.25s ease;
+
+        &:global(.fired) {
+            scale: 1.06;
+        }
+
+        img {
+            width: 78%;
+            height: auto;
+            filter: drop-shadow(0 0 28px rgba(124, 80, 255, 0.55));
+        }
+    }
+</style>
