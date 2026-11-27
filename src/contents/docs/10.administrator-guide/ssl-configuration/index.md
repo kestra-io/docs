@@ -205,7 +205,7 @@ Cross-site request forgery (CSRF) is an attack where a malicious website tricks 
 
 Kestra 2.0 ships CSRF protection enabled by default. It uses a double-submit token: the webserver sets a `csrfToken` cookie and injects the same value into the UI, which sends it back in the `X-CSRF-TOKEN` header on every state-changing request. The token is validated only when the request is authenticated by a session cookie (`BASIC_AUTH` or `JWT`). API and SDK clients that authenticate with an `Authorization` header are not affected, and `GET`, `HEAD`, and `OPTIONS` requests are never checked.
 
-CSRF protection does not require TLS. The `Secure` flag on the token cookie follows the request scheme, so plain-HTTP deployments keep working. The token is signed with `kestra.encryption.secret-key` when one is configured.
+CSRF protection does not require TLS. The `Secure` flag on the token cookie follows the request scheme, including `X-Forwarded-Proto` from a reverse proxy, so plain-HTTP deployments keep working. To force it, see [Secure cookies](../../configuration/03.observability-and-networking/index.md#secure-cookies). The token is signed with `kestra.encryption.secret-key` when one is configured.
 
 To disable it, for example while debugging a reverse proxy setup, set:
 

@@ -10,7 +10,7 @@ docId: ai-copilot
 
 Build and edit flows, diagnose failed executions, and run multi-step plans from a chat sidebar in the Kestra UI.
 
-This page is for anyone who works in the Kestra UI. Administrators who need to enable Copilot or choose its model can go straight to [Configure an LLM provider](#configure-an-llm-provider). If you write flows in Claude Code, Cursor, or another coding agent instead, see the [Docs MCP server](../02.kestra-mcp-resources/index.md) and [Agent Skills](../03.agent-skills/index.md).
+This page is for anyone who works in the Kestra UI. Administrators who need to enable Copilot or choose its model can go straight to [Configure an LLM provider](#configure-an-llm-provider). If you write flows in Claude Code, Cursor, or another coding agent instead, see the [Docs MCP Server](../02.kestra-mcp-resources/index.md) and [Agent Skills](../03.agent-skills/index.md).
 
 Open Copilot with the **AI** button in the top toolbar. Click **New chat +** to start a conversation, or use **Recents** to return to a previous one. Conversations last for the browser session. Type a prompt, or click the microphone button to dictate it.
 
@@ -69,7 +69,7 @@ Create a flow that downloads a CSV from S3 and loads it into Postgres
 
 ![AI Copilot Edit mode showing the Copilot searching plugins and proposing a validated S3-to-Postgres flow](./edit-step-1-build.png)
 
-The Copilot searches for the S3 and Postgres plugins, authors the flow with secrets referenced via `{{ secret('...') }}`, and presents the proposal. Select **Apply** to write it to the editor, or **Open in editor** to review the diff before accepting.
+The Copilot searches for the S3 and Postgres plugins, authors the flow with secrets referenced via `{{ secret('...') }}`, and presents the proposal as a draft card. Select **Apply** to save it, or **Open in editor** to edit it first. To see what the draft changes before you apply it, use the [Graph tab](#review-a-flow-change).
 
 **Step 2: Add error handling**
 
@@ -91,7 +91,25 @@ Parameterize the S3 bucket name and Postgres table as flow inputs
 
 The Copilot reads the current flow (note the `read-flow` step in the sidebar), adds an `inputs` block with `s3_bucket`, `s3_key`, and `postgres_table`, and rewires the hardcoded values to `{{ inputs.* }}` references throughout the flow. The flow and namespace context pills are attached automatically while working inside the editor.
 
-Each accepted change is saved as a revision. You can track the full edit history from the **Revisions** tab, or use [Git sync](../../version-control-cicd/04.git/index.md) to push revisions to your repository.
+### Review a flow change
+
+<!-- TODO(runtime test + screenshot): kestra-ee#12605 documented from source (kestra#22893, merged 2026-11-19). Check the Graph tab and the apply dialog on a develop image with a working LLM provider, and add a screenshot of the Graph tab with added, changed, and removed tasks. -->
+
+A valid flow draft card has a **YAML** tab and a **Graph** tab. The **Graph** tab shows the flow topology with each task and trigger marked by what the draft does to it. The draft is compared with the flow open in the editor, or with the saved flow when you're on another page. For a new flow, every task is added.
+
+| Mark | Meaning |
+|---|---|
+| Added | The task or trigger is new. |
+| Changed | Same ID and position, with different properties. |
+| Renamed | Same task under a new ID, with the same properties and child tasks. A task whose ID and properties both change shows as removed and added. |
+| Moved | Same task in another block, such as from `tasks` to `errors`, or into a different flowable task. |
+| Removed | The task or trigger is no longer in the flow. |
+
+Above the graph, a summary counts each kind of change and the unchanged tasks. If the graph can't be drawn, use the **YAML** tab instead.
+
+Selecting **Apply** opens a confirmation with the same summary and a text diff of the YAML. Applying saves the draft as a [draft revision](../../06.concepts/03.revision/index.md#draft-revisions): triggers and subflows ignore it until you publish it.
+
+Each applied change is saved as a revision. You can track the full edit history from the **Revisions** tab, or use [Git sync](../../version-control-cicd/04.git/index.md) to push revisions to your repository.
 
 ## Ask mode
 
@@ -132,6 +150,17 @@ Use Plan mode for tasks like:
 ## Fix with AI
 
 From the **Logs** and **Gantt** views of an execution, open the three-dot menu on a failed task and select **Fix with AI**. The flow editor opens with Copilot in Edit mode, loaded with the error context and ready to propose a fix.
+
+## Generate a unit test
+
+On a flow page, open the three-dot menu and select **Generate a unit test**. Copilot opens a new chat and sends a prompt for that flow. It reads the flow's source and drafts a [unit test](../../07.enterprise/02.governance/unit-tests/index.md) that mocks tasks calling external systems and asserts the outputs of the tasks that do the work. The draft appears as a card in the chat. Nothing is saved until you apply it.
+
+- Select **Open in editor** to review and edit the draft in the test editor before you save it.
+- Select **Apply** to create the test and open it. If a test with the same namespace and ID already exists, Apply overwrites it after you confirm.
+
+To change the draft, reply in the chat, for example "Add a test case where the API returns an empty list."
+
+The menu entry appears if you have the `TESTSUITE` `CREATE` permission on the flow's namespace. Overwriting an existing test also requires `TESTSUITE` `UPDATE`. Unit tests are available in Enterprise Edition and Kestra Cloud.
 
 ## Starter prompts
 
@@ -207,9 +236,9 @@ From the **Logs** and **Gantt** views of an execution, open the three-dot menu o
 
 ## Configure an LLM provider
 
-Copilot needs an LLM provider. Until you configure one, the Copilot panel opens with a notice that no provider is configured, and its prompt box, mode selector and suggestions stay disabled. Add providers under `kestra.ai.providers` in your Kestra configuration.
+Copilot needs an LLM provider. Add providers under `kestra.ai.providers` in your Kestra configuration. An open-source instance with no provider uses the [free tier](#free-tier) until you add one. Without a provider or the free tier, the Copilot panel opens with a notice that no provider is configured, and its prompt box, mode selector, and suggestions stay disabled.
 
-Kestra Open Source supports Google Gemini:
+Copilot supports Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and open-source models served by Ollama, in both the open-source and Enterprise editions. This example registers Gemini:
 
 ```yaml
 kestra:
@@ -223,7 +252,7 @@ kestra:
           model-name: gemini-3.5-flash-lite
 ```
 
-Enterprise Edition supports Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and open-source models served by Ollama. If you need another provider, [contact us](https://kestra.io/demo).
+If you need another provider, [contact us](https://kestra.io/demo).
 
 For every configuration property, including generation parameters, extended reasoning, request timeouts, mTLS, and custom headers, see the [AI Copilot configuration reference](../../configuration/06.enterprise-and-advanced/index.md#ai-copilot).
 
@@ -231,9 +260,28 @@ For every configuration property, including generation parameters, extended reas
 Legacy single-provider configurations (`kestra.ai.type` plus a provider block) still work. Use the `providers` array to register several providers and choose a default.
 :::
 
+### Free tier
+
+When an open-source instance has no provider configured, Copilot uses a free tier hosted by Kestra. It appears as **Kestra (free tier)** in the Copilot panel, which shows how much of the free allowance is left.
+
+On the free tier, Copilot sends your prompts, the flow YAML you're editing, and tool results to `api.kestra.io`. Tool results can include flow source and execution logs. To keep this data on your instance, configure your own provider, or turn the free tier off:
+
+```yaml
+kestra:
+  ai:
+    free-tier:
+      enabled: false
+```
+
+Kestra uses the free tier only when no provider is declared. If a declared provider can't start, for example because of an invalid API key, Copilot is unavailable instead of falling back to the free tier.
+
+:::alert{type="info"}
+In Enterprise Edition, the free tier is off by default. Set `kestra.ai.free-tier.enabled: true` to use it.
+:::
+
 ### Register multiple providers
 
-In Enterprise Edition, register several providers and mark one with `is-default: true`. Users can switch between them from the model dropdown in the Copilot panel.
+Register several providers and mark one with `is-default: true`. Users can switch between them from the model dropdown in the Copilot panel.
 
 ```yaml
 kestra:
@@ -256,7 +304,7 @@ kestra:
 
 ### Provider examples
 
-Each example below shows the minimum configuration for one Enterprise Edition provider.
+Each example below shows the minimum configuration for one provider.
 
 #### Amazon Bedrock
 
@@ -416,6 +464,44 @@ kestra:
           model-name: "anthropic/claude-sonnet-4"
 ```
 
+### Set usage limits
+
+Kestra records the tokens of every Copilot call. To cap what a provider spends, add a `usage-limit` block to its `configuration`. Copilot then shows the share of the allowance left, warns users as it runs low, and refuses new prompts once it's reached, until the period ends.
+
+```yaml
+kestra:
+  ai:
+    providers:
+      - id: gemini
+        display-name: Gemini
+        type: gemini
+        configuration:
+          api-key: YOUR_GEMINI_API_KEY
+          usage-limit:
+            max-weight: 50000000
+            user-max-weight: 5000000
+            window: MONTHLY
+```
+
+Limits count weighted tokens, so that cached input and generated output count at their relative cost. One uncached input token weighs `1`.
+
+| Property | Default | Description |
+|---|---|---|
+| `max-weight` | `0` | Limit for the whole instance, across all users and tenants. `0` sets no limit. |
+| `user-max-weight` | `0` | Limit for each user, across all the tenants they use. `0` sets no limit. |
+| `window` | `MONTHLY` | Period a limit counts over: `DAILY`, `WEEKLY` (starting Monday), or `MONTHLY` (starting on the 1st). Periods start at midnight UTC. |
+| `warning-threshold-percent` | `10` | Copilot warns users when this share of the allowance or less is left. With `0`, users see no warning before the limit is reached. |
+| `enabled` | `true` | Set to `false` to stop showing and enforcing the limits. Kestra still records usage. |
+| `cold-input-weight` | `1.0` | Weight of an uncached input token. |
+| `cached-input-weight` | `0.1` | Weight of an input token served from the provider's cache. If a provider doesn't report its cached share, the whole prompt counts as uncached input. |
+| `output-weight` | `6.0` | Weight of a generated token, reasoning tokens included. |
+
+A provider without `usage-limit` shows and enforces nothing. When a limit is reached, Copilot tells users whether they reached their own limit or the instance did, and when the period resets.
+
+To read the current usage, call `GET /api/v1/{tenant}/ai/usage`. It reports on the default provider, or on the provider set in the `providerId` query parameter.
+
+<!-- TODO(runtime test): free tier and usage limits written from source (kestra#18193, kestra-ee#9960, merged 2026-11-17). Live test on OSS develop fec96bba (2026-11-18): with no provider, Copilot registers "Kestra (free tier)" as the default provider and /ai/usage answers for kestra-free-tier, but every chat fails with `LLM streaming call failed: {"message":"Unauthorized"}` from the relay, and the relay's /limits answers 401, so no "% left" tag shows (AiFreeTierLimitProvider sends no identity headers). Ask engineering whether the relay (api.kestra.io#482) is live. Still to test: a working free-tier answer, the "% left" tag and refusal message with a small max-weight on your own provider. Screenshot of the usage tag pending. -->
+
 ### Disable AI Copilot
 
 Set `kestra.ai.enabled` to `false`. The property defaults to `true`.
@@ -426,9 +512,7 @@ kestra:
     enabled: false
 ```
 
-:::alert{type="warning"}
-**Known issue (Kestra 2.0.0):** `kestra.ai.enabled: false` does not fully disable AI Copilot in the current release. The Copilot UI button and other AI features such as "Fix with AI" remain visible and the feature continues to respond. This is being tracked and will be resolved in an upcoming release.
-:::
+With Copilot disabled, Kestra doesn't serve the Copilot API endpoints, and the [free tier](#free-tier) is off. The UI hides the Copilot entry in the left menu, the **AI** button in the top toolbar, the Copilot tab in the flow editor's context panel, and the **Fix with AI** actions. Opening `/ai` redirects to the home dashboard.
 
 ### Control access with RBAC
 

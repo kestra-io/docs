@@ -89,13 +89,21 @@ The `where` clause narrows which plugin instances a rule applies to. It is only 
 | `EQUAL_TO` | Exact match |
 | `NOT_EQUAL_TO` | Not an exact match |
 | `STARTS_WITH` | Prefix match |
+| `PREFIX` | Prefix match, same as `STARTS_WITH` |
 | `ENDS_WITH` | Suffix match |
 | `CONTAINS` | Substring match |
+| `NOT_CONTAINS` | No substring match |
 | `IN` | Value is in a list |
 | `NOT_IN` | Value is not in a list |
 | `REGEX` | Full regular expression match |
+| `GREATER_THAN` | Greater than the value |
+| `GREATER_THAN_OR_EQUAL_TO` | Greater than or equal to the value |
+| `LESS_THAN` | Less than the value |
+| `LESS_THAN_OR_EQUAL_TO` | Less than or equal to the value |
 | `IS_NULL` | Property is null or absent |
 | `IS_NOT_NULL` | Property is set and non-null |
+
+`IN` and `NOT_IN` take a non-empty list as `value`. `IS_NULL` and `IS_NOT_NULL` take no `value`. Every other operator needs a single value, and Kestra rejects the policy otherwise. Text comparisons are case-sensitive. The `GREATER_THAN` and `LESS_THAN` operators and their `_OR_EQUAL_TO` variants compare numbers and ISO 8601 dates by value.
 
 ```yaml
 # Prefix match — all Python script plugins
@@ -189,6 +197,8 @@ When injecting a nested object, keys from the flow and the policy are merged. If
 :::alert{type="warning"}
 If an `Add` and a `Delete` rule both target the same property in the same scope chain, Kestra raises a conflict error at save time. Express delete-then-re-inject as a single `Add` with `override: true` instead.
 :::
+
+When you create, update, or delete a policy that changes a trigger's resolved configuration, such as adding a `timezone` to a `Schedule` trigger, Kestra applies the new configuration to the trigger right away. It recomputes the trigger's next evaluation date, and it stops a running realtime trigger so that it restarts with the new configuration. A trigger that is running a backfill keeps its current evaluation date.
 
 ### Validate rules
 
@@ -455,6 +465,8 @@ When saving a flow violates an `ACTIVE` Policy, Kestra rejects the save and show
 
 When a flow is open in the editor, the Policies panel shows a **Mutation preview** toggle that surfaces injected values from `Add` rules, `override: true` replacements, and `Delete` removals, each annotated with the source policy that supplied them.
 
+While you edit a task, the **Inputs** panel of the task editor also has a **Policies** section, next to the namespace KV pairs and secrets. It lists every Policy that governs the flow and, under each one, the values it sets on the flow and on each task, labeled with the task id, such as the database user an `Add` rule injects. You can read what a task will receive without turning on the **Mutation preview**. Selecting a Policy opens its definition in a new tab, so the flow stays open in the editor.
+
 ## Policy scope and inheritance
 
 Policies apply along a scope chain, from outermost to innermost:
@@ -585,7 +597,7 @@ GET /api/v1/{tenant}/policies/{id}/evaluate
 GET /api/v1/{tenant}/namespaces/{namespace}/policies/{id}/evaluate
 ```
 
-The response lists every flow that would violate the policy's validate rules, grouped by rule. Use this to audit your compliance baseline before switching a policy from `EVALUATE` to `ACTIVE`.
+The response lists every flow the policy applies to, each with a status: `COMPLIANT`, `VIOLATING`, `MUTATED` or `CONFLICTING`. Flows that violate a validate rule, conflict, or would be changed by a mutate rule come first, and the list is paged with `page` and `size`. The policy page in the Governance UI shows the same list. Use it to audit your compliance baseline before switching a policy from `EVALUATE` to `ACTIVE`, or to see which flows a mutate rule changes.
 
 ## RBAC
 

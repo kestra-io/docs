@@ -66,7 +66,7 @@ When `vmName` is set, the runner targets an existing VM rather than creating one
 - The runner never stops or deletes the VM after the task — `stopVm` and `deleteVm` are ignored
 - The runner starts the VM if it is not already running, but leaves it running when the task finishes
 - `region`, `vmSize`, and `subnetId` are not required
-- The topology detail for the run always shows status `running`
+- The task's **Runner details** artifact always shows status `running`
 
 ## File handling
 
@@ -139,7 +139,7 @@ Setting `stopVm: false, deleteVm: false` keeps the VM running between task runs.
 `stopVm` and `deleteVm` have no effect when `vmName` is set. The runner never manages the lifecycle of a user-specified existing VM.
 :::
 
-The topology detail result (`AzureVmRunnerDetailResult`) reports the VM's final status:
+The runner's result (`AzureVmRunnerDetailResult`), shown in the task's **Runner details** artifact, reports the VM's final status:
 
 | Condition | Reported `status` |
 |---|---|

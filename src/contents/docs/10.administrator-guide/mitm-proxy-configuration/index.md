@@ -139,6 +139,19 @@ services:
       - JAVA_OPTS=-Djavax.net.ssl.trustStore=/app/ssl/truststore.p12 -Djavax.net.ssl.trustStorePassword=changeit -Djavax.net.ssl.trustStoreType=PKCS12 -Dhttp.proxyHost=your.proxy.net -Dhttp.proxyPort=8000 -Dhttps.proxyHost=your.proxy.net -Dhttps.proxyPort=8000 -Dhttp.nonProxyHosts=localhost|127.0.0.1|your.nexus.domain.com
 ```
 
+#### Authenticate plugin downloads with the proxy
+
+:::badge{version=">=2.1.0" editions="OSS,EE"}
+:::
+
+Plugin downloads from Maven repositories, such as `kestra plugins install` or installing versioned plugins in the Enterprise Edition, go through the proxy set by `http.proxyHost` and `https.proxyHost`. If the proxy requires Basic authentication, add its credentials for each scheme to `JAVA_OPTS`:
+
+```
+-Dhttp.proxyUser=proxy-user -Dhttp.proxyPassword=proxy-password -Dhttps.proxyUser=proxy-user -Dhttps.proxyPassword=proxy-password
+```
+
+Kestra sends the credentials only when `proxyUser` is set. The `jdk.http.auth.*` properties have no effect on plugin downloads. Plugin repositories whose host is listed in `http.nonProxyHosts`, such as an internal Nexus mirror, are reached directly.
+
 ## Troubleshooting
 
 1. **TLS handshake errors**
@@ -152,3 +165,6 @@ services:
 
 4. **Debugging TLS**
    Temporarily enable: `-Djavax.net.debug=ssl,handshake`.
+
+5. **`HTTP Status: 407` when installing a plugin**
+   The proxy requires authentication. Set `http.proxyUser` / `http.proxyPassword` and `https.proxyUser` / `https.proxyPassword` as described in [Authenticate plugin downloads with the proxy](#authenticate-plugin-downloads-with-the-proxy).

@@ -24,6 +24,7 @@ The **Preferences** section includes the following options:
 - **Default Triggers Tab**: Tab selected when navigating to the triggers page.
 - **Auto Refresh Interval**: Seconds between automatic data refreshes on list pages.
 - **Playground**: Toggle to enable or disable the editor playground, which lets you run tasks individually.
+- **Open Docs Tab**: Toggle whether the flow editor opens the **Documentation** view next to the code. It's on by default. When it's off, a new flow, or a flow you haven't opened before, starts with the editor only. A flow you've already opened keeps its layout.
 - **Default Flow Template**: YAML that opens in the editor when you create a flow from scratch. Leave out `id` and `namespace` and Kestra generates them. Invalid YAML shows a warning but is still saved. **Reset to default** clears it, so new flows use the instance template from [`kestra.flowTemplate`](../../configuration/03.observability-and-networking/index.md#default-flow-template), or the built-in Hello World flow if none is set. The template is stored in your browser and doesn't follow you to another browser or device.
 - **Customize Sidebar**: Drag and drop items to reorder the left navigation sidebar, or remove items you don't need.
 

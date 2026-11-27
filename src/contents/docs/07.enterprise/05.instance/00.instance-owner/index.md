@@ -31,7 +31,7 @@ The console organizes instance-wide administration into five sections:
 | **Instance** | Overview, System Overview, Services, Kill Switch, Announcements |
 | **Tenants** | Create, edit, and delete tenants; configure dedicated storage and secrets backends per tenant |
 | **Instance IAM** | Users and Service Accounts that exist at the instance level, independently of any tenant |
-| **Infrastructure** | Worker Groups, Worker Queues, Versioned Plugins, MCP Servers |
+| **Infrastructure** | Worker Groups, Worker Queues, MCP Servers |
 | **Governance** | Instance-level Policies and Audit Logs across all tenants |
 
 ## Exiting Instance Owner
@@ -50,25 +50,13 @@ When you launch Kestra for the first time, the [setup wizard](../../01.overview/
 
 ### Through the CLI
 
-When an Instance Owner already exists, create another one through the API with [`kestractl`](../../../kestra-cli/kestractl/index.md), authenticated as that Instance Owner:
+An existing Instance Owner can create another one with [`kestractl`](../../../kestra-cli/kestractl/index.md#users). In `kestractl`, the Instance Owner privilege is set with the `--superadmin` flag:
 
 ```bash
 kestractl users create --email admin@kestra.io --user-password 'TopSecret42' --superadmin
 ```
 
-To create the first Instance Owner without the setup wizard, for example in an automated installation, use the `kestra` server CLI. It writes directly to the database in the Kestra configuration, so run it where that configuration is available:
-
-```bash
-kestra auths users create admin@kestra.io TopSecret42 --instance-owner
-
-# with tenant scoping:
-kestra auths users create <username> <password> \
---tenant=<tenant-id> --instance-owner
-```
-
-:::alert{type="info"}
-`--superadmin` is a deprecated alias for `--instance-owner` and still works.
-:::
+`kestractl` authenticates against a running instance, so it can't create the first Instance Owner. Use the setup wizard or the configuration below for that.
 
 ### Through configuration
 

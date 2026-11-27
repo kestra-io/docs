@@ -46,14 +46,17 @@ Tenants must be created upfront, and a user needs to be granted access to use a 
 3. **Simple Configuration**: create new tenants at any time, each providing a fresh, fully isolated workspace accessible from your existing Kestra instance.
 4. **Intuitive UI Navigation**: the UI provides a dropdown as well as tenant identifiers included in the URL to make switching between tenants seamless.
 
-
 ## Creating and managing tenants
 
 Tenants are created and managed through the **Instance Owner console**. Only users with the Instance Owner privilege can create, edit, or delete tenants. The console lists tenants under **Instance Owner → Tenants → All tenants**. Tenants can also be managed with `kestractl`, the API, or Terraform.
 
 ### Creating a tenant from the UI
 
-Create a tenant from **Instance Owner → Tenants → All tenants**. The Instance Owner who creates the tenant is automatically granted the Admin role for it.
+Go to **Instance Owner → Tenants → All tenants** and click **Create**. The wizard steps through identity (ID and name), type, worker selector, optionally storage and secrets, and the retention policy. Click **Create** on the final review step.
+
+On the **Retention policy** step, set how long the tenant keeps finished executions and logs, and whether it keeps `FAILED` executions forever. The form starts from the default policy chosen at [instance setup](../../01.overview/02.setup/index.md#step-3-choose-a-retention-policy), or from 90 days for both when there is none. Kestra generates a daily `retention` flow in the tenant's system flows namespace from these values. Click **Skip**, or keep both executions and logs forever, to create the tenant without the flow. See [Default retention flow](../../../10.administrator-guide/purge/index.md#default-retention-flow).
+
+The Instance Owner who creates the tenant is automatically granted the Admin role for it. You may need to refresh the UI to see updated roles.
 
 ### Creating a tenant from the CLI
 
@@ -62,6 +65,14 @@ Create a tenant from **Instance Owner → Tenants → All tenants**. The Instanc
 ```bash
 kestractl tenants create stage --name "Staging"
 ```
+
+As in the UI, you are granted the Admin role in the new tenant. The tenant also gets a `retention` flow generated from the instance's default retention policy, when one was set at instance setup. To make another user an admin of the tenant, create a binding:
+
+```bash
+kestractl bindings create --tenant stage --type USER --external-id <user_id> --role <admin_role_id>
+```
+
+Run `kestractl tenants create --help` to see all available options, including concurrency limits and execution quotas.
 
 The `kestra` server CLI can also create a tenant. It writes directly to the database in the Kestra configuration, so run it where that configuration is available. It takes the tenant identifier and name as positional arguments. Add `--admin-username` to grant the Admin role on the new tenant to an existing user:
 
@@ -79,6 +90,22 @@ curl -X POST "https://kestra.example.com/api/v1/tenants" \
   -H "Content-Type: application/json" \
   -d '{"id": "stage", "name": "Staging"}'
 ```
+
+To choose the tenant's retention policy, add `retentionPolicy` to the body. `executionsDays` and `logsDays` are numbers of days, or `null` to keep forever, and `keepFailedExecutions` keeps `FAILED` executions and their `ERROR` logs forever:
+
+```json
+{
+  "id": "stage",
+  "name": "staging",
+  "retentionPolicy": {
+    "executionsDays": 30,
+    "logsDays": 14,
+    "keepFailedExecutions": true
+  }
+}
+```
+
+Without `retentionPolicy`, the tenant gets the instance's default policy, if one was set at instance setup. A policy with both `executionsDays` and `logsDays` set to `null` creates no flow. Instance Owners can read the default policy with `GET /api/v1/instance/retention-policy`, which returns `404` when none was set.
 
 ### Creating a tenant from Terraform
 
@@ -99,7 +126,7 @@ resource "kestra_tenant" "stage" {
 
 ### Deleting a tenant
 
-Deleting a tenant removes its flows, namespaces, apps, dashboards, roles, groups, role bindings, security integrations, and every user's and service account's access to the tenant.
+Deleting a tenant removes its flows, namespaces, apps, dashboards, assets and their relations, roles, groups, role bindings, security integrations, and every user's and service account's access to the tenant.
 
 Kestra keeps the following, which you can purge separately with the corresponding [Purge tasks](../../../10.administrator-guide/purge/index.md) if needed:
 
@@ -134,7 +161,20 @@ An Instance Owner edits a tenant's settings from **Instance Owner → Tenants �
 
 By default, each tenant uses the same [runtime and storage configuration](../../../configuration/02.runtime-and-storage/index.md) and [secrets backend](../secrets-manager/index.md) configured for your Kestra instance. If you need more isolation, you can configure a dedicated storage and secrets backend per tenant. This can be useful if each of your tenants serves different customers and you need to ensure complete data isolation between them.
 
-Configure a dedicated backend from the tenant's **Settings** page (**Instance Owner → Tenants → All tenants**, then the settings icon in the tenant's row), under **Dedicated internal storage** and **Dedicated secrets manager**. Turn on a section with its switch to show a type selector and a YAML configuration editor. In the API, the fields are `storageType`, `storageConfiguration`, `secretType`, and `secretConfiguration`. The [Terraform `kestra_tenant` resource](../../../13.terraform/resources/tenant/index.md) exposes them as `storage_type`, `storage_configuration`, `secret_type`, and `secret_configuration`, with the configuration as a flat map of strings.
+A dedicated storage and secrets backend is configured from the tenant's **Settings** page (**Instance Owner → Tenants → All tenants**, then the settings icon in the tenant's row). Turn on **Dedicated internal storage** in the **Internal storage** section or **Dedicated secrets manager** in the **Secrets manager** section, then select the storage or secret type. Namespaces have the same sections on their **Edit** tab.
+
+The configuration has two modes that edit the same properties, so you can switch between them:
+
+- **Form**: one field per property of the selected plugin. Required properties come first, and optional ones are grouped below them. A property the plugin doesn't define is flagged so you can remove it before saving. If the form for the selected type can't be loaded, this tab asks for the configuration as key and value pairs instead.
+- **Code**: the same properties as YAML. An empty editor shows an example with the plugin's main properties.
+
+Select **Documentation** to open the reference for the selected type.
+
+On a namespace, saved values are never shown again. Each one appears as **Set**: select **Replace** to enter a new value, or delete it to remove the property. Saving keeps every value you didn't change. Changing the storage or secret type clears the configuration, because the saved values belong to the previous backend.
+
+![Namespace Edit tab with a saved S3 storage configuration: bucket, accessKey, region, and secretKey each show Set with a Replace button](./namespace-dedicated-storage-saved.png)
+
+In the API, the fields are `storageType`, `storageConfiguration`, `secretType`, and `secretConfiguration`. The [Terraform `kestra_tenant` resource](../../../13.terraform/resources/tenant/index.md) exposes them as `storage_type`, `storage_configuration`, `secret_type`, and `secret_configuration`, with the configuration as a flat map of strings.
 
 Keep in mind:
 
@@ -145,7 +185,7 @@ Keep in mind:
 
 #### Use camelCase keys
 
-Write the configuration in camelCase, for example `accessKey` and `projectId`. In `application.yml` and Helm values, Kestra converts kebab-case keys such as `access-key` for you. Tenant settings pass your keys straight to the backend plugin with no conversion, so a kebab-case key fails when you save:
+Properties use the plugin's camelCase names, in the form and in **Code**, for example `accessKey` and `projectId`. In `application.yml` and Helm values, Kestra converts kebab-case keys such as `access-key` for you. Tenant settings pass your keys straight to the backend plugin with no conversion, so a kebab-case key fails when you save:
 
 ```
 Failed to create storage 's3'. Error: Unrecognized field "access-key"
@@ -174,7 +214,13 @@ Single-word keys such as `bucket`, `region`, `endpoint`, and `address` stay the 
 
 #### Dedicated storage example
 
-An S3 bucket as the tenant's internal storage, entered in **Dedicated internal storage** with the type set to `s3`:
+An S3 bucket as the tenant's internal storage, with the type set to `s3`. In the form, `bucket` is required and the keys and region are under **Connection**:
+
+![Dedicated internal storage with the s3 type and the bucket, accessKey, region, and secretKey fields filled in the form](./tenant-dedicated-storage-form.png)
+
+The same values in the **Code** view:
+
+![Dedicated internal storage Code view with the S3 configuration as YAML](./tenant-dedicated-storage-code.png)
 
 ```yaml
 bucket: tenant-a-kestra-storage
@@ -207,7 +253,13 @@ serviceAccount: |
 
 #### Dedicated secrets manager example
 
-AWS Secrets Manager, entered in **Dedicated secrets manager** with the type set to `aws-secret-manager`:
+AWS Secrets Manager, with the type set to `aws-secret-manager`. In the form, `region` is at the top and `accessKeyId` and `secretKeyId` are under **Advanced**:
+
+![Dedicated secrets manager with the aws-secret-manager type and the region field filled in the form](./tenant-dedicated-secrets-manager-form.png)
+
+The same values in the **Code** view:
+
+![Dedicated secrets manager Code view with the AWS Secrets Manager configuration as YAML](./tenant-dedicated-secrets-manager-code.png)
 
 ```yaml
 region: eu-west-1
@@ -225,7 +277,13 @@ appRole:
   secretId: YOUR_SECRET_ID
 ```
 
-For every property of each backend, see [Runtime and Storage](../../../configuration/02.runtime-and-storage/index.md) and the [Secrets Manager documentation](../secrets-manager/index.md). Those pages show `application.yml` keys, so rename them to camelCase before you paste them here.
+For every property of each backend, see [Runtime and Storage](../../../configuration/02.runtime-and-storage/index.md) and the [Secrets Manager documentation](../secrets-manager/index.md). Those pages show `application.yml` keys, so rename them to camelCase before you enter them here.
+
+#### Through the API
+
+The namespace API never returns the saved storage or secrets configuration. `GET /api/v1/{tenant}/namespaces/{id}/stored-configuration` lists the configured properties, each with the value `__KESTRA_SET__` in place of the saved one. When you update the namespace, send `__KESTRA_SET__` back for a property to keep its saved value, or leave `storageConfiguration` or `secretConfiguration` out of the request to keep the whole configuration. This endpoint requires the `UPDATE` action on the `NAMESPACE` permission.
+
+An invalid secrets manager configuration, such as a missing required property or a property the plugin doesn't define, is rejected with a `422` error that lists the properties to fix.
 
 ### Isolate Kestra services
 

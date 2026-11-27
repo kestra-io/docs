@@ -31,7 +31,7 @@ By default, labels prefixed with `system.` and `internal.` are hidden. Setting `
 
 ## System labels
 
-System Labels are labels prefixed with `system.` that serve specific purposes. The labels below are set automatically by Kestra. For a step-by-step guide on using `system.correlationId` as an idempotency key, see [Idempotency with correlation IDs](../../15.how-to-guides/idempotency/index.md).
+System Labels are labels prefixed with `system.` that serve specific purposes. The labels below are set automatically by Kestra. Only Kestra can set system labels, and the bare key `system` is reserved too: a flow, trigger, or execution that sets a label with that key is refused. For a step-by-step guide on using `system.correlationId` as an idempotency key, see [Idempotency with correlation IDs](../../15.how-to-guides/idempotency/index.md).
 
 ### `system.correlationId`
 
@@ -80,17 +80,17 @@ In the Enterprise Edition, updating a read-only flow server-side is restricted t
 ### `system.from`
 
 - Automatically set on every execution to indicate how it was triggered
-- Common values include `ui` (triggered from the Kestra UI) and `mcp` (triggered by a Kestra MCP server)
+- Common values include `ui` (triggered from the Kestra UI) and `mcp` (triggered through an MCP server in [MCP Flows](../../ai-orchestration/03.mcp-server/index.md))
 - Filtering by this label finds executions by their trigger source
 
 ### `system.mcpServerId`
 
-- Automatically set on every execution created by a Kestra MCP server
+- Automatically set on every execution created through an MCP server
 - Value is the `id` of the MCP server that invoked the tool
 - Used together with `system.from: mcp` to identify which server triggered a specific execution
 
 ### `system.mcpSessionId`
 
-- Automatically set on every execution created by a Kestra MCP server
+- Automatically set on every execution created through an MCP server
 - Value is the session ID of the MCP client connection that triggered the execution
 - Correlates multiple executions that originated from the same agent session

@@ -1,19 +1,25 @@
 ---
-title: "Flow MCP Servers: Expose Kestra Flows as AI Tools"
+title: "MCP Flows: Expose Kestra Flows as AI Tools"
 h1: Expose Your Flows as Tools for External AI Agents
-description: Expose Kestra flows as MCP tools that Claude, Cursor, and other AI agents can call. Create MCP servers, choose authentication, and connect clients.
-sidebarTitle: Flow MCP Servers
+description: Expose Kestra flows as MCP tools that Claude, Cursor, and other AI agents can call. Group them on MCP servers, choose authentication, and connect clients.
+sidebarTitle: MCP Flows
 icon: /src/contents/docs/icons/ai.svg
 version: ">= 2.0.0"
 editions: ["OSS", "EE", "Cloud"]
 docId: mcp-servers
 ---
 
-Expose your Kestra flows as named tools that external AI agents discover and call over MCP.
+MCP Flows exposes your Kestra flows as named tools that external AI agents discover and call over MCP.
 
-This page is for Kestra administrators and flow authors who want Claude, Cursor, or another AI agent to run their flows. If you want your coding agent to look up Kestra plugin schemas and docs while you write flows, use the [Docs MCP server](../../develop-with-ai/02.kestra-mcp-resources/index.md) instead.
+This page is for Kestra administrators and flow authors who want Claude, Cursor, or another AI agent to run their flows. Kestra has two other MCP features:
 
-A flow MCP server is a tenant-scoped entity that uses the [Model Context Protocol](https://modelcontextprotocol.io). Any flow with an [`McpToolTrigger`](../../05.workflow-components/07.triggers/06.mcp-tool-trigger/index.md) is registered as a named tool on its target server. AI agents discover the tool list at connection time, so adding or removing triggers takes effect without restarting clients.
+| You want an agent to… | Use |
+| --- | --- |
+| Run your own flows as tools | MCP Flows (this page) |
+| Operate your Kestra instance: read flows and executions, restart executions | [Kestra MCP Server](../../develop-with-ai/05.kestra-mcp-server/index.md) |
+| Look up plugin schemas, blueprints, and docs while it writes flows | [Docs MCP Server](../../develop-with-ai/02.kestra-mcp-resources/index.md) |
+
+With MCP Flows, you create MCP servers in a tenant and attach flows to them. Each server uses the [Model Context Protocol](https://modelcontextprotocol.io). Any flow with an [`McpToolTrigger`](../../05.workflow-components/07.triggers/06.mcp-tool-trigger/index.md) is registered as a named tool on its target server. AI agents discover the tool list at connection time, so adding or removing triggers takes effect without restarting clients.
 
 ## Two directions: Kestra as server vs. Kestra as client
 
@@ -21,10 +27,10 @@ Kestra supports MCP in both directions:
 
 | Direction | How | When to use |
 |---|---|---|
-| **Kestra as MCP server** | `McpToolTrigger` and a flow MCP server | External AI agents (Claude, Cursor) call your flows as tools |
+| **Kestra as MCP server** | `McpToolTrigger` and an MCP server | External AI agents (Claude, Cursor) call your flows as tools |
 | **Kestra as MCP client** | MCP client tasks (`SseMcpClient`, `StreamableHttpMcpClient`, `StdioMcpClient`, `DockerMcpClient`) | Your flows call external MCP servers as part of an `AIAgent` task |
 
-This page covers Kestra as an MCP server. To call external MCP servers from a flow, see [MCP clients](../01.ai-agents/index.md#mcp-clients).
+This page covers Kestra as an MCP server for your flows. To call external MCP servers from a flow, see [MCP clients](../01.ai-agents/index.md#mcp-clients).
 
 ## Default server
 
@@ -32,7 +38,7 @@ A `default` MCP server is automatically provisioned for every tenant on startup.
 
 ## Managing MCP servers
 
-Navigate to **Tenant → MCP Servers** in the left sidebar to view, create, edit, and manage MCP servers.
+Navigate to **Tenant → MCP Flows** in the left sidebar to view, create, edit, and manage MCP servers.
 
 To script the same tasks, [install `kestractl`](../../kestra-cli/kestractl/index.md#installation) and use its [`mcp-servers` commands](../../kestra-cli/kestractl/index.md#mcp-servers), or call the REST API at `/api/v1/{tenant}/mcp-servers`.
 

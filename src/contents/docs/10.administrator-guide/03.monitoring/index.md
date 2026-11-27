@@ -177,6 +177,7 @@ All Worker metrics except `worker.killed.count` are tagged with `worker_group`.
 |worker.trigger.started.count|`COUNTER`|Count of trigger evaluations started|
 |worker.trigger.ended.count|`COUNTER`|Count of trigger evaluations completed|
 |worker.trigger.error.count|`COUNTER`|Count of trigger evaluations that failed|
+|worker.stream.reconnect.count|`COUNTER`|Count of new job streams opened to the Worker Controller after the previous one was lost, also tagged with `reason` (`stream_error`, `stream_completed`, or `sync_unacknowledged`)|
 |worker.trigger.execution.count|`COUNTER`|Count of triggers evaluated|
 |worker.trigger.duration|`TIMER`|Duration of trigger evaluations|
 |worker.trigger.running.count|`GAUGE`|Number of triggers currently evaluating|

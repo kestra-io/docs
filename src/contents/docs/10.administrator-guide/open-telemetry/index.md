@@ -7,10 +7,9 @@ editions: ["OSS", "EE"]
 description: Implement observability in Kestra with OpenTelemetry to export traces, metrics, and logs to your preferred monitoring tools.
 ---
 
-**Observability** refers to understanding a system's internal state by analyzing its outputs. In software, this means examining telemetry data — such as traces, metrics, and logs — to gain insights into system behavior.
+**Observability** refers to understanding a system's internal state by analyzing its outputs. In software, this means examining telemetry data (traces, metrics, and logs) to gain insights into system behavior.
 
 **OpenTelemetry** is a vendor-neutral, tool-agnostic framework and toolkit for creating and managing telemetry data.
-It helps implement observability in software applications.
 
 OpenTelemetry defines three different kinds of telemetry data:
 - **Traces** provide a high-level view of what happens when a request is made to an application. A trace can contain multiple [spans](https://opentelemetry.io/docs/concepts/signals/traces/#spans).
@@ -118,7 +117,7 @@ The following screenshot shows three correlated traces:
 
 ### Disabling traces
 
-Traces can be disabled for flows while keeping API traces:
+To disable traces for flows while keeping API traces:
 
 ```yaml
 kestra:
@@ -126,7 +125,7 @@ kestra:
     root: DISABLED
 ```
 
-Traces can also be disabled per component (experimental). For example, disabling only Executor spans:
+You can also disable traces per component (experimental). For example, to disable only Executor spans:
 
 ```yaml
 kestra:
@@ -196,6 +195,7 @@ exporters:
 ## Logs
 
 To send logs to an OpenTelemetry-compatible collector, use the [LogShipper](../../07.enterprise/02.governance/logshipper/index.md) with the built-in OpenTelemetry log exporter.
+
 :::alert{type="warning"}
 LogShipper is only available in the Kestra **Enterprise Edition**.
 :::

@@ -30,7 +30,7 @@ Use this skill whenever you are asked to:
 ### Generating a flow
 
 1. Fetch the live flow schema: `curl -s https://api.kestra.io/v1/plugins/schemas/flow`
-2. Identify the correct plugin types — use the Kestra MCP server if available (`list_plugins`, `plugin_tasks`, `task_schema`), or check [kestra.io/plugins](https://kestra.io/plugins)
+2. Identify the correct plugin types — use the Docs MCP Server if available (`list_plugins`, `plugin_tasks`, `task_schema`), or check [kestra.io/plugins](https://kestra.io/plugins)
 3. Draft the YAML using the schema — validate every `type` against the live schema before emitting
 4. Return complete, deployable YAML
 
@@ -50,9 +50,9 @@ Use this skill whenever you are asked to:
 - **No recursive Pebble.** Pebble expressions are not evaluated inside other Pebble expressions.
 - **Use `| toJson` not `| json`** for JSON serialization in Pebble expressions.
 
-## Connecting the Kestra MCP server
+## Connecting the Docs MCP Server
 
-For the richest plugin discovery, add the Kestra MCP server to your AI agent:
+For the richest plugin discovery, add the Docs MCP Server to your AI agent:
 
 ```bash
 # Claude Code

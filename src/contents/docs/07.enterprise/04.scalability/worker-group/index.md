@@ -44,7 +44,7 @@ Add `workerSelector` to any task to route it to a matching Worker Queue. The `wo
 
 | Property | Description | Default |
 |---|---|---|
-| `tags` | List of RFC 1123 labels (max 20, each up to 64 characters) identifying the required Worker Queue. Tags can be [Pebble expressions](#choose-tags-at-runtime) | — |
+| `tags` | List of RFC 1123 labels (max 20, each up to 63 characters) identifying the required Worker Queue. Tags can be [Pebble expressions](#choose-tags-at-runtime) | — |
 | `match` | `ALL`: queue tags must include all selector tags. `ANY`: queue tags must include at least one selector tag | `ALL` |
 | `fallback` | Behavior when no worker is connected to any matching queue: `FAIL`, `WAIT`, `CANCEL`, or `IGNORE` | `FAIL` |
 
@@ -212,7 +212,7 @@ Two ids are reserved and never created manually:
 - `default` — the global default queue; receives tasks with no `workerSelector`
 - `system` — the in-process system worker
 
-Worker Queue ids must follow RFC 1123 label format: lowercase alphanumerics and hyphens, starting and ending with an alphanumeric character, max 64 characters.
+Worker Queue ids must follow RFC 1123 label format: lowercase alphanumerics and hyphens, starting and ending with an alphanumeric character, max 63 characters.
 
 ### Creating Worker Queues
 
@@ -734,6 +734,7 @@ Published by the controller process — the server-side view of fleet capacity a
 | `controller.capacity.shared.used` | gauge | `worker_group` | Shared slots currently in use |
 | `controller.job.dispatched.total` | counter | `worker_group`, `worker_queue` | Total jobs dispatched to workers |
 | `controller.job.requeued.total` | counter | `worker_queue` | Jobs re-queued because no worker had capacity |
+| `controller.job.resubmitted.total` | counter | `worker_group`, `worker_queue` | Jobs resubmitted because the worker they were sent to never received them |
 | `controller.job.killed.total` | counter | `worker_queue` | Jobs short-circuited by the pre-dispatch kill check |
 | `controller.job.dispatch.failed.total` | counter | `worker_group`, `worker_queue` | Dispatch attempts that failed: a send error, a failure to save the running state, or a payload above the worker's message size limit |
 | `controller.worker.registered.total` | counter | `worker_group`, `worker_queue` | Worker-queue subscription registrations |
@@ -763,6 +764,7 @@ Published by each worker process — the worker-side view of capacity and throug
 | `worker.killed.count` | counter | Kill events received from the controller |
 | `worker.queue.enqueued` | counter | Total items put into a buffer |
 | `worker.queue.dequeued` | counter | Total items drained from a buffer |
+| `worker.stream.reconnect.count` | counter | New job streams opened to the controller after the previous one was lost, tagged by `reason` (`stream_error`, `stream_completed`, or `sync_unacknowledged`) |
 | `worker.trigger.running.count` | gauge | Trigger evaluations currently in progress |
 | `worker.trigger.started.count` | counter | Total trigger evaluations started |
 | `worker.trigger.ended.count` | counter | Total trigger evaluations completed |
@@ -794,6 +796,8 @@ In Kestra 2.0, the task-level routing property changed from targeting a group by
 | No worker authentication | Registration token-based authentication with rotating credentials |
 
 `workerGroup` is not recognized in 2.0. Flows using it will fail validation and cannot be saved. Update your flows to replace `workerGroup.key` with `workerSelector.tags`. The group name in the old property corresponds to a tag on a Worker Queue in the new model.
+
+A dynamic key such as `workerGroup.key: "{{ outputs.get_worker.values.worker_key ?? null }}"` becomes `workerSelector.tags: ["{{ outputs.get_worker.values.worker_key ?? null }}"]`. One difference: a blank key used to send the task straight to the default group, while a blank tag now falls through to the flow, namespace, and tenant defaults first. See [Choose tags at runtime](#choose-tags-at-runtime).
 
 :::alert{type="warning"}
 The fallback default changed from `WAIT` to `FAIL`. Tasks that previously waited for an unavailable worker will now fail immediately unless you explicitly set `workerSelector.fallback: WAIT`.

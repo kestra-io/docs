@@ -151,7 +151,7 @@ Entries in `extraManifests` are rendered as Helm templates. When writing one as 
 
 ### Distinguishing worker groups
 
-Kestra's metrics payload does not include a worker group tag, so worker group identity has to come from Kubernetes pod labels. The Helm chart does not add a per-group label automatically, so declare one for the worker deployment and for each worker group:
+Kestra's metrics payload does not include a worker group tag, so worker group identity has to come from Kubernetes pod labels. The Helm chart labels the pods of each entry under `workerGroups` with `kestra.io/worker-group: <name>`. The `worker` Deployment gets no such label, so declare one for it:
 
 ```yaml
 deployments:
@@ -159,15 +159,11 @@ deployments:
     enabled: true
     podLabels:
       kestra.io/worker-group: default
-
-workerGroups:
-  gpu:
-    enabled: true
-    podLabels:
-      kestra.io/worker-group: gpu
 ```
 
-Together with `podTargetLabels` in the `PodMonitor` above, this makes each worker group separately queryable. Without it, every worker pod carries the same labels and its metrics cannot be attributed to a group.
+Together with `podTargetLabels` in the `PodMonitor` above, this makes each worker group separately queryable. Without it, metrics from the `worker` pods carry no worker group label.
+
+Don't set `kestra.io/worker-group` in a worker group's `podLabels`. The chart already sets it to the worker group name, and a different value makes the install fail with a `spec.template.metadata.labels: Invalid value` error.
 
 :::alert{type="info"}
 `podLabels` and `podAnnotations` are supported per component and per worker group, not only under `common`.

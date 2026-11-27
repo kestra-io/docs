@@ -145,3 +145,18 @@ kestra:
 
 This setting applies instance-wide. Target URL validation is enforced at create and update time.
 
+### Restrict target URLs
+
+To limit which URLs a promotion target can use, set an allowed list, a denied list, or both, under `kestra.security.http-client.promote`:
+
+```yaml
+kestra:
+  security:
+    http-client:
+      promote:
+        allowed-list:
+          - https://kestra-prod.example.com
+```
+
+Kestra checks the URL when a target is created, updated, or tested, and again before each promotion to a target in server mode. A rejected URL fails with a `422`. For the matching rules, see [Credential and Promote URL filtering](../../../security-hardening/index.md#credential-and-promote-url-filtering-ee).
+

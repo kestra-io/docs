@@ -82,7 +82,7 @@ triggers:
 
 No scheduled executions are created while the trigger is disabled. To re-enable it, set `disabled: false` or remove the property entirely.
 
-When you re-enable a Schedule trigger from the **Triggers** tab, a dialog asks how to handle the schedules missed while it was disabled: **Do not recover missed schedules**, or follow the trigger's [`recoverMissedSchedules`](../07.triggers/01.schedule-trigger/index.md#recover-missed-schedules) setting. The `PUT /api/v1/{tenant}/triggers/set-disabled` API skips missed schedules unless the request sets `recoverMissedSchedules: true`. Disabling a realtime trigger also stops its running instance.
+When you re-enable a Schedule trigger from the **Triggers** tab, a dialog asks how to handle the schedules missed while it was disabled: **Do not recover missed schedules**, or follow the trigger's [`recoverMissedSchedules`](../07.triggers/01.schedule-trigger/index.md#recover-missed-schedules) setting. The `PUT /api/v1/{tenant}/triggers/set-disabled` API skips missed schedules unless the request sets `recoverMissedSchedules: true`. Disabling a realtime trigger also stops its running instance. Webhook, MCP Tool, Flow, and asset event triggers can't be toggled from the **Triggers** tab, because the Scheduler doesn't evaluate them: set `disabled: true` in the flow source instead.
 
 ## Disabled task
 

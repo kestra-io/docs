@@ -172,6 +172,50 @@ When a list is configured but the URI has no parseable host, the request is reje
 This filter applies to HTTP plugin tasks and the `http()` Pebble expression function.
 :::
 
+## Credential and Promote URL filtering (EE)
+
+OAuth2 credentials and Promote targets also make server-side HTTP calls to URLs that users enter: the token endpoint of a [credential](../07.enterprise/03.auth/credentials/index.md), and the URL of a [promotion target](../07.enterprise/02.governance/promote/index.md). Without restrictions, a user who can create either one can point it at a cloud metadata endpoint or an internal service, and reach it with **Test connection**.
+
+Restrict these URLs with an allowed list, a denied list, or both, under `kestra.security.http-client`:
+
+```yaml
+kestra:
+  security:
+    http-client:
+      credentials:
+        allowed-list:
+          - https://oauth2.googleapis.com
+          - https://login.microsoftonline.com
+      promote:
+        allowed-list:
+          - https://kestra-prod.example.com
+        denied-list:
+          - 169.254.0.0/16
+```
+
+| Property | Default | What it checks |
+|---|---|---|
+| `kestra.security.http-client.credentials.allowed-list` and `denied-list` | `[]` | The token endpoint of `client_credentials`, JWT Bearer, and `private_key_jwt` credentials, on **Test connection** and each time Kestra fetches a token. GitHub App credentials always call `https://api.github.com` and aren't checked. |
+| `kestra.security.http-client.promote.allowed-list` and `denied-list` | `[]` | The URL of a promotion target when it's created, updated, or tested, and again before each promotion to a target in server mode. |
+
+Both lists are empty by default, so no filtering is applied until you set them. Entries follow the same [matching rules](#matching-rules) as HTTP tasks, and the allowed list is checked before the denied list.
+
+Before each call, Kestra also resolves a hostname and rejects it when any of its addresses matches an IP or CIDR entry of the denied list. The call then resolves the hostname again, so a name whose DNS answer changes between the two lookups can still reach a denied address. As with HTTP tasks, prefer an allowed list for strong protection.
+
+A credential whose token endpoint is rejected fails with this error, without the endpoint itself:
+
+```
+The token endpoint is rejected by the configured kestra.security.http-client.credentials allowed-list and denied-list.
+```
+
+A promotion target whose URL is rejected can't be saved or tested. The request fails with a `422` and a message that gives the reason, for example:
+
+```
+Promote target URL is rejected by kestra.security.http-client.promote: The host 'localhost' resolves to the address '127.0.0.1', which is in the denied list.
+```
+
+A target saved before you set the lists fails when you promote to it in server mode.
+
 ## Encryption key
 
 An encryption key under `kestra.encryption.secret-key` is required for `SECRET` inputs and outputs to be stored safely at rest. Without it, any flow that uses `SECRET`-typed inputs or outputs fails at runtime.
@@ -205,9 +249,9 @@ Configure plugin restrictions and worker isolation under [Worker Isolation](../0
 
 Kestra adds browser security headers to every HTTP response the Webserver sends, including error responses. Three are on by default: `X-Frame-Options`, `X-Content-Type-Options`, and `Referrer-Policy`.
 
-`Content-Security-Policy` and `Strict-Transport-Security` (HSTS) are off until you set them under `kestra.webserver.security-headers`. Kestra sends HSTS only when it terminates TLS itself, so behind a TLS-terminating reverse proxy, set HSTS at the proxy.
+`Content-Security-Policy` and `Strict-Transport-Security` (HSTS) are off until you set them under `kestra.webserver.security-headers`. Kestra sends HSTS only on HTTPS requests. Behind a TLS-terminating reverse proxy, configure the proxy to send `X-Forwarded-Proto: https` so Kestra recognizes the request as HTTPS and also marks its cookies `Secure`.
 
-See [Security response headers](../configuration/03.observability-and-networking/index.md#security-response-headers) for the configuration properties, a report-only CSP example, and how to disable headers.
+See [Security response headers](../configuration/03.observability-and-networking/index.md#security-response-headers) for the configuration properties, a report-only CSP example, and how to disable headers. To force the `Secure` cookie attribute regardless of the request, see [Secure cookies](../configuration/03.observability-and-networking/index.md#secure-cookies).
 
 ## Management endpoint access
 

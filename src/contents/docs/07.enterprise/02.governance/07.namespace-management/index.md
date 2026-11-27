@@ -100,6 +100,10 @@ tasks:
 
 Namespace-level Policies are inherited by child Namespaces. A Policy created in a parent Namespace applies to all flows in the parent and every child Namespace under it. See [Policies](../policies/index.md) for the full DSL reference, enforcement modes, and inheritance behavior.
 
+### Dedicated storage and secrets manager
+
+A namespace can use its own internal storage and secrets manager instead of its tenant's. On the namespace **Edit** tab, turn on **Dedicated internal storage** or **Dedicated secrets manager** and fill in the form. Saved values show as **Set**, and saving keeps the ones you don't replace. See [Dedicated storage and secrets backend per tenant](../tenants/index.md#dedicated-storage-and-secrets-backend-per-tenant).
+
 ### Default service account for SDK plugins
 
 Namespaces can now provide **default authentication credentials** that [SDK-based plugins](/plugins/plugin-kestra) use to run tasks such as [List all Namespaces](/plugins/plugin-kestra/kestra-namespaces/io.kestra.plugin.kestra.namespaces.list). This allows tasks relying on the [Kestra SDK](../../../api-reference/kestra-sdk/index.mdx) to call the API without hard-coding credentials inside the flow.
@@ -160,6 +164,10 @@ Don't store sensitive values in either; use [secrets](../../../06.concepts/04.se
 ## Creating Namespaces
 
 ### From the UI
+
+To create a namespace under an existing one, open any namespace, hover the arrow next to a namespace in the breadcrumb, then hover the parent you want. Its menu lists its child namespaces and ends with **Create child namespace**, which opens the create form with `parent.` already in the **Id** field. The entry appears only where you have permission to create namespaces, and never under the [system namespace](../../../06.concepts/system-flows/index.md).
+
+![The namespace breadcrumb with the docs menu open and the test entry hovered, showing its child namespaces cond and table followed by Create child namespace](./create-child-namespace-breadcrumb.png)
 
 The video below shows how to create a namespace and add several secrets and a nested Namespace variable that references one of them. It was recorded before Kestra 2.0, so it also adds plugin defaults for the AWS and Git plugins. In Kestra 2.0, a namespace-scoped [Policy](#policies) applies those values instead.
 
@@ -346,3 +354,27 @@ kestra_password = "your-kestra-password"
 The `allowedNamespaces` setting controls which namespaces can access a namespace's flows and resources. Configure it on the **Edit** tab of any namespace.
 
 By default, all namespaces are allowed. To restrict access, select specific namespaces — access automatically extends to each selected namespace's children.
+
+The setting covers:
+
+- Subflow calls
+- Flow triggers
+- namespace files
+- KV store
+- secrets
+- assets
+- files in internal storage, referenced by `kestra://` URI
+
+A Flow trigger in a flow whose namespace isn't allowed doesn't receive the executions of the restricted namespace. When an execution would otherwise have fired the trigger, because it matches its `states`, `dependsOn`, and `when` conditions, Kestra logs a warning on the flow that owns the trigger. The warning names the namespace whose Allowed Namespaces blocks it, which can be a parent of the execution's namespace. Nothing is logged on the restricted namespace's execution.
+
+A task that reads, writes, lists, or deletes a file by its `kestra://` URI is checked against the namespace the file belongs to. A flow can always reach:
+
+- the execution outputs, cache, and state files of its own flow;
+- its namespace's files and state, and the files of other flows in its namespace or a parent namespace;
+- the files of the execution that started it through a Flow trigger or a `Subflow` task.
+
+For any other file, the task fails when the file's namespace, or one of its parents, restricts Allowed Namespaces and doesn't list the flow's namespace. A file passed down more than one subflow level, or relayed through a third flow, is checked against the namespace that produced it.
+
+<!-- TODO(live-test kestra-ee#10551): on an EE image built after 2026-11-19 10:53Z, confirm the error message and task state when access is denied, and whether remote workers (GrpcStorage) enforce the check. -->
+
+[System Flows](../../../06.concepts/system-flows/index.md), such as alerts, need the system flows namespace (`system` by default) in the list to react to the executions of this namespace.

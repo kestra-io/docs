@@ -21,7 +21,7 @@ Every task accepts an `assets` property:
 | `inputs` | List of asset references | — | Assets the task reads. Each entry needs an `id`. Add `type` to type an asset that doesn't exist yet. |
 | `outputs` | List of assets | — | Assets the task creates or updates. Each entry needs an `id`. Add `type` to create a new asset with a real type. |
 | `enableAuto` | Boolean | `false` | Accept assets emitted by the plugin or by script log lines. See [Automatic emission](#automatic-emission). |
-| `assetFailureBehavior` | `WARN`, `FAIL`, or `IGNORE` | `WARN` | What happens to the task state when an asset can't be written. See [Failure behavior](#failure-behavior). |
+| `assetFailureBehavior` | `WARN`, `FAIL`, or `IGNORE` | `WARN` | What happens to the task state when an asset can't be written. See [Failure behavior](#failure-behavior). Tasks only: a trigger accepts the property but ignores it. |
 
 Asset declarations are an Enterprise Edition feature. In the open-source edition, a flow with an `assets` property fails validation with the message `assets are only available in Enterprise Edition`.
 
@@ -70,7 +70,7 @@ When `build_table` finishes:
 
 ### Rendering and task outputs
 
-Kestra renders the `assets` block after the task finishes, so expressions in it can read the task's own outputs with `outputs.<task_id>.<output>`. Use this when the resource name is only known at runtime:
+Kestra renders the `assets` block twice: when the task starts, to [lock its outputs](#while-the-task-runs), and when it ends. Expressions can read the task's own outputs with `outputs.<task_id>.<output>`, which only exist at the end. A field that needs them is left out at the start and written when the task ends. An output whose `id`, `type`, or `namespace` needs them isn't written or locked at the start, and the task logs a warning naming it. Use this when the resource name is only known at runtime:
 
 ```yaml
 - id: download
@@ -86,11 +86,27 @@ Kestra renders the `assets` block after the task finishes, so expressions in it 
 
 If an expression in `inputs` can't be rendered, Kestra still processes `outputs`, and the reverse.
 
+### While the task runs
+
+Kestra writes a task's declared outputs as soon as the task starts, and locks them until the attempt ends:
+
+- An output that doesn't exist yet is created with the status `pending`. An output that exists keeps its values and gets the status `updating`.
+- While the lock is held, writes from other task runs, the UI, and the API are refused, as with any [lock](../03.manage-assets/index.md#lock-an-asset). A task whose output another execution, or another task run of the same execution, has locked handles it with its [failure behavior](#failure-behavior). With `FAIL`, the task doesn't run.
+- When the task succeeds, Kestra writes the outputs rendered at the end, with the `status` the output entry declares, or `active`.
+
+If the execution already holds a lock on the asset, taken with the [`Acquire` task](../02.tasks-and-triggers/index.md#acquire-and-release), the task writes under that lock and the asset keeps its status during the run.
+
 ### What happens when a task fails
 
-When a task ends in `FAILED`, Kestra records lineage and usage for its inputs and outputs, and still creates placeholders for unknown inputs, but doesn't create or update its output assets. A failed run never overwrites an asset's metadata or `updated` timestamp.
+When a task ends in `FAILED` or is killed, Kestra records lineage and usage for its inputs and outputs, and still creates placeholders for unknown inputs. Its declared outputs are handled this way:
 
-A task with `allowFailure: true` that fails ends in `WARNING` instead, so Kestra writes its output assets.
+- An asset that existed before the task run is restored to the state it had before, so nothing the failed run wrote remains.
+- An asset the task run created stays, with the status `failed`.
+- An asset whose status the task set itself while running keeps what the task wrote.
+
+Assets the task [emitted](#automatic-emission) while running were written when they were emitted and aren't rolled back.
+
+A task with `allowFailure: true` that fails ends in `WARNING`, but its declared outputs are still handled as a failure: Kestra settles them with the state the task itself ended in, before `allowFailure` or `allowWarning` change it.
 
 ## Asset fields
 
@@ -107,6 +123,31 @@ An asset in `outputs` has these fields:
 
 Any other key you add to an output entry is stored in `metadata`. For example, `system: postgres` at the top level of the entry and `metadata.system: postgres` produce the same asset.
 
+### Lifecycle fields
+
+Three more top-level fields describe a resource's lifecycle. Set them directly on the output entry, not inside `metadata`:
+
+| Field | Description |
+| --- | --- |
+| `status` | Lifecycle state of the resource, as any string. Defaults to `active` when absent. |
+| `ttl` | Lease expiry as a UTC instant with milliseconds: `yyyy-MM-dd'T'HH:mm:ss.SSS'Z'`. An empty value means no expiry. Any other format is rejected. |
+| `owner` | Who the resource belongs to. Conventionally `user:<id>` or `group:<id>`. |
+
+Kestra stores these as `system.status`, `system.ttl`, and `system.owner`. Use those keys in dashboard queries and filter expressions. The fields apply to every asset type.
+
+While a task run writes an asset, Kestra sets its status to `pending`, `updating`, or `failed`. See [While the task runs](#while-the-task-runs). A task can also set `not_created` itself, for example when a plan is denied. A filter or query that selects `active` assets doesn't match an asset during those writes.
+
+```yaml
+outputs:
+  - id: staging-cluster-eu
+    type: io.kestra.plugin.ee.assets.VM
+    status: active
+    ttl: "2026-12-01T00:00:00.000Z"
+    owner: group:platform
+```
+
+To act before or after `ttl` passes, use a [`TtlTrigger`](../02.tasks-and-triggers/index.md#ttltrigger).
+
 ### Identity
 
 Kestra identifies an asset by its `id` within a tenant. The namespace and the type aren't part of the identity. Two declarations with the same `id` always refer to the same asset, even in different namespaces or flows.
@@ -121,6 +162,9 @@ When a task writes an asset that already exists, Kestra merges the new declarati
 | `namespace` | A declared namespace replaces the stored one. An omitted namespace keeps the stored one. |
 | `displayName`, `description` | A declared value replaces the stored one. An omitted value keeps the stored one. |
 | `metadata` | Merged key by key. Declared keys replace stored keys. Keys you don't declare are kept. A flow can't remove a key; to remove one, edit the asset in the UI or through the API. |
+| `partOf` | A declared parent replaces the stored one. An omitted `partOf` keeps the stored parent. |
+| `related` | Declared relations are added. Removing an entry from the list doesn't remove the relation; remove it through the API. |
+| `assetActions` | A declared list replaces the stored list. An omitted list keeps the stored one. |
 
 Each write updates the asset's `updated` timestamp and emits an `UPDATED` event, even when no field changed.
 
@@ -158,6 +202,70 @@ assets:
       type: io.kestra.plugin.ee.assets.Table
 ```
 
+## Relate assets
+
+Lineage edges come from what tasks read and write. To record other connections, add `partOf` and `related` to an output asset:
+
+| Field | Description |
+| --- | --- |
+| `partOf` | One parent asset, such as the deployment a VM belongs to. Creates a **Part of** relation. |
+| `related` | Up to 50 assets connected without a direction, such as a VM and its load balancer. Creates **Related** relations. |
+
+Each entry takes an `id`, an optional `namespace`, and an optional `role` of up to 100 characters that describes the connection:
+
+```yaml
+outputs:
+  - id: web-01
+    type: io.kestra.plugin.ee.assets.VM
+    partOf:
+      id: deploy-prod-eu
+      role: primary
+    related:
+      - id: lb-prod-eu
+        role: backend
+```
+
+The parent shows **web-01** under **Parts**, and the dependencies graph draws **Part of** and **Related** edges. To change relations without a flow, or to remove them, use the [relations API](../03.manage-assets/index.md#relations).
+
+## Asset actions
+
+Asset actions attach flows to an asset so users can run them from the asset's page, for example to resize or decommission a resource. Declare them with `assetActions` on an output asset. Each action names a flow by `namespace` and `flowId`, with an optional button `label`:
+
+```yaml
+outputs:
+  - id: web-01
+    type: io.kestra.plugin.ee.assets.VM
+    status: active
+    assetActions:
+      - namespace: company.infra
+        flowId: resize_vm
+        label: Resize
+      - namespace: company.infra
+        flowId: decommission_vm
+        label: Decommission
+        when:
+          - field: status
+            operator: EQUAL_TO
+            value: active
+      - namespace: company.infra
+        flowId: scale_cluster
+        label: Scale up
+        when:
+          - field: metadata.nodeCount
+            operator: LESS_THAN_OR_EQUAL_TO
+            value: 2
+```
+
+An action can carry up to 20 `when` conditions. Kestra offers the action and lets it run only while all of them hold, and an action without conditions is always offered. Each condition has a `field`, an `operator`, and a `value`.
+
+A condition reads one of the asset's fields: `id`, `namespace`, `type`, `displayName`, `description`, `status`, `ttl`, `owner`, or a metadata key as `metadata.<key>`. Use a dotted path such as `metadata.network.zone` for a nested key.
+
+The operators are `EQUAL_TO`, `NOT_EQUAL_TO`, `IN`, `NOT_IN`, `CONTAINS`, `NOT_CONTAINS`, `STARTS_WITH`, `ENDS_WITH`, `PREFIX`, `REGEX`, `GREATER_THAN`, `GREATER_THAN_OR_EQUAL_TO`, `LESS_THAN`, `LESS_THAN_OR_EQUAL_TO`, `IS_NULL`, and `IS_NOT_NULL`. `IN` and `NOT_IN` take a list as `value`, and `IS_NULL` and `IS_NOT_NULL` take no `value`. Text operators compare values as strings and are case-sensitive. The `GREATER_THAN` and `LESS_THAN` operators and their `_OR_EQUAL_TO` variants compare numbers and dates by value. Write dates in ISO 8601, either as a plain date or as a date-time with an offset, such as `2026-12-31T00:00:00Z`.
+
+A field the asset doesn't have, or an empty one, counts as unset, so `NOT_EQUAL_TO`, `NOT_IN`, and `NOT_CONTAINS` hold on it. An asset without a `status` counts as `active`. An asset can have up to 100 actions. To add actions or edit their conditions in the UI, see [Manage assets](../03.manage-assets/index.md#asset-detail-page).
+
+Running an action starts an execution of its flow with the labels `system.from: asset` and `system.assetId: <asset id>`. The asset ID isn't passed as an input, so read it from the labels or pass inputs when you run the action [through the API](../03.manage-assets/index.md#automate-with-the-api).
+
 ## Built-in asset types
 
 | Type | Common metadata keys |
@@ -166,7 +274,8 @@ assets:
 | `io.kestra.plugin.ee.assets.Dataset` | `system`, `location`, `format` |
 | `io.kestra.plugin.ee.assets.File` | `system`, `path` |
 | `io.kestra.plugin.ee.assets.VM` | `provider`, `region`, `state` |
-| `io.kestra.core.models.assets.External` | None. Kestra assigns this type to placeholders created from untyped inputs and from new outputs declared without a `type`. |
+| `io.kestra.plugin.ee.assets.Deployment` | None. Groups the resources of one provisioned environment, which point to it with `partOf`. The default type for [`TtlTrigger`](../02.tasks-and-triggers/index.md#ttltrigger). |
+| `io.kestra.core.models.assets.External` | None. Placeholder only: Kestra assigns it to assets created from untyped inputs and from new outputs declared without a `type`. You can't declare it as a type. |
 
 The metadata keys are conventions. Kestra stores them in `metadata` like any other key, and the [dependencies graph](../03.manage-assets/index.md#explore-the-dependencies-graph) uses `system` and `schema` for grouping.
 
@@ -175,6 +284,8 @@ You can also use any custom string as a type, such as `AWS_BUCKET` or `company.i
 ## Automatic emission
 
 Some plugins detect the resources a task reads and writes and emit assets themselves. Script tasks can do the same by printing a special log line. In both cases, set `assets.enableAuto: true` on the task. Without it, Kestra discards emitted assets.
+
+Kestra writes an emitted asset when the plugin or the log line emits it, while the task is still running, so the asset page and [asset triggers](../02.tasks-and-triggers/index.md) see it before the task ends.
 
 :::alert{type="warning"}
 Some plugins log that they emitted assets even when `enableAuto` is off, while Kestra records nothing. If a task logs asset emission but no asset appears, check that the task has `assets.enableAuto: true`.
@@ -189,15 +300,20 @@ Emitted assets and declared assets combine. You can turn on `enableAuto` and als
 | Plugin and tasks | Emits | Asset IDs |
 | --- | --- | --- |
 | JDBC `Query`, `Queries`, and `Batch` (all databases) | One `Table` output per table the task creates or writes to, and one `Table` input per table it only reads. Temporary tables, dropped tables, files, and system schemas are skipped. Each output carries `system`, `database`, `schema`, `name`, `lastStatementKind`, and `rowsAffected` when known, and the first 10 also carry `columns`. | `<database>.<schema>.<table>`, with the connection's current schema when the SQL doesn't name one, or `<database>.<table>` for MySQL and MariaDB. Unquoted names follow the database's case rules, such as lowercase for PostgreSQL. |
-| dbt `DbtCLI`, dbt Cloud `CheckStatus`, and dbt Cloud `TriggerRun` when `wait` is `true` | One `Table` output per model, seed, and snapshot, with its parents and sources as `Table` inputs. Adds test results as `dbtTestStatus` (`pass`, `fail`, or `warn`), `dbtTestsTotal`, and `dbtTestsFailed` when `parseRunResults` is `true`. | `<database>.<schema>.<name>` |
+| dbt `DbtCLI`, dbt Cloud `CheckStatus`, and dbt Cloud `TriggerRun` when `wait` is `true` | One output per model, seed, and snapshot, typed `io.kestra.plugin.dbt.assets.DbtModel`, `DbtSeed`, or `DbtSnapshot`, with its parents as inputs. Sources are untyped inputs, so a table another plugin emitted keeps its type, and a source no task emitted becomes an `External` asset. When `parseRunResults` is `true`, adds one `DbtTest` output per test that ran, with the tested node as input, and one `DbtExposure` per exposure. Models, seeds, and snapshots carry the rolled-up test results as `dbtTestStatus` (`pass`, `fail`, or `warn`), `dbtTestsTotal`, and `dbtTestsFailed`, and each `DbtTest` carries its own result. | `<database>.<schema>.<name>`. A test uses its own database and schema. An exposure uses its first parent's database and schema, followed by the exposure's dbt unique ID. |
 | Fivetran `connectors.Status`, and `connectors.Sync` when `wait` is `true` | One `Dataset` output per connector, and one `Table` output per enabled table with its source table as input. The input is a `Table` for database sources such as PostgreSQL, SQL Server, Snowflake, or BigQuery, and an `External` asset otherwise. When the destination reports no database name, such as Managed BigQuery, only the connector `Dataset` is emitted. | Connector: `<groupId>.<schema>`. Tables: `<database>.<schema>.<table>`. Source inputs: `<database>.<schema>.<table>`, `<schema>.<table>` for MySQL and MariaDB, or `<connectorId>.<schema>.<table>` for `External` |
+| Airbyte `connections.CheckStatus`, and `connections.Sync` and Airbyte Cloud `jobs.Sync` when `wait` is `true` | One `Table` output per replicated stream that committed records, or that the job reported with 0 records when it succeeded. Each output has its source stream as input: a `Table` for PostgreSQL, Redshift, SQL Server, Snowflake, BigQuery, MySQL, or ClickHouse sources, and an `External` asset otherwise. Nothing is emitted when the job fails or ends in `WARNING` without a successful attempt. Airbyte Cloud `jobs.Sync` emits only when the job succeeds. | Tables: `<database>.<schema>.<table>`, `<project>.<dataset>.<table>` for BigQuery, or `<database>.<table>` for MySQL and ClickHouse, read from the destination's configuration. When Kestra can't read the destination's database, for example for a destination that isn't a database, `<destinationId>.<namespace>.<table>`. Source inputs use the same format, or `<sourceId>.<namespace>.<stream>` for `External` |
 | Google Cloud BigQuery `RunTransferConfig` | One `Table` output for the destination table, or one `Dataset` output when the table isn't fixed. Emitted only after a successful run. | `<project>.<dataset>.<table>` or `<project>.<dataset>` |
 | Hex `projects.Run` | One `Dataset` output for the project, with `system: hex`. No inputs. | The `projectId` |
 | Qlik Cloud `apps.Reload` | One `io.kestra.plugin.qlikcloud.assets.App` output for the reloaded app. Set the task's `emitAssets` to `false` to turn this off. | The app ID |
 | Ansible `AnsibleCLI` | One `VM` input per host in an INI inventory file named exactly `inventory.ini` at the working directory root | The host name |
 | Helm `Upgrade`, `Rollback`, `Status`, and `Uninstall` | One `io.kestra.plugin.ee.assets.HelmRelease` output, with the chart and `valuesFrom` files as inputs, plus one `io.kestra.plugin.ee.assets.KubernetesResource` per managed resource. `Uninstall` deletes these assets. | Built from the cluster, Kubernetes namespace, and release name |
 
-dbt and Fivetran use the same `<database>.<schema>.<table>` ID format, so a Fivetran table and the dbt source that reads it join into one lineage chain. JDBC IDs use the same format, so a table that a JDBC task writes joins the same chain when its name matches, including case. Versions of the JDBC plugin before 3.0.0 emitted only `CREATE TABLE` targets, with IDs that left out the schema, so after an upgrade a schema-qualified table gets a new asset ID.
+<!-- TODO(verify on merge): Airbyte row written from plugin-airbyte#209 and #213, merged into feat/plugin-endpoints-2.1, which reaches main with the open PR #207 (plugin built on Kestra 2.1). Released v1.7.x still builds `<destinationId>.<namespace>.<table>` IDs and swallows emission errors. Check against the release that ships #207. -->
+
+<!-- TODO(verify on merge): dbt row written from open PRs plugin-dbt#362 (asset types) and #364 (badge), held for a plugin release after core 2.1. Check type names, test and exposure IDs, and the plugin version once they merge. -->
+
+dbt, Fivetran, and Airbyte use the same `<database>.<schema>.<table>` ID format, so a Fivetran or Airbyte table and the dbt source that reads it join into one lineage chain. Airbyte keeps the case of table names, so a Snowflake table can differ in case from the ID another plugin emits. JDBC IDs use the same format, so a table that a JDBC task writes joins the same chain when its name matches, including case. Versions of the JDBC plugin before 3.0.0 emitted only `CREATE TABLE` targets, with IDs that left out the schema, so after an upgrade a schema-qualified table gets a new asset ID.
 
 Plugins that only emit outputs, such as Hex and Qlik Cloud, can't see their upstream tables. Declare `assets.inputs` on those tasks with the IDs the upstream plugins emit:
 
@@ -290,9 +406,13 @@ assets:
       type: io.kestra.plugin.ee.assets.Table
 ```
 
-An invalid declaration is different. If a rendered asset breaks a [field](#asset-fields) rule, for example an `id` with a space, the task fails regardless of `assetFailureBehavior`.
+An invalid declaration is different. Kestra checks literal values in the `assets` block when you save the flow, so a declaration that breaks a [field](#asset-fields) rule, for example an `id` with a space, is rejected before the flow runs. Values written as expressions are checked only after they render: if a rendered asset breaks a field rule, the task fails regardless of `assetFailureBehavior`.
 
-The value accepts expressions.
+The value accepts expressions. To set it across many tasks without editing each flow, use a [Policy](../../policies/index.md) `Add` rule with `values: {assets: {assetFailureBehavior: FAIL}}`.
+
+:::alert{type="info"}
+If tasks that declare assets start ending in `WARNING`, their asset writes were already failing before this property existed, but silently. Set `assetFailureBehavior: IGNORE` to restore the silent behavior while you fix the cause.
+:::
 
 ## Next steps
 

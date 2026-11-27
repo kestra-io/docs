@@ -12,7 +12,10 @@ topics:
 
 Turn on automatic asset emission on a dbt task so Kestra records every model as an asset with its upstream dependencies, then connect the tasks that consume those models to the same lineage graph.
 
-A dbt project already describes which models depend on which. When you run it from Kestra, that knowledge usually stays inside dbt, so nobody can see which flow refreshes a model or which report reads it. With `assets.enableAuto`, the dbt task emits each model as a `Table` asset with its parents as inputs, and you only declare the edges dbt can't see.
+A dbt project already describes which models depend on which. When you run it from Kestra, that knowledge usually stays inside dbt, so nobody can see which flow refreshes a model or which report reads it. With `assets.enableAuto`, the dbt task emits each model as a `DbtModel` asset with its parents as inputs, and you only declare the edges dbt can't see.
+
+<!-- TODO(verify on merge): asset types, test assets, and the asset card badge come from open PRs plugin-dbt#362 and #364, held for a plugin release after core 2.1. Re-run this guide against that release and add the plugin version. -->
+
 
 ## Prerequisites
 
@@ -57,8 +60,9 @@ tasks:
 
 The only asset-specific line is `assets.enableAuto: true`. Without it, Kestra discards the assets the dbt plugin emits. After `dbt build` finishes, the plugin reads dbt's `manifest.json` and emits:
 
-- One `io.kestra.plugin.ee.assets.Table` output per model, seed, and snapshot, with the ID `<database>.<schema>.<name>`.
-- Each model's parents as `Table` inputs, which become edges in the dependencies graph.
+- One output per model, seed, and snapshot, with the ID `<database>.<schema>.<name>` and the type `io.kestra.plugin.dbt.assets.DbtModel`, `DbtSeed`, or `DbtSnapshot`.
+- Each model's parents as inputs, which become edges in the dependencies graph. dbt sources are untyped inputs, so a table that Fivetran, Airbyte, or another dbt project emitted keeps its type.
+- One `io.kestra.plugin.dbt.assets.DbtTest` output per test that ran, with the tested model as input, and one `DbtExposure` output per exposure.
 - The metadata keys `system` (the dbt adapter), `database`, `schema`, and `name`.
 
 The plugin emits assets without a namespace, so Kestra creates the models as [Global assets](../../07.enterprise/02.governance/01.assets/01.declare-assets/index.md#namespace-and-global-assets), visible to every namespace.
@@ -72,7 +76,7 @@ Execute the flow.
 You need the exact IDs dbt emitted to connect other tasks to them.
 
 1. Open **Assets** in the left navigation.
-2. Filter by the type `io.kestra.plugin.ee.assets.Table`. Don't filter by namespace: the dbt models are Global assets.
+2. Filter by the type `io.kestra.plugin.dbt.assets.DbtModel`. Don't filter by namespace: the dbt models are Global assets.
 3. Note the IDs of the two models. With a DuckDB file named `dbt.duckdb`, the database is `dbt` and the default schema is `main`, so the IDs look like `dbt.main.my_first_dbt_model` and `dbt.main.my_second_dbt_model`.
 
 You can also open the execution and select its **Assets** tab to list every asset the run read or wrote.
@@ -131,9 +135,9 @@ tasks:
             - id: reports.second_model_report
               namespace: company.data
               type: io.kestra.plugin.ee.assets.File
+              owner: group:analytics-team
               metadata:
                 path: second_model_report.csv
-                owner: analytics-team
 ```
 
 If the IDs you found in step 2 differ, use yours in `assets.inputs`. An input ID that doesn't match an existing asset creates a separate `External` placeholder instead of joining the dbt model.
@@ -152,7 +156,7 @@ With `parseRunResults` left at its default of `true`, the dbt plugin adds test r
 | `dbtTestsTotal` | Number of tests run on the model |
 | `dbtTestsFailed` | Number of failed tests |
 
-Models without executed tests carry none of these keys.
+Models without executed tests carry none of these keys. Each `DbtTest` asset carries the same keys for its own result, and a test that didn't run keeps its last result.
 
 Create a second flow that reacts when a model is written with a failing test status:
 
@@ -171,7 +175,7 @@ tasks:
 triggers:
   - id: dbt_tests_failed
     type: io.kestra.plugin.ee.assets.EventTrigger
-    assetType: io.kestra.plugin.ee.assets.Table
+    assetType: io.kestra.plugin.dbt.assets.DbtModel
     events:
       - CREATED
       - UPDATED
@@ -181,16 +185,17 @@ triggers:
         value: fail
 ```
 
-The trigger has no `namespace` filter because the dbt models are Global assets, and a `namespace` filter never matches a Global asset. It listens to both `CREATED` and `UPDATED` so it also fires on a model's first run. Replace the `Log` task with your notification task, for example Slack or email.
+The trigger has no `namespace` filter because the dbt models are Global assets, and a `namespace` filter never matches a Global asset. It listens to both `CREATED` and `UPDATED` so it also fires on a model's first run. Filtering on `DbtModel` keeps it from firing a second time for each failing `DbtTest` asset. Replace the `Log` task with your notification task, for example Slack or email.
 
-Kestra writes output assets only for task runs that don't fail. If a failing test makes `dbt build` exit with an error, check that the model's metadata still updates in your setup before you rely on this alert. Tests with `severity: warn` let the run succeed and report `warn`.
+Kestra writes output assets only for task runs that don't fail. A failing test makes `dbt build` exit with an error, so set `allowFailure: true` on the dbt task to record the failing result and fire this alert. Tests with `severity: warn` let the run succeed and report `warn`.
 
 ## Verify the result
 
 1. Open **Assets** and select `dbt.main.my_second_dbt_model`.
 2. On the **Overview** tab, check that **Upstream Assets** lists `dbt.main.my_first_dbt_model` and **Downstream Assets** lists `reports.second_model_report`. **Asset Values** shows the dbt metadata, including `dbtTestStatus` if tests ran.
-3. Open the **Dependencies** tab. The graph shows `my_first_dbt_model` → `my_second_dbt_model` → `second_model_report`, with the `dbt_build_with_lineage` flow attached. Use **Group by** and select **Plugins** to separate the dbt-produced assets from the Python-produced one.
-4. Open the **Executions** tab to see both runs of the flow.
+3. Open the **Dependencies** tab. The graph shows `my_first_dbt_model` → `my_second_dbt_model` → `second_model_report`, with the `dbt_build_with_lineage` flow attached, and each model's tests as `DbtTest` assets fed by the model. Use **Group by** and select **Plugins** to separate the dbt-produced assets from the Python-produced one.
+4. Under each model's card that has tests, check the test badge: `2 tests` when they all passed, `2 tests · warn` when a `severity: warn` test tripped, or `1/2 failed`. A model without executed tests shows no badge.
+5. Open the **Executions** tab to see both runs of the flow.
 
 ## Next steps
 

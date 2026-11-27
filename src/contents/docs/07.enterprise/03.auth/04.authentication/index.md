@@ -46,15 +46,40 @@ micronaut:
 On Kestra Cloud, contact support to change this setting.
 :::
 
-## Basic authentication
+## Sessions
 
-The default installation comes with no users defined. An administrator account is created with the CLI:
+:::badge{version=">=2.1" editions="EE,Cloud"}
+:::
 
-```bash
-./kestra auths users create --admin --username=<admin-username> --password=<admin-password> --tenant=<tenant-id>
+Each sign-in opens its own session, so signing in on another browser or device keeps the sessions you already have open. A session lasts as long as its refresh token cookie, 30 days by default, and each token refresh extends it by that lifetime again. To change it, set `micronaut.security.token.refresh.cookie.cookie-max-age`, which is separate from the access token cookie above:
+
+```yaml
+micronaut:
+  security:
+    token:
+      refresh:
+        cookie:
+          cookie-max-age: 7d
 ```
 
-When using `--admin`, `--tenant` is required to specify which tenant the admin role applies to. Omit `--tenant` only when creating a user without group or role assignments.
+These events end every session of a user at once, including their current access tokens:
+
+- the user logs out, in any browser
+- the user's password changes
+- an Instance Owner revokes the user's sessions with `DELETE /api/v1/users/{id}/refresh-token` or [`kestractl users revoke-refresh-token`](../../../kestra-cli/kestractl/index.md#users)
+- the user is deactivated, including by [SCIM](../scim/index.mdx), or deleted
+
+Sessions opened with a password also end when the password [expires](../rbac/index.md#expired-passwords).
+
+When a session ends while the UI is open, Kestra asks the user to [sign in again](../../../09.ui/index.mdx#expired-sessions) without losing their unsaved changes.
+
+Kestra deletes expired sessions when their user next signs in, and a background job deletes the rest. See [User sessions](../../../configuration/05.security-and-secrets/index.md#user-sessions) to configure it.
+
+## Basic authentication
+
+The default installation comes with no users defined. Create the first administrator account with the [setup wizard](../../01.overview/02.setup/index.md) on first launch, or define it in the [`kestra.security.instance-owner`](../../05.instance/00.instance-owner/index.md#through-configuration) configuration.
+
+After the first account exists, create additional users in the UI or with [`kestractl users create`](../../../kestra-cli/kestractl/index.md#users).
 
 ## Single sign-on (SSO)
 
@@ -76,6 +101,8 @@ micronaut:
 ```
 
 See the [Micronaut OIDC configuration guide](https://micronaut-projects.github.io/micronaut-security/latest/guide/#openid-configuration) for full details. See [Single Sign-On](../sso/index.md) to configure SSO with Google, Microsoft, and other providers.
+
+Kestra Enterprise Edition also supports SSO with a SAML 2.0 identity provider. See [SAML 2.0](../sso/saml/index.md).
 
 ## Passwordless (One-Time-Password)
 

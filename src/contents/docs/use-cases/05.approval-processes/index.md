@@ -10,6 +10,10 @@ Modern automation requires human oversight for critical decisions. Kestra enable
 
 ## Add human approval steps to workflows
 
+Use the [`Approval` task](../../05.workflow-components/23.approvals/index.md) to pause a flow until a reviewer approves or denies it, then run different tasks for each decision. In Kestra Enterprise, you can also [assign reviewers and track every request](../../07.enterprise/02.governance/approvals/index.md) on the **Approvals** page.
+
+The examples below use the older `Pause` and `HumanTask` tasks, which only wait to be resumed.
+
 ## What is Human-in-the-Loop Automation?
 
 Human-in-the-loop (HITL) automation combines automated tasks with human decision points. Kestra implements this through:

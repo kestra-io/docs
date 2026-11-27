@@ -31,6 +31,8 @@ kestra:
     namespace: system
 ```
 
+In the Enterprise Edition, a namespace that restricts its [Allowed Namespaces](../../07.enterprise/02.governance/07.namespace-management/index.md#allowed-namespaces) only lets a System Flow react to its executions with a Flow trigger if the system flows namespace is in the list.
+
 System Flows live in the `system` namespace, pinned at the top of **Namespaces**.
 
 ![Namespaces list with system namespace pinned at the top](./system-namespace.png)

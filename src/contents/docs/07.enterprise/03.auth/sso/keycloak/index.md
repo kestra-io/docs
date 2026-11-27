@@ -22,7 +22,7 @@ Once in Keycloak, create a new client:
 ![Create Client](./client1.png)
 ![Client Settings](./client2.png)
 
-Set `https://{{ yourKestraInstanceURL }}/oauth/callback/keycloak` as the valid redirect URI and `https://{{ yourKestraInstanceURL }}/logout` as the valid post-logout redirect URI.
+Set `https://{{ yourKestraInstanceURL }}/oauth/callback/keycloak` as the valid redirect URI and `https://{{ yourKestraInstanceURL }}/ui` as the valid post-logout redirect URI.
 
 ![Redirect URI](./redirect-uri.png)
 
@@ -39,9 +39,6 @@ micronaut:
           client-secret: "{{clientSecret}}"
           openid:
             issuer: "https://{{keyCloakServer}}/realms/{{yourRealm}}"
-    endpoints:
-      logout:
-        get-allowed: true
 ```
 
 Retrieve the `clientId` and `clientSecret` from the Keycloak UI:
@@ -116,9 +113,6 @@ micronaut:
             end-session:
               enabled: true
               url: "https://{{keyCloakServer}}/realms/{{yourRealm}}/protocol/openid-connect/logout"
-      endpoints:
-        logout:
-          get-allowed: true
 ```
 
 If you also want to force users to re-enter their credentials on every Kestra login — even when an active Keycloak SSO session exists — add `?prompt=login` to the authorization URL:
@@ -186,9 +180,6 @@ micronaut:
           openid:
             issuer: "https://{{keyCloakServer}}/realms/{{yourRealm}}"
           scopes: ["openid", "profile", "email", "groups"]
-    endpoints:
-      logout:
-        get-allowed: true
 ```
 
 Then configure Kestra to synchronize groups from the `groups` claim:

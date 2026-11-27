@@ -107,9 +107,9 @@ tasks:
         uri: "https://openlibrary.org/search.json?author={{ item.value }}&sort=new"
 ```
 
-After execution, the Gantt view shows the main Loop task with the sub-executions for each loop through the values list for each author. Click into **Iterations** to view each loop individually.
+After execution, the **Gantt** tab shows the Loop task with its number of iterations, one per author. Expand it to list the iterations in place, and select one to see its task runs in the side panel.
 
-![Loop Execution](./loop-authors-2-0.png)
+![Gantt tab of loop_example with the loop task expanded to its pynchon, dostoyevsky, and hedayat iterations, and the pynchon iteration selected to show its api task run in the side panel](./loop-authors.png)
 
 See the [Loop documentation](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop) for output collection, nested loops, error handling, and map-reduce patterns.
 
