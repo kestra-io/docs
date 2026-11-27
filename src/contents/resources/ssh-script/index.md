@@ -96,8 +96,7 @@ tasks:
     username: admin
     privateKey: "{{ secret('REMOTE_SERVER_KEY') }}"
     commands:
-      - sudo apt-get update
-      - sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+      - sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
     retry:
       type: constant
       maxAttempts: 3

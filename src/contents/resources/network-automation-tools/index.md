@@ -232,7 +232,7 @@ tasks:
   - id: approve_change
     type: io.kestra.plugin.core.flow.Pause
     pauseDuration: PT4H
-    behavior: CANCEL
+    behavior: FAIL
 
   - id: deploy
     type: io.kestra.plugin.core.flow.WorkingDirectory
@@ -262,7 +262,7 @@ errors:
       {"text": "Network change for {{ inputs.site_code }} failed or was not approved (execution {{ execution.id }})."}
 ```
 
-The validation and the deployment each run in their own working directory and clone the same branch. If nobody approves within four hours, the execution is cancelled and nothing is pushed to the devices.
+The validation and the deployment each run in their own working directory and clone the same branch. If nobody approves within four hours, the `Pause` task fails: nothing is pushed to the devices, and the `errors` branch sends the Slack alert.
 
 ### Building CI/CD Pipelines for Network Changes
 

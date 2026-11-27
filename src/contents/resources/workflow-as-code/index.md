@@ -55,7 +55,7 @@ By combining the [GitOps](/resources/infrastructure/gitops) principles described
 
 ## Orchestrate Production Workflows with Kestra: Syncing Flows from Git
 
-A direct example of workflow as code is deploying the orchestrator's own workflows from Git. The flow below is called by a GitHub webhook on every [`push` event](https://docs.github.com/en/webhooks/webhook-events-and-payloads#push). It first runs a dry-run sync, which writes a diff of what would change, then, only for pushes to `main`, syncs the flows into the production namespace.
+A direct example of workflow as code is deploying the orchestrator's own workflows from Git. The flow below is called by a GitHub webhook on every [`push` event](https://docs.github.com/en/webhooks/webhook-events-and-payloads#push). It first runs a dry-run sync of the pushed branch, which writes a diff of what would change, then, only for pushes to `main`, syncs the flows into the production namespace.
 
 ```yaml
 id: sync-flows-from-git
@@ -70,7 +70,7 @@ tasks:
   - id: dry_run_sync
     type: io.kestra.plugin.git.SyncFlows
     url: https://github.com/your-org/kestra-flows
-    branch: main
+    branch: "{{ trigger.body.ref | replace({'refs/heads/': ''}) }}"
     gitDirectory: flows
     targetNamespace: company.team.production
     username: "{{ secret('GIT_USERNAME') }}"
@@ -99,7 +99,7 @@ errors:
       {"text": "Flow sync from Git failed (execution {{ execution.id }})."}
 ```
 
-The webhook URL follows the format described in the [Webhook trigger documentation](/docs/workflow-components/triggers/webhook-trigger); the key is a secret, so rotate it if the URL leaks. `delete: false` keeps flows that exist in Kestra but not in Git, which is the safe default.
+The webhook URL follows the format described in the [Webhook trigger documentation](/docs/workflow-components/triggers/webhook-trigger); the key is a secret, so rotate it if the URL leaks. Set the GitHub webhook content type to `application/json` so that `trigger.body.ref` is available. `delete: false` keeps flows that exist in Kestra but not in Git, which is the safe default.
 
 This flow embodies the workflow as code philosophy. The automation logic for deploying other workflows is itself defined as a version-controlled YAML file. It is event-driven, keeps credentials in secrets, and records every deployment as an execution. 
 

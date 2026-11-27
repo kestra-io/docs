@@ -82,7 +82,7 @@ The vast majority of internal tools exist for a single purpose: allowing an auth
 
 In Kestra, the [`inputs`](/docs/workflow-components/inputs) block of a workflow renders as a typed, validated form when someone runs it from the UI: dropdowns, strings, integers, dates, files. Each run then shows its topology, logs, and outputs. For custom screens on top of flows, Kestra Enterprise adds [Apps](/docs/enterprise/scalability/apps).
 
-The example below handles a data deletion request. It checks the account, waits for a compliance approval, then deletes the customer's objects in S3.
+The example below handles a data deletion request. It checks that the account exists and stops if it does not, waits for a compliance approval, then deletes the customer's objects in S3.
 
 ```yaml
 id: customer_data_purge
@@ -106,8 +106,15 @@ tasks:
     url: "{{ secret('CORE_DB_JDBC_URL') }}"
     username: "{{ secret('DB_USER') }}"
     password: "{{ secret('DB_PASSWORD') }}"
-    sql: SELECT id, status FROM accounts WHERE id = '{{ inputs.customer_id }}'
-    fetchType: FETCH_ONE
+    sql: SELECT id, status FROM accounts WHERE id = :customer_id
+    parameters:
+      customer_id: "{{ inputs.customer_id }}"
+    fetchType: FETCH
+
+  - id: stop_if_unknown
+    type: io.kestra.plugin.core.execution.Fail
+    condition: "{{ outputs.validate_account.size == 0 }}"
+    errorMessage: "No account found for {{ inputs.customer_id }}; nothing was deleted."
 
   - id: compliance_approval
     type: io.kestra.plugin.core.flow.Pause
