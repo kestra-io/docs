@@ -113,6 +113,7 @@ const middlewares: CFMiddleware[] = [setupContentSecurityPolicyHeaders, noIndex,
 // cache (the Workers Cache API does not revalidate in the background itself).
 const EDGE_CACHE_TTL = 60 * 60
 const EDGE_CACHE_SWR = 60 * 60 * 24
+const EDGE_CACHE_JSON_BROWSER_TTL = 60 * 5
 
 // The plugin & blueprint templates declare `prerender = false`, so every hit
 // re-runs a full Astro render inside the Worker (high TTFB — see issue #5158).
@@ -275,9 +276,14 @@ export default {
 
         if (cacheKey && finalResponse.status === 200) {
             const response = new Response(finalResponse.body, finalResponse)
+            const browserTtl = finalResponse.headers
+                .get("content-type")
+                ?.includes("application/json")
+                ? `max-age=${EDGE_CACHE_JSON_BROWSER_TTL}, `
+                : ""
             response.headers.set(
                 "Cache-Control",
-                `public, s-maxage=${EDGE_CACHE_TTL}, stale-while-revalidate=${EDGE_CACHE_SWR}`,
+                `public, ${browserTtl}s-maxage=${EDGE_CACHE_TTL}, stale-while-revalidate=${EDGE_CACHE_SWR}`,
             )
 
             // Cloudflare's Cache API rejects `put()` on any response carrying a
