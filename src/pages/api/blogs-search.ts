@@ -9,7 +9,7 @@ import { markdownHeadings } from "~/utils/search/markdownHeadings"
 export const prerender = true
 
 export const GET: APIRoute = async () => {
-    const posts = await getCollection("blogs")
+    const posts = await getCollection("blogs", ({ data }) => !data.lang)
 
     const entries: BlogEntry[] = await Promise.all(
         posts.map(async (post) => {
