@@ -135,25 +135,6 @@
                                     "
                                 >
                                     <div
-                                        v-if="result.section"
-                                        class="all-section"
-                                    >
-                                        {{ result.section.label }}
-                                        <span
-                                            >({{
-                                                tabCount(result.section.type)
-                                            }})</span
-                                        >
-                                        <button
-                                            type="button"
-                                            @click="
-                                                selectFacet(result.section.type)
-                                            "
-                                        >
-                                            See all →
-                                        </button>
-                                    </div>
-                                    <div
                                         v-if="result.doc?.groupStart"
                                         class="doc-group"
                                     >
@@ -190,6 +171,12 @@
                                                 />
                                             </div>
                                             <div class="result-text">
+                                                <div
+                                                    v-if="result.kind"
+                                                    class="result-kind"
+                                                >
+                                                    {{ result.kind }}
+                                                </div>
                                                 <div class="plugin-title-row">
                                                     <h5>{{ result.title }}</h5>
                                                     <span
@@ -229,6 +216,12 @@
                                             class="result blueprint-result"
                                         >
                                             <div class="result-text">
+                                                <div
+                                                    v-if="result.kind"
+                                                    class="result-kind"
+                                                >
+                                                    {{ result.kind }}
+                                                </div>
                                                 <h5>{{ result.title }}</h5>
                                                 <p
                                                     v-if="
@@ -293,6 +286,10 @@
                                             />
                                             <div class="blog-text">
                                                 <div class="blog-meta">
+                                                    <template v-if="result.kind"
+                                                        >{{ result.kind }}
+                                                        •
+                                                    </template>
                                                     {{ result.blog.category }} •
                                                     {{ result.blog.date }}
                                                 </div>
@@ -321,8 +318,30 @@
                                         <div
                                             v-else-if="result.doc"
                                             class="result doc-result"
+                                            :class="{ grouped: !result.kind }"
                                         >
                                             <div class="result-text">
+                                                <div
+                                                    v-if="result.kind"
+                                                    class="result-kind"
+                                                >
+                                                    {{ result.kind
+                                                    }}<template
+                                                        v-if="
+                                                            result.doc
+                                                                .section &&
+                                                            result.doc
+                                                                .section !==
+                                                                result.doc.id
+                                                        "
+                                                    >
+                                                        ›
+                                                        {{
+                                                            result.doc
+                                                                .sectionTitle
+                                                        }}</template
+                                                    >
+                                                </div>
                                                 <h5>{{ result.title }}</h5>
                                                 <p
                                                     v-if="
@@ -742,7 +761,7 @@
     import { $fetchApi } from "~/utils/fetch"
     import { prepareSearchResults } from "~/utils/searchResults"
     import { markRaw } from "vue"
-    import { allSections } from "~/utils/search/all"
+    import { allResults } from "~/utils/search/all"
     import { blogsSearchResults, loadBlogsIndex } from "~/utils/search/blogs"
     import {
         blueprintsSearchResults,
@@ -760,13 +779,13 @@
     // Tabs searched in the browser, from indexes the popup loads when it opens.
     const LOCAL_TABS = {
         PLUGINS: {
-            label: "Plugins",
+            kind: "Plugin",
             load: loadPluginsIndex,
             search: (indexes, query) =>
                 pluginsSearchResults(indexes.PLUGINS, query),
         },
         BLUEPRINTS: {
-            label: "Blueprints",
+            kind: "Blueprint",
             load: loadBlueprintsIndex,
             search: (indexes, query) =>
                 blueprintsSearchResults(
@@ -776,13 +795,13 @@
                 ),
         },
         DOCS: {
-            label: "Docs",
+            kind: "Docs",
             load: loadDocsIndex,
             search: (indexes, query, urls) =>
                 docsSearchResults(indexes.DOCS, query, urls),
         },
         BLOGS: {
-            label: "Blog posts",
+            kind: "Blog post",
             load: loadBlogsIndex,
             search: (indexes, query, urls) =>
                 blogsSearchResults(indexes.BLOGS, query, urls),
@@ -1067,12 +1086,12 @@
 
                 const results = this.selectedFacet
                     ? localResults[this.selectedFacet].results
-                    : allSections(
+                    : allResults(
                           Object.entries(LOCAL_TABS).map(([type, tab]) => ({
-                              type,
-                              label: tab.label,
+                              kind: tab.kind,
                               results: localResults[type].results,
                           })),
+                          value,
                       )
                 this.showResults(results, keepSelection)
             },
@@ -1538,35 +1557,10 @@
             font-weight: 600;
             white-space: nowrap;
         }
-        .all-section {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            padding: 0.5rem 1rem;
+        .result-kind {
+            margin-bottom: 0.2rem;
             font-size: $font-size-xs;
-            font-weight: 700;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            color: var(--ks-content-primary);
-            background: var(--ks-background-secondary);
-            border-bottom: 1px solid var(--ks-border-primary);
-
-            span {
-                font-weight: 500;
-                color: var(--ks-content-secondary);
-            }
-
-            button {
-                margin-left: auto;
-                padding: 0;
-                border: 0;
-                background: none;
-                font-size: $font-size-xs;
-                font-weight: 600;
-                letter-spacing: 0;
-                text-transform: none;
-                color: var(--ks-content-link);
-            }
+            color: var(--ks-content-secondary);
         }
         .doc-group {
             display: flex;
@@ -1590,7 +1584,11 @@
             }
         }
         .search-result .doc-result {
-            padding: 0.65rem 1rem 0.65rem 2.4rem;
+            padding: 0.65rem 1rem;
+
+            &.grouped {
+                padding-left: 2.4rem;
+            }
 
             h5 {
                 margin: 0;
