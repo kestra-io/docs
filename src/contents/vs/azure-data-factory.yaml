@@ -1,4 +1,4 @@
-title: "Azure Data Factory Alternative: Kestra vs ADF"
+title: "Kestra vs Azure Data Factory: JSON Pipelines vs YAML Flows"
 description: "Compare Kestra and Azure Data Factory: JSON pipelines vs YAML flows, the same SQL Server to Blob Storage pipeline in both, Git workflow, pricing and hosting."
 competitorName: Azure Data Factory
 category: Data Orchestration
