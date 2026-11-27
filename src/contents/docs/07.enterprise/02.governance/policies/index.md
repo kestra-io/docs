@@ -449,43 +449,6 @@ If a referenced bundle contains `on: FLOW` rules and `policyRefs` is on a task o
 
 Reference policies don't apply through namespace inheritance: a flow, task, or trigger must list them in `policyRefs`. Reference policies are designed for opt-in configuration injection: use `Add` rules to supply credentials, defaults, or runner configuration that teams can adopt voluntarily. Validate rules (`Deny`, `Restrict`, `Require`) are not enforced in `REFERENCE` mode.
 
-### Work with references from the flow editor
-
-The flow editor helps you attach, create, and edit reference policies without leaving the flow, even when the flow is not complete enough to be saved yet.
-
-**Autocomplete `policyRefs`.** Press `Ctrl+Space` on a `policyRefs` entry to list the `REFERENCE` policies you can attach:
-
-- On a task or trigger, the list only contains the reference policies that carry an `on: PLUGIN` rule whose `type` condition matches that task or trigger type, exactly (`EQUAL_TO`) or through a prefix (`STARTS_WITH`).
-- At the flow level, the list contains every reference policy that applies to the flow's namespace.
-
-**Create a reference from a task.** The completion list on a task ends with **Create a policy reference for `<task>`…**. A **Move credentials to a policy reference** action also appears above any task that holds a plain-text credential, detected through the plugin schema's secret properties or the property name (`password`, `token`, `apiKey`, and similar). Both open a dialog prefilled from the task:
-
-- **Id** and **Namespace**: the policy id is suggested from the plugin, and the namespace is the flow's namespace or one of its parents. When the flow has no `namespace` yet, choose one of the namespaces you can access, and Kestra adds it to the flow.
-- **Applies to**: the exact task type by default. Choose a plugin prefix such as `io.kestra.plugin.jdbc.oracle` to cover every task of that plugin.
-- **Values the policy provides**: the literal values of the task. Credentials are selected by default and saved as namespace secrets, and the policy references them with `{{ secret('KEY') }}`.
-
-On submit, Kestra creates the secrets, creates the policy with `enforcement: REFERENCE` and an `Add` rule on `PLUGIN` filtered with `type`, removes the selected properties from the task, and adds the policy to the task's `policyRefs`. No credential is left in the flow or written into the policy.
-
-```yaml
-# Policy created from the dialog
-id: jdbc-postgresql-defaults
-enforcement: REFERENCE
-rules:
-  - type: io.kestra.plugin.ee.rules.Add
-    on: PLUGIN
-    where:
-      - field: type
-        operator: EQUAL_TO
-        value: io.kestra.plugin.jdbc.postgresql.Query
-    values:
-      username: kestra
-      password: "{{ secret('POSTGRESQL_PASSWORD') }}"
-```
-
-**Edit a reference.** Hover an entry of `policyRefs` and select **Edit policy** to change the policy in a dialog.
-
-These actions follow your permissions: suggestions need the `POLICY` `LIST` permission on the namespace, creating a policy needs `POLICY` `CREATE`, editing needs `POLICY` `UPDATE`, and saving a secret needs `SECRET` `UPDATE`.
-
 ## Visibility
 
 The Policy overview page (accessible from the tenant **Policies** menu or **Namespaces → [namespace] → Policies**) lists every flow violating the policy's validate rules, with a finding count per flow and a **Fix** button.
