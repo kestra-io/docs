@@ -98,6 +98,47 @@ describe("allResults", () => {
         expect(first.doc?.groupStart).toBe(false)
     })
 
+    it("never lets a plugin subgroup's short title count as an exact match", () => {
+        const rows = allResults(
+            [
+                {
+                    kind: "Plugin",
+                    results: [
+                        row(
+                            "plugins/plugin-figma/triggers",
+                            "PLUGINS",
+                            "Triggers",
+                            {
+                                plugin: { subgroup: true },
+                            },
+                        ),
+                    ],
+                },
+                {
+                    kind: "Docs",
+                    results: [
+                        row(
+                            "docs/workflow-components/triggers",
+                            "DOCS",
+                            "Triggers",
+                            {
+                                doc: {
+                                    fullTitle: "Triggers in Kestra",
+                                    groupStart: true,
+                                },
+                            },
+                        ),
+                    ],
+                },
+            ],
+            "triggers",
+        )
+        expect(rows.map((r) => r.url)).toEqual([
+            "docs/workflow-components/triggers",
+            "plugins/plugin-figma/triggers",
+        ])
+    })
+
     it("stops at the given limit", () => {
         const rows = allResults(
             [

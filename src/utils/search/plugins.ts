@@ -18,6 +18,7 @@ export type PluginSearchCard = CardPlugin & { elements?: ElementPreview[] }
 export interface PluginSearchResult extends SearchResult {
     plugin: {
         icon: string
+        subgroup: boolean
         isEnterprise: boolean
         categories: string[]
         description: string
@@ -40,6 +41,7 @@ const toResult = (card: PluginSearchCard): PluginSearchResult => ({
     title: card.title.replace(/\s*\(EE\)\s*$/i, ""),
     plugin: {
         icon: pluginIcon(card),
+        subgroup: Boolean(card.subGroup),
         isEnterprise: card.isEnterprise ?? false,
         categories: (card.categories ?? []).map(formatCategoryName),
         description: card.description ?? "",

@@ -1,7 +1,10 @@
 import type { SearchResult } from "~/utils/searchResults"
 import { includesAll, MAX_RESULTS, searchTokens } from "~/utils/search/matching"
 
-type Row = SearchResult & { doc?: { fullTitle: string; groupStart: boolean } }
+type Row = SearchResult & {
+    doc?: { fullTitle: string; groupStart: boolean }
+    plugin?: { subgroup: boolean }
+}
 
 const EXACT_TITLE = 2
 const IN_TITLE = 1
@@ -11,7 +14,9 @@ function relevance(row: Row, tokens: string[]) {
     const titles = [row.title, row.doc?.fullTitle]
         .filter((title): title is string => Boolean(title))
         .map((title) => title.toLowerCase().trim().replace(/\s+/g, " "))
-    if (titles.includes(tokens.join(" "))) return EXACT_TITLE
+    if (!row.plugin?.subgroup && titles.includes(tokens.join(" "))) {
+        return EXACT_TITLE
+    }
     return titles.some((title) => includesAll(title, tokens))
         ? IN_TITLE
         : ELSEWHERE
