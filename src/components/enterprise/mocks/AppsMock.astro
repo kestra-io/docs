@@ -65,8 +65,11 @@ const FIELDS = [
                         <p>{app.text}</p>
                     </div>
                     <span class="tags">
-                        {app.tags.map((tag) => (
-                            <span>{tag}</span>
+                        {app.tags.map((tag, i) => (
+                            <>
+                                {i > 0 && " "}
+                                <span>{tag}</span>
+                            </>
                         ))}
                     </span>
                     <span class:list={["request", { go: idx === 0 }]}>
