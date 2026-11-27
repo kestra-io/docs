@@ -2,7 +2,11 @@ import { cachedLoader } from "~/utils/search/loaders"
 
 export type PreviewSection = "docs" | "blogs"
 
-export type ContentPreviewPage = { title: string; html: string }
+export type ContentPreviewPage = {
+    title: string
+    html: string
+    assets: PreviewAssets
+}
 
 const pages = cachedLoader(async (path) => {
     const [section, ...id] = path.split("/")
@@ -53,13 +57,36 @@ function embedLink(page: Document, frame: Element) {
     return link
 }
 
-const addedStyles = new Set<string>()
+export type PreviewAssets = {
+    stylesheets: string[]
+    scripts: string[]
+    styles: string[]
+}
 
-function adoptAssets(page: Document) {
-    for (const link of page.querySelectorAll(
-        'link[rel="stylesheet"][href^="/_astro/"]',
-    )) {
-        const href = link.getAttribute("href") ?? ""
+const PREVIEW_STYLE_ATTR = "data-search-preview-style"
+
+function previewAssets(page: Document): PreviewAssets {
+    return {
+        stylesheets: [
+            ...page.querySelectorAll(
+                'link[rel="stylesheet"][href^="/_astro/"]',
+            ),
+        ].map((link) => link.getAttribute("href") ?? ""),
+        scripts: [...page.querySelectorAll('script[src^="/_astro/ec."]')].map(
+            (script) => script.getAttribute("src") ?? "",
+        ),
+        styles: [...page.querySelectorAll("style")]
+            .map((style) => style.textContent ?? "")
+            .filter(Boolean),
+    }
+}
+
+export function adoptPreviewAssets({
+    stylesheets,
+    scripts,
+    styles,
+}: PreviewAssets) {
+    for (const href of stylesheets) {
         if (!document.querySelector(`link[href="${href}"]`)) {
             document.head.appendChild(
                 Object.assign(document.createElement("link"), {
@@ -69,8 +96,7 @@ function adoptAssets(page: Document) {
             )
         }
     }
-    for (const script of page.querySelectorAll('script[src^="/_astro/ec."]')) {
-        const src = script.getAttribute("src") ?? ""
+    for (const src of scripts) {
         if (!document.querySelector(`script[src="${src}"]`)) {
             document.head.appendChild(
                 Object.assign(document.createElement("script"), {
@@ -80,16 +106,17 @@ function adoptAssets(page: Document) {
             )
         }
     }
-    for (const style of page.querySelectorAll("style")) {
-        const css = style.textContent ?? ""
-        if (css && !addedStyles.has(css)) {
-            addedStyles.add(css)
-            document.head.appendChild(
-                Object.assign(document.createElement("style"), {
-                    textContent: css,
-                }),
-            )
-        }
+    const present = new Set(
+        [...document.head.querySelectorAll(`style[${PREVIEW_STYLE_ATTR}]`)].map(
+            (style) => style.textContent,
+        ),
+    )
+    for (const css of styles) {
+        if (present.has(css)) continue
+        const style = document.createElement("style")
+        style.setAttribute(PREVIEW_STYLE_ATTR, "")
+        style.textContent = css
+        document.head.appendChild(style)
     }
 }
 
@@ -112,7 +139,7 @@ function previewPage(html: string, path: string): ContentPreviewPage {
     if (!content) throw new Error(`The ${path} preview has no content`)
     const origin = window.location.origin
 
-    adoptAssets(page)
+    const assets = previewAssets(page)
     sanitize(content)
     for (const link of content.querySelectorAll("a[href]")) {
         link.setAttribute(
@@ -134,5 +161,6 @@ function previewPage(html: string, path: string): ContentPreviewPage {
     return {
         title: page.querySelector("h1")?.textContent?.trim() ?? "",
         html: content.innerHTML,
+        assets,
     }
 }

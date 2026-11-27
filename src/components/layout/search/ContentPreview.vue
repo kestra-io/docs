@@ -25,9 +25,10 @@
 
 <script setup lang="ts">
     import { useResizeObserver } from "@vueuse/core"
-    import { ref, useTemplateRef } from "vue"
+    import { ref, useTemplateRef, watch } from "vue"
     import { useDeferredLoad } from "~/composables/useDeferredLoad"
     import {
+        adoptPreviewAssets,
         isContentPreviewLoaded,
         loadContentPreview,
         type PreviewSection,
@@ -46,6 +47,8 @@
         () => loadContentPreview(props.section, props.id),
         () => isContentPreviewLoaded(props.section, props.id),
     )
+
+    watch(page, (loaded) => loaded && adoptPreviewAssets(loaded.assets))
 
     // The preview fills what is left of the pane and stops there.
     const clip = useTemplateRef<HTMLElement>("clip")
