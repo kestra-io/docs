@@ -16,6 +16,8 @@ const REFERENCE_SECTIONS = new Set([
     "docs-style-guide",
 ])
 
+const GUIDE_SECTIONS = new Set(["tutorial"])
+
 const icons = import.meta.glob<{ default: ImageMetadata }>(
     "/src/contents/docs/icons/*.svg",
 )
@@ -49,6 +51,7 @@ export const GET: APIRoute = async () => {
             order: position === -1 ? sidebar.length : position,
             sidebar: position !== -1,
             reference: REFERENCE_SECTIONS.has(section),
+            guide: GUIDE_SECTIONS.has(section),
         }
     }
 

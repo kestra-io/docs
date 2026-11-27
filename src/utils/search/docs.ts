@@ -2,7 +2,14 @@ import type { SearchResult } from "~/utils/searchResults"
 import { withFullTextMatches } from "~/utils/search/fullText"
 import { $fetch } from "~/utils/fetch"
 import { loadOnce } from "~/utils/search/loaders"
-import { includesAll, MAX_RESULTS, searchTokens } from "~/utils/search/matching"
+import {
+    includesAll,
+    isExactMatch,
+    MAX_RESULTS,
+    searchTokens,
+} from "~/utils/search/matching"
+
+const SCORE = { EXACT: 4, TITLE: 3, SECONDARY: 2, OTHER: 1 } as const
 
 export type DocsSection = {
     title: string
@@ -10,6 +17,7 @@ export type DocsSection = {
     order: number
     sidebar: boolean
     reference: boolean
+    guide?: boolean
 }
 
 export type DocsPage = {
@@ -46,17 +54,20 @@ const sectionOf = (page: DocsPage) => page.id.split("/")[0]
 
 const depthOf = (page: DocsPage) => page.id.split("/").length
 
-function rankDocs(docs: DocsIndex, tokens: string[]) {
+function rankDocs(docs: DocsIndex, query: string, tokens: string[]) {
     const section = (page: DocsPage) => docs.sections[sectionOf(page)]
     const bySection = (a: DocsPage, b: DocsPage) =>
         Number(section(a)?.reference) - Number(section(b)?.reference) ||
+        Number(section(a)?.guide ?? false) -
+            Number(section(b)?.guide ?? false) ||
         (section(a)?.order ?? 0) - (section(b)?.order ?? 0)
-    const tier = (page: DocsPage) => {
+    const score = (page: DocsPage) => {
+        if (isExactMatch(query, page.short, page.title)) return SCORE.EXACT
         const title = `${page.title} ${page.short}`
-        if (includesAll(title, tokens)) return 3
+        if (includesAll(title, tokens)) return SCORE.TITLE
         return includesAll(`${title} ${page.headings.join(" ")}`, tokens)
-            ? 2
-            : 1
+            ? SCORE.SECONDARY
+            : SCORE.OTHER
     }
     return docs.pages
         .filter((page) =>
@@ -71,20 +82,21 @@ function rankDocs(docs: DocsIndex, tokens: string[]) {
                 tokens,
             ),
         )
-        .map((page) => ({ page, tier: tier(page) }))
+        .map((page) => ({ page, score: score(page) }))
         .sort(
             (a, b) =>
-                b.tier - a.tier ||
+                b.score - a.score ||
                 bySection(a.page, b.page) ||
                 depthOf(a.page) - depthOf(b.page) ||
                 a.page.short.length - b.page.short.length,
         )
-        .map(({ page }) => page)
 }
+
+type Ranked = { page: DocsPage }
 
 const toResult = (
     docs: DocsIndex,
-    page: DocsPage,
+    { page }: Ranked,
     group: {
         section: string
         title: string
@@ -110,23 +122,28 @@ const toResult = (
     },
 })
 
-function groupBySection(docs: DocsIndex, pages: DocsPage[]) {
-    const groups = new Map<string, DocsPage[]>()
-    for (const page of pages) {
-        const section = sectionOf(page)
-        groups.set(section, [...(groups.get(section) ?? []), page])
+function groupRuns(docs: DocsIndex, ranked: Ranked[]) {
+    const runs: Ranked[][] = []
+    for (const entry of ranked) {
+        const last = runs.at(-1)
+        if (last && sectionOf(last[0].page) === sectionOf(entry.page)) {
+            last.push(entry)
+        } else {
+            runs.push([entry])
+        }
     }
-    return [...groups].flatMap(([section, list]) =>
-        list.map((page, i) =>
-            toResult(docs, page, {
+    return runs.flatMap((run) => {
+        const section = sectionOf(run[0].page)
+        return run.map((entry, i) =>
+            toResult(docs, entry, {
                 section,
                 title: docs.sections[section]?.title ?? section,
                 icon: docs.sections[section]?.icon,
                 start: i === 0,
-                count: list.length,
+                count: run.length,
             }),
-        ),
-    )
+        )
+    })
 }
 
 // Before anything is typed: each section's own page, in sidebar order.
@@ -140,12 +157,16 @@ function docsHome(docs: DocsIndex) {
         )
         .sort((a, b) => docs.sections[a.id].order - docs.sections[b.id].order)
     return roots.map((page, i) =>
-        toResult(docs, page, {
-            section: "",
-            title: "Documentation",
-            start: i === 0,
-            count: roots.length,
-        }),
+        toResult(
+            docs,
+            { page },
+            {
+                section: "",
+                title: "Documentation",
+                start: i === 0,
+                count: roots.length,
+            },
+        ),
     )
 }
 
@@ -159,13 +180,16 @@ export function docsSearchResults(
         return { total: docs.pages.length, results: docsHome(docs) }
     }
     const pages = withFullTextMatches(
-        rankDocs(docs, tokens),
+        rankDocs(docs, query, tokens).map(({ page }) => page),
         docs.pages,
         fullTextUrls,
         "docs/",
     )
     return {
         total: pages.length,
-        results: groupBySection(docs, pages.slice(0, MAX_RESULTS)),
+        results: groupRuns(
+            docs,
+            pages.slice(0, MAX_RESULTS).map((page) => ({ page })),
+        ),
     }
 }

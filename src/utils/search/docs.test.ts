@@ -57,20 +57,61 @@ const docs: DocsIndex = {
     ],
 }
 
-const rows = (query: string, fullTextUrls?: string[]) =>
-    docsSearchResults(docs, query, fullTextUrls).results.map((r) => [
+const rows = (query: string) =>
+    docsSearchResults(docs, query).results.map((r) => [
         r.doc.id,
         r.doc.groupStart,
         r.doc.groupCount,
     ])
 
 describe("docsSearchResults", () => {
-    it("groups unfinished-word matches by section, the best match's section first", () => {
+    it("keeps the relevance order, grouping only consecutive pages of a section", () => {
         expect(rows("secr")).toEqual([
-            ["concepts/secret", true, 2],
-            ["concepts/kv-store", false, 2],
+            ["concepts/secret", true, 1],
             ["how-to-guides/kubernetes-secrets", true, 1],
             ["terraform/resources/namespace_secret", true, 1],
+            ["concepts/kv-store", true, 1],
+        ])
+    })
+
+    it("puts an exact title first, a tutorial step after the reference page", () => {
+        const withInputs: DocsIndex = {
+            sections: {
+                ...docs.sections,
+                tutorial: {
+                    title: "Tutorial",
+                    order: 3,
+                    sidebar: true,
+                    reference: false,
+                    guide: true,
+                },
+                "workflow-components": {
+                    title: "Workflow Components",
+                    order: 5,
+                    sidebar: true,
+                    reference: false,
+                },
+            },
+            pages: [
+                page("tutorial/outputs", "Pass Outputs Between Tasks", {
+                    short: "Outputs",
+                    headings: ["Use inputs and outputs"],
+                }),
+                page("tutorial/inputs", "Add Inputs to Kestra Workflows", {
+                    short: "Inputs",
+                }),
+                page("workflow-components/reusable-inputs", "Reusable Inputs"),
+                page("workflow-components/inputs", "Workflow Inputs", {
+                    short: "Inputs",
+                }),
+            ],
+        }
+        const results = docsSearchResults(withInputs, "Inputs").results
+        expect(results.map((r) => r.doc.id)).toEqual([
+            "workflow-components/inputs",
+            "tutorial/inputs",
+            "workflow-components/reusable-inputs",
+            "tutorial/outputs",
         ])
     })
 
@@ -80,11 +121,7 @@ describe("docsSearchResults", () => {
             "docs/concepts/secret",
         ])
         expect(total).toBe(5)
-        expect(results.map((r) => r.doc.id).slice(0, 3)).toEqual([
-            "concepts/secret",
-            "concepts/kv-store",
-            "concepts/namespace-files",
-        ])
+        expect(results.at(-1)?.doc.id).toBe("concepts/namespace-files")
     })
 
     it("builds rows linking to the page, titled with its sidebar name", () => {
