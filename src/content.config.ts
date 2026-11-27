@@ -247,6 +247,9 @@ export const collections = {
                 // Emits `noindex, follow` and keeps the page out of the
                 // sitemap; the page stays reachable for readers and links.
                 noindex: z.boolean().optional(),
+                // Resource ids (folder names) shown under "Related resources",
+                // in order, instead of the latest pages with the same tag.
+                related: z.array(z.string()).max(3).optional(),
                 // Replaces Get Started in the injected CTA pair (Book a Demo
                 // stays secondary). Taglines fall back to the tag defaults.
                 resourceCtaOverride: z

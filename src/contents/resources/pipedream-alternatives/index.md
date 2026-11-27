@@ -1,16 +1,20 @@
 ---
-title: "Pipedream Workflows Alternatives: What the Shutdown Removes, What to Save, and How to Migrate by March 31, 2027"
+title: "Pipedream Alternatives: Your Options After the Workflows Shutdown"
 description: "Pipedream Workflows shuts down on March 31, 2027 and its data is deleted on April 30. How the Pipedream Workflows alternatives compare, what the export contains, what you must save first, and a four-stage plan to move your workflows to Kestra in time."
-metaTitle: "Pipedream Alternative: Move Workflows by March 31"
-metaDescription: "Looking for a Pipedream alternative? Pipedream Workflows shuts down March 31, 2027: what the export misses, how the options compare, how to migrate."
+metaTitle: "Pipedream Alternatives in 2026: Your Options After the Shutdown"
+metaDescription: "Comparing Pipedream alternatives? Pipedream Workflows shuts down March 31, 2027. How the options compare, what the export misses, and how to migrate in time."
 tag: "infrastructure"
 date: 2026-10-20
-lastUpdated: 2026-11-04
+lastUpdated: 2026-11-25
+related:
+  - zapier-alternatives
+  - n8n-alternatives
+  - windmill-alternatives
 faq:
   - question: "Is Pipedream shutting down?"
     answer: "Pipedream Workflows and String are shutting down on March 31, 2027. Existing workflows keep running until then, but the product takes no new signups or subscriptions and ships no new features. All Workflows data, including connected-account credentials and OAuth tokens, is permanently deleted by April 30, 2027. Pipedream Connect, which covers the Connect API, MCP servers and the API proxy, is not affected."
   - question: "What is the best alternative to Pipedream Workflows?"
-    answer: "It depends on what your workflows do. For simple SaaS-to-SaaS automations built by business users, Zapier or Make are the closest fit. For teams that want a self-hosted visual builder, n8n. When the logic belongs inside an application your developers own, Temporal. When workflows loop over records, call slow APIs, run code in several languages and need Git, environments, retries and observability, Kestra. For teams leaving a hosted product like Pipedream, Kestra Cloud is the closest fit because it is fully managed; Kestra Open Source and Enterprise cover teams that prefer to self-host."
+    answer: "It depends on what your workflows do. For simple SaaS-to-SaaS automations built by business users, Zapier or Make are the closest fit. For teams that want a self-hosted visual builder, n8n. When the logic belongs inside an application your developers own, Temporal. For developers who want scripts, flows and internal apps in one product, Windmill. When workflows loop over records, call slow APIs, run code in several languages and need Git, environments, retries and observability, Kestra. For teams leaving a hosted product like Pipedream, Kestra Cloud is the closest fit because it is fully managed; Kestra Open Source and Enterprise cover teams that prefer to self-host."
   - question: "Is there an open-source alternative to Pipedream?"
     answer: "Yes. Kestra Open Source is licensed under Apache 2.0 and runs the same YAML flows as Kestra Cloud on Docker Compose, Kubernetes or a VM, so code steps, triggers and branches from Pipedream move across without a managed service. Among the other options, Windmill has an AGPLv3 core, Temporal is MIT-licensed but runs workflows inside your application code, and n8n is self-hostable under a fair-code license rather than an open-source one."
   - question: "What does the Pipedream export include?"
@@ -46,6 +50,31 @@ That changes the usual search for a Pipedream alternative. For Pipedream Workflo
 The dates come from Pipedream's own [shutdown notice](https://pipedream.com/docs/workflows). Monthly subscribers can cancel early in account settings; annual subscribers contact Pipedream support for an early, prorated cancellation.
 
 ::resource-cta
+
+## Four tests for any Pipedream alternative
+
+Most tools that come up in a Pipedream replacement search are strong in one slice of what Pipedream did. Ask four questions of each.
+
+1. **Does it run your code as code?** Pipedream steps are Node.js, Python, Go and Bash. An alternative that only offers a visual builder means rewriting that logic.
+2. **Can the control flow grow?** Loops, branches, waits, approvals and calls to other workflows should be native, not workarounds.
+3. **How hard is it to leave?** Where do definitions live, can you read them without the product, and could you run it yourself if the vendor changed course? Could you rebuild your business logic from a backup if you had to? This is the test Pipedream just failed.
+4. **Can more than one team use it?** Integrations rarely stay integrations; the same platform ends up running data loads, finance processes and infrastructure tasks.
+
+| Dimension | Zapier / Make | n8n | Temporal | Windmill | Kestra |
+|---|---|---|---|---|---|
+| Primary job | No-code SaaS automation | Visual workflow automation | Durable execution in application code | Scripts, workflows and internal apps | Workflow orchestration across systems |
+| Definition format | Visual builder | Visual builder, JSON export | Code (Go, Java, Python, TypeScript and others) | Scripts plus flow definitions | Declarative YAML, plus a no-code editor |
+| Runs Pipedream code steps as code | Limited code steps | JavaScript and Python nodes | Only inside your application | Yes, many languages | Yes: Node.js, Python, Go, Bash and more |
+| Native loops and approvals | Iterators; limited approvals | Loop node; wait nodes | In code | Yes | `Loop`, `Switch`, `Parallel`, `Pause` |
+| Git and environments | No | Source control on paid plans | Your application's repository | Git sync | Git sync, CI/CD, Terraform provider |
+| Managed cloud | Yes, only option | n8n Cloud | Temporal Cloud | Windmill Cloud | Kestra Cloud |
+| Self-hosted | No | Yes, fair-code license | Yes, MIT | Yes, AGPLv3 core | Yes, Open Source (Apache 2.0) or Enterprise |
+| Data, infrastructure and AI workflows | No | Partly | Through code you write | Partly | Yes, {totalPlugins}+ plugins |
+| Free to start | Yes: a free plan on each, with monthly task or credit limits | Yes: self-hosted Community Edition, or a 14-day n8n Cloud trial | Yes: self-hosted open source, and free credits on Temporal Cloud | Yes: self-hosted, and a free Cloud plan (1,000 executions a month) | Yes: open source; Kestra Cloud on request |
+
+What Kestra does not carry over: Pipedream's connected accounts. Each OAuth connection is re-created with your own OAuth client or API token for that app, stored as a secret or, on Kestra Cloud and Enterprise, as a [credential](/docs/enterprise/auth/credentials) that refreshes server-to-server tokens. Steps that used a pre-built action for an app without a Kestra plugin become HTTP requests.
+
+Choose Zapier or Make when business users own simple automations and no code needs to move. Choose [n8n](/vs/n8n) for a self-hosted visual builder, and [Temporal](/vs/temporal) when the workflow belongs inside an application your developers ship. Choose Windmill when your developers want scripts, flows and internal apps in a single product and an AGPLv3 core is acceptable. Choose Kestra when you need the layer Pipedream was for engineering teams, triggers plus code plus API calls, with the control flow, Git, observability and portability it never had, hosted for you on Kestra Cloud or run on your own infrastructure. The [Kestra vs. Pipedream comparison](/vs/pipedream) goes feature by feature.
 
 ## What the export gives you, and what it leaves behind
 
@@ -130,28 +159,6 @@ A forced migration is also the moment to stop living with the workarounds. Six c
 
 **People who are not developers.** Pipedream let analysts make small changes and watch runs. In Kestra, business users can work in the no-code editor, follow executions and usage on dashboards, or launch a process from a form built with [Apps](/docs/enterprise/scalability/apps) without touching the flow itself.
 
-## Four tests for any Pipedream alternative
-
-Most tools that come up in a Pipedream replacement search are strong in one slice of what Pipedream did. Ask four questions of each.
-
-1. **Does it run your code as code?** Pipedream steps are Node.js, Python, Go and Bash. An alternative that only offers a visual builder means rewriting that logic.
-2. **Can the control flow grow?** Loops, branches, waits, approvals and calls to other workflows should be native, not workarounds.
-3. **How hard is it to leave?** Where do definitions live, can you read them without the product, and could you run it yourself if the vendor changed course? Could you rebuild your business logic from a backup if you had to? This is the test Pipedream just failed.
-4. **Can more than one team use it?** Integrations rarely stay integrations; the same platform ends up running data loads, finance processes and infrastructure tasks.
-
-| Dimension | Zapier / Make | n8n | Temporal | Windmill | Kestra |
-|---|---|---|---|---|---|
-| Primary job | No-code SaaS automation | Visual workflow automation | Durable execution in application code | Scripts and internal tools | Workflow orchestration across systems |
-| Definition format | Visual builder | Visual builder, JSON export | Code (Go, Java, Python, TypeScript and others) | Scripts plus flow definitions | Declarative YAML, plus a no-code editor |
-| Runs Pipedream code steps as code | Limited code steps | JavaScript and Python nodes | Only inside your application | Yes, several languages | Yes: Node.js, Python, Go, Bash and more |
-| Native loops and approvals | Iterators; limited approvals | Loop node; wait nodes | In code | Yes | `Loop`, `Switch`, `Parallel`, `Pause` |
-| Git and environments | No | Source control on paid plans | Your application's repository | Git sync | Git sync, CI/CD, Terraform provider |
-| Managed cloud | Yes, only option | n8n Cloud | Temporal Cloud | Windmill Cloud | Kestra Cloud |
-| Self-hosted | No | Yes, fair-code license | Yes, MIT | Yes, AGPLv3 core | Yes, Open Source (Apache 2.0) or Enterprise |
-| Data, infrastructure and AI workflows | No | Partly | Through code you write | Partly | Yes, {totalPlugins}+ plugins |
-
-Choose Zapier or Make when business users own simple automations and no code needs to move. Choose [n8n](/vs/n8n) for a self-hosted visual builder, and [Temporal](/vs/temporal) when the workflow belongs inside an application your developers ship. Choose Kestra when you need the layer Pipedream was for engineering teams, triggers plus code plus API calls, with the control flow, Git, observability and portability it never had, hosted for you on Kestra Cloud or run on your own infrastructure. The [Kestra vs. Pipedream comparison](/vs/pipedream) goes feature by feature.
-
 ## A Pipedream workflow rebuilt as a Kestra flow
 
 A common Pipedream pattern: a file lands in shared storage, a code step parses it, a loop inside the next step posts each record to an ERP API, and a final step notifies the team. In Kestra it is one flow, and it runs the same on Kestra Cloud, Open Source and Enterprise. For a webhook-driven example with a code step, an ERP call over HTTP and a Slack alert on failure, see the [worked conversion](/resources/migration/pipedream#pd-compare-title) in the migration guide.
@@ -179,11 +186,13 @@ tasks:
   - id: parse
     type: io.kestra.plugin.scripts.python.Script
     containerImage: python:3.12-slim
+    inputFiles:
+      entries.csv: "{{ trigger.objects[0].uri }}"
     outputFiles:
       - entries.json
     script: |
       import csv, json
-      rows = list(csv.DictReader(open("{{ trigger.objects[0].uri }}")))
+      rows = list(csv.DictReader(open("entries.csv")))
       json.dump(rows, open("entries.json", "w"))
 
   - id: each_entry
@@ -195,7 +204,7 @@ tasks:
         uri: "{{ secret('ERP_URL') }}/journal-entries"
         method: POST
         contentType: application/json
-        body: "{{ item.value | toJson }}"
+        body: "{{ item.value }}"
         headers:
           Authorization: "Bearer {{ secret('ERP_TOKEN') }}"
         timeout: PT10M
@@ -208,7 +217,7 @@ tasks:
   - id: notify
     type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"
-    messageText: "Posted {{ outputs.each_entry.iterationCount ?? 'all' }} journal entries"
+    messageText: "Posted {{ fromJson(read(outputs.parse.outputFiles['entries.json'])) | length }} journal entries"
 
 errors:
   - id: route_failure
@@ -252,7 +261,7 @@ Give the rest a verdict: convert as-is, rebuild because the Pipedream version wa
 
 **4. Cut over and close down.** Repoint each webhook sender, one at a time, and watch executions arrive in Kestra before you disable the Pipedream workflow. Revoke the OAuth grants Pipedream held in each connected app. Finish before March 31, 2027, and keep April as the buffer, because after April 30 there is nothing left to go back to.
 
-## How teams have run the switch
+## A team that consolidated its integrations on Kestra
 
 [Víssimo Group](/stories/vissimo-group), the company behind Brazil's Evino and Grand Cru wine brands, ran its commerce integrations on an iPaaS and its BI pipelines on AWS Lambdas, with retries, timeouts and reprocessing hand-coded into each integration. It evaluated n8n, Temporal, Prefect, Airflow and Kestra, and consolidated both layers onto Kestra Open Source. Integration costs dropped by 90% and BI costs by 40%, it runs around 600 workflows in production, and Black Friday 2025 was its first without a major incident. Retries, timeouts and concurrency limits now live in the flow definitions instead of in each engineer's code.
 

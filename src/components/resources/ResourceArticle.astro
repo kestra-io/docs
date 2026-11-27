@@ -176,7 +176,11 @@ const faqSchema =
         {hubResources ? (
             <ResourceList resources={hubResources} tag={page.tag} />
         ) : (
-            <SimilarResources currentId={post.id} tag={page.tag} />
+            <SimilarResources
+                currentId={post.id}
+                tag={page.tag}
+                relatedIds={page.related}
+            />
         )}
         {faqItems.length > 0 && (
             <div class="resource-faq">
