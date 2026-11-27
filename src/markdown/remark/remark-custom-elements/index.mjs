@@ -4,6 +4,7 @@ import { collapse } from "./collapse.mjs"
 import { badge } from "./badge.mjs"
 import { NextLink } from "./next-link.mjs"
 import { resourceCta } from "./resource-cta.mjs"
+import { stats } from "./stats.mjs"
 
 // Also the registry the versioned-docs renderer dispatches through, so a
 // directive registered here works on archived versions with no extra wiring.
@@ -13,6 +14,7 @@ export const componentMap = {
     badge,
     "next-link": NextLink,
     "resource-cta": resourceCta,
+    stats,
 }
 
 export default function () {
