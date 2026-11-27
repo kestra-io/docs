@@ -1,0 +1,146 @@
+---
+import { Icon } from "astro-icon/components"
+
+interface Comparison {
+    href: string
+    name: string
+    monogram?: string
+}
+
+interface Props {
+    comparisons: Comparison[]
+    alternatives?: { href: string; label: string }
+}
+
+const { comparisons, alternatives } = Astro.props
+---
+
+<section class="vs-related" aria-labelledby="vs-related-title">
+    <div class="container-xl">
+        <div class="rails">
+            <header class="head">
+                <h2 id="vs-related-title">Compare Kestra with similar tools</h2>
+                {alternatives && (
+                    <a href={alternatives.href} class="btn-ghost">
+                        {alternatives.label}
+                        <Icon name="mdi:arrow-right" />
+                    </a>
+                )}
+            </header>
+            <ul class="links">
+                {comparisons.map((item) => (
+                    <li>
+                        <a href={item.href}>
+                            {item.monogram && (
+                                <span
+                                    class="brand-icon"
+                                    set:html={item.monogram}
+                                    aria-hidden="true"
+                                />
+                            )}
+                            <span class="label">Kestra vs {item.name}</span>
+                            <Icon name="mdi:arrow-right" class="arrow" />
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "/src/components/migration/migration" as *;
+
+    .vs-related {
+        @include band;
+    }
+
+    .rails {
+        @include rails;
+    }
+
+    .head {
+        @include head;
+        padding-top: 5rem;
+
+        @include media-breakpoint-down(md) {
+            padding-top: 3.5rem;
+        }
+
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: end;
+            column-gap: 3rem;
+        }
+    }
+
+    .links {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
+        margin: 0;
+        padding: 0 var(--inset) var(--inset);
+        list-style: none;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        a {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: end;
+            gap: 2rem 0.75rem;
+            height: 100%;
+            padding: 1.5rem;
+            border-radius: 8px;
+            background: var(--ks-background-secondary);
+            font-size: 1.0625rem;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+
+            &:hover {
+                background: color-mix(
+                    in srgb,
+                    var(--ks-content-primary) 6%,
+                    var(--ks-background-secondary)
+                );
+
+                .arrow {
+                    transform: translateX(0.25rem);
+                    color: var(--ks-content-primary);
+                }
+            }
+        }
+    }
+
+    .brand-icon {
+        display: inline-flex;
+        flex-shrink: 0;
+        grid-column: 1 / -1;
+        width: 2rem;
+        height: 2rem;
+
+        :global(svg) {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .label {
+        flex: 1;
+    }
+
+    .arrow {
+        width: 1.125rem;
+        height: 1.125rem;
+        color: var(--ks-content-tertiary);
+        transition: transform 0.2s ease;
+    }
+</style>

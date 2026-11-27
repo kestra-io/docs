@@ -105,130 +105,132 @@ const {
                 <h2 id="customers">
                     <slot name="title">
                         In production, at scale
-                        <span
-                            >Teams across banking, manufacturing, technology and
-                            the public sector run Kestra in production.</span
-                        >
+                        <span>
+                            Teams across banking, manufacturing, technology and
+                            the public sector run Kestra in production.
+                        </span>
                     </slot>
                 </h2>
             </header>
 
-            <div class="tabs" role="tablist" aria-label="Customer stories">
-                {
-                    STORIES.map((story, idx) => (
-                        <button
-                            type="button"
-                            role="tab"
-                            id={`story-tab-${idx}`}
-                            class:list={["tab", { active: idx === 0 }]}
-                            aria-selected={idx === 0 ? "true" : "false"}
-                            aria-controls={`story-${idx}`}
-                            tabindex={idx === 0 ? 0 : -1}
-                            style={`--logo-height: ${story.height}px`}
-                        >
-                            <span class="bar" aria-hidden="true" />
-                            {story.logo ? (
-                                <span class="logo" set:html={story.logo} />
-                            ) : (
-                                <span class="name" aria-hidden="true">
-                                    {story.company}
-                                </span>
-                            )}
-                            <span class="visually-hidden">{story.company}</span>
-                        </button>
-                    ))
+            <div
+                class="tabs"
+                role="tablist"
+                aria-label="Customer stories"
+                style={
+                    STORIES.length === 4
+                        ? undefined
+                        : `--count: ${STORIES.length}`
                 }
+            >
+                {STORIES.map((story, idx) => (
+                    <button
+                        type="button"
+                        role="tab"
+                        id={`story-tab-${idx}`}
+                        class:list={["tab", { active: idx === 0 }]}
+                        aria-selected={idx === 0 ? "true" : "false"}
+                        aria-controls={`story-${idx}`}
+                        tabindex={idx === 0 ? 0 : -1}
+                        style={`--logo-height: ${story.height}px`}
+                    >
+                        <span class="bar" aria-hidden="true" />
+                        {story.logo ? (
+                            <span class="logo" set:html={story.logo} />
+                        ) : (
+                            <span class="name" aria-hidden="true">
+                                {story.company}
+                            </span>
+                        )}
+                        <span class="visually-hidden">{story.company}</span>
+                    </button>
+                ))}
             </div>
 
             <div class="panels">
-                {
-                    STORIES.map((story, idx) => (
-                        <div
-                            id={`story-${idx}`}
-                            role="tabpanel"
-                            aria-labelledby={`story-tab-${idx}`}
-                            class:list={[
-                                "panel",
-                                {
-                                    active: idx === 0,
-                                    bare: !story.photo && !placeholder,
-                                },
-                            ]}
-                        >
-                            <figure class="story">
-                                <div class="figure">
-                                    {story.industry && (
-                                        <p class="industry">{story.industry}</p>
-                                    )}
-                                    <p class="stat">
-                                        {story.stat}{" "}
-                                        <span set:html={story.label} />
-                                    </p>
-                                </div>
-                                <figcaption class="words">
-                                    {(story.quote || story.detail) && (
-                                        <svg
-                                            viewBox="0 0 46 40"
-                                            class="glyph"
-                                            aria-hidden="true"
-                                        >
-                                            <path d="M0 0v20.742h11.843c-.161 2.37-.822 6.365-3.33 9.113C6.543 32.01 3.757 33.06 0 33.06V40c5.683 0 10.228-1.823 13.513-5.417 4.062-4.446 5.244-10.484 5.422-13.835V0H0Z" />
-                                            <path d="M27.06 0v20.742h11.842c-.161 2.37-.821 6.365-3.33 9.113-1.97 2.155-4.756 3.205-8.512 3.205V40c5.682 0 10.227-1.823 13.512-5.417 4.063-4.446 5.245-10.484 5.422-13.835V0H27.06Z" />
-                                        </svg>
-                                    )}
-                                    {story.quote ? (
-                                        <blockquote>{story.quote}</blockquote>
-                                    ) : (
-                                        story.detail && (
-                                            <p class="detail">{story.detail}</p>
-                                        )
-                                    )}
-                                    {story.author && (
-                                        <p class="author">{story.author}</p>
-                                    )}
-                                    {storyHref(story.story) && (
-                                        <a
-                                            href={storyHref(story.story)}
-                                            class="read"
-                                        >
-                                            <span>Read the story</span>
-                                            <Icon name="mdi:arrow-right" />
-                                        </a>
-                                    )}
-                                </figcaption>
-                            </figure>
-                            {(story.photo || placeholder) && (
-                                <div class="photo" aria-hidden="true">
-                                    {story.photo && (
-                                        <Image
-                                            src={story.photo}
-                                            alt=""
-                                            widths={[480, 720, 960]}
-                                            sizes="(max-width: 992px) 100vw, 40vw"
-                                            loading="lazy"
-                                        />
-                                    )}
-                                </div>
-                            )}
-                        </div>
-                    ))
-                }
+                {STORIES.map((story, idx) => (
+                    <div
+                        id={`story-${idx}`}
+                        role="tabpanel"
+                        aria-labelledby={`story-tab-${idx}`}
+                        class:list={[
+                            "panel",
+                            {
+                                active: idx === 0,
+                                bare: !story.photo && !placeholder,
+                            },
+                        ]}
+                    >
+                        <figure class="story">
+                            <div class="figure">
+                                {story.industry && (
+                                    <p class="industry">{story.industry}</p>
+                                )}
+                                <p class="stat">
+                                    {story.stat} <span set:html={story.label} />
+                                </p>
+                            </div>
+                            <figcaption class="words">
+                                {(story.quote || story.detail) && (
+                                    <svg
+                                        viewBox="0 0 46 40"
+                                        class="glyph"
+                                        aria-hidden="true"
+                                    >
+                                        <path d="M0 0v20.742h11.843c-.161 2.37-.822 6.365-3.33 9.113C6.543 32.01 3.757 33.06 0 33.06V40c5.683 0 10.228-1.823 13.513-5.417 4.062-4.446 5.244-10.484 5.422-13.835V0H0Z" />
+                                        <path d="M27.06 0v20.742h11.842c-.161 2.37-.821 6.365-3.33 9.113-1.97 2.155-4.756 3.205-8.512 3.205V40c5.682 0 10.227-1.823 13.512-5.417 4.063-4.446 5.245-10.484 5.422-13.835V0H27.06Z" />
+                                    </svg>
+                                )}
+                                {story.quote ? (
+                                    <blockquote>{story.quote}</blockquote>
+                                ) : (
+                                    story.detail && (
+                                        <p class="detail">{story.detail}</p>
+                                    )
+                                )}
+                                {story.author && (
+                                    <p class="author">{story.author}</p>
+                                )}
+                                {storyHref(story.story) && (
+                                    <a
+                                        href={storyHref(story.story)}
+                                        class="read"
+                                    >
+                                        <span>Read the story</span>
+                                        <Icon name="mdi:arrow-right" />
+                                    </a>
+                                )}
+                            </figcaption>
+                        </figure>
+                        {(story.photo || placeholder) && (
+                            <div class="photo" aria-hidden="true">
+                                {story.photo && (
+                                    <Image
+                                        src={story.photo}
+                                        alt=""
+                                        widths={[480, 720, 960]}
+                                        sizes="(max-width: 992px) 100vw, 40vw"
+                                        loading="lazy"
+                                    />
+                                )}
+                            </div>
+                        )}
+                    </div>
+                ))}
             </div>
 
-            {
-                foot && (
-                    <div class="foot">
-                        <p>
-                            More than <strong>40,000</strong> organizations run
-                            Kestra, including nearly 800 companies with over
-                            1,000 employees.
-                        </p>
-                        <a href="/stories" class="all">
-                            See all stories <span aria-hidden="true">→</span>
-                        </a>
-                    </div>
-                )
-            }
+            {foot && (
+                <div class="foot">
+                    <p>
+                        More than <strong>40,000</strong> organizations run
+                        Kestra, including nearly 800 companies with over 1,000
+                        employees.
+                    </p>
+                    <a href="/stories" class="all">
+                        See all stories <span aria-hidden="true">→</span>
+                    </a>
+                </div>
+            )}
         </div>
     </div>
 </section>
@@ -450,7 +452,7 @@ const {
 
     .tabs {
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(var(--count, 4), minmax(0, 1fr));
         gap: var(--gap);
 
         @include media-breakpoint-down(md) {
