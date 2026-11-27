@@ -40,7 +40,7 @@ See [Tenants](../../07.enterprise/02.governance/tenants/index.md) for the other 
 
 Open **Instance Owner** → **Tenants**, open the tenant's **Settings** page, and change its type to **Infrastructure**. The change applies to every member of the tenant on their next page load. Flows, apps, assets, and settings are kept. Only the home page and the sidebar change.
 
-Switching the type also seeds the [example environment](#example-environment), unless the tenant already received the current example bundle.
+Switching the type seeds the [example environment](#example-environment) only if the tenant never received it. See [When examples are seeded](#when-examples-are-seeded).
 
 ## Example environment
 
@@ -64,11 +64,18 @@ When the examples are present, the Catalog offers a guided tour of them. It walk
 
 ### When examples are seeded
 
-Kestra seeds the example environment when an Infrastructure tenant is created, and when a tenant's type changes. It skips seeding when:
+Kestra seeds the example environment when a tenant is created as, or switched to, `INFRASTRUCTURE` and never received the examples. After that, a type switch never seeds the tenant again, whatever the version of the example bundle, and removed examples stay removed.
 
-- The tenant already received the current version of the example bundle. Later versions of the bundle aren't applied to existing tenants. To see them, create a new tenant.
+To add the examples on purpose, open the tenant's **Settings** page and click **Add examples** next to **Example resources**. It seeds the current version of the example bundle on a tenant that doesn't have the examples. Only the Instance Owner can add examples. Through the API, call `POST /api/v1/tenants/{id}/examples`.
+
+To get a newer version of the example bundle on a tenant that has the examples, [remove them](#remove-the-example-environment), then add them again. Any change you made to the example flows is lost.
+
+Kestra doesn't seed the examples when:
+
 - Your license doesn't include both Apps and Assets. The tenant is created empty, and the server logs a warning.
 - Seeding is turned off in the configuration.
+
+A tenant skipped for one of these reasons never received the examples. Once the cause is fixed, **Add examples** or a later switch to `INFRASTRUCTURE` seeds it.
 
 To turn off seeding for every tenant, set `kestra.ee.tenant-examples.enabled` to `false`:
 
@@ -83,12 +90,21 @@ kestra:
 
 A banner on the Catalog, Deployments, and Inventory pages counts the example resources. Click **Remove examples** in the banner, or **Remove** next to **Example resources** on the tenant's settings page, and confirm.
 
+Removing the examples deletes:
+
+- Every app, flow, and asset in the `infrastructure.examples` namespace, including any you created there yourself.
+- The example dashboard and the example app template.
+- The `setup_demo_environment` execution and the examples' asset usage records.
+- The `infrastructure.examples` namespace.
+
 :::alert{type="warning"}
-Removing the examples deletes every app, flow, and asset in the `infrastructure.examples` namespace, including any you created there yourself, then the example dashboard, the example app template, and the namespace. It can't be undone.
+Removal also deletes anything you created in `infrastructure.examples`, and it can't be undone.
 :::
 
-The banner and the action are available to the Instance Owner, and to members who can delete flows, apps, dashboards, assets, and namespaces in `infrastructure.examples`. Through the API, call `DELETE /api/v1/tenants/{id}/examples`.
+Removal is available once the `setup_demo_environment` execution ends. Until then, Kestra refuses it with "The example setup run is still running. Try again once it ends."
 
-After the examples are removed, switching the tenant to another type and back to `INFRASTRUCTURE` seeds them again.
+The banner and the action are available to the Instance Owner, and to members who can delete flows, apps, dashboards, assets, namespaces, and executions in `infrastructure.examples`. Through the API, call `DELETE /api/v1/tenants/{id}/examples`.
+
+Removed examples stay removed: switching the tenant's type doesn't seed them again. To bring them back, click **Add examples** on the tenant's settings page. The product tour needs the examples, so the sidebar shows no tour entry while they're absent. The entry returns once you add them again.
 
 To hide the examples without deleting them, turn on **Hide examples** on the Catalog, Deployments, or Inventory page. Your browser remembers the setting.
