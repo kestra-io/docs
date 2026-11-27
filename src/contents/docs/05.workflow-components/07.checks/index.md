@@ -7,16 +7,20 @@ icon: /src/contents/docs/icons/flow.svg
 version: ">= 1.2.0"
 ---
 
-Checks are flow-level assertions evaluated against inputs before an execution is created. Each check defines a boolean `when` expression and a `message` to display when the expression evaluates to false.
+Checks are flow-level assertions evaluated against inputs before an execution is created. Each check defines a boolean `passIf` expression and a `message` to display when the expression evaluates to false.
 
 ## Properties
 
 | Property | Required | Default | Description |
 |---|---|---|---|
-| `when` | Yes | — | Pebble expression that must evaluate to a boolean. Can reference inputs, KV pairs, and other [expression](../../expressions/index.mdx) variables. |
+| `passIf` | Yes | — | Pebble expression that must evaluate to a boolean. Can reference inputs, KV pairs, and other [expression](../../expressions/index.mdx) variables. |
 | `message` | Yes | — | Text displayed in the Execute modal when the condition is false. |
 | `style` | No | `INFO` | Visual style for the message: `ERROR`, `SUCCESS`, `WARNING`, or `INFO`. |
 | `behavior` | No | `BLOCK_EXECUTION` | How the flow reacts when the condition is false: `BLOCK_EXECUTION` (do not create), `FAIL_EXECUTION` (create in failed state), or `CREATE_EXECUTION` (create anyway). |
+
+:::alert{type="info"}
+`passIf` was previously named `when`, and before Kestra 2.0 `condition`. Both `when` and `condition` remain supported as deprecated aliases so existing flows keep working, but new flows should use `passIf`. A check must set only one of the three.
+:::
 
 When you click **Execute**, the modal displays the `message` as soon as an input fails a check:
 
@@ -28,7 +32,7 @@ If several checks fail, the most restrictive behavior wins in this priority orde
 
 ## Evaluation behavior
 
-The following rules govern `when` expression evaluation:
+The following rules govern `passIf` expression evaluation:
 
 - **The condition must evaluate to a boolean `true`.** Only a real boolean passes; not the string `"true"`, `"yes"`, a number, or any other truthy value. Use comparisons and boolean operators (e.g. `{{ inputs.age >= 18 }}`) rather than returning a string.
 - **An unevaluatable condition always blocks.** If the condition cannot be evaluated (for example, an undefined variable or a syntax error), the check fails safe: the execution is hard-blocked with `BLOCK_EXECUTION` and an `ERROR` style, regardless of the `behavior` and `style` you declared. Fix the expression and reference only variables that exist at validation time to restore your declared behavior.
@@ -49,7 +53,7 @@ inputs:
 
 checks:
   - message: "Sorry, this flow can only be executed with 'Kestra'"
-    when: "{{ (inputs.name | upper) == 'KESTRA' }}"
+    passIf: "{{ (inputs.name | upper) == 'KESTRA' }}"
     style: ERROR
     behavior: BLOCK_EXECUTION
 
@@ -82,13 +86,13 @@ inputs:
 checks:
   # Block risky prod runs outside the allowed window
   - message: "Prod runs are only allowed between 06:00 and 22:00 UTC"
-    when: "{{ inputs.environment != 'prod' or (inputs.run_date | date('HH') | number >= 6 and inputs.run_date | date('HH') | number < 22) }}"
+    passIf: "{{ inputs.environment != 'prod' or (inputs.run_date | date('HH') | number >= 6 and inputs.run_date | date('HH') | number < 22) }}"
     style: ERROR
     behavior: BLOCK_EXECUTION
 
   # Warn if the payload is not the approved source
   - message: "Non-approved source detected. Use https://dummyjson.com when possible."
-    when: "{{ inputs.payload_url | startsWith('https://dummyjson.com') }}"
+    passIf: "{{ inputs.payload_url | startsWith('https://dummyjson.com') }}"
     style: WARNING
     behavior: CREATE_EXECUTION
 
